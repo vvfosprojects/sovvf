@@ -20,7 +20,7 @@ export class FiltroComponent {
     }
 
     onSelezione(filtro: VoceFiltro): void {
-        if (!this.selezionato) {
+      if (!this.selezionato) {
             if (!this.disabled) {
                 this.filtroSelezionato.emit(filtro);
             }

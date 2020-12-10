@@ -27,6 +27,40 @@ export class FiltriRichiesteComponent {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
 
+    statiRichiesta: VoceFiltro[] = [{
+      categoria: 'StatiRichiesta',
+      codice: 'Assegnati',
+      descrizione: 'Assegnati',
+      name: 'assegnati',
+      star: true,
+      statico: true,
+      },
+      {
+      categoria: 'StatiRichiesta',
+      codice: 'Sospesi',
+      descrizione: 'Sospesi',
+      name: 'sospesi',
+      star: true,
+      statico: true,
+      },
+      {
+      categoria: 'StatiRichiesta',
+      codice: 'Presidiati',
+      descrizione: 'Presidiati',
+      name: 'presidiati',
+      star: true,
+      statico: true,
+    },
+    {
+      categoria: 'StatiRichiesta',
+      codice: 'Chiusi',
+      descrizione: 'Chiusi',
+      name: 'chiusi',
+      star: true,
+      statico: true,
+    },
+    ];
+
     subscription = new Subscription();
 
     constructor(private store: Store,

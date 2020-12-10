@@ -16,7 +16,7 @@
         </button>
         <div ngbDropdownMenu class="bg-light px-3">
             <div class="card-block pt-1 pb-0">
-                <h6 class="font-weight-bold">Visualizza solo:</h6>
+                <h6 class="font-weight-bold">Visualizza:</h6>
                 <div class="py-1">
                     <div *ngFor="let f of filtri" class="cursor-pointer mb-2">
                         <app-filtro *ngIf="f.star === true"
@@ -28,6 +28,18 @@
                                     (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
                     </div>
                 </div>
+            </div>
+            <h6 class="font-weight-bold">Stati:</h6>
+            <div class="py-1">
+              <div *ngFor="let f of statiRichiesta" class="cursor-pointer mb-2">
+                <app-filtro *ngIf="f.star === true"
+                            [filtro]="f"
+                            [useCheckbox]="true"
+                            [selezionato]="f | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+              </div>
             </div>
             <div class="text-center">
                 <button class="btn btn-sm btn-block btn-secondary" (click)="openFiltersModal()">

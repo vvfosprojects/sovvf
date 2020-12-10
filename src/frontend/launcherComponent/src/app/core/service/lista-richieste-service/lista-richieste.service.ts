@@ -23,14 +23,17 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
+        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
+        const filtriTipologia = filtriTipologieRichiesta.filter( x => x.categoria !== 'StatiRichiesta');
+        const filtroStato = filtriTipologieRichiesta.filter( x => x.categoria === 'StatiRichiesta');
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null,
-            statiRichiesta: filters.statiRichiesta
+            filtriTipologie: null,
+            statiRichiesta: filtroStato && filtroStato.length > 0 ? filtroStato.map(f => f.codice) : null,
+            tipologiaRichiesta: filtriTipologia && filtriTipologia.length > 0 ? filtriTipologia.map(f => f.codice) : null
         };
         console.log('getRichieste OBJ', obj);
         return this.http.post(API_URL_RICHIESTE, obj);
