@@ -156,6 +156,10 @@ namespace SO115App.Persistence.MongoDB
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
 
+            //FILTRO ZONE EMERGENZA
+            if (filtro.ZoneEmergenza != null)
+                result = result.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))).ToList();
+
             //FILTRO PERIODO CHIAMATE CHIUSE
             if (filtro.PeriodoChiuse != null) result = result.Where(r =>
             {
