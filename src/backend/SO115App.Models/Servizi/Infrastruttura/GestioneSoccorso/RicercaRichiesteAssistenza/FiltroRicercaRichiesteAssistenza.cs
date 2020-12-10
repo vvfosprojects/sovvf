@@ -92,6 +92,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public string[] TipologiaRichiesta { get; set; }
 
         public PeriodoChiuse PeriodoChiuse { get; set; }
+
+        public string[] ZoneEmergenza { get; set; }
     }
 
     public class PeriodoChiuse
