@@ -56,15 +56,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             //try
             //{
-                Parallel.ForEach(codSede, sede =>
-                {
-                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext);
-                    httpManager.Configure("Personale_" + sede);
+            Parallel.ForEach(codSede, sede =>
+            {
+                var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+                httpManager.Configure("Personale_" + sede);
 
-                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-                    lock (listaPersonale)
-                        listaPersonale.AddRange(httpManager.GetAsync(url).Result);
-                });
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                lock (listaPersonale)
+                    listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
+            });
             //}
             //catch (Exception e)
             //{
@@ -91,7 +91,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
                 var mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
 
-                #endregion
+                #endregion API ESTERNA
 
                 lock (new object()) { result.AddRange(mapped); }
             });

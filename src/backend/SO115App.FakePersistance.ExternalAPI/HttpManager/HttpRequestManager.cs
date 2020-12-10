@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Caching;
@@ -7,6 +8,7 @@ using Polly.Caching.Memory;
 using Polly.Wrap;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
 using System.Net;
@@ -22,17 +24,19 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         private readonly IMemoryCache _memoryCache;
         private readonly IWriteLog _writeLog;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IConfiguration _configuration;
 
         private HttpRequestManager()
         {
         }
 
-        public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
+        public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext, IConfiguration configuration)
         {
             _client = client;
             _memoryCache = memoryCache;
             _writeLog = writeLog;
             _httpContext = httpContext;
+            _configuration = configuration;
         }
 
         private AsyncPolicyWrap<HttpResponseMessage> policies;
@@ -96,25 +100,40 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
         }
 
-        public async Task<ResponseObject> GetAsync(Uri url)
+        public async Task<ResponseObject> GetAsync(Uri url, string token)
         {
+            _client.DefaultRequestHeaders.Authorization =
+                   new AuthenticationHeaderValue("Bearer", "=" + token);
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return ManageResponse(response);
         }
 
-        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content)
+        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            _client.DefaultRequestHeaders.Authorization =
+                   new AuthenticationHeaderValue("Bearer", "=" + token);
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             return ManageResponse(response);
         }
 
-        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content)
+        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            _client.DefaultRequestHeaders.Authorization =
+                   new AuthenticationHeaderValue("Bearer", "=" + token);
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
+
+            return ManageResponse(response);
+        }
+
+        public async Task<ResponseObject> RichiediToken()
+        {
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetToken}?user=SO115&password=SO115");
+            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
+            var data = response.Content.ReadAsStringAsync().Result;
 
             return ManageResponse(response);
         }

@@ -20,16 +20,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(RientroGAC rientro)
         {
+            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
+
             var lstRientri = new List<RientroGAC>() { rientro };
 
-            var requestManager = new HttpRequestManager<object>(_client, _memoryCache, _writeLog, _httpContext);
+            var requestManager = new HttpRequestManager<object>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
             requestManager.Configure();
 
             var jsonString = JsonConvert.SerializeObject(lstRientri);
             var content = new StringContent(jsonString);
             var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacRientroMezzo);
 
-            var result = requestManager.PutAsync(uri, content).Result;
+            var result = requestManager.PutAsync(uri, content, getToken.GeneraToken()).Result;
         }
     }
 }
