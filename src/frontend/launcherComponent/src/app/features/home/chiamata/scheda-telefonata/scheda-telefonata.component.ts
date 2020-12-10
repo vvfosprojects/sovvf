@@ -199,14 +199,15 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     getChiamataForm(): void {
         const f = this.f;
-        this.nuovaRichiesta.tipologie = f.tipologie.value;
+        const tipologia = this.tipologie.filter((t: Tipologia) => t.codice === f.tipologie.value)[0];
+        this.nuovaRichiesta.tipologie = [tipologia];
         this.nuovaRichiesta.dettaglioTipologia = f.dettaglioTipologia.value;
         this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nominativo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = (f.etichette.value && f.etichette.value.length) ? f.etichette.value : null;
-        this.nuovaRichiesta.descrizione = f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : null;
+        this.nuovaRichiesta.descrizione = f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : tipologia.descrizione;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
