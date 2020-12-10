@@ -20,16 +20,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(UscitaGAC uscita)
         {
+            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
             var lstUscite = new List<UscitaGAC>() { uscita };
 
-            var requestManager = new HttpRequestManager<List<Response>>(_client, _memoryCache, _writeLog, _httpContext);
+            var requestManager = new HttpRequestManager<List<Response>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
             requestManager.Configure();
 
             var jsonString = JsonConvert.SerializeObject(lstUscite);
             var content = new StringContent(jsonString);
             var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacUscitaMezzo);
 
-            var result = requestManager.PutAsync(uri, content).Result;
+            var result = requestManager.PutAsync(uri, content, getToken.GeneraToken()).Result;
         }
     }
 }

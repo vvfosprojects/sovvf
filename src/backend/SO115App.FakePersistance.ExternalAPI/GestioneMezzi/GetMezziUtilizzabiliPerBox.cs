@@ -6,6 +6,7 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -60,19 +61,21 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaAnagraficaMezzo = new List<AnagraficaMezzo>();
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
 
-
             #region LEGGO DA API ESTERNA
+
+            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
+            var token = getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext);
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
                 httpManager.Configure("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
                 lock (lstMezziDto)
-                    lstMezziDto.AddRange(httpManager.GetAsync(url).Result);
+                    lstMezziDto.AddRange(httpManager.GetAsync(url, token).Result);
             });
 
             #endregion LEGGO DA API ESTERNA
@@ -90,7 +93,6 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     return mezzo;
                 }
                 //}
-
 
                 if (ListaStatiOperativiMezzi.Count > 0)
                     mezzo.Stato = ListaStatiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
@@ -129,21 +131,21 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             //else
             //{
             var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
-                if (ListaStatoOperativoMezzo.Count == 0)
+            if (ListaStatoOperativoMezzo.Count == 0)
+            {
+                switch (StatoMezzoOra)
                 {
-                    switch (StatoMezzoOra)
-                    {
-                        case "D": stato = Models.Classi.Utility.Costanti.MezzoInSede; break;
-                        case "R": stato = Models.Classi.Utility.Costanti.MezzoInRientro; break;
-                        case "O": stato = Models.Classi.Utility.Costanti.MezzoOperativoPreaccoppiato; break;
-                        case "A": stato = Models.Classi.Utility.Costanti.MezzoAssegnatoPreaccoppiato; break;
-                        default: stato = Models.Classi.Utility.Costanti.MezzoStatoSconosciuto; break;
-                    }
+                    case "D": stato = Models.Classi.Utility.Costanti.MezzoInSede; break;
+                    case "R": stato = Models.Classi.Utility.Costanti.MezzoInRientro; break;
+                    case "O": stato = Models.Classi.Utility.Costanti.MezzoOperativoPreaccoppiato; break;
+                    case "A": stato = Models.Classi.Utility.Costanti.MezzoAssegnatoPreaccoppiato; break;
+                    default: stato = Models.Classi.Utility.Costanti.MezzoStatoSconosciuto; break;
                 }
-                else
-                {
-                    stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
-                }
+            }
+            else
+            {
+                stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
+            }
             //}
             return stato;
         }
