@@ -10,36 +10,61 @@ import { Tipologia } from '../../model/tipologia.model';
 export class TriageModalComponent implements OnInit {
 
     tipologiaSelezionata: Tipologia;
-    // TODO: da inserire nello store e prendere con un selector
-    dettagliTipologia: any[] = [
+
+    dettagliTipologie: any[];
+    dettaglioTipologiaSelezionato: any;
+
+    abilitaTriage: boolean;
+    // TODO: ELIMINARE (PER FAKE)
+    domandeTriage = [
         {
-            codice: '1',
-            codSede: 'RM.1000',
-            codTipologia: '1',
-            descrizione: 'Indendio Auto'
+            titolo: 'C\'è qualcuno in casa?',
+            tipo: 'boolean',
+            risposte: ['si', 'no'],
+            campo: 'priorita',
+            effettiRisposteSuCampo: [
+                {
+                    risposta: 'si',
+                    valoreSuCampo: '5'
+                },
+                {
+                    risposta: 'no',
+                    valoreSuCampo: '3'
+                }
+            ]
         },
         {
-            codice: '2',
-            codSede: 'RM.1000',
-            codTipologia: '1',
-            descrizione: 'Indendio Auto Cisterna'
+            titolo: 'Che piano è?',
+            tipo: 'number',
+            campo: 'piano'
         }
     ];
-    dettaglioTipologiaSelezionato: any;
+    stepDomanda: number;
 
     constructor(private modal: NgbActiveModal) {
     }
 
     ngOnInit(): void {
+        if (!this.dettagliTipologie || this.dettagliTipologie.length <= 0) {
+            this.onAbilitaTriage();
+        }
     }
 
     onChangeDettaglioTipologia(codDettaglioTipologia: string): void {
-        this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((dT: any) => dT.codice === codDettaglioTipologia)[0];
+        this.dettaglioTipologiaSelezionato = this.dettagliTipologie.filter((dT: any) => dT.codice === codDettaglioTipologia)[0];
+    }
+
+    onAbilitaTriage(): void {
+        this.abilitaTriage = true;
+        this.stepDomanda = 1;
+    }
+
+    nextDomanda(): void {
+        this.stepDomanda = this.stepDomanda++;
     }
 
     closeModal(type: string): void {
         const obj = { type, result: this.dettaglioTipologiaSelezionato };
-        console.log('closeModal', obj);
         this.modal.close(obj);
     }
 }

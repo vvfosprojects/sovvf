@@ -1,5 +1,6 @@
 <div class="px-3" [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-930-chiamata': !boxAttivi}">
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
+                           [dettagliTipologie]="dettagliTipologie"
                            [operatore]="(utente$ | async)"
                            [enti]="enti$ | async"
                            [codiceSchedaContatto]="(schedaContattoTelefonata$ | async)?.codiceScheda"

@@ -1,0 +1,8 @@
+<div *ngFor="let domanda of domande; let i = index">
+    <ng-template [ngIf]="stepDomanda === i + 1">
+        <ng-template [ngIf]="domanda.tipo === 'number' || domanda.tipo === 'string'">
+            <label for="{{ domanda.campo }}">{{ domanda.titolo }}</label>
+            <input id="{{ domanda.campo }}" [type]="domanda.tipo" [placeholder]="'Inserisci' + domanda.campo">
+        </ng-template>
+    </ng-template>
+</div>

@@ -43,6 +43,7 @@ import { TriageModalComponent } from '../../../../shared/modal/triage-modal/tria
 export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() tipologie: Tipologia[];
+    @Input() dettagliTipologie: any[];
     @Input() operatore: Utente;
     @Input() competenze: Sede[];
     @Input() countInterventiVicinanze: number;
@@ -248,6 +249,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         }
         const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
+        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((dT: any) => dT.codTipologia === codTipologia);
         triageModal.result.then((res: any) => {
             switch (res.type) {
                 case 'salvaDettaglio':
@@ -255,21 +257,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                     break;
             }
         });
-    }
-
-    // todo: rimuovere (inutilizzato)
-    onAddTipologia(tipologia: any): void {
-        if (!this.nuovaRichiesta.tipologie) {
-            this.nuovaRichiesta.tipologie = [];
-            this.onAddTipologia(tipologia);
-        } else {
-            this.nuovaRichiesta.tipologie.push(tipologia);
-        }
-    }
-
-    // todo: rimuovere (inutilizzato)
-    onRemoveTipologia(tipologia: any): void {
-        this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
     }
 
     onAddEnti(ente: any): void {
