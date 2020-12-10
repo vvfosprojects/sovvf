@@ -20,20 +20,18 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,6 +53,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetZoneEmergenza _getoneEmergenza;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
@@ -67,6 +66,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetZoneEmergenza getZoneEmergenza,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             _boxMezziHandler = boxMezziHandler;
@@ -80,6 +80,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             _tipologieQueryHandler = tipologieQueryHandler;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _rubricaQueryHandler = rubricaQueryHandler;
+            _getoneEmergenza = getZoneEmergenza;
         }
 
         /// <summary>
@@ -135,6 +136,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
             var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
             var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
+            var ListaZoneEmergenza = Task.Factory.StartNew(() => _getoneEmergenza.GetAll());
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
@@ -146,6 +148,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 ListaFiltri = filtri,
                 InfoNue = infoNue.Result,
                 Tipologie = tipologie.Result,
+                ZoneEmergenza = ListaZoneEmergenza.Result,
                 Rubrica = rubrica.Result
             };
 

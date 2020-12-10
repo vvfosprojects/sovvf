@@ -6,10 +6,12 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
 
 namespace SO115App.CompositionRoot
 {
@@ -223,6 +225,12 @@ namespace SO115App.CompositionRoot
                 SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
 
             #endregion Rubrica
+
+            #region ZoneEmergenza
+
+            container.Register<IGetZoneEmergenza, GetZoneEmergenza>();
+
+            #endregion
 
             #region TrasferimentoChiamata
 
