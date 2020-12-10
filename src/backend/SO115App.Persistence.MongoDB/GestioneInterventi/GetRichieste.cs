@@ -144,14 +144,14 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
                 if (filtro.StatiRichiesta.Contains("Chiamata"))
-                    filtro.StatiRichiesta = filtro.StatiRichiesta.ToList().Select(f =>
+                    filtro.StatiRichiesta = filtro.StatiRichiesta.Select(f =>
                     {
                         if (f == "Chiamata")
                             return "InAttesa";
                         return f;
-                    }).ToArray();
+                    }).ToList();
                 else
-                    filtro.StatiRichiesta.Concat(new string[] { "InAttesa" });
+                    filtro.StatiRichiesta.Add("InAttesa");
 
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }

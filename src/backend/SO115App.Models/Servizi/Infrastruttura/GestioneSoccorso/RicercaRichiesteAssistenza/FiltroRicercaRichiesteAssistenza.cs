@@ -34,7 +34,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   Indica lo stato in cui può trovarsi una richiesta con riferimento all'avanzamento
         ///   nella sua gestione.
         /// </summary>
-        public string[] StatiRichiesta { get; set; }
+        public List<string> StatiRichiesta { get; set; }
 
         /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
