@@ -6,9 +6,16 @@
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <app-step-dettaglio-tipologia [dettagliTipologia]="dettagliTipologia"
-                                  (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
-    </app-step-dettaglio-tipologia>
+    <ng-template [ngIf]="dettagliTipologie?.length > 0 && !abilitaTriage">
+        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologie"
+                                      (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
+        </app-step-dettaglio-tipologia>
+    </ng-template>
+    <ng-template [ngIf]="abilitaTriage">
+        <app-step-domande [domande]="domandeTriage"
+                          [stepDomanda]="stepDomanda">
+        </app-step-domande>
+    </ng-template>
     <hr>
     <div class="text-center">
         <h6 class="d-inline-block mr-2">Tipologia Selezionata:</h6>
@@ -20,11 +27,25 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover">
-        {{ 'Continua Triage' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
-            (click)="closeModal('salvaDettaglio')">
-        {{ 'Salva dettaglio e Chiudi' | uppercase }}
-    </button>
+    <ng-template [ngIf]="!abilitaTriage">
+        <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="onAbilitaTriage()">
+            {{ 'Continua Triage' | uppercase }}
+        </button>
+    </ng-template>
+    <ng-template [ngIf]="abilitaTriage">
+        <button type="button" class="btn btn-lg btn-primary btn-no-hover" (click)="nextDomanda()">
+            {{ 'Prossima Domanda' | uppercase }}
+        </button>
+    </ng-template>
+    <ng-template [ngIf]="abilitaTriage">
+        <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
+            {{ 'Annulla Triage' | uppercase }}
+        </button>
+    </ng-template>
+    <ng-template [ngIf]="!abilitaTriage">
+        <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
+                (click)="closeModal('salvaDettaglio')">
+            {{ 'Salva dettaglio e Chiudi' | uppercase }}
+        </button>
+    </ng-template>
 </div>

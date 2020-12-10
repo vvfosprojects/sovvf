@@ -38,6 +38,28 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
+    // TODO: da inserire nello store e prendere con un selector
+    dettagliTipologie: any[] = [
+        {
+            codice: '1-1',
+            codSede: 'RM.1000',
+            codTipologia: '1',
+            descrizione: 'Indendio Auto'
+        },
+        {
+            codice: '1-2',
+            codSede: 'RM.1000',
+            codTipologia: '1',
+            descrizione: 'Indendio Auto Cisterna'
+        },
+        {
+            codice: '22-1',
+            codSede: 'RM.1000',
+            codTipologia: '22',
+            descrizione: 'Allagamento Appartamento'
+        }
+    ];
+
     doubleMonitor: boolean;
     permessiFeature = PermissionFeatures;
 

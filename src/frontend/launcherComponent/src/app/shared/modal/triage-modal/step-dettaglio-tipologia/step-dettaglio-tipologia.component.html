@@ -1,7 +1,7 @@
 <div class="text-center">
     <h5>Lista dettagli tipologia:</h5>
     <div class="mt-3">
-        <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologia"
+        <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
                       [checkboxState]="{
                   id: dettaglioTipologia.codice,
                   status: dettaglioTipologia.codice === codDettaglioTipologiaSelezionato,

@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class StepDettaglioTipologiaComponent implements OnInit {
 
-    @Input() dettagliTipologia: any[];
+    @Input() dettagliTipologie: any[];
 
     @Output() changeDettaglioTipologia: EventEmitter<string> = new EventEmitter<string>();
 
