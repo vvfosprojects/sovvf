@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
@@ -89,5 +90,15 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
         /// </summary>
         public string[] TipologiaRichiesta { get; set; }
+
+        public PeriodoChiuse PeriodoChiuse { get; set; }
+    }
+
+    public class PeriodoChiuse
+    {
+        public string Turno { get; set; }
+        public DateTime Da { get; set; }
+        public DateTime A { get; set; }
+        public DateTime Data { get; set; }
     }
 }

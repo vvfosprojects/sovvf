@@ -36,6 +36,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,10 +55,11 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
         private readonly IGetRubrica _getRubrica;
+        private readonly IGetTurno _getTurno;
 
         public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
             MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetRubrica getRubrica)
+            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetRubrica getRubrica, IGetTurno getTurno)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -68,6 +70,7 @@ namespace SO115App.Persistence.MongoDB
             _getCooDistaccamento = getCooDistaccamento;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getRubrica = getRubrica;
+            _getTurno = getTurno;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -150,22 +153,40 @@ namespace SO115App.Persistence.MongoDB
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
 
+            if (filtro.PeriodoChiuse != null) result = result.Where(r =>
+            {
+                if (filtro.PeriodoChiuse.Data != null)
+                    return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Day);
+                
+                else if (filtro.PeriodoChiuse.Turno != null)
+                {
+                    var turno = _getTurno.Get(r.IstanteChiusura);
+
+                    return r.Aperta == true || (r.Chiusa == true && turno.Codice.Contains(filtro.PeriodoChiuse.Turno));
+                }
+                
+                else if(filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
+                    return r.Aperta == true || (r.IstanteChiusura >= filtro.PeriodoChiuse.Da && r.IstanteChiusura <= filtro.PeriodoChiuse.A);
+
+                throw new Exception("Errore filtro periodo richieste chiuse");
+            }).ToList();
+
+
             if (filtro.FiltriTipologie != null)
             {
                 result = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
             }
 
-            if (filtro.TipologiaRichiesta != null)
-                result = result.Where(r =>
-                {
-                    if (filtro.TipologiaRichiesta.Contains("Chiamata"))
-                        return r.TestoStatoRichiesta == "C";
+            if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
+            {
+                if (filtro.TipologiaRichiesta.Contains("Chiamata"))
+                    return r.TestoStatoRichiesta == "C";
 
-                    if (filtro.TipologiaRichiesta.Contains("Intervento"))
-                        return r.TestoStatoRichiesta != "C";
+                if (filtro.TipologiaRichiesta.Contains("Intervento"))
+                    return r.TestoStatoRichiesta != "C";
 
-                    return true;
-                }).ToList();
+                return true;
+            }).ToList();
 
             if (filtro.IndirizzoIntervento != null)
             {

@@ -81,13 +81,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             { 
                 Parallel.ForEach(sedi, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext);
-                    httpManager.Configure("Mezzi_" + sede);
+                    //var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext);
+                    //httpManager.Configure("Mezzi_" + sede);
 
-                    var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
-                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-                    lock (lstMezziDto)
-                        lstMezziDto.AddRange(httpManager.GetAsync(url).Result);
+                    //var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
+                    //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+                    //lock (lstMezziDto)
+                    //    lstMezziDto.AddRange(httpManager.GetAsync(url).Result);
                 });
             }
             catch (Exception e)
