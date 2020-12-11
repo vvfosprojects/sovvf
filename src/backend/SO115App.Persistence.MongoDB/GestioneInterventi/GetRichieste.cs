@@ -188,10 +188,10 @@ namespace SO115App.Persistence.MongoDB
             //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
             if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
             {
-                if (filtro.TipologiaRichiesta.Contains("Chiamate"))
+                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
                     return r.TestoStatoRichiesta == "C";
 
-                if (filtro.TipologiaRichiesta.Contains("Interventi"))
+                if (filtro.TipologiaRichiesta.Equals("Interventi"))
                     return r.TestoStatoRichiesta != "C";
 
                 return true;
