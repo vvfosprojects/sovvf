@@ -2,12 +2,13 @@ import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core
 import {VoceFiltro} from './voce-filtro.model';
 import {NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ModalFiltriTipologiaComponent} from './modal-filtri-tipologia/modal-filtri-tipologia.component';
-import {ApplyFiltriTipologiaSelezionatiRichieste, SetZoneEmergenza} from '../../store/actions/filterbar/filtri-richieste.actions';
+import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../store/actions/filterbar/filtri-richieste.actions';
 import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
+import {SetZoneEmergenzaSelezionate} from '../../store/actions/filterbar/zone-emergenza.actions';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -103,9 +104,6 @@ export class FiltriRichiesteComponent {
     }
     const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
     modal.result.then((res: string[]) => {
-      console.log('TESTTTT*****');
-      console.log('TESTTTT', res);
-      this.store.dispatch(new SetZoneEmergenza(res));
       this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
       /*
       switch (res) {
@@ -179,8 +177,8 @@ export class FiltriRichiesteComponent {
     }
     const modal = this.modalService.open(ModalZonaEmergenzaComponent, modalOptions);
     modal.result.then((res: string[]) => {
-      console.log('TESTTTT', res);
-      this.store.dispatch(new SetZoneEmergenza(res));
+      console.log('Zone Emergenza Selezionate ', res);
+      this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
       this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
     });
   }

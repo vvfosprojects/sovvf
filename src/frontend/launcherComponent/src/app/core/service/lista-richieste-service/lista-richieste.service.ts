@@ -7,7 +7,7 @@ import { FiltersInterface } from '../../../shared/interface/filters/filters.inte
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 import {Store} from '@ngxs/store';
-import {FiltriRichiesteState} from '../../../features/home/store/states/filterbar/filtri-richieste.state';
+import {ZoneEmergenzaState} from '../../../features/home/store/states/filterbar/zone-emergenza.state';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -28,8 +28,7 @@ export class SintesiRichiesteService {
         const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
         const filtriTipologia = filtriTipologieRichiesta.filter( x => x.categoria !== 'StatiRichiesta' && x.categoria !== 'AltriFiltri');
         const filtroStato = filtriTipologieRichiesta.filter( x => x.categoria === 'StatiRichiesta');
-        const zoneEmergenza = this.store.selectSnapshot(FiltriRichiesteState.zoneEmergenzaFake);
-        console.log('****** ' , zoneEmergenza);
+        const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,

@@ -14,7 +14,7 @@ import {
   ResetFiltriSelezionatiRichieste,
   SetFiltroBoxRichieste,
   SetFiltroSelezionatoRichieste,
-  SetFiltroTipologiaSelezionatoRichieste, SetZoneEmergenza
+  SetFiltroTipologiaSelezionatoRichieste
 } from '../../actions/filterbar/filtri-richieste.actions';
 import { Injectable } from '@angular/core';
 import produce from 'immer';
@@ -28,7 +28,6 @@ export interface FiltriRichiesteStateModel {
     categoriaFiltriRichieste: string[];
     filtriTipologiaSelezionati: VoceFiltro[];
     filtriStatoRichiesteSelezionati: StatoRichiesta[];
-    zoneEmergenzaFake: string[];
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
@@ -72,7 +71,6 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: [],
     filtriStatoRichiesteSelezionati: [],
-    zoneEmergenzaFake: [],
 };
 
 @Injectable()
@@ -83,11 +81,6 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
 export class FiltriRichiesteState {
 
     constructor(private store: Store) {
-    }
-
-    @Selector()
-    static zoneEmergenzaFake(state: FiltriRichiesteStateModel): string[] {
-      return state.zoneEmergenzaFake;
     }
 
     @Selector()
@@ -113,16 +106,6 @@ export class FiltriRichiesteState {
     @Selector()
     static filtriStatoRichiestaSelezionati(state: FiltriRichiesteStateModel): StatoRichiesta[] {
         return state.filtriStatoRichiesteSelezionati;
-    }
-
-    @Action(SetZoneEmergenza)
-    setZoneEmergenza({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: any): void {
-        const state = getState();
-        console.log('****aaaaaa ', action);
-        patchState({
-          ...state,
-          zoneEmergenzaFake: action.zoneEmergenza,
-        });
     }
 
     @Action(GetFiltriRichieste)
