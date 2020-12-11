@@ -177,7 +177,6 @@ export class FiltriRichiesteComponent {
     }
     const modal = this.modalService.open(ModalZonaEmergenzaComponent, modalOptions);
     modal.result.then((res: string[]) => {
-      console.log('Zone Emergenza Selezionate ', res);
       this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
       this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
     });

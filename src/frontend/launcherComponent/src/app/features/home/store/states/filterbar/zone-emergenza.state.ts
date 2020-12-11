@@ -44,7 +44,6 @@ export class ZoneEmergenzaState {
   @Action(SetZoneEmergenzaSelezionate)
   setZoneEmergenzaSelezionate({ getState, setState, patchState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
     const state = getState();
-    console.log('zoneEmergenzaSelezionate , ', action.zoneEmergenza, 'test generale ', action);
     patchState({
       ...state,
       zoneEmergenzaSelezionate: action.zoneEmergenza,
