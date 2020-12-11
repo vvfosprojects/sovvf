@@ -35,6 +35,7 @@ import { MezziComposizioneState } from '../../shared/store/states/mezzi-composiz
 import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
+import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state';
 
 @NgModule({
     declarations: [
@@ -77,7 +78,8 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
                 SostituzionePartenzaModalState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
-                FiltriComposizioneState
+                FiltriComposizioneState,
+                ZoneEmergenzaState
             ]
         ),
     ],

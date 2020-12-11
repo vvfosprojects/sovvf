@@ -17,6 +17,8 @@ import { FiltroComponent } from '../../../shared/components/filtro/filtro.compon
 import { FiltriSchedeContattoComponent } from './filtri-schede-contatto/filtri-schede-contatto.component';
 import { FiltriMezziServizioComponent } from './filtri-mezzi-servizio/filtri-mezzi-servizio.component';
 import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
+import {ModalRichiesteChiuseComponent} from './filtri-richieste/modal-richieste-chiuse/modal-richieste-chiuse.component';
+import {ModalZonaEmergenzaComponent} from './filtri-richieste/modal-zona-emergenza/modal-zona-emergenza.component';
 
 @NgModule({
     imports: [
@@ -39,7 +41,9 @@ import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-t
         TastiTelefonataGroupComponent,
         FiltriSchedeContattoComponent,
         FiltriMezziServizioComponent,
-        ModalFiltriTipologiaComponent
+        ModalFiltriTipologiaComponent,
+        ModalRichiesteChiuseComponent,
+        ModalZonaEmergenzaComponent
     ],
     exports: [
         FilterbarComponent

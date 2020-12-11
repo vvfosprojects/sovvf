@@ -70,7 +70,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     ],
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: [],
-    filtriStatoRichiesteSelezionati: []
+    filtriStatoRichiesteSelezionati: [],
 };
 
 @Injectable()
@@ -159,7 +159,9 @@ export class FiltriRichiesteState {
                 filtriRichiesteSelezionati: insertItem<VoceFiltro>(action.filtro)
               })
             );
-            this.store.dispatch(new SetFiltroBoxRichieste(action.filtro.name)); // io
+            if (action && action.filtro) {
+              this.store.dispatch(new SetFiltroBoxRichieste(action.filtro.name));
+            }
         }
         dispatch(new GetListaRichieste());
     }

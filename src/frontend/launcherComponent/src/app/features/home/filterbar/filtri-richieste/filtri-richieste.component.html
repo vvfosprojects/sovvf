@@ -38,14 +38,30 @@
                             [selezionato]="f | selectedFilterRichieste"
                             [disabled]="disableFilters"
                             (filtroSelezionato)="onSelezioneFiltro($event)"
-                            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                            (chiusiModal)="openChiusiModal($event)"></app-filtro>
               </div>
             </div>
+            <h6 class="font-weight-bold">Altri:</h6>
+            <div class="py-1">
+              <div *ngFor="let f of altriFiltri" class="cursor-pointer mb-2">
+                <app-filtro *ngIf="f.star === true"
+                            [filtro]="f"
+                            [useCheckbox]="true"
+                            [selezionato]="f | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                            (zonaEmergenzaModal)="openZonaEmergenzaModal($event)"></app-filtro>
+              </div>
+            </div>
+          <!--
             <div class="text-center">
                 <button class="btn btn-sm btn-block btn-secondary" (click)="openFiltersModal()">
                     Visualizza altri
                 </button>
             </div>
+            -->
         </div>
     </div>
     <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="resetFiltri()" [disabled]="disableFilters">
