@@ -38,7 +38,7 @@ export class SintesiRichiesteService {
             filtriTipologie: null,
             statiRichiesta: filtroStato && filtroStato.length > 0 ? filtroStato.map(f => f.codice) : null,
             tipologiaRichiesta: filtriTipologia && filtriTipologia.length > 0 ? filtriTipologia.map(f => f.codice) : null,
-            zoneEmergenza: zoneEmergenza ? zoneEmergenza : null
+            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null
         };
         console.log('getRichieste OBJ', obj);
         return this.http.post(API_URL_RICHIESTE, obj);
