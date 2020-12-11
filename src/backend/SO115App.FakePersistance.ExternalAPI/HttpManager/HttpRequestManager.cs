@@ -8,7 +8,6 @@ using Polly.Caching.Memory;
 using Polly.Wrap;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
 using System.Net;
@@ -48,45 +47,43 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 .TimeoutAsync<HttpResponseMessage>(60);
 
             //ECCEZIONI E RESPONSE
-            var retryPolicy = Policy
-                .HandleResult<HttpResponseMessage>(c =>
+            var retryPolicy = Policy.HandleResult<HttpResponseMessage>(c =>
+            {
+                if (c.StatusCode != HttpStatusCode.OK)
                 {
-                    if (c.StatusCode != HttpStatusCode.OK)
+                    var exception = new ExternalApiLog()
                     {
-                        var exception = new ExternalApiLog()
-                        {
-                            Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
-                            DataOraEsecuzione = DateTime.Now,
-                            Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
-                            Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
-                            CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
-                            IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
-                        };
+                        Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
+                        DataOraEsecuzione = DateTime.Now,
+                        Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
+                        Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
+                        CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
+                        IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
+                    };
 
-                        _writeLog.Save(exception);
+                    _writeLog.Save(exception);
 
-                        switch (c.StatusCode)
-                        {
-                            case HttpStatusCode.NotFound:
-                                throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
-                            case HttpStatusCode.Forbidden:
-                                throw new Exception(Costanti.ES.AutorizzazioneNegata);
-                            case HttpStatusCode.UnprocessableEntity:
-                                throw new Exception(Costanti.ES.DatiMancanti);
-                            case HttpStatusCode.InternalServerError:
-                                throw new Exception(Costanti.ES.ErroreInternoAlServer);
-                            case HttpStatusCode.Created:
-                                throw new Exception(Costanti.ES.NonTuttiIDatiInviatiSonoStatiProcessati);
-                            case HttpStatusCode.UnsupportedMediaType:
-                                throw new Exception(Costanti.ES.OggettoNonValido);
-                            case 0:
-                                throw new Exception(c.ReasonPhrase);
-                        }
+                    switch (c.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                            throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
+                        case HttpStatusCode.Forbidden:
+                            throw new Exception(Costanti.ES.AutorizzazioneNegata);
+                        case HttpStatusCode.UnprocessableEntity:
+                            throw new Exception(Costanti.ES.DatiMancanti);
+                        case HttpStatusCode.InternalServerError:
+                            throw new Exception(Costanti.ES.ErroreInternoAlServer);
+                        case HttpStatusCode.Created:
+                            throw new Exception(Costanti.ES.NonTuttiIDatiInviatiSonoStatiProcessati);
+                        case HttpStatusCode.UnsupportedMediaType:
+                            throw new Exception(Costanti.ES.OggettoNonValido);
+                        case 0:
+                            throw new Exception(c.ReasonPhrase);
                     }
+                }
 
-                    return false;
-                })
-                .RetryAsync(3);
+                return false;
+            }).RetryAsync(3);
 
             //CACHE
             if (!string.IsNullOrEmpty(cacheString))
@@ -102,43 +99,53 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<ResponseObject> GetAsync(Uri url, string token)
         {
-            _client.DefaultRequestHeaders.Authorization =
-                   new AuthenticationHeaderValue("Bearer", "=" + token);
+            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
-            return ManageResponse(response);
+            return manageResponse(response);
         }
 
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token)
         {
-            content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            content.Headers.ContentType = getMediaType();
 
-            _client.DefaultRequestHeaders.Authorization =
-                   new AuthenticationHeaderValue("Bearer", "=" + token);
+            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
-            return ManageResponse(response);
+            return manageResponse(response);
         }
 
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token)
         {
-            content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            content.Headers.ContentType = getMediaType();
 
-            _client.DefaultRequestHeaders.Authorization =
-                   new AuthenticationHeaderValue("Bearer", "=" + token);
+            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
-            return ManageResponse(response);
+            return manageResponse(response);
         }
 
-        private ResponseObject ManageResponse(HttpResponseMessage response)
+
+        //PRIVATE METHODS
+
+        ResponseObject manageResponse(HttpResponseMessage response)
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
             return JsonConvert.DeserializeObject<ResponseObject>(data);
+        }
+
+        AuthenticationHeaderValue getBearerAuthorization(string token)
+        {
+            return new AuthenticationHeaderValue("Bearer", "=" + token);
+        }
+
+        MediaTypeWithQualityHeaderValue getMediaType()
+        {
+            return new MediaTypeWithQualityHeaderValue("application/json");
         }
     }
 }
