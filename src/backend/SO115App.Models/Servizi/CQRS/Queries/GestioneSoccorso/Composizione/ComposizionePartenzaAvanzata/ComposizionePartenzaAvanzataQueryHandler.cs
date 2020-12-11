@@ -101,7 +101,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
-            var lstSquadre = _getListaSquadre.Get(lstSedi)
+            var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
                 .ContinueWith(lstsquadre =>
                 {
                     var statiOperativi = _getStatoSquadre.Get(lstSedi);
@@ -125,9 +125,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return comp;
                     });
                 })
-                .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
+                .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo)).Result);
 
-            var lstMezzi = _getPosizioneFlotta.Get(0)
+            var lstMezzi = Task.Factory.StartNew(() => _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
                 .ContinueWith(lstmezzi => //Mapping 
                 {
@@ -177,7 +177,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return c;
                     });
                 })
-                .ContinueWith(lstCompMezzi => FiltraMezzi(query, lstCompMezzi.Result));
+                .ContinueWith(lstCompMezzi => FiltraMezzi(query, lstCompMezzi.Result)).Result);
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
