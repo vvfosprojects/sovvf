@@ -104,6 +104,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         {
             _client.DefaultRequestHeaders.Authorization =
                    new AuthenticationHeaderValue("Bearer", "=" + token);
+
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return ManageResponse(response);
@@ -112,8 +113,10 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+
             _client.DefaultRequestHeaders.Authorization =
                    new AuthenticationHeaderValue("Bearer", "=" + token);
+
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             return ManageResponse(response);
@@ -122,18 +125,11 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+
             _client.DefaultRequestHeaders.Authorization =
                    new AuthenticationHeaderValue("Bearer", "=" + token);
+
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
-
-            return ManageResponse(response);
-        }
-
-        public async Task<ResponseObject> RichiediToken()
-        {
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetToken}?user=SO115&password=SO115");
-            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
-            var data = response.Content.ReadAsStringAsync().Result;
 
             return ManageResponse(response);
         }
