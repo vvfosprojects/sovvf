@@ -2,13 +2,20 @@ import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core
 import {VoceFiltro} from './voce-filtro.model';
 import {NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ModalFiltriTipologiaComponent} from './modal-filtri-tipologia/modal-filtri-tipologia.component';
-import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../store/actions/filterbar/filtri-richieste.actions';
+import {
+  ApplyFiltriTipologiaSelezionatiRichieste, ClearFiltroSenzaEsecuzione
+} from '../../store/actions/filterbar/filtri-richieste.actions';
 import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
-import {SetZoneEmergenzaSelezionate} from '../../store/actions/filterbar/zone-emergenza.actions';
+import {
+  RemoveFakeStatoRichiesta, ResetFiltriStatiZone,
+  SetFakeStatoRichiesta,
+  SetZoneEmergenzaSelezionate
+} from '../../store/actions/filterbar/zone-emergenza.actions';
+import {FiltriRichiesteState} from '../../store/states/filterbar/filtri-richieste.state';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -27,17 +34,23 @@ export class FiltriRichiesteComponent {
   @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
   @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
+  specialSelected = [false, false, false];
+
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
+  @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
+  filtriAttiviToolTip: VoceFiltro[];
 
-  statiRichiesta: VoceFiltro[] = [{
-    categoria: 'StatiRichiesta',
-    codice: 'Assegnati',
-    descrizione: 'Assegnati',
-    name: 'assegnati',
-    star: true,
-    statico: true,
-  },
+  onlyOneCheck = false;
+  statiRichiesta: VoceFiltro[] = [
+      {
+      categoria: 'StatiRichiesta',
+      codice: 'Assegnati',
+      descrizione: 'Assegnati',
+      name: 'assegnati',
+      star: true,
+      statico: true,
+    },
     {
       categoria: 'StatiRichiesta',
       codice: 'Sospesi',
@@ -81,6 +94,15 @@ export class FiltriRichiesteComponent {
               dropdownOpts: NgbDropdownConfig) {
     dropdownOpts.placement = 'bottom';
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+    this.getFiltriAttiviTooltip();
+  }
+
+  getFiltriAttiviTooltip(): void {
+    this.subscription.add(
+      this.filtriAttiviToolTip$.subscribe((filtri: any) => {
+        this.filtriAttiviToolTip = filtri;
+      })
+    );
   }
 
   openFiltersModal(): void {
@@ -115,7 +137,7 @@ export class FiltriRichiesteComponent {
       }
       */
     });
-  }
+  } // Da rimuovere
 
   openChiusiModal(open: boolean): void {
     let modalOptions;
@@ -183,14 +205,42 @@ export class FiltriRichiesteComponent {
   }
 
   onSelezioneFiltro(filtro: VoceFiltro): void {
-    this.filtroSelezionato.emit(filtro);
+    const index = this.filtri.findIndex(e => e.name === filtro.name);
+    if (filtro.categoria !== 'StatiRichiesta' && filtro.categoria !== 'AltriFiltri') {
+      this.specialSelected = [false, false, false];
+      this.specialSelected[index] = true;
+      this.filtri.forEach((e, i) => {
+        if (i !== index && i < 3) {
+          this.store.dispatch(new ClearFiltroSenzaEsecuzione(filtro));
+        }
+      });
+    }
+    if (filtro.categoria === 'StatiRichiesta') {
+      this.store.dispatch(new SetFakeStatoRichiesta(filtro.codice));
+      this.filtroSelezionato.emit(filtro);
+    } else {
+      this.filtroSelezionato.emit(filtro);
+    }
   }
 
   onDeselezioneFiltro(filtro: VoceFiltro): void {
-    this.filtroDeselezionato.emit(filtro);
+    const index = this.filtri.findIndex(e => e.name === filtro.name);
+    this.specialSelected[index] = false;
+    if (filtro.categoria === 'StatiRichiesta') {
+      this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
+      this.filtroDeselezionato.emit(filtro);
+    } else {
+      this.filtroDeselezionato.emit(filtro);
+    }
   }
 
   resetFiltri(): void {
+    this.specialSelected = [false, false, false];
+    this.store.dispatch(new ResetFiltriStatiZone());
     this.filtriReset.emit();
+  }
+
+  checkIndex(index): boolean {
+    return !this.specialSelected.filter((x, i) => x && i !== index);
   }
 }

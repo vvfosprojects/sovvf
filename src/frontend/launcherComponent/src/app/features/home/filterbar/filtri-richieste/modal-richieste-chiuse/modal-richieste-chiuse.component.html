@@ -32,7 +32,7 @@
         <div class="form-group">
           <div class="input-group">
             <input class="form-control" placeholder="aaaa-mm-gg"
-                   name="dp" [displayMonths]="1" [navigation]="navigation" [outsideDays]="outsideDays"
+                   name="dp" [displayMonths]="1" [navigation]="navigation" [outsideDays]="outsideDays" [(ngModel)]="todayDate"
                    [showWeekNumbers]="false" ngbDatepicker #d="ngbDatepicker">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary btn-no-hover calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
@@ -81,3 +81,4 @@
     </div>
   </div>
 </div>
+

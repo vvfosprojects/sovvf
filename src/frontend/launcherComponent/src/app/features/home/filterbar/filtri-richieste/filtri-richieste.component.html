@@ -5,7 +5,8 @@
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
-                [disabled]="disableFilters">
+                [disabled]="disableFilters"
+                [ngbTooltip]="tipFiltriSelezionati">
             <i class="fa fa-filter"></i>
             {{ 'Filtri' | uppercase }}
             <span class="badge text-light"
@@ -14,15 +15,28 @@
               {{ filtriSelezionati?.length }}
             </span>
         </button>
+        <ng-template #tipFiltriSelezionati>
+          <div>
+            <b>
+              FILTRI ATTIVI:
+            </b>
+          </div>
+          <div *ngFor="let t of filtriAttiviToolTip">
+            {{ t.descrizione }}
+          </div>
+          <div *ngIf="filtriAttiviToolTip.length <= 0">
+            Nessun filtro attivo
+          </div>
+        </ng-template>
         <div ngbDropdownMenu class="bg-light px-3">
             <div class="card-block pt-1 pb-0">
                 <h6 class="font-weight-bold">Visualizza:</h6>
                 <div class="py-1">
-                    <div *ngFor="let f of filtri" class="cursor-pointer mb-2">
+                    <div *ngFor="let f of filtri; let index = index" class="cursor-pointer mb-2">
                         <app-filtro *ngIf="f.star === true"
                                     [filtro]="f"
                                     [useCheckbox]="true"
-                                    [selezionato]="f | selectedFilterRichieste"
+                                    [selezionato]="specialSelected[index]"
                                     [disabled]="disableFilters"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>

@@ -26,6 +26,7 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
   fromDate: NgbDate;
   toDate: NgbDate | null = null;
   date: {year: number, month: number};
+  todayDate;
 
   subscription: Subscription = new Subscription();
 
@@ -33,6 +34,7 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
     this.getTurnoCalendario();
+    this.todayDate = calendar.getToday();
   }
 
   ngOnDestroy(): void {

@@ -25,9 +25,12 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
-        const filtriTipologia = filtriTipologieRichiesta.filter( x => x.categoria !== 'StatiRichiesta' && x.categoria !== 'AltriFiltri');
-        const filtroStato = filtriTipologieRichiesta.filter( x => x.categoria === 'StatiRichiesta');
+        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri');
+        let filtriTipologia;
+        if (filtriTipologieRichiesta.length > 0) {
+          filtriTipologia = filtriTipologieRichiesta[0].codice;
+        }
+        const filtroStato =  this.store.selectSnapshot(ZoneEmergenzaState.fakeStatoRichiesta);
         const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
         const obj = {
             page: pagination.page,
@@ -35,8 +38,8 @@ export class SintesiRichiesteService {
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
             filtriTipologie: null,
-            statiRichiesta: filtroStato && filtroStato.length > 0 ? filtroStato.map(f => f.codice) : null,
-            tipologiaRichiesta: filtriTipologia && filtriTipologia.length > 0 ? filtriTipologia.map(f => f.codice) : null,
+            statiRichiesta:  filtroStato && filtroStato.length ? filtroStato : null,
+            tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
             zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null
         };
         console.log('getRichieste OBJ', obj);

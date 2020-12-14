@@ -11,12 +11,20 @@ export class SetFiltroSelezionatoRichieste {
     }
 }
 
-export class ClearFiltroSelezionatoRichieste {
-    static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
+export class ClearFiltroSenzaEsecuzione {
+    static readonly type = '[FiltriRichieste] Clear Filtro Richieste Senza Esecuzione';
 
     constructor(public filtro: VoceFiltro) {
     }
 }
+
+export class ClearFiltroSelezionatoRichieste {
+  static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
+
+  constructor(public filtro: VoceFiltro) {
+  }
+}
+
 
 export class SetFiltroBoxRichieste {
     static readonly type = '[FiltriRichieste] Set Filtro Box Richieste';
