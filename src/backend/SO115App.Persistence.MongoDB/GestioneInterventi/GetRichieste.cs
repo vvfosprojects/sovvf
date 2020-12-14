@@ -164,7 +164,7 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.PeriodoChiuse != null) result = result.Where(r =>
             {
                 if (filtro.PeriodoChiuse.Data != null)
-                    return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Day);
+                    return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Value.Day);
                 
                 else if (filtro.PeriodoChiuse.Turno != null)
                 {

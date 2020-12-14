@@ -99,8 +99,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
     public class PeriodoChiuse
     {
         public string Turno { get; set; }
-        public DateTime Da { get; set; }
-        public DateTime A { get; set; }
-        public DateTime Data { get; set; }
+        public DateTime? Da { get; set; }
+        public DateTime? A { get; set; }
+        public DateTime? Data { get; set; }
     }
 }
