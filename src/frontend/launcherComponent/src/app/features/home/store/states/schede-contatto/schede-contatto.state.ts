@@ -80,7 +80,7 @@ export const SchedeContattoEmpty = {
     idSchedeContattoCompetenza: [],
     idSchedeContattoConoscenza: [],
     idSchedeContattoDifferibili: [],
-    tabAttivo: null,
+    tabAttivo: ClassificazioneSchedaContatto.Competenza,
     idVisualizzati: [],
     idCollapsed: [],
     loadingSchedeContatto: false

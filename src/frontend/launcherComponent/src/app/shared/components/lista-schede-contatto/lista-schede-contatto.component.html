@@ -3,24 +3,6 @@
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </ng-template>
     <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
-        <ngb-tab id="Tutte">
-            <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipTutte">
-                    <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
-                </div>
-                <ng-template #tipTutte>
-                    <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
-                    <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }}</b></div>
-                </ng-template>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto</h6>
-                    </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Competenza">
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipCompetenza">
@@ -79,6 +61,24 @@
                 <div class="row">
                     <div *ngIf="idSchedeConoscenza?.length === 0" class="col-12 mt-4">
                         <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Tutte">
+            <ng-template ngbTabTitle>
+                <div [ngbTooltip]="tipTutte">
+                    <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
+                </div>
+                <ng-template #tipTutte>
+                    <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
+                    <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }}</b></div>
+                </ng-template>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
+                        <h6 class="text-center">Non ci sono Schede Contatto</h6>
                     </div>
                 </div>
             </ng-template>
