@@ -11,7 +11,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
 import {
-  RemoveFakeStatoRichiesta, ResetFiltriStatiZone,
+  RemoveFakeStatoRichiesta, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
   SetFakeStatoRichiesta,
   SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
@@ -41,11 +41,12 @@ export class FiltriRichiesteComponent {
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
   filtriAttiviToolTip: VoceFiltro[];
 
+  listaZoneEmergenzaSelezionate: string[] = [];
   onlyOneCheck = false;
   statiRichiesta: VoceFiltro[] = [
       {
       categoria: 'StatiRichiesta',
-      codice: 'Assegnati',
+      codice: 'Assegnata',
       descrizione: 'Assegnati',
       name: 'assegnati',
       star: true,
@@ -53,7 +54,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Sospesi',
+      codice: 'Sospesa',
       descrizione: 'Sospesi',
       name: 'sospesi',
       star: true,
@@ -61,7 +62,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Presidiati',
+      codice: 'Presidiata',
       descrizione: 'Presidiati',
       name: 'presidiati',
       star: true,
@@ -69,7 +70,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Chiusi',
+      codice: 'Chiusa',
       descrizione: 'Chiusi',
       name: 'chiusi',
       star: true,
@@ -199,8 +200,25 @@ export class FiltriRichiesteComponent {
     }
     const modal = this.modalService.open(ModalZonaEmergenzaComponent, modalOptions);
     modal.result.then((res: string[]) => {
-      this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
-      this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+      if (res != null) {
+        this.listaZoneEmergenzaSelezionate = [];
+        if (!res.includes('Nessuna zona emergenza')) {
+          res.forEach(x => this.listaZoneEmergenzaSelezionate.push(x));
+        } else { this.listaZoneEmergenzaSelezionate[0] = 'Nessuna zona emergenza'; }
+        this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
+        this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+      } else {
+        const filtro = {
+          categoria: 'AltriFiltri',
+          codice: 'ZonaEmergenza',
+          descrizione: 'Zona Emergenza',
+          name: 'zonaEmergenza',
+          star: true,
+          statico: true,
+        };
+        this.filtroDeselezionato.emit(filtro);
+        this.listaZoneEmergenzaSelezionate = [];
+      }
     });
   }
 
@@ -226,6 +244,10 @@ export class FiltriRichiesteComponent {
   onDeselezioneFiltro(filtro: VoceFiltro): void {
     const index = this.filtri.findIndex(e => e.name === filtro.name);
     this.specialSelected[index] = false;
+    if (filtro.categoria === 'AltriFiltri') {
+      this.store.dispatch(new ResetFiltriZoneSelezionate());
+      this.listaZoneEmergenzaSelezionate = [];
+    }
     if (filtro.categoria === 'StatiRichiesta') {
       this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
       this.filtroDeselezionato.emit(filtro);
@@ -236,6 +258,7 @@ export class FiltriRichiesteComponent {
 
   resetFiltri(): void {
     this.specialSelected = [false, false, false];
+    this.listaZoneEmergenzaSelezionate = [];
     this.store.dispatch(new ResetFiltriStatiZone());
     this.filtriReset.emit();
   }

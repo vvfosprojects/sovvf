@@ -10,13 +10,16 @@
 
 <div class="modal-body pb-0">
   <div>
-    <div (click)="onClickNessunaZona()" [class.box-selected]="nessunaZonaEmergenza" class="card row row_text py-2 px-3 box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona" style="margin-left: 15%">
-      Nessuna zona emergenza
-    </div>
+    <button (click)="onResetZoneEmergenza()" class="btn btn-no-hover btn-secondary btn-reset-filtri" ngbTooltip="Reset filtri zona emergenza" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
+      <i class="fa fa-undo px-1"></i>
+    </button>
+    <span [class.box-selected]="nessunaZonaSelected" [class.box-locked]="nessunaZonaLocked" class="card row row_text box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona" style="margin-left: 15%;">
+      <button (click)="onClickNessunaZona()" class="btn-no-style m-2" [disabled]="nessunaZonaLocked">Nessuna zona emergenza</button>
+    </span>
     <div *ngFor="let z of zonaEmergenzaArrayFake; let i = index" >
-      <div (click)="onBoxClick(i)" [class.box-selected]="z.selected" class="card row row_text py-2 px-3 box-zona-emergenza my-3 cursor-pointer" style="margin-left: 15%">
-        {{z.name}}
-      </div>
+      <span [class.box-locked]="zoneEmergenzaLocked" [class.box-selected]="z.selected" class="card row row_text box-zona-emergenza my-3 cursor-pointer" style="margin-left: 15%;">
+        <button (click)="onBoxClick(i)" class="btn-no-style m-2" [disabled]="zoneEmergenzaLocked">{{z.name}}</button>
+      </span>
     </div>
   </div>
 </div>
@@ -29,7 +32,7 @@
         {{ 'Chiudi' | uppercase }}
       </button>
       <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
-              (click)="chiudiModalFiltriTipologia('ok')">
+              (click)="chiudiModalFiltriTipologia('ok')" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
         {{ 'Applica Filtro' | uppercase }}
       </button>
     </div>

@@ -30,3 +30,7 @@ export class RemoveFakeStatoRichiesta {
 export class ResetFiltriStatiZone {
   static readonly type = '[ZoneEmergenza] Reset Zone Emergenza e Stati';
 }
+
+export class ResetFiltriZoneSelezionate {
+  static readonly type = '[ZoneEmergenza] Reset Zone Emergenza Selezionate';
+}

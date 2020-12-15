@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
-  RemoveFakeStatoRichiesta, ResetFiltriStatiZone,
+  RemoveFakeStatoRichiesta, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
   SetFakeStatoRichiesta,
   SetZoneEmergenza,
   SetZoneEmergenzaSelezionate
 } from '../../actions/filterbar/zone-emergenza.actions';
+import {patch} from '@ngxs/store/operators';
+
 
 export interface ZoneEmergenzaStateModel {
   zoneEmergenza: string[];
@@ -87,5 +89,15 @@ export class ZoneEmergenzaState {
   @Action(ResetFiltriStatiZone)
   resetFiltriStatiZone({ setState }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
     setState(zoneEmergenzaStateDefaults);
+  }
+
+  @Action(ResetFiltriZoneSelezionate)
+  resetFiltriZoneSelezionate({ setState }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
+    console.log('***run test');
+    setState(
+      patch({
+        zoneEmergenzaSelezionate: zoneEmergenzaStateDefaults.zoneEmergenzaSelezionate,
+      })
+    );
   }
 }
