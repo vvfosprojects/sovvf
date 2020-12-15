@@ -43,9 +43,7 @@
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('chiamate')"><span
                                     class="position-relative badge h6 w-75 "
-                                    [ngClass]="{'badge-rosso-des': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0,
-                                                                                                'border-click-checked': boxClick?.richieste.chiamate, 'border-info-aggregate':
-                                                                                                    !boxClick?.richieste.chiamate}"
+                                    [ngClass]="{'badge-rosso-des': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}"
                                     ><i *ngIf="interventiDiff"
                                                                                  class="blink-i-aggregate fa"
                                                                                  [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
@@ -63,7 +61,6 @@
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('assegnati')"><span
                       class="position-relative badge badge-warning h6 w-75 "
-                      [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
                       ><i *ngIf="interventiDiff"
                                                                     class="blink-i-aggregate fa"
                                                                     [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
@@ -88,7 +85,6 @@
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('presidiati')"><span
                                     class="position-relative badge badge-success h6 w-75 "
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.presidiati, 'border-info-aggregate': !boxClick?.richieste.presidiati}"
                                     ><i *ngIf="interventiDiff"
                                                                                    class="blink-i-aggregate fa"
                                                                                    [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
@@ -106,7 +102,6 @@
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('chiusi')"><span
                       class="position-relative badge bg-secondary text-light h6 w-75 "
-                      [ngClass]="{'border-click-checked': boxClick?.richieste.chiusi, 'border-info-aggregate': !boxClick?.richieste.chiusi}"
                       ><i *ngIf="interventiDiff"
                                                                  class="blink-i-aggregate fa"
                                                                  [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>

@@ -9,11 +9,16 @@
 </div>
 
 <div class="modal-body pb-0">
+  <div>
+    <div (click)="onClickNessunaZona()" [class.box-selected]="nessunaZonaEmergenza" class="card row row_text py-2 px-3 box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona" style="margin-left: 15%">
+      Nessuna zona emergenza
+    </div>
     <div *ngFor="let z of zonaEmergenzaArrayFake; let i = index" >
       <div (click)="onBoxClick(i)" [class.box-selected]="z.selected" class="card row row_text py-2 px-3 box-zona-emergenza my-3 cursor-pointer" style="margin-left: 15%">
         {{z.name}}
       </div>
     </div>
+  </div>
 </div>
 
 <div class="modal-footer">

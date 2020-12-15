@@ -9,6 +9,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalZonaEmergenzaComponent implements OnDestroy {
 
+  nessunaZonaEmergenza = false;
   subscription: Subscription = new Subscription();
 
   zonaEmergenzaArrayFake: any = [
@@ -43,5 +44,9 @@ export class ModalZonaEmergenzaComponent implements OnDestroy {
 
   onBoxClick(i): void {
     this.zonaEmergenzaArrayFake[i].selected = !this.zonaEmergenzaArrayFake[i].selected;
+  }
+
+  onClickNessunaZona(): void {
+    this.nessunaZonaEmergenza = !this.nessunaZonaEmergenza;
   }
 }

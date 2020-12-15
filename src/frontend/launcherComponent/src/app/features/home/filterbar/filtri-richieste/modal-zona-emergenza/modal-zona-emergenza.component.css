@@ -9,5 +9,9 @@
 }
 
 .box-selected {
-  box-shadow: 0 0 2px 2px #28a745;
+  box-shadow: 0 0 2px 2px #28a745 !important;
+}
+
+.box-selected-nessuna-zona {
+  box-shadow: 0 0 2px 2px #ffc107;
 }
