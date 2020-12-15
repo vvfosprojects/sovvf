@@ -3,6 +3,7 @@
         <div class="clearfix">
             <div class="float-left mr-4">
                 <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
+                                    [richiestaModifica]="richiestaModifica$ | async"
                                     [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
                                     (startChiamata)="toggleChiamata()">
                 </app-tasto-chiamata>

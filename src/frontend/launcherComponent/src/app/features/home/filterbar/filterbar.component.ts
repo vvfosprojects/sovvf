@@ -27,6 +27,8 @@ import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/a
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-filterbar',
@@ -75,6 +77,9 @@ export class FilterbarComponent {
     @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
+
+    // Modifica Richiesta
+    @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 

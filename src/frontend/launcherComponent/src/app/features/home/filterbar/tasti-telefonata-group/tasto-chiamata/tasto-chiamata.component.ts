@@ -1,4 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-tasto-chiamata',
@@ -10,8 +11,8 @@ export class TastoChiamataComponent {
     @HostBinding('class') classes = 'btn-group';
 
     @Input() colorButtonChiamata = 'btn-outline-success';
-    @Input() disabled = false;
-
+    @Input() richiestaModifica: SintesiRichiesta;
+    @Input() disabled: boolean;
     @Output() startChiamata = new EventEmitter();
 
     defaultColorButtonChiamata: string;
@@ -28,7 +29,7 @@ export class TastoChiamataComponent {
     }
 
     getClasses(): string {
-        let returnClass = this.colorButtonChiamata;
+        let returnClass = !this.richiestaModifica ? this.colorButtonChiamata : 'btn-success';
         if (this.disabled) {
             returnClass += ' cursor-not-allowed';
         }
@@ -37,5 +38,18 @@ export class TastoChiamataComponent {
 
     getActive(): boolean {
         return this.colorButtonChiamata !== this.defaultColorButtonChiamata;
+    }
+
+    getTitle(): string {
+        if (!this.richiestaModifica) {
+            if (!this.getActive()) {
+                return 'nuova chiamata';
+            } else if (this.getActive()) {
+                return 'stai inserendo una nuova chiamata';
+            }
+        } else if (this.richiestaModifica) {
+            const codRichiesta = this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice;
+            return 'Stai modificando la richiesta ' + codRichiesta + ' registrata da ' + this.richiestaModifica.operatore.nome + ' ' + this.richiestaModifica.operatore.cognome + ' alle ' + this.richiestaModifica.istanteRicezioneRichiesta.toLocaleString();
+        }
     }
 }

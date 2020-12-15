@@ -14,7 +14,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
+import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import {
     ClearMarkerRichiestaHover,
@@ -319,7 +319,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
-        this.store.dispatch(new ToggleModifica());
+        this.store.dispatch(new ToggleChiamata());
     }
 
     onGestioneRichiesta(richiesta: SintesiRichiesta): void {

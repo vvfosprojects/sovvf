@@ -33,6 +33,8 @@ import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/list
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
+import { ToggleChiamata } from '../../store/actions/view/view.actions';
+import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -55,6 +57,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     @Input() doubleMonitor: boolean;
     @Input() resetChiamata: boolean;
     @Input() schedaContatto: SchedaContatto;
+
+    // Modifica
+    @Input() modifica: boolean;
+    @Input() richiestaModifica: SintesiRichiesta;
 
     @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -125,6 +131,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                         this.setSchedaContatto(schedaContatto);
                         this.idSchedaContatto = schedaContatto.codiceScheda;
                     }
+                }
+            }
+            if (changes.richiestaModifica && changes.richiestaModifica.currentValue) {
+                const richiestaModifica = changes.richiestaModifica.currentValue;
+                if (richiestaModifica) {
+                    this.modifica = true;
                 }
             }
         }
@@ -445,17 +457,26 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         return msg;
     }
 
-    formIsValid(): boolean {
-        const messageArr: string[] = this.countErrorForm();
-        let message = messageArr.join(', ');
-        const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
-        if (messageArr.length > 0) {
-            message = message.substring(0, message.length - 2);
-            const type = ToastrType.Error;
-            this.store.dispatch(new ShowToastr(ToastrType.Clear));
-            this.store.dispatch(new ShowToastr(type, title, message));
-        } else {
-            this.store.dispatch(new ShowToastr(ToastrType.Clear));
+    onChiudiModifica(): void {
+        this.store.dispatch([
+            new ClearRichiestaModifica(),
+            new ToggleChiamata()
+        ]);
+    }
+
+    formIsInvalid(onlyBool?: boolean): boolean {
+        if (!onlyBool) {
+            const messageArr: string[] = this.countErrorForm();
+            let message = messageArr.join(', ');
+            const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
+            if (messageArr.length > 0) {
+                message = message.substring(0, message.length - 2);
+                const type = ToastrType.Error;
+                this.store.dispatch(new ShowToastr(ToastrType.Clear));
+                this.store.dispatch(new ShowToastr(type, title, message));
+            } else {
+                this.store.dispatch(new ShowToastr(ToastrType.Clear));
+            }
         }
         return !!this.chiamataForm.invalid;
     }
@@ -469,18 +490,18 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         return error.split(/\s*(?:;|$)\s*/);
     }
 
-    impostaAzioneChiamata($event: AzioneChiamataEnum): void {
-        if ($event === AzioneChiamataEnum.InviaPartenza || $event === AzioneChiamataEnum.MettiInCoda) {
-            this.nuovaRichiesta.azione = $event;
+    impostaAzioneChiamata(azioneChiamata: AzioneChiamataEnum): void {
+        if (azioneChiamata === AzioneChiamataEnum.InviaPartenza || azioneChiamata === AzioneChiamataEnum.MettiInCoda || azioneChiamata === AzioneChiamataEnum.Emergenza) {
+            this.nuovaRichiesta.azione = azioneChiamata;
         } else {
-            this.nuovaRichiesta.azione = $event;
+            this.nuovaRichiesta.azione = azioneChiamata;
             this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;
         }
-        this.onSubmit($event);
+        this.onSubmit(azioneChiamata);
     }
 
     checkSubmit(): boolean {
-        return (!this.formIsValid() && !!this.coordinate);
+        return (!this.formIsInvalid() && !!this.coordinate);
     }
 
     checkInputPattern(event: any, type: string): void {
@@ -540,7 +561,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         this.submitted = true;
         if (this.checkSubmit()) {
             this.getChiamataForm();
-            this._statoChiamata('inserita', azione);
+            if (!this.modifica) {
+                this._statoChiamata('inserita', azione);
+            } else if (this.modifica) {
+                this._statoChiamata('modificata', azione);
+            }
         }
     }
 

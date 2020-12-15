@@ -17,6 +17,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
 
 @Component({
     selector: 'app-chiamata',
@@ -37,6 +38,9 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+
+    // Modifica Richiesta
+    @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
     // TODO: da inserire nello store e prendere con un selector
     dettagliTipologie: any[] = [

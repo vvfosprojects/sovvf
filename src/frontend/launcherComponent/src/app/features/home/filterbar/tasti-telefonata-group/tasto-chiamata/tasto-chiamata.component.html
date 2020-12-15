@@ -3,11 +3,6 @@
         [class.btn-no-hover]="getActive()"
         [disabled]="disabled"
         (click)="chiamata()">
-    <i class="fa fa-phone"></i>
-    <ng-template [ngIf]="!getActive()">
-        {{ 'nuova chiamata' | uppercase }}
-    </ng-template>
-    <ng-template [ngIf]="getActive()">
-        {{ 'stai inserendo una nuova chiamata' | uppercase }}
-    </ng-template>
+    <i class="fa fa-phone mr-1"></i>
+    {{ getTitle() | uppercase }}
 </button>

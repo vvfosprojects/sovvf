@@ -39,6 +39,8 @@ import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/ri
 import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -159,6 +161,9 @@ export class SchedaTelefonataState {
             case 'inserita':
                 dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
                 break;
+            case 'modificata':
+                dispatch(new SuccessRichiestaModifica());
+                break;
             default:
                 return;
         }
@@ -226,7 +231,6 @@ export class SchedaTelefonataState {
             azioneChiamata: action.azioneChiamata
         });
         dispatch(new StartLoadingNuovaChiamata());
-
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
@@ -242,6 +246,9 @@ export class SchedaTelefonataState {
                         true
                     )
                 ]);
+            } else if (richiesta && action.azioneChiamata === AzioneChiamataEnum.Emergenza) {
+                this.store.dispatch(new SetRichiestaModifica(richiesta));
+                this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
             } else {
                 dispatch(new CestinaChiamata());
             }

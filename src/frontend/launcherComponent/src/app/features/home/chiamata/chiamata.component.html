@@ -11,6 +11,8 @@
                            [countInterventiVicinanze]="countInterventiVicinanze$ | async"
                            [interventiVicinanze]="interventiVicinanze$ | async"
                            [schedaContatto]="schedaContattoTelefonata$ | async"
+                           [richiestaModifica]="richiestaModifica$ | async"
+                           [modifica]="!!(richiestaModifica$ | async)"
                            (aggiungiNuovoEnte)="aggiungiNuovoEnte()">
     </app-scheda-telefonata>
 </div>

@@ -25,6 +25,7 @@
                                                [multiple]="false"
                                                [closeOnSelect]="true"
                                                [hideSelected]="true"
+                                               [disabled]="modifica"
                                                (ngModelChange)="onChangeTipologia($event)">
                                     </ng-select>
                                 </div>
@@ -32,17 +33,13 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <ng-template [ngIf]="f.tipologie.value">
+                            <ng-template [ngIf]="f.tipologie.value && !modifica">
                                 <div class="float-left w-25 px-2">
                                     <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()">
                                         {{ 'Apri Triage' | uppercase }}
                                     </button>
                                 </div>
                             </ng-template>
-                            <div *ngIf="f.dettaglioTipologia.value" class="float-left w-100 mt-1">
-                                Dettaglio Tipologia: <span
-                                    class="font-weight-bold">{{ f.dettaglioTipologia.value.descrizione }}</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -304,36 +301,46 @@
             </div>
             <div class="clearfix">
                 <div class="float-left">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
-                                (click)="onAnnullaChiamata()">Annulla
-                        </button>
-                        <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
-                            <button class="btn btn-outline-danger dropdown-toggle-split btn-no-hover"
-                                    ngbDropdownToggle></button>
-                            <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.FalsoAllarme)">Falso
-                                    allarme
-                                </button>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoNonPiuNecessario)">
-                                    Non più necessario
-                                </button>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoDuplicato)">
-                                    Duplicato
-                                </button>
+                    <ng-template [ngIf]="!modifica">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                                    (click)="onAnnullaChiamata()">
+                                Annulla
+                            </button>
+                            <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
+                                <button class="btn btn-outline-danger dropdown-toggle-split btn-no-hover"
+                                        ngbDropdownToggle></button>
+                                <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
+                                    <button class="dropdown-item"
+                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.FalsoAllarme)">Falso
+                                        allarme
+                                    </button>
+                                    <button class="dropdown-item"
+                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoNonPiuNecessario)">
+                                        Non più necessario
+                                    </button>
+                                    <button class="dropdown-item"
+                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoDuplicato)">
+                                        Duplicato
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <button class="btn btn-outline-secondary ml-2 mr-2 btn-no-hover btn-xlarge mx-3" type="button"
-                            (click)="onResetChiamata()">
-                        <i class="fa fa-recycle mr-1"></i>
-                        Ripulisci Campi
-                    </button>
+                        <button class="btn btn-outline-secondary ml-2 mr-2 btn-no-hover btn-xlarge mx-3"
+                                type="button"
+                                (click)="onResetChiamata()">
+                            <i class="fa fa-recycle mr-1"></i>
+                            Ripulisci Campi
+                        </button>
+                    </ng-template>
+                    <ng-template [ngIf]="modifica">
+                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                                (click)="onChiudiModifica()">
+                            Chiudi
+                        </button>
+                    </ng-template>
                 </div>
-                <div class="float-left">
+                <!-- <div class="float-left">
                     <button class="btn btn-outline-secondary mx-3 btn-no-hover btn-xlarge" type="button" disabled>
                         <i class="fa fa-pencil-square-o mr-1"></i>
                         Abilita Modifica
@@ -342,26 +349,62 @@
                         <i class="fa fa-pause mr-1"></i>
                         In Attesa
                     </button>
-                </div>
+                </div> -->
                 <div class="float-right">
-                    <button class="btn btn-primary btn-no-hover mx-3 btn-xlarge" style="min-width: 100px"
-                            [disabled]="disabledInviaPartenza"
-                            [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
-                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
-                            ngbTooltip="Invia Partenza">
-                        <!--<i class="fa fa-truck"></i>--> Invio Partenza
-                    </button>
-                    <button class="btn btn-success btn-no-hover btn-xlarge" style="min-width: 100px"
-                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)" ngbTooltip="Metti In Coda">
-                        <!--<i class="fa fa-check"></i>--> Conferma Chiamata
-                    </button>
+                    <ng-template [ngIf]="!modifica">
+                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="min-width: 100px"
+                                [disabled]="disabledInviaPartenza || formIsInvalid(true)"
+                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
+                                ngbTooltip="Invia Partenza"
+                                placement="top">
+                            Conferma e Invia Partenza
+                        </button>
+                        <button class="btn btn-success btn-no-hover mx-3 btn-xlarge" style="min-width: 100px"
+                                [disabled]="formIsInvalid(true)"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Emergenza)"
+                                ngbTooltip="Imposta Emergenza">
+                            Conferma e Continua
+                        </button>
+                        <button class="btn btn-danger btn-no-hover btn-xlarge" style="min-width: 100px"
+                                [disabled]="formIsInvalid(true)"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
+                                ngbTooltip="Metti In Coda"
+                                placement="top">
+                            Conferma
+                        </button>
+                    </ng-template>
+                    <ng-template [ngIf]="modifica">
+                        <button class="btn btn-primary btn-no-hover mx-3 btn-xlarge" style="min-width: 100px"
+                                [disabled]="disabledInviaPartenza || formIsInvalid(true)"
+                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
+                                ngbTooltip="Invia Partenza"
+                                placement="top">
+                            Salva e Invia Partenza
+                        </button>
+                        <button class="btn btn-success btn-no-hover btn-xlarge" style="min-width: 100px"
+                                [disabled]="formIsInvalid(true)"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
+                                ngbTooltip="Conferma Modifica"
+                                placement="top">
+                            Salva e Chiudi
+                        </button>
+                    </ng-template>
                 </div>
             </div>
         </form>
     </div>
-    <div class="col-4 h-100 bg-lightgrey">
-        <div class="my-2">
-            <button class="btn btn-block btn-no-hover btn-lg btn-danger">
+    <div class="col-4 h-100 bg-lightgrey"
+         [class.pt-3]="f.dettaglioTipologia.value">
+        <div *ngIf="f.dettaglioTipologia.value" class="text-center">
+            <h4 class="font-weight-bold">
+                {{ f.dettaglioTipologia.value.descrizione }}
+            </h4>
+        </div>
+        <div class="my-3">
+            <button class="btn btn-block btn-no-hover btn-lg btn-danger"
+                    [disabled]="!f.tipologie.value">
                 Visualizza P.O.S.
             </button>
         </div>
