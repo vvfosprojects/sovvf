@@ -13,7 +13,7 @@
   <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" style="inline-size: max-content; height: max-content" ngbTooltip="Filtra in dettaglio" placement="right"
           (click)="zonaEmergenzaModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-exclamation-triangle"></i></button>
 </div>
-<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1 text-muted" style="cursor: none; font-size: 12px; display: grid">
+<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1 text-muted" style="cursor: none; font-size: 15px; display: grid">
   <b>Selezione:</b>
   <span *ngFor="let z of listaZoneEmergenzaSelezionate">{{ z }}</span>
 </div>
