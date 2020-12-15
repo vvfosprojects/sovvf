@@ -61,6 +61,7 @@
               <div *ngFor="let f of altriFiltri" class="cursor-pointer mb-2">
                 <app-filtro *ngIf="f.star === true"
                             [filtro]="f"
+                            [listaZoneEmergenzaSelezionate]="listaZoneEmergenzaSelezionate"
                             [useCheckbox]="true"
                             [selezionato]="f | selectedFilterRichieste"
                             [disabled]="disableFilters"

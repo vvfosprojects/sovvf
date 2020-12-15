@@ -13,6 +13,7 @@ export class FiltroComponent {
     @Input() useCheckbox: boolean;
     @Input() disabled: boolean;
     @Input() onlyOneCheck: boolean;
+    @Input() listaZoneEmergenzaSelezionate: string[];
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();

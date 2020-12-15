@@ -41,6 +41,7 @@ export class FiltriRichiesteComponent {
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
   filtriAttiviToolTip: VoceFiltro[];
 
+  listaZoneEmergenzaSelezionate: string[] = [];
   onlyOneCheck = false;
   statiRichiesta: VoceFiltro[] = [
       {
@@ -200,6 +201,10 @@ export class FiltriRichiesteComponent {
     const modal = this.modalService.open(ModalZonaEmergenzaComponent, modalOptions);
     modal.result.then((res: string[]) => {
       if (res != null) {
+        this.listaZoneEmergenzaSelezionate = [];
+        if (!res.includes('Nessuna zona emergenza')) {
+          res.forEach(x => this.listaZoneEmergenzaSelezionate.push(x));
+        } else { this.listaZoneEmergenzaSelezionate[0] = 'Nessuna zona emergenza'; }
         this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
         this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
       } else {
@@ -212,6 +217,7 @@ export class FiltriRichiesteComponent {
           statico: true,
         };
         this.filtroDeselezionato.emit(filtro);
+        this.listaZoneEmergenzaSelezionate = [];
       }
     });
   }
@@ -240,6 +246,7 @@ export class FiltriRichiesteComponent {
     this.specialSelected[index] = false;
     if (filtro.categoria === 'AltriFiltri') {
       this.store.dispatch(new ResetFiltriZoneSelezionate());
+      this.listaZoneEmergenzaSelezionate = [];
     }
     if (filtro.categoria === 'StatiRichiesta') {
       this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
@@ -251,6 +258,7 @@ export class FiltriRichiesteComponent {
 
   resetFiltri(): void {
     this.specialSelected = [false, false, false];
+    this.listaZoneEmergenzaSelezionate = [];
     this.store.dispatch(new ResetFiltriStatiZone());
     this.filtriReset.emit();
   }
