@@ -1,22 +1,11 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ 'Seleziona un dettaglio tipologia' | uppercase }}</h4>
+    <h4 class="modal-title">{{ 'Triage' | uppercase }}</h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="closeModal('ko')">
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <ng-template [ngIf]="dettagliTipologie?.length > 0 && !abilitaTriage">
-        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologie"
-                                      (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
-        </app-step-dettaglio-tipologia>
-    </ng-template>
-    <ng-template [ngIf]="abilitaTriage">
-        <app-step-domande [domande]="domandeTriage"
-                          [stepDomanda]="stepDomanda">
-        </app-step-domande>
-    </ng-template>
-    <hr>
     <div class="text-center">
         <h6 class="d-inline-block mr-2">Tipologia Selezionata:</h6>
         <h5 class="d-inline-block font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
@@ -25,8 +14,27 @@
         <h6 class="d-inline-block mr-2">Dettaglio Tipologia Selezionata:</h6>
         <h5 class="d-inline-block font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
     </div>
+    <ng-template [ngIf]="dettagliTipologie?.length > 0 && !abilitaTriage">
+        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologie"
+                                      (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
+        </app-step-dettaglio-tipologia>
+    </ng-template>
+    <ng-template [ngIf]="abilitaTriage">
+        <div class="card card-shadow w-75 mx-auto p-3 mt-3">
+            <div *ngFor="let rispostaTriage of risposteTriage" class="alert alert-info">
+                <h5 class="mb-0">
+                    {{ getDomandaByCodice(rispostaTriage.codDomanda) }}
+                    <b>{{ rispostaTriage.risposta }}</b>
+                </h5>
+            </div>
+            <app-step-domande [domande]="domandeTriage"
+                              [codDomandaSelezionata]="codDomandaSelezionata"
+                              (risposta)="setRisposta($event.codDomanda, $event.risposta)">
+            </app-step-domande>
+        </div>
+    </ng-template>
 </div>
-<div class="modal-footer">
+<!-- <div class="modal-footer">
     <ng-template [ngIf]="!abilitaTriage">
         <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="onAbilitaTriage()">
             {{ 'Continua Triage' | uppercase }}
@@ -48,4 +56,9 @@
             {{ 'Salva dettaglio e Chiudi' | uppercase }}
         </button>
     </ng-template>
+</div> -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
+        {{ 'Chiudi Triage' | uppercase }}
+    </button>
 </div>

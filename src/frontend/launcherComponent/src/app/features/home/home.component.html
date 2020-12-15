@@ -1,34 +1,55 @@
 <div class="container-fluid" *ngIf="(navbarLoaded | async)">
+    <!-- Info Aggregate -->
     <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="doubleMonitor$ | async"
-             [ngClass]="{'d-none': !boxAttivi}">
+             [class.d-none]="!boxAttivi || viewState.chiamata.active">
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
+    <!-- Filterbar -->
     <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="doubleMonitor$ | async"
-             [ngClass]="{'mt-3': !boxAttivi}">
-            <app-filterbar [colorButton]="(colorButton$ | async)" [viewState]="viewState"></app-filterbar>
+             [class.mt-3]="!boxAttivi || viewState.chiamata.active">
+            <app-filterbar [colorButton]="(colorButton$ | async)"
+                           [viewState]="viewState">
+            </app-filterbar>
         </div>
     </div>
-    <div class="row" [ngClass]="{'mt-1': !boxAttivi && !viewState.chiamata.active}">
+    <div class="row"
+         [class.mt-1]="!boxAttivi && !viewState.chiamata.active"
+         [class.mt-2]="viewState.chiamata.active">
         <div [ngClass]="columnState.sinistra"
              [class.col-12]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
-            <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split"
+            <!-- Richieste -->
+            <app-richieste [class.d-none]="!viewState.richieste.active"
+                           [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
-            <app-chiamata *ngIf="viewState.chiamata.active" [boxAttivi]="boxAttivi"></app-chiamata>
+            <!-- Chiamata -->
+            <app-chiamata *ngIf="viewState.chiamata.active"
+                          [boxAttivi]="boxAttivi">
+            </app-chiamata>
+            <!-- Composizione Partenza -->
             <app-composizione-partenza *ngIf="viewState.composizione.active"
                                        [boxAttivi]="boxAttivi"
                                        [compPartenzaMode]="(composizioneMode$ | async)">
             </app-composizione-partenza>
-            <app-modifica-richiesta *ngIf="viewState.modifica.active" [boxAttivi]="boxAttivi"></app-modifica-richiesta>
+            <!-- Modifica Richiesta -->
+            <app-modifica-richiesta *ngIf="viewState.modifica.active"
+                                    [boxAttivi]="boxAttivi">
+            </app-modifica-richiesta>
+            <!-- Mezzi in Servizio -->
             <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"
-                                   [boxAttivi]="boxAttivi"></app-mezzi-in-servizio>
-            <app-schede-contatto *ngIf="viewState.schedeContatto.active" [boxAttivi]="boxAttivi"></app-schede-contatto>
+                                   [boxAttivi]="boxAttivi">
+            </app-mezzi-in-servizio>
+            <!-- Schede Contatto -->
+            <app-schede-contatto *ngIf="viewState.schedeContatto.active"
+                                 [boxAttivi]="boxAttivi">
+            </app-schede-contatto>
         </div>
+        <!-- Mappa -->
         <div class="mt-2"
              [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
              [class.map-translate]="doubleMonitor$ | async"

@@ -1,12 +1,14 @@
 <div class="text-center">
-    <h5>Lista dettagli tipologia:</h5>
-    <div class="mt-3">
-        <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
-                      [checkboxState]="{
+    <div class="card card-shadow w-50 mx-auto p-3 mt-3">
+        <h4>Seleziona un dettaglio tipologia</h4>
+        <div class="mt-3">
+            <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
+                          [checkboxState]="{
                   id: dettaglioTipologia.codice,
                   status: dettaglioTipologia.codice === codDettaglioTipologiaSelezionato,
                   label: dettaglioTipologia.descrizione}"
-                      (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codice)">
-        </app-checkbox>
+                          (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codice)">
+            </app-checkbox>
+        </div>
     </div>
 </div>

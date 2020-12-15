@@ -78,6 +78,9 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         'VV.UU.': false,
     };
 
+    // TODO: Rimuovere (fake triage)
+    visualizzaSuggerimentiTriage: boolean;
+
     private subscription = new Subscription();
 
     constructor(private formBuilder: FormBuilder,
@@ -254,6 +257,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             switch (res.type) {
                 case 'salvaDettaglio':
                     this.f.dettaglioTipologia.patchValue(res.result);
+                    this.visualizzaSuggerimentiTriage = true;
                     break;
             }
         });
