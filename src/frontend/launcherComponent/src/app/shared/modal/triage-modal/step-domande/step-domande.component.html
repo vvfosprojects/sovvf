@@ -1,8 +1,30 @@
-<div *ngFor="let domanda of domande; let i = index">
-    <ng-template [ngIf]="stepDomanda === i + 1">
-        <ng-template [ngIf]="domanda.tipo === 'number' || domanda.tipo === 'string'">
-            <label for="{{ domanda.campo }}">{{ domanda.titolo }}</label>
-            <input id="{{ domanda.campo }}" [type]="domanda.tipo" [placeholder]="'Inserisci' + domanda.campo">
+<ng-template [ngIf]="codDomandaSelezionata">
+    <div *ngFor="let domanda of domande; let i = index" class="mt-2">
+        <ng-template [ngIf]="domanda.codice === codDomandaSelezionata">
+            <ng-template [ngIf]="domanda.tipo === 'number' || domanda.tipo === 'string'">
+                <label for="{{ domanda.campo }}">{{ domanda.titolo }}</label>
+                <input id="{{ domanda.campo }}" [type]="domanda.tipo" [placeholder]="'Inserisci' + domanda.campo">
+            </ng-template>
+            <ng-template [ngIf]="domanda.tipo === 'boolean'">
+                <h3>{{ domanda.titolo }}</h3>
+                <div class="clearfix mt-2">
+                    <div class="float-left" (click)="setRisposta(domanda.codice, 'Sì')">
+                        <button class="btn btn-lg btn-danger mr-2">
+                            Si
+                        </button>
+                    </div>
+                    <div class="float-left" (click)="setRisposta(domanda.codice, 'No')">
+                        <button class="btn btn-lg btn-primary mr-2">
+                            No
+                        </button>
+                    </div>
+                    <div class="float-left" (click)="setRisposta(domanda.codice, 'Non lo so')">
+                        <button class="btn btn-lg btn-secondary">
+                            Non lo so
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
         </ng-template>
-    </ng-template>
-</div>
+    </div>
+</ng-template>
