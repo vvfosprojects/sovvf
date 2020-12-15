@@ -46,11 +46,15 @@ export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
   }
 
   chiudiModalFiltriTipologia(closeRes: string): void {
-    if (!this.zoneEmergenzaLocked && this.nessunaZonaLocked) {
-      this.modal.close(this.zonaEmergenzaArrayFake.filter(x => x.selected).map(x => x.name));
-    } else if (!this.nessunaZonaLocked && this.zoneEmergenzaLocked) {
-      this.modal.close('Nessuna zona emergenza');
-    } else { this.modal.close(null); }
+    if (closeRes === 'ok') {
+      if (!this.zoneEmergenzaLocked && this.nessunaZonaLocked) {
+        this.modal.close(this.zonaEmergenzaArrayFake.filter(x => x.selected).map(x => x.name));
+      } else if (!this.nessunaZonaLocked && this.zoneEmergenzaLocked) {
+        this.modal.close('Nessuna zona emergenza');
+      } else { this.modal.close(null); }
+    } else {
+      this.modal.close(null);
+    }
   }
 
   onBoxClick(i): void {
