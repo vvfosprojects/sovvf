@@ -351,7 +351,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 {
                     return Costanti.RichiestaChiusa;
                 }
-                if (eventoAssegnata.Count > 0)
+                if (eventoAssegnata.Count > 0 || Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0)
                 {
                     return Costanti.RichiestaAssegnata;
                 }
