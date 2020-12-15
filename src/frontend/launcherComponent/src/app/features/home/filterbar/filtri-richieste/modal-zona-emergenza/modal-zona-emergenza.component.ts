@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -7,7 +7,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './modal-zona-emergenza.component.html',
   styleUrls: ['./modal-zona-emergenza.component.css']
 })
-export class ModalZonaEmergenzaComponent implements OnDestroy {
+export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
 
   nessunaZonaSelected = false;
   nessunaZonaLocked = false;
@@ -34,6 +34,11 @@ export class ModalZonaEmergenzaComponent implements OnDestroy {
   ];
 
   constructor(private modal: NgbActiveModal) {
+  }
+
+  ngOnInIt(): void {
+    this.nessunaZonaSelected = false;
+    this.zonaEmergenzaArrayFake.forEach(e => e.selected = false);
   }
 
   ngOnDestroy(): void {
@@ -63,5 +68,8 @@ export class ModalZonaEmergenzaComponent implements OnDestroy {
     this.nessunaZonaLocked = false;
     this.nessunaZonaSelected = false;
     this.zonaEmergenzaArrayFake.forEach(e => e.selected = false);
+  }
+
+  ngOnInit(): void {
   }
 }

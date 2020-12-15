@@ -11,7 +11,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
 import {
-  RemoveFakeStatoRichiesta, ResetFiltriStatiZone,
+  RemoveFakeStatoRichiesta, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
   SetFakeStatoRichiesta,
   SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
@@ -238,6 +238,9 @@ export class FiltriRichiesteComponent {
   onDeselezioneFiltro(filtro: VoceFiltro): void {
     const index = this.filtri.findIndex(e => e.name === filtro.name);
     this.specialSelected[index] = false;
+    if (filtro.categoria === 'AltriFiltri') {
+      this.store.dispatch(new ResetFiltriZoneSelezionate());
+    }
     if (filtro.categoria === 'StatiRichiesta') {
       this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
       this.filtroDeselezionato.emit(filtro);
