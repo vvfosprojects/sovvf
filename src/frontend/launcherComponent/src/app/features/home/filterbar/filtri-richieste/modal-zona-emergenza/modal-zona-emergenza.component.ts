@@ -9,7 +9,9 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalZonaEmergenzaComponent implements OnDestroy {
 
-  nessunaZonaEmergenza = false;
+  nessunaZonaSelected = false;
+  nessunaZonaLocked = false;
+  zoneEmergenzaLocked = false;
   subscription: Subscription = new Subscription();
 
   zonaEmergenzaArrayFake: any = [
@@ -39,14 +41,27 @@ export class ModalZonaEmergenzaComponent implements OnDestroy {
   }
 
   chiudiModalFiltriTipologia(closeRes: string): void {
-    this.modal.close(this.zonaEmergenzaArrayFake.filter(x => x.selected).map(x => x.name));
+    if (!this.zoneEmergenzaLocked && this.nessunaZonaLocked) {
+      this.modal.close(this.zonaEmergenzaArrayFake.filter(x => x.selected).map(x => x.name));
+    } else if (!this.nessunaZonaLocked && this.zoneEmergenzaLocked) {
+      this.modal.close('Nessuna zona emergenza');
+    } else { this.modal.close(null); }
   }
 
   onBoxClick(i): void {
     this.zonaEmergenzaArrayFake[i].selected = !this.zonaEmergenzaArrayFake[i].selected;
+    this.nessunaZonaLocked = true;
   }
 
   onClickNessunaZona(): void {
-    this.nessunaZonaEmergenza = !this.nessunaZonaEmergenza;
+    this.nessunaZonaSelected = !this.nessunaZonaSelected;
+    this.zoneEmergenzaLocked = true;
+  }
+
+  onResetZoneEmergenza(): void {
+    this.zoneEmergenzaLocked = false;
+    this.nessunaZonaLocked = false;
+    this.nessunaZonaSelected = false;
+    this.zonaEmergenzaArrayFake.forEach(e => e.selected = false);
   }
 }

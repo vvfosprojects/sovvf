@@ -400,6 +400,16 @@ tag-input {
   color: #fff !important;
 }
 
+.btn-no-style {
+  background: none !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  font: inherit !important;
+  outline: inherit !important;
+  cursor: not-allowed;
+}
+
 .btn-verdemela:hover {
   background-color: #809e59 !important;
 }

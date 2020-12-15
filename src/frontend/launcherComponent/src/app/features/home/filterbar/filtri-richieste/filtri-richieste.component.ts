@@ -45,7 +45,7 @@ export class FiltriRichiesteComponent {
   statiRichiesta: VoceFiltro[] = [
       {
       categoria: 'StatiRichiesta',
-      codice: 'Assegnati',
+      codice: 'Assegnata',
       descrizione: 'Assegnati',
       name: 'assegnati',
       star: true,
@@ -53,7 +53,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Sospesi',
+      codice: 'Sospesa',
       descrizione: 'Sospesi',
       name: 'sospesi',
       star: true,
@@ -61,7 +61,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Presidiati',
+      codice: 'Presidiata',
       descrizione: 'Presidiati',
       name: 'presidiati',
       star: true,
@@ -69,7 +69,7 @@ export class FiltriRichiesteComponent {
     },
     {
       categoria: 'StatiRichiesta',
-      codice: 'Chiusi',
+      codice: 'Chiusa',
       descrizione: 'Chiusi',
       name: 'chiusi',
       star: true,
@@ -199,8 +199,20 @@ export class FiltriRichiesteComponent {
     }
     const modal = this.modalService.open(ModalZonaEmergenzaComponent, modalOptions);
     modal.result.then((res: string[]) => {
-      this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
-      this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+      if (res != null) {
+        this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
+        this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+      } else {
+        const filtro = {
+          categoria: 'AltriFiltri',
+          codice: 'ZonaEmergenza',
+          descrizione: 'Zona Emergenza',
+          name: 'zonaEmergenza',
+          star: true,
+          statico: true,
+        };
+        this.filtroDeselezionato.emit(filtro);
+      }
     });
   }
 
