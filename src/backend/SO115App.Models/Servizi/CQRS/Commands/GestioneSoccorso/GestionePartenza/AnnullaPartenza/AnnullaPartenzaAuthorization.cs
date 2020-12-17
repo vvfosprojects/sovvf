@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
@@ -59,6 +60,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
+
+                    if (command.Richiesta.Partenze.Where(p => p.Partenza.Mezzo.Codice.Contains(command.TargaMezzo)).First().Partenza.Mezzo.Stato != Costanti.MezzoInUscita)
+                        yield return new AuthorizationResult("Non puoi annullare una partenza in tale stato.");
 
                     bool abilitato = false;
                     foreach (var competenza in command.Richiesta.CodUOCompetenza)
