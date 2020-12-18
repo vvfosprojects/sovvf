@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
-  RemoveFakeStatoRichiesta, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
-  SetFakeStatoRichiesta,
+  RemoveFakeStatoRichiesta, RemovePeriodoChiuse, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
+  SetFakeStatoRichiesta, SetPeriodoChiuse,
   SetZoneEmergenza,
   SetZoneEmergenzaSelezionate
 } from '../../actions/filterbar/zone-emergenza.actions';
@@ -13,12 +13,19 @@ export interface ZoneEmergenzaStateModel {
   zoneEmergenza: string[];
   zoneEmergenzaSelezionate: string[];
   fakeStatoRichiesta: string[];
+  periodoChiuse: any;
 }
 
 export const zoneEmergenzaStateDefaults: ZoneEmergenzaStateModel = {
   zoneEmergenza: [],
   zoneEmergenzaSelezionate: [],
   fakeStatoRichiesta: [],
+  periodoChiuse: {
+    da: null,
+    a: null,
+    data: null,
+    turno: null,
+  }
 };
 
 @Injectable()
@@ -29,6 +36,11 @@ export const zoneEmergenzaStateDefaults: ZoneEmergenzaStateModel = {
 export class ZoneEmergenzaState {
 
   constructor() {
+  }
+
+  @Selector()
+  static periodoChiuse(state: ZoneEmergenzaStateModel): any {
+    return state.periodoChiuse;
   }
 
   @Selector()
@@ -44,6 +56,32 @@ export class ZoneEmergenzaState {
   @Selector()
   static zoneEmergenzaSelezionate(state: ZoneEmergenzaStateModel): string[] {
     return state.zoneEmergenzaSelezionate;
+  }
+
+  @Action(SetPeriodoChiuse)
+  setPeriodoChiuse({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
+    const periodoChiuse = {
+      da: action.periodo.da,
+      a: action.periodo.a,
+      data: action.periodo.data,
+      turno: action.periodo.turno,
+    };
+    patchState({
+      periodoChiuse,
+    });
+  }
+
+  @Action(RemovePeriodoChiuse)
+  removePeriodoChiuse({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
+    const periodoChiuse = {
+      da: null,
+      a: null,
+      data: null,
+      turno: null,
+    };
+    patchState({
+      periodoChiuse,
+    });
   }
 
   @Action(SetFakeStatoRichiesta)
@@ -93,7 +131,6 @@ export class ZoneEmergenzaState {
 
   @Action(ResetFiltriZoneSelezionate)
   resetFiltriZoneSelezionate({ setState }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
-    console.log('***run test');
     setState(
       patch({
         zoneEmergenzaSelezionate: zoneEmergenzaStateDefaults.zoneEmergenzaSelezionate,

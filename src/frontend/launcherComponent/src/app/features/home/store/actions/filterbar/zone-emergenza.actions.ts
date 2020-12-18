@@ -20,6 +20,17 @@ export class SetFakeStatoRichiesta {
   }
 }
 
+export class SetPeriodoChiuse {
+  static readonly type = '[ZoneEmergenza] Set Periodo Chiuse';
+
+  constructor(public periodo: any) {
+  }
+}
+
+export class RemovePeriodoChiuse {
+  static readonly type = '[ZoneEmergenza] Remove Periodo Chiuse';
+}
+
 export class RemoveFakeStatoRichiesta {
   static readonly type = '[ZoneEmergenza] Remove Stati Richiesta Fake';
 

@@ -14,6 +14,7 @@ export class FiltroComponent {
     @Input() disabled: boolean;
     @Input() onlyOneCheck: boolean;
     @Input() listaZoneEmergenzaSelezionate: string[];
+    @Input() periodoChiuse: any;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
