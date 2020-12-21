@@ -205,6 +205,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : (f.tipologie.length > 0 ? f.tipologie[0].descrizione : null),
             new Richiedente(f.telefono.value, f.nominativo.value),
             {
+                indirizzo: f.indirizzo.value,
                 piano: f.piano.value,
                 palazzo: f.palazzo.value,
                 scala: f.scala.value,
@@ -293,7 +294,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
             new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
         );
-        this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
+        this.f.indirizzo.patchValue(result.formatted_address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
         this.reducerSchedaTelefonata('cerca');
