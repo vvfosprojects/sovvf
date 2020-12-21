@@ -58,6 +58,12 @@
     </ng-template>
 </div> -->
 <div class="modal-footer">
+    <button type="button" class="btn btn-lg button-urgenza btn-success btn-no-hover" style="min-width: 100px"
+            [disabled]="false"
+            (click)="setEmergenza()"
+            ngbTooltip="Condividi in Gestione">
+        {{ 'Segnala Urgenza' | uppercase }}
+    </button>
     <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
         {{ 'Chiudi Triage' | uppercase }}
     </button>

@@ -30,8 +30,8 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
-    @Select(SchedaTelefonataState.countInterventiVicinanze) countInterventiVicinanze$: Observable<number>;
-    @Select(SchedaTelefonataState.interventiVicinanze) interventiVicinanze$: Observable<SintesiRichiesta[]>;
+    @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
+    @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;

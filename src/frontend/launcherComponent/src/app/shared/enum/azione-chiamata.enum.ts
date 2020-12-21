@@ -5,6 +5,5 @@ export enum AzioneChiamataEnum {
     ChiusuraForzata,
     MettiInCoda,
     InviaPartenza,
-    Emergenza,
     Modifica
 }

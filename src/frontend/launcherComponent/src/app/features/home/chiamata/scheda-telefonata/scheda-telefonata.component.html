@@ -207,22 +207,22 @@
               <span style="width: max-content; display: inline-grid; margin-left: 5px">
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('112')" type="checkbox" id="112" name="112"
-                         [checked]="prefix[112]">
+                         [checked]="scorciatoieTelefono[112]">
                   <label class="ml-1 mb-0" for="112" style="cursor: pointer">112</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('113')" type="checkbox" id="113" name="113"
-                         [checked]="prefix[113]">
+                         [checked]="scorciatoieTelefono[113]">
                   <label class="ml-1 mb-0" for="113" style="cursor: pointer">113</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('118')" type="checkbox" id="118" name="118"
-                         [checked]="prefix[118]">
+                         [checked]="scorciatoieTelefono[118]">
                   <label class="ml-1 mb-0" for="118" style="cursor: pointer">118</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU." name="VV.UU."
-                         [checked]="prefix['VV.UU.']">
+                         [checked]="scorciatoieTelefono['VV.UU.']">
                   <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
                 </span>
               </span>
@@ -360,12 +360,6 @@
                                 placement="top">
                             Conferma e Invia Partenza
                         </button>
-                        <button class="btn btn-success btn-no-hover mx-3 btn-xlarge" style="min-width: 100px"
-                                [disabled]="formIsInvalid(true)"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Emergenza)"
-                                ngbTooltip="Imposta Emergenza">
-                            Conferma e Continua
-                        </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge" style="min-width: 100px"
                                 [disabled]="formIsInvalid(true)"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
@@ -424,6 +418,22 @@
                         <h5>2. <b>Ci sono persone in pericolo?</b></h5>
                         <h5>Risposta: <b>No</b></h5>
                     </div>
+                    <div class="mb-2">
+                        <h5><b>Info Pre-arrivo</b></h5>
+                        <h5>
+                            Lorem Ipsum è un testo segnaposto utilizzato nel settore della tipografia e della stampa.
+                        </h5>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- NOTE NUE -->
+            <ngb-panel id="note-nue"
+                       [disabled]="!codiceSchedaContatto">
+                <ng-template ngbPanelTitle>
+                    <b>NOTE NUE</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    {{ schedaContatto.dettaglio ? schedaContatto.dettaglio : 'Nessuna Nota Disponibile' }}
                 </ng-template>
             </ngb-panel>
             <!-- MEZZI CONSIGLIATI -->
@@ -441,27 +451,36 @@
                     </div>
                 </ng-template>
             </ngb-panel>
+            <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
             <!-- INTERVENTI IN PROSSIMITA' -->
-            <ngb-panel id="interventi-vicinanze"
-                       [disabled]="countInterventiVicinanze <= 0 || interventiVicinanze?.length <= 0">
+            <ngb-panel id="interventi-prossimita"
+                       [disabled]="countInterventiProssimita <= 0 || interventiProssimita?.length <= 0">
                 <ng-template ngbPanelTitle>
-                    <b>INTERVENTI IN PROSSIMITA'</b>
+                    <b>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</b>
                 </ng-template>
                 <ng-template ngbPanelContent>
-                    <div *ngFor="let interventoVicinanze of interventiVicinanze">
-                        <b>{{ interventoVicinanze.codiceRichiesta ? interventoVicinanze.codiceRichiesta : interventoVicinanze.codice }}</b>
-                        - {{ interventoVicinanze.localita.indirizzo }}
+                    <div *ngFor="let interventoProssimita of interventiProssimita">
+                        <b>{{ interventoProssimita.codiceRichiesta ? interventoProssimita.codiceRichiesta : interventoProssimita.codice }}</b>
+                        - {{ interventoProssimita.localita.indirizzo }}
                     </div>
                 </ng-template>
             </ngb-panel>
-            <!-- NOTE NUE -->
-            <ngb-panel id="note-nue"
-                       [disabled]="!codiceSchedaContatto">
+            <!-- TODO: INTERVENTI STESSA VIA -->
+            <ngb-panel id="interventi-stessa-via" [disabled]="true">
                 <ng-template ngbPanelTitle>
-                    <b>NOTE NUE</b>
+                    <b>INTERVENTI NELLA STESSA VIA</b>
                 </ng-template>
                 <ng-template ngbPanelContent>
-                    {{ schedaContatto.dettaglio ? schedaContatto.dettaglio : 'Nessuna Nota Disponibile' }}
+                    <!-- TODO: inserire "INTERVENTI NELLA STESSA VIA" -->
+                </ng-template>
+            </ngb-panel>
+            <!-- TODO: INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
+            <ngb-panel id="interventi-chiusi-stesso-indirizzo" [disabled]="true">
+                <ng-template ngbPanelTitle>
+                    <b>INTERVENTI CHIUSI CON STESSO INDIRIZZO</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <!-- TODO: inserire "INTERVENTI CHIUSI CON STESSO INDIRIZZO" -->
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>

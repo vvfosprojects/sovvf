@@ -1,8 +1,23 @@
-<button type="button" class="btn font-weight-bolder"
-        [ngClass]="getClasses()"
-        [class.btn-no-hover]="getActive()"
-        [disabled]="disabled"
-        (click)="chiamata()">
-    <i class="fa fa-phone mr-1"></i>
-    {{ getTitle() | uppercase }}
-</button>
+<ng-template [ngIf]="!richiestaModifica">
+    <button type="button" class="btn font-weight-bolder"
+            [ngClass]="getClasses()"
+            [class.btn-no-hover]="getActive()"
+            [disabled]="disabled"
+            (click)="chiamata()">
+        <i class="fa fa-phone mr-1"></i>
+        {{ getTitle() | uppercase }}
+    </button>
+</ng-template>
+<ng-template [ngIf]="!!richiestaModifica">
+    <div class="mt-2 pl-2">
+        <h4 class="d-inline-block h5 mr-2 mb-0">
+            <i class="fa fa-edit"></i>
+            Stai modificando la richiesta
+            <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>
+        </h4>
+        <h4 class="d-inline-block h5 mb-0">
+            del giorno <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'dd-MM-yyyy' }}</b>
+            alle <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'HH:mm:ss' }}</b>
+        </h4>
+    </div>
+</ng-template>

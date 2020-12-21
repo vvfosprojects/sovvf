@@ -26,14 +26,14 @@ export class SetCompetenze {
     }
 }
 
-export class SetCountInterventiVicinanze {
+export class SetCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Count Interventi Vicinanze';
 
     constructor(public coordinate: Coordinate) {
     }
 }
 
-export class SetInterventiVicinanze {
+export class SetInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
 
     constructor(public coordinate: Coordinate) {
@@ -51,7 +51,7 @@ export class ClearChiamata {
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
-    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
+    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum, public emergenza: boolean) {
     }
 }
 
