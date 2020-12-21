@@ -32,6 +32,7 @@ export class SintesiRichiesteService {
         }
         const filtroStato =  this.store.selectSnapshot(ZoneEmergenzaState.fakeStatoRichiesta);
         const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
+        const periodoChiuse = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiuse);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
@@ -40,7 +41,8 @@ export class SintesiRichiesteService {
             filtriTipologie: null,
             statiRichiesta:  filtroStato && filtroStato.length ? filtroStato : null,
             tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
-            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null
+            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
+            periodoChiuse,
         };
         console.log('getRichieste OBJ', obj);
         return this.http.post(API_URL_RICHIESTE, obj);

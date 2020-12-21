@@ -11,8 +11,8 @@ import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
 import {
-  RemoveFakeStatoRichiesta, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
-  SetFakeStatoRichiesta,
+  RemoveFakeStatoRichiesta, RemovePeriodoChiuse, ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
+  SetFakeStatoRichiesta, SetPeriodoChiuse,
   SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
 import {FiltriRichiesteState} from '../../store/states/filterbar/filtri-richieste.state';
@@ -42,6 +42,11 @@ export class FiltriRichiesteComponent {
   filtriAttiviToolTip: VoceFiltro[];
 
   listaZoneEmergenzaSelezionate: string[] = [];
+  periodoChiuse: any = {
+    daA: null,
+    data: null,
+    turno: null,
+  };
   onlyOneCheck = false;
   statiRichiesta: VoceFiltro[] = [
       {
@@ -164,12 +169,15 @@ export class FiltriRichiesteComponent {
       }
     }
     const modal = this.modalService.open(ModalRichiesteChiuseComponent, modalOptions);
-    modal.result.then((res: string) => {
-      switch (res) {
+    modal.result.then((res: any) => {
+      switch (res.status) {
         case 'ok':
+          this.periodoChiuse = res.date;
+          this.store.dispatch(new SetPeriodoChiuse(res.result));
           this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
           break;
         case 'ko':
+          this.periodoChiuse = {};
           break;
       }
     });
@@ -248,6 +256,10 @@ export class FiltriRichiesteComponent {
       this.store.dispatch(new ResetFiltriZoneSelezionate());
       this.listaZoneEmergenzaSelezionate = [];
     }
+    if (filtro.name === 'chiusi') {
+      this.periodoChiuse = {};
+      this.store.dispatch(new RemovePeriodoChiuse());
+    }
     if (filtro.categoria === 'StatiRichiesta') {
       this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
       this.filtroDeselezionato.emit(filtro);
@@ -259,7 +271,9 @@ export class FiltriRichiesteComponent {
   resetFiltri(): void {
     this.specialSelected = [false, false, false];
     this.listaZoneEmergenzaSelezionate = [];
+    this.periodoChiuse = {};
     this.store.dispatch(new ResetFiltriStatiZone());
+    this.store.dispatch(new RemovePeriodoChiuse());
     this.filtriReset.emit();
   }
 

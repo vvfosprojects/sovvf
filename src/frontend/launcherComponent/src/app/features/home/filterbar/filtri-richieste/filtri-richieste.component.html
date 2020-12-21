@@ -51,6 +51,7 @@
                             [useCheckbox]="true"
                             [selezionato]="f | selectedFilterRichieste"
                             [disabled]="disableFilters"
+                            [periodoChiuse]="periodoChiuse"
                             (filtroSelezionato)="onSelezioneFiltro($event)"
                             (filtroDeselezionato)="onDeselezioneFiltro($event)"
                             (chiusiModal)="openChiusiModal($event)"></app-filtro>

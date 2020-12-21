@@ -20,6 +20,11 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     Del: true,
     Turno: false,
   };
+  periodoChiuseToShow: any = {
+    daA: null,
+    data: null,
+    turno: null,
+  };
   navigation: 'select';
   outsideDays: 'visible';
   hoveredDate: NgbDate | null = null;
@@ -49,6 +54,30 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     );
   }
 
+  formatDate(date: any): any {
+    date.month = date.month - 1;
+    const day = date.day;
+    const month = date.month;
+    const year = date.year;
+    const dateFormatted = new Date( year, month, day, 10, 0, 0, 0);
+    return dateFormatted;
+  }
+
+  formatDatetoShow(): any {
+    this.periodoChiuseToShow = {
+      daA: null,
+      data: null,
+      turno: null,
+    };
+    let da;
+    let a;
+    da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
+    a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
+    this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
+    this.periodoChiuseToShow.data = this.prefix['Del'] ? this.todayDate.day + '/' + this.todayDate.month + '/' + this.todayDate.year : null;
+    this.periodoChiuseToShow.turno = this.prefix['Turno'] ? this.turnoCalendario.corrente : null;
+  }
+
   onCheckFiltro(key: string): void {
     if (this.prefix[key]) {
       this.prefix[key] = false;
@@ -58,7 +87,23 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
   }
 
   chiudiModalFiltriTipologia(closeRes: string): void {
-    this.modal.close(closeRes);
+    if (closeRes === 'ok') {
+      this.formatDatetoShow();
+      console.log('periodoChiuseToShow.daA ' , this.periodoChiuseToShow.daA);
+      this.modal.close({
+        status: 'ok',
+        result: {
+                  da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
+                  a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
+                  data: this.prefix['Del'] ? this.formatDate(this.todayDate) : null,
+                  turno: this.prefix['Turno'] ? this.turnoCalendario.corrente : null,
+                },
+        date: this.periodoChiuseToShow,
+      });
+    } else {
+      this.modal.close({ status: 'ko'});
+    }
+
   }
 
   onDateSelection(date: NgbDate): void {
