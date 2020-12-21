@@ -77,6 +77,8 @@ export class TriageModalComponent implements OnInit {
     risposteTriage: any[];
     codDomandaSelezionata: string;
 
+    checkedEmergenza: boolean;
+
     constructor(private modal: NgbActiveModal,
                 private store: Store) {
     }
@@ -119,6 +121,9 @@ export class TriageModalComponent implements OnInit {
     }
 
     setEmergenza(): void {
+        // TODO: rimuovere (fake check emergenza)
+        this.checkedEmergenza = true;
+
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
             nuovaRichiesta: this.nuovaRichiesta,

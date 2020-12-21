@@ -58,13 +58,17 @@
     </ng-template>
 </div> -->
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg button-urgenza btn-success btn-no-hover" style="min-width: 100px"
-            [disabled]="false"
-            (click)="setEmergenza()"
-            ngbTooltip="Condividi in Gestione">
-        {{ 'Segnala Urgenza' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
-        {{ 'Chiudi Triage' | uppercase }}
-    </button>
+    <div class="clearfix w-100">
+        <div class="float-left mt-2">
+            <app-checkbox
+                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedEmergenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedEmergenza }"
+                    (click)="setEmergenza()">
+            </app-checkbox>
+        </div>
+        <div class="float-right">
+            <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
+                {{ 'Chiudi Triage' | uppercase }}
+            </button>
+        </div>
+    </div>
 </div>
