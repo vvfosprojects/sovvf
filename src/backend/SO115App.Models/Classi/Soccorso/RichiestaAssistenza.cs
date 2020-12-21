@@ -973,5 +973,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         public List<Partenza> lstPartenze => Partenze.Select(c => c.Partenza).ToList();
+
+        /// <summary>
+        /// Se non ci sono partenze è uguale a 0
+        /// </summary>
+        public int CodiceUltimaPartenza => Partenze.Select(c => c.Partenza.Codice).Max();
     }
 }
