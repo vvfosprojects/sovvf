@@ -175,18 +175,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
-            int ContatorePartenze = 1;
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 if (partenza.Codice == 0)
-                    partenza.Codice = ContatorePartenze;
+                    partenza.Codice = command.Richiesta.CodiceUltimaPartenza + 1;
 
                 foreach (var squadra in partenza.Squadre)
                 {
                     squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenza.Mezzo.Stato);
                 }
-
-                ContatorePartenze++;
             }
 
             command.ConfermaPartenze.IdRichiesta = command.Richiesta.Id;
