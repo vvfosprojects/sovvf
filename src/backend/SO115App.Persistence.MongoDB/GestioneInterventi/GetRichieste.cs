@@ -155,6 +155,8 @@ namespace SO115App.Persistence.MongoDB
 
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
+            else //CHIUSE NASCOSTE DI DEFAULT
+                result = result.Where(r => !r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
 
             //FILTRO ZONE EMERGENZA
             if (filtro.ZoneEmergenza != null)
@@ -176,7 +178,7 @@ namespace SO115App.Persistence.MongoDB
                 else if(filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
                     return r.Aperta == true || (r.IstanteChiusura >= filtro.PeriodoChiuse.Da && r.IstanteChiusura <= filtro.PeriodoChiuse.A);
 
-                throw new Exception("Errore filtro periodo richieste chiuse");
+                return true;
             }).ToList();
 
 

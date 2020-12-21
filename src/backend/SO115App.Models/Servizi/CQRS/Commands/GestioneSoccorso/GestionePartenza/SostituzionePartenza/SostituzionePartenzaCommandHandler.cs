@@ -1,12 +1,9 @@
 ﻿using CQRS.Commands;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using System;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza
@@ -14,8 +11,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class SostituzionePartenzaCommandHandler : ICommandHandler<SostituzionePartenzaCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
+        private readonly ISetRientroMezzo _rientroMezzo;
+        private readonly ISetUscitaMezzo _uscitaMezzo;
+        private readonly ISostituzionePartenza _sostituzionePartenza;
 
-        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta) => _updateRichiesta = updateRichiesta;
+        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo)
+        {
+            _updateRichiesta = updateRichiesta;
+            _rientroMezzo = rientroMezzo;
+        }
 
         public void Handle(SostituzionePartenzaCommand command)
         {
@@ -49,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + sostituzione.CodMezzoSmontante + " tornando in sede con il mezzo " + sostituzione.CodMezzoMontante;
 
-                var EventoPartenza = new SostituzionePartenzaFineTurno(Richiesta, sostituzione.CodMezzoSmontante, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
+                new SostituzionePartenzaFineTurno(Richiesta, sostituzione.CodMezzoSmontante, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
 
                 #region Aggiornamento Partenze nella Richiesta
 
@@ -68,7 +72,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 appoPartenzaMontante.Partenza.Squadre = BkSquadraSmontante;
                 Richiesta.Partenze.Add(appoPartenzaMontante);
 
-                #endregion Aggiornamento Partenze nella Richiesta
+                #endregion
+
+                #region Comunicazione a servizi GAC
+
+                //RIENTRO
+                _rientroMezzo.Set(new RientroGAC()
+                { 
+                    //nuovo id partenza
+                    idPartenza = appoPartenzaMontante.Partenza.Codice.ToString(),
+                    dataIntervento = appoPartenzaSmontante.DataOraInserimento,
+                    numeroIntervento = appoPartenzaSmontante.CodiceRichiesta,
+                    dataRientro = appoPartenzaSmontante.DataOraInserimento,
+                    targa = appoPartenzaSmontante.Partenza.Mezzo.Codice,
+                    tipoMezzo = appoPartenzaSmontante.Partenza.Mezzo.Genere
+                });
+
+                //USCITA
+
+                #endregion
 
                 var CodSede = appoPartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 

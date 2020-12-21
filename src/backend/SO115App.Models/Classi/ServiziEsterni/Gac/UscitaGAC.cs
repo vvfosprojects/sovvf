@@ -7,6 +7,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
     public class UscitaGAC : BaseGAC
     {
         public string numeroIntervento { get; set; }
+        public string idPartenza { get; set; }
         public DateTime dataIntervento { get; set; }
         public DateTime dataUscita { get; set; }
         public TipoUscita tipoUscita { get; set; }
