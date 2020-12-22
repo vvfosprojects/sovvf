@@ -7,5 +7,4 @@ export interface SchedaTelefonataInterface {
     nuovaRichiesta: SintesiRichiesta;
     markerChiamata: ChiamataMarker;
     azioneChiamata?: AzioneChiamataEnum;
-    emergenza?: boolean;
 }

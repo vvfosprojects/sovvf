@@ -28,9 +28,7 @@
                            [boxAttivi]="boxAttivi">
             </app-richieste>
             <!-- Chiamata -->
-            <app-chiamata *ngIf="viewState.chiamata.active"
-                          [boxAttivi]="boxAttivi">
-            </app-chiamata>
+            <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
             <!-- Composizione Partenza -->
             <app-composizione-partenza *ngIf="viewState.composizione.active"
                                        [boxAttivi]="boxAttivi"

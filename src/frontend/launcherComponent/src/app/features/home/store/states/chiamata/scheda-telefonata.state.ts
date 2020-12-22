@@ -159,7 +159,7 @@ export class SchedaTelefonataState {
                 dispatch(new SetInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
                 break;
             case 'inserita':
-                dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata, action.schedaTelefonata.emergenza));
+                dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
                 break;
             case 'modificata':
                 dispatch(new SuccessRichiestaModifica());
@@ -247,7 +247,7 @@ export class SchedaTelefonataState {
                         true
                     )
                 ]);
-            } else if (richiesta && action.emergenza) {
+            } else if (richiesta && action.nuovaRichiesta.emergenza) {
                 this.store.dispatch(new SetRichiestaModifica(richiesta));
                 this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
             } else {

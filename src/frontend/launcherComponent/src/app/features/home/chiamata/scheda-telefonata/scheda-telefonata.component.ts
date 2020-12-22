@@ -181,7 +181,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             zoneEmergenza: [null],
             prioritaRichiesta: [3, Validators.required],
             listaEnti: [null],
-            stato: [StatoRichiesta.Chiamata]
+            stato: [StatoRichiesta.Chiamata],
+            emergenza: [false]
         });
     }
 
@@ -239,7 +240,13 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             f.rilevanzaStArCu.value,
             null,
             null,
-            null
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            f.emergenza.value
         );
     }
 
@@ -377,14 +384,14 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                 windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
-                size: 'xl'
+                size: 'lg'
             };
         } else {
             modalOptions = {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
-                size: 'xl'
+                size: 'lg'
             };
         }
         this.getNuovaRichiesta();
@@ -463,6 +470,13 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         } else {
             Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === key);
             f.telefono.patchValue(key);
+        }
+    }
+
+    setEmergenza(): void {
+        if (this.checkSubmit() && !this.f.emergenza.value) {
+            this.f.emergenza.value = !this.f.emergenza.value;
+            this.onSubmit(AzioneChiamataEnum.MettiInCoda);
         }
     }
 

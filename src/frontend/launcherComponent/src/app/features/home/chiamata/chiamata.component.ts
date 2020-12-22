@@ -26,8 +26,6 @@ import { RichiestaModificaState } from '../store/states/richieste/richiesta-modi
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    @Input() boxAttivi: boolean;
-
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;

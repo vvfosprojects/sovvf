@@ -238,7 +238,7 @@
             <!-- NOTE  -->
             <div class="row p-2 my-2 bg-secondary"></div>
             <div class="row mb-5">
-                <div class="col-9">
+                <div class="col-8">
                     <div class="row">
                         <div class="col mb-2">
                             <label class="d-none" for="notePubbliche">Note Pubbliche</label>
@@ -273,7 +273,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
+                    <div class="wrapper-grid my-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                         [disableTooltip]="!formIsInvalid(true)">
+                        <app-checkbox
+                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.emergenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.emergenza.value || formIsInvalid(true) }"
+                                (click)="setEmergenza()">
+                        </app-checkbox>
+                    </div>
                     <div class="wrapper-grid">
                         <span class="mb-0 h5 font-xlarge">Priorità</span>
                         <span class="pl-2" style="font-size: 18px;">
@@ -352,7 +359,7 @@
                 </div> -->
                 <div class="float-right">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="min-width: 100px"
+                        <button class="btn btn-primary btn-no-hover btn-xlarge mr-3" style="min-width: 100px"
                                 [disabled]="disabledInviaPartenza || formIsInvalid(true)"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
@@ -418,11 +425,17 @@
                         <h5>2. <b>Ci sono persone in pericolo?</b></h5>
                         <h5>Risposta: <b>No</b></h5>
                     </div>
-                    <div class="mt-2">
-                        <h5><b>Info Pre-arrivo</b></h5>
-                        <h5>
-                            Lorem Ipsum è un testo segnaposto utilizzato nel settore della tipografia e della stampa.
+                    <div class="mt-3">
+                        <h5 class="text-danger">
+                            <i class="fa fa-file-pdf-o mr-2"></i>
+                            <b>Istruzioni Pre-Arrivo</b>
                         </h5>
+                        <div class="px-3">
+                            <ul class="list-group">
+                                <li>Istruzione 1</li>
+                                <li>Istruzione 2</li>
+                            </ul>
+                        </div>
                     </div>
                 </ng-template>
             </ngb-panel>
@@ -440,10 +453,10 @@
             <ngb-panel id="mezzi-consigliati"
                        [disabled]="!visualizzaSuggerimentiTriage">
                 <ng-template ngbPanelTitle>
-                    <b>MEZZI CONSIGLIATI</b>
+                    <b>MEZZI CONSIGLIATI ({{ !visualizzaSuggerimentiTriage ? '0' : '2' }})</b>
                 </ng-template>
                 <ng-template ngbPanelContent>
-                    <div class="p-2">
+                    <div class="px-3">
                         <ul class="list-group">
                             <li>APS</li>
                             <li>AS</li>
@@ -462,6 +475,7 @@
                     <div *ngFor="let interventoProssimita of interventiProssimita">
                         <b>{{ interventoProssimita.codiceRichiesta ? interventoProssimita.codiceRichiesta : interventoProssimita.codice }}</b>
                         - {{ interventoProssimita.localita.indirizzo }}
+                        - {{ interventoProssimita.richiedente.nominativo }}
                     </div>
                 </ng-template>
             </ngb-panel>

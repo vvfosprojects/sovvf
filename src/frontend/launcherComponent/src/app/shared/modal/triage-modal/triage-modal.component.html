@@ -6,32 +6,31 @@
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <div class="text-center">
-        <h6 class="d-inline-block mr-2">Tipologia Selezionata:</h6>
-        <h5 class="d-inline-block font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
+    <div class="h5">
+        <span class="d-inline-block mr-1">Tipologia Selezionata:</span>
+        <span class="d-inline-block font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</span>
     </div>
-    <div *ngIf="dettaglioTipologiaSelezionato" class="text-center">
-        <h6 class="d-inline-block mr-2">Dettaglio Tipologia Selezionata:</h6>
-        <h5 class="d-inline-block font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
+    <div *ngIf="dettaglioTipologiaSelezionato" class="h5">
+        <span class="d-inline-block mr-1">Dettaglio Tipologia Selezionata:</span>
+        <span class="d-inline-block font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</span>
     </div>
+    <hr class="mt-3 mb-0">
     <ng-template [ngIf]="dettagliTipologie?.length > 0 && !abilitaTriage">
         <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologie"
                                       (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
         </app-step-dettaglio-tipologia>
     </ng-template>
     <ng-template [ngIf]="abilitaTriage">
-        <div class="card card-shadow w-75 mx-auto p-3 mt-3">
-            <div *ngFor="let rispostaTriage of risposteTriage" class="alert alert-info">
-                <h5 class="mb-0">
-                    {{ getDomandaByCodice(rispostaTriage.codDomanda) }}
-                    <b>{{ rispostaTriage.risposta }}</b>
-                </h5>
-            </div>
-            <app-step-domande [domande]="domandeTriage"
-                              [codDomandaSelezionata]="codDomandaSelezionata"
-                              (risposta)="setRisposta($event.codDomanda, $event.risposta)">
-            </app-step-domande>
+        <div *ngFor="let rispostaTriage of risposteTriage" class="alert alert-info">
+            <h5 class="mb-0">
+                {{ getDomandaByCodice(rispostaTriage.codDomanda) }}
+                <b>{{ rispostaTriage.risposta }}</b>
+            </h5>
         </div>
+        <app-step-domande [domande]="domandeTriage"
+                          [codDomandaSelezionata]="codDomandaSelezionata"
+                          (risposta)="setRisposta($event.codDomanda, $event.risposta)">
+        </app-step-domande>
     </ng-template>
 </div>
 <!-- <div class="modal-footer">

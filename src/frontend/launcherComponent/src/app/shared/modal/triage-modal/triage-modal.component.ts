@@ -127,11 +127,11 @@ export class TriageModalComponent implements OnInit {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
             nuovaRichiesta: this.nuovaRichiesta,
-            markerChiamata: this.chiamataMarker,
-            emergenza: true
+            markerChiamata: this.chiamataMarker
         };
         schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
         schedaTelefonata.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
+        schedaTelefonata.nuovaRichiesta.emergenza = true;
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 
