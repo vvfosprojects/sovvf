@@ -41,15 +41,10 @@ export class TastoChiamataComponent {
     }
 
     getTitle(): string {
-        if (!this.richiestaModifica) {
-            if (!this.getActive()) {
-                return 'nuova chiamata';
-            } else if (this.getActive()) {
-                return 'stai inserendo una nuova chiamata';
-            }
-        } else if (this.richiestaModifica) {
-            const codRichiesta = this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice;
-            return 'Stai modificando la richiesta ' + codRichiesta + ' registrata da ' + this.richiestaModifica.operatore.nome + ' ' + this.richiestaModifica.operatore.cognome + ' alle ' + this.richiestaModifica.istanteRicezioneRichiesta.toLocaleString();
+        if (!this.getActive()) {
+            return 'nuova chiamata';
+        } else if (this.getActive()) {
+            return 'stai inserendo una nuova chiamata';
         }
     }
 }

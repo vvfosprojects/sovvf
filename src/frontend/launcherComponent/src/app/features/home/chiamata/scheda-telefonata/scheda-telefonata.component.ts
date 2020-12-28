@@ -48,8 +48,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     @Input() dettagliTipologie: any[];
     @Input() operatore: Utente;
     @Input() competenze: Sede[];
-    @Input() countInterventiVicinanze: number;
-    @Input() interventiVicinanze: SintesiRichiesta[];
+    @Input() countInterventiProssimita: number;
+    @Input() interventiProssimita: SintesiRichiesta[];
     @Input() enti: Ente[];
     @Input() codiceSchedaContatto: string;
     @Input() disabledInviaPartenza = false;
@@ -77,7 +77,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     nuovaRichiesta: SintesiRichiesta;
     idSchedaContatto: string;
-    prefix: {} = {
+    listaEnti: Ente[];
+    scorciatoieTelefono = {
         112: false,
         113: false,
         118: false,
@@ -97,23 +98,14 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
         });
-        this.chiamataForm = this.createForm();
-        this.initNuovaRichiesta();
+        this.chiamataForm = this.createAndGetForm();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
             if (changes.operatore && changes.operatore.currentValue) {
                 const operatore = changes.operatore.currentValue;
-                this.nuovaRichiesta.operatore = new Utente(
-                    operatore.id,
-                    operatore.nome,
-                    operatore.cognome,
-                    operatore.codiceFiscale,
-                    operatore.sede,
-                    operatore.username
-                );
-                this.idChiamata = this.makeIdChiamata();
+                this.idChiamata = makeIdChiamata(operatore);
             }
             if (changes.codiceSchedaContatto && changes.codiceSchedaContatto.currentValue) {
                 this.f.contatto.patchValue(changes.codiceSchedaContatto.currentValue);
@@ -139,6 +131,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                     this.modifica = true;
                 }
             }
+
+            function makeIdChiamata(operatore: Utente): string {
+                return `${operatore.sede.codice}-${operatore.id}-${makeID(8)}`;
+            }
         }
     }
 
@@ -156,14 +152,15 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         this.clearTipologieSelezionate();
         this.coordinate = null;
         this.store.dispatch(new ClearClipboard());
-        this._statoChiamata('reset');
+        this.reducerSchedaTelefonata('reset');
         this.store.dispatch(new DelChiamataMarker(this.idChiamata));
     }
 
-    createForm(): FormGroup {
+    createAndGetForm(): FormGroup {
         return this.formBuilder.group({
             tipologie: [null, Validators.required],
             dettaglioTipologia: [null],
+            istanteRicezioneRichiesta: [new Date(new Date().getTime() + OFFSET_SYNC_TIME[0])],
             nominativo: [null, Validators.required],
             telefono: [null, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
             indirizzo: [null, Validators.required],
@@ -183,7 +180,9 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             descrizione: [null],
             zoneEmergenza: [null],
             prioritaRichiesta: [3, Validators.required],
-            listaEnti: [null]
+            listaEnti: [null],
+            stato: [StatoRichiesta.Chiamata],
+            emergenza: [false]
         });
     }
 
@@ -191,51 +190,64 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         return this.chiamataForm.controls;
     }
 
-    initNuovaRichiesta(): void {
-        this.nuovaRichiesta = new SintesiRichiesta(
-            null,
-            null,
-            null,
-            null,
-            null,
-            StatoRichiesta.Chiamata,
-            0,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        );
-        this.nuovaRichiesta.rilevanteStArCu = false;
-        this.nuovaRichiesta.rilevanteGrave = false;
-        this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
-    }
-
-    getChiamataForm(): void {
+    getNuovaRichiesta(): SintesiRichiesta {
         const f = this.f;
         const tipologia = this.tipologie.filter((t: Tipologia) => t.codice === f.tipologie.value)[0];
-        this.nuovaRichiesta.tipologie = [tipologia];
-        this.nuovaRichiesta.dettaglioTipologia = f.dettaglioTipologia.value;
-        this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nominativo.value);
-        this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
-        this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
-        this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
-        this.nuovaRichiesta.tags = (f.etichette.value && f.etichette.value.length) ? f.etichette.value : null;
-        this.nuovaRichiesta.descrizione = f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : tipologia.descrizione;
-        this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
-        this.nuovaRichiesta.notePrivate = f.notePrivate.value;
-        this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
-        this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
-        this.nuovaRichiesta.localita.piano = f.piano.value;
-        this.nuovaRichiesta.localita.palazzo = f.palazzo.value;
-        this.nuovaRichiesta.localita.scala = f.scala.value;
-        this.nuovaRichiesta.localita.interno = f.interno.value;
-        this.nuovaRichiesta.localita.contatto = f.contatto.value;
-        this.nuovaRichiesta.codiceSchedaNue = this.idSchedaContatto ? this.idSchedaContatto : null;
-        this.nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : null;
-        console.log('Nuova Richiesta', this.nuovaRichiesta);
+        return new SintesiRichiesta(
+            null,
+            null,
+            null,
+            this.operatore,
+            f.istanteRicezioneRichiesta.value,
+            f.stato.value,
+            f.prioritaRichiesta.value,
+            [tipologia],
+            null, // f.dettaglioTipologia.value,
+            f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : (f.tipologie.length > 0 ? f.tipologie[0].descrizione : null),
+            new Richiedente(f.telefono.value, f.nominativo.value),
+            {
+                indirizzo: f.indirizzo.value,
+                piano: f.piano.value,
+                palazzo: f.palazzo.value,
+                scala: f.scala.value,
+                interno: f.interno.value,
+                contatto: f.contatto.value,
+                note: f.noteIndirizzo.value,
+                coordinate: {
+                    longitudine: f.longitudine.value,
+                    latitudine: f.latitudine.value
+                },
+            },
+            null,
+            null,
+            null,
+            null,
+            f.rilevanzaGrave.value,
+            this.idSchedaContatto ? this.idSchedaContatto : null,
+            f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null,
+            null,
+            null,
+            (f.etichette.value && f.etichette.value.length) ? f.etichette.value : null,
+            f.notePubbliche.value,
+            f.notePrivate.value,
+            null,
+            null,
+            null,
+            null,
+            (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : null,
+            null,
+            null,
+            f.rilevanzaStArCu.value,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            f.emergenza.value
+        );
     }
 
     onChangeTipologia(codTipologia: string): void {
@@ -244,61 +256,25 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    openTriage(): void {
-        const codTipologia = this.f.tipologie.value;
-        let modalOptions: any;
-        if (this.doubleMonitor) {
-            modalOptions = {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl'
-            };
-        } else {
-            modalOptions = {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl'
-            };
-        }
-        const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
-        triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
-        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((dT: any) => dT.codTipologia === codTipologia);
-        triageModal.result.then((res: any) => {
-            switch (res.type) {
-                case 'salvaDettaglio':
-                    this.f.dettaglioTipologia.patchValue(res.result);
-                    this.visualizzaSuggerimentiTriage = true;
-                    break;
-            }
-        });
-    }
-
-    onAddEnti(ente: any): void {
-        if (!this.nuovaRichiesta.listaEnti) {
-            this.nuovaRichiesta.listaEnti = [];
-            this.onAddEnti(ente);
-        } else {
-            this.nuovaRichiesta.listaEnti.push(ente);
-        }
-    }
-
-    onRemoveEnti(ente: any): void {
-        this.nuovaRichiesta.listaEnti.splice(this.nuovaRichiesta.listaEnti.indexOf(ente.codice), 1);
+    clearTipologieSelezionate(): void {
+        this.f.tipologie.patchValue(null);
     }
 
     checkTipologie(): boolean {
         return !!!(this.f.tipologie.value && (this.f.tipologie.value.length > 0));
     }
 
-    checkEnti(): boolean {
-        return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
+    onAddEnti(ente: any): void {
+        if (!this.nuovaRichiesta.listaEnti) {
+            this.listaEnti = [];
+            this.onAddEnti(ente);
+        } else {
+            this.listaEnti.push(ente);
+        }
     }
 
-    clearTipologieSelezionate(): void {
-        this.f.tipologie.patchValue(null);
-        this.nuovaRichiesta.tipologie = null;
+    onRemoveEnti(ente: any): void {
+        this.listaEnti.splice(this.listaEnti.indexOf(ente.codice), 1);
     }
 
     onAggiungiNuovoEnte(): void {
@@ -307,7 +283,77 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     clearEntiSelezionati(): void {
         this.f.listaEnti.patchValue([]);
-        this.nuovaRichiesta.listaEnti = [];
+        this.listaEnti = [];
+    }
+
+    checkEnti(): boolean {
+        return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
+    }
+
+    onCopiaIndirizzo(): void {
+        this.reducerSchedaTelefonata('copiaIndirizzo');
+    }
+
+    onCercaIndirizzo(result: Address): void {
+        const lat = roundToDecimal(result.geometry.location.lat(), 6);
+        const lng = roundToDecimal(result.geometry.location.lng(), 6);
+        this.coordinate = new Coordinate(lat, lng);
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
+        );
+        this.f.indirizzo.patchValue(result.formatted_address);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
+        this.reducerSchedaTelefonata('cerca');
+    }
+
+    onMsgIndirizzo(): string {
+        let msg = '';
+        if (this.f.indirizzo.errors && !this.coordinate) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (this.f.indirizzo.errors) {
+            msg = 'L\'indirizzo è richiesto';
+        } else if (!this.coordinate) {
+            msg = 'È necessario selezionare un indirizzo dall\'elenco';
+        } else {
+            return null;
+        }
+        return msg;
+    }
+
+    onShowInterventiProssimita(): void {
+        let modalInterventiProssimita;
+        if (this.doubleMonitor) {
+            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl',
+            });
+        } else {
+            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl',
+            });
+        }
+        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
+        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
+        modalInterventiProssimita.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        console.log('Test Ok');
+                        break;
+                    case 'ko':
+                        console.log('Azione annullata');
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     openModalSchedeContatto(): void {
@@ -330,53 +376,115 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
     }
 
-    onAnnullaChiamata(): void {
-        if (!this.checkNessunCampoModificato()) {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+    openTriage(): void {
+        const codTipologia = this.f.tipologie.value;
+        let modalOptions: any;
+        if (this.doubleMonitor) {
+            modalOptions = {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            };
+        } else {
+            modalOptions = {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-            ];
+                centered: true,
+                size: 'lg'
+            };
+        }
+        this.getNuovaRichiesta();
+        const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
+        triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
+        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((dT: any) => dT.codTipologia === codTipologia);
+        triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
+        triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
+        triageModal.result.then((res: any) => {
+            switch (res.type) {
+                case 'salvaDettaglio':
+                    this.f.dettaglioTipologia.patchValue(res.result);
+                    this.visualizzaSuggerimentiTriage = true;
+                    break;
+            }
+        });
+    }
 
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            this.chiamataForm.reset();
-                            this.nuovaRichiesta.tipologie = [];
-                            this._statoChiamata('annullata');
-                            break;
-                        case 'ko':
-                            console.log('Azione annullata');
-                            break;
-                    }
-                    console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
+    setSchedaContatto(scheda: SchedaContatto): void {
+        const f = this.f;
+
+        f.nominativo.patchValue(scheda.richiedente.nominativo);
+        f.telefono.patchValue(scheda.richiedente.telefono);
+        f.indirizzo.patchValue(scheda.localita.indirizzo);
+
+        const lat = scheda.localita.coordinate.latitudine;
+        const lng = scheda.localita.coordinate.longitudine;
+        this.coordinate = new Coordinate(lat, lng);
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo), null
+        );
+        // TODO: rimuovere
+        // this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo, null);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
+        this.reducerSchedaTelefonata('cerca');
+    }
+
+    countErrorForm(): string[] {
+        let error = '';
+        error += this.f.tipologie.errors ? 'Tipologia;' : '';
+        error += this.f.nominativo.errors ? 'Nominativo;' : '';
+        error += this.f.telefono.errors ? 'Telefono;' : '';
+        error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
+        return error.split(/\s*(?:;|$)\s*/);
+    }
+
+    checkInputPattern(event: any, type: string): void {
+        let regexp;
+        switch (type) {
+            case 'PHONE':
+                regexp = /^[0-9\+]*$/;
+                break;
+            case 'LAT_LON':
+                regexp = /^[0-9\.\-]$/;
+                break;
+        }
+
+        let inputValue;
+        if (event instanceof ClipboardEvent) {
+            inputValue = event.clipboardData.getData('Text');
         } else {
-            this._statoChiamata('annullata');
+            inputValue = event.key;
+        }
+
+        if (!regexp.test(inputValue)) {
+            event.preventDefault();
         }
     }
 
-    checkNessunCampoModificato(): boolean {
-        let campiModificati = false;
-        if (!this.f.tipologie.value && !this.f.nominativo.value && !this.f.telefono.value
-            && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
-            && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value && !this.f.listaEnti.value
-            && !this.f.notePrivate.value && !this.f.notePubbliche.value && !this.f.descrizione.value && !this.f.zoneEmergenza.value
-            && this.f.prioritaRichiesta.value === 3) {
-            campiModificati = true;
+    onCheckScorciatoiaNumero(key: string): void {
+        const f = this.f;
+        if (this.scorciatoieTelefono[key]) {
+            this.scorciatoieTelefono[key] = false;
+            f.telefono.patchValue('');
+        } else {
+            Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === key);
+            f.telefono.patchValue(key);
         }
-        return campiModificati;
+    }
+
+    setEmergenza(): void {
+        if (this.checkSubmit() && !this.f.emergenza.value) {
+            this.f.emergenza.value = !this.f.emergenza.value;
+            this.onSubmit(AzioneChiamataEnum.MettiInCoda);
+        }
+    }
+
+    onChiudiModifica(): void {
+        this.store.dispatch([
+            new ClearRichiestaModifica(),
+            new ToggleChiamata()
+        ]);
     }
 
     onResetChiamata(): void {
@@ -408,13 +516,15 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                 switch (val) {
                     case 'ok':
                         this.submitted = false;
+                        this.coordinate = null;
                         this.chiamataForm.reset();
+                        this.store.dispatch([
+                            new ClearClipboard(),
+                            new DelChiamataMarker(this.idChiamata)
+                        ]);
                         this.clearTipologieSelezionate();
                         this.clearEntiSelezionati();
-                        this.coordinate = null;
-                        this.store.dispatch(new ClearClipboard());
-                        this._statoChiamata('reset');
-                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
+                        this.reducerSchedaTelefonata('reset');
                         break;
                     case 'ko':
                         console.log('Azione annullata');
@@ -426,42 +536,62 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         );
     }
 
-    onCopiaIndirizzo(): void {
-        this._statoChiamata('copiaIndirizzo');
-    }
+    onAnnullaChiamata(): void {
+        if (!this.checkNessunCampoModificato()) {
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+            modalConfermaAnnulla.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+            ];
 
-    onCercaIndirizzo(result: Address): void {
-        const lat = roundToDecimal(result.geometry.location.lat(), 6);
-        const lng = roundToDecimal(result.geometry.location.lng(), 6);
-        this.coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
-        );
-        this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, result.formatted_address, null);
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lng);
-        this._statoChiamata('cerca');
-    }
-
-    onMsgIndirizzo(): string {
-        let msg = '';
-        if (this.f.indirizzo.errors && !this.coordinate) {
-            msg = 'L\'indirizzo è richiesto';
-        } else if (this.f.indirizzo.errors) {
-            msg = 'L\'indirizzo è richiesto';
-        } else if (!this.coordinate) {
-            msg = 'È necessario selezionare un indirizzo dall\'elenco';
+            modalConfermaAnnulla.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            this.chiamataForm.reset();
+                            this.reducerSchedaTelefonata('annullata');
+                            break;
+                        case 'ko':
+                            console.log('Azione annullata');
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
         } else {
-            return null;
+            this.reducerSchedaTelefonata('annullata');
         }
-        return msg;
     }
 
-    onChiudiModifica(): void {
-        this.store.dispatch([
-            new ClearRichiestaModifica(),
-            new ToggleChiamata()
-        ]);
+    checkNessunCampoModificato(): boolean {
+        let campiModificati = false;
+        if (!this.f.tipologie.value && !this.f.nominativo.value && !this.f.telefono.value
+            && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
+            && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value && !this.f.listaEnti.value
+            && !this.f.notePrivate.value && !this.f.notePubbliche.value && !this.f.descrizione.value && !this.f.zoneEmergenza.value
+            && this.f.prioritaRichiesta.value === 3) {
+            campiModificati = true;
+        }
+        return campiModificati;
+    }
+
+    impostaAzioneChiamata(azioneChiamata: AzioneChiamataEnum): void {
+        // if (azioneChiamata === AzioneChiamataEnum.InviaPartenza || azioneChiamata === AzioneChiamataEnum.MettiInCoda) {
+        //     this.nuovaRichiesta.azione = azioneChiamata;
+        // } else {
+        //     this.nuovaRichiesta.azione = azioneChiamata;
+        //     this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;
+        // }
+        this.onSubmit(azioneChiamata);
     }
 
     formIsInvalid(onlyBool?: boolean): boolean {
@@ -481,142 +611,31 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         return !!this.chiamataForm.invalid;
     }
 
-    countErrorForm(): string[] {
-        let error = '';
-        error += this.f.tipologie.errors ? 'Tipologia;' : '';
-        error += this.f.nominativo.errors ? 'Nominativo;' : '';
-        error += this.f.telefono.errors ? 'Telefono;' : '';
-        error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
-        return error.split(/\s*(?:;|$)\s*/);
-    }
-
-    impostaAzioneChiamata(azioneChiamata: AzioneChiamataEnum): void {
-        if (azioneChiamata === AzioneChiamataEnum.InviaPartenza || azioneChiamata === AzioneChiamataEnum.MettiInCoda || azioneChiamata === AzioneChiamataEnum.Emergenza) {
-            this.nuovaRichiesta.azione = azioneChiamata;
-        } else {
-            this.nuovaRichiesta.azione = azioneChiamata;
-            this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;
-        }
-        this.onSubmit(azioneChiamata);
-    }
-
     checkSubmit(): boolean {
         return (!this.formIsInvalid() && !!this.coordinate);
-    }
-
-    checkInputPattern(event: any, type: string): void {
-        let regexp;
-        switch (type) {
-            case 'PHONE':
-                regexp = /^[0-9\+]*$/;
-                break;
-            case 'LAT_LON':
-                regexp = /^[0-9\.\-]$/;
-                break;
-        }
-
-        let inputValue;
-        if (event instanceof ClipboardEvent) {
-            inputValue = event.clipboardData.getData('Text');
-        } else {
-            inputValue = event.key;
-        }
-
-        if (!regexp.test(inputValue)) {
-            event.preventDefault();
-        }
-    }
-
-    onCheckScorciatoiaNumero(key: string): void {
-        const f = this.f;
-        if (this.prefix[key]) {
-            this.prefix[key] = false;
-            f.telefono.patchValue('');
-        } else {
-            Object.keys(this.prefix).forEach(x => this.prefix[x] = x === key);
-            f.telefono.patchValue(key);
-        }
-    }
-
-    setSchedaContatto(scheda: SchedaContatto): void {
-        const f = this.f;
-
-        f.nominativo.patchValue(scheda.richiedente.nominativo);
-        f.telefono.patchValue(scheda.richiedente.telefono);
-        f.indirizzo.patchValue(scheda.localita.indirizzo);
-
-        const lat = scheda.localita.coordinate.latitudine;
-        const lng = scheda.localita.coordinate.longitudine;
-        this.coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo), null
-        );
-        this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo, null);
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lng);
-        this._statoChiamata('cerca');
     }
 
     onSubmit(azione?: AzioneChiamataEnum): void {
         this.submitted = true;
         if (this.checkSubmit()) {
-            this.getChiamataForm();
             if (!this.modifica) {
-                this._statoChiamata('inserita', azione);
+                this.reducerSchedaTelefonata('inserita', azione);
             } else if (this.modifica) {
-                this._statoChiamata('modificata', azione);
+                this.reducerSchedaTelefonata('modificata', azione);
             }
         }
     }
 
-    _statoChiamata(tipo: string, azione?: AzioneChiamataEnum): void {
+    reducerSchedaTelefonata(tipo: string, azione?: AzioneChiamataEnum): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo,
-            nuovaRichiesta: this.nuovaRichiesta,
+            nuovaRichiesta: this.getNuovaRichiesta(),
             markerChiamata: this.chiamataMarker
         };
         if (azione) {
             schedaTelefonata.azioneChiamata = azione;
+            schedaTelefonata.nuovaRichiesta.azione = azione;
         }
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
-    }
-
-    makeIdChiamata(): string {
-        return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
-    }
-
-    onShowInterventiProssimita(): void {
-        let modalInterventiProssimita;
-        if (this.doubleMonitor) {
-            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl',
-            });
-        } else {
-            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl',
-            });
-        }
-        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiVicinanze;
-        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiVicinanze;
-        modalInterventiProssimita.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        console.log('Test Ok');
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
     }
 }

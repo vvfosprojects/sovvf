@@ -207,22 +207,22 @@
               <span style="width: max-content; display: inline-grid; margin-left: 5px">
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('112')" type="checkbox" id="112" name="112"
-                         [checked]="prefix[112]">
+                         [checked]="scorciatoieTelefono[112]">
                   <label class="ml-1 mb-0" for="112" style="cursor: pointer">112</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('113')" type="checkbox" id="113" name="113"
-                         [checked]="prefix[113]">
+                         [checked]="scorciatoieTelefono[113]">
                   <label class="ml-1 mb-0" for="113" style="cursor: pointer">113</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('118')" type="checkbox" id="118" name="118"
-                         [checked]="prefix[118]">
+                         [checked]="scorciatoieTelefono[118]">
                   <label class="ml-1 mb-0" for="118" style="cursor: pointer">118</label>
                 </span>
                 <span>
                   <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU." name="VV.UU."
-                         [checked]="prefix['VV.UU.']">
+                         [checked]="scorciatoieTelefono['VV.UU.']">
                   <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
                 </span>
               </span>
@@ -238,7 +238,7 @@
             <!-- NOTE  -->
             <div class="row p-2 my-2 bg-secondary"></div>
             <div class="row mb-5">
-                <div class="col-9">
+                <div class="col-8">
                     <div class="row">
                         <div class="col mb-2">
                             <label class="d-none" for="notePubbliche">Note Pubbliche</label>
@@ -273,7 +273,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
+                    <div class="wrapper-grid my-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                         [disableTooltip]="!formIsInvalid(true)">
+                        <app-checkbox
+                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.emergenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.emergenza.value || formIsInvalid(true) }"
+                                (click)="setEmergenza()">
+                        </app-checkbox>
+                    </div>
                     <div class="wrapper-grid">
                         <span class="mb-0 h5 font-xlarge">Priorità</span>
                         <span class="pl-2" style="font-size: 18px;">
@@ -352,19 +359,13 @@
                 </div> -->
                 <div class="float-right">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="min-width: 100px"
+                        <button class="btn btn-primary btn-no-hover btn-xlarge mr-3" style="min-width: 100px"
                                 [disabled]="disabledInviaPartenza || formIsInvalid(true)"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
                                 placement="top">
                             Conferma e Invia Partenza
-                        </button>
-                        <button class="btn btn-success btn-no-hover mx-3 btn-xlarge" style="min-width: 100px"
-                                [disabled]="formIsInvalid(true)"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Emergenza)"
-                                ngbTooltip="Imposta Emergenza">
-                            Conferma e Continua
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge" style="min-width: 100px"
                                 [disabled]="formIsInvalid(true)"
@@ -424,33 +425,17 @@
                         <h5>2. <b>Ci sono persone in pericolo?</b></h5>
                         <h5>Risposta: <b>No</b></h5>
                     </div>
-                </ng-template>
-            </ngb-panel>
-            <!-- MEZZI CONSIGLIATI -->
-            <ngb-panel id="mezzi-consigliati"
-                       [disabled]="!visualizzaSuggerimentiTriage">
-                <ng-template ngbPanelTitle>
-                    <b>MEZZI CONSIGLIATI</b>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                    <div class="p-2">
-                        <ul class="list-group">
-                            <li>APS</li>
-                            <li>AS</li>
-                        </ul>
-                    </div>
-                </ng-template>
-            </ngb-panel>
-            <!-- INTERVENTI IN PROSSIMITA' -->
-            <ngb-panel id="interventi-vicinanze"
-                       [disabled]="countInterventiVicinanze <= 0 || interventiVicinanze?.length <= 0">
-                <ng-template ngbPanelTitle>
-                    <b>INTERVENTI IN PROSSIMITA'</b>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                    <div *ngFor="let interventoVicinanze of interventiVicinanze">
-                        <b>{{ interventoVicinanze.codiceRichiesta ? interventoVicinanze.codiceRichiesta : interventoVicinanze.codice }}</b>
-                        - {{ interventoVicinanze.localita.indirizzo }}
+                    <div class="mt-3">
+                        <h5 class="text-danger">
+                            <i class="fa fa-file-pdf-o mr-2"></i>
+                            <b>Istruzioni Pre-Arrivo</b>
+                        </h5>
+                        <div class="px-3">
+                            <ul class="list-group">
+                                <li>Istruzione 1</li>
+                                <li>Istruzione 2</li>
+                            </ul>
+                        </div>
                     </div>
                 </ng-template>
             </ngb-panel>
@@ -462,6 +447,54 @@
                 </ng-template>
                 <ng-template ngbPanelContent>
                     {{ schedaContatto.dettaglio ? schedaContatto.dettaglio : 'Nessuna Nota Disponibile' }}
+                </ng-template>
+            </ngb-panel>
+            <!-- MEZZI CONSIGLIATI -->
+            <ngb-panel id="mezzi-consigliati"
+                       [disabled]="!visualizzaSuggerimentiTriage">
+                <ng-template ngbPanelTitle>
+                    <b>MEZZI CONSIGLIATI ({{ !visualizzaSuggerimentiTriage ? '0' : '2' }})</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="px-3">
+                        <ul class="list-group">
+                            <li>APS</li>
+                            <li>AS</li>
+                        </ul>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
+            <!-- INTERVENTI IN PROSSIMITA' -->
+            <ngb-panel id="interventi-prossimita"
+                       [disabled]="countInterventiProssimita <= 0 || interventiProssimita?.length <= 0">
+                <ng-template ngbPanelTitle>
+                    <b>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div *ngFor="let interventoProssimita of interventiProssimita">
+                        <b>{{ interventoProssimita.codiceRichiesta ? interventoProssimita.codiceRichiesta : interventoProssimita.codice }}</b>
+                        - {{ interventoProssimita.localita.indirizzo }}
+                        - {{ interventoProssimita.richiedente.nominativo }}
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- TODO: INTERVENTI STESSA VIA -->
+            <ngb-panel id="interventi-stessa-via" [disabled]="true">
+                <ng-template ngbPanelTitle>
+                    <b>INTERVENTI NELLA STESSA VIA</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <!-- TODO: inserire "INTERVENTI NELLA STESSA VIA" -->
+                </ng-template>
+            </ngb-panel>
+            <!-- TODO: INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
+            <ngb-panel id="interventi-chiusi-stesso-indirizzo" [disabled]="true">
+                <ng-template ngbPanelTitle>
+                    <b>INTERVENTI CHIUSI CON STESSO INDIRIZZO</b>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <!-- TODO: inserire "INTERVENTI CHIUSI CON STESSO INDIRIZZO" -->
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>

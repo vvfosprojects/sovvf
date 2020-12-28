@@ -1,5 +1,9 @@
-<div style="margin-right: -10px" (click)="container.emit()" [ngbTooltip]="tooltipMessage"
-     [disableTooltip]="!tooltipMessage">
+<div style="margin-right: -10px"
+     [class.small]="!bigText"
+     [class.big]="bigText"
+     [ngbTooltip]="tooltipMessage"
+     [disableTooltip]="!tooltipMessage"
+     (click)="container.emit()">
     <input type="checkbox" id="{{typeName}}{{checkboxState.label}}" [checked]="checkboxState.status" (click)="onCheck()"
            [disabled]="checkboxState?.disabled"/>
     <label for="{{typeName}}{{checkboxState.label}}" [innerHTML]="labelFormat()" [class.disable-checkbox]="checkboxState?.disabled"></label>

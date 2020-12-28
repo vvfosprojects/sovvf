@@ -1,4 +1,4 @@
-<div class="px-3" [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-930-chiamata': !boxAttivi}">
+<div class="px-3 m-h-820-chiamata">
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
                            [dettagliTipologie]="dettagliTipologie"
                            [operatore]="(utente$ | async)"
@@ -8,8 +8,8 @@
                            [loading]="loadingNuovaChiamata$ | async"
                            [doubleMonitor]="doubleMonitor"
                            [competenze]="competenze$ | async"
-                           [countInterventiVicinanze]="countInterventiVicinanze$ | async"
-                           [interventiVicinanze]="interventiVicinanze$ | async"
+                           [countInterventiProssimita]="countInterventiProssimita$ | async"
+                           [interventiProssimita]="interventiProssimita$ | async"
                            [schedaContatto]="schedaContattoTelefonata$ | async"
                            [richiestaModifica]="richiestaModifica$ | async"
                            [modifica]="!!(richiestaModifica$ | async)"

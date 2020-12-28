@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
+import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
+import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-triage-modal',
@@ -13,6 +19,9 @@ export class TriageModalComponent implements OnInit {
 
     dettagliTipologie: any[];
     dettaglioTipologiaSelezionato: any;
+
+    nuovaRichiesta: SintesiRichiesta;
+    chiamataMarker: ChiamataMarker;
 
     abilitaTriage: boolean;
     // TODO: ELIMINARE (PER FAKE)
@@ -68,7 +77,10 @@ export class TriageModalComponent implements OnInit {
     risposteTriage: any[];
     codDomandaSelezionata: string;
 
-    constructor(private modal: NgbActiveModal) {
+    checkedEmergenza: boolean;
+
+    constructor(private modal: NgbActiveModal,
+                private store: Store) {
     }
 
     ngOnInit(): void {
@@ -106,6 +118,21 @@ export class TriageModalComponent implements OnInit {
 
     getDomandaByCodice(codDomanda: string): string {
         return this.domandeTriage.filter((d: any) => d.codice === codDomanda)[0].titolo;
+    }
+
+    setEmergenza(): void {
+        // TODO: rimuovere (fake check emergenza)
+        this.checkedEmergenza = true;
+
+        const schedaTelefonata: SchedaTelefonataInterface = {
+            tipo: 'inserita',
+            nuovaRichiesta: this.nuovaRichiesta,
+            markerChiamata: this.chiamataMarker
+        };
+        schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
+        schedaTelefonata.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
+        schedaTelefonata.nuovaRichiesta.emergenza = true;
+        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 
     closeModal(type: string): void {

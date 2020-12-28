@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import {Select} from '@ngxs/store';
-import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
-import {Observable, Subscription} from 'rxjs';
-import {Composizione} from '../../enum/composizione.enum';
+import { Select } from '@ngxs/store';
+import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
+import { Observable, Subscription } from 'rxjs';
+import { Composizione } from '../../enum/composizione.enum';
 
 @Component({
     selector: 'app-checkbox',
@@ -12,33 +12,36 @@ import {Composizione} from '../../enum/composizione.enum';
 })
 export class CheckboxComponent {
 
+    @Input() checkboxState: CheckboxInterface = { id: null, status: false, label: '' };
+    @Input() typeName = 'checkBox';
+    @Input() tooltipMessage: string;
+    @Input() bigText: boolean;
+
+    @Output() checkbox = new EventEmitter<CheckboxInterface>();
+    @Output() container = new EventEmitter();
+
     @Select(ViewComponentState.composizioneStatus) composizioneMode$: Observable<Composizione>;
     composizioneMode: boolean;
 
-    @Input() checkboxState: CheckboxInterface = { id: null, status: false, label: '' };
-    @Input() typeName = 'checkBox';
-    @Input() tooltipMessage;
-    @Output() checkbox = new EventEmitter<CheckboxInterface>();
-    @Output() container = new EventEmitter();
-    subscription: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor() {
-      this.subscription.add(
-        this.composizioneMode$.subscribe((cM: any) => {
-          this.composizioneMode = cM;
-          if (this.composizioneMode) {
-            this.checkbox.emit({
-              id: this.checkboxState.id,
-              status: true
-            });
-          } else {
-            this.checkbox.emit({
-              id: this.checkboxState.id,
-              status: false
-            });
-          }
-        })
-      );
+        this.subscriptions.add(
+            this.composizioneMode$.subscribe((cM: any) => {
+                this.composizioneMode = cM;
+                if (this.composizioneMode) {
+                    this.checkbox.emit({
+                        id: this.checkboxState.id,
+                        status: true
+                    });
+                } else {
+                    this.checkbox.emit({
+                        id: this.checkboxState.id,
+                        status: false
+                    });
+                }
+            })
+        );
     }
 
     onCheck(): void {
