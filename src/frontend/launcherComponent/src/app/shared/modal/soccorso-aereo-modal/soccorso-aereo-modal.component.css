@@ -1,0 +1,16 @@
+.area-size {
+  max-height: 350px;
+  min-height: 350px;
+}
+
+.overflow-size {
+  overflow-y: overlay;
+}
+
+.width-size {
+  width: 260px !important;
+}
+
+.input-checked {
+  border: solid #28a745;
+}

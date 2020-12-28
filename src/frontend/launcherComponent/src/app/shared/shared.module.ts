@@ -66,6 +66,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TriageModalComponent } from './modal/triage-modal/triage-modal.component';
 import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
+import {SoccorsoAereoModalComponent} from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -124,7 +125,8 @@ const COMPONENTS = [
     InterventiProssimitaModalComponent,
     TriageModalComponent,
     StepDettaglioTipologiaComponent,
-    StepDomandeComponent
+    StepDomandeComponent,
+    SoccorsoAereoModalComponent
 ];
 
 @NgModule({
