@@ -1,6 +1,6 @@
 .area-size {
-  max-height: 350px;
-  min-height: 350px;
+  max-height: 350px !important;
+  min-height: 350px !important;
 }
 
 .overflow-size {

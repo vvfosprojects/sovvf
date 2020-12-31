@@ -10,14 +10,23 @@ import {patch} from '@ngxs/store/operators';
 
 
 export interface ZoneEmergenzaStateModel {
-  zoneEmergenza: string[];
+  zoneEmergenza: any[];
   zoneEmergenzaSelezionate: string[];
   fakeStatoRichiesta: string[];
   periodoChiuse: any;
 }
 
 export const zoneEmergenzaStateDefaults: ZoneEmergenzaStateModel = {
-  zoneEmergenza: [],
+  zoneEmergenza: [
+    {
+      name: 'test fake number 1',
+      selected: false,
+    },
+    {
+      name: 'test fake number 2',
+      selected: false,
+    }
+  ],
   zoneEmergenzaSelezionate: [],
   fakeStatoRichiesta: [],
   periodoChiuse: {
@@ -49,13 +58,25 @@ export class ZoneEmergenzaState {
   }
 
   @Selector()
-  static zoneEmergenza(state: ZoneEmergenzaStateModel): string[] {
+  static zoneEmergenza(state: ZoneEmergenzaStateModel): any[] {
     return state.zoneEmergenza;
   }
 
   @Selector()
   static zoneEmergenzaSelezionate(state: ZoneEmergenzaStateModel): string[] {
     return state.zoneEmergenzaSelezionate;
+  }
+
+  @Action(SetZoneEmergenza)
+  setZoneEmergenza({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
+    /*
+    const zoneEmergenza: any = {
+      name: action.name
+    };
+    patchState({
+      zoneEmergenza,
+    });
+    */
   }
 
   @Action(SetPeriodoChiuse)
@@ -103,15 +124,6 @@ export class ZoneEmergenzaState {
     const arrayStatiFiltrati = arrayStati.filter(x => x !== singleValue);
     patchState({
       fakeStatoRichiesta: arrayStatiFiltrati,
-    });
-  }
-
-  @Action(SetZoneEmergenza)
-  setZoneEmergenza({ getState, setState, patchState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: any): void {
-    const state = getState();
-    patchState({
-      ...state,
-      zoneEmergenza: action.zoneEmergenza,
     });
   }
 

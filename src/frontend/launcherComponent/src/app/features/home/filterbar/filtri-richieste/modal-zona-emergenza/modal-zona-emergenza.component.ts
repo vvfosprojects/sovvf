@@ -1,6 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Store} from '@ngxs/store';
+import {ZoneEmergenzaState} from '../../../store/states/filterbar/zone-emergenza.state';
+import {makeCopy} from '../../../../../shared/helper/function';
 
 @Component({
   selector: 'app-modal-zona-emergenza',
@@ -13,27 +16,12 @@ export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
   nessunaZonaLocked = false;
   zoneEmergenzaLocked = false;
   subscription: Subscription = new Subscription();
+  zonaEmergenzaArrayFake: any = [];
 
-  zonaEmergenzaArrayFake: any = [
-    {
-      name: 'Zona Emergenza Fake 1',
-      selected: false,
-    },
-    {
-      name: 'Zona Emergenza Fake 2',
-      selected: false,
-    },
-    {
-      name: 'Zona Emergenza Fake 3',
-      selected: false,
-    },
-    {
-      name: 'Zona Emergenza Fake 4',
-      selected: false,
-    },
-  ];
-
-  constructor(private modal: NgbActiveModal) {
+  constructor(private modal: NgbActiveModal, private store: Store) {
+      const zoneEmergenza = makeCopy(this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenza));
+      this.zonaEmergenzaArrayFake = zoneEmergenza;
+      console.log('zonaEmergenzaArrayFake ', this.zonaEmergenzaArrayFake);
   }
 
   ngOnInIt(): void {

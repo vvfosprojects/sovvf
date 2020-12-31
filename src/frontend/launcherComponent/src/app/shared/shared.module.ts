@@ -67,6 +67,7 @@ import { TriageModalComponent } from './modal/triage-modal/triage-modal.componen
 import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
 import {SoccorsoAereoModalComponent} from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
+import {DettaglioSoccorsoAereoModalComponent} from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -126,7 +127,8 @@ const COMPONENTS = [
     TriageModalComponent,
     StepDettaglioTipologiaComponent,
     StepDomandeComponent,
-    SoccorsoAereoModalComponent
+    SoccorsoAereoModalComponent,
+    DettaglioSoccorsoAereoModalComponent
 ];
 
 @NgModule({
