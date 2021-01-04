@@ -8,7 +8,7 @@ namespace SO115App.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class GestioneSoccorsoAereo : ControllerBase
+    public class GestioneSoccorsoAereoController : ControllerBase
     {
         [HttpGet("GetCategorieSoccorso")]
         public async Task<IActionResult> GetCategorieSoccorso()
@@ -18,13 +18,11 @@ namespace SO115App.API.Controllers
                 var idUtente = Request.Headers["IdUtente"];
                 var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
-                return null;
+                //return null;
             }
             catch (Exception e)
             {
-                e = e.GetBaseException();
-
-                throw e;
+                throw e.GetBaseException();
             }
         }
 
@@ -40,9 +38,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                e = e.GetBaseException();
-
-                throw e;
+                throw e.GetBaseException();
             }
         }
 
@@ -58,9 +54,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                e = e.GetBaseException();
-
-                throw e;
+                throw e.GetBaseException();
             }
         }
 
@@ -76,9 +70,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                e = e.GetBaseException();
-
-                throw e;
+                throw e.GetBaseException();
             }
         }
     }
