@@ -2,5 +2,7 @@
 {
     public class CategoriaSoccorsoAereo
     {
+        public string CategoryCode { get; set; }
+        public string CategoryName { get; set; }
     }
 }
