@@ -4,9 +4,9 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza
 {
@@ -23,9 +23,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _uscitaMezzo = uscitaMezzo;
         }
 
-        public void Handle(SostituzionePartenzaCommand command)
+        public async void Handle(SostituzionePartenzaCommand command)
         {
-            foreach (var sostituzione in command.sostituzione.Sostituzioni)
+            Parallel.ForEach(command.sostituzione.Sostituzioni, sostituzione =>
             {
                 #region GESTIONE NOTE
 
@@ -95,60 +95,64 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     }
                 };
 
-                #endregion
-
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 
                 _updateRichiesta.UpDate(command.Richiesta);
 
+                #endregion
+
                 #region Comunicazione a servizi GAC
 
                 //RIENTRO SMONTANTE
-                _rientroMezzo.Set(new RientroGAC()
-                {
-                    idPartenza = PartenzaSmontante.Partenza.Codice.ToString(),
-                    dataIntervento = PartenzaSmontante.DataOraInserimento,
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    dataRientro = PartenzaSmontante.DataOraInserimento,
-                    targa = PartenzaSmontante.Partenza.Mezzo.Codice,
-                    tipoMezzo = PartenzaSmontante.Partenza.Mezzo.Genere
-                });
 
-                //RIENTRO MONTANTE
-                _rientroMezzo.Set(new RientroGAC()
+                Task.Factory.StartNew(async () =>
                 {
-                    idPartenza = PartenzaMontante.Partenza.Codice.ToString(),
-                    dataIntervento = PartenzaMontante.DataOraInserimento,
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    dataRientro = PartenzaMontante.DataOraInserimento,
-                    targa = PartenzaMontante.Partenza.Mezzo.Codice,
-                    tipoMezzo = PartenzaMontante.Partenza.Mezzo.Genere
-                });
+                    _rientroMezzo.Set(new RientroGAC()
+                    {
+                        idPartenza = PartenzaSmontante.Partenza.Codice.ToString(),
+                        dataIntervento = PartenzaSmontante.DataOraInserimento,
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataRientro = PartenzaSmontante.DataOraInserimento,
+                        targa = PartenzaSmontante.Partenza.Mezzo.Codice,
+                        tipoMezzo = PartenzaSmontante.Partenza.Mezzo.Genere
+                    });
 
-                //USCITA NUOVA PARTENZA MONTANTE
-                _uscitaMezzo.Set(new UscitaGAC()
-                {
-                    idPartenza = PartenzaMontanteNuova.Partenza.Codice.ToString(),
-                    dataIntervento = PartenzaMontanteNuova.DataOraInserimento,
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    dataUscita = PartenzaMontanteNuova.DataOraInserimento,
-                    targa = PartenzaMontanteNuova.Partenza.Mezzo.Codice,
-                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere
-                });
+                    //RIENTRO MONTANTE
+                    _rientroMezzo.Set(new RientroGAC()
+                    {
+                        idPartenza = PartenzaMontante.Partenza.Codice.ToString(),
+                        dataIntervento = PartenzaMontante.DataOraInserimento,
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataRientro = PartenzaMontante.DataOraInserimento,
+                        targa = PartenzaMontante.Partenza.Mezzo.Codice,
+                        tipoMezzo = PartenzaMontante.Partenza.Mezzo.Genere
+                    });
 
-                //USCITA NUOVA PARTENZA SMONTANTE
-                _uscitaMezzo.Set(new UscitaGAC()
-                {
-                    idPartenza = PartenzaSmontanteNuova.Partenza.Codice.ToString(),
-                    dataIntervento = PartenzaSmontanteNuova.DataOraInserimento,
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    dataUscita = PartenzaSmontanteNuova.DataOraInserimento,
-                    targa = PartenzaSmontanteNuova.Partenza.Mezzo.Codice,
-                    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere
+                    //USCITA NUOVA PARTENZA MONTANTE
+                    _uscitaMezzo.Set(new UscitaGAC()
+                    {
+                        idPartenza = PartenzaMontanteNuova.Partenza.Codice.ToString(),
+                        dataIntervento = PartenzaMontanteNuova.DataOraInserimento,
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataUscita = PartenzaMontanteNuova.DataOraInserimento,
+                        targa = PartenzaMontanteNuova.Partenza.Mezzo.Codice,
+                        tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere
+                    });
+
+                    //USCITA NUOVA PARTENZA SMONTANTE
+                    _uscitaMezzo.Set(new UscitaGAC()
+                    {
+                        idPartenza = PartenzaSmontanteNuova.Partenza.Codice.ToString(),
+                        dataIntervento = PartenzaSmontanteNuova.DataOraInserimento,
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataUscita = PartenzaSmontanteNuova.DataOraInserimento,
+                        targa = PartenzaSmontanteNuova.Partenza.Mezzo.Codice,
+                        tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere
+                    });
                 });
 
                 #endregion
-            }
+            });
         }
     }
 }

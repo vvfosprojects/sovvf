@@ -42,7 +42,7 @@ export class SintesiRichiesteService {
             statiRichiesta:  filtroStato && filtroStato.length ? filtroStato : null,
             tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
             zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
-            periodoChiuse,
+            periodoChiuse: periodoChiuse.da || periodoChiuse.data || periodoChiuse.turno ? periodoChiuse : null,
         };
         console.log('getRichieste OBJ', obj);
         return this.http.post(API_URL_RICHIESTE, obj);

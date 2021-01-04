@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetBoundsIniziale, SetDataTipologie } from '../actions/home.actions';
-import { ClearRichieste, GetListaRichieste } from '../actions/richieste/richieste.actions';
+import { ClearRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
 import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
@@ -15,7 +15,6 @@ import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologich
 import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
-import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
@@ -81,7 +80,7 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
-        this.homeService.getHome().subscribe((data: Welcome) => {
+      this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
                 new StopBigLoading(),
@@ -95,7 +94,8 @@ export class HomeState {
                 new SetTipologicheMezzi(data.listaFiltri),
                 new SetContatoriSchedeContatto(data.infoNue),
                 new SetDataTipologie(data.tipologie),
-                new SetEnti(data.rubrica)
+                new SetEnti(data.rubrica),
+                // new SetZoneEmergenza(data.zoneEmergenza)
             ]);
         });
     }

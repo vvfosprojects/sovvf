@@ -1,11 +1,3 @@
-
-export class SetZoneEmergenza {
-  static readonly type = '[ZoneEmergenza] Set Zone Emergenza';
-
-  constructor(public zoneEmergenza: string[]) {
-  }
-}
-
 export class SetZoneEmergenzaSelezionate {
   static readonly type = '[ZoneEmergenza] Set Zone Emergenza Selezionate';
 
@@ -17,6 +9,13 @@ export class SetFakeStatoRichiesta {
   static readonly type = '[ZoneEmergenza] Set Stati Richiesta Fake';
 
   constructor(public zoneEmergenza: string) {
+  }
+}
+
+export class SetZoneEmergenza {
+  static readonly type = '[ZoneEmergenza] Set Zone Emergenza';
+
+  constructor(public zoneEmergenza: any[]) {
   }
 }
 

@@ -89,7 +89,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         /// Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
         /// </summary>
-        public string TipologiaRichiesta { get; set; }
+        public string TipologiaRichiesta { get; set; } = "ChiamateInterventi";
 
         public PeriodoChiuse PeriodoChiuse { get; set; }
 
