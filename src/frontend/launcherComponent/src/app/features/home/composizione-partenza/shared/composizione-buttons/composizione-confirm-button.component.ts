@@ -5,7 +5,6 @@ import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {SoccorsoAereoModalComponent} from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
-import {DettaglioSoccorsoAereoModalComponent} from '../../../../../shared/modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 
 @Component({
   selector: 'app-composizione-confirm-button',
@@ -62,41 +61,6 @@ export class ComposizioneConfirmButtonComponent {
       }
     }
     const modal = this.modalService.open(SoccorsoAereoModalComponent, modalOptions);
-    modal.result.then((res: string) => {
-      switch (res) {
-        case 'ok':
-          this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
-          break;
-        case 'ko':
-          break;
-      }
-    });
-  }
-
-  openDettaglioSoccorsoAereoModal(open: any): void {
-    let modalOptions;
-    if (open) {
-      if (this.doubleMonitor) {
-        modalOptions = {
-          windowClass: 'modal-left',
-          backdrop: 'static',
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-          keyboard: false,
-          size: 'xl',
-        } as NgbModalOptions;
-      } else {
-        modalOptions = {
-          windowClass: '',
-          backdrop: 'static',
-          backdropClass: 'light-blue-backdrop',
-          centered: true,
-          keyboard: false,
-          size: 'xl',
-        } as NgbModalOptions;
-      }
-    }
-    const modal = this.modalService.open(DettaglioSoccorsoAereoModalComponent, modalOptions);
     modal.result.then((res: string) => {
       switch (res) {
         case 'ok':

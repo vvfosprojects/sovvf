@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { NgbActiveModal, NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal, NgbModalOptions, NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -30,6 +30,8 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
+import {DettaglioSoccorsoAereoModalComponent} from '../../modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
+import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -421,6 +423,41 @@ export class SintesiRichiestaComponent implements OnChanges {
                     break;
             }
         });
+    }
+
+    openDettaglioSoccorsoAereoModal(open: any): void {
+      let modalOptions;
+      if (open) {
+        if (this.doubleMonitor) {
+          modalOptions = {
+            windowClass: 'modal-left',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false,
+            size: 'xl',
+          } as NgbModalOptions;
+        } else {
+          modalOptions = {
+            windowClass: '',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false,
+            size: 'xl',
+          } as NgbModalOptions;
+        }
+      }
+      const modal = this.modalService.open(DettaglioSoccorsoAereoModalComponent, modalOptions);
+      modal.result.then((res: string) => {
+        switch (res) {
+          case 'ok':
+            this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+            break;
+          case 'ko':
+            break;
+        }
+      });
     }
 
     getStatoFonogrammaStringByEnum(statoFonogramma: StatoFonogramma): string {
