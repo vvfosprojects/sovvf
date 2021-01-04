@@ -5,11 +5,16 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorso
 {
     public class GetCategorieSoccorsoAereoQueryHandler : IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult>
     {
-        private readonly IGetCategorieSoccorsoAereo getCategorieSoccorsoAereo;
+        private readonly IGetCategorieSoccorsoAereo _getCategorieSoccorsoAereo;
+
+        public GetCategorieSoccorsoAereoQueryHandler(IGetCategorieSoccorsoAereo getCategorieSoccorsoAereo)
+        {
+            _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
+        }
 
         public GetCategorieSoccorsoAereoResult Handle(GetCategorieSoccorsoAereoQuery query)
         {
-            var result = getCategorieSoccorsoAereo.Get();
+            var result = _getCategorieSoccorsoAereo.Get();
 
             return new GetCategorieSoccorsoAereoResult()
             {

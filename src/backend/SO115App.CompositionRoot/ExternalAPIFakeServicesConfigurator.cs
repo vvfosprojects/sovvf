@@ -23,6 +23,7 @@ using SimpleInjector;
 using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.AFM;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
@@ -33,6 +34,7 @@ using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -255,6 +257,12 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie, ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
 
             #endregion Tipologie
+
+            #region AFM
+
+            container.Register<IGetCategorieSoccorsoAereo, GetCategorieSoccorsoAereo>();
+
+            #endregion
         }
     }
 }

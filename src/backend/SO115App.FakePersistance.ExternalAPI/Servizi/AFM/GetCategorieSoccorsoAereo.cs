@@ -23,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
             APImanager.Configure();
 
-            var result = APImanager.GetAsync(new Uri(""), "").Result;
+            var result = APImanager.GetAsync(new Uri("http://afm-demo.dipvvf.it/webRescue/rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
             return result;
         }

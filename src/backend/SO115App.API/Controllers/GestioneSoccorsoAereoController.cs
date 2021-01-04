@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CQRS.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +12,13 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneSoccorsoAereoController : ControllerBase
     {
+        private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
+
+        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo)
+        {
+            _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
+        }
+
         [HttpGet("GetCategorieSoccorso")]
         public async Task<IActionResult> GetCategorieSoccorso()
         {
@@ -18,7 +27,9 @@ namespace SO115App.API.Controllers
                 var idUtente = Request.Headers["IdUtente"];
                 var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
-                //return null;
+                var result = _getCategorieSoccorsoAereo.Handle(new GetCategorieSoccorsoAereoQuery() { });
+
+                return Ok(result);
             }
             catch (Exception e)
             {

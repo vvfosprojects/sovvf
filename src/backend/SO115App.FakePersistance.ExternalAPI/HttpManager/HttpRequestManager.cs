@@ -106,6 +106,15 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             return manageResponse(response);
         }
 
+        public async Task<ResponseObject> GetAsync(Uri url, string username, string password)
+        {
+            _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
+
+            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
+
+            return manageResponse(response);
+        }
+
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = getMediaType();
@@ -141,6 +150,11 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         AuthenticationHeaderValue getBearerAuthorization(string token)
         {
             return new AuthenticationHeaderValue("Bearer", "=" + token);
+        }
+
+        AuthenticationHeaderValue getBasicAuthorization(string username, string password)
+        {
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{username}:{password}")));
         }
 
         MediaTypeWithQualityHeaderValue getMediaType()
