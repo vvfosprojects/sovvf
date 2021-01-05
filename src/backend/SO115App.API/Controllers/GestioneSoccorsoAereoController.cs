@@ -1,6 +1,8 @@
-﻿using CQRS.Queries;
+﻿using CQRS.Commands;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
 using System;
 using System.Threading.Tasks;
@@ -13,10 +15,13 @@ namespace SO115App.API.Controllers
     public class GestioneSoccorsoAereoController : ControllerBase
     {
         private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
+        private readonly ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> _inserisciRichiestaSoccorsoAereo;
 
-        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo)
+        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo,
+            ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisciRichiestaSoccorsoAereo)
         {
             _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
+            _inserisciRichiestaSoccorsoAereo = inserisciRichiestaSoccorsoAereo;
         }
 
         [HttpGet("GetCategorieSoccorso")]
@@ -24,12 +29,33 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                var idUtente = Request.Headers["IdUtente"];
-                var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                var query = new GetCategorieSoccorsoAereoQuery() 
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"]
+                };
 
-                var result = _getCategorieSoccorsoAereo.Handle(new GetCategorieSoccorsoAereoQuery() { });
+                var result = _getCategorieSoccorsoAereo.Handle(query);
 
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                throw e.GetBaseException();
+            }
+        }
+
+        [HttpPost("InserisciRichiestaSoccorso")]
+        public async Task<IActionResult> InserisciRichiestaSoccorso([FromBody] InserisciRichiestaSoccorsoAereoCommand command)
+        {
+            try
+            {
+                command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                command.IdOperatore = Request.Headers["IdUtente"];
+
+                _inserisciRichiestaSoccorsoAereo.Handle(command);
+
+                return Ok();
             }
             catch (Exception e)
             {

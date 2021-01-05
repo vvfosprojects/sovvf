@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
@@ -23,7 +24,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
             APImanager.Configure();
 
-            var result = APImanager.GetAsync(new Uri("http://afm-demo.dipvvf.it/webRescue/rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = APImanager.GetAsync(new Uri(Costanti.AFM + "rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
             return result;
         }

@@ -25,10 +25,9 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         private readonly IHttpContextAccessor _httpContext;
         private readonly IConfiguration _configuration;
 
-        private HttpRequestManager()
-        {
-        }
+        private AsyncPolicyWrap<HttpResponseMessage> policies;
 
+        private HttpRequestManager() { }
         public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext, IConfiguration configuration)
         {
             _client = client;
@@ -37,8 +36,6 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             _httpContext = httpContext;
             _configuration = configuration;
         }
-
-        private AsyncPolicyWrap<HttpResponseMessage> policies;
 
         public void Configure(string cacheString = null)
         {
@@ -126,11 +123,29 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             return manageResponse(response);
         }
 
+        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string username, string password)
+        {
+            _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
+
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
+
+            return manageResponse(response);
+        }
+
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token)
         {
             content.Headers.ContentType = getMediaType();
 
             _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+
+            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
+
+            return manageResponse(response);
+        }
+
+        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string username, string password)
+        {
+            _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
@@ -154,7 +169,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         AuthenticationHeaderValue getBasicAuthorization(string username, string password)
         {
-            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{username}:{password}")));
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{username}:{password}")));
         }
 
         MediaTypeWithQualityHeaderValue getMediaType()

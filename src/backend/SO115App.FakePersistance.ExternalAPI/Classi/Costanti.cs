@@ -34,6 +34,8 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string GeoFleetUrl = "http://geofleet-ws.dipvvf.it/api/";
         public static string GacUrl = "http://localhost:5002/api/AnagraficaMezzi/";
 
+        public static string AFM = "http://afm-demo.dipvvf.it/webRescue/";
+
         #endregion Url
 
         #region Json
