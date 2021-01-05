@@ -5,6 +5,7 @@ import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {SoccorsoAereoModalComponent} from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
+import {GetAzioniRichiesta} from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 
 @Component({
   selector: 'app-composizione-confirm-button',
@@ -27,6 +28,7 @@ export class ComposizioneConfirmButtonComponent {
   constructor(private store: Store,
               private modalService: NgbModal) {
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+    this.store.dispatch(new GetAzioniRichiesta());
   }
 
   _confirmPartenzaInViaggio(): void {

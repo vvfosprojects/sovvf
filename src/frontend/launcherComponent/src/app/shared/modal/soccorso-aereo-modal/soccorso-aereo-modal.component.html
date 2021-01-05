@@ -13,10 +13,10 @@
     <div class="col-6" style="text-align: center">
       <span class="badge h6 w-100 badge-primary" style="font-size: x-large">Seleziona le Azioni Richieste</span>
       <div class="row"></div>
-      <div class="card card-shadow mx-auto p-3" [class.overflow-size]="azioniArrayFake.length >= 8" style="height: 350px">
-        <div *ngFor="let a of azioniArrayFake; let index = index" class="row my-1">
-          <div class="clearfix ml-2"><input type="text" class="pr-1" [class.input-checked]="azioniArrayFake[index].checked" style="text-align: center; height: 36px; width: 36px; vertical-align: bottom; outline: none" placeholder="{{a.cod}}" disabled></div>
-          <div class="clearfix mx-1"><input type="text" placeholder="{{a.descrizione}}" [class.input-checked]="azioniArrayFake[index].checked" [class.width-size]="azioniArrayFake.length >= 8" style="width: 270px; height: 36px; vertical-align: bottom; outline: none" disabled></div>
+      <div class="card card-shadow mx-auto p-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
+        <div *ngFor="let a of azioniRichiesta; let index = index" class="row my-1">
+          <div class="clearfix ml-2"><input type="text" class="pr-1" [class.input-checked]="azioniRichiesta[index].checked" style="text-align: center; height: 36px; width: 36px; vertical-align: bottom; outline: none" placeholder="{{a.categoryCode}}" disabled></div>
+          <div class="clearfix mx-1"><input type="text" placeholder="{{a.categoryName}}" [class.input-checked]="azioniRichiesta[index].checked" [class.width-size]="azioniRichiesta.length >= 8" style="width: 270px; height: 36px; vertical-align: bottom; outline: none" disabled></div>
           <div class="clearfix mr-1"><input type="checkbox" (click)="onCheck(index)"  style="width:36px; height: 36px; vertical-align: bottom; outline: none"></div>
         </div>
       </div>

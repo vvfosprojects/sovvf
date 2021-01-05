@@ -89,7 +89,6 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
   chiudiModalFiltriTipologia(closeRes: string): void {
     if (closeRes === 'ok') {
       this.formatDatetoShow();
-      console.log('periodoChiuseToShow.daA ' , this.periodoChiuseToShow.daA);
       this.modal.close({
         status: 'ok',
         result: {
