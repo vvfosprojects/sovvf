@@ -58,9 +58,10 @@
 </div> -->
 <div class="modal-footer">
     <div class="clearfix w-100">
-        <div class="float-left mt-2">
+        <div class="float-left mt-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+             [disableTooltip]="!disableEmergenza">
             <app-checkbox
-                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedEmergenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedEmergenza }"
+                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedEmergenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedEmergenza || disableEmergenza }"
                     (click)="setEmergenza()">
             </app-checkbox>
         </div>

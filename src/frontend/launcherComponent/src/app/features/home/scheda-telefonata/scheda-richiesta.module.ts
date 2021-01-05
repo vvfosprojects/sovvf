@@ -6,12 +6,12 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';  // Dependen
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChiamataComponent } from './chiamata.component';
-import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata.component';
+import { SchedaRichiestaComponent } from './scheda-richiesta.component';
+import { FormRichiestaComponent } from './form-richiesta/form-richiesta.component';
 import { ChiamataService } from '../../../core/service/chiamata-service/chiamata.service';
 import { NgxsModule } from '@ngxs/store';
-import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
-import { ClipboardState } from '../store/states/chiamata/clipboard.state';
+import { ChiamataState } from '../store/states/scheda-telefonata/chiamata.state';
+import { ClipboardState } from '../store/states/scheda-telefonata/clipboard.state';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
@@ -30,21 +30,21 @@ import { TagInputModule } from 'ngx-chips';
         SharedModule,
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([
-            SchedaTelefonataState,
+            ChiamataState,
             ClipboardState
         ]),
         NgxsFormPluginModule
     ],
     declarations: [
-        ChiamataComponent,
-        SchedaTelefonataComponent
+        SchedaRichiestaComponent,
+        FormRichiestaComponent
     ],
     exports: [
-        ChiamataComponent
+        SchedaRichiestaComponent
     ],
     providers: [
         ChiamataService
     ]
 })
-export class ChiamataModule {
+export class SchedaRichiestaModule {
 }

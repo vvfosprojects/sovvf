@@ -49,12 +49,11 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
         richieste: {
             active: true,
-            split: true,
+            split: false
         },
         mappa: {
-            active: true,
-            split: true,
-            options: [AppFeatures.Richieste]
+            active: false,
+            split: false
         },
         chiamata: {
             active: false

@@ -20,24 +20,21 @@
     <div class="row"
          [class.mt-1]="!boxAttivi && !viewState.chiamata.active"
          [class.mt-2]="viewState.chiamata.active">
-        <div [ngClass]="columnState.sinistra"
-             [class.col-12]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
+        <div [class.col-6]="(doubleMonitor$ | async)"
+             [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.chiamata.active || viewState.richieste.active)">
             <!-- Richieste -->
             <app-richieste [class.d-none]="!viewState.richieste.active"
                            [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
-            <!-- Chiamata -->
-            <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
+            <!-- Scheda Richiesta -->
+            <app-scheda-richiesta *ngIf="viewState.chiamata.active">
+            </app-scheda-richiesta>
             <!-- Composizione Partenza -->
             <app-composizione-partenza *ngIf="viewState.composizione.active"
                                        [boxAttivi]="boxAttivi"
                                        [compPartenzaMode]="(composizioneMode$ | async)">
             </app-composizione-partenza>
-            <!-- Modifica Richiesta -->
-            <app-modifica-richiesta *ngIf="viewState.modifica.active"
-                                    [boxAttivi]="boxAttivi">
-            </app-modifica-richiesta>
             <!-- Mezzi in Servizio -->
             <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"
                                    [boxAttivi]="boxAttivi">
@@ -49,12 +46,14 @@
         </div>
         <!-- Mappa -->
         <div class="mt-2"
-             [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
+             [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.mappa.active)"
+             [class.col-6]="doubleMonitor$ | async"
              [class.map-translate]="doubleMonitor$ | async"
-             [class.d-none]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
+             [class.d-none]="(((doubleMonitor$ | async) === false) && viewState.richieste.active) || (((chiamataConMappa$ | async) === false) && (viewState.chiamata.active))">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
-                      (mapFullLoaded)="onMapFullLoaded()"></app-maps>
+                      (mapFullLoaded)="onMapFullLoaded()">
+            </app-maps>
         </div>
     </div>
 </div>

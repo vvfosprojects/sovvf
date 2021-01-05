@@ -27,7 +27,7 @@ import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/a
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
-import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
+import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({

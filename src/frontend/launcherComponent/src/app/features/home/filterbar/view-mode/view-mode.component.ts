@@ -21,6 +21,7 @@ export class ViewModeComponent {
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
+        config.placement = 'left';
     }
 
     buttonViewMode($event): void {

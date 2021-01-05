@@ -5,7 +5,7 @@ import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { HomeState } from '../store/states/home.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
-import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
+import { ChiamataState } from '../store/states/scheda-telefonata/chiamata.state';
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
 import { Ente } from 'src/app/shared/interface/ente.interface';
@@ -17,20 +17,20 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { RichiestaModificaState } from '../store/states/richieste/richiesta-modifica.state';
+import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
 
 @Component({
-    selector: 'app-chiamata',
-    templateUrl: './chiamata.component.html',
-    styleUrls: ['./chiamata.component.css']
+    selector: 'app-scheda-richiesta',
+    templateUrl: './scheda-richiesta.component.html',
+    styleUrls: ['./scheda-richiesta.component.css']
 })
-export class ChiamataComponent implements OnInit, OnDestroy {
+export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
-    @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
-    @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
-    @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
-    @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
-    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(ChiamataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
+    @Select(ChiamataState.competenze) competenze$: Observable<Sede[]>;
+    @Select(ChiamataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
+    @Select(ChiamataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
+    @Select(ChiamataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;

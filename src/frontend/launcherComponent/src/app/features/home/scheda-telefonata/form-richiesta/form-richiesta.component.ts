@@ -37,12 +37,12 @@ import { ToggleChiamata } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 
 @Component({
-    selector: 'app-scheda-telefonata',
-    templateUrl: './scheda-telefonata.component.html',
-    styleUrls: ['./scheda-telefonata.component.scss'],
+    selector: 'app-form-richiesta',
+    templateUrl: './form-richiesta.component.html',
+    styleUrls: ['./form-richiesta.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
+export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() tipologie: Tipologia[];
     @Input() dettagliTipologie: any[];
@@ -400,6 +400,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((dT: any) => dT.codTipologia === codTipologia);
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
+        triageModal.componentInstance.disableEmergenza = this.formIsInvalid(true);
         triageModal.result.then((res: any) => {
             switch (res.type) {
                 case 'salvaDettaglio':

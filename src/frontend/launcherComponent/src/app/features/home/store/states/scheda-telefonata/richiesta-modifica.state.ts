@@ -22,30 +22,6 @@ import {
 import { Injectable } from '@angular/core';
 
 export interface RichiestaModificaStateModel {
-    modificaRichiestaForm: {
-        model: {
-            selectedTipologie: string[],
-            nominativo: string,
-            telefono: string,
-            indirizzo: string,
-            latitudine: string,
-            longitudine: string,
-            piano: string,
-            etichette: string,
-            noteIndirizzo: string,
-            rilevanzaGrave: boolean,
-            rilevanzaStArCu: boolean,
-            notePrivate: string,
-            notePubbliche: string,
-            descrizione: string,
-            zoneEmergenza: string,
-            prioritaRichiesta: number,
-            listaEnti: string[]
-        },
-        dirty: boolean,
-        status: string,
-        errors: any
-    };
     richiestaModifica: SintesiRichiesta;
     richiestaMarker: RichiestaMarker;
     successModifica: boolean;
@@ -53,12 +29,6 @@ export interface RichiestaModificaStateModel {
 }
 
 export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
-    modificaRichiestaForm: {
-        model: undefined,
-        dirty: false,
-        status: '',
-        errors: {}
-    },
     richiestaModifica: null,
     richiestaMarker: null,
     successModifica: false,

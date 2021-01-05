@@ -102,7 +102,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     children: [ClipboardState]
 })
 
-export class SchedaTelefonataState {
+export class ChiamataState {
 
     constructor(private chiamataService: ChiamataService,
                 private store: Store,

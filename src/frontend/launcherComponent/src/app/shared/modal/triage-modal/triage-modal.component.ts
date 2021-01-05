@@ -78,6 +78,7 @@ export class TriageModalComponent implements OnInit {
     codDomandaSelezionata: string;
 
     checkedEmergenza: boolean;
+    disableEmergenza: boolean;
 
     constructor(private modal: NgbActiveModal,
                 private store: Store) {

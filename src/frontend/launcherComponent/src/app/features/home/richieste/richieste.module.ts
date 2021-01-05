@@ -18,7 +18,6 @@ import { TagInputModule } from 'ngx-chips';
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
-import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 /**
  * Ngxs
  */
@@ -60,13 +59,11 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
     declarations: [
         RichiesteComponent,
         ListaRichiesteComponent,
-        RichiestaFissataComponent,
-        ModificaRichiestaComponent,
+        RichiestaFissataComponent
     ],
     exports: [
         RichiesteComponent,
-        ModificaRichiestaComponent,
-        ListaRichiesteComponent,
+        ListaRichiesteComponent
     ]
 })
 export class RichiesteModule {
