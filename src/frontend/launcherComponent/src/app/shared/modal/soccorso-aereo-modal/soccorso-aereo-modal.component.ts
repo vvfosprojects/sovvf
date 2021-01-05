@@ -24,7 +24,6 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   constructor(private modal: NgbActiveModal, private store: Store) {
     this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
     this.azioniRichiesta.forEach(x => x.checked = false);
-    console.log('*** LISTA AZIONI RICHIESTA ', this.azioniRichiesta);
   }
 
   ngOnDestroy(): void {
