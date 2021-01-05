@@ -140,17 +140,22 @@ namespace SO115App.Persistence.MongoDB
 
             result = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti).ToList();
 
+            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
+            if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
+            {
+                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
+                    return r.TestoStatoRichiesta == "C";
+
+                if (filtro.TipologiaRichiesta.Equals("Interventi"))
+                    return r.TestoStatoRichiesta != "C";
+
+                return true;
+            }).ToList();
+
             //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
-                if (filtro.StatiRichiesta.Contains("Chiamata"))
-                    filtro.StatiRichiesta = filtro.StatiRichiesta.Select(f =>
-                    {
-                        if (f == "Chiamata")
-                            return "InAttesa";
-                        return f;
-                    }).ToList();
-                else
+                if (filtro.StatiRichiesta.Contains("Assegnata"))
                     filtro.StatiRichiesta.Add("InAttesa");
 
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
@@ -186,18 +191,6 @@ namespace SO115App.Persistence.MongoDB
             {
                 result = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
             }
-
-            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
-            if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
-            {
-                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
-                    return r.TestoStatoRichiesta == "C";
-
-                if (filtro.TipologiaRichiesta.Equals("Interventi"))
-                    return r.TestoStatoRichiesta != "C";
-
-                return true;
-            }).ToList();
 
             if (filtro.IndirizzoIntervento != null)
             {

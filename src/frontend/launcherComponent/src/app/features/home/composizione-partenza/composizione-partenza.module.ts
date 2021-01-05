@@ -17,6 +17,7 @@ import { ComposizioneConfirmButtonComponent } from './shared/composizione-button
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {ComposizioneSoccorsoAereoState} from '../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
                 // Comp Rapida
                 ComposizioneVeloceState,
                 // Comp Avanzata
-                ComposizioneAvanzataState
+                ComposizioneAvanzataState,
+                // Comp Soccorso Aereo
+                ComposizioneSoccorsoAereoState
             ]
         ),
         NgxPaginationModule,

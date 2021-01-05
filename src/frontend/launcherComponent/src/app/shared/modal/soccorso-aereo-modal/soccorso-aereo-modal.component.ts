@@ -1,6 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Store} from '@ngxs/store';
+import {ComposizioneSoccorsoAereoState} from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
+import {makeCopy} from '../../helper/function';
 
 
 @Component({
@@ -12,46 +15,16 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class SoccorsoAereoModalComponent implements OnDestroy {
 
   subscription: Subscription = new Subscription();
+  azioniRichiesta: [{
+    categoryCode: null,
+    categoryName: null,
+    checked: boolean,
+  }];
 
-  azioniArrayFake = [
-    {
-    cod: 'A',
-    descrizione: 'Soccorso a persona',
-    checked: false,
-    },
-    {
-      cod: 'B',
-      descrizione: 'Spegnimento con Benna',
-      checked: false,
-    },
-    {
-      cod: 'C',
-      descrizione: 'Ricognizione',
-      checked: false,
-    },
-    {
-      cod: 'D',
-      descrizione: 'Trasporto personale',
-      checked: false,
-    },
-    {
-      cod: 'E',
-      descrizione: 'Trasporto attrezzature',
-      checked: false,
-    },
-    {
-      cod: 'A',
-      descrizione: 'Soccorso a persona',
-      checked: false,
-    },
-    {
-      cod: 'E',
-      descrizione: 'Trasporto attrezzature',
-      checked: false,
-    },
-  ];
-
-  constructor(private modal: NgbActiveModal) {
+  constructor(private modal: NgbActiveModal, private store: Store) {
+    this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
+    this.azioniRichiesta.forEach(x => x.checked = false);
+    console.log('*** LISTA AZIONI RICHIESTA ', this.azioniRichiesta);
   }
 
   ngOnDestroy(): void {
@@ -59,11 +32,18 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   }
 
   onCheck(i: number): void {
-    this.azioniArrayFake[i].checked = !this.azioniArrayFake[i].checked;
+    this.azioniRichiesta[i].checked = !this.azioniRichiesta[i].checked;
   }
 
   chiudiModalSoccorsoAereo(closeRes: string): void {
-    this.modal.close(closeRes);
+    if (closeRes === 'ok') {
+      this.modal.close({
+        status: 'ok',
+        result: {},
+      });
+    } else {
+      this.modal.close({ status: 'ko'});
+    }
   }
 
 }

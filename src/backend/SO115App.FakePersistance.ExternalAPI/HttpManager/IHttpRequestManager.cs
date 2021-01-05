@@ -9,6 +9,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         void Configure(string cacheString = null);
 
         Task<ResponseObject> GetAsync(Uri url, string token);
+        Task<ResponseObject> GetAsync(Uri url, string username, string password);
 
         Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token);
 
