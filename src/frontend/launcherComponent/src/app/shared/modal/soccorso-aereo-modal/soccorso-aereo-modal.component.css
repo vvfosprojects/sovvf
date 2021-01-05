@@ -8,9 +8,17 @@
 }
 
 .width-size {
-  width: 260px !important;
+  width: 330px !important;
 }
 
 .input-checked {
   border: solid #28a745;
+}
+
+input {
+  font-size: 18px;
+}
+
+textarea {
+  font-size: 18px;
 }
