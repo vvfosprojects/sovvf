@@ -261,6 +261,7 @@ namespace SO115App.CompositionRoot
             #region AFM
 
             container.Register<IGetCategorieSoccorsoAereo, GetCategorieSoccorsoAereo>();
+            container.Register<IGetTipologieRichiestaSoccorsoAereo, GetTipologieSoccorsoAereo>();
             container.Register<IAggiornaRichiestaSoccorsoAereo, AggiornaRichiestaSoccorsoAereo>();
             container.Register<IAnnullaRichiestaSoccorsoAereo, AnnullaRichiestaSoccorsoAereo>();
             container.Register<IInserisciRichiestaSoccorsoAereo, InserisciRichiestaSoccorsoAereo>();

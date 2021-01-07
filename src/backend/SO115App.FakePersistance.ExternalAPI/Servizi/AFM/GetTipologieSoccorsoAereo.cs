@@ -9,22 +9,21 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 {
-    public class GetCategorieSoccorsoAereo : BaseService, IGetCategorieSoccorsoAereo
+    public class GetTipologieSoccorsoAereo : BaseService, IGetTipologieRichiestaSoccorsoAereo
     {
-        public GetCategorieSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor httpContext)
+        public GetTipologieSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor httpContext)
             : base(client, configuration, cache, log, httpContext) { }
 
-        public List<CategoriaSoccorsoAereo> Get()
+        public List<TipologiaSoccorsoAereo> Get()
         {
-            var APImanager = new HttpRequestManager<List<CategoriaSoccorsoAereo>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<List<TipologiaSoccorsoAereo>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 
-            var result = APImanager.GetAsync(new Uri(Costanti.AFM + "rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = APImanager.GetAsync(new Uri(Costanti.AFM + "rescueType"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
             return result;
         }

@@ -15,11 +15,11 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneSoccorsoAereoController : ControllerBase
     {
-        private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
+        private readonly IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
         private readonly ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> _inserisciRichiestaSoccorsoAereo;
         private readonly ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> _annullaRichiestaSoccorsoAereo;
 
-        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo,
+        public GestioneSoccorsoAereoController(IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> getCategorieSoccorsoAereo,
             ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisciRichiestaSoccorsoAereo,
             ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> annullaRichiestaSoccorsoAereo)
         {
@@ -33,7 +33,7 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                var query = new GetCategorieSoccorsoAereoQuery() 
+                var query = new GetTipologieSoccorsoAereoQuery() 
                 {
                     CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"]
