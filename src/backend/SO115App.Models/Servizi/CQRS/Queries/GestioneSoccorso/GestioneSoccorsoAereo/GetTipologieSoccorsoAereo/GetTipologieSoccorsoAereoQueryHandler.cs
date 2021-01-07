@@ -5,9 +5,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorso
 {
     public class GetTipologieSoccorsoAereoQueryHandler : IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult>
     {
-        private readonly IGetTipologieSoccorsoAereo _getTipologieSoccorsoAereo;
+        private readonly IGetTipologieRichiestaSoccorsoAereo _getTipologieSoccorsoAereo;
 
-        public GetTipologieSoccorsoAereoQueryHandler(IGetTipologieSoccorsoAereo getTipologieSoccorsoAereo)
+        public GetTipologieSoccorsoAereoQueryHandler(IGetTipologieRichiestaSoccorsoAereo getTipologieSoccorsoAereo)
         {
             _getTipologieSoccorsoAereo = getTipologieSoccorsoAereo;
         }
