@@ -17,7 +17,7 @@ export const environment = {
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestioneFonogramma: '/api/GestioneFonogramma',
-        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo/GetCategorieSoccorso',
+        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo',
         gestionePartenza: '/api/GestionePartenza',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',

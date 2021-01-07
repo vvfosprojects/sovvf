@@ -9,7 +9,7 @@ import { ListaComposizioneVeloce } from '../../../shared/interface/lista-composi
 
 
 const BASE_URL = environment.baseUrl;
-const API_URL_CATEGORIE_SOCCORSO = BASE_URL + environment.apiUrl.gestioneSoccorsoAereo;
+const API_URL_SOCCORSO_AEREO = BASE_URL + environment.apiUrl.gestioneSoccorsoAereo;
 const API_URL_PREACCOPPIATI = BASE_URL + environment.apiUrl.composizione.preaccoppiati;
 const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
 const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
@@ -24,7 +24,16 @@ export class CompPartenzaService {
     }
 
     getCategorieSoccorso(): Observable<any[]> {
-      return this.http.get<any[]>(API_URL_CATEGORIE_SOCCORSO);
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorieSoccorso`);
+    }
+
+    getTipologieSoccorso(): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologieSoccorso`);
+    }
+
+    addSoccorsoAereo(obj: any): Observable<any> {
+      // todo: obj da definire
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/AddSoccorsoAereo`, obj);
     }
 
     getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {

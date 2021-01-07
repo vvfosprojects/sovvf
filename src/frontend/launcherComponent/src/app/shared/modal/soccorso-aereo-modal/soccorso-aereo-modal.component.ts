@@ -15,11 +15,7 @@ import {makeCopy} from '../../helper/function';
 export class SoccorsoAereoModalComponent implements OnDestroy {
 
   subscription: Subscription = new Subscription();
-  azioniRichiesta: [{
-    categoryCode: null,
-    categoryName: null,
-    checked: boolean,
-  }];
+  azioniRichiesta: any[];
 
   constructor(private modal: NgbActiveModal, private store: Store) {
     this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
