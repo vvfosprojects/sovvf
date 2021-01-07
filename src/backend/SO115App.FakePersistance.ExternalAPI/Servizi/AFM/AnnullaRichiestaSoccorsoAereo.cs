@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -14,9 +17,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public AnnullaRichiestaSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor accessor)
         : base(client, configuration, cache, log, accessor) { }
 
-        public void Annulla(Models.Classi.ServiziEsterni.AFM.AnnullaRichiestaSoccorsoAereo richiesta)
+        public void Annulla(Models.Classi.ServiziEsterni.AFM.AnnullaRichiestaSoccorsoAereo richiesta, string CodiceRichiesta)
         {
-            throw new NotImplementedException();
+            var APImanager = new HttpRequestManager<ErroreRichiestaSoccorsoAereo>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+
+            APImanager.Configure();
+
+            var jsonString = JsonConvert.SerializeObject(richiesta);
+            var content = new StringContent(jsonString);
+
+            var result = APImanager.PostAsync(new Uri(Costanti.AFM + "rescueRequest/" + CodiceRichiesta + "/abort"), content, "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
         }
     }
 }

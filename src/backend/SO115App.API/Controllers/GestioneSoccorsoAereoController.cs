@@ -2,6 +2,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
 using System;
@@ -16,12 +17,15 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
         private readonly ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> _inserisciRichiestaSoccorsoAereo;
+        private readonly ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> _annullaRichiestaSoccorsoAereo;
 
         public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo,
-            ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisciRichiestaSoccorsoAereo)
+            ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisciRichiestaSoccorsoAereo,
+            ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> annullaRichiestaSoccorsoAereo)
         {
             _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
             _inserisciRichiestaSoccorsoAereo = inserisciRichiestaSoccorsoAereo;
+            _annullaRichiestaSoccorsoAereo = annullaRichiestaSoccorsoAereo;
         }
 
         [HttpGet("GetCategorieSoccorso")]
@@ -54,6 +58,24 @@ namespace SO115App.API.Controllers
                 command.IdOperatore = Request.Headers["IdUtente"];
 
                 _inserisciRichiestaSoccorsoAereo.Handle(command);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw e.GetBaseException();
+            }
+        }
+
+        [HttpPost("AnnullaRichiestaSoccorso")]
+        public async Task<IActionResult> AnnullaRichiestaSoccorso([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
+        {
+            try
+            {
+                command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                command.IdOperatore = Request.Headers["IdUtente"];
+
+                _annullaRichiestaSoccorsoAereo.Handle(command);
 
                 return Ok();
             }
