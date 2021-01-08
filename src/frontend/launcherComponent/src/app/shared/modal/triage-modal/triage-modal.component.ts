@@ -4,7 +4,7 @@ import { Tipologia } from '../../model/tipologia.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
-import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/scheda-telefonata/chiamata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
 

@@ -11,8 +11,8 @@ import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../../../shared/model/utente.model';
-import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/chiamata/scheda-telefonata.actions';
+import { ClearClipboard } from '../../store/actions/scheda-telefonata/clipboard.actions';
+import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/scheda-telefonata/chiamata.actions';
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
@@ -34,7 +34,7 @@ import { InterventiProssimitaModalComponent } from '../../../../shared/modal/int
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
 import { ToggleChiamata } from '../../store/actions/view/view.actions';
-import { ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
+import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 
 @Component({
     selector: 'app-form-richiesta',

@@ -5,7 +5,7 @@ import { ChiamateMarkerService } from '../../../../../core/service/maps-service'
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataState } from '../scheda-telefonata/chiamata.state';
-import { ClearIndirizzo } from '../../actions/chiamata/scheda-telefonata.actions';
+import { ClearIndirizzo } from '../../actions/scheda-telefonata/chiamata.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import {
     ClearChiamateMarkers,

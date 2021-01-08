@@ -1,6 +1,6 @@
 import { Action, State, StateContext } from '@ngxs/store';
 import { ClipboardService } from 'ngx-clipboard';
-import { ClearClipboard, CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
+import { ClearClipboard, CopyToClipboard } from '../../actions/scheda-telefonata/clipboard.actions';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { Injectable } from '@angular/core';
 

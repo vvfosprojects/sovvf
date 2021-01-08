@@ -16,8 +16,8 @@ import {
     StartChiamata,
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
-} from '../../actions/chiamata/scheda-telefonata.actions';
-import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
+} from '../../actions/scheda-telefonata/chiamata.actions';
+import { CopyToClipboard } from '../../actions/scheda-telefonata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
@@ -39,7 +39,7 @@ import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/ri
 import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
-import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 
 export interface SchedaTelefonataStateModel {

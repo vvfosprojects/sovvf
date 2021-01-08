@@ -9,21 +9,23 @@
                     <div class="float-left mr-5">
                         <button class="btn font-weight-bolder mr-2"
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
+                                placement="right"
                                 [routerLink]="['/' + RoutesPath.Home]"
                                 [class.btn-outline-light]="((richiesteStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false)"
                                 [class.btn-light]="(richiesteStatus$ | async) || (chiamataStatus$ | async) || (composizioneStatus$ | async)"
                                 [class.text-danger]="(richiesteStatus$ | async) || (chiamataStatus$ | async) || (composizioneStatus$ | async)"
                                 (click)="onChiamateInterventi()">
-                            <span class="d-inline-block">CHIAMATE / INTERVENTI</span>
+                            <i class="fa fa-home"></i>
                         </button>
                         <button class="btn btn-outline-light font-weight-bolder mr-2"
                                 ngbTooltip="Visualizza Mezzi in Servizio"
+                                placement="right"
                                 [class.cursor-not-allowed]="disabledMezziInServizio"
                                 [class.btn-light]="mezziInServizioStatus$ | async"
                                 [class.text-danger]="mezziInServizioStatus$ | async"
                                 [disabled]="disabledMezziInServizio"
                                 (click)="toggleMezziInSerivizo()">
-                            <span class="d-inline-block">MEZZI</span>
+                            <i class="fa fa-truck"></i>
                         </button>
                         <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
                                                    [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"
@@ -51,27 +53,6 @@
             <!-- Zona Destra -->
             <div class="float-right">
                 <div class="clearfix">
-                    <!-- Nuova versione -->
-                    <div class="float-left mr-2">
-                        <ng-template [ngIf]="newVersion">
-                            <app-bottone-nuova-versione [btnBlock]="true"
-                                                        (doAction)="onGetNewVersion()"></app-bottone-nuova-versione>
-                        </ng-template>
-                        <ng-template [ngIf]="newVersionSoon && !newVersion">
-                            <app-bottone-nuova-versione [btnBlock]="true"
-                                                        [testo]="'Nuova versione presto disponibile'"
-                                                        [tooltip]="'A breve sarà disponibile una nuova versione, clicca per maggiori informazioni'"
-                                                        (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
-                        </ng-template>
-                        <ng-template
-                                [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url?.indexOf('changelog') === -1">
-                            <app-bottone-nuova-versione [btnBlock]="true"
-                                                        [icona]="'fa-newspaper-o'"
-                                                        [testo]="'Nuova versione: scopri di più'"
-                                                        [tooltip]="'Clicca per visualizzare le novità della nuova versione'"
-                                                        (doAction)="onNewFeaturesInfo()"></app-bottone-nuova-versione>
-                        </ng-template>
-                    </div>
                     <!-- Operatore e Bottono Destra -->
                     <div class="float-right">
                         <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"

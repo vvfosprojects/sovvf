@@ -39,7 +39,6 @@ import { SintesiRichiestaActionsComponent } from './components/sintesi-richiesta
 import { ActionRichiestaModalComponent } from './modal/action-richiesta-modal/action-richiesta-modal.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { PartialLoaderComponent } from './components/partial-loader/partial-loader.component';
-import { BottoneNuovaVersioneComponent } from './components/bottone-nuova-versione/bottone-nuova-versione.component';
 import { EliminaPartenzaModalComponent } from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { RichiestaDuplicataModalComponent } from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { ModificaFonogrammaModalComponent } from './modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
@@ -48,8 +47,6 @@ import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-ac
 import { TastoCompPartenzaComponent } from './components/tasto-comp-partenza/tasto-comp-partenza.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
-import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
-import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
 import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
@@ -87,7 +84,6 @@ const COMPONENTS = [
     ActionRichiestaModalComponent,
     CheckboxComponent,
     PartialLoaderComponent,
-    BottoneNuovaVersioneComponent,
     EliminaPartenzaModalComponent,
     RichiestaDuplicataModalComponent,
     ModificaFonogrammaModalComponent,
@@ -111,8 +107,6 @@ const COMPONENTS = [
     TastoCompPartenzaComponent,
     BoxAnteprimaPartenzaComponent,
     AllertaSedeModalComponent,
-    AnnuncioNuovaVersioneModalComponent,
-    NuoveFeaturesInfoModalComponent,
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
     SostituzionePartenzeFineTunoModalComponent,

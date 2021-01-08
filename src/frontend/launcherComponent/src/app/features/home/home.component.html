@@ -21,7 +21,7 @@
          [class.mt-1]="!boxAttivi && !viewState.chiamata.active"
          [class.mt-2]="viewState.chiamata.active">
         <div [class.col-6]="(doubleMonitor$ | async)"
-             [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.chiamata.active || viewState.richieste.active)">
+             [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.chiamata.active || viewState.richieste.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
             <!-- Richieste -->
             <app-richieste [class.d-none]="!viewState.richieste.active"
                            [split]="viewState.richieste.split"
@@ -49,7 +49,7 @@
              [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.mappa.active)"
              [class.col-6]="doubleMonitor$ | async"
              [class.map-translate]="doubleMonitor$ | async"
-             [class.d-none]="(((doubleMonitor$ | async) === false) && viewState.richieste.active) || (((chiamataConMappa$ | async) === false) && (viewState.chiamata.active))">
+             [class.d-none]="(((doubleMonitor$ | async) === false) && (viewState.richieste.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)) || (((chiamataConMappa$ | async) === false) && (viewState.chiamata.active))">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
                       (mapFullLoaded)="onMapFullLoaded()">

@@ -24,7 +24,7 @@ import {
 } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
-import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
+import { SetRichiestaModifica } from '../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';

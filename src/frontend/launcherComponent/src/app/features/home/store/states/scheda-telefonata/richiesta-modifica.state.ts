@@ -18,7 +18,7 @@ import {
     SetRichiestaModifica,
     SuccessRichiestaModifica,
     ClearIndirizzo
-} from '../../actions/richieste/richiesta-modifica.actions';
+} from '../../actions/scheda-telefonata/richiesta-modifica.actions';
 import { Injectable } from '@angular/core';
 
 export interface RichiestaModificaStateModel {
