@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../store/actions/filterbar/filtri-richieste.actions';
 import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {SoccorsoAereoModalComponent} from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
-import {GetAzioniRichiesta, GetTipologieRichiesta} from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import {
+  AddSoccorsoAereo,
+  GetAzioniRichiesta,
+  GetTipologieRichiesta
+} from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 
 @Component({
   selector: 'app-composizione-confirm-button',
@@ -64,10 +67,10 @@ export class ComposizioneConfirmButtonComponent {
       }
     }
     const modal = this.modalService.open(SoccorsoAereoModalComponent, modalOptions);
-    modal.result.then((res: string) => {
-      switch (res) {
+    modal.result.then((res: any) => {
+      switch (res.status) {
         case 'ok':
-          this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+          this.store.dispatch(new AddSoccorsoAereo(res.result));
           break;
         case 'ko':
           break;

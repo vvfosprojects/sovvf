@@ -85,9 +85,12 @@ export class ComposizioneSoccorsoAereoState {
 
   @Action(AddSoccorsoAereo)
   addSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, richiesta: any): void {
-    this.compPartenzaService.addSoccorsoAereo(richiesta).subscribe((action: any) => {
-      dispatch(new AddSoccorsoAereo(action.dataArray));
+    /*this.compPartenzaService.addSoccorsoAereo(richiesta).subscribe((action: any) => {
+      dispatch(new AddSoccorsoAereo(action));
     }, () => {});
+    */
+    this.compPartenzaService.addSoccorsoAereo(richiesta).subscribe(() => {
+    });
   }
 
   @Action(SetMotivazioneRichiesta)
