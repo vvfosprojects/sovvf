@@ -53,8 +53,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("InserisciRichiestaSoccorso")]
-        public async Task<IActionResult> InserisciRichiestaSoccorso([FromBody] InserisciRichiestaSoccorsoAereoCommand command)
+        [HttpPost("Inserisci")]
+        public async Task<IActionResult> Inserisci([FromBody] InserisciRichiestaSoccorsoAereoCommand command)
         {
             try
             {
@@ -71,8 +71,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("AnnullaRichiestaSoccorso")]
-        public async Task<IActionResult> AnnullaRichiestaSoccorso([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
+        [HttpPost("Annulla")]
+        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {
             try
             {

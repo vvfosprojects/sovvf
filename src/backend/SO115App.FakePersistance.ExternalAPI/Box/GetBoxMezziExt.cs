@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -59,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 listaCodici.Add(sede);
             };
 
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
+            var listaMezzi = new List<Mezzo>();
 
             mezzi.InSede = listaMezzi
                 .Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)

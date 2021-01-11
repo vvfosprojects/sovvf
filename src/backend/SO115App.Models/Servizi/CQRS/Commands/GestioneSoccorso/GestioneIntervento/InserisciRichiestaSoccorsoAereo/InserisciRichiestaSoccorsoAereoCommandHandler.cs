@@ -38,6 +38,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             };
 
             _aggiorna.Aggiorna(richiestaSoccorsoAereo);
+
+            //aggiornare richiesta sul db
         }
     }
 }

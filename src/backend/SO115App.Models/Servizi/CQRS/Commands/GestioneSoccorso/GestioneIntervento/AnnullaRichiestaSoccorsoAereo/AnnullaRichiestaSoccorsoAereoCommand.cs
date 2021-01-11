@@ -1,7 +1,4 @@
-﻿using CQRS.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SO115App.API.Models.Classi.Soccorso;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
@@ -16,5 +13,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         /// Codice richiesta
         /// </summary>
         public string Codice { get; set; }
+        public RichiestaAssistenza Richiesta { get; set; }
     }
 }

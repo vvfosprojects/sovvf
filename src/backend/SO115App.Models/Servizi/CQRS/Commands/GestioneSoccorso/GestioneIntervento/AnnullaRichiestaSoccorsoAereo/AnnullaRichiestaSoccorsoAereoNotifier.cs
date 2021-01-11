@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CQRS.Commands.Notifiers;
+using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
-    class AnnullaRichiestaSoccorsoAereoNotifier
+    public class AnnullaRichiestaSoccorsoAereoNotifier : ICommandNotifier<AnnullaRichiestaSoccorsoAereoCommand>
     {
+        public AnnullaRichiestaSoccorsoAereoNotifier()
+        {
+
+        }
+
+        public void Notify(AnnullaRichiestaSoccorsoAereoCommand command)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
