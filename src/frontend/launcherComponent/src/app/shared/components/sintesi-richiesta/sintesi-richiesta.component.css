@@ -97,3 +97,7 @@
   max-width: 16.666667%;
   align-self: center;
 }
+
+.font-dettaglio {
+  font-size: 130% !important;
+}

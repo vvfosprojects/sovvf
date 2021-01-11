@@ -8,7 +8,6 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
 import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
-import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-lista-richieste',

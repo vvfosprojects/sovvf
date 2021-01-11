@@ -9,7 +9,6 @@ import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 import { TipoTerreno } from './tipo-terreno';
-import { EnteIntervenuto } from './ente-intervenuto';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
@@ -176,7 +175,11 @@ export class SintesiRichiesta {
         /**
          * richiesta inviata in stato di emergenza
          */
-        public emergenza?: boolean
+        public emergenza?: boolean,
+        /**
+         * richiesta con soccorso aereo
+         */
+        public soccorsoAereo?: boolean
     ) {
     }
 }

@@ -10,7 +10,7 @@
                 <div class="col-md-12">
                     <span *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
                           class="d-inline-block text-danger font-weight-bolder h4"
-                          style="position: absolute; left: 0px; top:22px">S</span>
+                          style="position: absolute; left: 0; top:22px">S</span>
                     <!-- PRIMA RIGA -->
                     <div class="row">
                         <div class="clearfix mx-3">
@@ -159,7 +159,7 @@
                             <div class="h6 mb-0">
 
                                 <!-- soccorso aereo -->
-                                <span *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="nowrap">
+                                <span *ngIf="richiesta.soccorsoAereo" class="nowrap">
                                           <button class="btn btn-light border pl-0 py-0 big_numbers mr-1 font-double-monitor"
                                                   style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
                                               <i class="guida fa fa-plane fa-fw ml-2 pl-1" ngbTooltip="Dettaglio Soccorso Aereo"></i>
@@ -191,7 +191,8 @@
                                     <button class="btn btn-light border pl-0 py-0 big_numbers font-double-monitor"
                                             [ngbPopover]="popMezzi"
                                             popoverTitle="Mezzi" triggers="click" tabindex="0" style="cursor:pointer"
-                                            (click)="$event.stopPropagation()">
+                                            (click)="$event.stopPropagation()"
+                                    placement="bottom-right">
                                         <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
                                     </button>
@@ -298,7 +299,8 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-4 pr-3 text-right"
+                        <div class="col-2"></div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-2 pr-3 text-right"
                              [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
                                 <button *ngIf="!fissata && fissabile"
@@ -463,7 +465,7 @@
                             <!-- I colonna -->
                             <div class="col-md-3">
                                 <!-- presa in carico -->
-                                <div class="h6">
+                                <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                        placement="right"></i>
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
@@ -503,7 +505,7 @@
                                 </div>
 
                                 <!-- in lavorazione -->
-                                <div class="h6">
+                                <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                        placement="right"></i>
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
@@ -532,7 +534,7 @@
                                 </div>
 
                                 <!-- scheda nue -->
-                                <div class="h6">
+                                <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                        placement="right"></i>
                                     <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
@@ -546,7 +548,7 @@
                                 </div>
 
                                 <!-- fonogramma -->
-                                <div class="h6">
+                                <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
                                        placement="right"></i>
                                     <span *ngIf="richiesta?.fonogramma"
@@ -597,7 +599,7 @@
                             </div>
 
                             <!-- II colonna -->
-                            <div class="col-md-6 bg-red border p-2"
+                            <div class="col-md-6 bg-red border p-2" style="box-shadow: 0 0 3px 0 #000000;"
                                  [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                                 <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
@@ -617,7 +619,7 @@
                             <!-- III colonna-->
                             <div class="col-md-3">
                                 <!-- turno intervento -->
-                                <div class="h6 text-right">
+                                <div class="h6 text-right font-dettaglio">
                                 <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
                                     {{richiesta?.trnInsChiamata}}
                                     <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
@@ -630,7 +632,7 @@
                                 </div>
 
                                 <!-- enti intervenuti -->
-                                <div class="h6 text-right">
+                                <div class="h6 text-right font-dettaglio">
                                     <button *ngIf="inGestione"
                                             class="btn btn-sm btn-info mr-2"
                                             ngbTooltip="Modifica Enti Intervenuti"
@@ -654,7 +656,7 @@
                                 </div>
 
                                 <!-- tipo terreno -->
-                                <div class="h6 text-right">
+                                <div class="h6 text-right font-dettaglio">
                                 <span *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
                                       class="h6 m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
                                     {{ tipoTerrenoValue?.terrenoHa }}
@@ -678,7 +680,7 @@
                                 </div>
 
                                 <!-- complessità -->
-                                <div class="h6 text-right">
+                                <div class="h6 text-right font-dettaglio">
                                     <a><b>{{ richiesta?.complessita?.indice }}</b></a>
                                     <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
                                         richiesta?.complessita?.descrizione }}</span>

@@ -163,12 +163,6 @@ export class SignalRService {
         });
 
         /**
-         * Soccorso Aereo
-         */
-
-        // ToDo: notifica soccorso aereo
-
-        /**
          * Markers Mappa
          */
         this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
