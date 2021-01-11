@@ -28,6 +28,7 @@ using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
@@ -669,20 +670,14 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var composizionePartenza = this.Partenze;
-                var eventoChiusura = this._eventi
-                    .LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = this._eventi
-                    .LastOrDefault() is RichiestaSospesa;
-                var eventoPresidiata = this._eventi
-                    .LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = this._eventi
-                    .LastOrDefault() is AssegnataRichiesta;
-                var eventoRiaperta = this._eventi
-                    .LastOrDefault() is RiaperturaRichiesta;
-                var eventoRientrata = _eventi
-                    .LastOrDefault() is PartenzaRientrata;
-                var eventoInRientro = _eventi
-                    .LastOrDefault() is PartenzaInRientro;
+
+                var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
+                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
+                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is RichiestaSoccorsoAereo;
+                var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
+                var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
+                var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
 
                 if (eventoChiusura)
                     return new Chiusa();
@@ -941,20 +936,13 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoChiusura = this._eventi
-                    .LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = this._eventi
-                    .LastOrDefault() is RichiestaSospesa;
-                var eventoPresidiata = this._eventi
-                    .LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = this._eventi
-                    .LastOrDefault() is AssegnataRichiesta;
-                var eventoRiaperta = this._eventi
-                    .LastOrDefault() is RiaperturaRichiesta;
-                var eventoRientrata = _eventi
-                    .LastOrDefault() is PartenzaRientrata;
-                var eventoInRientro = _eventi
-                    .LastOrDefault() is PartenzaInRientro;
+                var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
+                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
+                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is RichiestaSoccorsoAereo;
+                var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
+                var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
+                var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
 
                 if (eventoChiusura)
                     return "X";
