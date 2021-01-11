@@ -7,16 +7,23 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ImpostazioniRoutingModule } from './impostazioni.routing';
-import { ImpostazioniComponent } from './impostazioni.component';
+import { ImpostazioniSedeComponent } from './impostazioni-sede.component';
+import { DettagliTipologieComponent } from './dettagli-tipologie/dettagli-tipologie.component';
+import { AddDettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/add-dettaglio-tipologia-modal.component';
+import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 
 @NgModule({
     declarations: [
-        ImpostazioniComponent
+        ImpostazioniSedeComponent,
+        DettagliTipologieComponent,
+        AddDettaglioTipologiaModalComponent
+    ],
+    exports: [
+        DettagliTipologieComponent
     ],
     imports: [
         CommonModule,
-        ImpostazioniRoutingModule,
+        ImpostazioniSedeRoutingModule,
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
         NgxsFormPluginModule.forRoot(),
@@ -27,5 +34,5 @@ import { ImpostazioniComponent } from './impostazioni.component';
     ]
 })
 
-export class ImpostazioniModule {
+export class ImpostazioniSedeModule {
 }
