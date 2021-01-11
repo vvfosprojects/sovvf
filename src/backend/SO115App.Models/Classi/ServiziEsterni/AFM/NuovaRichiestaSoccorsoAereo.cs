@@ -12,7 +12,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
         public string OnSiteContact  { get; set; }
         public DateTime Datetime  { get; set; }
         public string Remarks  { get; set; }
-        public List<string> RescueCategories  { get; set; }
+        public string[] RescueCategories  { get; set; }
         public string OperatorName  { get; set; }
         public string OperatorSurname  { get; set; }
         public string OperatorFiscalCode  { get; set; }

@@ -17,8 +17,11 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiestaById _getRichiestaById;
 
-        public ConfermaPartenzeAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
-                                             IGetAutorizzazioni getAutorizzazioni, IGetRichiestaById getRichiestaById)
+        public ConfermaPartenzeAuthorization(
+            IPrincipal currentUser,
+            IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetRichiestaById getRichiestaById)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

@@ -66,6 +66,8 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.UtPresaInCarico = new List<string>();
         }
 
+        public bool SoccorsoAereo { get; set; } = false;
+
         /// <summary>
         ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento
         ///   delle richieste.

@@ -1,4 +1,5 @@
-﻿using SO115App.Models.Classi.ServiziEsterni.AFM;
+﻿using SO115App.API.Models.Classi.Soccorso;
+using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public string IdOperatore { get; set; }
 
         public NuovaRichiestaSoccorsoAereo RichiestaSoccorsoAereo { get; set; }
-        public string CodiceRichiesta { get; set; }
-        public string Motivazione { get; set; }
-        //public string CodiceFiscale { get; set; }
-        //public string Cognome { get; set; }
-        //public string Nome { get; set; }
+
+        public RichiestaAssistenza Richiesta { get; set; }
     }
 }
