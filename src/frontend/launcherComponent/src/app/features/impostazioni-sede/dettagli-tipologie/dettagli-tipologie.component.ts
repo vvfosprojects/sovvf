@@ -17,7 +17,8 @@ export class DettagliTipologieComponent implements OnInit {
 
     addDettaglio(): void {
         const options: NgbModalOptions = {
-            centered: true
+            centered: true,
+            size: 'lg'
         };
         this.modalService.open(AddDettaglioTipologiaModalComponent, options);
     }

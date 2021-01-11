@@ -70,10 +70,15 @@
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-users"></i>
                         </button>
-                        <button class="btn btn-outline-light" ngbTooltip="Visualizza Info Aggiornamenti"
+                        <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
                                 [routerLink]="['/' + RoutesPath.Changelog]"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-newspaper-o"></i>
+                        </button>
+                        <button class="btn btn-outline-light" ngbTooltip="Visualizza Impostazioni Sede"
+                                [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fa fa-cogs"></i>
                         </button>
                         <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
                                        (notificheLette)="setNotificheLette()" (logout)="logout()"></app-operatore>
