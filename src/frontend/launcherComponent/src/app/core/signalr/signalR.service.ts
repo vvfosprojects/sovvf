@@ -274,6 +274,11 @@ export class SignalRService {
         });
 
         /**
+         * Soccorso Aereo
+         */
+        // Todo: notifica soccorso aereo
+
+        /**
          * Composizione Partenza
          */
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
