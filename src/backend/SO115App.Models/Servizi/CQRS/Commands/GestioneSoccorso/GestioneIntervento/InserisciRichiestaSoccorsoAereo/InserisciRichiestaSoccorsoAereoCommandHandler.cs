@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -10,13 +11,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 {
     public class InserisciRichiestaSoccorsoAereoCommandHandler : ICommandHandler<InserisciRichiestaSoccorsoAereoCommand>
     {
-        private readonly IInserisciRichiestaSoccorsoAereo _inserisci;
         private readonly IAggiornaRichiestaSoccorsoAereo _aggiorna;
         private readonly IGetRichiestaById _getRichiestaById;
 
-        public InserisciRichiestaSoccorsoAereoCommandHandler(IInserisciRichiestaSoccorsoAereo inserisci, IAggiornaRichiestaSoccorsoAereo aggiorna, IGetRichiestaById getRichiestaById)
+        public InserisciRichiestaSoccorsoAereoCommandHandler(IAggiornaRichiestaSoccorsoAereo aggiorna, IGetRichiestaById getRichiestaById)
         {
-            _inserisci = inserisci;
             _aggiorna = aggiorna;
             _getRichiestaById = getRichiestaById;
         }
@@ -25,19 +24,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var richiesta = _getRichiestaById.GetByCodiceRichiesta(command.CodiceRichiesta);
 
+            new RichiestaSoccorsoAereo(richiesta, DateTime.Now, command.IdOperatore);
+
             var richiestaSoccorsoAereo = new NuovaRichiestaSoccorsoAereo()
             {
                 Lat = (decimal)richiesta.Localita.Coordinate.Latitudine,
                 Lng = (decimal)richiesta.Localita.Coordinate.Longitudine,
                 RequestKey = richiesta.Codice,
-                Description = command.Motivazione
+                Description = command.Motivazione,
+                Datetime = DateTime.Now,
+                OnSiteContact = "",
+                OperatorFiscalCode = command.RichiestaSoccorsoAereo.OperatorFiscalCode,
+                OperatorName = command.RichiestaSoccorsoAereo.OperatorName,
+                OperatorSurname = command.RichiestaSoccorsoAereo.OperatorSurname,
+                RequestTypeCode = command.RichiestaSoccorsoAereo.RequestTypeCode,
+                RescueCategories = command.RichiestaSoccorsoAereo.RescueCategories,
+                Remarks = ""
             };
 
-            //TODO logica if
-            if (true)
-                _inserisci.Inserisci(richiestaSoccorsoAereo);
-            else
-                _aggiorna.Aggiorna(richiestaSoccorsoAereo);
+            _aggiorna.Aggiorna(richiestaSoccorsoAereo);
         }
     }
 }
