@@ -49,7 +49,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
 
@@ -85,7 +85,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
 
@@ -106,7 +106,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
 
@@ -122,7 +122,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
 
@@ -138,7 +138,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                throw e.GetBaseException();
+                return BadRequest(e.GetBaseException().Message);
             }
         }
     }
