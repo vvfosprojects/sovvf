@@ -34,7 +34,7 @@ namespace SO115App.API.Controllers
             _getListaDettagliTipologia = getListaDettagliTipologia;
         }
 
-        [HttpPost]
+        [HttpPost("Get")]
         public async Task<IActionResult> Get([FromBody] DettaglioTipologiaQuery query)
         {
             try
