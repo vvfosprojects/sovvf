@@ -31,7 +31,7 @@ import {
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
-import { FiltersSchedeContattoInterface } from '../../../../../shared/interface/filters/filters-schede-contatto.interface';
+import { FiltersSchedeContatto } from '../../../../../shared/interface/filters/filters-schede.contatto';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
@@ -68,7 +68,7 @@ export interface SchedeContattoStateModel {
     schedaContattoTelefonata: SchedaContatto;
     codiceSchedaContattoHover: string;
     filtriSchedeContatto: VoceFiltro[];
-    filtriSelezionati: FiltersSchedeContattoInterface;
+    filtriSelezionati: FiltersSchedeContatto;
     tabAttivo: ClassificazioneSchedaContatto;
     idVisualizzati: string[];
     idCollapsed: string[];

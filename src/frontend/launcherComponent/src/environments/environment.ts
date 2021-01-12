@@ -40,7 +40,8 @@ export const environment = {
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
-        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        dettagliTipologie: '/api/GestioneDettaglioTipologia'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

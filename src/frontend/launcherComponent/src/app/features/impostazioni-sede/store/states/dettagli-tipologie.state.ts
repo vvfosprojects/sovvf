@@ -1,25 +1,27 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { GetDettagliTipologie } from '../actions/dettagli-tipologie.actions';
+import { ClearRicercaDettagliTipologia, GetDettagliTipologie, SetDettagliTipologie, SetRicercaDettagliTipologie } from '../actions/dettagli-tipologie.actions';
 import { StartLoading, StopLoading } from '../../../../shared/store/actions/loading/loading.actions';
-import { RicercaRubricaState } from '../../../rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { PaginationState } from '../../../../shared/store/states/pagination/pagination.state';
 import { ResponseInterface } from '../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
+import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 
-export interface SchedaTelefonataStateModel {
-    dettagliTipologie: any[];
+export interface DettagliTipologiaStateModel {
+    dettagliTipologie: DettaglioTipologia[];
+    ricerca: string;
 }
 
-export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
+export const DettagliTipologiaStateDefaults: DettagliTipologiaStateModel = {
     dettagliTipologie: null,
+    ricerca: undefined
 };
 
 @Injectable()
-@State<SchedaTelefonataStateModel>({
+@State<DettagliTipologiaStateModel>({
     name: 'detttagliTipologie',
-    defaults: SchedaTelefonataStateDefaults
+    defaults: DettagliTipologiaStateDefaults
 })
 
 export class DettagliTipologieState {
@@ -29,14 +31,19 @@ export class DettagliTipologieState {
     }
 
     @Selector()
-    static dettagliTipologie(state: SchedaTelefonataStateModel): any[] {
+    static dettagliTipologie(state: DettagliTipologiaStateModel): any[] {
         return state.dettagliTipologie;
     }
 
+    @Selector()
+    static ricerca(state: DettagliTipologiaStateModel): string {
+        return state.ricerca;
+    }
+
     @Action(GetDettagliTipologie)
-    getDettagliTipologie({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: GetDettagliTipologie): void {
+    getDettagliTipologie({ getState, dispatch }: StateContext<DettagliTipologiaStateModel>, action: GetDettagliTipologie): void {
         dispatch(new StartLoading());
-        const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
+        const ricerca = getState().ricerca;
         const filters = {
             search: ricerca
         };
@@ -48,10 +55,30 @@ export class DettagliTipologieState {
         this.detttagliTipologieService.getDettagliTipologie(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch([
                 new PatchPagination(response.pagination),
-                // todo: completare (SetDettagliTipologia)
-                // new SetDettagliTipologia(response.dataArray),
+                new SetDettagliTipologie(response.dataArray),
                 new StopLoading()
             ]);
+        });
+    }
+
+    @Action(SetDettagliTipologie)
+    setDettagliTipologie({ patchState }: StateContext<DettagliTipologiaStateModel>, action: SetDettagliTipologie): void {
+        patchState({
+            dettagliTipologie: action.dettagliTipologie
+        });
+    }
+
+    @Action(SetRicercaDettagliTipologie)
+    setRicercaDettagliTipologia({ patchState }: StateContext<DettagliTipologiaStateModel>, action: SetRicercaDettagliTipologie): void {
+        patchState({
+            ricerca: action.ricerca
+        });
+    }
+
+    @Action(ClearRicercaDettagliTipologia)
+    clearRicercaDettagliTipologia({ patchState }: StateContext<DettagliTipologiaStateModel>, action: ClearRicercaDettagliTipologia): void {
+        patchState({
+            ricerca: DettagliTipologiaStateDefaults.ricerca
         });
     }
 

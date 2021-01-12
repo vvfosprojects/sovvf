@@ -1,5 +1,5 @@
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 
-export interface FiltersRichiesteInterface {
+export interface FiltersRichieste {
     statiRichiesta?: StatoRichiesta[];
 }

@@ -4,7 +4,7 @@
             <i class="fa fa-list"></i>
             Dettagli Tipologie
         </h3>
-        <button class="btn btn-sm btn-primary ml-3 mb-2" (click)="addDettaglio()">
+        <button class="btn btn-sm btn-primary ml-3 mb-2" (click)="onAddDettaglioTipologia()">
             <i class="fa fa-plus"></i>
             Aggiungi Dettaglio
         </button>
@@ -21,9 +21,9 @@
         <input id="ricercaDettagliTipologie"
                type="text"
                placeholder="Cerca un Dettaglio Tipologia"
-               class="form-control">
+               [disabled]="!dettagliTipologie?.length">
     </div>
-    <div class="col-12 mt-2">
+    <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
         <table class="table">
             <thead>
             <tr>
@@ -34,28 +34,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row" style="width:10%">1</th>
-                <td style="width:10%">RM.1000</td>
-                <td style="width:10%">1</td>
-                <td style="width:35%">Incendio Autocisterna</td>
-            </tr>
-            <tr>
-                <th scope="row" style="width:10%">1</th>
-                <td style="width:10%">RM.1000</td>
-                <td style="width:10%">2</td>
-                <td style="width:35%">Incendio Autobus</td>
-            </tr>
-            <tr>
-                <th scope="row" style="width:10%">1</th>
-                <td style="width:10%">RM.1000</td>
-                <td style="width:10%">3</td>
-                <td style="width:35%">Incendio Tir</td>
+            <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
+                <th scope="row" style="width:10%">{{ dettaglioTipologia.codiceTipologia }}</th>
+                <td style="width:10%">{{ dettaglioTipologia.codSede }}</td>
+                <td style="width:10%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
+                <td style="width:35%">{{ dettaglioTipologia.descrizione }}</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="col-12 text-right">
+
+    <div *ngIf="!dettagliTipologie?.length" class="col-12 mt-2">
+        <div class="alert alert-danger mb-0">
+            <i class="fa fa-exclamation-triangle"></i>
+            Nessun Dettaglio Tipologia presente
+        </div>
+    </div>
+    <div *ngIf="dettagliTipologie?.length" class="col-12 text-right">
         <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'">
         </pagination-controls>
     </div>

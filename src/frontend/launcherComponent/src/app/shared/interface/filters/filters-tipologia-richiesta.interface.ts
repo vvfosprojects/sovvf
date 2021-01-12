@@ -1,6 +1,5 @@
-import {TipologiaRichiesta} from '../../enum/tipologiaRichiesta.enum';
+import { TipologiaRichiesta } from '../../enum/tipologiaRichiesta.enum';
 
-
-export interface FiltersTipologiaRichiestaInterfaceInterface {
-  tipologiaRichiesta?: TipologiaRichiesta[];
+export interface FiltersTipologiaRichiesta {
+    tipologiaRichiesta?: TipologiaRichiesta[];
 }
