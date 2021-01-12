@@ -109,6 +109,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
+            BsonClassMap.RegisterClassMap<TipologiaDettaglio>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
@@ -204,6 +205,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<StatoOperativoSquadra>("statoSquadra");
+            }
+        }
+
+        public IMongoCollection<TipologiaDettaglio> TipologiaDettaglioCollection
+        {
+            get
+            {
+                return database.GetCollection<TipologiaDettaglio>("tipologiaDettaglio");
             }
         }
 

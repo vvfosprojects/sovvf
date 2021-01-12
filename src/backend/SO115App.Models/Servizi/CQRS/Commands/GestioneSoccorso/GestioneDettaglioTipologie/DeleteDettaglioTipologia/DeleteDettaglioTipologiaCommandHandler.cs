@@ -11,7 +11,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettagl
 
         public void Handle(DeleteDettaglioTipologiaCommand command)
         {
-            _deleteDettaglioTipologia.Delete(command);
+            _deleteDettaglioTipologia.Delete(command.CodDettaglioTipologia);
         }
     }
 }
