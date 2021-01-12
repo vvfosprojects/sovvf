@@ -60,7 +60,14 @@ namespace SO115App.ExternalAPI.Fake.Box
                 listaCodici.Add(sede);
             };
 
+
+            //fix temporaneo per causa chiamata esterna che fallisce
+#if (DEBUG)
             var listaMezzi = new List<Mezzo>();
+#endif
+#if (!DEBUG)
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
+#endif
 
             mezzi.InSede = listaMezzi
                 .Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)

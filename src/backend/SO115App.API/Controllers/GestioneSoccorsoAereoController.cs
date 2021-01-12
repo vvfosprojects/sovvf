@@ -2,6 +2,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
@@ -54,12 +55,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Inserisci")]
-        public async Task<IActionResult> Inserisci([FromBody] InserisciRichiestaSoccorsoAereoCommand command)
+        public async Task<IActionResult> Inserisci([FromBody] NuovaRichiestaSoccorsoAereo richiesta)
         {
             try
             {
-                command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-                command.IdOperatore = Request.Headers["IdUtente"];
+                var command = new InserisciRichiestaSoccorsoAereoCommand()
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"],
+                    RichiestaSoccorsoAereo = richiesta
+                };
 
                 _inserisciRichiestaSoccorsoAereo.Handle(command);
 
@@ -72,12 +77,16 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Annulla")]
-        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
+        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereo richiesta)
         {
             try
             {
-                command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-                command.IdOperatore = Request.Headers["IdUtente"];
+                var command = new AnnullaRichiestaSoccorsoAereoCommand()
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"],
+                    Annullamento = richiesta
+                };
 
                 _annullaRichiestaSoccorsoAereo.Handle(command);
 
