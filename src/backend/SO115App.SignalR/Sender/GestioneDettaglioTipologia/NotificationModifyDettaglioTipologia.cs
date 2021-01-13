@@ -33,7 +33,8 @@ namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia
 
             DettaglioTipologiaQuery query = new DettaglioTipologiaQuery()
             {
-                IdSede = dettaglioTipologia.CodiceSede
+                IdSede = dettaglioTipologia.CodiceSede,
+                Filters = new Models.Classi.Filtri.FiltriDettaglioTipologia() { Search = "" },
             };
 
             var listaDettagliTipologia = _getDettaglioTipologia.Get(query);
