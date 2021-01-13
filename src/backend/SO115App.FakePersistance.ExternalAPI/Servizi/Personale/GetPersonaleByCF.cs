@@ -54,22 +54,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            //try
-            //{
-            Parallel.ForEach(codSede, sede =>
+            try
             {
-                var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                httpManager.Configure("Personale_" + sede);
+                Parallel.ForEach(codSede, sede =>
+                {
+                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+                    httpManager.Configure("Personale_" + sede);
 
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-                lock (listaPersonale)
-                    listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
-            });
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception("Elenco del personale non disponibile");
-            //}
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                    lock (listaPersonale)
+                        listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
+                });
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Elenco del personale non disponibile");
+            }
 
             return listaPersonale;
         }
