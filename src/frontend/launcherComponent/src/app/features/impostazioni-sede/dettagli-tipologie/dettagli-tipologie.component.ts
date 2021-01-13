@@ -4,7 +4,13 @@ import { Select, Store } from '@ngxs/store';
 import { HomeState } from '../../home/store/states/home.state';
 import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
-import { ClearRicercaDettagliTipologia, GetDettagliTipologie, SetRicercaDettagliTipologie } from '../store/actions/dettagli-tipologie.actions';
+import {
+    ClearRicercaDettagliTipologia,
+    GetDettagliTipologie,
+    ReducerSelezioneFiltroTipologia,
+    ResetFiltroTipologiaSelezionato,
+    SetRicercaDettagliTipologie
+} from '../store/actions/dettagli-tipologie.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -13,7 +19,6 @@ import { SetCurrentUrl } from '../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
-import { GetRubrica } from '../../rubrica/store/actions/rubrica/rubrica.actions';
 import { DettagliTipologieState } from '../store/states/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
@@ -43,9 +48,10 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    totalItems: number;
     @Select(PaginationState.page) page$: Observable<number>;
+    page: number;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
@@ -61,10 +67,11 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.getMonitorSize();
         this.getRicerca();
         this.getPageSize();
+        this.getTotalItems();
+        this.getPage();
         this.getDettagliTipologie(true);
         this.dettagliTipologie$.subscribe((dettagliTipologie: DettaglioTipologia[]) => this.dettagliTipologie = dettagliTipologie);
     }
-
 
     ngOnInit(): void {
         this.store.dispatch([
@@ -215,8 +222,16 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRicercaDettagliTipologie(ricerca));
     }
 
-    onPageChange(page: number): void {
-        this.store.dispatch(new GetDettagliTipologie(page));
+    onFiltroTipologiaChange(tipologia: { codice: string, descrizione: string }): void {
+        if (tipologia) {
+            this.store.dispatch(new ReducerSelezioneFiltroTipologia(+tipologia.codice));
+        } else {
+            this.onFiltroTipologiaReset();
+        }
+    }
+
+    onFiltroTipologiaReset(): void {
+        this.store.dispatch(new ResetFiltroTipologiaSelezionato());
     }
 
     onPageSizeChange(pageSize: number): void {
@@ -234,15 +249,35 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         );
     }
 
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetDettagliTipologie(page));
+    }
+
     getPageSize(): void {
         this.subscriptions.add(
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {
                     if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetRubrica());
+                        this.store.dispatch(new GetDettagliTipologie());
                     }
                     this.pageSize = pageSize;
                 }
+            })
+        );
+    }
+
+    getTotalItems(): void {
+        this.subscriptions.add(
+            this.totalItems$.subscribe((totalItems: number) => {
+                this.totalItems = totalItems;
+            })
+        );
+    }
+
+    getPage(): void {
+        this.subscriptions.add(
+            this.page$.subscribe((page: number) => {
+                this.page = page;
             })
         );
     }

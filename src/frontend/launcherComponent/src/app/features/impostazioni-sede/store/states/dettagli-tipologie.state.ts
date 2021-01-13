@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import {
     AddDettaglioTipologia,
-    ClearRicercaDettagliTipologia, DeleteDettaglioTipologia,
-    GetDettagliTipologie,
-    SetDettagliTipologie,
+    ClearRicercaDettagliTipologia,
+    DeleteDettaglioTipologia,
+    GetDettagliTipologie, ReducerSelezioneFiltroTipologia, ResetFiltroTipologiaSelezionato,
+    SetDettagliTipologie, SetFiltroTipologiaDeselezionato, SetFiltroTipologiaSelezionato,
     SetRicercaDettagliTipologie,
     UpdateDettaglioTipologia
 } from '../actions/dettagli-tipologie.actions';
@@ -14,16 +15,28 @@ import { PaginationState } from '../../../../shared/store/states/pagination/pagi
 import { ResponseInterface } from '../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import {
+    ReducerSelezioneFiltroSede,
+    ResetSediFiltroSelezionate,
+    SetSedeFiltroDeselezionato,
+    SetSedeFiltroSelezionato
+} from '../../../gestione-utenti/store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { GetUtentiGestione } from '../../../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { RicercaUtentiStateDefaults, RicercaUtentiStateModel } from '../../../gestione-utenti/store/states/ricerca-utenti/ricerca-utenti.state';
+import { DettaglioTipologiaModalStateDefaults } from './dettaglio-tipologia-modal-state';
+import { FiltersInterface } from '../../../../shared/interface/filters/filters.interface';
 
 export interface DettagliTipologieStateModel {
     dettagliTipologie: DettaglioTipologia[];
     ricerca: string;
+    filtroTipologia: number;
 }
 
 export const DettagliTipologieStateDefaults: DettagliTipologieStateModel = {
     dettagliTipologie: null,
-    ricerca: undefined
+    ricerca: undefined,
+    filtroTipologia: null
 };
 
 @Injectable()
@@ -51,11 +64,13 @@ export class DettagliTipologieState {
     @Action(GetDettagliTipologie)
     getDettagliTipologie({ getState, dispatch }: StateContext<DettagliTipologieStateModel>, action: GetDettagliTipologie): void {
         dispatch(new StartLoading());
-        const ricerca = getState().ricerca;
-        console.warn('GetDettagliTipologie ricerca', ricerca);
+        const state = getState();
+        const ricerca = state.ricerca;
+        const filtroTipologia = state.filtroTipologia;
         const filters = {
-            search: ricerca
-        };
+            search: ricerca,
+            codTipologia: filtroTipologia
+        } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
@@ -118,5 +133,44 @@ export class DettagliTipologieState {
                 dettagliTipologie: removeItem<DettaglioTipologia>(dettaglioTipologia => dettaglioTipologia.codiceDettaglioTipologia === action.codiceDettaglioTipologia)
             })
         );
+    }
+
+    /**
+     * Filtri Tipologie
+     */
+    @Action(ReducerSelezioneFiltroTipologia)
+    reducerSelezioneFiltroTipologia({ getState, dispatch }: StateContext<DettagliTipologieStateModel>, action: ReducerSelezioneFiltroTipologia): void {
+        const filtroTipologiaSelezionato = getState().filtroTipologia;
+        if (!filtroTipologiaSelezionato) {
+            dispatch(new SetFiltroTipologiaSelezionato(action.codTipologia));
+        } else {
+            dispatch(new SetFiltroTipologiaDeselezionato());
+        }
+    }
+
+    @Action(SetFiltroTipologiaSelezionato)
+    setFiltroTipologiaSelezionato({ patchState, dispatch }: StateContext<DettagliTipologieStateModel>, action: SetFiltroTipologiaSelezionato): void {
+        patchState({
+            filtroTipologia: action.codTipologia
+        });
+        dispatch(new GetDettagliTipologie());
+    }
+
+    @Action(SetFiltroTipologiaDeselezionato)
+    setFiltroTipologiaDeselezionato({ setState, dispatch }: StateContext<DettagliTipologieStateModel>): void {
+        setState(
+            patch({
+                filtroTipologia: undefined
+            })
+        );
+        dispatch(new GetDettagliTipologie());
+    }
+
+    @Action(ResetFiltroTipologiaSelezionato)
+    resetFiltroTipologiaSelezionato({ patchState, dispatch }: StateContext<DettagliTipologieStateModel>): void {
+        patchState({
+            filtroTipologia: DettagliTipologieStateDefaults.filtroTipologia
+        });
+        dispatch(new GetDettagliTipologie());
     }
 }
