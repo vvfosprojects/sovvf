@@ -30,32 +30,28 @@
                         </div>
                         <div class="clearfix" style="width: 12%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
-                            <ng-template #rilevante>
-                                <div *ngIf="richiesta?.rilevanteGrave">
-                                    Intervento Rilevante
-                                </div>
-                                <div *ngIf="richiesta?.rilevanteStArCu">
-                                    Intervento Rilevante Storico Artistico Culturale
-                                </div>
-                            </ng-template>
                             <div class="h6 mb-1 nowrap font-double-monitor">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
                                    ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
                                 <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
-                                          class="font-double-monitor">{{ richiesta.codiceRichiesta }} </span>
+                                          class="font-double-monitor">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                                      <span class="font-double-monitor" style="font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                                    </span>
                                     <span *ngIf="!richiesta.codiceRichiesta"
-                                          class="font-double-monitor">{{ richiesta.codice }} </span>
+                                          class="font-double-monitor">{{ richiesta.codice.slice(0, -5) }}
+                                      <span class="font-double-monitor" style="font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                                    </span>
                                 </a>
-                                <span *ngIf="richiesta?.rilevanteGrave || richiesta?.rilevanteStArCu"
-                                      class="d-inline-block mr-1 text-danger"
-                                      [ngbTooltip]="rilevante" placement="bottom">
-                                    <i *ngIf="richiesta?.rilevanteStArCu" class="fa fa-university mr-2"></i>
-                                    <i *ngIf="richiesta?.rilevanteGrave" class="fa fa-exclamation"></i>
-                                </span>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 17%"></div>
+                        <div class="clearfix" style="width: 17%">
+                          <button *ngIf="richiesta.prioritaRichiesta > 3" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
+                                  ngbTooltip="Chiamata Urgente!"
+                                  style="height: 36px; width: 36px; border-radius: 65% ">
+                            <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
+                          </button>
+                        </div>
                         <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- descrizione intervento -->

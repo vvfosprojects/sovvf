@@ -63,7 +63,7 @@
 }
 
 .filled {
-    color: #fffe00;
+    color: #ffc107;
 }
 
 .bad {
@@ -98,4 +98,35 @@
 
 .font-dettaglio {
   font-size: 130% !important;
+}
+
+.btn-glow {
+  background-color: #1c87c9;
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+  border-color: #ffc107  !important;
+  color: #eeeeee;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 20px;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+}
+@keyframes glowing {
+  0% {
+    background-color: #e30202;
+    box-shadow: 0 0 5px #e30202;
+  }
+  50% {
+    background-color: #fc0303;
+    box-shadow: 0 0 15px #fc0303;
+  }
+  100% {
+    background-color: #fd1d1d;
+    box-shadow: 0 0 5px #fd1d1d;
+  }
+}
+.btn-glow {
+  animation: glowing 1300ms infinite;
 }
