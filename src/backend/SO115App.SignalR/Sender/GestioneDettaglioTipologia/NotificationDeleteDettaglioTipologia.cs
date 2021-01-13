@@ -44,6 +44,7 @@ namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteDettaglioTipologia", new
                 {
+                    Data = dettaglioTipologia.CodDettaglioTipologia,
                     Pagination = new Paginazione() { TotalItems = listaDettagliTipologia.Count }
                 });
 

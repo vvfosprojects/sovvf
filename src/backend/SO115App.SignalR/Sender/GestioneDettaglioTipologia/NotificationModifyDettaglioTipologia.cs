@@ -43,7 +43,8 @@ namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyModifyDettaglioTipologia", new
                 {
-                    Pagination = new Paginazione() { TotalItems = listaDettagliTipologia.Count }
+                    Pagination = new Paginazione() { TotalItems = listaDettagliTipologia.Count },
+                    Data = dettaglioTipologia
                 });
 
                 //await _notificationHubContext.Clients.Group(sede).SendAsync("ElencoDettaglioTipologia", listaDettagliTipologia);
