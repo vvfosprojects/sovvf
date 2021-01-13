@@ -234,10 +234,6 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ResetFiltroTipologiaSelezionato());
     }
 
-    onPageChange(page: number): void {
-        this.store.dispatch(new GetDettagliTipologie(page));
-    }
-
     onPageSizeChange(pageSize: number): void {
         this.store.dispatch(new SetPageSize(pageSize));
     }
@@ -251,6 +247,10 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetDettagliTipologie(page));
     }
 
     getPageSize(): void {

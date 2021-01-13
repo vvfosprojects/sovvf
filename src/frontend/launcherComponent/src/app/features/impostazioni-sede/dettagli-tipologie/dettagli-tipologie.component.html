@@ -68,7 +68,10 @@
         </div>
     </div>
     <div *ngIf="dettagliTipologie?.length" class="col-12 text-right mt-2">
-        <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'">
+        <pagination-controls class="mt-1 mb-0"
+                             [previousLabel]="'Precedente'"
+                             [nextLabel]="'Successiva'"
+                             (pageChange)="onPageChange($event)">
         </pagination-controls>
     </div>
 </div>
