@@ -66,7 +66,7 @@ import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/s
 import { SchedeContattoState } from './features/home/store/states/schede-contatto/schede-contatto.state';
 import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
 import { TipologieState } from './shared/store/states/tipologie/tipologie.state';
-import { DettaglioTipologiaModalState } from './features/impostazioni-sede/store/states/dettaglio-tipologia-modal-state.service';
+import { DettaglioTipologiaModalState } from './features/impostazioni-sede/store/states/dettaglio-tipologia-modal-state';
 
 @NgModule({
     declarations: [

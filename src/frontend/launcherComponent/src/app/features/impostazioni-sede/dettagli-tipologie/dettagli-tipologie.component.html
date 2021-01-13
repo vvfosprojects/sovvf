@@ -13,7 +13,12 @@
         <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
         <ng-select id="filtriDettagliTipologie"
                    placeholder="Filtra per tipologia"
-                   [items]="['Incendio Normale (generico) (1)']">
+                   bindLabel="descrizione"
+                   bindValue="codice"
+                   [items]="[{
+                       codice: '1',
+                       descrizione: 'Incendio Normale (generico) (1)'
+                   }]">
         </ng-select>
     </div>
     <div class="col text-right">
@@ -27,26 +32,27 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col" style="width:10%">Codice Tipologia</th>
-                <th scope="col" style="width:10%">Sede</th>
-                <th scope="col" style="width:10%">Codice Dettaglio</th>
-                <th scope="col" style="width:35%">Descrizione</th>
+                <th scope="col" style="width:15%">Codice Tipologia</th>
+                <th scope="col" style="width:15%">Sede</th>
+                <th scope="col" style="width:15%">Codice Dettaglio</th>
+                <th scope="col" style="width:30%">Descrizione</th>
                 <th scope="col" style="width:35%">Azioni</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
-                <th scope="row" style="width:10%">{{ dettaglioTipologia.codiceTipologia }}</th>
-                <td style="width:10%">{{ dettaglioTipologia.codSede }}</td>
-                <td style="width:10%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
-                <td style="width:35%">{{ dettaglioTipologia.descrizione }}</td>
+                <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
+                <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>
+                <td style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
+                <td style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
                 <td style="width:35%">
-                    <button class="btn btn-info" (click)="onEditDettaglioTipologia(dettaglioTipologia)">
-                        Modifica
+                    <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
+                            (click)="onEditDettaglioTipologia(dettaglioTipologia)">
+                        <i class="fa fa-edit"></i>
                     </button>
-                    <button class="btn btn-danger"
+                    <button class="btn btn-sm btn-danger" ngbTooltip="Elimina Dettaglio Tipologia"
                             (click)="onDeleteDettaglioTipologia({ codDettaglioTipologia: dettaglioTipologia.codiceDettaglioTipologia, descrizioneDettaglioTipologia: dettaglioTipologia.descrizione })">
-                        Elimina
+                        <i class="fa fa-trash"></i>
                     </button>
                 </td>
             </tr>
