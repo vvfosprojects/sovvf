@@ -22,11 +22,11 @@
         </ng-select>
     </div>
     <div class="col text-right">
-        <label for="ricercaDettagliTipologie" class="d-none">Ricerca Dettagli Tipologie</label>
-        <input id="ricercaDettagliTipologie"
-               type="text"
-               placeholder="Cerca un Dettaglio Tipologia"
-               [disabled]="!dettagliTipologie?.length">
+        <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
+                                        (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
+    </div>
+    <div *ngIf="ricerca" class="col-12 pl-2">
+        <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </div>
     <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
         <table class="table">

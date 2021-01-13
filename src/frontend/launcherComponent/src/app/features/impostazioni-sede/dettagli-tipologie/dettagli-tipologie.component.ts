@@ -211,7 +211,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestDeleteDettaglioTipologia(codDettaglioTipologia));
     }
 
-    onRicercaRubrica(ricerca: string): void {
+    onRicercaDettagliTipologie(ricerca: string): void {
         this.store.dispatch(new SetRicercaDettagliTipologie(ricerca));
     }
 
@@ -228,7 +228,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetRubrica());
+                    this.store.dispatch(new GetDettagliTipologie());
                 }
             })
         );

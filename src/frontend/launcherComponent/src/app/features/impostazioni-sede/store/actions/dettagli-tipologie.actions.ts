@@ -1,5 +1,4 @@
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { Ente } from '../../../../shared/interface/ente.interface';
 
 export class GetDettagliTipologie {
     static readonly type = '[DettagliTipologie] Get Dettagli Tipologie';

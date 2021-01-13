@@ -15,7 +15,6 @@ import { ResponseInterface } from '../../../../shared/interface/response.interfa
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { Ente } from '../../../../shared/interface/ente.interface';
 
 export interface DettagliTipologieStateModel {
     dettagliTipologie: DettaglioTipologia[];
@@ -53,6 +52,7 @@ export class DettagliTipologieState {
     getDettagliTipologie({ getState, dispatch }: StateContext<DettagliTipologieStateModel>, action: GetDettagliTipologie): void {
         dispatch(new StartLoading());
         const ricerca = getState().ricerca;
+        console.warn('GetDettagliTipologie ricerca', ricerca);
         const filters = {
             search: ricerca
         };
