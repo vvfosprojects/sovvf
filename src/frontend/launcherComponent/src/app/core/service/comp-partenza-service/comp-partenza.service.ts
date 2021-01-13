@@ -32,7 +32,7 @@ export class CompPartenzaService {
     }
 
     addSoccorsoAereo(obj: any): Observable<any> {
-      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj);
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj.richiesta);
     }
 
     getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {
