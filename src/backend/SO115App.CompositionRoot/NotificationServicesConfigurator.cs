@@ -23,6 +23,7 @@ namespace SO115App.CompositionRoot
         {
             #region Notifiche
 
+            container.Register<INotificationAnnullaRichiestaSoccorsoAereo, NotificationAnnullaRichiestaSoccorsoAereo>();
             container.Register<INotificationInserisciRichiestaSoccorsoAereo, NotificationInserisciRichiestaSoccorsoAereo>();
             container.Register<
                 Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
