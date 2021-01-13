@@ -116,7 +116,7 @@ export class DettagliTipologieState {
     updateDettaglioTipologia({ setState }: StateContext<DettagliTipologieStateModel>, action: UpdateDettaglioTipologia): void {
         setState(
             patch({
-                dettagliTipologie: updateItem<DettaglioTipologia>(voce => voce.codiceDettaglioTipologia === action.dettaglioTipologia.codiceDettaglioTipologia, action.dettaglioTipologia)
+                dettagliTipologie: updateItem<DettaglioTipologia>(dettaglioTipologia => dettaglioTipologia.codiceDettaglioTipologia === action.dettaglioTipologia.codiceDettaglioTipologia, action.dettaglioTipologia)
             })
         );
     }

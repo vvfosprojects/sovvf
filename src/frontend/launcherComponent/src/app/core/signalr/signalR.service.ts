@@ -385,7 +385,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyModifyDettaglioTipologia', (response: any) => {
             console.log('NotifyModifyDettaglioTipologia', response);
-            this.store.dispatch(new UpdateDettaglioTipologia(response.data));
+            this.store.dispatch(new UpdateDettaglioTipologia(response.data.dettaglioTipologia));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
