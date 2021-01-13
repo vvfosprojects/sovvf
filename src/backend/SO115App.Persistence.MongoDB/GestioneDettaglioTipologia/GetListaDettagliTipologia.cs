@@ -25,10 +25,18 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
         {
             var text = query.Filters.Search?.ToLower() ?? "";
 
+            var CodTipologia = query.Filters.codTipologia;
+
             var listaPin = GetGerarchia(query.IdSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
+            var lstEnti = new List<TipologiaDettaglio>();
+
+            if (CodTipologia != null)
+                lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
+                && (c.Descrizione.ToLower().Contains(text)) && (c.CodiceTipologia.Equals(CodTipologia))).ToList();
+            else
+                lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
                 && (c.Descrizione.ToLower().Contains(text))).ToList();
 
             //GESTIONE RICORSIVITA'
