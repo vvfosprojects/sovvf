@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CQRS.Commands;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Condivise;
@@ -21,12 +22,12 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AddDettaglioTipologiaCommand> _addhandler;
         private readonly ICommandHandler<ModifyDettaglioTipologiaCommand> _updatehandler;
         private readonly ICommandHandler<DeleteDettaglioTipologiaCommand> _deletehandler;
-        private readonly IGetListaDettaglioTipologia _getListaDettagliTipologia;
+        private readonly IQueryHandler<DettaglioTipologiaQuery, DettaglioTipologiaResult> _getListaDettagliTipologia;
 
         public GestioneDettaglioTipologiaController(ICommandHandler<AddDettaglioTipologiaCommand> Addhandler,
             ICommandHandler<ModifyDettaglioTipologiaCommand> Updatehandler,
             ICommandHandler<DeleteDettaglioTipologiaCommand> Deletehandler,
-            IGetListaDettaglioTipologia getListaDettagliTipologia)
+            IQueryHandler<DettaglioTipologiaQuery, DettaglioTipologiaResult> getListaDettagliTipologia)
         {
             _addhandler = Addhandler;
             _updatehandler = Updatehandler;
@@ -42,7 +43,7 @@ namespace SO115App.API.Controllers
                 query.IdOperatore = Request.Headers["IdUtente"];
                 query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
 
-                return Ok(_getListaDettagliTipologia.Get(query));
+                return Ok(_getListaDettagliTipologia.Handle(query));
             }
             catch (Exception ex)
             {
