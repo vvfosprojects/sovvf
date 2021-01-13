@@ -7,6 +7,6 @@ export class GetTipologie {
 export class SetTipologie {
     static readonly type = '[Tipologie] Set Tipologie';
 
-    constructor(tipologie: Tipologia[]) {
+    constructor(public tipologie: Tipologia[]) {
     }
 }

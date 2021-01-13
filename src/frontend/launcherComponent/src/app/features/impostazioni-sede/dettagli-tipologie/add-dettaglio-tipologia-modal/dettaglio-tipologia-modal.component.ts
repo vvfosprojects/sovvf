@@ -7,6 +7,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state';
+import { TipologieState } from '../../../../shared/store/states/tipologie/tipologie.state';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 @Component({
     selector: 'app-dettaglio-tipologia-modal',
@@ -16,6 +18,7 @@ import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipol
 export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(DettaglioTipologiaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 

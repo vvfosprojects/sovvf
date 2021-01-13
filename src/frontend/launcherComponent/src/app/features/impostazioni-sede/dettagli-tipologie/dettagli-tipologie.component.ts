@@ -29,18 +29,19 @@ import {
     RequestUpdateDettaglioTipologia
 } from '../store/actions/dettaglio-tipologia-modal.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 
 @Component({
     selector: 'app-dettagli-tipologie',
     templateUrl: './dettagli-tipologie.component.html',
     styleUrls: ['./dettagli-tipologie.component.scss']
 })
-export class DettagliTipologieComponent implements OnInit, OnDestroy {
+export class DettagliTipologieComponent implements OnDestroy {
 
     // TODO: !!!!!!
     // TODO: creare state "Tipologie" con relativo controller BE che restituisce le tipologie (attualmente in home ma non va bene)
     // TODO: !!!!!!
-    @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
     dettagliTipologie: DettaglioTipologia[];
@@ -73,19 +74,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.dettagliTipologie$.subscribe((dettagliTipologie: DettaglioTipologia[]) => this.dettagliTipologie = dettagliTipologie);
     }
 
-    ngOnInit(): void {
-        this.store.dispatch([
-            new SetCurrentUrl(RoutesPath.ImpostazioniSede),
-            new SetSediNavbarVisible(false),
-            new StopBigLoading()
-        ]);
-    }
-
     ngOnDestroy(): void {
-        this.store.dispatch([
-            new ClearRicercaDettagliTipologia(),
-            new SetSediNavbarVisible()
-        ]);
         this.subscriptions.unsubscribe();
     }
 

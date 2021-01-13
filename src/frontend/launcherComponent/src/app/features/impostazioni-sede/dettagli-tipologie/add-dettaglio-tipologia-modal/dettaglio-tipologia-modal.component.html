@@ -11,14 +11,8 @@
             <label for="tipologia">Scegli una Tipologia</label>
             <ng-select id="tipologia"
                        placeholder="Seleziona una tipologia dall'elenco"
-                       [items]="[{
-                           codice: '1',
-                           descrizione:'Incendio Normale (generico) (1)'
-                       },{
-                       codice: '2',
-                       descrizione: 'Incendio Generico (2)'
-                       }]"
-                       bindLabel="descrizione"
+                       [items]="tipologie$ | async"
+                       bindLabel="codiceDescrizione"
                        bindValue="codice"
                        formControlName="codTipologia">
             </ng-select>
@@ -35,15 +29,21 @@
 </div>
 <div class="modal-footer">
     <ng-template [ngIf]="!editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2" (click)="onConfermaERiapri()">
+        <button class="btn btn-lg btn-success btn-no-hover mr-2"
+                [disabled]="!formValid"
+                (click)="onConfermaERiapri()">
             {{ 'Conferma e Continua' | uppercase }}
         </button>
-        <button class="btn btn-lg btn-secondary btn-no-hover" (click)="onConfermaEChiudi()">
+        <button class="btn btn-lg btn-secondary btn-no-hover"
+                [disabled]="!formValid"
+                (click)="onConfermaEChiudi()">
             {{ 'Conferma e Chiudi' | uppercase }}
         </button>
     </ng-template>
     <ng-template [ngIf]="editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2" (click)="onConfermaEChiudi()">
+        <button class="btn btn-lg btn-success btn-no-hover mr-2"
+                [disabled]="!formValid"
+                (click)="onConfermaEChiudi()">
             {{ 'Conferma Modifica' | uppercase }}
         </button>
     </ng-template>

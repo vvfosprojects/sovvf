@@ -41,6 +41,7 @@ export const environment = {
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        tipologie: '/api/GestioneTipologie',
         dettagliTipologie: '/api/GestioneDettaglioTipologia'
     },
     casUrl: {

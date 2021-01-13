@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetBoundsIniziale, SetDataTipologie } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetBoundsIniziale } from '../actions/home.actions';
 import { ClearRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
@@ -13,8 +13,6 @@ import { HomeService } from '../../../../core/service/home-service/home.service'
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
 import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
-import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
@@ -25,13 +23,11 @@ import { StopBigLoading } from '../../../../shared/store/actions/loading/loading
 
 export interface HomeStateModel {
     markerLoading: boolean;
-    tipologie: Tipologia[];
     bounds: LatLngBoundsLiteral;
 }
 
 export const HomeStateDefaults: HomeStateModel = {
     markerLoading: false,
-    tipologie: null,
     bounds: null
 };
 
@@ -45,11 +41,6 @@ export class HomeState {
     @Selector()
     static markerOnLoading(state: HomeStateModel): boolean {
         return state.markerLoading;
-    }
-
-    @Selector()
-    static tipologie(state: HomeStateModel): Tipologia[] {
-        return state.tipologie;
     }
 
     @Selector()
@@ -84,7 +75,6 @@ export class HomeState {
             console.log('Welcome', data);
             dispatch([
                 new StopBigLoading(),
-                // new GetListaRichieste(),
                 new SetCurrentUrl(RoutesPath.Home),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
@@ -93,19 +83,10 @@ export class HomeState {
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetTipologicheMezzi(data.listaFiltri),
                 new SetContatoriSchedeContatto(data.infoNue),
-                new SetDataTipologie(data.tipologie),
                 new SetEnti(data.rubrica),
                 // new SetZoneEmergenza(data.zoneEmergenza)
             ]);
         });
-    }
-
-    @Action(SetDataTipologie)
-    setDataTipologie({ patchState, dispatch }: StateContext<HomeStateModel>, action: SetDataTipologie): void {
-        patchState({
-            tipologie: action.tipologie
-        });
-        dispatch(new GetFiltriRichieste());
     }
 
     @Action(SetBoundsIniziale)

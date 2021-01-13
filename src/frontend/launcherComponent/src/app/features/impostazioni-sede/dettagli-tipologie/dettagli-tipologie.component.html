@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-5">
         <h3 class="d-inline-block mb-0">
             <i class="fa fa-list"></i>
             Dettagli Tipologie
@@ -13,15 +13,9 @@
         <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
         <ng-select id="filtriDettagliTipologie"
                    placeholder="Filtra per tipologia"
-                   bindLabel="descrizione"
+                   bindLabel="codiceDescrizione"
                    bindValue="codice"
-                   [items]="[{
-                       codice: '1',
-                       descrizione: 'Incendio Normale (generico) (1)'
-                   },{
-                       codice: '2',
-                       descrizione: 'Incendio Generico (2)'
-                   }]"
+                   [items]="tipologie$ | async"
                    (change)="onFiltroTipologiaChange($event)">
         </ng-select>
     </div>

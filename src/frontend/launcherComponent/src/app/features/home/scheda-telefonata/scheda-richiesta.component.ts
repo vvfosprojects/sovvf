@@ -18,6 +18,7 @@ import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interf
 import { Sede } from '../../../shared/model/sede.model';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
+import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 
 @Component({
     selector: 'app-scheda-richiesta',
@@ -33,7 +34,7 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(ChiamataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
-    @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
