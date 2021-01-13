@@ -76,6 +76,7 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
+            TipologiaDettaglioMap.Map();
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
@@ -109,7 +110,6 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
-            BsonClassMap.RegisterClassMap<TipologiaDettaglio>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
