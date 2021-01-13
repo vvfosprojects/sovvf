@@ -1,3 +1,5 @@
+import { Ente } from '../../../../shared/interface/ente.interface';
+
 export class RequestAddDettaglioTipologia {
     static readonly type = '[DettaglioTipologiaModal] Request Add Dettaglio Tipologia';
 }
@@ -8,13 +10,6 @@ export class RequestUpdateDettaglioTipologia {
 
 export class RequestDeleteDettaglioTipologia {
     static readonly type = '[DettaglioTipologiaModal] Request Delete Dettaglio Tipologia';
-
-    constructor(public codDettaglioTipologia: number) {
-    }
-}
-
-export class SetCodTipologiaFormDettaglioTipologia {
-    static readonly type = '[DettaglioTipologiaModal] Set Cod Tipologia Dettaglio Tipologia';
 
     constructor(public codDettaglioTipologia: number) {
     }

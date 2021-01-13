@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state.service';
+import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state';
 
 @Component({
     selector: 'app-dettaglio-tipologia-modal',
@@ -36,7 +36,7 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.dettaglioTipologiaForm = new FormGroup({
             codTipologia: new FormControl(),
-            descrizione: new FormControl(),
+            descrizione: new FormControl()
         });
         this.dettaglioTipologiaForm = this.fb.group({
             codTipologia: [null, Validators.required],
@@ -71,7 +71,7 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
         console.log('updateDettaglioTipologiaForm', editDettaglioTipologia);
         this.store.dispatch(new UpdateFormValue({
             value: {
-                codTipolgia: editDettaglioTipologia.codiceTipologia,
+                codTipologia: editDettaglioTipologia.codiceTipologia.toString(),
                 descrizione: editDettaglioTipologia.descrizione,
             },
             path: 'dettaglioTipologiaModal.dettaglioTipologiaForm'

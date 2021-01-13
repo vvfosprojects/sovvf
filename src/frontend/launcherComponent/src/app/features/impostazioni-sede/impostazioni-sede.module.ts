@@ -13,12 +13,14 @@ import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/add-detta
 import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 import { NgxsModule } from '@ngxs/store';
 import { DettagliTipologieState } from './store/states/dettagli-tipologie.state';
+import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-dettagli-tipologie/ricerca-dettagli-tipologie.component';
 
 @NgModule({
     declarations: [
         ImpostazioniSedeComponent,
         DettagliTipologieComponent,
-        DettaglioTipologiaModalComponent
+        DettaglioTipologiaModalComponent,
+        RicercaDettagliTipologieComponent
     ],
     imports: [
         CommonModule,

@@ -24,3 +24,21 @@ export class SetRicercaDettagliTipologie {
 export class ClearRicercaDettagliTipologia {
     static readonly type = '[DettagliTipologie] Clear Ricerca Dettagli Tipologie';
 }
+
+export class AddDettaglioTipologia {
+    static readonly type = '[DettagliTipologie] Add Dettaglio Tipologia';
+}
+
+export class UpdateDettaglioTipologia {
+    static readonly type = '[DettagliTipologie] Update Dettaglio Tipologia';
+
+    constructor(public dettaglioTipologia: DettaglioTipologia) {
+    }
+}
+
+export class DeleteDettaglioTipologia {
+    static readonly type = '[DettagliTipologie] Delete Dettaglio Tipologia';
+
+    constructor(public codiceDettaglioTipologia: number) {
+    }
+}

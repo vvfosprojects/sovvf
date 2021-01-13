@@ -21,9 +21,8 @@ import {
     ClearFormDettaglioTipologia,
     RequestAddDettaglioTipologia,
     RequestDeleteDettaglioTipologia,
-    RequestUpdateDettaglioTipologia,
-    SetCodTipologiaFormDettaglioTipologia
-} from '../store/actions/add-dettaglio-tipologia-modal.actions';
+    RequestUpdateDettaglioTipologia
+} from '../store/actions/dettaglio-tipologia-modal.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -111,11 +110,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         addDettaglioTipologia.result.then(
             (result: { success: boolean, openAgain: boolean }) => {
                 if (result.success) {
-                    this.addDettaglioTipologia();
-                    if (result.openAgain) {
-                        this.store.dispatch(new SetCodTipologiaFormDettaglioTipologia(1));
-                        this.onAddDettaglioTipologia();
-                    }
+                    this.addDettaglioTipologia(result.openAgain);
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormDettaglioTipologia());
                     console.log('Modal "addDettaglioTipologia" chiusa con val ->', result);
@@ -128,8 +123,11 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         );
     }
 
-    addDettaglioTipologia(): void {
+    addDettaglioTipologia(openAgain: boolean): void {
         this.store.dispatch(new RequestAddDettaglioTipologia());
+        if (openAgain) {
+            this.onAddDettaglioTipologia();
+        }
     }
 
     onEditDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
@@ -213,7 +211,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestDeleteDettaglioTipologia(codDettaglioTipologia));
     }
 
-    onRicercaRubrica(ricerca: string): void {
+    onRicercaDettagliTipologie(ricerca: string): void {
         this.store.dispatch(new SetRicercaDettagliTipologie(ricerca));
     }
 
@@ -230,7 +228,7 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetRubrica());
+                    this.store.dispatch(new GetDettagliTipologie());
                 }
             })
         );
