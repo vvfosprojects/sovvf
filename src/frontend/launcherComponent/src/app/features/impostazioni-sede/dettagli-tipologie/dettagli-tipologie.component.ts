@@ -16,8 +16,15 @@ import { StopBigLoading } from '../../../shared/store/actions/loading/loading.ac
 import { GetRubrica } from '../../rubrica/store/actions/rubrica/rubrica.actions';
 import { DettagliTipologieState } from '../store/states/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
-import { AddDettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/add-dettaglio-tipologia-modal.component';
-import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia } from '../store/actions/add-dettaglio-tipologia-modal.actions';
+import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
+import {
+    ClearFormDettaglioTipologia,
+    RequestAddDettaglioTipologia,
+    RequestDeleteDettaglioTipologia,
+    RequestUpdateDettaglioTipologia,
+    SetCodTipologiaFormDettaglioTipologia
+} from '../store/actions/add-dettaglio-tipologia-modal.actions';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -87,14 +94,14 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
     onAddDettaglioTipologia(): void {
         let addDettaglioTipologia: any;
         if (this.doubleMonitor) {
-            addDettaglioTipologia = this.modalService.open(AddDettaglioTipologiaModalComponent, {
+            addDettaglioTipologia = this.modalService.open(DettaglioTipologiaModalComponent, {
                 windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg'
             });
         } else {
-            addDettaglioTipologia = this.modalService.open(AddDettaglioTipologiaModalComponent, {
+            addDettaglioTipologia = this.modalService.open(DettaglioTipologiaModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
@@ -102,10 +109,13 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
             });
         }
         addDettaglioTipologia.result.then(
-            (result: { success: boolean }) => {
+            (result: { success: boolean, openAgain: boolean }) => {
                 if (result.success) {
                     this.addDettaglioTipologia();
-                    this.onAddDettaglioTipologia();
+                    if (result.openAgain) {
+                        this.store.dispatch(new SetCodTipologiaFormDettaglioTipologia(1));
+                        this.onAddDettaglioTipologia();
+                    }
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormDettaglioTipologia());
                     console.log('Modal "addDettaglioTipologia" chiusa con val ->', result);
@@ -122,72 +132,72 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestAddDettaglioTipologia());
     }
 
-    /* onEditVoceRubrica(voceRubrica: Ente): void {
-        console.log('onEditVoceRubrica', voceRubrica);
+    onEditDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
+        console.log('onEditDettaglioTipologia', dettaglioTipologia);
         let editVoceRubricaModal;
         if (this.doubleMonitor) {
-            editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+            editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
                 windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg'
             });
         } else {
-            editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+            editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
                 windowClass: 'modal-holder ',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg'
             });
         }
-        editVoceRubricaModal.componentInstance.editEnte = voceRubrica;
+        editVoceRubricaModal.componentInstance.editDettaglioTipologia = dettaglioTipologia;
         editVoceRubricaModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
-                    this.updateVoceRubrica();
+                    this.updateDettaglioTipologia();
                 } else if (!result.success) {
-                    this.store.dispatch(new ClearFormEnte());
-                    console.log('Modal "addVoceRubrica" chiusa con val ->', result);
+                    this.store.dispatch(new ClearFormDettaglioTipologia());
+                    console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
                 }
             },
             (err) => {
-                this.store.dispatch(new ClearFormEnte());
+                this.store.dispatch(new ClearFormDettaglioTipologia());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
-    } */
+    }
 
-    /* updateVoceRubrica(): void {
-        this.store.dispatch(new RequestUpdateEnte());
-    } */
+    updateDettaglioTipologia(): void {
+        this.store.dispatch(new RequestUpdateDettaglioTipologia());
+    }
 
-    /* onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }): void {
-        let modalConfermaAnnulla;
+    onDeleteDettaglioTipologia(payload: { codDettaglioTipologia: number, descrizioneDettaglioTipologia: string }): void {
+        let modalConfermaEliminazione: any;
         if (this.doubleMonitor) {
-            modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
                 windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
         } else {
-            modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
         }
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
-        modalConfermaAnnulla.componentInstance.bottoni = [
+        modalConfermaEliminazione.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
+        modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
+        modalConfermaEliminazione.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
         ];
-        modalConfermaAnnulla.result.then(
+        modalConfermaEliminazione.result.then(
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.deleteVoceRubrica(payload.idVoceRubrica);
+                        this.deleteDettaglioTipologia(payload.codDettaglioTipologia);
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
@@ -197,11 +207,11 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
-    } */
+    }
 
-    /* deleteVoceRubrica(id: string): void {
-        this.store.dispatch(new RequestDeleteEnte({ id }));
-    } */
+    deleteDettaglioTipologia(codDettaglioTipologia: number): void {
+        this.store.dispatch(new RequestDeleteDettaglioTipologia(codDettaglioTipologia));
+    }
 
     onRicercaRubrica(ricerca: string): void {
         this.store.dispatch(new SetRicercaDettagliTipologie(ricerca));

@@ -9,7 +9,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImpostazioniSedeComponent } from './impostazioni-sede.component';
 import { DettagliTipologieComponent } from './dettagli-tipologie/dettagli-tipologie.component';
-import { AddDettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/add-dettaglio-tipologia-modal.component';
+import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
 import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 import { NgxsModule } from '@ngxs/store';
 import { DettagliTipologieState } from './store/states/dettagli-tipologie.state';
@@ -18,7 +18,7 @@ import { DettagliTipologieState } from './store/states/dettagli-tipologie.state'
     declarations: [
         ImpostazioniSedeComponent,
         DettagliTipologieComponent,
-        AddDettaglioTipologiaModalComponent
+        DettaglioTipologiaModalComponent
     ],
     imports: [
         CommonModule,

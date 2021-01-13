@@ -2,8 +2,15 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { DettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
-import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDeleteDettaglioTipologia, RequestUpdateDettaglioTipologia } from '../actions/add-dettaglio-tipologia-modal.actions';
+import {
+    ClearFormDettaglioTipologia,
+    RequestAddDettaglioTipologia,
+    RequestDeleteDettaglioTipologia,
+    RequestUpdateDettaglioTipologia,
+    SetCodTipologiaFormDettaglioTipologia
+} from '../actions/add-dettaglio-tipologia-modal.actions';
 import { ResponseInterface } from '../../../../shared/interface/response.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface DettaglioTipologiaStateModel {
     dettaglioTipologiaForm: {
@@ -78,6 +85,18 @@ export class DettaglioTipologiaModalState {
     requestDeleteEnte({ setState, dispatch }: StateContext<DettaglioTipologiaStateModel>, action: RequestDeleteDettaglioTipologia): void {
         this.detttagliTipologieService.deleteDettagliTipologie(action.codDettaglioTipologia).subscribe((response: ResponseInterface) => {
         });
+    }
+
+    @Action(SetCodTipologiaFormDettaglioTipologia)
+    setCodTipologiaFormDettaglioTipologia({ dispatch }: StateContext<DettaglioTipologiaStateModel>, action: SetCodTipologiaFormDettaglioTipologia): void {
+        dispatch(
+            new UpdateFormValue({
+                path: 'dettaglioTipologiaModal.dettaglioTipologiaForm',
+                value: {
+                    codTipologia: action.codDettaglioTipologia
+                }
+            })
+        );
     }
 
     @Action(ClearFormDettaglioTipologia)

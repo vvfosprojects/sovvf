@@ -9,11 +9,11 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state.service';
 
 @Component({
-    selector: 'app-add-dettaglio-tipologia-modal',
-    templateUrl: './add-dettaglio-tipologia-modal.component.html',
-    styleUrls: ['./add-dettaglio-tipologia-modal.component.scss']
+    selector: 'app-dettaglio-tipologia-modal',
+    templateUrl: './dettaglio-tipologia-modal.component.html',
+    styleUrls: ['./dettaglio-tipologia-modal.component.scss']
 })
-export class AddDettaglioTipologiaModalComponent implements OnInit, OnDestroy {
+export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(DettaglioTipologiaModalState.formValid) formValid$: Observable<boolean>;
@@ -78,14 +78,24 @@ export class AddDettaglioTipologiaModalComponent implements OnInit, OnDestroy {
         }));
     }
 
-    onConferma(): void {
+    onConfermaERiapri(): void {
         this.submitted = true;
 
         if (!this.formValid) {
             return;
         }
 
-        this.modal.close({ success: true });
+        this.modal.close({ success: true, openAgain: true });
+    }
+
+    onConfermaEChiudi(): void {
+        this.submitted = true;
+
+        if (!this.formValid) {
+            return;
+        }
+
+        this.modal.close({ success: true, openAgain: false });
     }
 
     onDismiss(): void {

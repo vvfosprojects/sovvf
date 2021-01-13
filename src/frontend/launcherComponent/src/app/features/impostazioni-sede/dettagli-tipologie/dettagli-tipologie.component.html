@@ -31,6 +31,7 @@
                 <th scope="col" style="width:10%">Sede</th>
                 <th scope="col" style="width:10%">Codice Dettaglio</th>
                 <th scope="col" style="width:35%">Descrizione</th>
+                <th scope="col" style="width:35%">Azioni</th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +40,15 @@
                 <td style="width:10%">{{ dettaglioTipologia.codSede }}</td>
                 <td style="width:10%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
                 <td style="width:35%">{{ dettaglioTipologia.descrizione }}</td>
+                <td style="width:35%">
+                    <button class="btn btn-info" (click)="onEditDettaglioTipologia(dettaglioTipologia)">
+                        Modifica
+                    </button>
+                    <button class="btn btn-danger"
+                            (click)="onDeleteDettaglioTipologia({ codDettaglioTipologia: dettaglioTipologia.codiceDettaglioTipologia, descrizioneDettaglioTipologia: dettaglioTipologia.descrizione })">
+                        Elimina
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
