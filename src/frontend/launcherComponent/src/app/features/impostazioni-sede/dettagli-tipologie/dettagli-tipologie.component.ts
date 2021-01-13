@@ -222,10 +222,9 @@ export class DettagliTipologieComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRicercaDettagliTipologie(ricerca));
     }
 
-    onFiltroTipologiaChange(dettaglioTipologia: { codice: string, descrizione: string }): void {
-        console.log('onFiltroTipologiaChange', dettaglioTipologia);
-        if (dettaglioTipologia) {
-            this.store.dispatch(new ReducerSelezioneFiltroTipologia(+dettaglioTipologia.codice));
+    onFiltroTipologiaChange(tipologia: { codice: string, descrizione: string }): void {
+        if (tipologia) {
+            this.store.dispatch(new ReducerSelezioneFiltroTipologia(+tipologia.codice));
         } else {
             this.onFiltroTipologiaReset();
         }
