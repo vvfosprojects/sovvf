@@ -42,3 +42,29 @@ export class DeleteDettaglioTipologia {
     constructor(public codiceDettaglioTipologia: number) {
     }
 }
+
+
+/**
+ * Filtri Tipologie
+ */
+export class ReducerSelezioneFiltroTipologia {
+    static readonly type = '[DettagliTipologie] Reducer Selezione Filtro Tipologia';
+
+    constructor(public codTipologia: number) {
+    }
+}
+
+export class SetFiltroTipologiaSelezionato {
+    static readonly type = '[DettagliTipologie] Set Filtro Tipologia Selezionato';
+
+    constructor(public codTipologia: number) {
+    }
+}
+
+export class SetFiltroTipologiaDeselezionato {
+    static readonly type = '[DettagliTipologie] Set Filtro Tipologia Deselezionato';
+}
+
+export class ResetFiltroTipologiaSelezionato {
+    static readonly type = '[DettagliTipologie] Reset Filtro Tipologia Selezionato';
+}

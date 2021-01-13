@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
-import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 
 const BASE_URL = environment.baseUrl;
@@ -23,7 +22,8 @@ export class DetttagliTipologieService {
     getDettagliTipologie(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
         const obj = {
             filters: {
-                search: filters.search
+                search: filters.search,
+                codTipologia: filters.codTipologia
             },
             pagination
         };

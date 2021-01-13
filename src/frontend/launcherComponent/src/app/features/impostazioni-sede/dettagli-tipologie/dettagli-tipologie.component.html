@@ -18,7 +18,8 @@
                    [items]="[{
                        codice: '1',
                        descrizione: 'Incendio Normale (generico) (1)'
-                   }]">
+                   }]"
+                   (change)="onFiltroTipologiaChange($event)">
         </ng-select>
     </div>
     <div class="col text-right">
@@ -29,7 +30,7 @@
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </div>
     <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
-        <table class="table">
+        <table class="table mt-3 mb-2">
             <thead>
             <tr>
                 <th scope="col" style="width:15%">Codice Tipologia</th>
@@ -40,7 +41,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
+            <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
                 <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
                 <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>
                 <td style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
@@ -66,7 +67,7 @@
             Nessun Dettaglio Tipologia presente
         </div>
     </div>
-    <div *ngIf="dettagliTipologie?.length" class="col-12 text-right">
+    <div *ngIf="dettagliTipologie?.length" class="col-12 text-right mt-2">
         <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'">
         </pagination-controls>
     </div>
