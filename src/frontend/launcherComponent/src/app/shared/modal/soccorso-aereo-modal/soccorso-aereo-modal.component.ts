@@ -41,15 +41,16 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   }
 
   chiudiModalSoccorsoAereo(closeRes: string): void {
+    const requestType = [];
+    this.azioniRichiesta.forEach(x => x.checked ?  requestType.push(x.descrizione) : null);
     if (closeRes === 'ok') {
       const obj = {
-        description : this.motivazione ? this.motivazione : null,
-        rescueCategories  : [],
+        description: this.motivazione ? this.motivazione : null,
+        requestType: requestType.join(', '),
         operatorName: this.utente.nome,
         operatorSurname: this.utente.cognome,
         operatorFiscalCode: this.utente.codiceFiscale,
       };
-      this.azioniRichiesta.forEach(x => x.checked ?  obj.rescueCategories.push(x.descrizione) : null);
       this.modal.close({
         status: 'ok',
         result: obj,
