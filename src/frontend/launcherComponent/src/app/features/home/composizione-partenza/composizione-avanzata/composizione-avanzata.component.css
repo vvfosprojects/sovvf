@@ -1,6 +1,6 @@
 .m-h-boxes-avanzata {
-    height: 345px;
-    max-height: 345px;
+    height: 628px;
+    max-height: 628px;
 }
 
 .m-h-no-boxes-avanzata {
@@ -29,4 +29,8 @@
   transform: translate(78px, -26px);
   position: fixed;
   cursor: pointer
+}
+
+.font-comp-xl {
+  font-size: 130% !important;
 }

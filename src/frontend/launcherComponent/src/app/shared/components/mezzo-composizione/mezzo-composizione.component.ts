@@ -7,6 +7,10 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { iconaStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { Sede } from '../../model/sede.model';
+import {Select} from '@ngxs/store';
+import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
+import {Observable, Subscription} from 'rxjs';
+import {ViewLayouts} from '../../interface/view.interface';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -33,13 +37,22 @@ export class MezzoComposizioneComponent implements OnInit {
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
-    public sganciamentoDisabilitato = false;
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    constructor() {
-    }
+    public sganciamentoDisabilitato = false;
+    private subscription = new Subscription();
+    viewState: ViewLayouts;
+
+  constructor() {
+    this.getViewState();
+  }
 
     ngOnInit(): void {
         this.sganciamentoCheck();
+    }
+
+    getViewState(): void {
+      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     sganciamentoCheck(): void {

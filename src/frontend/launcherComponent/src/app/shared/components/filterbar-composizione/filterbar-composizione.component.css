@@ -1,3 +1,7 @@
 .dropdown-toggle::after {
     display: none;
 }
+
+.font-comp-xl {
+  font-size: 115% !important;
+}

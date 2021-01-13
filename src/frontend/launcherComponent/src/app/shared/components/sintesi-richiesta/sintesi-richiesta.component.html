@@ -13,7 +13,7 @@
                           style="position: absolute; left: 0; top:22px">S</span>
                     <!-- PRIMA RIGA -->
                     <div class="row">
-                        <div class="clearfix mx-3">
+                        <div class="clearfix ml-4" style="width: 2%">
                             <!-- Priorità -->
                             <i class="guida fa fa-thermometer-half fa-fw font-double-monitor d-none"
                                [class.high-priority]="richiesta.prioritaRichiesta > 3"
@@ -28,7 +28,7 @@
                                 </ng-template>
                             </ngb-rating>
                         </div>
-                        <div class="col-3"
+                        <div class="clearfix" style="width: 12%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <ng-template #rilevante>
                                 <div *ngIf="richiesta?.rilevanteGrave">
@@ -55,6 +55,7 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="clearfix" style="width: 17%"></div>
                         <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- descrizione intervento -->
@@ -95,8 +96,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-6"
-                             style="flex: 0 0 48% !important;">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 30%">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
                                 <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
@@ -135,31 +135,12 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-2">
-                            <!-- richiedente -->
-                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
-                                <i class="guida fa fa-address-book-o fa-fw mr-1 font-double-monitor"
-                                   ngbTooltip="Richiedente"
-                                   container="body"></i>
-                                <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor">
-                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right"
-                                       [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
-                                        {{ richiesta?.richiedente?.nominativo | truncate:20 }}
-                                    </a>
-                                </span>
-                                <span class="font-double-monitor ml-1">
-                                    (
-                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
-                                        <a>{{ richiesta?.richiedente?.telefono }}</a>
-                                    )
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-2 pr-3 text-right">
+                        <div class="clearfix" style="width: 22%"></div>
+                        <div class="clearfix pr-3 text-right" style="width: 15%">
                             <div class="h6 mb-0">
 
                                 <!-- soccorso aereo -->
-                                <span *ngIf="richiesta.soccorsoAereo" class="nowrap">
+                                <span *ngIf="true" class="nowrap">
                                           <button class="btn btn-light border pl-0 py-0 big_numbers mr-1 font-double-monitor"
                                                   style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
                                               <i class="guida fa fa-plane fa-fw ml-2 pl-1" ngbTooltip="Dettaglio Soccorso Aereo"></i>
@@ -215,10 +196,10 @@
                     </div>
                     <!-- SECONDA RIGA -->
                     <div class="row">
-                        <div class="clearfix mx-3">
+                        <div class="clearfix ml-4" style="width: 2%">
 
                         </div>
-                        <div class="col-3"
+                        <div class="clearfix" style="width: 12%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
@@ -231,11 +212,12 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="clearfix" style="width: 17%"></div>
                         <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- richiedente -->
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
-                                <i class="guida fa fa-address-book-o fa-fw mr-1 font-double-monitor"
+                                <i class="guida fa fa-address-book-o fa-fw mr-1" style="font-size: 140%"
                                    ngbTooltip="Richiedente"
                                    container="body"></i>
                                 <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor">
@@ -245,16 +227,13 @@
                                     </a>
                                 </span>
                                 <span  class="font-double-monitor ml-1">
-                                    (
-                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 140%" ngbTooltip="Numero richiedente"></i>
                                         <a>{{ richiesta?.richiedente?.telefono }}</a>
-                                    )
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-6"
-                             style="flex: 0 0 48% !important;">
-                            <i class="guida fa fa-map-marker fa-fw mr-1 font-double-monitor" ngbTooltip="Località"></i>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 30%">
+                            <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%" ngbTooltip="Località"></i>
                             <span class="font-double-monitor">
                                       <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
                                             class="font-double-monitor"
@@ -262,7 +241,7 @@
                                           {{ richiesta?.localita?.indirizzo | truncate:30 }}
                                       </span>
                                 </span>
-                            <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor">
+                            <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor" style="vertical-align: text-bottom;">
                                 <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
@@ -299,8 +278,27 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-2"></div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-2 pr-3 text-right"
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 22%; align-self: center">
+                          <!-- richiedente -->
+                          <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                            <i class="guida fa fa-address-book-o fa-fw mr-1"
+                               style="font-size: 140%"
+                               ngbTooltip="Richiedente"
+                               container="body"></i>
+                            <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor mr-2">
+                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}"
+                                       placement="right" style="font-size: 130%;font-weight: 400;"
+                                       [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
+                                        {{ richiesta?.richiedente?.nominativo | truncate:20 }}
+                                    </a>
+                                </span>
+                            <span class="ml-1">
+                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
+                                        <a style="font-size: 140% !important; font-weight: 400;">{{ richiesta?.richiedente?.telefono }}</a>
+                                </span>
+                          </div>
+                        </div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix text-right" style="width: 14.3%"
                              [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
                                 <button *ngIf="!fissata && fissabile"
@@ -428,7 +426,7 @@
                     </div>
 
                     <!-- box note localita e zone emergenza -->
-                    <div *ngIf="isEspanso" class="col-md-12 default-cursor">
+                    <div *ngIf="isEspanso" [class.d-none]="partenza" class="col-md-12 default-cursor">
                         <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza || richiesta?.tags"
                              class="col-md-12">
                             <div class="row card bt-0 note-localita mt-1">
@@ -573,7 +571,7 @@
                                     <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata"
                                          class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
                                          [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
-                                        <i class="guida fa fa-exclamation-triangle fa-fw mr-1 "
+                                        <i class="guida fa fa-exclamation-triangle fa-fw mr-1" style="font-size: 110%"
                                            ngbTooltip="Sedi Allertate"
                                            placement="right"></i>
                                         {{ sediAllertate | truncate: 13 }}

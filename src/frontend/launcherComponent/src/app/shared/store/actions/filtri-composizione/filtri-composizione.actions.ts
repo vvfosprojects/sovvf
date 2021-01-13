@@ -6,6 +6,13 @@ export class SetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Set Lista Filtri';
 }
 
+export class SetFiltriDistaccamentoDefault {
+  static readonly type = '[FiltriComposizione] Set Filtri Distaccamento Default';
+
+  constructor( public distaccamenti: any[]) {
+  }
+}
+
 export class AddFiltroSelezionatoComposizione {
     static readonly type = '[FiltriComposizione] Add Filtro Selezionato';
 

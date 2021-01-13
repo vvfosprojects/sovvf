@@ -3,7 +3,7 @@
     <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="doubleMonitor$ | async"
-             [class.d-none]="!boxAttivi || viewState.chiamata.active">
+             [class.d-none]="!boxAttivi || viewState.chiamata.active || viewState.composizione.active">
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
@@ -11,7 +11,8 @@
     <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="doubleMonitor$ | async"
-             [class.mt-3]="!boxAttivi || viewState.chiamata.active">
+             [class.mt-3]="!boxAttivi || viewState.chiamata.active"
+             [class.d-none]="viewState.composizione.active">
             <app-filterbar [colorButton]="(colorButton$ | async)"
                            [viewState]="viewState">
             </app-filterbar>
@@ -19,7 +20,7 @@
     </div>
     <div class="row"
          [class.mt-1]="!boxAttivi && !viewState.chiamata.active"
-         [class.mt-2]="viewState.chiamata.active">
+         [class.mt-2]="viewState.chiamata.active || viewState.composizione.active">
         <div [class.col-6]="(doubleMonitor$ | async)"
              [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.chiamata.active || viewState.richieste.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
             <!-- Richieste -->

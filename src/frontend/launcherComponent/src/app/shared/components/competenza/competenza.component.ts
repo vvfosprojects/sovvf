@@ -10,6 +10,7 @@ export class CompetenzaComponent {
 
     @Input() competenza: Sede;
     @Input() i: number;
+    @Input() compAvanzata: boolean;
 
     @Output() LocalizzazioneCompetenza: EventEmitter<Sede> = new EventEmitter(); // (1)
 

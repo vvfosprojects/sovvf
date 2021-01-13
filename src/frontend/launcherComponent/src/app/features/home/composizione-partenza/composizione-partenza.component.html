@@ -17,6 +17,7 @@
         </div>
         <div class="py-1">
             <app-filterbar-composizione [filtri]="filtri$ | async"
+                                        [competenze]="richiesta.competenze"
                                         [disableComposizioneMode]="loadingListe"
                                         [composizionePartenza]="true"
                                         [prenotato]="prenotato"
