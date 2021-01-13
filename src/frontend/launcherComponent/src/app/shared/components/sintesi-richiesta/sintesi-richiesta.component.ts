@@ -162,6 +162,8 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     invioPartenza(richiesta: SintesiRichiesta): void {
+        const competenzeDefault = [];
+        richiesta.codUOCompetenza.forEach(x => competenzeDefault.push(x));
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }

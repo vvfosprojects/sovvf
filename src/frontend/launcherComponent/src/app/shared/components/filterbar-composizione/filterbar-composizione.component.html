@@ -1,20 +1,22 @@
-<div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2 px-2">
+<div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2 px-2 font-comp-xl"
+     [class.font-comp-xl]="viewState.composizione.active">
     <div class="row">
         <!-- Tasti Composizione Partenza -->
         <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
-                    <button class="btn btn-block btn-primary btn-no-hover" (click)="turnOffComposizione()">
-                        <i class="fa fa-arrow-left"></i>
+                    <button class="btn btn-block btn-primary btn-no-hover font-comp-xl" style="width: 65px"
+                            (click)="turnOffComposizione()" ngbTooltip="Torna Chiamate/Interventi" placement="bottom-left">
+                        <i class="fa fa-arrow-left font-comp-xl"></i>
                     </button>
                 </div>
                 <div class="pl-1" style="display:flex;" (click)="$event.stopPropagation()">
                     <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
                          (click)="$event.stopPropagation()">
-                        <button class="btn btn-info btn-no-hover" id="dropdownActionsMezzo" ngbDropdownAnchor
-                                ngbTooltip="Opzioni"
+                        <button class="btn btn-info btn-no-hover font-comp-xl" id="dropdownActionsMezzo" ngbDropdownAnchor
+                                ngbTooltip="Opzioni" placement="bottom-left"
                                 (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
-                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v font-comp-xl"></i>
                         </button>
                         <div ngbDropdownMenu>
                             <div ngbDropdownItem>
@@ -46,11 +48,12 @@
         </div>
         <!-- Select Filtri -->
         <div [class.col-9]="composizionePartenza"
+             [class.align-self-center]="viewState.composizione.active"
              [class.col-12]="sostituzionePartenza">
             <div class="row pt-1"
                  [class.pb-2]="sostituzionePartenza">
                 <div class="col-3">
-                    <ng-select class="align-self-center"
+                    <ng-select class="align-self-center font-comp-xl"
                                [items]="filtri?.turni"
                                [multiple]="false"
                                [closeOnSelect]="true"
@@ -74,7 +77,7 @@
                                [loading]="!filtri?.distaccamenti"
                                (change)="addFiltro($event, 'codiceDistaccamento')"
                                (clear)="clearFiltri('codiceDistaccamento')"
-                               placeholder="Distaccamento: Tutti">
+                               placeholder="Distaccamento: Competenza">
                     </ng-select>
                 </div>
 
@@ -116,9 +119,13 @@
             </div>
         </div>
         <!-- Elimina Filtri Attivi -->
-        <button class="btn btn-sm btn-danger align-self-center" ngbTooltip="Elimina Filtri Attivi">
-            <i class="fa fa-trash"></i>
+        <!--
+        <button class="btn btn-sm btn-danger btn-no-hover align-self-center font-comp-xl"
+                (click)="resetFiltri()" style="width: 55px; margin-left: 100px"
+                ngbTooltip="Elimina Filtri Attivi">
+            <i class="fa fa-trash font-comp-xl"></i>
         </button>
+        -->
         <!-- Altri Filtri -->
         <ng-template [ngIf]="composizionePartenza">
             <a href="javascript:void(0)" class="align-self-center font-weight-bolder pl-3">
@@ -126,5 +133,11 @@
                 <i class="fa fa-chevron-down"></i>
             </a>
         </ng-template>
+    </div>
+    <div class="row mb-1"  style="font-size: xx-large">
+      <div class="col" style="text-align-last: center">
+        <app-competenza *ngFor="let c of competenze; let i = index"
+                        [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
+      </div>
     </div>
 </div>

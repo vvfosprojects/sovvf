@@ -7,7 +7,7 @@ import {
   GetFiltriComposizione,
   ResetFiltriComposizione,
   RemoveFiltroSelezionatoComposizione,
-  SetFiltriComposizione, ClearFiltriComposizione
+  SetFiltriComposizione, ClearFiltriComposizione, SetFiltriDistaccamentoDefault
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
@@ -70,6 +70,13 @@ export class FiltriComposizioneState {
         dispatch(new SetFiltriComposizione());
     }
 
+    @Action(SetFiltriDistaccamentoDefault)
+    setFiltriDistaccamentoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: any): void {
+      patchState({
+        codiceDistaccamento: action.distaccamenti,
+      });
+    }
+
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
@@ -103,11 +110,14 @@ export class FiltriComposizioneState {
                 );
                 break;
             case 'codiceDistaccamento':
-                ctx.setState(
+                /*ctx.setState(
                     patch({
                         codiceDistaccamento: removeItem(codiceDistaccamento => codiceDistaccamento !== action.id)
                     })
-                );
+                );*/
+                ctx.patchState({
+                  codiceDistaccamento: [],
+                });
                 ctx.setState(
                     patch({
                         codiceDistaccamento: insertItem(action.id)
@@ -203,18 +213,15 @@ export class FiltriComposizioneState {
     }
 
     @Action(ClearFiltriComposizione)
-    clearFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
-      patchState({
-        filtri: {
-          turni: null,
-          distaccamenti: [],
-          generiMezzi: [],
-          stati: []
-        },
-        turno: undefined,
-        codiceDistaccamento: [],
-        tipoMezzo: [],
-        statoMezzo: [],
-      });
+    clearFiltriComposizione( ctx: StateContext<FiltriComposizioneStateStateModel>): void {
+      ctx.setState(
+        patch({
+          turno: FiltriComposizioneStateDefaults.turno,
+          codiceDistaccamento: FiltriComposizioneStateDefaults.codiceDistaccamento,
+          tipoMezzo: FiltriComposizioneStateDefaults.tipoMezzo,
+          statoMezzo: FiltriComposizioneStateDefaults.statoMezzo
+          }
+        )
+      );
     }
 }

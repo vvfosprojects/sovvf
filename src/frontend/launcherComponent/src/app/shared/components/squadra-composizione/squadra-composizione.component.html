@@ -1,8 +1,9 @@
 <li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
+    [class.font-composizione-avanzata]="viewState.composizione.active"
     (click)="onClick()" [ngClass]="liClass()">
     <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom"
          [disableTooltip]="!squadraComposizioneBusy()">
-        <div class="col-10 pl-0">
+        <div class="clearfix pl-0 font-composizione-avanzata" style="width: 55%">
       <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right"
             triggers="mouseenter:mouseleave">
         <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadraComp.squadra.componenti.length}}</span>
@@ -16,10 +17,14 @@
             <span class="font-weight-bolder">{{squadraComp.squadra.nome}}</span>
             <span class="d-inline-block ml-1">({{squadraComp.squadra.turno}})</span>
         </div>
-        <div class="col-2 pl-0">
+        <div *ngIf="viewState.composizione.active" class="clearfix font-composizione-avanzata text-right pr-1" style="width: 45%;">
+          <span class="badge" [ngClass]="badgeDistaccamentoClass()"
+                [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione}}</span>
+        </div>
+        <div *ngIf="!viewState.composizione.active" class="col-2 pl-0">
       <span class="badge" [ngClass]="badgeDistaccamentoClass()"
             [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione
-          | slice:0:3}}</span>
-        </div>
+        | slice:0:3}}</span>
+      </div>
     </div>
 </li>

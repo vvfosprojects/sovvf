@@ -3,6 +3,10 @@ import { SquadraComposizione } from '../../interface/squadra-composizione-interf
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
+import {ViewLayouts} from '../../interface/view.interface';
+import {Observable, Subscription} from 'rxjs';
+import {Select} from '@ngxs/store';
+import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -23,7 +27,18 @@ export class SquadraComposizioneComponent {
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
-    constructor() {
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+
+    private subscription = new Subscription();
+    viewState: ViewLayouts;
+
+
+  constructor() {
+      this.getViewState();
+    }
+
+    getViewState(): void {
+      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     onClick(): void {
