@@ -24,21 +24,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore);
 
-            //var richiestaSoccorsoAereo = new NuovaRichiestaSoccorsoAereo()
-            //{
-            //    Lat = (decimal)command.Richiesta.Localita.Coordinate.Latitudine,
-            //    Lng = (decimal)command.Richiesta.Localita.Coordinate.Longitudine,
-            //    RequestKey = command.RichiestaSoccorsoAereo.RequestKey,
-            //    Description = command.RichiestaSoccorsoAereo.Description,
-            //    Datetime = DateTime.Now,
-            //    OnSiteContact = "",
-            //    OperatorFiscalCode = command.RichiestaSoccorsoAereo.OperatorFiscalCode,
-            //    OperatorName = command.RichiestaSoccorsoAereo.OperatorName,
-            //    OperatorSurname = command.RichiestaSoccorsoAereo.OperatorSurname,
-            //    RequestTypeCode = command.RichiestaSoccorsoAereo.RequestTypeCode,
-            //    RescueCategories = command.RichiestaSoccorsoAereo.RescueCategories,
-            //    Remarks = ""
-            //};
+            if (command.RichiestaSoccorsoAereo.RequestKey != null)
+                command.RichiestaSoccorsoAereo.RequestKey =
+                    "CMD." +
+                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[0] +
+                    "." +
+                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0') +
+                    "." +
+                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
 
             //Comunico al servizio esterno
             _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
