@@ -143,6 +143,7 @@
             </div>
         </div>
         <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
+                                         [richiesta]="richiesta"
                                          [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
                                          (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
                                          (confirmPartenzaInUscita)="confermaPartenzeInUscita()">

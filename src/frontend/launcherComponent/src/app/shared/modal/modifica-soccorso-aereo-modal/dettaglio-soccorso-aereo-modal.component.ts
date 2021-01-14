@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 
 
 @Component({
@@ -12,7 +13,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
   subscription: Subscription = new Subscription();
-
+  richiesta: SintesiRichiesta;
 
   constructor(private modal: NgbActiveModal) {
   }

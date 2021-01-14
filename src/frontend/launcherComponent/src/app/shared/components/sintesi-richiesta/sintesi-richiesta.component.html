@@ -32,7 +32,7 @@
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <div class="h6 mb-1 nowrap font-double-monitor">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
-                                   ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
+                                   ngbTooltip="Identificativo richiesta" placement="top-left"></i>
                                 <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-double-monitor">{{ richiesta.codiceRichiesta.slice(0, -5)}}
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="clearfix" style="width: 17%">
-                          <button *ngIf="richiesta.prioritaRichiesta > 3" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
+                          <button *ngIf="richiesta.prioritaRichiesta > 3 && richiesta.stato === 'Chiamata'" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
                                   ngbTooltip="Chiamata Urgente!"
                                   style="height: 36px; width: 36px; border-radius: 65% ">
                             <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
@@ -199,7 +199,7 @@
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
-                                   placement="right" container="body"></i>
+                                   placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
                                           [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"

@@ -2,3 +2,13 @@
   min-height: 75px !important;
   max-height: 75px !important;
 }
+
+.font-soccorso-lg {
+  font-size: 170% !important;
+}
+
+.input-soccorso-format {
+  display: inline-flex !important;
+  align-items: flex-end !important;
+  height: fit-content !important;
+}

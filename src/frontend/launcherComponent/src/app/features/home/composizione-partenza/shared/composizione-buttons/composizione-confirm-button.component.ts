@@ -6,9 +6,9 @@ import {Observable, Subscription} from 'rxjs';
 import {SoccorsoAereoModalComponent} from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import {
   AddSoccorsoAereo,
-  GetAzioniRichiesta,
-  GetTipologieRichiesta
+  GetAzioniRichiesta
 } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
   selector: 'app-composizione-confirm-button',
@@ -22,6 +22,7 @@ export class ComposizioneConfirmButtonComponent {
 
   @Input() boxPartenzaLenght: number;
   @Input() disableConfirmPartenza = true;
+  @Input() richiesta: SintesiRichiesta;
 
   @Output() confirmPartenzaInViaggio = new EventEmitter();
   @Output() confirmPartenzaInUscita = new EventEmitter();
@@ -32,7 +33,6 @@ export class ComposizioneConfirmButtonComponent {
               private modalService: NgbModal) {
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.store.dispatch(new GetAzioniRichiesta());
-    this.store.dispatch(new GetTipologieRichiesta()); // todo: rilocare dove è realmente richiesto
   }
 
   _confirmPartenzaInViaggio(): void {
@@ -67,6 +67,7 @@ export class ComposizioneConfirmButtonComponent {
       }
     }
     const modal = this.modalService.open(SoccorsoAereoModalComponent, modalOptions);
+    modal.componentInstance.richiesta = this.richiesta;
     modal.result.then((res: any) => {
       switch (res.status) {
         case 'ok':

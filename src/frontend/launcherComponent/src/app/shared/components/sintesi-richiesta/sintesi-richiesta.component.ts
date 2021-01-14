@@ -451,8 +451,10 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
       }
       const modal = this.modalService.open(DettaglioSoccorsoAereoModalComponent, modalOptions);
+      modal.componentInstance.richiesta = this.richiesta;
+      console.log('*** RICHIESTA SOCCORSO ', this.richiesta);
       modal.result.then((res: string) => {
-        switch (res) {
+          switch (res) {
           case 'ok':
             this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
             break;

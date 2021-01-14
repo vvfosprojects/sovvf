@@ -6,6 +6,7 @@ import {ComposizioneSoccorsoAereoState} from '../../../features/home/store/state
 import {makeCopy} from '../../helper/function';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {Utente} from '../../model/utente.model';
+import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
 
+  richiesta: SintesiRichiesta;
   subscription: Subscription = new Subscription();
   tipologiaChecked = false;
   motivazione: string;
@@ -46,6 +48,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     if (closeRes === 'ok') {
       const obj = {
         description: this.motivazione ? this.motivazione : null,
+        requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
         requestType: requestType.join(', '),
         operatorName: this.utente.nome,
         operatorSurname: this.utente.cognome,
