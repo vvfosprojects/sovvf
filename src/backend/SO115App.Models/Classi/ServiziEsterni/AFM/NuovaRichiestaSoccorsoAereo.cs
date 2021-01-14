@@ -4,40 +4,24 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
     public class NuovaRichiestaSoccorsoAereo
     {
-        public string RequestKey { get; set; }
-        //{
-        //    get => RequestKey; 
+        public string requestKey { get; set; }
+        public DateTime datetime { get; set; }
+        public string description { get; set; } = "";
+        public string requestTypeCode { get; set; } = "";
+        public string requestType { get; set; } = "";
+        public decimal lat { get; set; }
+        public decimal lng { get; set; }
+        public string onSiteContact { get; set; } = "";
+        public string onSiteContactPhoneNumber { get; set; } = "";
+        public string remarks { get; set; } = "";
+        public string[] rescueCategories { get; set; } = new string[] { "" };
+        public string locality { get; set; } = "";
+        public string operatorName { get; set; }
+        public string operatorSurname { get; set; }
+        public string operatorFiscalCode { get; set; }
 
-        //    set
-        //    {
-        //        if(RequestKey != null)
-        //            RequestKey = 
-        //                "CMD." + 
-        //                value.Split('-', StringSplitOptions.RemoveEmptyEntries)[0] +
-        //                "." +
-        //                value.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0') +
-        //                "." +
-        //                value.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
-        //    } 
-        //}
-
-        public string Description { get; set; }
-        public string RequestTypeCode { get; set; }
-        public string RequestType { get; set; }
-        public decimal Lat { get; set; }
-        public decimal Lng { get; set; }
-        public string OnSiteContact { get; set; }
-        public string OnSiteContactPhoneNumber { get; set; }
-        public DateTime Datetime { get; set; }
-        public string Remarks { get; set; }
-        public string[] RescueCategories { get; set; }
-        public string OperatorName { get; set; }
-        public string OperatorSurname { get; set; }
-        public string OperatorFiscalCode { get; set; }
-
-        public string VenueInCharge { get; set; } = "";
-        public string ProgressiveNumber { get; set; } = "";
-        public bool AreReliableCoordinates { get; set; } = true;
-        public bool IsConsultation { get; set; } = false;
+        public string venueInCharge { get; set; } = "";
+        public string progressiveNumber { get; set; } = "";
+        public bool areReliableCoordinates { get; set; } = false;
     }
 }

@@ -32,7 +32,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public IEnumerable<AuthorizationResult> Authorize(InserisciRichiestaSoccorsoAereoCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetByCodice(command.RichiestaSoccorsoAereo.RequestKey);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.RichiestaSoccorsoAereo.requestKey);
 
             var Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 

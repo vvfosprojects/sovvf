@@ -125,6 +125,8 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string username, string password)
         {
+            content.Headers.ContentType = getMediaType();
+
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
@@ -145,6 +147,8 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string username, string password)
         {
+            content.Headers.ContentType = getMediaType();
+
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));

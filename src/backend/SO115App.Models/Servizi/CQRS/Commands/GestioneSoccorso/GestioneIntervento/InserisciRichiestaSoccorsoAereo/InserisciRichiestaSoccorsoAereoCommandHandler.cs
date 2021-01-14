@@ -24,14 +24,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore);
 
-            if (command.RichiestaSoccorsoAereo.RequestKey != null)
-                command.RichiestaSoccorsoAereo.RequestKey =
-                    "CMD." +
-                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[0] +
-                    "." +
-                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0') +
-                    "." +
-                    command.RichiestaSoccorsoAereo.RequestKey.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
+            if (command.RichiestaSoccorsoAereo.requestKey != null)
+            {
+                string value = command.Richiesta.Codice;
+                string sede = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[0];
+                string seq = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0');
+                string data = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
+
+                seq = seq == "" ? "0" : seq;
+
+                command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
+            }
+
+            command.RichiestaSoccorsoAereo.datetime = DateTime.Now;
 
             //Comunico al servizio esterno
             _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
