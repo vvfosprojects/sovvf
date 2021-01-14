@@ -53,6 +53,8 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
         operatorName: this.utente.nome,
         operatorSurname: this.utente.cognome,
         operatorFiscalCode: this.utente.codiceFiscale,
+        lat: this.richiesta.localita.coordinate.latitudine,
+        lng: this.richiesta.localita.coordinate.longitudine,
       };
       this.modal.close({
         status: 'ok',
