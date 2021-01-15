@@ -9,12 +9,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
     public class AnnullaRichiestaSoccorsoAereoCommandHandler : ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand>
     {
         private readonly IAnnullaRichiestaSoccorsoAereo _annullaRichiestaSoccorsoAereo;
-        private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
 
-        public AnnullaRichiestaSoccorsoAereoCommandHandler(IAnnullaRichiestaSoccorsoAereo annullaRichiestaSoccorsoAereo, ISaveRichiestaAssistenza saveRichiestaAssistenza)
+        public AnnullaRichiestaSoccorsoAereoCommandHandler(IAnnullaRichiestaSoccorsoAereo annullaRichiestaSoccorsoAereo, IUpDateRichiestaAssistenza updateRichiesta)
         {
             _annullaRichiestaSoccorsoAereo = annullaRichiestaSoccorsoAereo;
-            _saveRichiestaAssistenza = saveRichiestaAssistenza;
+            _updateRichiesta = updateRichiesta;
         }
 
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
@@ -27,7 +27,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
 
             //Salvo richiesta sul db
-            _saveRichiestaAssistenza.Save(command.Richiesta);
+            _updateRichiesta.UpDate(command.Richiesta);
         }
     }
 }

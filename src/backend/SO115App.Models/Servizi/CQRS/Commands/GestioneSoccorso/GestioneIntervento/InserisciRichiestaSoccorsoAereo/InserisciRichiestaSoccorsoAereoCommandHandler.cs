@@ -1,6 +1,5 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -10,12 +9,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
     public class InserisciRichiestaSoccorsoAereoCommandHandler : ICommandHandler<InserisciRichiestaSoccorsoAereoCommand>
     {
         private readonly IAggiornaRichiestaSoccorsoAereo _aggiorna;
-        private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
+        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
 
-        public InserisciRichiestaSoccorsoAereoCommandHandler(IAggiornaRichiestaSoccorsoAereo aggiorna, ISaveRichiestaAssistenza saveRichiestaAssistenza)
+        public InserisciRichiestaSoccorsoAereoCommandHandler(IAggiornaRichiestaSoccorsoAereo aggiorna, IUpDateRichiestaAssistenza updateRichiesta)
         {
             _aggiorna = aggiorna;
-            _saveRichiestaAssistenza = saveRichiestaAssistenza;
+            _updateRichiesta = updateRichiesta;
         }
 
         public void Handle(InserisciRichiestaSoccorsoAereoCommand command)
@@ -42,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
             //Aggiorno richiesta sul db
-            _saveRichiestaAssistenza.Save(command.Richiesta);
+            _updateRichiesta.UpDate(command.Richiesta);
         }
     }
 }
