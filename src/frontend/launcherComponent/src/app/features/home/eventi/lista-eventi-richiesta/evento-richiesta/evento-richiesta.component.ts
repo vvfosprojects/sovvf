@@ -57,6 +57,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
             ['RevocaPerSostituzioneMezzo', ['fa-refresh']],
             ['AllertaAltreSedi', ['fa-exclamation-triangle']],
+            ['RichiestaSoccorsoAereo', ['fa-plane']],
 
             // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
