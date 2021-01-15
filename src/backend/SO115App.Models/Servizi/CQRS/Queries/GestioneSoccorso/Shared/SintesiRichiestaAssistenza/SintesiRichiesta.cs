@@ -57,6 +57,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
             this.Competenze = new List<Sede>();
         }
 
+        public bool RichiestaSoccorsoAereo { get; set; } = false;
+
         /// <summary>
         ///   L'id della richiesta
         /// </summary>

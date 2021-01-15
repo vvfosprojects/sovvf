@@ -19,7 +19,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            command.Richiesta.SoccorsoAereo = false;
+            command.Richiesta.RichiestaSoccorsoAereo = false;
 
             new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore);
 

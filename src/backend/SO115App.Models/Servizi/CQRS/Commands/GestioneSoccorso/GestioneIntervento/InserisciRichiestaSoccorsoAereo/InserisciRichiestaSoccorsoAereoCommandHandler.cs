@@ -34,7 +34,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
                 command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
             }
-            command.Richiesta.SoccorsoAereo = true;
+            command.Richiesta.RichiestaSoccorsoAereo = true;
             command.RichiestaSoccorsoAereo.datetime = DateTime.Now;
 
             //Comunico al servizio esterno
