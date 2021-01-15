@@ -118,28 +118,44 @@
   </div>
 
   <!-- ATTIVITA' -->
-  <!---->
-  <div class="row"><div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px">Attivtà</div></div>
-  <div class="row my-5">
-    <div class="col-12 d-inline-flex">
-      <div class="clearfix w-50 mr-2 align-self-center">
-          <ng-select class="border font-xlarge test-ng-select"
-                     bindLabel=""
-                     bindValue=""
-                     clearAllText="Clear"
-                     placeholder="Seleziona Attività"
-                     [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
-                     [items]=""
-                     [multiple]="false"
-                     [closeOnSelect]="true"
-                     [hideSelected]="true">
-          </ng-select>
-      </div>
-      <div class="clearfix w-50">
-        <input id="attivita" type="text" placeholder="info attività" class="form-control font-xlarge" style="height: 50px" disabled>
-      </div>
+  <div class="row">
+    <div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px">Attività
+    <i (click)="onShowAttivita()" [class.fa-chevron-up]="!showAttivita" [class.fa-chevron-down]="showAttivita" class="fa"
+       style="cursor: pointer; transform: translate(63rem, 0px)"></i>
     </div>
   </div>
+  <table *ngIf="showAttivita" class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Stato</th>
+      <th scope="col">Aggiornata alle</th>
+      <th scope="col">Nucleo</th>
+      <th scope="col">Velivo</th>
+      <th scope="col">Categorie</th>
+      <th scope="col">Tempo Stimato</th>
+      <th scope="col">Accettazione</th>
+      <th scope="col">Decollo</th>
+      <th scope="col">Arrivo</th>
+      <th scope="col">Rientro</th>
+      <th scope="col">Sede</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of attivita; index as i">
+      <th scope="row">{{a.stato}}</th>
+      <td>{{a.aggiornamento}}</td>
+      <td>{{a.nucleo}}</td>
+      <td>{{a.velivolo}}</td>
+      <td>{{a.categorie}}</td>
+      <td>{{a.tempoStimato}}</td>
+      <td>{{a.accettazione}}</td>
+      <td>{{a.decollo}}</td>
+      <td>{{a.arrivo}}</td>
+      <td>{{a.rientro}}</td>
+      <td>{{a.sede}}</td>
+    </tr>
+    </tbody>
+  </table>
 
 
 </div>
