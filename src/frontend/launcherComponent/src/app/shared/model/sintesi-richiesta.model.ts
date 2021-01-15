@@ -179,7 +179,7 @@ export class SintesiRichiesta {
         /**
          * richiesta con soccorso aereo
          */
-        public soccorsoAereo?: boolean
+        public richiestaSoccorsoAereo?: boolean
     ) {
     }
 }
