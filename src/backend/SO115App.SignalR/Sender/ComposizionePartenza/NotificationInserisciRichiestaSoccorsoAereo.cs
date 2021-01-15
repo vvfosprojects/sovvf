@@ -36,9 +36,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                 Task.Factory.StartNew(() =>
                 {
-                    //var boxRichieste = _getBoxRichieste.Get(se)
+                    var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
 
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", command.Richiesta);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
                 });
             });
         }
