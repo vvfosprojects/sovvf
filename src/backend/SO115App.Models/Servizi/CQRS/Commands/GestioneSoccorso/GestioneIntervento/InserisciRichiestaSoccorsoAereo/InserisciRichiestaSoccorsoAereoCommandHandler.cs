@@ -19,10 +19,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(InserisciRichiestaSoccorsoAereoCommand command)
         {
-            command.Richiesta.SoccorsoAereo = true;
+            //CREO L'EVENTO
+            new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore, command.RichiestaSoccorsoAereo.description);
 
-            new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore);
-
+            //COMPONGO IL MODELLO
             if (command.RichiestaSoccorsoAereo.requestKey != null)
             {
                 string value = command.Richiesta.Codice;
@@ -34,7 +34,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
                 command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
             }
-
+            command.Richiesta.SoccorsoAereo = true;
             command.RichiestaSoccorsoAereo.datetime = DateTime.Now;
 
             //Comunico al servizio esterno

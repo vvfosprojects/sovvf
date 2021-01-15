@@ -32,13 +32,13 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command.Richiesta);
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command.RichiestaSoccorsoAereo);
 
                 Task.Factory.StartNew(() =>
                 {
                     //var boxRichieste = _getBoxRichieste.Get(se)
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", command.Richiesta);
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", command.Richiesta);
                 });
             });
         }

@@ -131,6 +131,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case TrasferimentoChiamata _:
                     return ((TrasferimentoChiamata)evento).Note;
 
+                case RichiestaSoccorsoAereo _:
+                    return ((RichiestaSoccorsoAereo)evento).Note;
+
                 case AllertaSedi _:
 
                 default:
