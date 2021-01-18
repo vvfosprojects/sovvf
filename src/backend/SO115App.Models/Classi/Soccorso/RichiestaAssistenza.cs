@@ -676,7 +676,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
                 var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is RichiestaSoccorsoAereo;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || (_eventi.LastOrDefault() is RichiestaSoccorsoAereo && RichiestaSoccorsoAereo == true);
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
                 var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
@@ -941,7 +941,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
                 var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is RichiestaSoccorsoAereo;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || (_eventi.LastOrDefault() is RichiestaSoccorsoAereo && RichiestaSoccorsoAereo == true);
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
                 var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
