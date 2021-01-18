@@ -143,12 +143,13 @@ export class SignalRService {
         });
 
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
-          console.log('RichiestaSoccorsoAFM Success:', data);
+          console.log('NotifySuccessAFM', data);
           this.store.dispatch(new UpdateRichiesta(data.richiesta));
           this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
         });
 
         this.hubNotification.on('NotifyErrorAFM', (data: string) => {
+          console.log('NotifyErrorAFM:', data);
           this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
