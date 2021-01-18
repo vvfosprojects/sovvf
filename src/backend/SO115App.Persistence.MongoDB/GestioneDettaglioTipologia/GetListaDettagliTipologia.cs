@@ -32,7 +32,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
             var lstEnti = new List<TipologiaDettaglio>();
 
-            if (CodTipologia != null)
+            if (CodTipologia != null && CodTipologia > 0)
                 lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
                 && (c.Descrizione.ToLower().Contains(text)) && (c.CodiceTipologia.Equals(CodTipologia))).ToList();
             else
