@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.SignalR.Utility;
@@ -14,11 +15,14 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IGetBoxRichieste _getBoxRichieste;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        public NotificationInserisciRichiestaSoccorsoAereo(IHubContext<NotificationHub> notificationHubContext, IGetBoxRichieste getBoxRichieste, GetGerarchiaToSend getGerarchiaToSend)
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
+
+        public NotificationInserisciRichiestaSoccorsoAereo(IHubContext<NotificationHub> notificationHubContext, IGetBoxRichieste getBoxRichieste, GetGerarchiaToSend getGerarchiaToSend, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getBoxRichieste = getBoxRichieste;
             _notificationHubContext = notificationHubContext;
+            _mapperSintesi = mapperSintesi;
         }
 
         public async Task SendNotification(InserisciRichiestaSoccorsoAereoCommand command)
@@ -32,7 +36,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", command.Richiesta);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyInserimentoAFM", command.Richiesta);
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", _mapperSintesi.Map(command.Richiesta));
 
                 Task.Factory.StartNew(() =>
                 {
