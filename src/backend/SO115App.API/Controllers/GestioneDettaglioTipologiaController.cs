@@ -80,7 +80,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int CodDettaglio)
+        public async Task<IActionResult> Delete([FromBody] TipologiaDettaglioDelete Dettaglio)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace SO115App.API.Controllers
                 {
                     CodiceSede = Request.Headers["codicesede"].ToString().Split(','),
                     idOperatore = Request.Headers["IdUtente"],
-                    CodDettaglioTipologia = CodDettaglio
+                    CodDettaglioTipologia = Dettaglio.codDettaglio
                 };
 
                 _deletehandler.Handle(command);
