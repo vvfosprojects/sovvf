@@ -49,7 +49,8 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 CodiceTipologia = c.CodiceTipologia,
                 CodSede = c.CodSede,
                 Descrizione = c.Descrizione,
-                Ricorsivo = c.Ricorsivo
+                Ricorsivo = c.Ricorsivo,
+                Id = c.Id
             }).OrderByDescending(c => c.Descrizione).ToList();
         }
 

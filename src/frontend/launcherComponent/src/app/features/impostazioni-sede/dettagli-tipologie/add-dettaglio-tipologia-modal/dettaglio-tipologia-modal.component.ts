@@ -76,6 +76,8 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
             value: {
                 codTipologia: editDettaglioTipologia.codiceTipologia.toString(),
                 descrizione: editDettaglioTipologia.descrizione,
+                codiceDettaglioTipologia: editDettaglioTipologia.codiceDettaglioTipologia,
+                id: editDettaglioTipologia.id
             },
             path: 'dettaglioTipologiaModal.dettaglioTipologiaForm'
         }));

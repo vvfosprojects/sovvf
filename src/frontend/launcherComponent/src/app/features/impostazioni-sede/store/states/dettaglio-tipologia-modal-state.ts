@@ -15,6 +15,8 @@ export interface DettaglioTipologiaModalStateModel {
         model?: {
             codTipologia: string;
             descrizione: string;
+            codDettaglioTipologia: string;
+            id:string
         };
         dirty: boolean;
         status: string;
@@ -26,7 +28,9 @@ export const DettaglioTipologiaModalStateDefaults: DettaglioTipologiaModalStateM
     dettaglioTipologiaForm: {
         model: {
             codTipologia: undefined,
-            descrizione: undefined
+            descrizione: undefined,
+            codDettaglioTipologia: undefined,
+            id:undefined
         },
         dirty: false,
         status: '',
@@ -72,7 +76,9 @@ export class DettaglioTipologiaModalState {
         const updatedDetttaglioTipologia = {
             codiceTipologia: +form.codTipologia,
             descrizione: form.descrizione,
-        } as DettaglioTipologiaDto;
+            codiceDettaglioTipologia: form.codDettaglioTipologia,
+            id:form.id
+        } as UpDateDettaglioTipologiaDto;
 
         this.detttagliTipologieService.updateDettaglioTipologia(updatedDetttaglioTipologia).subscribe((response: ResponseInterface) => {
                 dispatch(new ClearFormDettaglioTipologia());
