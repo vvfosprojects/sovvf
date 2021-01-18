@@ -4,6 +4,7 @@ using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo
 {
@@ -22,14 +23,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var dataInserimento = DateTime.Now;
 
-            //CREO L'EVENTO E AGGIORNO LA RICHIESTA ASSISTENZA
-            new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore, command.RichiestaSoccorsoAereo.description);
-            command.Richiesta.RichiestaSoccorsoAereo = true;
+            //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
             command.RichiestaSoccorsoAereo.datetime = dataInserimento;
 
-            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
-
-            //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
             if (command.RichiestaSoccorsoAereo.requestKey != null)
             {
                 string value = command.Richiesta.Codice;
@@ -43,23 +39,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
 
             //Comunico al servizio esterno
-            try
-            {
-                _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
-            }
-            catch (Exception e)
-            {
-                //evento esito afm con note/messaggio
-                //
+            var result = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
-                command.Richiesta.RichiestaSoccorsoAereo = false;
+            //Aggiorno la richiesta
+            new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
 
-                _updateRichiesta.UpDate(command.Richiesta);
-
-                throw e;
-            }
-
-            //Aggiorno richiesta sul db
+            //Salvo richiesta sul db
+            command.Richiesta.RichiestaSoccorsoAereo = true;
             _updateRichiesta.UpDate(command.Richiesta);
         }
     }

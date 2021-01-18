@@ -18,7 +18,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public AggiornaRichiestaSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor accessor)
         : base(client, configuration, cache, log, accessor) { }
 
-        public void Aggiorna(NuovaRichiestaSoccorsoAereo richiesta)
+        public ErroreRichiestaSoccorsoAereo Aggiorna(NuovaRichiestaSoccorsoAereo richiesta)
         {
             var APImanager = new HttpRequestManager<ErroreRichiestaSoccorsoAereo>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
@@ -29,8 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
             var result = APImanager.PutAsync(new Uri(Costanti.AFM + "rescueRequest"), content, "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
-            if (result != null && result.errors.Count > 0)
-                throw new Exception(string.Concat(result.errors.Select(c => c.detail).ToList()));
+            return result;
         }
     }
 }

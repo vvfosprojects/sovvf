@@ -32,13 +32,13 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", command.Richiesta);
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", command.Richiesta);
 
                 Task.Factory.StartNew(() =>
                 {
                     var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
                 });
             });
         }
