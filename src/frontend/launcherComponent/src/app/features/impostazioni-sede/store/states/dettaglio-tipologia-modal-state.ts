@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import {
     ClearFormDettaglioTipologia,
     RequestAddDettaglioTipologia,
@@ -15,8 +15,8 @@ export interface DettaglioTipologiaModalStateModel {
         model?: {
             codTipologia: string;
             descrizione: string;
-            codDettaglioTipologia: string;
-            id:string
+            codiceDettaglioTipologia: string;
+            id: string;
         };
         dirty: boolean;
         status: string;
@@ -29,8 +29,8 @@ export const DettaglioTipologiaModalStateDefaults: DettaglioTipologiaModalStateM
         model: {
             codTipologia: undefined,
             descrizione: undefined,
-            codDettaglioTipologia: undefined,
-            id:undefined
+            codiceDettaglioTipologia: undefined,
+            id: undefined
         },
         dirty: false,
         status: '',
@@ -74,11 +74,11 @@ export class DettaglioTipologiaModalState {
     requestUpdateDettaglioTipologia({ getState, dispatch }: StateContext<DettaglioTipologiaModalStateModel>): void {
         const form = getState().dettaglioTipologiaForm.model;
         const updatedDetttaglioTipologia = {
+            id: form.id,
             codiceTipologia: +form.codTipologia,
             descrizione: form.descrizione,
-            codiceDettaglioTipologia: form.codDettaglioTipologia,
-            id:form.id
-        } as UpDateDettaglioTipologiaDto;
+            codiceDettaglioTipologia: +form.codiceDettaglioTipologia
+        } as UpdateDettaglioTipologiaDto;
 
         this.detttagliTipologieService.updateDettaglioTipologia(updatedDetttaglioTipologia).subscribe((response: ResponseInterface) => {
                 dispatch(new ClearFormDettaglioTipologia());

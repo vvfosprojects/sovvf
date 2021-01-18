@@ -4,9 +4,9 @@ export interface DettaglioTipologiaDto {
 }
 
 
-export interface UpDateDettaglioTipologiaDto {
+export interface UpdateDettaglioTipologiaDto {
+    id: string;
     codiceTipologia: number;
     descrizione: string;
-    codiceDettaglioTipologia:string;
-    id:string;
+    codiceDettaglioTipologia: number;
 }

@@ -6,7 +6,7 @@ import { FiltersInterface } from '../../../shared/interface/filters/filters.inte
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
 import { DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
-import { UpDateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;
@@ -35,7 +35,7 @@ export class DetttagliTipologieService {
         return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Add', dettaglioTipologia);
     }
 
-    updateDettaglioTipologia(dettaglioTipologia: UpDateDettaglioTipologiaDto): Observable<ResponseInterface> {
+    updateDettaglioTipologia(dettaglioTipologia: UpdateDettaglioTipologiaDto): Observable<ResponseInterface> {
         return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
     }
 

@@ -38,9 +38,6 @@ import { TipologieState } from '../../../shared/store/states/tipologie/tipologie
 })
 export class DettagliTipologieComponent implements OnDestroy {
 
-    // TODO: !!!!!!
-    // TODO: creare state "Tipologie" con relativo controller BE che restituisce le tipologie (attualmente in home ma non va bene)
-    // TODO: !!!!!!
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;

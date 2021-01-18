@@ -39,11 +39,15 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.dettaglioTipologiaForm = new FormGroup({
             codTipologia: new FormControl(),
-            descrizione: new FormControl()
+            descrizione: new FormControl(),
+            codiceDettaglioTipologia: new FormControl(),
+            id: new FormControl()
         });
         this.dettaglioTipologiaForm = this.fb.group({
             codTipologia: [null, Validators.required],
-            descrizione: [null, Validators.required]
+            descrizione: [null, Validators.required],
+            codiceDettaglioTipologia: [null],
+            id: [null],
         });
     }
 
@@ -76,7 +80,7 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
             value: {
                 codTipologia: editDettaglioTipologia.codiceTipologia.toString(),
                 descrizione: editDettaglioTipologia.descrizione,
-                codiceDettaglioTipologia: editDettaglioTipologia.codiceDettaglioTipologia,
+                codiceDettaglioTipologia: editDettaglioTipologia.codiceDettaglioTipologia.toString(),
                 id: editDettaglioTipologia.id
             },
             path: 'dettaglioTipologiaModal.dettaglioTipologiaForm'
