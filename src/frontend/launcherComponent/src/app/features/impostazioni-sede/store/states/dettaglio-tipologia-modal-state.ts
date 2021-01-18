@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import {
     ClearFormDettaglioTipologia,
     RequestAddDettaglioTipologia,
@@ -9,6 +9,7 @@ import {
     RequestUpdateDettaglioTipologia
 } from '../actions/dettaglio-tipologia-modal.actions';
 import { ResponseInterface } from '../../../../shared/interface/response.interface';
+import { DeleteDettaglioTipologia } from '../../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 export interface DettaglioTipologiaModalStateModel {
     dettaglioTipologiaForm: {
@@ -88,7 +89,10 @@ export class DettaglioTipologiaModalState {
 
     @Action(RequestDeleteDettaglioTipologia)
     requestDeleteDettaglioTipologia({ setState, dispatch }: StateContext<DettaglioTipologiaModalStateModel>, action: RequestDeleteDettaglioTipologia): void {
-        this.detttagliTipologieService.deleteDettagliTipologie(action.codDettaglioTipologia).subscribe((response: ResponseInterface) => {
+        const updatedDetttaglioTipologia = {
+            codDettaglio: action.codDettaglioTipologia
+        } as DeleteDettaglioTipologiaDto;
+        this.detttagliTipologieService.deleteDettagliTipologie(updatedDetttaglioTipologia).subscribe((response: ResponseInterface) => {
         });
     }
 

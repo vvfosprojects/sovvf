@@ -10,3 +10,7 @@ export interface UpdateDettaglioTipologiaDto {
     descrizione: string;
     codiceDettaglioTipologia: number;
 }
+
+export interface DeleteDettaglioTipologiaDto {
+    codDettaglio: number;
+}

@@ -13,14 +13,16 @@ import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/add-detta
 import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 import { NgxsModule } from '@ngxs/store';
 import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-dettagli-tipologie/ricerca-dettagli-tipologie.component';
-import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
+import { DettaglioTipologiaModalState } from './store/states/dettaglio-tipologia-modal-state';
+import { TriageComponent } from './triage/triage.component';
 
 @NgModule({
     declarations: [
         ImpostazioniSedeComponent,
         DettagliTipologieComponent,
         DettaglioTipologiaModalComponent,
-        RicercaDettagliTipologieComponent
+        RicercaDettagliTipologieComponent,
+        TriageComponent
     ],
     imports: [
         CommonModule,
@@ -28,7 +30,7 @@ import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipol
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
         NgxsModule.forFeature([
-            DettagliTipologieState
+            DettaglioTipologiaModalState
         ]),
         NgxsFormPluginModule.forRoot(),
         FormsModule,

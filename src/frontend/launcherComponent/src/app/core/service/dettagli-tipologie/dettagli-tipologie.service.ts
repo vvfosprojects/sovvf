@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
-import { DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 
 const BASE_URL = environment.baseUrl;
@@ -39,8 +39,8 @@ export class DetttagliTipologieService {
         return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
     }
 
-    deleteDettagliTipologie(codDettaglioTipologia: number): Observable<ResponseInterface> {
-        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Delete', codDettaglioTipologia);
+    deleteDettagliTipologie(dettaglioTipologia: DeleteDettaglioTipologiaDto): Observable<ResponseInterface> {
+        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Delete', dettaglioTipologia);
     }
 
 }
