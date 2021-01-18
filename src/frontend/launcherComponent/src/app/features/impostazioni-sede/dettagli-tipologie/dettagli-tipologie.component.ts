@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
-import { HomeState } from '../../home/store/states/home.state';
 import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import {
-    ClearRicercaDettagliTipologia,
     GetDettagliTipologie,
     ReducerSelezioneFiltroTipologia,
     ResetFiltroTipologiaSelezionato,
@@ -15,10 +13,6 @@ import { PaginationState } from '../../../shared/store/states/pagination/paginat
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
-import { SetCurrentUrl } from '../../../shared/store/actions/app/app.actions';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
-import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { DettagliTipologieState } from '../store/states/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
