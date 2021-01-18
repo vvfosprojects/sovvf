@@ -135,6 +135,15 @@ export class SignalRService {
         });
 
         /**
+         * Soccorso Aereo
+         */
+        this.hubNotification.on('NotifySuccessAFM', (data: SintesiRichiesta) => {
+            console.log('RichiestaSoccorsoAFM Success:', data);
+            this.store.dispatch(new UpdateRichiesta(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
+        });
+
+        /**
          * Cambiamento Stato Squadra/Mezzi Richiesta
          */
         this.hubNotification.on('ChangeStateSuccess', (data: boolean) => {
@@ -266,11 +275,6 @@ export class SignalRService {
             console.log('NotifyDeleteAllertaAltreSedi');
             this.store.dispatch(new GetListaRichieste());
         });
-
-        /**
-         * Soccorso Aereo
-         */
-        // Todo: notifica soccorso aereo
 
         /**
          * Composizione Partenza

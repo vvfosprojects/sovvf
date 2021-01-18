@@ -7,6 +7,7 @@ import {makeCopy} from '../../helper/function';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {Utente} from '../../model/utente.model';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
+import {AddSoccorsoAereo} from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 
 
 @Component({
@@ -56,9 +57,10 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
         lat: this.richiesta.localita.coordinate.latitudine,
         lng: this.richiesta.localita.coordinate.longitudine,
       };
+      this.store.dispatch(new AddSoccorsoAereo(obj));
+      //
       this.modal.close({
-        status: 'ok',
-        result: obj,
+        status: 'ok'
       });
     } else {
       this.modal.close({ status: 'ko'});

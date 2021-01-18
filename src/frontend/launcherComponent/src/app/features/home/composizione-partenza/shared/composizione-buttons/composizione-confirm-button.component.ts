@@ -71,7 +71,7 @@ export class ComposizioneConfirmButtonComponent {
     modal.result.then((res: any) => {
       switch (res.status) {
         case 'ok':
-          this.store.dispatch(new AddSoccorsoAereo(res.result));
+          // console.log('Richiesta Soccorso AFM inserita con successo');
           break;
         case 'ko':
           break;
