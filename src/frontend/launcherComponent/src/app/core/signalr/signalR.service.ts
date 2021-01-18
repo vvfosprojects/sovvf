@@ -137,16 +137,19 @@ export class SignalRService {
         /**
          * Soccorso Aereo
          */
+        // Todo: tipicizzare
         this.hubNotification.on('NotifyInserimentoAFM', (data: any) => {
-            console.log('NotifyInserimentoAFM:', data);
+          console.log('NotifyInserimentoAFM:', data);
         });
 
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
           console.log('RichiestaSoccorsoAFM Success:', data);
-          /*
           this.store.dispatch(new UpdateRichiesta(data.richiesta));
           this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
-          */
+        });
+
+        this.hubNotification.on('NotifyErrorAFM', (data: string) => {
+          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         /**
