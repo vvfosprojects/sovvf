@@ -43,10 +43,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             //Aggiorno la richiesta
             new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+            command.Richiesta.RichiestaSoccorsoAereo = true;
             command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
 
             //Salvo richiesta sul db
-            command.Richiesta.RichiestaSoccorsoAereo = true;
             _updateRichiesta.UpDate(command.Richiesta);
         }
     }
