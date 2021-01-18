@@ -23,6 +23,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var dataInserimento = DateTime.Now;
 
+            #region AFM Servizio
+
             //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
             command.RichiestaSoccorsoAereo.datetime = dataInserimento;
 
@@ -41,10 +43,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             //Comunico al servizio esterno
             var result = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
-            //Aggiorno la richiesta
-            new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
-            command.Richiesta.RichiestaSoccorsoAereo = true;
-            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
+            #endregion
+
+            if (result.errors.Count == 0)
+            {
+                new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+
+                command.Richiesta.RichiestaSoccorsoAereo = true;
+
+                command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
+            }
+            else
+            {
+                new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, "Richiesta AFM accettata");
+            }
 
             //Salvo richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);

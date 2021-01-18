@@ -66,6 +66,9 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.UtPresaInCarico = new List<string>();
         }
 
+        /// <summary>
+        /// Il campo viene settato a true solamente nel caso in cui la chiamata di inserimento AFM va a buon fine.
+        /// </summary>
         public bool RichiestaSoccorsoAereo { get; set; } = false;
 
         /// <summary>
