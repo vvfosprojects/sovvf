@@ -30,6 +30,7 @@ import {
 } from '../store/actions/dettaglio-tipologia-modal.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
+import { NgSelectConfig } from '@ng-select/ng-select';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -57,7 +58,9 @@ export class DettagliTipologieComponent implements OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-                private store: Store) {
+                private store: Store,
+                private ngSelectConfig: NgSelectConfig) {
+        ngSelectConfig.appendTo = 'body';
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
