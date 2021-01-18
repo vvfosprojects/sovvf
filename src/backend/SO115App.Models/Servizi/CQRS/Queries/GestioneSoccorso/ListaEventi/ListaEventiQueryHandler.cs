@@ -278,6 +278,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case TrasferimentoChiamata _:
                     return Costanti.TrasferimentoChiamata;
 
+                case RichiestaSoccorsoAereo _:
+                    return Costanti.RichiestaSoccorsoAereo;
+
                 default:
                     return Costanti.EventoGenerico;
             }
