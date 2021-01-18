@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
-import { HomeState } from '../../home/store/states/home.state';
 import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import {
-    ClearRicercaDettagliTipologia,
     GetDettagliTipologie,
     ReducerSelezioneFiltroTipologia,
     ResetFiltroTipologiaSelezionato,
@@ -15,10 +13,6 @@ import { PaginationState } from '../../../shared/store/states/pagination/paginat
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
-import { SetCurrentUrl } from '../../../shared/store/actions/app/app.actions';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
-import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { DettagliTipologieState } from '../store/states/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
@@ -30,6 +24,7 @@ import {
 } from '../store/actions/dettaglio-tipologia-modal.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
+import { NgSelectConfig } from '@ng-select/ng-select';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -38,9 +33,6 @@ import { TipologieState } from '../../../shared/store/states/tipologie/tipologie
 })
 export class DettagliTipologieComponent implements OnDestroy {
 
-    // TODO: !!!!!!
-    // TODO: creare state "Tipologie" con relativo controller BE che restituisce le tipologie (attualmente in home ma non va bene)
-    // TODO: !!!!!!
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
@@ -60,7 +52,9 @@ export class DettagliTipologieComponent implements OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-                private store: Store) {
+                private store: Store,
+                private ngSelectConfig: NgSelectConfig) {
+        ngSelectConfig.appendTo = 'body';
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
