@@ -21,7 +21,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
         {
             var MaxDettaglio = _dbContext.TipologiaDettaglioCollection.Find(_ => true).SortByDescending(d => d.CodiceDettaglioTipologia).Limit(1).FirstOrDefaultAsync().Result;
 
-            dettaglio.CodiceDettaglioTipologia = MaxDettaglio != null ? MaxDettaglio.CodiceDettaglioTipologia + 1 : 0;
+            dettaglio.CodiceDettaglioTipologia = MaxDettaglio != null ? MaxDettaglio.CodiceDettaglioTipologia + 1 : 1;
 
             _dbContext.TipologiaDettaglioCollection.InsertOne(dettaglio);
         }
