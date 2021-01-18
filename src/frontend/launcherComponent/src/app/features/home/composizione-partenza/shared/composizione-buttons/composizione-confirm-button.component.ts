@@ -1,21 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import { NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {SoccorsoAereoModalComponent} from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import {
-  AddSoccorsoAereo,
   GetAzioniRichiesta
 } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.model';
+import {makeCopy} from '../../../../../shared/helper/function';
+import {ComposizioneSoccorsoAereoState} from '../../../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 @Component({
   selector: 'app-composizione-confirm-button',
   templateUrl: './composizione-confirm-button.component.html',
   styleUrls: ['./composizione-confirm-button.component.css']
 })
-export class ComposizioneConfirmButtonComponent {
+export class ComposizioneConfirmButtonComponent implements OnChanges {
 
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
@@ -28,11 +29,16 @@ export class ComposizioneConfirmButtonComponent {
   @Output() confirmPartenzaInUscita = new EventEmitter();
 
   subscription = new Subscription();
+  azioniRichiesta: any;
 
   constructor(private store: Store,
               private modalService: NgbModal) {
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.store.dispatch(new GetAzioniRichiesta());
+    this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
+  }
+
+  ngOnChanges(): void {
   }
 
   _confirmPartenzaInViaggio(): void {
