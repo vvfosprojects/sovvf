@@ -6,7 +6,7 @@ import { TreeviewI18n, TreeviewSelection } from 'ngx-treeview';
 @Injectable({
     providedIn: 'root'
 })
-export class DefaultTreeviewI18n extends TreeviewI18n {
+export class SediTreeviewI18n extends TreeviewI18n {
     constructor(
         protected i18n: I18n
     ) {

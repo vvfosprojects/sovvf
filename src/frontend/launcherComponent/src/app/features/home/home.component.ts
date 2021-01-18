@@ -10,6 +10,8 @@ import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     boxAttivi: boolean;
 
     constructor(private store: Store) {
+        this.getDettagliTipologie(true);
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
@@ -54,6 +57,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onMapFullLoaded(): void {
         this.store.dispatch(new SetMapLoaded(true));
+    }
+
+    getDettagliTipologie(pageAttuale: boolean): void {
+        let page = null;
+        if (pageAttuale) {
+            page = this.store.selectSnapshot(PaginationState.page);
+        }
+        this.store.dispatch(new GetDettagliTipologie(page));
     }
 
     getViewState(): void {

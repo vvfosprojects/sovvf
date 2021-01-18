@@ -60,7 +60,7 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
-import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../features/impostazioni-sede/store/actions/dettagli-tipologie.actions';
+import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;

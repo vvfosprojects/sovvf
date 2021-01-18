@@ -8,12 +8,12 @@ import {
     ReducerSelezioneFiltroTipologia,
     ResetFiltroTipologiaSelezionato,
     SetRicercaDettagliTipologie
-} from '../store/actions/dettagli-tipologie.actions';
+} from '../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
-import { DettagliTipologieState } from '../store/states/dettagli-tipologie.state';
+import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
 import {

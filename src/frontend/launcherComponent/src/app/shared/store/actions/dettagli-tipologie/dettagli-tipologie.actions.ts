@@ -1,4 +1,4 @@
-import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 
 export class GetDettagliTipologie {
     static readonly type = '[DettagliTipologie] Get Dettagli Tipologie';

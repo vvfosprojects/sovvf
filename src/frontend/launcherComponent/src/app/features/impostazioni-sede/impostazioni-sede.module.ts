@@ -12,8 +12,8 @@ import { DettagliTipologieComponent } from './dettagli-tipologie/dettagli-tipolo
 import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
 import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 import { NgxsModule } from '@ngxs/store';
-import { DettagliTipologieState } from './store/states/dettagli-tipologie.state';
 import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-dettagli-tipologie/ricerca-dettagli-tipologie.component';
+import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 
 @NgModule({
     declarations: [

@@ -5,27 +5,22 @@ import {
     AddDettaglioTipologia,
     ClearRicercaDettagliTipologia,
     DeleteDettaglioTipologia,
-    GetDettagliTipologie, ReducerSelezioneFiltroTipologia, ResetFiltroTipologiaSelezionato,
-    SetDettagliTipologie, SetFiltroTipologiaDeselezionato, SetFiltroTipologiaSelezionato,
+    GetDettagliTipologie,
+    ReducerSelezioneFiltroTipologia,
+    ResetFiltroTipologiaSelezionato,
+    SetDettagliTipologie,
+    SetFiltroTipologiaDeselezionato,
+    SetFiltroTipologiaSelezionato,
     SetRicercaDettagliTipologie,
     UpdateDettaglioTipologia
-} from '../actions/dettagli-tipologie.actions';
-import { StartLoading, StopLoading } from '../../../../shared/store/actions/loading/loading.actions';
-import { PaginationState } from '../../../../shared/store/states/pagination/pagination.state';
-import { ResponseInterface } from '../../../../shared/interface/response.interface';
-import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
-import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import {
-    ReducerSelezioneFiltroSede,
-    ResetSediFiltroSelezionate,
-    SetSedeFiltroDeselezionato,
-    SetSedeFiltroSelezionato
-} from '../../../gestione-utenti/store/actions/ricerca-utenti/ricerca-utenti.actons';
-import { GetUtentiGestione } from '../../../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { RicercaUtentiStateDefaults, RicercaUtentiStateModel } from '../../../gestione-utenti/store/states/ricerca-utenti/ricerca-utenti.state';
-import { DettaglioTipologiaModalStateDefaults } from './dettaglio-tipologia-modal-state';
-import { FiltersInterface } from '../../../../shared/interface/filters/filters.interface';
+} from '../../actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { StartLoading, StopLoading } from '../../actions/loading/loading.actions';
+import { PaginationState } from '../pagination/pagination.state';
+import { ResponseInterface } from '../../../interface/response.interface';
+import { PatchPagination } from '../../actions/pagination/pagination.actions';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
+import { patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { FiltersInterface } from '../../../interface/filters/filters.interface';
 
 export interface DettagliTipologieStateModel {
     dettagliTipologie: DettaglioTipologia[];

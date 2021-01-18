@@ -12,7 +12,6 @@ import { ClearChiamateMarkers, SetChiamateMarkers } from '../actions/maps/chiama
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
-import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
@@ -51,6 +50,25 @@ export class HomeState {
     constructor(private homeService: HomeService) {
     }
 
+    @Action(GetDataHome)
+    getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
+        this.homeService.getHome().subscribe((data: Welcome) => {
+            console.log('Welcome', data);
+            dispatch([
+                new StopBigLoading(),
+                new SetCurrentUrl(RoutesPath.Home),
+                new SetBoxRichieste(data.boxListaInterventi),
+                new SetBoxMezzi(data.boxListaMezzi),
+                new SetBoxPersonale(data.boxListaPersonale),
+                new SetChiamateMarkers(data.listaChiamateInCorso),
+                new SetInitCentroMappa(data.centroMappaMarker),
+                new SetTipologicheMezzi(data.listaFiltri),
+                new SetEnti(data.rubrica),
+                // new SetZoneEmergenza(data.zoneEmergenza)
+            ]);
+        });
+    }
+
     @Action(ClearDataHome)
     clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>): void {
         dispatch([
@@ -67,26 +85,6 @@ export class HomeState {
             new ClearViewState()
         ]);
         patchState(HomeStateDefaults);
-    }
-
-    @Action(GetDataHome)
-    getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
-      this.homeService.getHome().subscribe((data: Welcome) => {
-            console.log('Welcome', data);
-            dispatch([
-                new StopBigLoading(),
-                new SetCurrentUrl(RoutesPath.Home),
-                new SetBoxRichieste(data.boxListaInterventi),
-                new SetBoxMezzi(data.boxListaMezzi),
-                new SetBoxPersonale(data.boxListaPersonale),
-                new SetChiamateMarkers(data.listaChiamateInCorso),
-                new SetInitCentroMappa(data.centroMappaMarker),
-                new SetTipologicheMezzi(data.listaFiltri),
-                new SetContatoriSchedeContatto(data.infoNue),
-                new SetEnti(data.rubrica),
-                // new SetZoneEmergenza(data.zoneEmergenza)
-            ]);
-        });
     }
 
     @Action(SetBoundsIniziale)

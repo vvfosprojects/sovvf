@@ -9,23 +9,25 @@
             Aggiungi Dettaglio
         </button>
     </div>
-    <div class="col">
-        <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
-        <ng-select id="filtriDettagliTipologie"
-                   placeholder="Filtra per tipologia"
-                   bindLabel="codiceDescrizione"
-                   bindValue="codice"
-                   [items]="tipologie$ | async"
-                   (change)="onFiltroTipologiaChange($event)">
-        </ng-select>
-    </div>
-    <div class="col text-right">
-        <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
-                                        (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
-    </div>
-    <div *ngIf="ricerca" class="col-12 pl-2">
-        <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-    </div>
+    <ng-template [ngIf]="dettagliTipologie?.length">
+        <div class="col">
+            <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
+            <ng-select id="filtriDettagliTipologie"
+                       placeholder="Filtra per tipologia"
+                       bindLabel="codiceDescrizione"
+                       bindValue="codice"
+                       [items]="tipologie$ | async"
+                       (change)="onFiltroTipologiaChange($event)">
+            </ng-select>
+        </div>
+        <div class="col text-right">
+            <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
+                                            (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
+        </div>
+        <div *ngIf="ricerca" class="col-12 pl-2">
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+        </div>
+    </ng-template>
     <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
         <table class="table mt-3 mb-2">
             <thead>

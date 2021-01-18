@@ -5,7 +5,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
-import { ClearRicercaDettagliTipologia } from './store/actions/dettagli-tipologie.actions';
+import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 @Component({
     selector: 'app-impostazioni-sede',
