@@ -2,3 +2,37 @@
     <i class="fa fa-question-circle"></i>
     Domande Triage
 </h3>
+<div class="mt-4">
+    <ngb-accordion [closeOthers]="true">
+        <ngb-panel id="tipologia-1">
+            <ng-template ngbPanelTitle>
+                1. Incendio generico
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <ngx-treeview [items]="tItems"
+                              [config]="tConfig">
+                </ngx-treeview>
+            </ng-template>
+        </ngb-panel>
+        <ngb-panel id="tipologia-2">
+            <ng-template ngbPanelTitle>
+                2. Incendio ed Esplosione
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <ngx-treeview [items]="tItems"
+                              [config]="tConfig">
+                </ngx-treeview>
+            </ng-template>
+        </ngb-panel>
+        <ngb-panel id="tipologia-3">
+            <ng-template ngbPanelTitle>
+                3. Esplosione da sostanza esplodente
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <ngx-treeview [items]="tItems"
+                              [config]="tConfig">
+                </ngx-treeview>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+</div>
