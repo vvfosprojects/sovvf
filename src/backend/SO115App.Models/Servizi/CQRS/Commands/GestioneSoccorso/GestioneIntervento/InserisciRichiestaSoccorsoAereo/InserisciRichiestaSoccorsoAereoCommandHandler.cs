@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
 
@@ -19,10 +20,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(InserisciRichiestaSoccorsoAereoCommand command)
         {
-            //CREO L'EVENTO
-            new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore, command.RichiestaSoccorsoAereo.description);
+            var dataInserimento = DateTime.Now;
 
-            //COMPONGO IL MODELLO
+            //CREO L'EVENTO E AGGIORNO LA RICHIESTA ASSISTENZA
+            new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore, command.RichiestaSoccorsoAereo.description);
+            command.Richiesta.RichiestaSoccorsoAereo = true;
+            command.RichiestaSoccorsoAereo.datetime = dataInserimento;
+
+            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
+
+            //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
             if (command.RichiestaSoccorsoAereo.requestKey != null)
             {
                 string value = command.Richiesta.Codice;
@@ -34,11 +41,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
                 command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
             }
-            command.Richiesta.RichiestaSoccorsoAereo = true;
-            command.RichiestaSoccorsoAereo.datetime = DateTime.Now;
 
             //Comunico al servizio esterno
-            _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
+            try
+            {
+                _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
+            }
+            catch (Exception e)
+            {
+                //evento esito afm con note/messaggio
+                //
+
+                command.Richiesta.RichiestaSoccorsoAereo = false;
+
+                _updateRichiesta.UpDate(command.Richiesta);
+
+                throw e;
+            }
 
             //Aggiorno richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);

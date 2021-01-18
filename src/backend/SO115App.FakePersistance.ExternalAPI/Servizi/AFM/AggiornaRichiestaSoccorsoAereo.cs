@@ -8,6 +8,7 @@ using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
+using System.Linq;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.AFM
@@ -27,6 +28,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
             var content = new StringContent(jsonString);
 
             var result = APImanager.PutAsync(new Uri(Costanti.AFM + "rescueRequest"), content, "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+
+            if (result != null && result.errors.Count > 0)
+                throw new Exception(string.Concat(result.errors.Select(c => c.detail).ToList()));
         }
     }
 }
