@@ -22,9 +22,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var dataInserimento = DateTime.Now;
 
-            //GESTISCO L'EVENTO E LA RICHIESTA ASSISTENZA
+            //CREO L'EVENTO E AGGIORNO LA RICHIESTA ASSISTENZA
             new RichiestaSoccorsoAereo(command.Richiesta, DateTime.Now, command.IdOperatore, command.RichiestaSoccorsoAereo.description);
             command.Richiesta.RichiestaSoccorsoAereo = true;
+            command.RichiestaSoccorsoAereo.datetime = dataInserimento;
 
             command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, dataInserimento);
 
@@ -40,10 +41,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
                 command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
             }
-            command.RichiestaSoccorsoAereo.datetime = dataInserimento;
 
             //Comunico al servizio esterno
-            _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
+            try
+            {
+                _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
+            }
+            catch (Exception e)
+            {
+                //evento esito afm con note/messaggio
+                //
+
+                command.Richiesta.RichiestaSoccorsoAereo = false;
+
+                _updateRichiesta.UpDate(command.Richiesta);
+
+                throw e;
+            }
 
             //Aggiorno richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);

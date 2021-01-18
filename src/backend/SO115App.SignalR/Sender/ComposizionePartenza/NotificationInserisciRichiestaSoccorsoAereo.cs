@@ -32,7 +32,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command.RichiestaSoccorsoAereo);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", command.Richiesta);
 
                 Task.Factory.StartNew(() =>
                 {
