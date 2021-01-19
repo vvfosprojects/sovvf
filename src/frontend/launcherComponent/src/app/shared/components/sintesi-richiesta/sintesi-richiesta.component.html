@@ -45,7 +45,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 17%">
+                        <div class="clearfix" style="width: 10%">
                           <button *ngIf="richiesta.prioritaRichiesta > 3 && richiesta.stato === 'Chiamata'" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
                                   ngbTooltip="Chiamata Urgente!"
                                   style="height: 36px; width: 36px; border-radius: 65% ">
@@ -92,7 +92,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 30%">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
                                 <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
@@ -131,15 +131,15 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 22%"></div>
+                        <div class="clearfix" style="width: 26%"></div>
                         <div class="clearfix pr-3 text-right" style="width: 15%">
                             <div class="h6 mb-0">
 
                                 <!-- soccorso aereo -->
                                 <span *ngIf="richiesta.richiestaSoccorsoAereo" class="nowrap">
-                                          <button class="btn btn-light pl-0 py-0 big_numbers mr-1 font-double-monitor"
-                                                  style="cursor:pointer; border: 1px solid #a72920 !important" (click)="openDettaglioSoccorsoAereoModal($event)">
-                                              <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #a72920" ngbTooltip="Dettaglio Soccorso Aereo"></i>
+                                          <button class="btn btn-info pl-0 py-0 mr-1 font-double-monitor"
+                                                  style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
+                                              <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa" ngbTooltip="Dettaglio Soccorso Aereo"></i>
                                           </button>
                                 </span>
 
@@ -208,7 +208,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 17%"></div>
+                        <div class="clearfix" style="width: 10%"></div>
                         <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- richiedente -->
@@ -228,7 +228,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 30%">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
                             <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%" ngbTooltip="Località"></i>
                             <span class="font-double-monitor">
                                       <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
@@ -274,7 +274,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 22%; align-self: center">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 26%; align-self: center">
                           <!-- richiedente -->
                           <div class="h6 mt-1 mb-2 nowrap default-cursor">
                             <i class="guida fa fa-address-book-o fa-fw mr-1"
