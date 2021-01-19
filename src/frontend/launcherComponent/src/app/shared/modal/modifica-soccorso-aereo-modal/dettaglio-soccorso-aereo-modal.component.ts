@@ -3,9 +3,9 @@ import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 import {Select, Store} from '@ngxs/store';
-import {RemoveSoccorsoAereo} from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {Utente} from '../../model/utente.model';
 import {AuthState} from '../../../features/auth/store/auth.state';
+import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
 
 
 @Component({
@@ -52,7 +52,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     },
   ];
 
-  constructor(private modal: NgbActiveModal, private store: Store) {
+  constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
   }
 
@@ -69,6 +69,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       // caso modifica
       } else if (closeRes === 'mod') {
       // caso annullamento
+      this.submitted = true;
       const date = new Date();
       const obj = {
         requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
@@ -79,8 +80,9 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
           dateTime: date,
         }
       };
-      this.store.dispatch(new RemoveSoccorsoAereo(obj));
-      this.modal.close({ status: 'ko'});
+      this.compPartenzaService.removeSoccorsoAereo(obj).subscribe(() => {
+        this.modal.close({ status: 'ko' });
+      }, () => this.submitted = false);
       } else { this.modal.close({ status: 'ko'}); }
   }
 
