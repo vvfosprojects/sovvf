@@ -7,7 +7,7 @@ import {makeCopy} from '../../helper/function';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {Utente} from '../../model/utente.model';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
-import {AddSoccorsoAereo} from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
 
 
 @Component({
@@ -26,8 +26,10 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   tipologiaChecked = false;
   motivazione: string;
   azioniRichiesta: any[];
+  submitted: boolean;
 
-  constructor(private modal: NgbActiveModal, private store: Store) {
+
+  constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
     this.motivazione = null;
     this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
@@ -44,10 +46,11 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   }
 
   chiudiModalSoccorsoAereo(closeRes: string): void {
+    this.submitted = true;
     const requestType = [];
     this.azioniRichiesta.forEach(x => x.checked ?  requestType.push(x.descrizione) : null);
     if (closeRes === 'ok') {
-      const obj = {
+      const obj: any = {
         description: this.motivazione ? this.motivazione : '',
         requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
         requestType: requestType.join(', '),
@@ -57,11 +60,9 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
         lat: this.richiesta.localita.coordinate.latitudine,
         lng: this.richiesta.localita.coordinate.longitudine,
       };
-      this.store.dispatch(new AddSoccorsoAereo(obj));
-      //
-      this.modal.close({
-        status: 'ok'
-      });
+      this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+        this.modal.close({ status: 'ok' });
+      }, () => this.submitted = false); // ToDo: da testare i vari casi
     } else {
       this.modal.close({ status: 'ko'});
     }

@@ -1,7 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
+import {Select, Store} from '@ngxs/store';
+import {RemoveSoccorsoAereo} from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import {Utente} from '../../model/utente.model';
+import {AuthState} from '../../../features/auth/store/auth.state';
 
 
 @Component({
@@ -12,9 +16,13 @@ import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 
 export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
+  @Select(AuthState.currentUser) user$: Observable<Utente>;
+  utente: Utente;
+
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
   showAttivita = true;
+  submitted: boolean;
   attivita: any[] = [
      {
       stato: 'test1',
@@ -44,7 +52,8 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     },
   ];
 
-  constructor(private modal: NgbActiveModal) {
+  constructor(private modal: NgbActiveModal, private store: Store) {
+    this.getUtente();
   }
 
   ngOnDestroy(): void {
@@ -56,7 +65,30 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   }
 
   chiudiModalSoccorsoAereo(closeRes: string): void {
-    this.modal.close(closeRes);
+    if (closeRes === 'ok') {
+      // caso modifica
+      } else if (closeRes === 'mod') {
+      // caso annullamento
+      const date = new Date();
+      const obj = {
+        requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+        payload: {
+          operatorName: this.utente.nome,
+          operatorSurname: this.utente.cognome,
+          operatorFiscalCode: this.utente.codiceFiscale,
+          dateTime: date,
+        }
+      };
+      this.store.dispatch(new RemoveSoccorsoAereo(obj));
+      this.modal.close({ status: 'ko'});
+      } else { this.modal.close({ status: 'ko'}); }
   }
 
+  getUtente(): void {
+    this.subscription.add(
+      this.user$.subscribe((user: Utente) => {
+        this.utente = user;
+      })
+    );
+  }
 }

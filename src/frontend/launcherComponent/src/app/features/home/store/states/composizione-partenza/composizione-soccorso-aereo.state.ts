@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
   AddAzioniRichiesta, AddSoccorsoAereo, AddTipologieRichiesta,
-  GetAzioniRichiesta, GetTipologieRichiesta,
+  GetAzioniRichiesta, GetTipologieRichiesta, RemoveSoccorsoAereo,
   SetMotivazioneRichiesta
 } from '../../actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {CompPartenzaService} from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -86,6 +86,12 @@ export class ComposizioneSoccorsoAereoState {
   @Action(AddSoccorsoAereo)
   addSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, richiesta: any): void {
     this.compPartenzaService.addSoccorsoAereo(richiesta).subscribe(() => {
+    });
+  }
+
+  @Action(RemoveSoccorsoAereo)
+  removeSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, richiesta: any): void {
+    this.compPartenzaService.removeSoccorsoAereo(richiesta).subscribe(() => {
     });
   }
 

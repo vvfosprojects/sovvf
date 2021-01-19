@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
@@ -32,7 +32,14 @@ export class CompPartenzaService {
     }
 
     addSoccorsoAereo(obj: any): Observable<any> {
-      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj.richiesta);
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj);
+    }
+
+    removeSoccorsoAereo(obj: any): Observable<any> {
+      const headers = new HttpHeaders({
+        CodiceRichiesta: obj.richiesta.requestKey});
+      const options = { headers };
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Annulla`, obj.richiesta.payload, options );
     }
 
     getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {

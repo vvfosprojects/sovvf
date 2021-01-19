@@ -14,6 +14,13 @@ export class AddSoccorsoAereo {
   }
 }
 
+export class RemoveSoccorsoAereo {
+  static readonly type = '[ComposizioneSoccorsoAereo] Remove Richiesta Soccorso Aereo';
+
+  constructor(public richiesta: any) {
+  }
+}
+
 export class SetMotivazioneRichiesta {
   static readonly type = '[ComposizioneSoccorsoAereo] Update Motivazione Richiesta Soccorso Aereo';
 
