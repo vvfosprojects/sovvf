@@ -85,6 +85,7 @@ namespace SO115App.API.Controllers
                 {
                     CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
+                    Codice = Request.Headers["CodiceRichiesta"],
                     Annullamento = richiesta
                 };
 
