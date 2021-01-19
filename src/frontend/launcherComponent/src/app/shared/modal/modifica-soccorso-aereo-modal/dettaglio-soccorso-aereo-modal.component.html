@@ -167,11 +167,15 @@
               (click)="chiudiModalSoccorsoAereo('ok')">
         {{ 'Modifica Richiesta'.toLocaleUpperCase() }}
       </button>
-      <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"
+      <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"
               (click)="chiudiModalSoccorsoAereo('mod')">
         {{ 'Annulla Richiesta'.toLocaleUpperCase() }}
       </button>
-      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" placement="bottom" ngbTooltip="Refresh" style="width: 10%">
+      <button *ngIf="submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2" [disabled]="true">
+        <i class="fa fa-spin fa-spinner mr-1"></i>
+        {{ 'Annulamento In Corso' | uppercase }}
+      </button>
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" placement="bottom" ngbTooltip="Refresh" style="width: 10%" disabled>
         <i class="fa fa-refresh"></i>
       </button>
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
