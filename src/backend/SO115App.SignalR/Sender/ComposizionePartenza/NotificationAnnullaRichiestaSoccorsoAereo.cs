@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
@@ -36,14 +37,19 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 if(!command.ErroriAFM.IsError())
-                    _notificationHubContext.Clients.Group(sede).SendAsync("ModifySuccessAnnullamentoAFM", _mapperSintesi.Map(command.Richiesta));
-
-                Task.Factory.StartNew(() =>
                 {
-                    var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", _mapperSintesi.Map(command.Richiesta));
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
-                });
+                    Task.Factory.StartNew(() =>
+                    {
+                        var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
+
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
+                    });
+                }
+                else
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((AnnullamentoRichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
+
             });
         }
     }
