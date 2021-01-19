@@ -8,10 +8,11 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
 {
     public class AnnullamentoRichiestaSoccorsoAereo : Evento
     {
-        public AnnullamentoRichiestaSoccorsoAereo(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte)
-            : base(richiesta, istante, codiceFonte, "RichiestaSoccorsoAereo")
+        public string Note { get; set; }
+        public AnnullamentoRichiestaSoccorsoAereo(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string note)
+            : base(richiesta, istante, codiceFonte, "AnnullamentoSoccorsoAereo")
         {
-
+            Note = note;
         }
     }
 }

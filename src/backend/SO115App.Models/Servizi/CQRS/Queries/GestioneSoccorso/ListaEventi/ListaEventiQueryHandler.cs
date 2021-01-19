@@ -134,6 +134,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case RichiestaSoccorsoAereo _:
                     return ((RichiestaSoccorsoAereo)evento).Note;
 
+                case AnnullamentoRichiestaSoccorsoAereo _:
+                    return ((AnnullamentoRichiestaSoccorsoAereo)evento).Note;
+
                 case AllertaSedi _:
 
                 default:
@@ -280,6 +283,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RichiestaSoccorsoAereo _:
                     return Costanti.RichiestaSoccorsoAereo;
+
+                case AnnullamentoRichiestaSoccorsoAereo _:
+                    return Costanti.AnnullamentoRichiestaSoccorsoAereo;
 
                 default:
                     return Costanti.EventoGenerico;

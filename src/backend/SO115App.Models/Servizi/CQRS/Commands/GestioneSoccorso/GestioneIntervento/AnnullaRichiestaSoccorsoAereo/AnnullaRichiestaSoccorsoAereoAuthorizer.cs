@@ -11,7 +11,7 @@ using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
-    public class AnnullaRichiestaSoccorsoAereoAuthorizer : ICommandAuthorizer<InserisciRichiestaSoccorsoAereoCommand>
+    public class AnnullaRichiestaSoccorsoAereoAuthorizer : ICommandAuthorizer<AnnullaRichiestaSoccorsoAereoCommand>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
@@ -30,9 +30,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             _getRichiestaById = getRichiestaById;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(InserisciRichiestaSoccorsoAereoCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetByCodice(command.RichiestaSoccorsoAereo.requestKey);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.Codice);
 
             var Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 

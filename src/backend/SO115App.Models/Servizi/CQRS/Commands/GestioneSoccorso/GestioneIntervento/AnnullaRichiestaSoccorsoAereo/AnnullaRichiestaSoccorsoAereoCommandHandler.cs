@@ -3,6 +3,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
@@ -21,14 +22,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var date = DateTime.Now;
 
-            new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore);
-
             //Comunico al servizio esterno
-            _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
+            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
+
+            new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
 
 
-
-            command.Richiesta.RichiestaSoccorsoAereo = false;
+            if(result.errors == null || result.errors.Count == 0)
+            {
+                command.Richiesta.RichiestaSoccorsoAereo = false;
+            }
 
             //Salvo richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);

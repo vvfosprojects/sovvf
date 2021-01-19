@@ -120,6 +120,7 @@ namespace SO115App.Models.Classi.Utility
         public static string TrasferimentoChiamata = "TrasferimentoChiamata";
 
         public static string RichiestaSoccorsoAereo = "RichiestaSoccorsoAereo";
+        public static string AnnullamentoRichiestaSoccorsoAereo = "AnnullamentoRichiestaSoccorsoAereo";
         #endregion Eventi
 
         #region Ruoli Utenti
