@@ -41,16 +41,19 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyInserimentoAFM", command.Richiesta);
 
                 if(!command.ErroriAFM.IsError())
+                {
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", _mapperSintesi.Map(command.Richiesta));
+
+                    Task.Factory.StartNew(() =>
+                    {
+                        var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
+
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
+                    });
+                }
                 else
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((RichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
 
-                Task.Factory.StartNew(() =>
-                {
-                    var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
-
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
-                });
             });
         }
     }
