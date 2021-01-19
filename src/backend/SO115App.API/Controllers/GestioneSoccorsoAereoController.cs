@@ -100,7 +100,7 @@ namespace SO115App.API.Controllers
 
                 if (!((RichiestaSoccorsoAereo)command.Richiesta.Eventi.LastOrDefault()).Note.Contains("Annullamento AFM accettato"))
                 {
-                    throw new Exception("Inserimento richiesta soccorso aereo fallito");
+                    throw new Exception("Annullamento richiesta soccorso aereo fallito");
                 }
 
                 return Ok();

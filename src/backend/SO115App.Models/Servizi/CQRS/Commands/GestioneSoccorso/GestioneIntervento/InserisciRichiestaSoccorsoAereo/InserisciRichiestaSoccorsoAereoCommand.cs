@@ -16,6 +16,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public RichiestaAssistenza Richiesta { get; set; }
 
-        public ErroreRichiestaSoccorsoAereo ErroreAFM { get; set; }
+        public ErroreRichiestaSoccorsoAereo ErroriAFM { get; set; }
     }
 }

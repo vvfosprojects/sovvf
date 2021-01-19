@@ -29,7 +29,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             #endregion
 
-            if(result.errors == null || result.errors.Count != 0) //OK ANNULLAMENTO
+            command.ErroriAFM = result;
+
+            if (!result.IsError()) //OK ANNULLAMENTO
             {
                 command.Richiesta.RichiestaSoccorsoAereo = false;
 
