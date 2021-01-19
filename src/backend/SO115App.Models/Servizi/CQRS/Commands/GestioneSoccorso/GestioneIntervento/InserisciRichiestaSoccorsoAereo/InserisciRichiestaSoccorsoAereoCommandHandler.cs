@@ -45,7 +45,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             #endregion
 
-            if (result.errors.Count != 0) //ERRORE
+            if (result.errors == null || result.errors.Count != 0) //ERRORE
             {
                 new RichiestaSoccorsoAereo(command.Richiesta, dataInserimento, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
             }
@@ -60,6 +60,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             //Salvo richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);
+
+            if (result.errors != null || result.errors.Count > 0)
+            {
+                throw new Exception("Inserimento richiesta soccorso aereo fallito");
+            }
         }
     }
 }
