@@ -37,6 +37,7 @@ using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 using SO115App.Models.Classi.Fonogramma;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.Soccorso.Eventi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -343,7 +344,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
                 var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
 
-                if (Eventi.LastOrDefault() is SO115App.Models.Classi.Soccorso.Eventi.RichiestaSoccorsoAereo && RichiestaSoccorsoAereo == true)
+                if ((Eventi.LastOrDefault() is RichiestaSoccorsoAereo || Eventi.LastOrDefault() is AnnullamentoRichiestaSoccorsoAereo) && RichiestaSoccorsoAereo == true)
                     return Costanti.RichiestaAssegnata;
 
                 foreach (var partenza in PartenzeSelect)

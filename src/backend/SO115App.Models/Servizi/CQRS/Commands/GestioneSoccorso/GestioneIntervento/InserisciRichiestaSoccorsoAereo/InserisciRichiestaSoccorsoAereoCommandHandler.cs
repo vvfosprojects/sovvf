@@ -60,11 +60,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             //Salvo richiesta sul db
             _updateRichiesta.UpDate(command.Richiesta);
-
-            if (result.errors != null || result.errors.Count > 0)
-            {
-                throw new Exception("Inserimento richiesta soccorso aereo fallito");
-            }
         }
     }
 }

@@ -3,11 +3,13 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetTipologieSoccorsoAereo;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -67,6 +69,11 @@ namespace SO115App.API.Controllers
                 };
 
                 _inserisciRichiestaSoccorsoAereo.Handle(command);
+
+                if (!((RichiestaSoccorsoAereo)command.Richiesta.Eventi.LastOrDefault()).Note.Contains("Richiesta AFM accettata"))
+                {
+                    throw new Exception("Inserimento richiesta soccorso aereo fallito");
+                }
 
                 return Ok();
             }

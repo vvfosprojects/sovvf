@@ -22,15 +22,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var date = DateTime.Now;
 
+            #region AFM Servizio
+
             //Comunico al servizio esterno
             var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
 
-            new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+            #endregion
 
-
-            if(result.errors == null || result.errors.Count == 0)
+            if(result.errors == null || result.errors.Count != 0) //OK ANNULLAMENTO
             {
                 command.Richiesta.RichiestaSoccorsoAereo = false;
+
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, "Annullamento AFM accettato");
+            }
+            else //FALLIMENTO INSERIMENTO
+            {
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
             }
 
             //Salvo richiesta sul db
