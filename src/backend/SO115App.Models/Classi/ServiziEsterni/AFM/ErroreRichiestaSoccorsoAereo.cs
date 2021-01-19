@@ -6,7 +6,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
     {
         public List<Errore> errors { get; set; }
 
-        public bool IsError() => errors != null || errors.Count > 0;
+        public bool IsError() => errors != null && errors.Count > 0;
     }
 
     public class Errore
