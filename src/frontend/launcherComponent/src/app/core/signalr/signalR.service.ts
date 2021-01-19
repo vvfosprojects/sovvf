@@ -153,6 +153,17 @@ export class SignalRService {
           this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
+        this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
+          console.log('NotifySuccessAnnullamentoAFM:', data);
+          this.store.dispatch(new UpdateRichiesta(data.richiesta));
+          this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+        });
+
+        this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
+          console.log('NotifyErrorAnnullamentoAFM:', data);
+          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+        });
+
         /**
          * Cambiamento Stato Squadra/Mezzi Richiesta
          */
