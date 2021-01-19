@@ -98,6 +98,11 @@ namespace SO115App.API.Controllers
 
                 _annullaRichiestaSoccorsoAereo.Handle(command);
 
+                if (!((RichiestaSoccorsoAereo)command.Richiesta.Eventi.LastOrDefault()).Note.Contains("Richiesta AFM accettata"))
+                {
+                    throw new Exception("Inserimento richiesta soccorso aereo fallito");
+                }
+
                 return Ok();
             }
             catch (Exception e)
