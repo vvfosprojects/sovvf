@@ -21,7 +21,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            var date = DateTime.Now;
+            var date = command.Annullamento.datetime;
 
             #region AFM Servizio
 
