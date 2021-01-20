@@ -22,6 +22,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
   showAttivita = true;
+  showDettaglio = true;
   submitted: boolean;
   attivita: any[] = [
      {
@@ -54,6 +55,8 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
+    this.showAttivita = true;
+    this.showDettaglio = false;
   }
 
   ngOnDestroy(): void {
@@ -62,6 +65,10 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
   onShowAttivita(): void {
     this.showAttivita = !this.showAttivita;
+  }
+
+  onShowDettaglio(): void {
+    this.showDettaglio = !this.showDettaglio;
   }
 
   chiudiModalSoccorsoAereo(closeRes: string): void {

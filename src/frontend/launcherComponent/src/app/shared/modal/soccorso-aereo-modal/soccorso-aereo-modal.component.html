@@ -41,10 +41,16 @@
 <div class="modal-footer">
   <div class="row w-100">
     <div class="col-12 text-right">
-      <button *ngIf="!submitted" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
-                (click)="chiudiModalSoccorsoAereo('ok')" [disabled]="!tipologiaChecked">
+      <button *ngIf="!submitted && (motivazione && tipologiaChecked)" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
+                (click)="chiudiModalSoccorsoAereo('ok')">
         {{ 'Richiedi' | uppercase }}
       </button>
+      <span *ngIf="!motivazione || !tipologiaChecked" class="float-left" tabindex="0" ngbTooltip="Inserisci Azione e Motivazione" placement="top">
+        <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
+                disabled>
+          {{ 'Richiedi' | uppercase }}
+        </button>
+      </span>
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
               (click)="chiudiModalSoccorsoAereo('ko')">
         {{ 'Chiudi' | uppercase }}
