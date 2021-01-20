@@ -45,7 +45,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             #endregion
 
-            command.ErroriAFM = responseAFM;
+            command.ResponseAFM = responseAFM;
 
             if (responseAFM.IsError()) //ERRORE
             {
@@ -53,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
             else //OK INSERIMENTO
             {
-                var note = "Richiesta accettata: " + responseAFM.activities.LastOrDefault().activityStatusType;
+                var note = "Richiesta AFM accettata: " + responseAFM.activities.LastOrDefault().activityStatusType;
 
                 new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note);
 
