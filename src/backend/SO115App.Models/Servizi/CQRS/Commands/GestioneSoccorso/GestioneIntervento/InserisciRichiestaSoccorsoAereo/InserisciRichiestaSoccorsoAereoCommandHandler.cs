@@ -45,7 +45,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             #endregion
 
-            command.ErroriAFM = responseAFM;
+            command.ResponseAFM = responseAFM;
 
             if (responseAFM.IsError()) //ERRORE
             {
