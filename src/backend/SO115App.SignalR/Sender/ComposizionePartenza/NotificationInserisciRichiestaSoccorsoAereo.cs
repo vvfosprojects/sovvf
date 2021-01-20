@@ -40,7 +40,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             {
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyInserimentoAFM", command.Richiesta);
 
-                if (!command.ResponseAFM.IsError())
+                if (!command.ResponseAFM.IsError()) //SUCCESSO
                 {
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", _mapperSintesi.Map(command.Richiesta));
 
@@ -53,7 +53,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
                     });
                 }
-                else
+                else //FALLIMENTO
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((RichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
             });
         }
