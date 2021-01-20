@@ -138,9 +138,6 @@ export class SignalRService {
          * Soccorso Aereo
          */
         // Todo: tipicizzare
-        this.hubNotification.on('NotifyInserimentoAFM', (data: any) => {
-          console.log('NotifyInserimentoAFM:', data);
-        });
 
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
           console.log('NotifySuccessAFM', data);

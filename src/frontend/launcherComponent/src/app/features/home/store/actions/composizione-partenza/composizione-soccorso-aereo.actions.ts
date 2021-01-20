@@ -14,6 +14,13 @@ export class AddSoccorsoAereo {
   }
 }
 
+export class GetDettaglioSoccorsoAereo {
+  static readonly type = '[ComposizioneSoccorsoAereo] Get Dettaglio Soccorso Aereo';
+
+  constructor(public codRichiesta: string) {
+  }
+}
+
 export class RemoveSoccorsoAereo {
   static readonly type = '[ComposizioneSoccorsoAereo] Remove Richiesta Soccorso Aereo';
 
@@ -39,6 +46,13 @@ export class AddTipologieRichiesta {
   static readonly type = '[ComposizioneSoccorsoAereo] Add Tipologie Richieste';
 
   constructor(public tipologieRichiesta: any) {
+  }
+}
+
+export class SetDettaglioSoccorsoAereo {
+  static readonly type = '[ComposizioneSoccorsoAereo] Set Dettaglio Soccorso Aereo';
+
+  constructor(public dettaglioAFM: any[]) {
   }
 }
 

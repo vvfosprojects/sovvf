@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
@@ -6,6 +6,10 @@ import {Select, Store} from '@ngxs/store';
 import {Utente} from '../../model/utente.model';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
+import {
+  ComposizioneSoccorsoAereoState,
+  DettaglioAFM
+} from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 
 @Component({
@@ -18,43 +22,18 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
+  @Select(ComposizioneSoccorsoAereoState.dettaglioAFM) dataAFM$: Observable<Utente>;
+  dettaglioAFM: DettaglioAFM;
 
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
   showAttivita = true;
   showDettaglio = true;
   submitted: boolean;
-  attivita: any[] = [
-     {
-      stato: 'test1',
-      aggiornamento: 'test2',
-      nucleo: 'test3',
-      velivolo: 'test4',
-      categorie: 'test5',
-      tempoStimato: 'test6',
-      accettazione: 'test7',
-      decollo: 'test8',
-      arrivo: 'test9',
-      rientro: 'test10',
-      sede: 'test11'
-    },
-    {
-      stato: 'aaaaa',
-      aggiornamento: 'bbbb',
-      nucleo: 'cccc',
-      velivolo: 'ddddd',
-      categorie: 'eeeeee',
-      tempoStimato: 'fffff',
-      accettazione: 'ggggg',
-      decollo: 'hhhhhh',
-      arrivo: 'iiiii',
-      rientro: 'lllll',
-      sede: 'mmmmm'
-    },
-  ];
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
+    this.getDettaglioAFM();
     this.showAttivita = true;
     this.showDettaglio = false;
   }
@@ -77,14 +56,12 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       } else if (closeRes === 'mod') {
       // caso annullamento
       this.submitted = true;
-      const date = new Date();
       const obj = {
         requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
         payload: {
           operatorName: this.utente.nome,
           operatorSurname: this.utente.cognome,
           operatorFiscalCode: this.utente.codiceFiscale,
-          dateTime: date,
         }
       };
       this.compPartenzaService.removeSoccorsoAereo(obj).subscribe(() => {
@@ -97,6 +74,14 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     this.subscription.add(
       this.user$.subscribe((user: Utente) => {
         this.utente = user;
+      })
+    );
+  }
+
+  getDettaglioAFM(): void {
+    this.subscription.add(
+      this.dataAFM$.subscribe((data: any) => {
+        this.dettaglioAFM = data;
       })
     );
   }

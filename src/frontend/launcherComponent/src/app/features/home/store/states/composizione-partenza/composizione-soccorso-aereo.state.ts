@@ -2,10 +2,39 @@ import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
   AddAzioniRichiesta, AddSoccorsoAereo, AddTipologieRichiesta,
-  GetAzioniRichiesta, GetTipologieRichiesta, RemoveSoccorsoAereo,
+  GetAzioniRichiesta, GetDettaglioSoccorsoAereo, GetTipologieRichiesta, RemoveSoccorsoAereo, SetDettaglioSoccorsoAereo,
   SetMotivazioneRichiesta
 } from '../../actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {CompPartenzaService} from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+
+export interface DettaglioAFM {
+  areReliableCoordinates: boolean;
+  datetime: string;
+  description: string;
+  events: [{
+    activityID: 730
+    activityStatusType: string;
+    aircraft: string;
+    department: string;
+    event: string;
+    operatorName: string;
+    operatorSurname: string;
+    statusDatetime: string;
+  }];
+  lat: number;
+  lng: number;
+  locality: string;
+  onSiteContact: string;
+  onSiteContactPhoneNumber: string;
+  operatorFiscalCode: string;
+  operatorName: string;
+  operatorSurname: string;
+  progressiveNumber: string;
+  remarks: any;
+  requestKey: string;
+  requestType: string;
+  venueInCharge: string;
+}
 
 export interface ComposizioneSoccorsoAereoStateModel {
   azioniRichiesta: [{
@@ -18,6 +47,7 @@ export interface ComposizioneSoccorsoAereoStateModel {
     codice: string,
     tipo: string,
   }];
+  dettaglioAFM: DettaglioAFM;
 }
 
 export const ComposizioneSoccorsoAereoStateDefaults: ComposizioneSoccorsoAereoStateModel = {
@@ -31,6 +61,7 @@ export const ComposizioneSoccorsoAereoStateDefaults: ComposizioneSoccorsoAereoSt
     codice: null,
     tipo: null,
   }],
+  dettaglioAFM: null,
 };
 
 @Injectable()
@@ -48,6 +79,11 @@ export class ComposizioneSoccorsoAereoState {
   @Selector()
   static motivazione(state: ComposizioneSoccorsoAereoStateModel): string {
     return state.motivazioneRichiesta;
+  }
+
+  @Selector()
+  static dettaglioAFM(state: ComposizioneSoccorsoAereoStateModel): DettaglioAFM {
+    return state.dettaglioAFM;
   }
 
 
@@ -69,6 +105,13 @@ export class ComposizioneSoccorsoAereoState {
     }, () => {});
   }
 
+  @Action(GetDettaglioSoccorsoAereo)
+  getDettaglioSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, codRichiesta: string): void {
+    this.compPartenzaService.getDettaglioSoccorsoAereo(codRichiesta).subscribe((action: any) => {
+      dispatch(new SetDettaglioSoccorsoAereo(action.data));
+    }, () => {});
+  }
+
   @Action(AddAzioniRichiesta)
   setRichieste({ patchState }: StateContext<ComposizioneSoccorsoAereoStateModel>, azioniRichiesta: any): void {
     patchState({
@@ -81,6 +124,15 @@ export class ComposizioneSoccorsoAereoState {
     patchState({
       tipologieRichiesta: tipologieRichiesta.tipologieRichiesta.map(x => ({codice : x.requestTypeCode, tipo: x.requestType})),
     });
+  }
+
+  @Action(SetDettaglioSoccorsoAereo)
+  setDettaglioSoccorsoAereo({ patchState, getState }: StateContext<ComposizioneSoccorsoAereoStateModel>, action: any): void {
+    patchState({
+      dettaglioAFM: action.dettaglioAFM
+    });
+    const state = getState();
+    console.log('***state.dettaglioAFM AFTER CHANGE ', state.dettaglioAFM);
   }
 
   @Action(AddSoccorsoAereo)

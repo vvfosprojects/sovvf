@@ -32,6 +32,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 import {DettaglioSoccorsoAereoModalComponent} from '../../modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
+import {GetDettaglioSoccorsoAereo} from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -451,6 +452,8 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
       }
       const modal = this.modalService.open(DettaglioSoccorsoAereoModalComponent, modalOptions);
+      const requestKey = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+      this.store.dispatch(new GetDettaglioSoccorsoAereo(requestKey));
       modal.componentInstance.richiesta = this.richiesta;
       console.log('*** RICHIESTA SOCCORSO ', this.richiesta);
       modal.result.then((res: string) => {

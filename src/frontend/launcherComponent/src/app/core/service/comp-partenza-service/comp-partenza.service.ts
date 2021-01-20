@@ -31,6 +31,10 @@ export class CompPartenzaService {
       return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologieSoccorso`);
     }
 
+    getDettaglioSoccorsoAereo(codRichiesta: any): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStoricoRichiestaSoccorso?requestKey=${codRichiesta.codRichiesta}`);
+    }
+
     addSoccorsoAereo(obj: any): Observable<any> {
       return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj);
     }
