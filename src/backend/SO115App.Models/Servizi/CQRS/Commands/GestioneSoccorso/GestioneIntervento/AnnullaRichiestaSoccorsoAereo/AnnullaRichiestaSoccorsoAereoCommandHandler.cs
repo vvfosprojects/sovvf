@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -20,7 +21,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            var date = DateTime.Now;
+            var date = command.Annullamento.datetime;
 
             #region AFM Servizio
 
@@ -39,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
             else //FALLIMENTO ANNULLAMENTO
             {
-                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => MapErrorsAFM.Map(e))));
             }
 
             //Salvo richiesta sul db
