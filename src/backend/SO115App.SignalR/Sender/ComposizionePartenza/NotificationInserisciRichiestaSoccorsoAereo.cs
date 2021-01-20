@@ -38,13 +38,13 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyInserimentoAFM", command.Richiesta);
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyInserimentoAFM", command.Richiesta);
 
                 if (!command.ResponseAFM.IsError()) //SUCCESSO
                 {
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", _mapperSintesi.Map(command.Richiesta));
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDettaglioAFM", command.ResponseAFM);
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyDettaglioAFM", command.ResponseAFM);
 
                     Task.Factory.StartNew(() =>
                     {
