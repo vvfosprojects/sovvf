@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
 
@@ -15,14 +16,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorso
 
         public GetStoricoRichiestaSoccorsoAereoResult Handle(GetStoricoRichiestaSoccorsoAereoQuery query)
         {
-            string value = query.RequestKey;
-            string sede = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[0];
-            string seq = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0');
-            string data = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
-
-            seq = seq == "" ? "0" : seq;
-
-            var requestKey = "CMD." + sede + '.' + seq + '.' + data;
+            var requestKey = MapRequestKeyAFM.MapForAFM(query.RequestKey);
 
             var result = _getHistoryRichiestaSoccorsoAereo.Get(requestKey);
 

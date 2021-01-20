@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
@@ -29,16 +30,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.RichiestaSoccorsoAereo.datetime = date;
 
             if (command.RichiestaSoccorsoAereo.requestKey != null)
-            {
-                string value = command.Richiesta.Codice;
-                string sede = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[0];
-                string seq = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[2].TrimStart('0');
-                string data = value.Split('-', StringSplitOptions.RemoveEmptyEntries)[1];
-
-                seq = seq == "" ? "0" : seq;
-
-                command.RichiestaSoccorsoAereo.requestKey = "CMD." + sede + '.' + seq + '.' + data;
-            }
+                command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
 
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
@@ -49,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             if (responseAFM.IsError()) //ERRORE
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => e.detail)));
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => MapErrorsAFM.Map(e))));
             }
             else //OK INSERIMENTO
             {
