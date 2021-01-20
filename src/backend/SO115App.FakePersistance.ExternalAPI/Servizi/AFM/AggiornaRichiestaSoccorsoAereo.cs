@@ -18,9 +18,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public AggiornaRichiestaSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor accessor)
         : base(client, configuration, cache, log, accessor) { }
 
-        public ErroreRichiestaSoccorsoAereo Aggiorna(NuovaRichiestaSoccorsoAereo richiesta)
+        public ResponseAFM Aggiorna(NuovaRichiestaSoccorsoAereo richiesta)
         {
-            var APImanager = new HttpRequestManager<ErroreRichiestaSoccorsoAereo>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<ResponseAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 

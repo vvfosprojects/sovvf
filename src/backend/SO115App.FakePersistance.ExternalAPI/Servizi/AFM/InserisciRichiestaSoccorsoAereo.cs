@@ -19,7 +19,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public void Inserisci(NuovaRichiestaSoccorsoAereo richiesta)
         {
-            var APImanager = new HttpRequestManager<ErroreRichiestaSoccorsoAereo>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<ResponseAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 

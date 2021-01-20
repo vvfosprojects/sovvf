@@ -41,19 +41,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
 
             //Comunico al servizio esterno
-            var result = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
+            var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
             #endregion
 
-            command.ErroriAFM = result;
+            command.ErroriAFM = responseAFM;
 
-            if (result.IsError()) //ERRORE
+            if (responseAFM.IsError()) //ERRORE
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => e.detail)));
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => e.detail)));
             }
             else //OK INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, "Richiesta AFM accettata");
+                var note = "Richiesta accettata: " + responseAFM.activities.LastOrDefault().activityStatusType;
+
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note);
 
                 command.Richiesta.RichiestaSoccorsoAereo = true;
 

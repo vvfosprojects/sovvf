@@ -53,7 +53,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 }
                 else
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((RichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
-
             });
         }
     }
