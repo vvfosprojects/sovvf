@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AddItemTriageModalComponent } from '../../../shared/modal/add-item-triage-modal/add-item-triage-modal.component';
 
 @Component({
     selector: 'app-triage',
@@ -13,110 +15,83 @@ export class TriageComponent implements OnInit {
         hasFilter: false,
         hasCollapseExpand: false,
         decoupleChildFromParent: false,
-        maxHeight: 1000
+        maxHeight: 500
     } as TreeviewConfig;
 
-    tItems = [
-        new TreeviewItem({
-            text: 'Ci sono persone in casa?',
-            value: 'Ci sono persone in casa?',
-            disabled: true,
-            children: [
-                {
-                    text: 'Si',
-                    value: 'si',
-                    children: [{
-                        text: 'Ci sono persone in pericolo?',
-                        value: 'Ci sono persone in pericolo?',
-                        children: [
-                            { text: 'Si', value: 'si', disabled: true },
-                            { text: 'No', value: 'no', disabled: true },
-                            { text: 'Non lo so', value: 'non lo so', disabled: true }
-                        ],
-                        disabled: true
-                    }],
-                    disabled: true
-                },
-                {
-                    text: 'No',
-                    value: 'no',
-                    children: [{
-                        text: 'Si riesce ad accedere all\'abitazione?',
-                        value: 'Si riesce ad accedere all\'abitazione?',
-                        children: [
-                            { text: 'Si', value: 'si', disabled: true },
-                            { text: 'No', value: 'no', disabled: true },
-                            { text: 'Non lo so', value: 'non lo so', disabled: true }
-                        ],
-                        disabled: true
-                    }],
-                    disabled: true
-                },
-                {
-                    text: 'Non lo so',
-                    value: 'non lo so',
-                    children: [{
-                        text: 'Ci sono persone in pericolo?',
-                        value: 'Ci sono persone in pericolo?',
-                        children: [
-                            {
-                                text: 'Si',
-                                value: 'si',
-                                children: [{
-                                    text: 'Si riesce ad accedere all\'abitazione?',
-                                    value: 'Si riesce ad accedere all\'abitazione?',
-                                    children: [
-                                        { text: 'Si', value: 'si', disabled: true },
-                                        { text: 'No', value: 'no', disabled: true },
-                                        { text: 'Non lo so', value: 'non lo so', disabled: true }
-                                    ],
-                                    disabled: true
-                                }],
-                                disabled: true
-                            },
-                            {
-                                text: 'No',
-                                value: 'no',
-                                children: [{
-                                    text: 'Si riesce ad accedere all\'abitazione?',
-                                    value: 'Si riesce ad accedere all\'abitazione?',
-                                    children: [
-                                        { text: 'Si', value: 'si', disabled: true },
-                                        { text: 'No', value: 'no', disabled: true },
-                                        { text: 'Non lo so', value: 'non lo so', disabled: true }
-                                    ],
-                                    disabled: true
-                                }],
-                                disabled: true
-                            },
-                            {
-                                text: 'Non lo so',
-                                value: 'non lo so',
-                                children: [{
-                                    text: 'Si riesce ad accedere all\'abitazione?',
-                                    value: 'Si riesce ad accedere all\'abitazione?',
-                                    children: [
-                                        { text: 'Si', value: 'si', disabled: true },
-                                        { text: 'No', value: 'no', disabled: true },
-                                        { text: 'Non lo so', value: 'non lo so', disabled: true }
-                                    ],
-                                    disabled: true
-                                }],
-                                disabled: true
-                            }
-                        ],
-                        disabled: true
-                    }],
-                    disabled: true
-                }
-            ]
-        })
-    ];
+    dettaglioTipologiaTriage: any;
+    showTriage: boolean;
 
-    constructor() {
+    tItems: TreeviewItem[];
+
+    constructor(private modalService: NgbModal) {
     }
 
     ngOnInit(): void {
+    }
+
+    onDettaglioTipologiaTriage(dettaglioTipologiaTriage: any): void {
+        this.dettaglioTipologiaTriage = dettaglioTipologiaTriage;
+        if (!dettaglioTipologiaTriage) {
+            this.showTriage = false;
+        }
+    }
+
+    onShowTriage(): void {
+        if (this.dettaglioTipologiaTriage) {
+            this.showTriage = true;
+        }
+    }
+
+    initTriage(): void {
+        this.tItems = [
+            new TreeviewItem({
+                text: 'Ci sono persone in casa?',
+                value: '1',
+                children: [
+                    {
+                        text: 'Si',
+                        value: '1-1',
+                        disabled: true
+                    },
+                    {
+                        text: 'No',
+                        value: '2-1',
+                        disabled: true
+                    },
+                    {
+                        text: 'Non lo so',
+                        value: '3-1',
+                        disabled: true
+                    }
+                ]
+            })
+        ];
+    }
+
+    addDomanda(item: TreeItem): void {
+        const addItemTriageModal = this.modalService.open(AddItemTriageModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addItemTriageModal.componentInstance.tItem = item;
+        addItemTriageModal.result.then((res: any) => {
+            item.children = [{
+                text: res.prossimaDomanda,
+                value: item.value + '-1',
+                children: [
+                    { text: 'Si', value: '1' + item.value + '-1', disabled: true },
+                    { text: 'No', value: '2' + item.value + '-1', disabled: true },
+                    { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
+                ]
+            }];
+        });
+
+    }
+
+    removeItem(item: TreeviewItem): void {
+        console.log('removeItem', item);
     }
 
 }
