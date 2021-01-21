@@ -26,7 +26,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             #region AFM Servizio
 
             //Comunico al servizio esterno
-            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
+            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.CodiceRichiesta);
 
             #endregion
 
