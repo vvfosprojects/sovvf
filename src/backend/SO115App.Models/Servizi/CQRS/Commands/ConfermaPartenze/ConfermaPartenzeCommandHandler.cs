@@ -155,7 +155,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var sedeRichiesta = command.Richiesta.CodSOCompetente;
 
             if (command.Richiesta.CodRichiesta == null)
-                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
+                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, DateTime.UtcNow.Year);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {

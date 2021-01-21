@@ -13,21 +13,21 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
         public GeneraCodiceRichiesta(DbContext dbContext) => _dbContext = dbContext;
 
-        public string Genera(string codiceProvincia, int anno)
+        public string GeneraCodiceIntervento(string codiceProvincia, int anno)
         {
+            string data = DateTime.Now.ToString("ddMMyyy");
             int maxNumero = GetMaxCodiceIntervento(codiceProvincia);
 
-            string returnFormatString = string.Format("{0}-{1}-{2:D5}", codiceProvincia.Split('.')[0], anno, maxNumero);
+            string returnFormatString = string.Format("{0}-{1}-{2:D5}", codiceProvincia.Split('.')[0], data, maxNumero);
 
             return returnFormatString;
         }
 
         public string GeneraCodiceChiamata(string codiceProvincia, int anno)
         {
-            string data = DateTime.Now.ToString("ddMMyyy");
             int maxNumero = GetMaxCodiceChiamata(codiceProvincia);
 
-            string returnString = string.Format("{0}-{1}-{2:D5}", codiceProvincia.Split('.')[0], data, maxNumero);
+            string returnString = string.Format("{0}-{1}-{2:D5}", codiceProvincia.Split('.')[0], anno, maxNumero);
 
             return returnString;
         }
