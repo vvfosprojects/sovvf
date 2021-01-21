@@ -14,7 +14,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         /// <summary>
         /// Codice richiesta
         /// </summary>
-        public string Codice { get; set; }
+        public string CodiceRichiesta { get; set; }
 
         public RichiestaAssistenza Richiesta { get; set; }
 

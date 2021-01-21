@@ -89,17 +89,12 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Annulla")]
-        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereo richiesta)
+        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {
             try
             {
-                var command = new AnnullaRichiestaSoccorsoAereoCommand()
-                {
-                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
-                    IdOperatore = Request.Headers["IdUtente"],
-                    Codice = Request.Headers["CodiceRichiesta"],
-                    Annullamento = richiesta
-                };
+                command.IdOperatore = Request.Headers["IdUtente"];
+                command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
                 _annullaRichiestaSoccorsoAereo.Handle(command);
 
