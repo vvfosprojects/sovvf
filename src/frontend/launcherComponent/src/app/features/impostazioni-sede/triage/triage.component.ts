@@ -34,8 +34,15 @@ export class TriageComponent implements OnInit {
     onDettaglioTipologiaTriage(dettaglioTipologiaTriage: any): void {
         this.dettaglioTipologiaTriage = dettaglioTipologiaTriage;
         if (!dettaglioTipologiaTriage) {
-            this.showTriage = false;
+            this.onClearDettaglioTipologiaTriage();
         }
+    }
+
+    onClearDettaglioTipologiaTriage(): void {
+        this.dettaglioTipologiaTriage = null;
+        this.tItems = null;
+        this.tItemsData = [];
+        this.showTriage = false;
     }
 
     onShowTriage(): void {
@@ -77,7 +84,7 @@ export class TriageComponent implements OnInit {
         }
     }
 
-    addDomanda(item: TreeItem): void {
+    addItem(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(AddItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',

@@ -9,7 +9,7 @@
             Aggiungi Dettaglio
         </button>
     </div>
-    <ng-template [ngIf]="dettagliTipologie?.length">
+    <ng-template [ngIf]="dettagliTipologie?.length || ricerca">
         <div class="col">
             <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
             <ng-select id="filtriDettagliTipologie"
