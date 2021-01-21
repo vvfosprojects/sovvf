@@ -21,7 +21,7 @@
                            [debounceTime]="1000"
                            [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}">
                     <i *ngIf="ricercaSquadre" (click)="onClearSearchSquadre()"
-                       class="fa fa-times clear-search-squadre"></i>
+                       class="fa fa-times clear-search-squadre" style="transform: translate(225px, -28px);"></i>
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"
@@ -70,7 +70,7 @@
                            placeholder="Cerca..." [(ngModel)]="ricercaMezzi" appDebounceKeyUp
                            (debounceKeyUp)="onSearchMezzi()" [debounceTime]="1000"
                            [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}">
-                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi"></i>
+                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi" style="transform: translate(272px, -28px);"></i>
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"

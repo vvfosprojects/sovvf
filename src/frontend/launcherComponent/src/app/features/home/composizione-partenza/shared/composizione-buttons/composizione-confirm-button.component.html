@@ -1,6 +1,6 @@
 <div class="btn-group mx-5" ngbDropdown role="group" placement='top' style="width: 25%">
-  <span *ngIf="richiesta.richiestaSoccorsoAereo" class="w-100" tabindex="0" ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova">
-    <button class="btn btn-warning btn-block card-shadow mt-2 btn-no-hover font-comp-xl"
+  <span *ngIf="richiesta.richiestaSoccorsoAereo" class="w-100" tabindex="0" style="outline: none" ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova">
+    <button class="btn btn-warning btn-block card-shadow mt-2 btn-no-hover font-comp-xl" style="outline: none"
             ngbTooltip="Intervento aereo"
             placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="richiesta.richiestaSoccorsoAereo">
     <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>

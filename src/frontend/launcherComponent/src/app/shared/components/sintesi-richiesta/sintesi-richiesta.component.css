@@ -130,3 +130,11 @@
 .btn-glow {
   animation: glowing 1300ms infinite;
 }
+
+.row_text {
+  color: #000000 !important;
+}
+
+.cod-int {
+  color: #000000 !important;
+}

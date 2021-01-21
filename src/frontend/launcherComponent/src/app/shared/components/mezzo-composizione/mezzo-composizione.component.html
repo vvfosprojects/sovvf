@@ -7,6 +7,8 @@
         <div class="col-1 pr-0">
       <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato"
             [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)"></span>
+          <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onSganciamento(); $event.stopPropagation()" style="margin-left: 15px"
+             ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato"></i>
         </div>
         <div class="col-6 pr-0">
             <span [ngbTooltip]="mezzoComp.mezzo.descrizione" [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7"
@@ -32,10 +34,6 @@
                   [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione
               | slice:0:3}}</span>
       </div>
-        <div class="col-2 text-right">
-            <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onSganciamento(); $event.stopPropagation()"
-               ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato"></i>
-        </div>
     </div>
     <app-prenotazione-progress-bar *ngIf="itemPrenotato && mezzoComp.istanteScadenzaSelezione" [mezzoComp]="mezzoComp"
                                    [itemPrenotato]="itemPrenotato" [graphic]="false"></app-prenotazione-progress-bar>

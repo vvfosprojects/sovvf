@@ -59,7 +59,7 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
           backdropClass: 'light-blue-backdrop',
           centered: true,
           keyboard: false,
-          size: 'lg',
+          size: 'xl',
         } as NgbModalOptions;
       } else {
         modalOptions = {
@@ -68,7 +68,7 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
           backdropClass: 'light-blue-backdrop',
           centered: true,
           keyboard: false,
-          size: 'lg',
+          size: 'xl',
         } as NgbModalOptions;
       }
     }
@@ -77,7 +77,7 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
     modal.result.then((res: any) => {
       switch (res.status) {
         case 'ok':
-          // console.log('Richiesta Soccorso AFM inserita con successo');
+          // this.store.dispatch(new GetListeComposizioneAvanzata()); Todo: aggiornamento sintesi richiesta
           break;
         case 'ko':
           break;
