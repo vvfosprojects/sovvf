@@ -40,10 +40,7 @@ export class CompPartenzaService {
     }
 
     removeSoccorsoAereo(obj: any): Observable<any> {
-      const headers = new HttpHeaders({
-        CodiceRichiesta: obj.requestKey});
-      const options = { headers };
-      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Annulla`, obj.payload, options );
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Annulla`, obj );
     }
 
     getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {

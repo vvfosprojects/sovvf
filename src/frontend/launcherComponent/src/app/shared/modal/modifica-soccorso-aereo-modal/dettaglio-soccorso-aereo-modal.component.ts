@@ -57,8 +57,8 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       // caso annullamento
       this.submitted = true;
       const obj = {
-        requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
-        payload: {
+        codiceRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+        annullamento: {
           operatorName: this.utente.nome,
           operatorSurname: this.utente.cognome,
           operatorFiscalCode: this.utente.codiceFiscale,
