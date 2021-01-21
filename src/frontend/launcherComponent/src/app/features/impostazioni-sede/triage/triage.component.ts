@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddItemTriageModalComponent } from '../../../shared/modal/add-item-triage-modal/add-item-triage-modal.component';
@@ -6,7 +6,8 @@ import { AddItemTriageModalComponent } from '../../../shared/modal/add-item-tria
 @Component({
     selector: 'app-triage',
     templateUrl: './triage.component.html',
-    styleUrls: ['./triage.component.scss']
+    styleUrls: ['./triage.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TriageComponent implements OnInit {
 
@@ -22,6 +23,7 @@ export class TriageComponent implements OnInit {
     showTriage: boolean;
 
     tItems: TreeviewItem[];
+    tItemsData = [];
 
     constructor(private modalService: NgbModal) {
     }
@@ -68,6 +70,13 @@ export class TriageComponent implements OnInit {
         ];
     }
 
+    getItemData(itemValue: string): any {
+        const itemData = this.tItemsData.filter((data: any) => data.itemValue === itemValue)[0];
+        if (itemData) {
+            return itemData;
+        }
+    }
+
     addDomanda(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(AddItemTriageModalComponent, {
             windowClass: 'modal-holder',
@@ -77,17 +86,36 @@ export class TriageComponent implements OnInit {
         });
         addItemTriageModal.componentInstance.tItem = item;
         addItemTriageModal.result.then((res: any) => {
-            item.children = [{
-                text: res.prossimaDomanda,
-                value: item.value + '-1',
-                children: [
-                    { text: 'Si', value: '1' + item.value + '-1', disabled: true },
-                    { text: 'No', value: '2' + item.value + '-1', disabled: true },
-                    { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
-                ]
-            }];
+            if (res.domandaSeguente) {
+                item.children = [{
+                    text: res.domandaSeguente,
+                    value: item.value + '-1',
+                    children: [
+                        { text: 'Si', value: '1' + item.value + '-1', disabled: true },
+                        { text: 'No', value: '2' + item.value + '-1', disabled: true },
+                        { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
+                    ]
+                }];
+            }
+            const otherData = {
+                itemValue: item.value,
+                soccorsoAereo: null,
+                generiMezzo: null,
+                prioritaConsigliata: null
+            };
+            if (res.soccorsoAereo) {
+                otherData.soccorsoAereo = res.soccorsoAereo;
+            }
+            if (res.generiMezzo) {
+                otherData.generiMezzo = res.generiMezzo;
+            }
+            if (res.prioritaConsigliata) {
+                otherData.prioritaConsigliata = res.prioritaConsigliata;
+            }
+            if (otherData) {
+                this.tItemsData.push(otherData);
+            }
         });
-
     }
 
     removeItem(item: TreeviewItem): void {
