@@ -27,6 +27,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
   motivazione: string;
   azioniRichiesta: any[];
   submitted: boolean;
+  inserimentoFallito: boolean;
 
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
@@ -34,6 +35,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     this.motivazione = null;
     this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
     this.azioniRichiesta.forEach(x => x.checked = false);
+    this.inserimentoFallito = false;
   }
 
   ngOnDestroy(): void {
@@ -63,6 +65,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
       this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
         this.modal.close({ status: 'ok' });
       }, () => this.submitted = false);
+      this.inserimentoFallito = true;
     } else {
       this.modal.close({ status: 'ko'});
     }
