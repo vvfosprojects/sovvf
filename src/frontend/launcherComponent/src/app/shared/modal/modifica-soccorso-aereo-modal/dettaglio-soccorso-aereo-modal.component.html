@@ -142,8 +142,8 @@
     </div>
   </div>
 
-  <table *ngIf="showAttivita" class="table table-striped">
-    <thead>
+  <table *ngIf="showAttivita" class="table table-striped table-bordered">
+    <thead class="thead-light" style="font-size: large">
     <tr>
       <th scope="col">Stato</th>
       <th scope="col">Aggiornata alle</th>
@@ -159,18 +159,18 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let a of dettaglioAFM?.events; index as i">
+    <tr *ngFor="let a of dettaglioAFM?.events; index as i" style="background-color: rgba(0, 0, 0, 0.01);">
       <th scope="row">{{a.activityStatusType}}</th>
       <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
       <td>{{a.department}}</td>
       <td>{{a.aircraft}}</td>
-      <td>-----</td>
-      <td>-----</td>
-      <td>-----</td>
-      <td>-----</td>
-      <td>-----</td>
-      <td>-----</td>
-      <td>-----</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
     </tbody>
   </table>
