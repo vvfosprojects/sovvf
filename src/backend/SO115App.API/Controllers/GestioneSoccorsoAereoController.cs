@@ -132,22 +132,6 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetInfoRichiestaSoccorso")]
-        public async Task<IActionResult> GetInfoRichiestaSoccorso(string requestKey)
-        {
-            try
-            {
-                var idUtente = Request.Headers["IdUtente"];
-                var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-
-                return null;
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.GetBaseException().Message);
-            }
-        }
-
         [HttpGet("GetStoricoRichiestaSoccorso")]
         public async Task<IActionResult> GetStoricoRichiestaSoccorso(string requestKey)
         {
@@ -164,6 +148,22 @@ namespace SO115App.API.Controllers
                 var result = _getStoricoRichiestaSoccorsoAereo.Handle(query);
 
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.GetBaseException().Message);
+            }
+        }
+
+        [HttpGet("GetInfoRichiestaSoccorso")]
+        private async Task<IActionResult> GetInfoRichiestaSoccorso(string requestKey)
+        {
+            try
+            {
+                var idUtente = Request.Headers["IdUtente"];
+                var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+                return null;
             }
             catch (Exception e)
             {

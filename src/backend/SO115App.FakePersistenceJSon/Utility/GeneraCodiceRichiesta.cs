@@ -7,7 +7,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 {
     public class GeneraCodiceRichiesta : IGeneraCodiceRichiesta
     {
-        public string Genera(string codiceProvincia, int anno)
+        public string GeneraCodiceIntervento(string codiceProvincia, int anno)
         {
             int ultimeDueCifreAnno = anno % 100;
             int nuovoNumero = GetMaxCodice.GetMax();
