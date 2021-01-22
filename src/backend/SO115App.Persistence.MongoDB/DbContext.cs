@@ -76,6 +76,7 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
+            TipologiaDettaglioMap.Map();
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
@@ -205,6 +206,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<StatoOperativoSquadra>("statoSquadra");
+            }
+        }
+
+        public IMongoCollection<TipologiaDettaglio> TipologiaDettaglioCollection
+        {
+            get
+            {
+                return database.GetCollection<TipologiaDettaglio>("tipologiaDettaglio");
             }
         }
 

@@ -18,16 +18,13 @@ export class SetSediFiltro {
     }
 }
 
-export class ResetSediFiltroSelezionate {
-    static readonly type = '[RicercaUtenti] Reset Sedi Filtro Selezionate';
-}
-
 export class ReducerSelezioneFiltroSede {
     static readonly type = '[RicercaUtenti] Reducer Selezione Filtro Sede';
 
     constructor(public sedeFiltro: string) {
     }
 }
+
 export class SetSedeFiltroSelezionato {
     static readonly type = '[RicercaUtenti] Set Sede Filtro Selezionato';
 
@@ -42,6 +39,6 @@ export class SetSedeFiltroDeselezionato {
     }
 }
 
-export class SetAllSediFiltroSelezionate {
-    static readonly type = '[RicercaUtenti] Set All Sedi Filtro Selezionate';
+export class ResetSediFiltroSelezionate {
+    static readonly type = '[RicercaUtenti] Reset Sedi Filtro Selezionate';
 }

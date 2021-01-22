@@ -5,9 +5,11 @@ import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 
 const BASE_URL = environment.baseUrl;
-const API = BASE_URL + '';
+const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;
 
 @Injectable({
     providedIn: 'root'
@@ -18,15 +20,27 @@ export class DetttagliTipologieService {
     constructor(private http: HttpClient) {
     }
 
-    // todo: completare
     getDettagliTipologie(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
         const obj = {
             filters: {
-                search: filters.search
+                search: filters.search,
+                codTipologia: filters.codTipologia
             },
             pagination
         };
-        return this.http.post(API, obj);
+        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Get', obj);
+    }
+
+    addDettaglioTipologia(dettaglioTipologia: DettaglioTipologiaDto): Observable<ResponseInterface> {
+        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Add', dettaglioTipologia);
+    }
+
+    updateDettaglioTipologia(dettaglioTipologia: UpdateDettaglioTipologiaDto): Observable<ResponseInterface> {
+        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
+    }
+
+    deleteDettagliTipologie(dettaglioTipologia: DeleteDettaglioTipologiaDto): Observable<ResponseInterface> {
+        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Delete', dettaglioTipologia);
     }
 
 }

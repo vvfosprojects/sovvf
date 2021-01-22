@@ -134,8 +134,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
             var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
             var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
-            var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
-            var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
+            //var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
+            //var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
             var ListaZoneEmergenza = Task.Factory.StartNew(() => _getZoneEmergenza.GetAll());
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
@@ -146,8 +146,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 ListaChiamateInCorso = listaChiamateInCorso.Result,
                 CentroMappaMarker = centroMappaMarker.Result,
                 ListaFiltri = filtri,
-                InfoNue = infoNue.Result,
-                Tipologie = tipologie.Result,
+                //InfoNue = infoNue.Result,
+                //Tipologie = tipologie.Result,
                 ZoneEmergenza = ListaZoneEmergenza.Result,
                 Rubrica = rubrica.Result
             };

@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="closeModal('ko')">
+        <i class="fa fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height py-4 px-5">
+    <form [formGroup]="addItemTriageForm">
+        <div>
+            <ng-template [ngIf]="primaDomanda">
+                <label for="domandaSeguente" class="font-xlarge">Inserisci il testo della Prima Domanda</label>
+            </ng-template>
+            <ng-template [ngIf]="!primaDomanda">
+                <label for="domandaSeguente" class="font-xlarge">Domanda Seguente</label>
+            </ng-template>
+            <input id="domandaSeguente"
+                   [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
+                   formControlName="domandaSeguente"
+                   type="text"
+                   class="form-control form-control-lg">
+        </div>
+        <ng-template [ngIf]="!primaDomanda">
+            <div class="mt-3">
+                <label for="mezzi">Generi Mezzo Appropriati</label>
+                <ng-select id="mezzi"
+                           placeholder="Seleziona uno o più Generi Mezzo"
+                           formControlName="generiMezzo"
+                           [items]="['ABP', 'AS']"
+                           [hideSelected]="true"
+                           [multiple]="true">
+                </ng-select>
+            </div>
+            <div class="mt-3">
+                <label for="soccorsoAereo">Richiesta Soccorso Aereo</label>
+                <ng-select id="soccorsoAereo"
+                           placeholder="Seleziona la necessità di Soccorso Aereo"
+                           formControlName="soccorsoAereo"
+                           [items]="['Non Necessario', 'Utile', 'Molto Utile', 'Indispensabile']"
+                           [hideSelected]="true"
+                           [multiple]="false">
+                </ng-select>
+            </div>
+            <div class="mt-3">
+                <label for="prioritaConsigliata">Priorità Intervento</label>
+                <ng-select id="prioritaConsigliata"
+                           placeholder="Seleziona un livello di Priorità"
+                           formControlName="prioritaConsigliata"
+                           [items]="['Molto Bassa', 'Bassa', 'Media', 'Alta']"
+                           [hideSelected]="true"
+                           [multiple]="false">
+                </ng-select>
+            </div>
+        </ng-template>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="w-100 text-left">
+        <button type="button" class="btn btn-lg btn-secondary mr-2"
+                (click)="closeModal('ko')">
+            Annulla
+        </button>
+        <button type="button" class="btn btn-lg btn-success" ngbTooltip="Riempi tutti i campi obbligatori"
+                (click)="onConferma()">
+            Conferma
+        </button>
+    </div>
+</div>

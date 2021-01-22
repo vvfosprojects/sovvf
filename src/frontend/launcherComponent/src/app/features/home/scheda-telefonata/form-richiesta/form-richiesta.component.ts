@@ -35,6 +35,7 @@ import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
 import { ToggleChiamata } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
+import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -45,7 +46,7 @@ import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/ri
 export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() tipologie: Tipologia[];
-    @Input() dettagliTipologie: any[];
+    @Input() dettagliTipologie: DettaglioTipologia[];
     @Input() operatore: Utente;
     @Input() competenze: Sede[];
     @Input() countInterventiProssimita: number;
@@ -397,7 +398,7 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
         this.getNuovaRichiesta();
         const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
-        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((dT: any) => dT.codTipologia === codTipologia);
+        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((d: DettaglioTipologia) => d.codiceTipologia === +codTipologia);
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.disableEmergenza = this.formIsInvalid(true);

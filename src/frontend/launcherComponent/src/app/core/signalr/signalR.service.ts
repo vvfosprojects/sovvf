@@ -60,6 +60,7 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -392,6 +393,28 @@ export class SignalRService {
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
             this.store.dispatch(new GetListaRichieste());
+        });
+
+        /**
+         * Dettagli Tipologie
+         */
+        this.hubNotification.on('NotifyAddDettaglioTipologia', (response: any) => {
+            console.log('NotifyAddDettaglioTipologia', response);
+            this.store.dispatch(new AddDettaglioTipologia());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyModifyDettaglioTipologia', (response: any) => {
+            console.log('NotifyModifyDettaglioTipologia', response);
+            this.store.dispatch(new UpdateDettaglioTipologia(response.data.dettaglioTipologia));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteDettaglioTipologia', (response: any) => {
+            console.log('NotifyDeleteDettaglioTipologia', response);
+            this.store.dispatch(new DeleteDettaglioTipologia(response.data));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
 
         /**
