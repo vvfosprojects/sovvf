@@ -30,12 +30,20 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   showAttivita = true;
   showDettaglio = true;
   submitted: boolean;
+  submittedModifica: boolean;
+  modificaMotivazione: boolean;
+  motivazione = '';
+  annullamentoFallito: boolean;
+  modificaFallito: boolean;
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
     this.getDettaglioAFM();
     this.showAttivita = true;
     this.showDettaglio = false;
+    this.modificaMotivazione = false;
+    this.annullamentoFallito = false;
+    this.modificaFallito = false;
   }
 
   ngOnDestroy(): void {
@@ -50,10 +58,28 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     this.showDettaglio = !this.showDettaglio;
   }
 
+  onModificaMotivazione(): void {
+    this.modificaMotivazione = !this.modificaMotivazione;
+    this.motivazione = '';
+  }
+
+  onAnnullaModificaMotivazione(): void {
+    this.modificaMotivazione = !this.modificaMotivazione;
+    this.motivazione = this.dettaglioAFM.description;
+  }
+
   chiudiModalSoccorsoAereo(closeRes: string): void {
-    if (closeRes === 'ok') {
+    if (closeRes === 'mod') {
       // caso modifica
-      } else if (closeRes === 'mod') {
+      this.submittedModifica = true;
+      const obj: any = {
+        description: this.motivazione,
+      };
+      this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+        this.modal.close({ status: 'ok' });
+      }, () => this.submittedModifica = false);
+      this.modificaFallito = true;
+    } else if (closeRes === 'ok') {
       // caso annullamento
       this.submitted = true;
       const obj = {
@@ -67,6 +93,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       this.compPartenzaService.removeSoccorsoAereo(obj).subscribe(() => {
         this.modal.close({ status: 'ko' });
       }, () => this.submitted = false);
+      this.annullamentoFallito = true;
       } else { this.modal.close({ status: 'ko'}); }
   }
 
@@ -82,7 +109,11 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     this.subscription.add(
       this.dataAFM$.subscribe((data: any) => {
         this.dettaglioAFM = data;
+        if (data) {
+          this.motivazione = data.description;
+        }
       })
     );
+
   }
 }

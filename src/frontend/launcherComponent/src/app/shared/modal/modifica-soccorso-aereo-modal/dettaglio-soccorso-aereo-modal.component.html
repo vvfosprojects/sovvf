@@ -99,18 +99,37 @@
       </div>
     </div>
     <div class="row d-inline-flex w-100">
-      <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 46%; margin-left: 2.5rem">
+      <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
         <label class="d-none" for="noteintervento">Note Intervento</label>
         <i class="guida fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" placement="left" style="font-size: 185%; padding-bottom: 5px"></i>
         <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
                   placeholder="Nessuna Nota Pubblica disponibile"
                   class="form-control font-xlarge area-size" disabled></textarea>
       </div>
-      <div class="clearfix" style="text-align: center; width: 46%">
+      <div class="clearfix" style="text-align: center; width: 44%">
         <label class="d-none" for="motivazioneRichiesta">Motivazione della richiesta</label>
-        <textarea id="motivazioneRichiesta" type="text" [(ngModel)]="dettaglioAFM.description"
-                  placeholder="Inserisci motivazione della richiesta"
-                  class="form-control font-xlarge area-size" disabled></textarea>
+        <textarea id="motivazioneRichiesta" type="text" [(ngModel)]="motivazione"
+                  placeholder="Inserisci motivazione della richiesta" [class.mod-success]="modificaMotivazione && motivazione.length > 0"
+                  [class.mod-error]="modificaMotivazione && motivazione.length <= 0"
+                  class="form-control font-xlarge area-size" [disabled]="!modificaMotivazione"></textarea>
+      </div>
+      <button [class.d-none]="modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
+              (click)="onModificaMotivazione()" ngbTooltip="Modifica Motivazione richiesta" placement="bottom">
+        <i class="fa fa-pencil-square-o fa-fw mx-1" style="font-size: 150%; transform: translate(-18px, 0px);"></i>
+      </button>
+      <div [class.d-none]="!modificaMotivazione" style="display: inline-grid">
+        <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="onAnnullaModificaMotivazione()" ngbTooltip="Annulla Modifiche" placement="top">
+          <i class="fa fa-times fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
+        <button *ngIf="!submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="motivazione.length <= 0">
+          <i class="fa fa-check fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
+        <button *ngIf="submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="true">
+          <i class="fa fa-spin fa-spinner fa-spin-mod fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -122,6 +141,7 @@
        style="cursor: pointer; float: right"></i>
     </div>
   </div>
+
   <table *ngIf="showAttivita" class="table table-striped">
     <thead>
     <tr>
@@ -155,18 +175,22 @@
     </tbody>
   </table>
 
+  <div *ngIf="annullamentoFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento non riuscita.
+      <span (click)="annullamentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  <div *ngIf="modificaFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica non riuscita.
+      <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
 
 </div>
 
 <div class="modal-footer">
   <div class="row w-100">
     <div class="col-12 text-right">
-      <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
-              (click)="chiudiModalSoccorsoAereo('ok')">
-        {{ 'Modifica Richiesta'.toLocaleUpperCase() }}
-      </button>
       <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"
-              (click)="chiudiModalSoccorsoAereo('mod')">
+              (click)="chiudiModalSoccorsoAereo('ok')">
         {{ 'Annulla Richiesta'.toLocaleUpperCase() }}
       </button>
       <button *ngIf="submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2" [disabled]="true">

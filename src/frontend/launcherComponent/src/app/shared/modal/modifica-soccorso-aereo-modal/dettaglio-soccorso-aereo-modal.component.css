@@ -12,3 +12,16 @@
   align-items: flex-end !important;
   height: fit-content !important;
 }
+
+.mod-success {
+  border: solid #28a745;
+}
+
+.mod-error {
+  border: solid #dc3545;
+}
+
+.fa-spin-mod {
+  margin-left: -11px !important;
+  vertical-align: super;
+}
