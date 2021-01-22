@@ -64,7 +64,8 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
       };
       this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
         this.modal.close({ status: 'ok' });
-      }, () => this.submitted = false);
+      }, () =>
+      this.submitted = false);
       this.inserimentoFallito = true;
     } else {
       this.modal.close({ status: 'ko'});

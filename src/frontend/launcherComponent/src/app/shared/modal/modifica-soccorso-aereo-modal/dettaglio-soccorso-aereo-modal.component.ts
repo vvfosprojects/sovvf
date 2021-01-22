@@ -73,6 +73,13 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       // caso modifica
       this.submittedModifica = true;
       const obj: any = {
+        requestType: this.dettaglioAFM.requestType,
+        requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+        operatorName: this.utente.nome,
+        operatorSurname: this.utente.cognome,
+        operatorFiscalCode: this.utente.codiceFiscale,
+        lat: this.richiesta.localita.coordinate.latitudine,
+        lng: this.richiesta.localita.coordinate.longitudine,
         description: this.motivazione,
       };
       this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
