@@ -41,17 +41,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             if (responseAFM.IsError()) //ERRORE
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => MapErrorsAFM.Map(e))));
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => MapErrorsAFM.Map(e))), responseAFM.activities);
             }
             else //OK INSERIMENTO
             {
                 var note = "Richiesta AFM accettata: " + responseAFM.activities.LastOrDefault().activityStatusType;
 
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note);
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, responseAFM.activities);
 
                 command.Richiesta.RichiestaSoccorsoAereo = true;
-
-                command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.IdOperatore, command.RichiestaSoccorsoAereo.description, date);
             }
 
             //Salvo richiesta sul db

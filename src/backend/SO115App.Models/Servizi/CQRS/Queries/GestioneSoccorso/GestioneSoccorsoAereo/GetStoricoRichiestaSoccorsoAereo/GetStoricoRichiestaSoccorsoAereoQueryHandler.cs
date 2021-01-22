@@ -1,7 +1,6 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
-using System;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetStoricoRichiestaSoccorsoAereo
 {

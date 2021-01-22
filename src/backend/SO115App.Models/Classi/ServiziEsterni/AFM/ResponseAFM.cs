@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
@@ -53,7 +54,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
     public class Aircraft
     {
         public string regMark { get; set; } = null;
-        public string distance { get; set; } = null;
+        public double distance { get; set; } = 0;
         public int estimatedFlightTime { get; set; } = 0;
         public List<Category> rescueCategories { get; set; } = null;
     }

@@ -32,6 +32,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Persistence.MongoDB.Mappings;
@@ -91,8 +92,12 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<UscitaPartenza>();
             BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
             BsonClassMap.RegisterClassMap<RichiestaSospesa>();
+
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
+            BsonClassMap.RegisterClassMap<Activity>();
+
+
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
             BsonClassMap.RegisterClassMap<ChiusuraRichiesta>();
