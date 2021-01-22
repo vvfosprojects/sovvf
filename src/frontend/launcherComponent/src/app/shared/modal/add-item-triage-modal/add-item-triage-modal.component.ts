@@ -10,6 +10,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class AddItemTriageModalComponent implements OnInit {
 
+    primaDomanda: boolean;
+
     tItem: TreeviewItem;
 
     addItemTriageForm: FormGroup;
@@ -43,17 +45,28 @@ export class AddItemTriageModalComponent implements OnInit {
     }
 
     onConferma(): void {
-        const item = {
-            value: this.tItem.value,
-            domandaSeguente: this.f.domandaSeguente.value,
-            soccorsoAereo: this.f.soccorsoAereo.value,
-            generiMezzo: this.f.generiMezzo.value,
-            prioritaConsigliata: this.f.prioritaConsigliata.value
-        };
-        this.modal.close(item);
+        if (this.tItem) {
+            const item = {
+                value: this.tItem.value,
+                domandaSeguente: this.f.domandaSeguente.value,
+                soccorsoAereo: this.f.soccorsoAereo.value,
+                generiMezzo: this.f.generiMezzo.value,
+                prioritaConsigliata: this.f.prioritaConsigliata.value
+            };
+            this.modal.close(item);
+        } else {
+            const item = {
+                domandaSeguente: this.f.domandaSeguente.value
+            };
+            this.modal.close(item);
+        }
     }
 
     closeModal(type: string): void {
         this.modal.close(type);
+    }
+
+    getTitle(): string {
+        return this.primaDomanda ? 'Inizia Triage' : 'Modifica triage';
     }
 }

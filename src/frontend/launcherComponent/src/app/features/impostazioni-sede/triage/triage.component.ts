@@ -52,29 +52,7 @@ export class TriageComponent implements OnInit {
     }
 
     initTriage(): void {
-        this.tItems = [
-            new TreeviewItem({
-                text: 'Ci sono persone in casa?',
-                value: '1',
-                children: [
-                    {
-                        text: 'Si',
-                        value: '1-1',
-                        disabled: true
-                    },
-                    {
-                        text: 'No',
-                        value: '2-1',
-                        disabled: true
-                    },
-                    {
-                        text: 'Non lo so',
-                        value: '3-1',
-                        disabled: true
-                    }
-                ]
-            })
-        ];
+        this.addItem();
     }
 
     getItemData(itemValue: string): any {
@@ -84,43 +62,70 @@ export class TriageComponent implements OnInit {
         }
     }
 
-    addItem(item: TreeItem): void {
+    addItem(item?: TreeItem): void {
         const addItemTriageModal = this.modalService.open(AddItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
         });
+        addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
         addItemTriageModal.componentInstance.tItem = item;
         addItemTriageModal.result.then((res: any) => {
             if (res.domandaSeguente) {
-                item.children = [{
-                    text: res.domandaSeguente,
-                    value: item.value + '-1',
-                    children: [
-                        { text: 'Si', value: '1' + item.value + '-1', disabled: true },
-                        { text: 'No', value: '2' + item.value + '-1', disabled: true },
-                        { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
-                    ]
-                }];
-            }
-            const otherData = {
-                itemValue: item.value,
-                soccorsoAereo: null,
-                generiMezzo: null,
-                prioritaConsigliata: null
-            };
-            if (res.soccorsoAereo) {
-                otherData.soccorsoAereo = res.soccorsoAereo;
-            }
-            if (res.generiMezzo) {
-                otherData.generiMezzo = res.generiMezzo;
-            }
-            if (res.prioritaConsigliata) {
-                otherData.prioritaConsigliata = res.prioritaConsigliata;
-            }
-            if (otherData) {
-                this.tItemsData.push(otherData);
+                if (this.tItems) {
+                    item.children = [{
+                        text: res.domandaSeguente,
+                        value: item.value + '-1',
+                        children: [
+                            { text: 'Si', value: '1' + item.value + '-1', disabled: true },
+                            { text: 'No', value: '2' + item.value + '-1', disabled: true },
+                            { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
+                        ]
+                    }];
+                    const otherData = {
+                        itemValue: item.value,
+                        soccorsoAereo: null,
+                        generiMezzo: null,
+                        prioritaConsigliata: null
+                    };
+                    if (res.soccorsoAereo) {
+                        otherData.soccorsoAereo = res.soccorsoAereo;
+                    }
+                    if (res.generiMezzo) {
+                        otherData.generiMezzo = res.generiMezzo;
+                    }
+                    if (res.prioritaConsigliata) {
+                        otherData.prioritaConsigliata = res.prioritaConsigliata;
+                    }
+                    if (otherData) {
+                        this.tItemsData.push(otherData);
+                    }
+                } else {
+                    this.tItems = [
+                        new TreeviewItem({
+                            text: res.domandaSeguente,
+                            value: '1',
+                            children: [
+                                {
+                                    text: 'Si',
+                                    value: '1-1',
+                                    disabled: true
+                                },
+                                {
+                                    text: 'No',
+                                    value: '2-1',
+                                    disabled: true
+                                },
+                                {
+                                    text: 'Non lo so',
+                                    value: '3-1',
+                                    disabled: true
+                                }
+                            ]
+                        })
+                    ];
+                }
             }
         });
     }

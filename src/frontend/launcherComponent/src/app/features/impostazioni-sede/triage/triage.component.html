@@ -10,8 +10,8 @@
             </ng-template>
             <ng-template ngbPanelContent>
                 <!-- SELECT DETTAGLIO TIPOLOGIA -->
-                <div class="">
-                    <label [for]="'dettaglioTipologiaTriage' + '-' + 'Incendio  normale (generico)'">
+                <div class="card card-shadow py-3 px-4">
+                    <label [for]="'dettaglioTipologiaTriage' + '-' + 'Incendio  normale (generico)'" class="font-xlarge">
                         Seleziona un Dettaglio Tipologia
                     </label>
                     <ng-select [id]="'dettaglioTipologiaTriage' + '-' + 'Incendio normale (generico)'"
@@ -27,7 +27,7 @@
                                 (click)="onShowTriage()">
                             Continua
                         </button>
-                        <button class="btn btn-lg btn-no-hover btn-secondary mr-2"
+                        <button class="btn btn-lg btn-no-hover btn-danger mr-2"
                                 [disabled]="!dettaglioTipologiaTriage || !showTriage"
                                 (click)="onClearDettaglioTipologiaTriage()">
                             Reset
