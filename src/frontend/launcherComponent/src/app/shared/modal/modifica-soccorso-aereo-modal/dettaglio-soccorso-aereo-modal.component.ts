@@ -84,8 +84,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       };
       this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
         this.modal.close({ status: 'ok' });
-      }, () => this.submittedModifica = false);
-      this.modificaFallito = true;
+      }, () => {this.submittedModifica = false; this.modificaFallito = true; });
     } else if (closeRes === 'ok') {
       // caso annullamento
       this.submitted = true;
@@ -99,8 +98,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       };
       this.compPartenzaService.removeSoccorsoAereo(obj).subscribe(() => {
         this.modal.close({ status: 'ko' });
-      }, () => this.submitted = false);
-      this.annullamentoFallito = true;
+      }, () => {this.submitted = false; this.annullamentoFallito = true; });
       } else { this.modal.close({ status: 'ko'}); }
   }
 

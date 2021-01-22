@@ -113,11 +113,11 @@
                   [class.mod-error]="modificaMotivazione && motivazione.length <= 0"
                   class="form-control font-xlarge area-size" [disabled]="!modificaMotivazione"></textarea>
       </div>
-      <button [class.d-none]="modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
+      <button *ngIf="!modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
               (click)="onModificaMotivazione()" ngbTooltip="Modifica Motivazione richiesta" placement="bottom">
         <i class="fa fa-pencil-square-o fa-fw mx-1" style="font-size: 150%; transform: translate(-18px, 0px);"></i>
       </button>
-      <div [class.d-none]="!modificaMotivazione" style="display: inline-grid">
+      <div *ngIf="modificaMotivazione" style="display: inline-grid">
         <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
                 (click)="onAnnullaModificaMotivazione()" ngbTooltip="Annulla Modifiche" placement="top">
           <i class="fa fa-times fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
@@ -142,7 +142,7 @@
     </div>
   </div>
 
-  <table *ngIf="showAttivita" class="table table-striped table-bordered">
+  <table *ngIf="showAttivita" class="table table-bordered table-hover mt-2">
     <thead class="thead-light" style="font-size: large">
     <tr>
       <th scope="col">Stato</th>
@@ -159,7 +159,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let a of dettaglioAFM?.events; index as i" style="background-color: rgba(0, 0, 0, 0.01);">
+    <tr *ngFor="let a of dettaglioAFM?.events; index as i">
       <th scope="row">{{a.activityStatusType}}</th>
       <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
       <td>{{a.department}}</td>
