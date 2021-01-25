@@ -68,6 +68,7 @@ import { MergeSchedeContattoState } from './features/home/store/states/schede-co
 import { TipologieState } from './shared/store/states/tipologie/tipologie.state';
 import { DettaglioTipologiaModalState } from './features/impostazioni-sede/store/states/dettaglio-tipologia-modal-state';
 import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
+import { TriageState } from './shared/store/states/triage/triage.state';
 
 @NgModule({
     declarations: [
@@ -117,7 +118,8 @@ import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie
                 SchedeContattoState,
                 MergeSchedeContattoState,
                 TipologieState,
-                DettagliTipologieState
+                DettagliTipologieState,
+                TriageState
             ],
             { developmentMode: !environment.production }
         ),

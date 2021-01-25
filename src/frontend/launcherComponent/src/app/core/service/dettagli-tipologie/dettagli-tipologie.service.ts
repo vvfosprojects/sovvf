@@ -5,8 +5,9 @@ import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
-import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, GetDettaglioTipologiaByCodTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;
@@ -28,19 +29,23 @@ export class DetttagliTipologieService {
             },
             pagination
         };
-        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Get', obj);
+        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Get', obj);
+    }
+
+    getDettaglioTipologiaByCodTipologia(codTipologia: number): Observable<GetDettaglioTipologiaByCodTipologiaDto> {
+        return this.http.get<GetDettaglioTipologiaByCodTipologiaDto>(API_DETTAGLI_TIPOLOGIE + '/GetByIdTipologia?idTipologia=' + codTipologia);
     }
 
     addDettaglioTipologia(dettaglioTipologia: DettaglioTipologiaDto): Observable<ResponseInterface> {
-        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Add', dettaglioTipologia);
+        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Add', dettaglioTipologia);
     }
 
     updateDettaglioTipologia(dettaglioTipologia: UpdateDettaglioTipologiaDto): Observable<ResponseInterface> {
-        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
+        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
     }
 
     deleteDettagliTipologie(dettaglioTipologia: DeleteDettaglioTipologiaDto): Observable<ResponseInterface> {
-        return this.http.post(API_DETTAGLI_TIPOLOGIE + '/Delete', dettaglioTipologia);
+        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Delete', dettaglioTipologia);
     }
 
 }

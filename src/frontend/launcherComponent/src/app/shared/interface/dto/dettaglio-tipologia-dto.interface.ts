@@ -1,3 +1,5 @@
+import { DettaglioTipologia } from '../dettaglio-tipologia.interface';
+
 export interface DettaglioTipologiaDto {
     codiceTipologia: number;
     descrizione: string;
@@ -13,4 +15,8 @@ export interface UpdateDettaglioTipologiaDto {
 
 export interface DeleteDettaglioTipologiaDto {
     codDettaglio: number;
+}
+
+export interface GetDettaglioTipologiaByCodTipologiaDto {
+    listaDettaglioTipologie: DettaglioTipologia[];
 }

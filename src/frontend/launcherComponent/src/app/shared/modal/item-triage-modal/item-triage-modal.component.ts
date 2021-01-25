@@ -4,13 +4,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'app-add-item-triage-modal',
-    templateUrl: './add-item-triage-modal.component.html',
-    styleUrls: ['./add-item-triage-modal.component.scss']
+    selector: 'app-item-triage-modal',
+    templateUrl: './item-triage-modal.component.html',
+    styleUrls: ['./item-triage-modal.component.scss']
 })
-export class AddItemTriageModalComponent implements OnInit {
+export class ItemTriageModalComponent implements OnInit {
 
     primaDomanda: boolean;
+    itemEdit: any;
 
     tItem: TreeviewItem;
 
@@ -23,6 +24,10 @@ export class AddItemTriageModalComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('tItem', this.tItem);
+        if (this.itemEdit) {
+            console.log('Item Edit', this.itemEdit);
+            this.patchForm();
+        }
     }
 
     initForm(): void {
@@ -40,8 +45,22 @@ export class AddItemTriageModalComponent implements OnInit {
         });
     }
 
+    patchForm(): void {
+        this.addItemTriageForm.patchValue({
+            domandaSeguente: this.itemEdit.domandaSeguente,
+            soccorsoAereo: this.itemEdit.soccorsoAereo,
+            generiMezzo: this.itemEdit.generiMezzo,
+            prioritaConsigliata: this.itemEdit.prioritaConsigliata
+        });
+        this.f.domandaSeguente.disable();
+    }
+
     get f(): any {
         return this.addItemTriageForm.controls;
+    }
+
+    formIsInvalid(): boolean {
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value;
     }
 
     onConferma(): void {
