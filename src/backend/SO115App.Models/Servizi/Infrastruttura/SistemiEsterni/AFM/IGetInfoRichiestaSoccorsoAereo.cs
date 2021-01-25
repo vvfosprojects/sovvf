@@ -1,10 +1,9 @@
 ﻿using SO115App.Models.Classi.ServiziEsterni.AFM;
-using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM
 {
-    public interface IGetTipologieRichiestaSoccorsoAereo
+    public interface IGetInfoRichiestaSoccorsoAereo
     {
-        List<TipologiaAFM> Get();
+        InfoAFM Get(string requestKey);
     }
 }

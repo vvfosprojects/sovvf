@@ -17,9 +17,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public AnnullaRichiestaSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor accessor)
         : base(client, configuration, cache, log, accessor) { }
 
-        public ResponseAFM Annulla(Models.Classi.ServiziEsterni.AFM.AnnullaRichiestaSoccorsoAereo richiesta, string CodiceRichiesta)
+        public InfoAFM Annulla(Models.Classi.ServiziEsterni.AFM.AnnullaRichiestaAFM richiesta, string CodiceRichiesta)
         {
-            var APImanager = new HttpRequestManager<ResponseAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<InfoAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 

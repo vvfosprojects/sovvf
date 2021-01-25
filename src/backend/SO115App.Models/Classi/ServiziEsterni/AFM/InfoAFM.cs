@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
-    public class ResponseAFM
+    public class InfoAFM
     {
         public string requestKey { get; set; } = null;
         public string description { get; set; } = null;

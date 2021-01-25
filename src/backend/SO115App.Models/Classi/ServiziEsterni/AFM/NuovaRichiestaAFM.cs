@@ -2,7 +2,7 @@
 
 namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
-    public class NuovaRichiestaSoccorsoAereo
+    public class NuovaRichiestaAFM
     {
         public string requestKey { get; set; }
         public DateTime datetime { get; set; }

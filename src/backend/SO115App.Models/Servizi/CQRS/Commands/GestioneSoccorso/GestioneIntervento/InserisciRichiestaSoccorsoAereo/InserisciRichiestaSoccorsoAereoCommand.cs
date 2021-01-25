@@ -12,10 +12,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public string[] CodiciSede { get; set; }
         public string IdOperatore { get; set; }
 
-        public NuovaRichiestaSoccorsoAereo RichiestaSoccorsoAereo { get; set; }
+        public NuovaRichiestaAFM RichiestaSoccorsoAereo { get; set; }
 
         public RichiestaAssistenza Richiesta { get; set; }
 
-        public ResponseAFM ResponseAFM { get; set; }
+        public InfoAFM ResponseAFM { get; set; }
     }
 }

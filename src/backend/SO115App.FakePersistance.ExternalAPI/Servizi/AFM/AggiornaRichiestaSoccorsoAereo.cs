@@ -8,7 +8,6 @@ using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
-using System.Linq;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.AFM
@@ -18,9 +17,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public AggiornaRichiestaSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor accessor)
         : base(client, configuration, cache, log, accessor) { }
 
-        public ResponseAFM Aggiorna(NuovaRichiestaSoccorsoAereo richiesta)
+        public InfoAFM Aggiorna(NuovaRichiestaAFM richiesta)
         {
-            var APImanager = new HttpRequestManager<ResponseAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<InfoAFM>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 

@@ -5,20 +5,20 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetStoricoRichiestaSoccorsoAereo
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetInfoAFM
 {
-    public class GetStoricoRichiestaSoccorsoAereoAuthorization : IQueryAuthorizer<GetStoricoRichiestaSoccorsoAereoQuery, GetStoricoRichiestaSoccorsoAereoResult>
+    public class GetInfoAFMAuthorization : IQueryAuthorizer<GetInfoAFMQuery, GetInfoAFMResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
 
-        public GetStoricoRichiestaSoccorsoAereoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public GetInfoAFMAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(GetStoricoRichiestaSoccorsoAereoQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(GetInfoAFMQuery query)
         {
             var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 

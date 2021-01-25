@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM
 {
     public interface IGetCategorieSoccorsoAereo
     {
-        List<CategoriaSoccorsoAereo> Get();
+        List<CategoriaAFM> Get();
     }
 }

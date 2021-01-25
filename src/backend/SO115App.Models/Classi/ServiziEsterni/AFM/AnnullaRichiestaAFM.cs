@@ -2,7 +2,7 @@
 
 namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
-    public class AnnullaRichiestaSoccorsoAereo
+    public class AnnullaRichiestaAFM
     {
         public string operatorName { get; set; }
         public string operatorSurname { get; set; }

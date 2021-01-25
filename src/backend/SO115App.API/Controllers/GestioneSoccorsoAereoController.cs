@@ -3,12 +3,12 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetStoricoRichiestaSoccorsoAereo;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetInfoAFM;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetStoricoAFM;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetTipologieSoccorsoAereo;
 using System;
 using System.Linq;
@@ -21,24 +21,26 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneSoccorsoAereoController : ControllerBase
     {
-        private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorieSoccorsoAereo;
-        private readonly IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> _getTipologieSoccorsoAereo;
-        private readonly IQueryHandler<GetStoricoRichiestaSoccorsoAereoQuery, GetStoricoRichiestaSoccorsoAereoResult> _getStoricoRichiestaSoccorsoAereo;
-        private readonly ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> _inserisciRichiestaSoccorsoAereo;
-        private readonly ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> _annullaRichiestaSoccorsoAereo;
+        private readonly IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> _getCategorie;
+        private readonly IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> _getTipologie;
+        private readonly IQueryHandler<GetInfoAFMQuery, GetInfoAFMResult> _getInfo;
+        private readonly IQueryHandler<GetStoricoAFMQuery, GetStoricoAFMResult> _getStorico;
+        private readonly ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> _inserisci;
+        private readonly ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> _annulla;
 
-        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorieSoccorsoAereo,
-            IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> getTipologieSoccorsoAereo,
-            IQueryHandler<GetStoricoRichiestaSoccorsoAereoQuery, GetStoricoRichiestaSoccorsoAereoResult> getStoricoRichiestaSoccorsoAereo,
-            ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisciRichiestaSoccorsoAereo,
-            ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> annullaRichiestaSoccorsoAereo)
+        public GestioneSoccorsoAereoController(IQueryHandler<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult> getCategorie,
+            IQueryHandler<GetTipologieSoccorsoAereoQuery, GetTipologieSoccorsoAereoResult> getTipologie,
+            IQueryHandler<GetInfoAFMQuery, GetInfoAFMResult> getInfo,
+            IQueryHandler<GetStoricoAFMQuery, GetStoricoAFMResult> getStorico,
+            ICommandHandler<InserisciRichiestaSoccorsoAereoCommand> inserisci,
+            ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand> annulla)
         {
-            _getTipologieSoccorsoAereo = getTipologieSoccorsoAereo;
-            _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
-            _inserisciRichiestaSoccorsoAereo = inserisciRichiestaSoccorsoAereo;
-            _annullaRichiestaSoccorsoAereo = annullaRichiestaSoccorsoAereo;
-            _getCategorieSoccorsoAereo = getCategorieSoccorsoAereo;
-            _getStoricoRichiestaSoccorsoAereo = getStoricoRichiestaSoccorsoAereo;
+            _getCategorie = getCategorie;
+            _getTipologie = getTipologie;
+            _getInfo = getInfo;
+            _getStorico = getStorico;
+            _inserisci = inserisci;
+            _annulla = annulla;
         }
 
         [HttpGet("GetCategorie")]
@@ -46,13 +48,80 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                var query = new GetCategorieSoccorsoAereoQuery() 
+                var query = new GetCategorieSoccorsoAereoQuery()
                 {
                     CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"]
                 };
 
-                var result = _getCategorieSoccorsoAereo.Handle(query);
+                var result = _getCategorie.Handle(query);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.GetBaseException().Message);
+            }
+        }
+
+        [HttpGet("GetTipologie")]
+        private async Task<IActionResult> GetTipologieSoccorsoAereo()
+        {
+            try
+            {
+                var query = new GetTipologieSoccorsoAereoQuery()
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"]
+                };
+
+                var result = _getTipologie.Handle(query);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.GetBaseException().Message);
+            }
+        }
+
+        [HttpGet("GetStorico")]
+        public async Task<IActionResult> GetStoricoRichiestaSoccorsoAereo(string requestKey)
+        {
+            try
+            {
+                var query = new GetStoricoAFMQuery()
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"],
+
+                    RequestKey = requestKey
+                };
+
+                var result = _getStorico.Handle(query);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.GetBaseException().Message);
+            }
+        }
+
+        [HttpGet("GetInfo")]
+        public async Task<IActionResult> GetInfoRichiestaSoccorsoAereo(string requestKey)
+        {
+            try
+            {
+                var query = new GetInfoAFMQuery()
+                {
+                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"],
+
+                    RequestKey = requestKey
+                };
+
+                var result = _getInfo.Handle(query);
 
                 return Ok(result);
             }
@@ -63,7 +132,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Inserisci")]
-        public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaSoccorsoAereo richiesta)
+        public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaAFM richiesta)
         {
             try
             {
@@ -74,7 +143,7 @@ namespace SO115App.API.Controllers
                     RichiestaSoccorsoAereo = richiesta
                 };
 
-                _inserisciRichiestaSoccorsoAereo.Handle(command);
+                _inserisci.Handle(command);
 
                 if (command.ResponseAFM.IsError())
                 {
@@ -97,7 +166,7 @@ namespace SO115App.API.Controllers
                 command.IdOperatore = Request.Headers["IdUtente"];
                 command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
-                _annullaRichiestaSoccorsoAereo.Handle(command);
+                _annulla.Handle(command);
 
                 if (!((AnnullamentoRichiestaSoccorsoAereo)command.Richiesta.Eventi.LastOrDefault()).Note.Contains("Annullamento AFM accettato"))
                 {
@@ -105,66 +174,6 @@ namespace SO115App.API.Controllers
                 }
 
                 return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.GetBaseException().Message);
-            }
-        }
-
-        [HttpGet("GetTipologie")]
-        private async Task<IActionResult> GetTipologieSoccorsoAereo()
-        {
-            try
-            {
-                var query = new GetTipologieSoccorsoAereoQuery()
-                {
-                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
-                    IdOperatore = Request.Headers["IdUtente"]
-                };
-
-                var result = _getTipologieSoccorsoAereo.Handle(query);
-
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.GetBaseException().Message);
-            }
-        }
-
-        [HttpGet("GetEventi")]
-        public async Task<IActionResult> GetStoricoRichiestaSoccorsoAereo(string requestKey)
-        {
-            try
-            {
-                var query = new GetStoricoRichiestaSoccorsoAereoQuery()
-                {
-                    CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
-                    IdOperatore = Request.Headers["IdUtente"],
-
-                    RequestKey = requestKey
-                };
-
-                var result = _getStoricoRichiestaSoccorsoAereo.Handle(query);
-
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.GetBaseException().Message);
-            }
-        }
-
-        [HttpGet("GetInfo")]
-        private async Task<IActionResult> GetInfoRichiestaSoccorsoAereo(string requestKey)
-        {
-            try
-            {
-                var idUtente = Request.Headers["IdUtente"];
-                var codiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-
-                return null;
             }
             catch (Exception e)
             {

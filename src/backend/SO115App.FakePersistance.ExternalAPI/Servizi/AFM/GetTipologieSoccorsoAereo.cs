@@ -17,9 +17,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         public GetTipologieSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor httpContext)
             : base(client, configuration, cache, log, httpContext) { }
 
-        public List<TipologiaSoccorsoAereo> Get()
+        public List<TipologiaAFM> Get()
         {
-            var APImanager = new HttpRequestManager<List<TipologiaSoccorsoAereo>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            var APImanager = new HttpRequestManager<List<TipologiaAFM>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
 
             APImanager.Configure();
 
