@@ -83,23 +83,18 @@
       <div class="clearfix input-soccorso-format">
       </div>
     </div>
-    <div class="row my-4 d-inline-flex">
-      <div class="clearfix mr-3 input-soccorso-format" style="width: 23%; margin-left: 2.5rem" >
-        <label for="aggiornamento" class="d-none">Aggiornamento alle</label>
-        <i class="guida fa fa-clock-o fa-fw mx-1" ngbTooltip="Data aggiornamento" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
-        <input id="aggiornamento" type="text" placeholder="data-aggiornamento" class="form-control font-xlarge" disabled>
-      </div>
-      <div class="clearfix mr-2 input-soccorso-format" style="width: 30%" >
+    <div class="row w-100 my-4 d-inline-flex">
+      <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
         <label for="tipologia" class="d-none">Tipologia Intervento</label>
-        <i class="guida fa fa-exclamation-triangle fa-fw mx-1" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="guida fa fa-exclamation-triangle fa-fw mx-1" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
         <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
       </div>
-      <div class="clearfix mx-2 input-soccorso-format" style="width: 20%" >
+      <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
         <i class="guida fa fa-address-book-o fa-fw mx-1" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
-      <div class="clearfix input-soccorso-format" style="width: 15%" >
+      <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
         <i class="guida fa fa-phone fa-fw mx-1" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
@@ -151,7 +146,7 @@
   </div>
 
   <table *ngIf="showAttivita" class="table table-bordered table-hover mt-2">
-    <thead class="thead-light" style="font-size: large">
+    <thead class="thead-light">
     <tr>
       <th scope="col">Stato</th>
       <th scope="col">Aggiornata alle</th>
@@ -167,17 +162,17 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let a of dettaglioAFM?.events; index as i">
+    <tr *ngFor="let a of dettaglioAFM?.activities; index as i">
       <th scope="row">{{a.activityStatusType}}</th>
       <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
       <td>{{a.department}}</td>
-      <td>{{a.aircraft}}</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>{{a.aircraft.regMark}}</td>
+      <td>{{a.aircraft.rescueCategories ? a.aircraft.rescueCategories : ''}}</td>
+      <td>{{a.aircraft.estimatedFlightTime ? a.aircraft.estimatedFlightTime : ''}}</td>
+      <td>{{a.acceptanceDatetime ? a.acceptanceDatetime : ''}}</td>
+      <td>{{a.takeoffDatetime ? a.takeoffDatetime : ''}}</td>
+      <td>{{a.rescueArriveDatetime ? a.rescueArriveDatetime : ''}}</td>
+      <td>{{a.rescueLeaveDatetime ? a.rescueLeaveDatetime : ''}}</td>
       <td></td>
     </tr>
     </tbody>
@@ -199,7 +194,7 @@
   </div>
 
   <table class="table table-bordered table-hover mt-2">
-    <thead class="thead-light" style="font-size: large">
+    <thead class="thead-light">
     <tr>
       <th scope="col">Orario</th>
       <th scope="col">Evento</th>
@@ -212,13 +207,13 @@
     </thead>
     <tbody>
     <tr *ngFor="let a of eventiAFM?.events; index as i">
-      <th scope="row">{{a.activityStatusType}}</th>
-      <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
+      <th scope="row">{{a.statusDatetime.substring(0, 16).split('T')}}</th>
+      <td>{{a.event}}</td>
+      <td>{{a.activityStatusType}}</td>
+      <td>{{a.activityID}}</td>
       <td>{{a.department}}</td>
       <td>{{a.aircraft}}</td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>{{a.operatorName}} {{a.operatorSurname}}</td>
     </tr>
     </tbody>
   </table>
