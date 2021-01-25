@@ -36,7 +36,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                if(!command.ErroriAFM.IsError())
+                if(!command.ResponseAFM.IsError())
                 {
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", _mapperSintesi.Map(command.Richiesta));
 

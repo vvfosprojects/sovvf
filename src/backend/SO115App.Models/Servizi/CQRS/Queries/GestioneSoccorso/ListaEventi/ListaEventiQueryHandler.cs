@@ -198,6 +198,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             {
                 targa = ((SostituzionePartenzaFineTurno)evento).CodiceMezzo;
             }
+            if (evento is RichiestaSoccorsoAereo)
+            {
+                targa = ((RichiestaSoccorsoAereo)evento).Targa;
+            }
+            if (evento is AnnullamentoRichiestaSoccorsoAereo)
+            {
+                targa = ((AnnullamentoRichiestaSoccorsoAereo)evento).Targa;
+            }
 
             return targa.Contains('.') ? targa.Split('.')[1] : targa;
         }

@@ -1,10 +1,8 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
@@ -22,26 +20,27 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
         {
             var date = DateTime.Now;
-            command.Annullamento.datetime = date;
 
             #region AFM Servizio
+
+            command.Annullamento.datetime = date;
 
             //Comunico al servizio esterno
             var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.CodiceRichiesta);
 
             #endregion
 
-            command.ErroriAFM = result;
+            command.ResponseAFM = result;
 
             if (!result.IsError()) //OK ANNULLAMENTO
             {
                 command.Richiesta.RichiestaSoccorsoAereo = false;
 
-                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, "Annullamento AFM accettato");
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento());
             }
-            else //FALLIMENTO ANNULLAMENTO
+            else //ERRORE ANNULLAMENTO
             {
-                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(result.errors.Select(e => MapErrorsAFM.Map(e))));
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento());
             }
 
             //Salvo richiesta sul db

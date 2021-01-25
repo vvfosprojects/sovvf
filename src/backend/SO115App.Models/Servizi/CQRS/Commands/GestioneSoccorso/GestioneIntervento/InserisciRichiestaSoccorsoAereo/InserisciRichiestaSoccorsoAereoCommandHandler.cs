@@ -2,10 +2,8 @@
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo
 {
@@ -27,10 +25,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             #region AFM Servizio
 
             //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
+            string azione = "Modifica";
+
             command.RichiestaSoccorsoAereo.datetime = date;
 
             if (command.RichiestaSoccorsoAereo.requestKey != null)
+            {
                 command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
+                azione = "Inserimento";
+            }
 
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
@@ -39,17 +42,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             command.ResponseAFM = responseAFM;
 
-            if (responseAFM.IsError()) //ERRORE
+            if (!responseAFM.IsError()) //OK INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, string.Concat(responseAFM.errors.Select(e => MapErrorsAFM.Map(e))), responseAFM.activities);
-            }
-            else //OK INSERIMENTO
-            {
-                var note = "Richiesta AFM accettata: " + responseAFM.activities.LastOrDefault().activityStatusType;
-
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, responseAFM.activities);
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento());
 
                 command.Richiesta.RichiestaSoccorsoAereo = true;
+            }
+            else //ERRORE INSERIMENTO
+            {
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento());
             }
 
             //Salvo richiesta sul db
