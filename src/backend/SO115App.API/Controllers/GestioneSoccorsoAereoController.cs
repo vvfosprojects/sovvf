@@ -41,8 +41,8 @@ namespace SO115App.API.Controllers
             _getStoricoRichiestaSoccorsoAereo = getStoricoRichiestaSoccorsoAereo;
         }
 
-        [HttpGet("GetCategorieSoccorso")]
-        public async Task<IActionResult> GetCategorieSoccorso()
+        [HttpGet("GetCategorie")]
+        public async Task<IActionResult> GetCategorieSoccorsoAereo()
         {
             try
             {
@@ -63,7 +63,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Inserisci")]
-        public async Task<IActionResult> Inserisci([FromBody] NuovaRichiestaSoccorsoAereo richiesta)
+        public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaSoccorsoAereo richiesta)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Annulla")]
-        public async Task<IActionResult> Annulla([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
+        public async Task<IActionResult> AnnullaRichiestaSoccorsoAereo([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {
             try
             {
@@ -112,8 +112,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetTipologieSoccorso")]
-        public async Task<IActionResult> GetTipologieSoccorso()
+        [HttpGet("GetTipologie")]
+        private async Task<IActionResult> GetTipologieSoccorsoAereo()
         {
             try
             {
@@ -133,8 +133,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetEventiRichiestaSoccorso")]
-        public async Task<IActionResult> GetStoricoRichiestaSoccorso(string requestKey)
+        [HttpGet("GetEventi")]
+        public async Task<IActionResult> GetStoricoRichiestaSoccorsoAereo(string requestKey)
         {
             try
             {
@@ -156,8 +156,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetInfoRichiestaSoccorso")]
-        private async Task<IActionResult> GetInfoRichiestaSoccorso(string requestKey)
+        [HttpGet("GetInfo")]
+        private async Task<IActionResult> GetInfoRichiestaSoccorsoAereo(string requestKey)
         {
             try
             {

@@ -30,12 +30,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
         public List<Errore> errors { private get; set; } = null;
 
         public bool IsError() => errors != null && errors.Count > 0;
-        public string GetNoteEvento()
+        public string GetNoteEvento(string azione)
         {
-            if (errors != null && errors.Count > 0)
-                return "Richiesta AFM fallita: " + string.Concat(errors.Select(e => MapErrorsAFM.Map(e) + ". "));
+            if (IsError())
+                return azione + " soccorso AFM fallito: " + string.Concat(errors.Select(e => MapErrorsAFM.Map(e) + ". ")).TrimEnd();
             else 
-                return "Richiesta AFM accettata: " + activities.Last().activityStatusType;
+                return azione + " soccorso AFM accettato: " + activities.Last().activityStatusType;
         }
         public string GetTargaEvento() => activities.Last().aircraft.regMark;
     }
