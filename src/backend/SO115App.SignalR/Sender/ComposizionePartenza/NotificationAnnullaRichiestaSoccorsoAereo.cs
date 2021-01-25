@@ -38,7 +38,11 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             {
                 if(!command.ResponseAFM.IsError())
                 {
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", _mapperSintesi.Map(command.Richiesta));
+                    var sintesi = _mapperSintesi.Map(command.Richiesta);
+
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", sintesi);
+
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", new { chiamata = sintesi });
 
                     Task.Factory.StartNew(() =>
                     {
