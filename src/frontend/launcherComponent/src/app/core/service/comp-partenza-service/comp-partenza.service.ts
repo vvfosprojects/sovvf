@@ -36,7 +36,7 @@ export class CompPartenzaService {
     }
 
     getEventiSoccorsoAereo(codRichiesta: any): Observable<any[]> {
-      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetEventi?requestKey=${codRichiesta.codRichiesta}`);
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStorico?requestKey=${codRichiesta.codRichiesta}`);
     }
 
     addSoccorsoAereo(obj: any): Observable<any> {
