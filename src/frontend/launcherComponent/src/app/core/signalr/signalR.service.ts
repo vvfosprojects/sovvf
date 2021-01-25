@@ -158,7 +158,6 @@ export class SignalRService {
           console.log('NotifySuccessAnnullamentoAFM:', data);
           this.store.dispatch(new UpdateRichiesta(data.richiesta));
           this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
-          this.store.dispatch(new GetListaRichieste());
         });
 
         this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
