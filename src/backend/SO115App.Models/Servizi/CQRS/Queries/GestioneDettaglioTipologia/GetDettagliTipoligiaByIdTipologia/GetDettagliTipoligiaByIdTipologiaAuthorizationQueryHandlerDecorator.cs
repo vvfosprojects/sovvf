@@ -23,10 +23,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia.GetDet
             _getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(DettaglioTipologiaQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(GetDettagliTipoligiaByIdTipologiaQuery query)
         {
             string username = this._currentUser.Identity.Name;
             Utente user = _findUserByUsername.FindUserByUs(username);
+
+            if (query.CodiceTipologia == 0)
+                yield return new AuthorizationResult(Costanti.DatiMancanti);
 
             if (this._currentUser.Identity.IsAuthenticated)
             {
