@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SO115App.Models.Classi.ServiziEsterni.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,8 +27,17 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
 
 
         //ERRORI
-        public List<Errore> errors { get; set; } = null;
+        public List<Errore> errors { private get; set; } = null;
+
         public bool IsError() => errors != null && errors.Count > 0;
+        public string GetNoteEvento()
+        {
+            if (errors != null && errors.Count > 0)
+                return "Richiesta AFM fallita: " + string.Concat(errors.Select(e => MapErrorsAFM.Map(e) + ". "));
+            else 
+                return "Richiesta AFM accettata: " + activities.Last().activityStatusType;
+        }
+        public string GetTargaEvento() => activities.Last().aircraft.regMark;
     }
 
     public class Errore
@@ -61,7 +71,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
 
     public class Category
     {
-        public string categoryName = null;
-        public string categoryCode = null;
+        public string categoryName { get; set; } = null;
+        public string categoryCode { get; set; } = null;
     }
 }

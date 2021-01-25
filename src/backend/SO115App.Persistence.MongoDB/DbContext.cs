@@ -95,8 +95,6 @@ namespace Persistence.MongoDB
 
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
-            BsonClassMap.RegisterClassMap<Activity>();
-
 
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();

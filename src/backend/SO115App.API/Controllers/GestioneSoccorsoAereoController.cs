@@ -3,6 +3,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
@@ -77,7 +78,7 @@ namespace SO115App.API.Controllers
 
                 if (command.ResponseAFM.IsError())
                 {
-                    throw new Exception("Inserimento richiesta soccorso aereo fallito");
+                    throw new Exception("Inserimento richiesta soccorso aereo fallito: ");
                 }
 
                 return Ok();
@@ -132,7 +133,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetStoricoRichiestaSoccorso")]
+        [HttpGet("GetEventiRichiestaSoccorso")]
         public async Task<IActionResult> GetStoricoRichiestaSoccorso(string requestKey)
         {
             try
