@@ -25,14 +25,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             #region AFM Servizio
 
             //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
-            string azione = "Modifica";
+            string azione = "Inserimento";
 
             command.RichiestaSoccorsoAereo.datetime = date;
 
             if (command.RichiestaSoccorsoAereo.requestKey != null)
             {
                 command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
-                azione = "Inserimento";
+                azione = "Aggiornamento";
             }
 
             //Comunico al servizio esterno
@@ -50,7 +50,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
             else //ERRORE INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento());
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), null);
             }
 
             //Salvo richiesta sul db
