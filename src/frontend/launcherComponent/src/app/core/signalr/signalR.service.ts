@@ -4,7 +4,11 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import {
+  GetListaRichieste,
+  StopLoadingActionMezzo,
+  UpdateRichiesta
+} from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -154,6 +158,7 @@ export class SignalRService {
           console.log('NotifySuccessAnnullamentoAFM:', data);
           this.store.dispatch(new UpdateRichiesta(data.richiesta));
           this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+          this.store.dispatch(new GetListaRichieste());
         });
 
         this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
