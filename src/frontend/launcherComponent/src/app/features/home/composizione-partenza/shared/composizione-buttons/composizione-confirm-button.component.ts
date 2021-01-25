@@ -77,7 +77,6 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
     modal.result.then((res: any) => {
       switch (res.status) {
         case 'ok':
-          // this.store.dispatch(new GetListeComposizioneAvanzata()); Todo: aggiornamento sintesi richiesta
           break;
         case 'ko':
           break;
