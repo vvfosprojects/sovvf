@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -26,7 +27,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.Annullamento.datetime = date;
 
             //Comunico al servizio esterno
-            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.CodiceRichiesta);
+            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, MapRequestKeyAFM.MapForAFM(command.CodiceRichiesta));
 
             #endregion
 
