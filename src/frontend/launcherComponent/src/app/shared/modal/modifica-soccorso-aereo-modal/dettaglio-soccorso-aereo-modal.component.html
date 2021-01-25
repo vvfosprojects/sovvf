@@ -167,17 +167,17 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let a of dettaglioAFM?.events; index as i">
+    <tr *ngFor="let a of dettaglioAFM?.activities; index as i">
       <th scope="row">{{a.activityStatusType}}</th>
       <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
       <td>{{a.department}}</td>
-      <td>{{a.aircraft}}</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>{{a.aircraft.regMark}}</td>
+      <td>{{a.aircraft.rescueCategories ? a.aircraft.rescueCategories : ''}}</td>
+      <td>{{a.aircraft.estimatedFlightTime ? a.aircraft.estimatedFlightTime : ''}}</td>
+      <td>{{a.acceptanceDatetime ? a.acceptanceDatetime : ''}}</td>
+      <td>{{a.takeoffDatetime ? a.takeoffDatetime : ''}}</td>
+      <td>{{a.rescueArriveDatetime ? a.rescueArriveDatetime : ''}}</td>
+      <td>{{a.rescueLeaveDatetime ? a.rescueLeaveDatetime : ''}}</td>
       <td></td>
     </tr>
     </tbody>
@@ -212,13 +212,13 @@
     </thead>
     <tbody>
     <tr *ngFor="let a of eventiAFM?.events; index as i">
-      <th scope="row">{{a.activityStatusType}}</th>
-      <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
+      <th scope="row">{{a.statusDatetime.substring(0, 16).split('T')}}</th>
+      <td>{{a.event}}</td>
+      <td>{{a.activityStatusType}}</td>
+      <td>{{a.activityID}}</td>
       <td>{{a.department}}</td>
       <td>{{a.aircraft}}</td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>{{a.operatorName}} {{a.operatorSurname}}</td>
     </tr>
     </tbody>
   </table>

@@ -13,12 +13,12 @@ import {
 } from '../../actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {CompPartenzaService} from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 
-export interface DettaglioAFM {
+export interface EventiAFM {
   areReliableCoordinates: boolean;
   datetime: string;
   description: string;
   events: [{
-    activityID: 730
+    activityID: number;
     activityStatusType: string;
     aircraft: string;
     department: string;
@@ -42,6 +42,42 @@ export interface DettaglioAFM {
   venueInCharge: string;
 }
 
+export interface DettaglioAFM {
+  activities: [{
+    acceptanceDatetime: string;
+    activityID: number;
+    activityStatusType: string;
+    aircraft: {
+      regMark: string;
+      distance: number,
+      estimatedFlightTime: number,
+      rescueCategories: string;
+    }
+    department: string;
+    landingDatetime: string;
+    rescueArriveDatetime: string;
+    rescueLeaveDatetime: string;
+    statusDatetime: string;
+    takeoffDatetime: string;
+  }];
+  areReliableCoordinates: boolean;
+  datetime: string;
+  description: string;
+  lat: number;
+  lng: number;
+  locality: string;
+  onSiteContact: string;
+  onSiteContactPhoneNumber: string;
+  operatorFiscalCode: string;
+  operatorName: string;
+  operatorSurname: string;
+  progressiveNumber: string;
+  remarks: string;
+  requestKey: string;
+  requestType: string;
+  venueInCharge: string;
+}
+
 export interface ComposizioneSoccorsoAereoStateModel {
   azioniRichiesta: [{
     codice: string,
@@ -54,7 +90,7 @@ export interface ComposizioneSoccorsoAereoStateModel {
     tipo: string,
   }];
   dettaglioAFM: DettaglioAFM;
-  eventiAFM: any;
+  eventiAFM: EventiAFM;
 }
 
 export const ComposizioneSoccorsoAereoStateDefaults: ComposizioneSoccorsoAereoStateModel = {
@@ -95,7 +131,7 @@ export class ComposizioneSoccorsoAereoState {
   }
 
   @Selector()
-  static eventiAFM(state: ComposizioneSoccorsoAereoStateModel): any {
+  static eventiAFM(state: ComposizioneSoccorsoAereoStateModel): EventiAFM {
     return state.eventiAFM;
   }
 

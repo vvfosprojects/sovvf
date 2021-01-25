@@ -7,8 +7,7 @@ import {Utente} from '../../model/utente.model';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import {
-  ComposizioneSoccorsoAereoState,
-  DettaglioAFM
+  ComposizioneSoccorsoAereoState, DettaglioAFM, EventiAFM
 } from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 
@@ -25,7 +24,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   @Select(ComposizioneSoccorsoAereoState.dettaglioAFM) dataAFM$: Observable<Utente>;
   dettaglioAFM: DettaglioAFM;
   @Select(ComposizioneSoccorsoAereoState.eventiAFM) dataEventiAFM$: Observable<Utente>;
-  eventiAFM: DettaglioAFM;
+  eventiAFM: EventiAFM;
 
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
