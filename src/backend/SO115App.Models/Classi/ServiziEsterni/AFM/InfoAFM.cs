@@ -37,7 +37,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
             else 
                 return azione + " soccorso AFM accettato: " + activities.Last().activityStatusType;
         }
-        public string GetTargaEvento() => activities.Last().aircraft.regMark;
+        public string GetTargaEvento() => activities?.Last().aircraft.regMark ?? "";
     }
 
     public class Errore

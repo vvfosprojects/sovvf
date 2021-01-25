@@ -4,7 +4,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
 {
     public class NuovaRichiestaAFM
     {
-        public string requestKey { get; set; }
+        public string requestKey { get; set; } = null;
         public DateTime datetime { get; set; }
         public string description { get; set; } = "";
         public string requestTypeCode { get; set; } = "0";

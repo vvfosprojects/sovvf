@@ -4,6 +4,7 @@ using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo
 {
@@ -29,11 +30,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             command.RichiestaSoccorsoAereo.datetime = date;
 
-            if (command.RichiestaSoccorsoAereo.requestKey != null)
+            if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo)
             {
-                command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
                 azione = "Aggiornamento";
             }
+
+            command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
 
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
@@ -50,7 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
             else //ERRORE INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), null);
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento());
             }
 
             //Salvo richiesta sul db
