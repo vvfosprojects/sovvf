@@ -12,6 +12,7 @@ export class ItemTriageModalComponent implements OnInit {
 
     primaDomanda: boolean;
     itemEdit: any;
+    disableDomanda: any;
 
     tItem: TreeviewItem;
 
@@ -23,10 +24,13 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('tItem', this.tItem);
+        console.log('[ITEM TRIAGE MODAL] tItem', this.tItem);
         if (this.itemEdit) {
-            console.log('Item Edit', this.itemEdit);
+            console.log('[ITEM TRIAGE MODAL] ItemEdit', this.itemEdit);
             this.patchForm();
+        }
+        if (this.disableDomanda) {
+            this.f.domandaSeguente.disable();
         }
     }
 
@@ -52,7 +56,6 @@ export class ItemTriageModalComponent implements OnInit {
             generiMezzo: this.itemEdit.generiMezzo,
             prioritaConsigliata: this.itemEdit.prioritaConsigliata
         });
-        this.f.domandaSeguente.disable();
     }
 
     get f(): any {
@@ -72,17 +75,17 @@ export class ItemTriageModalComponent implements OnInit {
                 generiMezzo: this.f.generiMezzo.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
-            this.modal.close(item);
+            this.modal.close({ success: true, data: item });
         } else {
             const item = {
                 domandaSeguente: this.f.domandaSeguente.value
             };
-            this.modal.close(item);
+            this.modal.close({ success: true, data: item });
         }
     }
 
     closeModal(type: string): void {
-        this.modal.close(type);
+        this.modal.close({ success: false, data: type });
     }
 
     getTitle(): string {

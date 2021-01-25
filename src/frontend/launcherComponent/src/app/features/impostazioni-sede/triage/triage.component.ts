@@ -16,6 +16,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageState } from '../../../shared/store/states/triage/triage.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
+import { addQuestionMark, capitalize } from '../../../shared/helper/function';
 
 @Component({
     selector: 'app-triage',
@@ -64,6 +65,7 @@ export class TriageComponent implements OnInit {
     }
 
     onSetCodTipologia(codTipologia: string): void {
+        this.codDettaglioTipologia = null;
         this.codTipologia = codTipologia;
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.codTipologia));
     }
@@ -101,7 +103,7 @@ export class TriageComponent implements OnInit {
     getItemData(item: any): any {
         const itemData = this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
-            if (item.children.length > 0) {
+            if (item?.children?.length > 0) {
                 itemData.domandaSeguente = item.children[0].text;
             }
             return itemData;
@@ -117,67 +119,77 @@ export class TriageComponent implements OnInit {
         });
         addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
         addItemTriageModal.componentInstance.tItem = item;
-        addItemTriageModal.result.then((res: any) => {
-            if (res.domandaSeguente) {
+        addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
+            if (res.success) {
                 if (this.tItems) {
-                    item.children = [{
-                        text: res.domandaSeguente,
-                        value: item.value + '-1',
-                        children: [
-                            { text: 'Si', value: '1' + item.value + '-1', disabled: true },
-                            { text: 'No', value: '2' + item.value + '-1', disabled: true },
-                            { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
-                        ]
-                    }];
+                    if (res.data.domandaSeguente) {
+                        this.addDomandaSeguente(item, res.data.domandaSeguente);
+                    }
                     const otherData = {
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,
                         prioritaConsigliata: null
                     };
-                    if (res.soccorsoAereo) {
-                        otherData.soccorsoAereo = res.soccorsoAereo;
+                    if (res.data.soccorsoAereo) {
+                        otherData.soccorsoAereo = res.data.soccorsoAereo;
                     }
-                    if (res.generiMezzo) {
-                        otherData.generiMezzo = res.generiMezzo;
+                    if (res.data.generiMezzo) {
+                        otherData.generiMezzo = res.data.generiMezzo;
                     }
-                    if (res.prioritaConsigliata) {
-                        otherData.prioritaConsigliata = res.prioritaConsigliata;
+                    if (res.data.prioritaConsigliata) {
+                        otherData.prioritaConsigliata = res.data.prioritaConsigliata;
                     }
                     if (otherData) {
                         this.tItemsData.push(otherData);
                     }
                 } else {
-                    this.tItems = [
-                        new TreeviewItem({
-                            text: res.domandaSeguente,
-                            value: '1',
-                            children: [
-                                {
-                                    text: 'Si',
-                                    value: '1-1',
-                                    disabled: true
-                                },
-                                {
-                                    text: 'No',
-                                    value: '2-1',
-                                    disabled: true
-                                },
-                                {
-                                    text: 'Non lo so',
-                                    value: '3-1',
-                                    disabled: true
-                                }
-                            ]
-                        })
-                    ];
+                    this.addPrimaDomanda(res.data.domandaSeguente);
                 }
             }
         });
         console.log('TRIAGE', this.tItems);
     }
 
-    editItem(item?: TreeItem): void {
+    addPrimaDomanda(domanda: string): void {
+        this.tItems = [
+            new TreeviewItem({
+                text: addQuestionMark(capitalize(domanda)),
+                value: '1',
+                children: [
+                    {
+                        text: 'Si',
+                        value: '1-1',
+                        disabled: true
+                    },
+                    {
+                        text: 'No',
+                        value: '2-1',
+                        disabled: true
+                    },
+                    {
+                        text: 'Non lo so',
+                        value: '3-1',
+                        disabled: true
+                    }
+                ]
+            })
+        ];
+    }
+
+    addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
+        item.children = [{
+            text: addQuestionMark(capitalize(domandaSeguente)),
+            value: item.value + '-1',
+            children: [
+                { text: 'Si', value: '1' + item.value + '-1', disabled: true },
+                { text: 'No', value: '2' + item.value + '-1', disabled: true },
+                { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
+            ]
+        }];
+    }
+
+    editItem(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -185,69 +197,67 @@ export class TriageComponent implements OnInit {
             size: 'lg'
         });
         addItemTriageModal.componentInstance.primaDomanda = false;
+        addItemTriageModal.componentInstance.disableDomanda = item.children && item.children.length;
         addItemTriageModal.componentInstance.itemEdit = this.getItemData(item);
         addItemTriageModal.componentInstance.tItem = item;
-        addItemTriageModal.result.then((res: any) => {
-            if (res.domandaSeguente) {
-                if (this.tItems) {
-                    item.children = [{
-                        text: res.domandaSeguente,
-                        value: item.value + '-1',
-                        children: [
-                            { text: 'Si', value: '1' + item.value + '-1', disabled: true },
-                            { text: 'No', value: '2' + item.value + '-1', disabled: true },
-                            { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
-                        ]
-                    }];
-                    const otherData = {
+        addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
+            if (res.success) {
+                if (res.data.domandaSeguente) {
+                    this.addDomandaSeguente(item, res.data.domandaSeguente);
+                }
+
+                // TODO: rivedere logica edit (funziona solo con il primo elemento)
+                /* let iItemDataFound = 0;
+                let itemDataFound: any;
+                for (const tItemData of this.tItemsData) {
+                    iItemDataFound = iItemDataFound++;
+                    if (tItemData.itemValue === res.value) {
+                        itemDataFound = tItemData;
+                    } else {
+                        itemDataFound = null;
+                    }
+                }
+
+                let editedItem: any;
+                if (itemDataFound) {
+                    editedItem = {
+                        itemValue: item.value,
+                        soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
+                        generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
+                        prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null
+                    };
+                } else {
+                    editedItem = {
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,
                         prioritaConsigliata: null
                     };
-                    if (res.soccorsoAereo) {
-                        otherData.soccorsoAereo = res.soccorsoAereo;
-                    }
-                    if (res.generiMezzo) {
-                        otherData.generiMezzo = res.generiMezzo;
-                    }
-                    if (res.prioritaConsigliata) {
-                        otherData.prioritaConsigliata = res.prioritaConsigliata;
-                    }
-                    if (otherData) {
-                        this.tItemsData.push(otherData);
-                    }
-                } else {
-                    this.tItems = [
-                        new TreeviewItem({
-                            text: res.domandaSeguente,
-                            value: '1',
-                            children: [
-                                {
-                                    text: 'Si',
-                                    value: '1-1',
-                                    disabled: true
-                                },
-                                {
-                                    text: 'No',
-                                    value: '2-1',
-                                    disabled: true
-                                },
-                                {
-                                    text: 'Non lo so',
-                                    value: '3-1',
-                                    disabled: true
-                                }
-                            ]
-                        })
-                    ];
                 }
+
+                if (res.soccorsoAereo) {
+                    editedItem.soccorsoAereo = res.soccorsoAereo;
+                } else {
+                    editedItem.soccorsoAereo = null;
+                }
+                if (res.generiMezzo) {
+                    editedItem.generiMezzo = res.generiMezzo;
+                } else {
+                    editedItem.generiMezzo = null;
+                }
+                if (res.prioritaConsigliata) {
+                    editedItem.prioritaConsigliata = res.prioritaConsigliata;
+                } else {
+                    editedItem.prioritaConsigliata = null;
+                }
+
+                if (itemDataFound) {
+                    this.tItemsData[iItemDataFound] = editedItem;
+                } else {
+                    this.tItemsData.push(editedItem);
+                } */
             }
         });
-    }
-
-    editItemText(item?: TreeItem): void {
-        console.log('editItemText');
     }
 
     removeItem(item: TreeviewItem): void {
