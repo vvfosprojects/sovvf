@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTi
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTipologie.InserimentoDettaglioTipologia;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTipologie.ModificaDettaglioTipologia;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia.GetDettagliTipoligiaByIdTipologia;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 
 namespace SO115App.API.Controllers
@@ -23,16 +24,19 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<ModifyDettaglioTipologiaCommand> _updatehandler;
         private readonly ICommandHandler<DeleteDettaglioTipologiaCommand> _deletehandler;
         private readonly IQueryHandler<DettaglioTipologiaQuery, DettaglioTipologiaResult> _getListaDettagliTipologia;
+        private readonly IQueryHandler<GetDettagliTipoligiaByIdTipologiaQuery, GetDettagliTipoligiaByIdTipologiaResult> _getListaDettagliTipologieByIdTipologia;
 
         public GestioneDettaglioTipologiaController(ICommandHandler<AddDettaglioTipologiaCommand> Addhandler,
             ICommandHandler<ModifyDettaglioTipologiaCommand> Updatehandler,
             ICommandHandler<DeleteDettaglioTipologiaCommand> Deletehandler,
-            IQueryHandler<DettaglioTipologiaQuery, DettaglioTipologiaResult> getListaDettagliTipologia)
+            IQueryHandler<DettaglioTipologiaQuery, DettaglioTipologiaResult> getListaDettagliTipologia,
+            IQueryHandler<GetDettagliTipoligiaByIdTipologiaQuery, GetDettagliTipoligiaByIdTipologiaResult> getListaDettagliTipologieByIdTipologia)
         {
             _addhandler = Addhandler;
             _updatehandler = Updatehandler;
             _deletehandler = Deletehandler;
             _getListaDettagliTipologia = getListaDettagliTipologia;
+            _getListaDettagliTipologieByIdTipologia = getListaDettagliTipologieByIdTipologia;
         }
 
         [HttpPost("Get")]
@@ -44,6 +48,28 @@ namespace SO115App.API.Controllers
                 query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
 
                 return Ok(_getListaDettagliTipologia.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("GetByIdTipologia")]
+        public async Task<IActionResult> GetByIdTipologia(int idTipologia)
+        {
+            try
+            {
+                var query = new GetDettagliTipoligiaByIdTipologiaQuery()
+                {
+                    CodiceTipologia = idTipologia,
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',')
+                };
+
+                return Ok(_getListaDettagliTipologieByIdTipologia.Handle(query));
             }
             catch (Exception ex)
             {
