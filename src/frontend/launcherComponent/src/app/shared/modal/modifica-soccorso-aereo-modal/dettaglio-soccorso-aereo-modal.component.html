@@ -2,14 +2,20 @@
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'DETTAGLIO RICHIESTA SOCCORSO AEREO' }}
   </h4>
-  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
           (click)="chiudiModalSoccorsoAereo('ko')">
     <i class="fa fa-times text-danger"></i>
   </button>
 </div>
 
 <div class="modal-body pb-0">
-  <div class="row" style="justify-content: center; font-size: x-large">
+  <div class="row" style="font-size: x-large">
+    <div class="col-4">
+      <span (click)="mostraAttivita = true" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
+            style="padding: 10px; margin-left: 10px;margin-right: 2px; opacity: 0.8">Attività</span>
+      <span (click)="mostraAttivita = false" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
+            style="padding: 10px; opacity: 0.8">Eventi</span>
+    </div>
     <div class="clearfix d-inline-flex">
       <span class="badge h6 w-100 badge-primary mb-0" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
     </div>
@@ -52,7 +58,8 @@
   </div>
 
   <!-- DETTAGLIO -->
-  <div class="row">
+  <span *ngIf="mostraAttivita">
+      <div class="row">
     <div class="w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Dettaglio
       <i (click)="onShowDettaglio()" [class.fa-chevron-up]="!showDettaglio" [class.fa-chevron-down]="showDettaglio" class="fa pt-1"
          style="cursor: pointer; float: right"></i>
@@ -133,8 +140,9 @@
       </div>
     </div>
   </div>
-
+  </span>
   <!-- ATTIVITA' -->
+  <span *ngIf="mostraAttivita">
   <div class="row">
     <div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Attività
     <i (click)="onShowAttivita()" [class.fa-chevron-up]="!showAttivita" [class.fa-chevron-down]="showAttivita" class="fa pt-1"
@@ -183,6 +191,47 @@
     <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica non riuscita.
       <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
   </div>
+  </span>
+  <!-- EVENTI -->
+  <span *ngIf="!mostraAttivita">
+  <div class="row">
+    <div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Eventi</div>
+  </div>
+
+  <table class="table table-bordered table-hover mt-2">
+    <thead class="thead-light" style="font-size: large">
+    <tr>
+      <th scope="col">Orario</th>
+      <th scope="col">Evento</th>
+      <th scope="col">Stato Attività</th>
+      <th scope="col">ID Attività</th>
+      <th scope="col">Nucleo</th>
+      <th scope="col">Velivolo</th>
+      <th scope="col">Operatore</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of eventiAFM?.events; index as i">
+      <th scope="row">{{a.activityStatusType}}</th>
+      <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
+      <td>{{a.department}}</td>
+      <td>{{a.aircraft}}</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="annullamentoFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento non riuscita.
+      <span (click)="annullamentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  <div *ngIf="modificaFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica non riuscita.
+      <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  </span>
 
 </div>
 
@@ -197,11 +246,6 @@
         <i class="fa fa-spin fa-spinner mr-1"></i>
         {{ 'Annulamento In Corso' | uppercase }}
       </button>
-      <!--
-      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" placement="bottom" ngbTooltip="Refresh" style="width: 10%" disabled>
-        <i class="fa fa-refresh"></i>
-      </button>
-      -->
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
               (click)="chiudiModalSoccorsoAereo('ko')">
         {{ 'Chiudi'.toLocaleUpperCase() }}

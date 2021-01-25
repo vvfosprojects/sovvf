@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
@@ -24,15 +24,19 @@ export class CompPartenzaService {
     }
 
     getCategorieSoccorso(): Observable<any[]> {
-      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorieSoccorso`);
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorie`);
     }
-
+    /*
     getTipologieSoccorso(): Observable<any[]> {
-      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologieSoccorso`);
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologie`);
+    }
+    */
+    getDettaglioSoccorsoAereo(codRichiesta: any): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetInfo?requestKey=${codRichiesta.codRichiesta}`);
     }
 
-    getDettaglioSoccorsoAereo(codRichiesta: any): Observable<any[]> {
-      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStoricoRichiestaSoccorso?requestKey=${codRichiesta.codRichiesta}`);
+    getEventiSoccorsoAereo(codRichiesta: any): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetEventi?requestKey=${codRichiesta.codRichiesta}`);
     }
 
     addSoccorsoAereo(obj: any): Observable<any> {

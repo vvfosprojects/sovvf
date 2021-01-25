@@ -25,3 +25,7 @@
   margin-left: -11px !important;
   vertical-align: super;
 }
+
+.badge-menu:hover {
+  opacity: 1 !important;
+}

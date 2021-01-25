@@ -1,8 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
-  AddAzioniRichiesta, AddSoccorsoAereo, AddTipologieRichiesta,
-  GetAzioniRichiesta, GetDettaglioSoccorsoAereo, GetTipologieRichiesta, RemoveSoccorsoAereo, SetDettaglioSoccorsoAereo,
+  AddAzioniRichiesta,
+  AddSoccorsoAereo,
+  AddTipologieRichiesta,
+  GetAzioniRichiesta,
+  GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo,
+  RemoveSoccorsoAereo,
+  SetDettaglioSoccorsoAereo,
+  SetEventiSoccorsoAereo,
   SetMotivazioneRichiesta
 } from '../../actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {CompPartenzaService} from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -48,6 +54,7 @@ export interface ComposizioneSoccorsoAereoStateModel {
     tipo: string,
   }];
   dettaglioAFM: DettaglioAFM;
+  eventiAFM: any;
 }
 
 export const ComposizioneSoccorsoAereoStateDefaults: ComposizioneSoccorsoAereoStateModel = {
@@ -62,6 +69,7 @@ export const ComposizioneSoccorsoAereoStateDefaults: ComposizioneSoccorsoAereoSt
     tipo: null,
   }],
   dettaglioAFM: null,
+  eventiAFM: null,
 };
 
 @Injectable()
@@ -86,6 +94,11 @@ export class ComposizioneSoccorsoAereoState {
     return state.dettaglioAFM;
   }
 
+  @Selector()
+  static eventiAFM(state: ComposizioneSoccorsoAereoStateModel): any {
+    return state.eventiAFM;
+  }
+
 
   constructor(private compPartenzaService: CompPartenzaService) {
   }
@@ -98,17 +111,26 @@ export class ComposizioneSoccorsoAereoState {
     }, () => {});
   }
 
+  /*
   @Action(GetTipologieRichiesta)
   getTipologieRichiesta({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>): void {
     this.compPartenzaService.getTipologieSoccorso().subscribe((action: any) => {
       dispatch(new AddTipologieRichiesta(action.dataArray));
     }, () => {});
   }
+  */
 
   @Action(GetDettaglioSoccorsoAereo)
   getDettaglioSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, codRichiesta: string): void {
     this.compPartenzaService.getDettaglioSoccorsoAereo(codRichiesta).subscribe((action: any) => {
       dispatch(new SetDettaglioSoccorsoAereo(action.data));
+    }, () => {});
+  }
+
+  @Action(GetEventiSoccorsoAereo)
+  getEventiSoccorsoAereo({ dispatch }: StateContext<ComposizioneSoccorsoAereoStateModel>, codRichiesta: string): void {
+    this.compPartenzaService.getEventiSoccorsoAereo(codRichiesta).subscribe((action: any) => {
+      dispatch(new SetEventiSoccorsoAereo(action.data));
     }, () => {});
   }
 
@@ -133,6 +155,15 @@ export class ComposizioneSoccorsoAereoState {
     });
     const state = getState();
     console.log('***state.dettaglioAFM AFTER CHANGE ', state.dettaglioAFM);
+  }
+
+  @Action(SetEventiSoccorsoAereo)
+  setEventiSoccorsoAereo({ patchState, getState }: StateContext<ComposizioneSoccorsoAereoStateModel>, action: any): void {
+    patchState({
+      eventiAFM: action.eventiAFM
+    });
+    const state = getState();
+    console.log('***state.eventiAFM AFTER CHANGE ', state.eventiAFM);
   }
 
   @Action(AddSoccorsoAereo)

@@ -24,6 +24,8 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   utente: Utente;
   @Select(ComposizioneSoccorsoAereoState.dettaglioAFM) dataAFM$: Observable<Utente>;
   dettaglioAFM: DettaglioAFM;
+  @Select(ComposizioneSoccorsoAereoState.eventiAFM) dataEventiAFM$: Observable<Utente>;
+  eventiAFM: DettaglioAFM;
 
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
@@ -35,15 +37,18 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   motivazione = '';
   annullamentoFallito: boolean;
   modificaFallito: boolean;
+  mostraAttivita: boolean;
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
     this.getDettaglioAFM();
+    this.getEventiAFM();
     this.showAttivita = true;
     this.showDettaglio = false;
     this.modificaMotivazione = false;
     this.annullamentoFallito = false;
     this.modificaFallito = false;
+    this.mostraAttivita = true;
   }
 
   ngOnDestroy(): void {
@@ -117,6 +122,15 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
         if (data) {
           this.motivazione = data.description;
         }
+      })
+    );
+
+  }
+
+  getEventiAFM(): void {
+    this.subscription.add(
+      this.dataEventiAFM$.subscribe((data: any) => {
+        this.eventiAFM = data;
       })
     );
 
