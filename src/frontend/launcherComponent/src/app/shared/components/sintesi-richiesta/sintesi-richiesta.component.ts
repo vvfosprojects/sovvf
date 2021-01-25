@@ -459,7 +459,6 @@ export class SintesiRichiestaComponent implements OnChanges {
       this.store.dispatch(new GetDettaglioSoccorsoAereo(requestKey));
       this.store.dispatch(new GetEventiSoccorsoAereo(requestKey));
       modal.componentInstance.richiesta = this.richiesta;
-      console.log('*** RICHIESTA SOCCORSO ', this.richiesta);
       modal.result.then((res: string) => {
           switch (res) {
           case 'ok':

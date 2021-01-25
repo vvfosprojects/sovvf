@@ -83,23 +83,18 @@
       <div class="clearfix input-soccorso-format">
       </div>
     </div>
-    <div class="row my-4 d-inline-flex">
-      <div class="clearfix mr-3 input-soccorso-format" style="width: 23%; margin-left: 2.5rem" >
-        <label for="aggiornamento" class="d-none">Aggiornamento alle</label>
-        <i class="guida fa fa-clock-o fa-fw mx-1" ngbTooltip="Data aggiornamento" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
-        <input id="aggiornamento" type="text" placeholder="data-aggiornamento" class="form-control font-xlarge" disabled>
-      </div>
-      <div class="clearfix mr-2 input-soccorso-format" style="width: 30%" >
+    <div class="row w-100 my-4 d-inline-flex">
+      <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
         <label for="tipologia" class="d-none">Tipologia Intervento</label>
-        <i class="guida fa fa-exclamation-triangle fa-fw mx-1" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="guida fa fa-exclamation-triangle fa-fw mx-1" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
         <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
       </div>
-      <div class="clearfix mx-2 input-soccorso-format" style="width: 20%" >
+      <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
         <i class="guida fa fa-address-book-o fa-fw mx-1" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
-      <div class="clearfix input-soccorso-format" style="width: 15%" >
+      <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
         <i class="guida fa fa-phone fa-fw mx-1" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>

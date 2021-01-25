@@ -189,8 +189,6 @@ export class ComposizioneSoccorsoAereoState {
     patchState({
       dettaglioAFM: action.dettaglioAFM
     });
-    const state = getState();
-    console.log('***state.dettaglioAFM AFTER CHANGE ', state.dettaglioAFM);
   }
 
   @Action(SetEventiSoccorsoAereo)
@@ -198,8 +196,6 @@ export class ComposizioneSoccorsoAereoState {
     patchState({
       eventiAFM: action.eventiAFM
     });
-    const state = getState();
-    console.log('***state.eventiAFM AFTER CHANGE ', state.eventiAFM);
   }
 
   @Action(AddSoccorsoAereo)
