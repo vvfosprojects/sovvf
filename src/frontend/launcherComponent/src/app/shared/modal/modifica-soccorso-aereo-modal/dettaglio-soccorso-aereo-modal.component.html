@@ -91,7 +91,7 @@
       </div>
       <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
-        <i class="guida fa fa-address-book-o fa-fw mx-1" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="guida fa fa-address-book-o fa-fw mx-3" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
       <div class="clearfix input-soccorso-format" style="width: 20.5%" >
@@ -103,7 +103,7 @@
     <div class="row d-inline-flex w-100">
       <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
         <label class="d-none" for="noteintervento">Note Intervento</label>
-        <i class="guida fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" placement="left" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="guida fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
         <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
                   placeholder="Nessuna Nota Pubblica disponibile"
                   class="form-control font-xlarge area-size" disabled></textarea>
