@@ -64,35 +64,35 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     aggiungiNuovoEnte(): void {
-        let addEnteModal;
-        if (this.doubleMonitor) {
-            addEnteModal = this.modalService.open(EnteModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            addEnteModal = this.modalService.open(EnteModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
-        addEnteModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.store.dispatch(new RequestAddEnte());
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormEnte());
-                    console.log('Modal "addEnteModal" chiusa con val ->', result);
-                }
-            },
-            (err) => {
-                this.store.dispatch(new ClearFormEnte());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
-            }
-        );
+        /*    let addEnteModal;
+           if (this.doubleMonitor) {
+               addEnteModal = this.modalService.open(EnteModalComponent, {
+                   windowClass: 'modal-holder modal-left',
+                   backdropClass: 'light-blue-backdrop',
+                   centered: true,
+                   size: 'lg'
+               });
+           } else {
+               addEnteModal = this.modalService.open(EnteModalComponent, {
+                   windowClass: 'modal-holder',
+                   backdropClass: 'light-blue-backdrop',
+                   centered: true,
+                   size: 'lg'
+               });
+           }
+           addEnteModal.result.then(
+               (result: { success: boolean }) => {
+                   if (result.success) {
+                       this.store.dispatch(new RequestAddEnte());
+                   } else if (!result.success) {
+                       this.store.dispatch(new ClearFormEnte());
+                       console.log('Modal "addEnteModal" chiusa con val ->', result);
+                   }
+               },
+               (err) => {
+                   this.store.dispatch(new ClearFormEnte());
+                   console.error('Modal chiusa senza bottoni. Err ->', err);
+               }
+           ); */
     }
 }
