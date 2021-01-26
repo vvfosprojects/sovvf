@@ -13,6 +13,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         private readonly IAggiornaRichiestaSoccorsoAereo _aggiorna;
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
 
+        //IGetCompetenzeByCoordinateIntervento
+
         public InserisciRichiestaSoccorsoAereoCommandHandler(IAggiornaRichiestaSoccorsoAereo aggiorna, IUpDateRichiestaAssistenza updateRichiesta)
         {
             _aggiorna = aggiorna;
@@ -23,19 +25,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var date = DateTime.Now;
 
-            #region AFM Servizio
-
-            //COMPONGO IL MODELLO DEL SERVIZIO ESTERNO
             string azione = "Inserimento";
-
-            command.RichiestaSoccorsoAereo.datetime = date;
 
             if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo)
             {
                 azione = "Aggiornamento";
             }
 
+            #region AFM Servizio
+
+            //COMPONGO IL MODELLO PER AFM
+            command.RichiestaSoccorsoAereo.datetime = date;
             command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
+            command.RichiestaSoccorsoAereo.progressiveNumber = command.Richiesta.CodRichiesta?.Split('-')[2] ?? "";
+            //command.RichiestaSoccorsoAereo.;
+
 
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);

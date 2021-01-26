@@ -1,11 +1,9 @@
 ﻿using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
-using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -32,10 +30,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public IEnumerable<AuthorizationResult> Authorize(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            if (command.CodiceRichiesta.Length > 13)
-                command.Richiesta = _getRichiestaById.GetByCodiceRichiesta(command.CodiceRichiesta);
-            else
-                command.Richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
             var Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
