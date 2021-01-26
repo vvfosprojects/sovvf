@@ -78,7 +78,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       this.submittedModifica = true;
       const obj: any = {
         requestType: this.dettaglioAFM.requestType,
-        requestKey: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+        requestKey: this.richiesta.codice,
         operatorName: this.utente.nome,
         operatorSurname: this.utente.cognome,
         operatorFiscalCode: this.utente.codiceFiscale,
@@ -93,7 +93,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
       // caso annullamento
       this.submitted = true;
       const obj = {
-        codiceRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+        codiceRichiesta: this.richiesta.codice,
         annullamento: {
           operatorName: this.utente.nome,
           operatorSurname: this.utente.cognome,
