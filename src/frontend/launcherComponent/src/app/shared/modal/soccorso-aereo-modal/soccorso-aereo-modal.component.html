@@ -13,7 +13,10 @@
     <div class="col-7" style="text-align: center">
       <span class="badge h6 w-100 badge-primary" style="font-size: 111%;">Seleziona le Azioni Richieste</span>
       <div class="row"></div>
-      <div class="card card-shadow mx-auto p-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
+      <div *ngIf="azioniRichiesta.length <= 0" class="card card-shadow mx-auto p-3">
+        <div class="clearfix ml-2"><i class="fa fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
+      </div>
+      <div  *ngIf="azioniRichiesta.length > 0" class="card card-shadow mx-auto p-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
         <div *ngFor="let a of azioniRichiesta; let index = index" class="row my-1">
           <div class="clearfix ml-2"><input type="text" class="pr-1" [class.input-checked]="azioniRichiesta[index].checked"
                                             style="text-align: center; height: 36px; width: 55px; vertical-align: bottom; outline: none; font-size: 110%;" placeholder="{{a.codice}}" disabled></div>

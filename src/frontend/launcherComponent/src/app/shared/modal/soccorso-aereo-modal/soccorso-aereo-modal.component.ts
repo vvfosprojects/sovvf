@@ -3,11 +3,11 @@ import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {Select, Store} from '@ngxs/store';
 import {ComposizioneSoccorsoAereoState} from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
-import {makeCopy} from '../../helper/function';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {Utente} from '../../model/utente.model';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
+import {makeCopy} from '../../helper/function';
 
 
 @Component({
@@ -20,21 +20,21 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
 
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
+  @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<boolean>;
+  azioniRichiesta: any[];
 
   richiesta: SintesiRichiesta;
   subscription: Subscription = new Subscription();
   tipologiaChecked = false;
   motivazione: string;
-  azioniRichiesta: any[];
   submitted: boolean;
   inserimentoFallito: boolean;
 
 
   constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
+    this.getAzioniRichiesta();
     this.motivazione = null;
-    this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
-    this.azioniRichiesta.forEach(x => x.checked = false);
     this.inserimentoFallito = false;
   }
 
@@ -77,4 +77,14 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
       })
     );
   }
+
+  getAzioniRichiesta(): void {
+    this.subscription.add(
+      this.azioniRichiesta$.subscribe((azioniRichiesta: any) => {
+        this.azioniRichiesta = makeCopy(azioniRichiesta);
+        this.azioniRichiesta.forEach(x => x.checked = false);
+      })
+    );
+  }
+
 }
