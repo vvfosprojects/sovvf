@@ -24,18 +24,15 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
   @Input() boxPartenzaLenght: number;
   @Input() disableConfirmPartenza = true;
   @Input() richiesta: SintesiRichiesta;
-
   @Output() confirmPartenzaInViaggio = new EventEmitter();
   @Output() confirmPartenzaInUscita = new EventEmitter();
 
   subscription = new Subscription();
-  azioniRichiesta: any;
 
   constructor(private store: Store,
               private modalService: NgbModal) {
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.store.dispatch(new GetAzioniRichiesta());
-    this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
   }
 
   ngOnChanges(): void {
