@@ -35,7 +35,7 @@ import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
 import { ToggleChiamata } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
-import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
+import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -46,7 +46,6 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() tipologie: Tipologia[];
-    @Input() dettagliTipologie: DettaglioTipologia[];
     @Input() operatore: Utente;
     @Input() competenze: Sede[];
     @Input() countInterventiProssimita: number;
@@ -379,6 +378,8 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
 
     openTriage(): void {
         const codTipologia = this.f.tipologie.value;
+        const codTipologiaNumber = +this.f.tipologie.value;
+        this.store.dispatch(new GetDettagliTipologieByCodTipologia(codTipologiaNumber));
         let modalOptions: any;
         if (this.doubleMonitor) {
             modalOptions = {
@@ -398,7 +399,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
         this.getNuovaRichiesta();
         const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
-        triageModal.componentInstance.dettagliTipologie = this.dettagliTipologie.filter((d: DettaglioTipologia) => d.codiceTipologia === +codTipologia);
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.disableEmergenza = this.formIsInvalid(true);
@@ -407,6 +407,9 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
                 case 'salvaDettaglio':
                     this.f.dettaglioTipologia.patchValue(res.result);
                     this.visualizzaSuggerimentiTriage = true;
+                    break;
+                default:
+                    this.store.dispatch(new ClearDettagliTipologie());
                     break;
             }
         });

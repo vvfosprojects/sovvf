@@ -42,7 +42,8 @@ export const environment = {
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
         tipologie: '/api/GestioneTipologie',
-        dettagliTipologie: '/api/GestioneDettaglioTipologia'
+        dettagliTipologie: '/api/GestioneDettaglioTipologia',
+        triage: '/api/GestioneTriage'
     },
     casUrl: {
         linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',

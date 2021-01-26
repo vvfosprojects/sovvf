@@ -437,6 +437,21 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="mt-3">
+                        <h5 class="text-danger">
+                            <i class="fa fa-truck mr-2"></i>
+                            <b>
+                                MEZZI CONSIGLIATI
+                                <span class="font-weight-bolder">({{ !visualizzaSuggerimentiTriage ? '0' : '2' }})</span>
+                            </b>
+                        </h5>
+                        <div class="px-3">
+                            <ul class="list-group">
+                                <li>APS</li>
+                                <li>AS</li>
+                            </ul>
+                        </div>
+                    </div>
                 </ng-template>
             </ngb-panel>
             <!-- NOTE NUE -->
@@ -447,21 +462,6 @@
                 </ng-template>
                 <ng-template ngbPanelContent>
                     {{ schedaContatto.dettaglio ? schedaContatto.dettaglio : 'Nessuna Nota Disponibile' }}
-                </ng-template>
-            </ngb-panel>
-            <!-- MEZZI CONSIGLIATI -->
-            <ngb-panel id="mezzi-consigliati"
-                       [disabled]="!visualizzaSuggerimentiTriage">
-                <ng-template ngbPanelTitle>
-                    <b>MEZZI CONSIGLIATI ({{ !visualizzaSuggerimentiTriage ? '0' : '2' }})</b>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                    <div class="px-3">
-                        <ul class="list-group">
-                            <li>APS</li>
-                            <li>AS</li>
-                        </ul>
-                    </div>
                 </ng-template>
             </ngb-panel>
             <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->

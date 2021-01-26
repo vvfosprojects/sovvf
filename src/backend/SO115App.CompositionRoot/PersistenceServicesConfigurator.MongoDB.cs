@@ -260,6 +260,7 @@ namespace SO115App.CompositionRoot
             container.Register<IDeleteDettaglioTipologia, DeleteDettaglioTipologia>();
             container.Register<IModifyDettaglioTipologia, UpDateDettaglioTipologia>();
             container.Register<IGetListaDettaglioTipologia, GetListaDettagliTipologia>();
+            container.Register<IGetListaDettagliTipologieByIdTipologia, GetListaDettagliTipologiaByIdTipologia>();
 
             #endregion Dettaglio Tipologia
         }

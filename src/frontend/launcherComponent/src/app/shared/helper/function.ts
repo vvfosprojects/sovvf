@@ -372,3 +372,16 @@ export function getStatoFonogrammaStringByEnum(fonogrammaEnum: StatoFonogramma):
             return 'Da Inviare';
     }
 }
+
+export function capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.substring(1);
+}
+
+export function addQuestionMark(value: string): string {
+    const questionMarked = value.indexOf('?') !== -1;
+    if (!questionMarked) {
+        return value + '?';
+    } else {
+        return value;
+    }
+}

@@ -15,8 +15,8 @@
         <span class="d-inline-block font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</span>
     </div>
     <hr class="mt-3 mb-0">
-    <ng-template [ngIf]="dettagliTipologie?.length > 0 && !abilitaTriage">
-        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologie"
+    <ng-template [ngIf]="dettagliTipologia?.length > 0 && !abilitaTriage">
+        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologia"
                                       (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
         </app-step-dettaglio-tipologia>
     </ng-template>

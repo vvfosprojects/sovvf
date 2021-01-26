@@ -30,6 +30,26 @@ import { AppState } from './shared/store/states/app/app.state';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { ToastrState } from './shared/store/states/toastr/toastr.state';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
+import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
+import { SchedeContattoState } from './features/home/store/states/schede-contatto/schede-contatto.state';
+import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
+import { TipologieState } from './shared/store/states/tipologie/tipologie.state';
+import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
+import { TriageState } from './shared/store/states/triage/triage.state';
+import { TriageModalState } from './shared/store/states/triage-modal/triage-modal.state';
+import { AuthState } from './features/auth/store/auth.state';
+import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
+import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
+import { EntiState } from './shared/store/states/enti/enti.state';
+import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
+import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
+import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { PermessiState } from './shared/store/states/permessi/permessi.state';
+import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
+import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { LoadingState } from './shared/store/states/loading/loading.state';
+import { PaginationState } from './shared/store/states/pagination/pagination.state';
 /**
  * Route
  */
@@ -45,29 +65,10 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { LoadingState } from './shared/store/states/loading/loading.state';
-import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { PermessiState } from './shared/store/states/permessi/permessi.state';
-import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
-import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
-import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
-import { AuthState } from './features/auth/store/auth.state';
-import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
-import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
-import { EntiState } from './shared/store/states/enti/enti.state';
-import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
-import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
-import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
-import { SchedeContattoState } from './features/home/store/states/schede-contatto/schede-contatto.state';
-import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
-import { TipologieState } from './shared/store/states/tipologie/tipologie.state';
-import { DettaglioTipologiaModalState } from './features/impostazioni-sede/store/states/dettaglio-tipologia-modal-state';
-import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 
 @NgModule({
     declarations: [
@@ -117,7 +118,9 @@ import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie
                 SchedeContattoState,
                 MergeSchedeContattoState,
                 TipologieState,
-                DettagliTipologieState
+                DettagliTipologieState,
+                TriageState,
+                TriageModalState
             ],
             { developmentMode: !environment.production }
         ),

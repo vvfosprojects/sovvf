@@ -6,8 +6,10 @@ import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
 import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/scheda-telefonata/chiamata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
+import { TriageModalState } from '../../store/states/triage-modal/triage-modal.state';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-triage-modal',
@@ -18,7 +20,9 @@ export class TriageModalComponent implements OnInit {
 
     tipologiaSelezionata: Tipologia;
 
-    dettagliTipologie: DettaglioTipologia[];
+    @Select(TriageModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
+    dettagliTipologia: DettaglioTipologia[];
+
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     nuovaRichiesta: SintesiRichiesta;
@@ -74,18 +78,29 @@ export class TriageModalComponent implements OnInit {
     checkedEmergenza: boolean;
     disableEmergenza: boolean;
 
+    private subscriptions: Subscription = new Subscription();
+
     constructor(private modal: NgbActiveModal,
                 private store: Store) {
     }
 
     ngOnInit(): void {
-        if (!this.dettagliTipologie || this.dettagliTipologie.length <= 0) {
-            this.onAbilitaTriage();
-        }
+        this.getDettagliTipologia();
+    }
+
+    getDettagliTipologia(): void {
+        this.subscriptions.add(
+            this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
+                this.dettagliTipologia = dettagliTipologia;
+                if (dettagliTipologia && dettagliTipologia.length <= 0) {
+                    this.onAbilitaTriage();
+                }
+            })
+        );
     }
 
     onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
-        this.dettaglioTipologiaSelezionato = this.dettagliTipologie.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
+        this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
         this.onAbilitaTriage();
     }
 

@@ -4,13 +4,15 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'app-add-item-triage-modal',
-    templateUrl: './add-item-triage-modal.component.html',
-    styleUrls: ['./add-item-triage-modal.component.scss']
+    selector: 'app-item-triage-modal',
+    templateUrl: './item-triage-modal.component.html',
+    styleUrls: ['./item-triage-modal.component.scss']
 })
-export class AddItemTriageModalComponent implements OnInit {
+export class ItemTriageModalComponent implements OnInit {
 
     primaDomanda: boolean;
+    itemEdit: any;
+    disableDomanda: any;
 
     tItem: TreeviewItem;
 
@@ -22,7 +24,14 @@ export class AddItemTriageModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('tItem', this.tItem);
+        console.log('[ITEM TRIAGE MODAL] tItem', this.tItem);
+        if (this.itemEdit) {
+            console.log('[ITEM TRIAGE MODAL] ItemEdit', this.itemEdit);
+            this.patchForm();
+        }
+        if (this.disableDomanda) {
+            this.f.domandaSeguente.disable();
+        }
     }
 
     initForm(): void {
@@ -40,8 +49,21 @@ export class AddItemTriageModalComponent implements OnInit {
         });
     }
 
+    patchForm(): void {
+        this.addItemTriageForm.patchValue({
+            domandaSeguente: this.itemEdit.domandaSeguente,
+            soccorsoAereo: this.itemEdit.soccorsoAereo,
+            generiMezzo: this.itemEdit.generiMezzo,
+            prioritaConsigliata: this.itemEdit.prioritaConsigliata
+        });
+    }
+
     get f(): any {
         return this.addItemTriageForm.controls;
+    }
+
+    formIsInvalid(): boolean {
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value;
     }
 
     onConferma(): void {
@@ -53,17 +75,17 @@ export class AddItemTriageModalComponent implements OnInit {
                 generiMezzo: this.f.generiMezzo.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
-            this.modal.close(item);
+            this.modal.close({ success: true, data: item });
         } else {
             const item = {
                 domandaSeguente: this.f.domandaSeguente.value
             };
-            this.modal.close(item);
+            this.modal.close({ success: true, data: item });
         }
     }
 
     closeModal(type: string): void {
-        this.modal.close(type);
+        this.modal.close({ success: false, data: type });
     }
 
     getTitle(): string {
