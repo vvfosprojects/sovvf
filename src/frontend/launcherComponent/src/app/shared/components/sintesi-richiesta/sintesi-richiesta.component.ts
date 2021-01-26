@@ -455,7 +455,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
       }
       const modal = this.modalService.open(DettaglioSoccorsoAereoModalComponent, modalOptions);
-      const requestKey = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+      const requestKey = this.richiesta.codice;
       this.store.dispatch(new GetDettaglioSoccorsoAereo(requestKey));
       this.store.dispatch(new GetEventiSoccorsoAereo(requestKey));
       modal.componentInstance.richiesta = this.richiesta;
