@@ -4,11 +4,13 @@ using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
+using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
@@ -230,7 +232,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetZoneEmergenza, GetZoneEmergenza>();
 
-            #endregion
+            #endregion ZoneEmergenza
 
             #region TrasferimentoChiamata
 
@@ -251,6 +253,15 @@ namespace SO115App.CompositionRoot
                 Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
 
             #endregion TrasferimentoChiamata
+
+            #region Dettaglio Tipologia
+
+            container.Register<IAddDettaglioTipologia, AddDettaglioTipologia>();
+            container.Register<IDeleteDettaglioTipologia, DeleteDettaglioTipologia>();
+            container.Register<IModifyDettaglioTipologia, UpDateDettaglioTipologia>();
+            container.Register<IGetListaDettaglioTipologia, GetListaDettagliTipologia>();
+
+            #endregion Dettaglio Tipologia
         }
     }
 }

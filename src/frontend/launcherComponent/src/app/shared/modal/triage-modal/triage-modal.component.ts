@@ -7,6 +7,7 @@ import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.int
 import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/scheda-telefonata/chiamata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
+import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 
 @Component({
     selector: 'app-triage-modal',
@@ -17,14 +18,13 @@ export class TriageModalComponent implements OnInit {
 
     tipologiaSelezionata: Tipologia;
 
-    dettagliTipologie: any[];
-    dettaglioTipologiaSelezionato: any;
+    dettagliTipologie: DettaglioTipologia[];
+    dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
     abilitaTriage: boolean;
-    // TODO: ELIMINARE (PER FAKE)
     domandeTriage = [
         {
             codice: '1',
@@ -66,13 +66,7 @@ export class TriageModalComponent implements OnInit {
                     valoreSuCampo: '3'
                 }
             ]
-        },
-        /* {
-            codice: '3',
-            titolo: 'Che piano è?',
-            tipo: 'number',
-            campo: 'piano'
-        },*/
+        }
     ];
     risposteTriage: any[];
     codDomandaSelezionata: string;
@@ -90,8 +84,8 @@ export class TriageModalComponent implements OnInit {
         }
     }
 
-    onChangeDettaglioTipologia(codDettaglioTipologia: string): void {
-        this.dettaglioTipologiaSelezionato = this.dettagliTipologie.filter((dT: any) => dT.codice === codDettaglioTipologia)[0];
+    onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
+        this.dettaglioTipologiaSelezionato = this.dettagliTipologie.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
         this.onAbilitaTriage();
     }
 
@@ -109,12 +103,9 @@ export class TriageModalComponent implements OnInit {
     }
 
     nextDomanda(): void {
-        console.log(this.codDomandaSelezionata);
         const indexDomandaDaVisualizzare = (+this.codDomandaSelezionata + 1) - 1;
-        console.log(indexDomandaDaVisualizzare);
         const domandaSelezionata = this.domandeTriage[indexDomandaDaVisualizzare];
         this.codDomandaSelezionata = domandaSelezionata ? domandaSelezionata.codice : null;
-        console.log(this.codDomandaSelezionata);
     }
 
     getDomandaByCodice(codDomanda: string): string {

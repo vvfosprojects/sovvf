@@ -9,14 +9,10 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImpostazioniRoutingModule } from './impostazioni.routing';
 import { ImpostazioniComponent } from './impostazioni.component';
-import { DettagliTipologieComponent } from './dettagli-tipologie/dettagli-tipologie.component';
-import { AddDettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/add-dettaglio-tipologia-modal.component';
 
 @NgModule({
     declarations: [
-        ImpostazioniComponent,
-        DettagliTipologieComponent,
-        AddDettaglioTipologiaModalComponent
+        ImpostazioniComponent
     ],
     imports: [
         CommonModule,

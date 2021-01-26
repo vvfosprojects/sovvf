@@ -1,25 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 
 @Component({
     selector: 'app-step-dettaglio-tipologia',
     templateUrl: './step-dettaglio-tipologia.component.html',
     styleUrls: ['./step-dettaglio-tipologia.component.scss']
 })
-export class StepDettaglioTipologiaComponent implements OnInit {
+export class StepDettaglioTipologiaComponent {
 
-    @Input() dettagliTipologie: any[];
+    @Input() dettagliTipologie: DettaglioTipologia[];
 
-    @Output() changeDettaglioTipologia: EventEmitter<string> = new EventEmitter<string>();
+    @Output() changeDettaglioTipologia: EventEmitter<number> = new EventEmitter<number>();
 
-    codDettaglioTipologiaSelezionato: string;
+    codDettaglioTipologiaSelezionato: number;
 
     constructor() {
     }
 
-    ngOnInit(): void {
-    }
-
-    onCheckDettaglioTipologia(codice: string): void {
+    onCheckDettaglioTipologia(codice: number): void {
         if (codice) {
             this.codDettaglioTipologiaSelezionato = codice;
             this.changeDettaglioTipologia.emit(codice);
@@ -28,6 +26,10 @@ export class StepDettaglioTipologiaComponent implements OnInit {
             this.codDettaglioTipologiaSelezionato = null;
             this.changeDettaglioTipologia.emit(null);
         }
+    }
+
+    getStatus(dettaglioTipologia: DettaglioTipologia): boolean {
+        return dettaglioTipologia.codiceDettaglioTipologia === this.codDettaglioTipologiaSelezionato;
     }
 
 }

@@ -21,6 +21,7 @@ import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/sto
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
+import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
 
 @Component({
     selector: 'app-root',

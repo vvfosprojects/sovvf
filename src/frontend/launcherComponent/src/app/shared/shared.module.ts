@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
-import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
+import { SediTreeviewI18n } from './store/states/sedi-treeview/sedi-treeview-i18n.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
@@ -63,8 +63,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TriageModalComponent } from './modal/triage-modal/triage-modal.component';
 import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
-import {SoccorsoAereoModalComponent} from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
-import {DettaglioSoccorsoAereoModalComponent} from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
+import { SoccorsoAereoModalComponent } from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
+import { DettaglioSoccorsoAereoModalComponent } from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
+import { AddItemTriageModalComponent } from './modal/add-item-triage-modal/add-item-triage-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -124,6 +125,9 @@ const COMPONENTS = [
     SoccorsoAereoModalComponent,
     DettaglioSoccorsoAereoModalComponent
 ];
+const MODULES = [
+    PipeModule
+];
 
 @NgModule({
     imports: [
@@ -136,28 +140,26 @@ const COMPONENTS = [
         NgSelectModule,
         NgxsFormPluginModule.forRoot(),
         FilterPipeModule,
+        NgxPaginationModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
-        }),
-        NgxPaginationModule
+        })
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
+        AddItemTriageModalComponent
     ],
     exports: [
         ...COMPONENTS,
-        PipeModule
+        MODULES
     ]
 })
 export class SharedModule {
 
     static forRoot(): any {
         return {
-            ngModule: SharedModule,
-            providers: [
-                { provide: TreeviewI18n, useClass: DefaultTreeviewI18n },
-            ],
+            ngModule: SharedModule
         };
     }
 }
