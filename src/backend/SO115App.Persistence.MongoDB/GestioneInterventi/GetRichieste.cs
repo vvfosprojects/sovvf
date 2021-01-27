@@ -232,7 +232,7 @@ namespace SO115App.Persistence.MongoDB
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaChiusa))
                     .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenBy(x => x.IstanteRicezioneRichiesta)
+                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .ToList();
         }
 

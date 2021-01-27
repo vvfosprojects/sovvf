@@ -62,11 +62,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
-        private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
+        //private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
 
         private readonly IGetListaSintesi _iGetListaSintesi;
-        private readonly IMapper _mapper;
-        private readonly IGetUtenteById _getUtenteById;
+        //private readonly IMapper _mapper;
+        //private readonly IGetUtenteById _getUtenteById;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
         /// <summary>
@@ -77,13 +77,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
         /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi,
-            IMapper mapper, IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public SintesiRichiesteAssistenzaQueryHandler(/*ICercaRichiesteAssistenza cercaRichiesteAssistenza,*/ IGetListaSintesi iGetListaSintesi,
+            /*IMapper mapper, IGetUtenteById getUtenteById, */IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            _cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            //_cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             _iGetListaSintesi = iGetListaSintesi;
-            _mapper = mapper;
-            _getUtenteById = getUtenteById;
+            //_mapper = mapper;
+            //_getUtenteById = getUtenteById;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
@@ -96,7 +96,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         {
             Log.Debug("Inizio elaborazione Lista Sintesi Richieste Assistenza Handler");
 
-            var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
+            //var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
 
