@@ -52,6 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.RichiestaSoccorsoAereo.venueInCharge = distaccamentoCompetenza.Result.DescDistaccamento;
             command.RichiestaSoccorsoAereo.onSiteContact = command.Richiesta.Richiedente.Nominativo;
             command.RichiestaSoccorsoAereo.onSiteContactPhoneNumber = command.Richiesta.Richiedente.Telefono;
+            command.RichiestaSoccorsoAereo.requestTypeCode = "0";
 
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);

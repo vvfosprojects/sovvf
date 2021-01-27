@@ -20,7 +20,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
         public string operatorFiscalCode { get; set; }
 
         public string venueInCharge { get; set; } = "";
-        public string progressiveNumber { get; set; } = "";
+        public string progressiveNumber { get; set; } = "0";
         public bool areReliableCoordinates { get; set; } = false;
     }
 }
