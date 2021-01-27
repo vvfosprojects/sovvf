@@ -8,7 +8,7 @@
 <div *ngIf="sintesiRichiesta" class="modal-content bg-lightinfo p-0">
     <app-sintesi-richiesta class="bg-white rounded" [richiesta]="sintesiRichiesta" [fissata]="false" [fissabile]="false"
                            [isEspanso]="true" [gestibile]="false" [modificabile]="false" [espandibile]="false"
-                           [listaEventi]="false" [boxAzioni]="false"
+                           [boxAzioni]="false"
                            [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
 </div>
 <div *ngIf="!sintesiRichiesta" class="modal-content p-0">

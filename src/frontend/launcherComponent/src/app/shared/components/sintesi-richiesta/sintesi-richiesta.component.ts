@@ -9,10 +9,7 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { ModificaStatoFonogrammaEmitInterface } from '../../interface/modifica-stato-fonogramma-emit.interface';
 import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
-import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
 import {Select, Store} from '@ngxs/store';
-import { PatchRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
-import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../modal/allerta-sede-modal/allerta-sede-modal.component';
@@ -53,7 +50,6 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() fissabile: boolean;
     @Input() isEspanso: boolean;
     @Input() espandibile: boolean;
-    @Input() listaEventi: boolean;
     @Input() partenza: boolean;
     @Input() inGestione: boolean;
     @Input() composizionePartenza = true;
@@ -70,7 +66,6 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() clickRichiesta = new EventEmitter<any>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
     @Output() fissaInAlto = new EventEmitter<any>();
-    @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() nuovaPartenza = new EventEmitter<any>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
@@ -161,10 +156,6 @@ export class SintesiRichiestaComponent implements OnChanges {
         if (richiesta) {
             this.hoverOut.emit(richiesta.id);
         }
-    }
-
-    visualizzaEventiRichiesta(codice: string): void {
-        this.eventiRichiesta.emit(codice);
     }
 
     invioPartenza(richiesta: SintesiRichiesta): void {
@@ -516,36 +507,6 @@ export class SintesiRichiestaComponent implements OnChanges {
             case StatoFonogramma.NonNecessario:
                 return 'Non Necessario';
         }
-    }
-
-    onModificaEntiIntervenuti(): void {
-        let modalModificaEntiIntervenuti;
-        if (this.doubleMonitor) {
-          modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-        } else {
-          modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-        }
-        modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-        modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
-        modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    const mod = makeCopy(this.richiesta);
-                    mod.listaEnti = res.result.listaEnti;
-                    this.store.dispatch(new PatchRichiesta(mod as SintesiRichiesta));
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
     }
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
