@@ -35,11 +35,11 @@
         </button>
     </div>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-lg btn-secondary text-right mr-2" style="font-weight:600" (click)="onCancel()">
-        {{ 'Non Salvare' | uppercase }}
-    </button>
-    <button class="btn btn-lg btn-danger text-right" style="font-weight:600" (click)="onSubmit()">
-        {{ 'Salva Enti' | uppercase }}
-    </button>
+<div class="modal-footer" style="place-content: space-between;">
+  <button class="btn btn-lg btn-danger text-right btn-no-hover" style="font-weight:600" (click)="onSubmit()">
+    {{ 'Salva Enti' | uppercase }}
+  </button>
+  <button class="btn btn-lg btn-secondary text-right mr-2 btn-no-hover" style="font-weight:600" (click)="onCancel()">
+      {{ 'Non Salvare' | uppercase }}
+  </button>
 </div>

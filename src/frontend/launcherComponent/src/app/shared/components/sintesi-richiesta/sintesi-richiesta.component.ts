@@ -30,12 +30,13 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
-import {DettaglioSoccorsoAereoModalComponent} from '../../modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
+import {DettaglioSoccorsoAereoModalComponent} from '../../modal/dettaglio-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 import {
   GetDettaglioSoccorsoAereo,
   GetEventiSoccorsoAereo
 } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import {AzioniSintesiRichiestaModalComponent} from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -48,6 +49,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
+    @Input() boxAzioni: boolean;
     @Input() fissabile: boolean;
     @Input() isEspanso: boolean;
     @Input() espandibile: boolean;
@@ -463,6 +465,41 @@ export class SintesiRichiestaComponent implements OnChanges {
           switch (res) {
           case 'ok':
             this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
+            break;
+          case 'ko':
+            break;
+        }
+      });
+    }
+
+    onShowAzioniRichiesta(): void {
+      let modalOptions;
+      if (open) {
+        if (this.doubleMonitor) {
+          modalOptions = {
+            windowClass: 'modal-left',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false,
+            size: 'xl',
+          } as NgbModalOptions;
+        } else {
+          modalOptions = {
+            windowClass: '',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false,
+            size: 'xl',
+          } as NgbModalOptions;
+        }
+      }
+      const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
+      modal.componentInstance.richiesta = this.richiesta;
+      modal.result.then((res: string) => {
+        switch (res) {
+          case 'ok':
             break;
           case 'ko':
             break;
