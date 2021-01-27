@@ -58,7 +58,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
         description: this.motivazione ? this.motivazione : '',
         requestKey: this.richiesta.codice,
         requestType: requestType.join(', '),
-        requestTypeCode: requestTypeCode.join(', '),
+        requestTypeCode: '',
         operatorName: this.utente.nome,
         operatorSurname: this.utente.cognome,
         operatorFiscalCode: this.utente.codiceFiscale,
