@@ -306,24 +306,47 @@ export class TriageComponent {
     }
 
     updateItemTitle(item: TreeItem): void {
-        item.text = this.itemTitleEdit;
+        item.text = addQuestionMark(capitalize(this.itemTitleEdit));
         this.clearItemValueEditTitle();
     }
 
     removeItem(item: TreeviewItem): void {
-        let index = 0;
-        let iItemDataFound: number;
-        for (const tItemData of this.tItemsData) {
-            index = index + 1;
-            if (tItemData.itemValue === item.value) {
-                iItemDataFound = index;
-            }
-        }
-        this.tItemsData.splice(iItemDataFound, 1);
-
         const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
         parent.children = null;
+        this.removeItemData(parent);
         this.updateTriage(this.tItems[0]);
+    }
+
+    removeItemData(item: TreeItem): void {
+        // Rimuovo "data" dell'item
+        removeData(this.tItemsData, item);
+        // Rimuovo "data" dei figli/sottofigli e così via
+        removeDataRecursively(this.tItemsData, item, item.value);
+
+        function removeData(tItemsData: any, element: TreeItem): void {
+            let index = 0;
+            let iItemDataFound: number;
+            for (const tItemData of tItemsData) {
+                index = index + 1;
+                if (tItemData.itemValue === element.value) {
+                    iItemDataFound = index;
+                }
+            }
+            tItemsData.splice(iItemDataFound, 1);
+        }
+
+        function removeDataRecursively(tItemsData: any, element: TreeItem, value: string): void {
+            removeData(tItemsData, element);
+            if (element.children != null) {
+                let i: number;
+                let result = null;
+                for (i = 0; result == null && i < element.children.length; i++) {
+                    result = removeDataRecursively(tItemsData, element.children[i], value);
+                }
+                return result;
+            }
+            return null;
+        }
     }
 
     findItem(element: any, value: string): TreeviewItem {
