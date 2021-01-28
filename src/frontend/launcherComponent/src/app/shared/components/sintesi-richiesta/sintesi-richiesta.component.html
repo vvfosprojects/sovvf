@@ -192,6 +192,7 @@
                                     placement="bottom-right">
                                         <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
+                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}r</span>
                                     </button>
 
                                     <ng-template #popMezzi>
