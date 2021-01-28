@@ -10,13 +10,16 @@ import {
     ClearTriage,
     GetDettagliTipologieByCodTipologia,
     GetTriageByCodDettaglioTipologia,
-    SetDettaglioTipologiaTriage
+    SaveTriage,
+    SetDettaglioTipologiaTriage,
+    SetNewTriage,
+    SetNewTriageData
 } from '../../../shared/store/actions/triage/triage.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageState } from '../../../shared/store/states/triage/triage.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
-import { addQuestionMark, capitalize } from '../../../shared/helper/function';
+import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
 
 @Component({
     selector: 'app-triage',
@@ -129,33 +132,12 @@ export class TriageComponent {
                     if (res.data.domandaSeguente) {
                         this.addDomandaSeguente(item, res.data.domandaSeguente);
                     }
-                    const otherData = {
-                        itemValue: item.value,
-                        soccorsoAereo: null,
-                        generiMezzo: null,
-                        prioritaConsigliata: null
-                    };
-                    if (res.data.soccorsoAereo) {
-                        otherData.soccorsoAereo = res.data.soccorsoAereo;
-                    }
-                    if (res.data.generiMezzo) {
-                        otherData.generiMezzo = res.data.generiMezzo;
-                    }
-                    if (res.data.prioritaConsigliata) {
-                        otherData.prioritaConsigliata = res.data.prioritaConsigliata;
-                    }
-                    if (otherDataValues(otherData)) {
-                        this.tItemsData.push(otherData);
-                    }
+                    this.addOtherData(res, item);
                 } else {
                     this.addPrimaDomanda(res.data.domandaSeguente);
                 }
             }
         });
-
-        function otherDataValues(otherData: any): boolean {
-            return otherData?.soccorsoAereo || otherData?.generiMezzo || otherData?.prioritaConsigliata;
-        }
     }
 
     addPrimaDomanda(domanda: string): void {
@@ -182,6 +164,7 @@ export class TriageComponent {
                 ]
             })
         ];
+        this.updateTriage(this.tItems[0]);
     }
 
     addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
@@ -196,6 +179,33 @@ export class TriageComponent {
                 ]
             })
         ];
+        this.updateTriage(this.tItems[0]);
+    }
+
+    addOtherData(res: any, item: TreeItem): void {
+        const otherData = {
+            itemValue: item.value,
+            soccorsoAereo: null,
+            generiMezzo: null,
+            prioritaConsigliata: null
+        };
+        if (res.data.soccorsoAereo) {
+            otherData.soccorsoAereo = res.data.soccorsoAereo;
+        }
+        if (res.data.generiMezzo) {
+            otherData.generiMezzo = res.data.generiMezzo;
+        }
+        if (res.data.prioritaConsigliata) {
+            otherData.prioritaConsigliata = res.data.prioritaConsigliata;
+        }
+        if (otherDataValues(otherData)) {
+            this.tItemsData.push(otherData);
+            this.updateTriageData(this.tItemsData);
+        }
+
+        function otherDataValues(data: any): boolean {
+            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata;
+        }
     }
 
     editItem(item: TreeItem): void {
@@ -266,6 +276,7 @@ export class TriageComponent {
                 }
             }
         });
+        this.updateTriage(this.tItems[0]);
     }
 
     removeItem(item: TreeviewItem): void {
@@ -281,6 +292,7 @@ export class TriageComponent {
 
         const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
         parent.children = null;
+        this.updateTriage(this.tItems[0]);
     }
 
     findItem(element: any, value: string): TreeviewItem {
@@ -297,7 +309,16 @@ export class TriageComponent {
         return null;
     }
 
+    updateTriage(triage: any): void {
+        this.store.dispatch(new SetNewTriage(makeCopy(triage)));
+        this.updateTriageData(this.tItemsData);
+    }
+
+    updateTriageData(data: any): void {
+        this.store.dispatch(new SetNewTriageData(makeCopy(data)));
+    }
+
     saveTriage(): void {
-        console.log('Triage', this.tItems);
+        this.store.dispatch(new SaveTriage());
     }
 }
