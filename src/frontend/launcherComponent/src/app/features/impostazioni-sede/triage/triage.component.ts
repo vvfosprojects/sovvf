@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
@@ -24,7 +24,7 @@ import { addQuestionMark, capitalize } from '../../../shared/helper/function';
     styleUrls: ['./triage.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TriageComponent implements OnInit {
+export class TriageComponent {
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
@@ -53,9 +53,6 @@ export class TriageComponent implements OnInit {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
-    }
-
-    ngOnInit(): void {
     }
 
     getDettaglioTipologia(): void {
@@ -117,6 +114,13 @@ export class TriageComponent implements OnInit {
             centered: true,
             size: 'lg'
         });
+
+        if (this.tItems) {
+            // TODO: correggere, viene visualizzato il titolo soltanto se la risposta selezionata è sì
+            const itemValueToFind = item.value.slice(0, -2);
+            addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
+            addItemTriageModal.componentInstance.rispostaTitle = item.text;
+        }
         addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
         addItemTriageModal.componentInstance.tItem = item;
         addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
@@ -140,7 +144,7 @@ export class TriageComponent implements OnInit {
                     if (res.data.prioritaConsigliata) {
                         otherData.prioritaConsigliata = res.data.prioritaConsigliata;
                     }
-                    if (otherData) {
+                    if (otherDataValues(otherData)) {
                         this.tItemsData.push(otherData);
                     }
                 } else {
@@ -148,7 +152,10 @@ export class TriageComponent implements OnInit {
                 }
             }
         });
-        console.log('TRIAGE', this.tItems);
+
+        function otherDataValues(otherData: any): boolean {
+            return otherData?.soccorsoAereo || otherData?.generiMezzo || otherData?.prioritaConsigliata;
+        }
     }
 
     addPrimaDomanda(domanda: string): void {
@@ -178,15 +185,17 @@ export class TriageComponent implements OnInit {
     }
 
     addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
-        item.children = [{
-            text: addQuestionMark(capitalize(domandaSeguente)),
-            value: item.value + '-1',
-            children: [
-                { text: 'Si', value: '1' + item.value + '-1', disabled: true },
-                { text: 'No', value: '2' + item.value + '-1', disabled: true },
-                { text: 'Non lo so', value: '3' + item.value + '-1', disabled: true }
-            ]
-        }];
+        item.children = [
+            new TreeviewItem({
+                text: addQuestionMark(capitalize(domandaSeguente)),
+                value: item.value + '-1',
+                children: [
+                    { text: 'Si', value: '1-' + item.value + '-1', disabled: true },
+                    { text: 'No', value: '2-' + item.value + '-1', disabled: true },
+                    { text: 'Non lo so', value: '3-' + item.value + '-1', disabled: true }
+                ]
+            })
+        ];
     }
 
     editItem(item: TreeItem): void {
@@ -202,19 +211,18 @@ export class TriageComponent implements OnInit {
         addItemTriageModal.componentInstance.tItem = item;
         addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
             if (res.success) {
-                if (res.data.domandaSeguente) {
+                if (!item.children && res.data.domandaSeguente) {
                     this.addDomandaSeguente(item, res.data.domandaSeguente);
                 }
 
-                // TODO: rivedere logica edit (funziona solo con il primo elemento)
-                /* let iItemDataFound = 0;
+                let iItemDataFound = 0;
+                let index = 0;
                 let itemDataFound: any;
                 for (const tItemData of this.tItemsData) {
-                    iItemDataFound = iItemDataFound++;
-                    if (tItemData.itemValue === res.value) {
+                    index = index + 1;
+                    if (tItemData.itemValue === res.data.value) {
+                        iItemDataFound = index;
                         itemDataFound = tItemData;
-                    } else {
-                        itemDataFound = null;
                     }
                 }
 
@@ -235,18 +243,18 @@ export class TriageComponent implements OnInit {
                     };
                 }
 
-                if (res.soccorsoAereo) {
-                    editedItem.soccorsoAereo = res.soccorsoAereo;
+                if (res.data.soccorsoAereo) {
+                    editedItem.soccorsoAereo = res.data.soccorsoAereo;
                 } else {
                     editedItem.soccorsoAereo = null;
                 }
-                if (res.generiMezzo) {
-                    editedItem.generiMezzo = res.generiMezzo;
+                if (res.data.generiMezzo) {
+                    editedItem.generiMezzo = res.data.generiMezzo;
                 } else {
                     editedItem.generiMezzo = null;
                 }
-                if (res.prioritaConsigliata) {
-                    editedItem.prioritaConsigliata = res.prioritaConsigliata;
+                if (res.data.prioritaConsigliata) {
+                    editedItem.prioritaConsigliata = res.data.prioritaConsigliata;
                 } else {
                     editedItem.prioritaConsigliata = null;
                 }
@@ -255,13 +263,38 @@ export class TriageComponent implements OnInit {
                     this.tItemsData[iItemDataFound] = editedItem;
                 } else {
                     this.tItemsData.push(editedItem);
-                } */
+                }
             }
         });
     }
 
     removeItem(item: TreeviewItem): void {
-        console.log('removeItem', item);
+        let index = 0;
+        let iItemDataFound: number;
+        for (const tItemData of this.tItemsData) {
+            index = index + 1;
+            if (tItemData.itemValue === item.value) {
+                iItemDataFound = index;
+            }
+        }
+        this.tItemsData.splice(iItemDataFound, 1);
+
+        const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
+        parent.children = null;
+    }
+
+    findItem(element: any, value: string): TreeviewItem {
+        if (element.value === value) {
+            return element;
+        } else if (element.children != null) {
+            let i: number;
+            let result = null;
+            for (i = 0; result == null && i < element.children.length; i++) {
+                result = this.findItem(element.children[i], value);
+            }
+            return result;
+        }
+        return null;
     }
 
     saveTriage(): void {

@@ -10,6 +10,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class ItemTriageModalComponent implements OnInit {
 
+    domandaTitle: string;
+    rispostaTitle: string;
+
     primaDomanda: boolean;
     itemEdit: any;
     disableDomanda: any;
@@ -24,9 +27,7 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('[ITEM TRIAGE MODAL] tItem', this.tItem);
         if (this.itemEdit) {
-            console.log('[ITEM TRIAGE MODAL] ItemEdit', this.itemEdit);
             this.patchForm();
         }
         if (this.disableDomanda) {
@@ -89,6 +90,10 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     getTitle(): string {
-        return this.primaDomanda ? 'Inizia Triage' : 'Modifica triage';
+        if (this.domandaTitle) {
+            return 'Domanda Selezionata =>' + this.domandaTitle;
+        } else {
+            return this.primaDomanda ? 'Inizia Triage' : 'Modifica triage';
+        }
     }
 }
