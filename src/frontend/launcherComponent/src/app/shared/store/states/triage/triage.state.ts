@@ -1,6 +1,13 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { ClearDettagliTipologie, ClearTriage, GetDettagliTipologieByCodTipologia, GetTriageByCodDettaglioTipologia, SetDettaglioTipologiaTriage } from '../../actions/triage/triage.actions';
+import {
+    ClearDettagliTipologie,
+    ClearTriage,
+    GetDettagliTipologieByCodTipologia,
+    GetTriageByCodDettaglioTipologia, SaveTriage,
+    SetDettaglioTipologiaTriage,
+    SetNewTriage, SetNewTriageData
+} from '../../actions/triage/triage.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TriageService } from '../../../../core/service/triage/triage.service';
@@ -9,13 +16,17 @@ import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/d
 export interface TriageStateModel {
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
-    triage: any;
+    triageByDettaglioTipologia: any;
+    newTriage: any;
+    newTriageData: any[];
 }
 
 export const TriageStateDefaults: TriageStateModel = {
     dettagliTipologie: null,
     dettaglioTipologia: null,
-    triage: null
+    triageByDettaglioTipologia: null,
+    newTriage: null,
+    newTriageData: null
 };
 
 @Injectable()
@@ -66,9 +77,9 @@ export class TriageState {
 
     @Action(GetTriageByCodDettaglioTipologia)
     getTriageByCodDettaglioTipologia({ patchState }: StateContext<TriageStateModel>, action: GetTriageByCodDettaglioTipologia): void {
-        this.triageService.getTriage(action.codDettaglioTipologia).subscribe((triage: any) => {
+        this.triageService.get(action.codDettaglioTipologia).subscribe((triage: any) => {
             patchState({
-                triage
+                triageByDettaglioTipologia: triage
             });
         });
     }
@@ -76,7 +87,31 @@ export class TriageState {
     @Action(ClearTriage)
     clearTriage({ patchState }: StateContext<TriageStateModel>): void {
         patchState({
-            triage: null
+            newTriage: null
+        });
+    }
+
+    @Action(SetNewTriage)
+    setNewTriage({ patchState }: StateContext<TriageStateModel>, action: SetNewTriage): void {
+        patchState({
+            newTriage: action.triage
+        });
+    }
+
+    @Action(SetNewTriageData)
+    setNewTriageData({ patchState }: StateContext<TriageStateModel>, action: SetNewTriageData): void {
+        patchState({
+            newTriageData: action.data
+        });
+    }
+
+    @Action(SaveTriage)
+    saveTriage({ getState }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const triage = state.newTriage;
+        const triageData = state.newTriageData;
+        this.triageService.save(triage, triageData).subscribe((res: any) => {
+            console.log('Save triage service response', res);
         });
     }
 }

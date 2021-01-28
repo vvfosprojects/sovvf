@@ -26,3 +26,21 @@ export class GetTriageByCodDettaglioTipologia {
 export class ClearTriage {
     static readonly type = '[Triage] Clear Triage';
 }
+
+export class SetNewTriage {
+    static readonly type = '[Triage] Set New Triage';
+
+    constructor(public triage: any) {
+    }
+}
+
+export class SetNewTriageData {
+    static readonly type = '[Triage] Set New Triage Data';
+
+    constructor(public data: any[]) {
+    }
+}
+
+export class SaveTriage {
+    static readonly type = '[Triage] Save Triage';
+}

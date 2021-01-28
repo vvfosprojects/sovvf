@@ -15,10 +15,19 @@ export class TriageService {
     constructor(private http: HttpClient) {
     }
 
-    getTriage(codDettaglioTipologia: number): Observable<any> {
+    get(codDettaglioTipologia: number): Observable<any> {
         const obj = {
             codDettaglioTipologia
         };
         return this.http.post<any>(API_TRIAGE + '/Get', obj);
+    }
+
+    save(triage: any, triageData: any[]): Observable<any> {
+        const obj = {
+            triage,
+            triageData
+        };
+        console.log('Save Triage =>', obj);
+        return this.http.post<any>(API_TRIAGE + '/Save', obj);
     }
 }
