@@ -50,6 +50,12 @@ export class TriageComponent {
     tItems: TreeviewItem[];
     tItemsData = [];
 
+    editMode: boolean;
+    unsavedModifiche: boolean;
+
+    itemValueTitleEdit: string;
+    itemTitleEdit: string;
+
     constructor(private store: Store,
                 private modalService: NgbModal,
                 private selectConfig: NgSelectConfig) {
@@ -110,34 +116,40 @@ export class TriageComponent {
         }
     }
 
-    addItem(item?: TreeItem): void {
-        const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
+    toggleEditMode(): void {
+        this.editMode = !this.editMode;
+    }
 
-        if (this.tItems) {
-            // TODO: correggere, viene visualizzato il titolo soltanto se la risposta selezionata è sì
-            const itemValueToFind = item.value.slice(0, -2);
-            addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
-            addItemTriageModal.componentInstance.rispostaTitle = item.text;
-        }
-        addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
-        addItemTriageModal.componentInstance.tItem = item;
-        addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
-            if (res.success) {
-                if (this.tItems) {
-                    if (res.data.domandaSeguente) {
-                        this.addDomandaSeguente(item, res.data.domandaSeguente);
-                    }
-                    this.addOtherData(res, item);
-                } else {
-                    this.addPrimaDomanda(res.data.domandaSeguente);
-                }
+    addItem(item?: TreeItem): void {
+        if (this.editMode || !item) {
+            const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+
+            if (this.tItems) {
+                // TODO: correggere, viene visualizzato il titolo soltanto se la risposta selezionata è sì
+                const itemValueToFind = item.value.slice(0, -2);
+                addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
+                addItemTriageModal.componentInstance.rispostaTitle = item.text;
             }
-        });
+            addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
+            addItemTriageModal.componentInstance.tItem = item;
+            addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
+                if (res.success) {
+                    if (this.tItems) {
+                        if (res.data.domandaSeguente) {
+                            this.addDomandaSeguente(item, res.data.domandaSeguente);
+                        }
+                        this.addOtherData(res, item);
+                    } else {
+                        this.addPrimaDomanda(res.data.domandaSeguente);
+                    }
+                }
+            });
+        }
     }
 
     addPrimaDomanda(domanda: string): void {
@@ -165,6 +177,8 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
+        this.toggleEditMode();
+        this.unsavedModifiche = true;
     }
 
     addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
@@ -180,6 +194,7 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
+        this.unsavedModifiche = true;
     }
 
     addOtherData(res: any, item: TreeItem): void {
@@ -208,6 +223,7 @@ export class TriageComponent {
         }
     }
 
+    // TODO: correggere logica
     editItem(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
@@ -279,6 +295,21 @@ export class TriageComponent {
         this.updateTriage(this.tItems[0]);
     }
 
+    setItemValueEditTitle(item: TreeItem): void {
+        this.itemValueTitleEdit = item.value;
+        this.itemTitleEdit = item.text;
+    }
+
+    clearItemValueEditTitle(): void {
+        this.itemValueTitleEdit = null;
+        this.itemTitleEdit = null;
+    }
+
+    updateItemTitle(item: TreeItem): void {
+        item.text = this.itemTitleEdit;
+        this.clearItemValueEditTitle();
+    }
+
     removeItem(item: TreeviewItem): void {
         let index = 0;
         let iItemDataFound: number;
@@ -319,6 +350,8 @@ export class TriageComponent {
     }
 
     saveTriage(): void {
+        this.toggleEditMode();
         this.store.dispatch(new SaveTriage());
+        this.unsavedModifiche = false;
     }
 }
