@@ -1,6 +1,7 @@
 <span>
   <span class="d-inline-block font-dettaglio">
-    <span class="badge bg-{{statoMezzoColor(mezzo.stato)}} m-0" style="color: #fff; padding: 5px" ngbTooltip="Stato Mezzo: {{mezzo.stato}}">
+    <span class="badge bg-{{statoMezzoColor(mezzo.stato)}} m-0" [class.bg-verdemela]="mezzo.stato === 'In Rientro'"
+          style="color: #fff; padding: 5px" ngbTooltip="Stato Mezzo: {{mezzo.stato}}">
       <i class="fa fa-stop-circle mr-1"></i>
       {{mezzo.stato}}</span>
     <span style="vertical-align: text-top">

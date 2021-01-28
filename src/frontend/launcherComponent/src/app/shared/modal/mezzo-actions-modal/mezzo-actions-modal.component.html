@@ -11,13 +11,13 @@
   <form [formGroup]="timeActionForm">
 
       <div class="form-group" style="text-align: center;">
-        <label for="default-picker">Seleziona un orario</label>          
+        <label for="default-picker">Seleziona un orario</label>
         <div class="md-form md-outline" id="default-picker" style="display: flex; justify-content: center;">
           <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
           <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
-          
-          <!-- 
-           <input type="time" class="form-control" placeholder="Seleziona ora" 
+
+          <!--
+           <input type="time" class="form-control" placeholder="Seleziona ora"
           formControlName="time" style="width: 225px;">
           -->
 
@@ -26,12 +26,12 @@
     <small class="text-muted">* Il cambiamento di stato del mezzo risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
   </form>
 </div>
-<div class="modal-footer">
-  <button class="btn btn-lg btn-secondary text-right" style="font-weight:600" (click)="onCancel()">
-      {{ 'Annulla' | uppercase }}
-  </button>
-  <button class="btn btn-lg btn-danger text-right" style="font-weight:600" [disabled]="!timeActionForm?.valid"
+<div class="modal-footer" style="place-content: space-between;">
+  <button class="btn btn-lg btn-danger btn-no-hover" style="font-weight:600" [disabled]="!timeActionForm?.valid"
           (click)="onSubmit()">
-      {{ 'Conferma' | uppercase }}
+    {{ 'Conferma' | uppercase }}
+  </button>
+  <button class="btn btn-lg btn-secondary btn-no-hover" style="font-weight:600" (click)="onCancel()">
+      {{ 'Annulla' | uppercase }}
   </button>
 </div>
