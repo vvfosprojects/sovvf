@@ -52,7 +52,7 @@
           <br>
           <span>{{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}</span>
         </button>
-        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" style="opacity: 0.85;">
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" style="opacity: 0.85;" placement="bottom-right">
           <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split btn-no-hover"
                   ngbTooltip="Altro" placement="bottom-right"
                   ngbDropdownToggle>
@@ -62,7 +62,7 @@
             <button *ngFor="let stato of statoRichiestaString" ngbDropdownItem
                     (click)="onClick(stato)">{{stato}}
             </button>
-            <ng-template [ngIf]="statoRichiestaString && statoRichiestaString.length <= 0" x-placement="bottom">
+            <ng-template [ngIf]="statoRichiestaString && statoRichiestaString.length <= 0">
               <div class="px-2">
                 Nessuna azione secondaria disponibile
               </div>
