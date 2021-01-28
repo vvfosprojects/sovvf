@@ -91,7 +91,7 @@ export class ItemTriageModalComponent implements OnInit {
 
     getTitle(): string {
         if (this.domandaTitle) {
-            return 'Domanda Selezionata =>' + this.domandaTitle;
+            return this.domandaTitle;
         } else {
             return this.primaDomanda ? 'Inizia Triage' : 'Modifica triage';
         }

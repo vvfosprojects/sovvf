@@ -373,7 +373,9 @@ export class TriageComponent {
     }
 
     saveTriage(): void {
-        this.toggleEditMode();
+        if (this.editMode) {
+            this.toggleEditMode();
+        }
         this.store.dispatch(new SaveTriage());
         this.unsavedModifiche = false;
     }
