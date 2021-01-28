@@ -4,13 +4,15 @@
     [class.font-composizione-avanzata]="viewState.composizione.active">
     <div class="row px-3" ngbTooltip="Mezzo già impegnato" placement="bottom"
          [disableTooltip]="!itemBloccato && !mezzoComp.istanteScadenzaSelezione && !itemPrenotato">
-        <div class="col-1 pr-0">
-      <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato"
-            [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)"></span>
-          <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onSganciamento(); $event.stopPropagation()" style="margin-left: 15px"
+        <div class="col-2 pr-0">
+          <span class="fa fa-eercast mr-1"
+                [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)">
+            {{mezzoComp.mezzo.stato}}
+          </span>
+          <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onSganciamento(); $event.stopPropagation()" style="margin-left: 5px"
              ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato"></i>
         </div>
-        <div class="col-6 pr-0">
+        <div class="col-5 pr-0">
             <span [ngbTooltip]="mezzoComp.mezzo.descrizione" [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7"
                   class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione | slice: 0:7}}</span>
             <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
