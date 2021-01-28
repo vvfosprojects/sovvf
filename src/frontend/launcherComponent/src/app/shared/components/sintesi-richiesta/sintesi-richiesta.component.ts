@@ -133,11 +133,11 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     richiestaDoubleClick(richiesta: SintesiRichiesta): void {
-        if (richiesta && this.espandibile) {
-            this.isSingleClick = false;
-            this.toggleEspanso(richiesta.id);
-            this.doubleClickRichiesta.emit(richiesta);
-        }
+        // if (richiesta && this.espandibile) {
+        //     this.isSingleClick = false;
+        //     this.toggleEspanso(richiesta.id);
+        //     this.doubleClickRichiesta.emit(richiesta);
+        // }
     }
 
     fissaClick(richiesta: SintesiRichiesta): void {

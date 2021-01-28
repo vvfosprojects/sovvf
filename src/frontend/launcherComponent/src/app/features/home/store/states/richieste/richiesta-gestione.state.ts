@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
-import { AddRichiestaEspansa } from '../../actions/richieste/richieste-espanse.actions';
+import {AddRichiestaEspansa, RemoveRichiestaEspansa} from '../../actions/richieste/richieste-espanse.actions';
 import { ClearMarkerRichiestaSelezionato, SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { RichiestaFissataState } from './richiesta-fissata.state';
@@ -42,6 +42,7 @@ export class RichiestaGestioneState {
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
             dispatch(new ClearRichiestaGestione(action.richiesta.id));
             dispatch(new ClearRichiestaSelezionata());
+            dispatch(new RemoveRichiestaEspansa(action.richiesta.id));
         } else {
             patchState({
                 richiestaGestione: action.richiesta
