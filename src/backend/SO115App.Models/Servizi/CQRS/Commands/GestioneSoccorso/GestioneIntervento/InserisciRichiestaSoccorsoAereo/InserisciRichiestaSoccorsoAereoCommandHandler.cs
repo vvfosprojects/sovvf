@@ -37,7 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo)
             {
-                azione = "Aggiornamento";
+                azione = "Aggiornamento motivazione ";
             }
 
             #region AFM Servizio
