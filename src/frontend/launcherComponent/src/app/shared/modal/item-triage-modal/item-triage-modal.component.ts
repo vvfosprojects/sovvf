@@ -73,7 +73,7 @@ export class ItemTriageModalComponent implements OnInit {
                 value: this.tItem.value,
                 domandaSeguente: this.f.domandaSeguente.value,
                 soccorsoAereo: this.f.soccorsoAereo.value,
-                generiMezzo: this.f.generiMezzo.value,
+                generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
             this.modal.close({ success: true, data: item });

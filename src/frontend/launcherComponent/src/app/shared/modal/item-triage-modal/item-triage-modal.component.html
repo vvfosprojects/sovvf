@@ -18,7 +18,10 @@
         <div class="card card-shadow p-4" [class.mt-3]="rispostaTitle">
             <ng-template [ngIf]="!primaDomanda">
                 <div>
-                    <label for="mezzi">Generi Mezzo Appropriati</label>
+                    <label for="mezzi" class="font-xlarge">
+                        <i class="fa fa-truck mr-1"></i>
+                        Generi Mezzo Appropriati
+                    </label>
                     <ng-select id="mezzi"
                                placeholder="Seleziona uno o più Generi Mezzo"
                                formControlName="generiMezzo"
@@ -27,8 +30,11 @@
                                [multiple]="true">
                     </ng-select>
                 </div>
-                <div class="mt-2">
-                    <label for="soccorsoAereo">Richiesta Soccorso Aereo</label>
+                <div class="mt-3">
+                    <label for="soccorsoAereo" class="font-xlarge">
+                        <i class="fa fa-plane mr-1"></i>
+                        Richiesta Soccorso Aereo
+                    </label>
                     <ng-select id="soccorsoAereo"
                                placeholder="Seleziona la necessità di Soccorso Aereo"
                                formControlName="soccorsoAereo"
@@ -38,7 +44,10 @@
                     </ng-select>
                 </div>
                 <div class="mt-3">
-                    <label for="prioritaConsigliata">Priorità Intervento</label>
+                    <label for="prioritaConsigliata" class="font-xlarge">
+                        <i class="fa fa-thermometer mr-1"></i>
+                        Priorità Intervento
+                    </label>
                     <ng-select id="prioritaConsigliata"
                                placeholder="Seleziona un livello di Priorità"
                                formControlName="prioritaConsigliata"
@@ -53,7 +62,10 @@
                     <label for="domandaSeguente" class="font-xlarge">Inserisci il testo della Prima Domanda</label>
                 </ng-template>
                 <ng-template [ngIf]="!primaDomanda">
-                    <label for="domandaSeguente" class="font-xlarge">Domanda Seguente</label>
+                    <label for="domandaSeguente" class="font-xlarge">
+                        <i class="fa fa-return mr-1"></i>
+                        Domanda Seguente
+                    </label>
                 </ng-template>
                 <input id="domandaSeguente"
                        [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
