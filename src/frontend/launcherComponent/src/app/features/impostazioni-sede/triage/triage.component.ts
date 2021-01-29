@@ -130,8 +130,7 @@ export class TriageComponent {
             });
 
             if (this.tItems) {
-                // TODO: correggere, viene visualizzato il titolo soltanto se la risposta selezionata è sì
-                const itemValueToFind = item.value.slice(0, -2);
+                const itemValueToFind = item.value.slice(2);
                 addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
                 addItemTriageModal.componentInstance.rispostaTitle = item.text;
             }

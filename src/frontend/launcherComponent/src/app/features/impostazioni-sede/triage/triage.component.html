@@ -42,8 +42,9 @@
                 <button class="btn btn-lg btn-no-hover btn-primary font-weight-bolder mr-2"
                         [disabled]="!codDettaglioTipologia || showTriage"
                         (click)="onShowTriage()">
+                    <i class="fa fa-search mr-1"></i>
                     <ng-template [ngIf]="!dettaglioTipologia">
-                        {{ 'Continua' | uppercase }}
+                        {{ 'Ricerca triage'  | uppercase }}
                     </ng-template>
                     <ng-template [ngIf]="dettaglioTipologia">
                         {{ 'Ricerca triage di "' + dettaglioTipologia?.descrizione + '"'  | uppercase }}
@@ -54,6 +55,7 @@
                 <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder mr-2"
                         [disabled]="!codDettaglioTipologia || !showTriage"
                         (click)="onReset()">
+                    <i class="fa fa-refresh mr-1"></i>
                     {{ 'Nuova Ricerca' | uppercase }}
                 </button>
             </div>
@@ -61,7 +63,7 @@
     </div>
     <!-- MODIFICA TRIAGE - TREEVIEW -->
     <ng-template [ngIf]="showTriage">
-        <div class="card card-shadow bg-light py-3 px-4 mt-3">
+        <div class="py-3 mt-3">
             <h3 class="mt-2">
                 <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
                 <i class="fa fa-arrow-circle-right mr-3"></i>
@@ -76,7 +78,7 @@
                 <hr class="mt-3 mb-2">
             </ng-template>
             <ng-template [ngIf]="tItems">
-                <div class="mt-2 px-4 pb-3 bg-white shadow\-sm">
+                <div class="card card-shadow bg-light mt-3 px-4 pb-3">
                     <ngx-treeview [items]="tItems"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">
