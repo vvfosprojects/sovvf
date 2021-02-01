@@ -19,7 +19,7 @@ export class SetDettaglioTipologiaTriage {
 export class GetTriageByCodDettaglioTipologia {
     static readonly type = '[Triage] Get Triage By CodDettaglioTipologia';
 
-    constructor(public codDettaglioTipologia: number) {
+    constructor(public codTipologia: number, public codDettaglioTipologia: number) {
     }
 }
 

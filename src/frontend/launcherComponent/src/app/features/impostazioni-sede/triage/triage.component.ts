@@ -3,7 +3,7 @@ import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import {
     ClearDettagliTipologie,
@@ -20,6 +20,9 @@ import { TriageState } from '../../../shared/store/states/triage/triage.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 
 @Component({
     selector: 'app-triage',
@@ -29,6 +32,8 @@ import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/fu
 })
 export class TriageComponent {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
     @Select(TriageState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
@@ -48,7 +53,7 @@ export class TriageComponent {
     showTriage: boolean;
 
     tItems: TreeviewItem[];
-    tItemsData = [];
+    tItemsData: ItemTriageData[];
 
     editMode: boolean;
     unsavedModifiche: boolean;
@@ -56,12 +61,15 @@ export class TriageComponent {
     itemValueTitleEdit: string;
     itemTitleEdit: string;
 
+    private subscription = new Subscription();
+
     constructor(private store: Store,
                 private modalService: NgbModal,
                 private selectConfig: NgSelectConfig) {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getDettaglioTipologia(): void {
@@ -80,7 +88,7 @@ export class TriageComponent {
         this.codDettaglioTipologia = codDettaglioTipologia;
         this.store.dispatch([
             new SetDettaglioTipologiaTriage(this.codDettaglioTipologia),
-            new GetTriageByCodDettaglioTipologia(this.codDettaglioTipologia)
+            new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia)
         ]);
     }
 
@@ -92,7 +100,7 @@ export class TriageComponent {
         this.codTipologia = null;
         this.codDettaglioTipologia = null;
         this.tItems = null;
-        this.tItemsData = [];
+        this.tItemsData = null;
         this.showTriage = false;
     }
 
@@ -106,8 +114,8 @@ export class TriageComponent {
         this.addItem();
     }
 
-    getItemData(item: any): any {
-        const itemData = this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
+    getItemData(item: TreeItem): any {
+        const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
             if (item?.children?.length > 0) {
                 itemData.domandaSeguente = item.children[0].text;
@@ -197,6 +205,9 @@ export class TriageComponent {
     }
 
     addOtherData(res: any, item: TreeItem): void {
+        if (!this.tItemsData) {
+            this.tItemsData = [];
+        }
         const otherData = {
             itemValue: item.value,
             soccorsoAereo: null,
@@ -367,8 +378,10 @@ export class TriageComponent {
         this.updateTriageData(this.tItemsData);
     }
 
-    updateTriageData(data: any): void {
-        this.store.dispatch(new SetNewTriageData(makeCopy(data)));
+    updateTriageData(data: ItemTriageData[]): void {
+        if (data) {
+            this.store.dispatch(new SetNewTriageData(makeCopy(data)));
+        }
     }
 
     saveTriage(): void {

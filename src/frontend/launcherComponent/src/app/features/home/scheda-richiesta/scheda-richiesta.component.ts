@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -8,9 +8,6 @@ import { ChiamataState } from '../store/states/scheda-telefonata/chiamata.state'
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
 import { Ente } from 'src/app/shared/interface/ente.interface';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EnteModalComponent } from '../../../shared/modal/ente-modal/ente-modal.component';
-import { ClearFormEnte, RequestAddEnte } from '../../../shared/store/actions/enti/enti.actions';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
@@ -50,49 +47,15 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();
 
-    constructor(private modalService: NgbModal,
-                private store: Store) {
+    constructor() {
     }
 
     ngOnInit(): void {
-        console.log('Componente Chiamata creato');
+        console.log('Componente Scheda Richiesta creato');
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnDestroy(): void {
-        console.log('Componente Chiamata distrutto');
-    }
-
-    aggiungiNuovoEnte(): void {
-        /*    let addEnteModal;
-           if (this.doubleMonitor) {
-               addEnteModal = this.modalService.open(EnteModalComponent, {
-                   windowClass: 'modal-holder modal-left',
-                   backdropClass: 'light-blue-backdrop',
-                   centered: true,
-                   size: 'lg'
-               });
-           } else {
-               addEnteModal = this.modalService.open(EnteModalComponent, {
-                   windowClass: 'modal-holder',
-                   backdropClass: 'light-blue-backdrop',
-                   centered: true,
-                   size: 'lg'
-               });
-           }
-           addEnteModal.result.then(
-               (result: { success: boolean }) => {
-                   if (result.success) {
-                       this.store.dispatch(new RequestAddEnte());
-                   } else if (!result.success) {
-                       this.store.dispatch(new ClearFormEnte());
-                       console.log('Modal "addEnteModal" chiusa con val ->', result);
-                   }
-               },
-               (err) => {
-                   this.store.dispatch(new ClearFormEnte());
-                   console.error('Modal chiusa senza bottoni. Err ->', err);
-               }
-           ); */
+        console.log('Componente Scheda Richiesta distrutto');
     }
 }

@@ -195,8 +195,9 @@
             <ng-template [ngIf]="editMode">
                 <ng-template [ngIf]="item.children?.length <= 0 && !getItemData(item)">
                     <button class="btn btn-primary ml-3"
+                            ngbTooltip="Aggiungi"
                             (click)="addItem(item)">
-                        <i class="fa fa-plus-circle" ngbTooltip="Aggiungi"></i>
+                        <i class="fa fa-plus-circle"></i>
                     </button>
                 </ng-template>
                 <!-- TODO: correggere logica motodo => editItem -->
@@ -206,8 +207,10 @@
                     </button>
                 </ng-template> -->
                 <ng-template [ngIf]="item.children?.length > 1 && item.value.length !== 1">
-                    <button class="btn btn-danger ml-2" (click)="removeItem(item)">
-                        <i class="fa fa-trash-o" ngbTooltip="Rimuovi"></i>
+                    <button class="btn btn-danger ml-2"
+                            ngbTooltip="Rimuovi"
+                            (click)="removeItem(item)">
+                        <i class="fa fa-trash-o"></i>
                     </button>
                 </ng-template>
             </ng-template>

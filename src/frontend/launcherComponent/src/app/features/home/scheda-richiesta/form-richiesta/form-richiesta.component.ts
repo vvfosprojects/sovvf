@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -61,8 +61,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
     // Modifica
     @Input() modifica: boolean;
     @Input() richiestaModifica: SintesiRichiesta;
-
-    @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     ngxGooglePlacesOptions: Options;
 
@@ -264,32 +262,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
         return !!!(this.f.tipologie.value && (this.f.tipologie.value.length > 0));
     }
 
-    onAddEnti(ente: any): void {
-        if (!this.nuovaRichiesta.listaEnti) {
-            this.listaEnti = [];
-            this.onAddEnti(ente);
-        } else {
-            this.listaEnti.push(ente);
-        }
-    }
-
-    onRemoveEnti(ente: any): void {
-        this.listaEnti.splice(this.listaEnti.indexOf(ente.codice), 1);
-    }
-
-    onAggiungiNuovoEnte(): void {
-        this.aggiungiNuovoEnte.emit();
-    }
-
-    clearEntiSelezionati(): void {
-        this.f.listaEnti.patchValue([]);
-        this.listaEnti = [];
-    }
-
-    checkEnti(): boolean {
-        return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
-    }
-
     onCopiaIndirizzo(): void {
         this.reducerSchedaTelefonata('copiaIndirizzo');
     }
@@ -485,6 +457,12 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    onInAttesa(): void {
+        if (this.checkSubmit()) {
+            this.onSubmit(AzioneChiamataEnum.InAttesa);
+        }
+    }
+
     onChiudiModifica(): void {
         this.store.dispatch([
             new ClearRichiestaModifica(),
@@ -528,7 +506,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
                             new DelChiamataMarker(this.idChiamata)
                         ]);
                         this.clearTipologieSelezionate();
-                        this.clearEntiSelezionati();
                         this.reducerSchedaTelefonata('reset');
                         break;
                     case 'ko':
