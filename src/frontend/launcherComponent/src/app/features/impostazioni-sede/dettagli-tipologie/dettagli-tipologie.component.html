@@ -3,10 +3,6 @@
         <h3 class="d-inline-block mb-0">
             Dettagli Tipologie
         </h3>
-        <button class="btn btn-sm btn-primary ml-3 mb-2" (click)="onAddDettaglioTipologia()">
-            <i class="fa fa-plus"></i>
-            Aggiungi Dettaglio
-        </button>
     </div>
     <div class="col">
         <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
@@ -63,11 +59,20 @@
             Nessun Dettaglio Tipologia presente
         </div>
     </div>
-    <div *ngIf="dettagliTipologie?.length" class="col-12 text-right mt-2">
-        <pagination-controls class="mt-1 mb-0"
-                             [previousLabel]="'Precedente'"
-                             [nextLabel]="'Successiva'"
-                             (pageChange)="onPageChange($event)">
-        </pagination-controls>
+    <div *ngIf="dettagliTipologie?.length" class="col-12">
+        <div class="clearfix">
+            <div class="float-left">
+                <button class="btn btn-lg btn-primary" (click)="onAddDettaglioTipologia()">
+                    <i class="fa fa-plus"></i>
+                    Aggiungi Dettaglio
+                </button>
+            </div>
+            <div class="float-right text-right mt-3">
+                <pagination-controls [previousLabel]="'Precedente'"
+                                     [nextLabel]="'Successiva'"
+                                     (pageChange)="onPageChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
     </div>
 </div>
