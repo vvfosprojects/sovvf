@@ -34,6 +34,7 @@ using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
@@ -110,6 +111,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
+            BsonClassMap.RegisterClassMap<Triage>();
+            BsonClassMap.RegisterClassMap<TriageData>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
@@ -221,6 +224,22 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<ExternalApiLog>("externalApiLog");
+            }
+        }
+
+        public IMongoCollection<Triage> TriageCollection
+        {
+            get
+            {
+                return database.GetCollection<Triage>("triage");
+            }
+        }
+
+        public IMongoCollection<TriageData> TriageDataCollection
+        {
+            get
+            {
+                return database.GetCollection<TriageData>("triageData");
             }
         }
 
