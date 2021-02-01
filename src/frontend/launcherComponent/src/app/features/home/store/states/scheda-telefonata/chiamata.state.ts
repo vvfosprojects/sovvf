@@ -247,7 +247,7 @@ export class ChiamataState {
                         true
                     )
                 ]);
-            } else if (richiesta && action.nuovaRichiesta.emergenza) {
+            } else if (richiesta && (action.nuovaRichiesta.emergenza || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch(new SetRichiestaModifica(richiesta));
                 this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
             } else {
