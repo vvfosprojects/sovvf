@@ -18,7 +18,7 @@ import {
     StopLoadingNuovaChiamata
 } from '../../actions/scheda-telefonata/chiamata.actions';
 import { CopyToClipboard } from '../../actions/scheda-telefonata/clipboard.actions';
-import { ToggleChiamata } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
@@ -43,7 +43,7 @@ import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/sc
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 
 export interface SchedaTelefonataStateModel {
-    nuovaRichiestaForm: {
+    richiestaForm: {
         model: {
             selectedTipologie: string[],
             nominativo: string,
@@ -78,7 +78,7 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
-    nuovaRichiestaForm: {
+    richiestaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -248,8 +248,12 @@ export class ChiamataState {
                     )
                 ]);
             } else if (richiesta && (action.nuovaRichiesta.emergenza || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
-                this.store.dispatch(new SetRichiestaModifica(richiesta));
-                this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
+                this.store.dispatch([
+                    new ToggleChiamata(),
+                    new SetRichiestaModifica(richiesta),
+                    new ToggleModifica(),
+                    new SetMarkerRichiestaSelezionato(richiesta.id)
+                ]);
             } else {
                 dispatch(new CestinaChiamata());
             }
