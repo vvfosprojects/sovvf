@@ -45,6 +45,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ComposizioneSquadre = SO115App.API.Models.Classi.Composizione.ComposizioneSquadre;
 using ComposizioneMezzi = SO115App.API.Models.Classi.Composizione.ComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -57,6 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        private readonly IGetPreAccoppiati _getPreAccoppiati;
 
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly IConfiguration _configuration;
@@ -71,6 +75,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             IGetStatoMezzi getMezziPrenotati,
             IGetMezziUtilizzabili getMezziUtilizzabili,
             IGetPosizioneFlotta getPosizioneFlotta,
+            IGetPreAccoppiati getPreAccoppiati,
 
             IGetTipologieByCodice getTipologieByCodice,
             IConfiguration configuration,
@@ -82,6 +87,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getStatoSquadre = getStatoSquadre;
             _getPosizioneFlotta = getPosizioneFlotta;
+            _getPreAccoppiati = getPreAccoppiati;
 
             _getTipologieByCodice = getTipologieByCodice;
             _configuration = configuration;
@@ -99,6 +105,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoCorrente = _getTurno.Get();
             var turnoPrecedente = _getTurno.Get(turnoCorrente.DataOraInizio.AddMilliseconds(-1));
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
+
+            var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
@@ -131,6 +139,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
                 .ContinueWith(lstmezzi => //Mapping 
                 {
+                    foreach (var mezzo in lstmezzi.Result)
+                    {
+                        mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+                    }
+
                     var composizioneMezzi = (from mezzo in lstmezzi.Result
                                              let kmGen = new Random().Next(1, 60).ToString()
                                              let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
