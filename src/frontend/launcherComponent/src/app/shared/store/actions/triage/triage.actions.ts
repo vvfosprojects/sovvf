@@ -41,6 +41,14 @@ export class SetNewTriageData {
     }
 }
 
-export class SaveTriage {
-    static readonly type = '[Triage] Save Triage';
+export class AddTriage {
+    static readonly type = '[Triage] Add Triage';
+}
+
+export class UpdateTriage {
+    static readonly type = '[Triage] Update Triage';
+}
+
+export class DeleteTriage {
+    static readonly type = '[Triage] Delete Triage';
 }

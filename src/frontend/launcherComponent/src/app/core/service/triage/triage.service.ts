@@ -25,14 +25,34 @@ export class TriageService {
         return this.http.post<any>(API_TRIAGE + '/Get', obj);
     }
 
-    save(codTipologia: number, codDettaglioTipologia: number, triage: TreeviewItem, triageData: ItemTriageData[]): Observable<any> {
+    add(codTipologia: number, codDettaglioTipologia: number, triage: TreeviewItem, triageData: ItemTriageData[]): Observable<any> {
         const obj = {
             codTipologia,
             codDettaglioTipologia,
             triage,
             triageData: triageData?.length ? triageData : null
         };
-        console.log('Save Triage =>', obj);
-        return this.http.post<any>(API_TRIAGE + '/Save', obj);
+        console.log('Add Triage =>', obj);
+        return this.http.post<any>(API_TRIAGE + '/Add', obj);
+    }
+
+    update(codTipologia: number, codDettaglioTipologia: number, triage: TreeviewItem, triageData: ItemTriageData[]): Observable<any> {
+        const obj = {
+            codTipologia,
+            codDettaglioTipologia,
+            triage,
+            triageData: triageData?.length ? triageData : null
+        };
+        console.log('Update Triage =>', obj);
+        return this.http.post<any>(API_TRIAGE + '/Update', obj);
+    }
+
+    delete(codTipologia: number, codDettaglioTipologia: number): Observable<any> {
+        const obj = {
+            codTipologia,
+            codDettaglioTipologia
+        };
+        console.log('Delete Triage =>', obj);
+        return this.http.post<any>(API_TRIAGE + '/Delete', obj);
     }
 }
