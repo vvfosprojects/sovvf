@@ -8,19 +8,19 @@ import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/sc
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { TriageModalState } from '../../store/states/triage-modal/triage-modal.state';
+import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-triage-modal',
-    templateUrl: './triage-modal.component.html',
-    styleUrls: ['./triage-modal.component.scss']
+    selector: 'app-triage-chiamata-modal',
+    templateUrl: './triage-chiamata-modal.component.html',
+    styleUrls: ['./triage-chiamata-modal.component.scss']
 })
-export class TriageModalComponent implements OnInit {
+export class TriageChiamataModalComponent implements OnInit {
 
     tipologiaSelezionata: Tipologia;
 
-    @Select(TriageModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
+    @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
 
     dettaglioTipologiaSelezionato: DettaglioTipologia;

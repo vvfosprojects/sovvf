@@ -1,10 +1,10 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettagliTipologieByCodTipologia, ClearDettagliTipologie } from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 
 export interface TriageModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
@@ -18,11 +18,11 @@ export const TriageModalStateDefaults: TriageModalStateModel = {
 
 @Injectable()
 @State<TriageModalStateModel>({
-    name: 'triageModal',
+    name: 'triageChiamataModal',
     defaults: TriageModalStateDefaults
 })
 
-export class TriageModalState {
+export class TriageChiamataModalState {
 
     constructor(private detttagliTipologieService: DetttagliTipologieService,
                 private triageService: TriageService) {

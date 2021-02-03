@@ -30,7 +30,7 @@ import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/co
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
-import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
+import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
@@ -392,7 +392,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             };
         }
         this.getNuovaRichiesta();
-        const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
+        const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;

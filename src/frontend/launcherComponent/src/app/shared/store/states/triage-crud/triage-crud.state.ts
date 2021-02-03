@@ -13,10 +13,10 @@ import {
     DeleteTriage
 } from '../../actions/triage/triage.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { TreeviewItem } from 'ngx-treeview';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 
 export interface TriageStateModel {
     dettagliTipologie: DettaglioTipologia[];
@@ -36,11 +36,11 @@ export const TriageStateDefaults: TriageStateModel = {
 
 @Injectable()
 @State<TriageStateModel>({
-    name: 'triage',
+    name: 'triageCRUD',
     defaults: TriageStateDefaults
 })
 
-export class TriageState {
+export class TriageCrudState {
 
     constructor(private detttagliTipologieService: DetttagliTipologieService,
                 private triageService: TriageService) {

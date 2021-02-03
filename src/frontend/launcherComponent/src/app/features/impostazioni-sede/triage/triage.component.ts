@@ -16,7 +16,7 @@ import {
     SetNewTriageData
 } from '../../../shared/store/actions/triage/triage.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { TriageState } from '../../../shared/store/states/triage/triage.state';
+import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
@@ -34,8 +34,8 @@ export class TriageComponent {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
-    @Select(TriageState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
+    @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+    @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
     dettaglioTipologia: DettaglioTipologia;
 
     codTipologia: string;
