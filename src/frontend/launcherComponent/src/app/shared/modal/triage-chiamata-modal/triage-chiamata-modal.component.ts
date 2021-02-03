@@ -10,6 +10,7 @@ import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
+import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -18,17 +19,16 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class TriageChiamataModalComponent implements OnInit {
 
-    tipologiaSelezionata: Tipologia;
-
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
+
+    tipologiaSelezionata: Tipologia;
 
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
-    abilitaTriage: boolean;
     domandeTriage = [
         {
             codice: '1',
@@ -85,6 +85,7 @@ export class TriageChiamataModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologiaSelezionata.codice));
         this.getDettagliTipologia();
     }
 
@@ -101,11 +102,11 @@ export class TriageChiamataModalComponent implements OnInit {
 
     onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
         this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
+        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato.codiceDettaglioTipologia));
         this.onAbilitaTriage();
     }
 
     onAbilitaTriage(): void {
-        this.abilitaTriage = true;
         this.codDomandaSelezionata = this.domandeTriage[0].codice;
     }
 

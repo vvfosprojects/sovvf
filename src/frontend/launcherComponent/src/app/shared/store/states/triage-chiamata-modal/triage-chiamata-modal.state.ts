@@ -2,24 +2,35 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
-import { GetDettagliTipologieByCodTipologia, ClearDettagliTipologie } from '../../actions/triage-modal/triage-modal.actions';
+import {
+    GetDettagliTipologieByCodTipologia,
+    ClearDettagliTipologie,
+    SetDettaglioTipologiaTriageChiamata,
+    SetTipologiaTriageChiamata,
+    SetTriageChiamata
+} from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
+import { TreeviewItem } from 'ngx-treeview';
 
-export interface TriageModalStateModel {
+export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
-    triage: any;
+    codTipologiaSelezionata: number;
+    codDettagliTipologiaSelezionato: number;
+    triage: TreeviewItem[];
 }
 
-export const TriageModalStateDefaults: TriageModalStateModel = {
+export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
     dettagliTipologia: null,
+    codTipologiaSelezionata: undefined,
+    codDettagliTipologiaSelezionato: undefined,
     triage: null
 };
 
 @Injectable()
-@State<TriageModalStateModel>({
+@State<TriageChiamataModalStateModel>({
     name: 'triageChiamataModal',
-    defaults: TriageModalStateDefaults
+    defaults: TriageChiamataModalStateDefaults
 })
 
 export class TriageChiamataModalState {
@@ -29,17 +40,17 @@ export class TriageChiamataModalState {
     }
 
     @Selector()
-    static dettagliTipologia(state: TriageModalStateModel): DettaglioTipologia[] {
+    static dettagliTipologia(state: TriageChiamataModalStateModel): DettaglioTipologia[] {
         return state.dettagliTipologia;
     }
 
     @Selector()
-    static triage(state: TriageModalStateModel): any {
+    static triage(state: TriageChiamataModalStateModel): any {
         return state.triage;
     }
 
     @Action(GetDettagliTipologieByCodTipologia)
-    getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
+    getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageChiamataModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
         this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
             patchState({
                 dettagliTipologia: response.listaDettaglioTipologie
@@ -48,9 +59,36 @@ export class TriageChiamataModalState {
     }
 
     @Action(ClearDettagliTipologie)
-    clearDettagliTipologie({ patchState }: StateContext<TriageModalStateModel>): void {
+    clearDettagliTipologie({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
         patchState({
-            dettagliTipologia: TriageModalStateDefaults.dettagliTipologia
+            dettagliTipologia: TriageChiamataModalStateDefaults.dettagliTipologia
+        });
+    }
+
+    @Action(SetTipologiaTriageChiamata)
+    setTipologiaTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>, action: SetTipologiaTriageChiamata): void {
+        patchState({
+            codTipologiaSelezionata: action.codTipologia
+        });
+    }
+
+    @Action(SetDettaglioTipologiaTriageChiamata)
+    setDettaglioTipologiaTriageChiamata({ patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: SetDettaglioTipologiaTriageChiamata): void {
+        patchState({
+            codDettagliTipologiaSelezionato: action.codDettaglioTipologia
+        });
+        dispatch(new SetTriageChiamata());
+    }
+
+    @Action(SetTriageChiamata)
+    setTriageChiamata({ getState, patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        const state = getState();
+        const codTipologiaSelezionata = state.codTipologiaSelezionata;
+        const codDettaglioTipologiaSelezionata = state.codDettagliTipologiaSelezionato;
+        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: TreeviewItem[]) => {
+            patchState({
+                triage
+            });
         });
     }
 }

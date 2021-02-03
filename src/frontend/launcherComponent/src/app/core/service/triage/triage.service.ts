@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 
 const BASE_URL = environment.baseUrl;
@@ -30,9 +30,8 @@ export class TriageService {
             codTipologia,
             codDettaglioTipologia,
             triage,
-            triageData: triageData?.length ? triageData : null
+            listaTriageData: triageData?.length ? triageData : null
         };
-        console.log('Add Triage =>', obj);
         return this.http.post<any>(API_TRIAGE + '/Add', obj);
     }
 
@@ -41,9 +40,8 @@ export class TriageService {
             codTipologia,
             codDettaglioTipologia,
             triage,
-            triageData: triageData?.length ? triageData : null
+            listaTriageData: triageData?.length ? triageData : null
         };
-        console.log('Update Triage =>', obj);
         return this.http.post<any>(API_TRIAGE + '/Update', obj);
     }
 
@@ -52,7 +50,6 @@ export class TriageService {
             codTipologia,
             codDettaglioTipologia
         };
-        console.log('Delete Triage =>', obj);
         return this.http.post<any>(API_TRIAGE + '/Delete', obj);
     }
 }
