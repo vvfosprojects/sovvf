@@ -3,14 +3,14 @@ import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import {
     ClearDettagliTipologie,
     ClearTriage,
     GetDettagliTipologieByCodTipologia,
     GetTriageByCodDettaglioTipologia,
-    SaveTriage,
+    AddTriage,
     SetDettaglioTipologiaTriage,
     SetNewTriage,
     SetNewTriageData
@@ -20,6 +20,8 @@ import { TriageState } from '../../../shared/store/states/triage/triage.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 
 @Component({
     selector: 'app-triage',
@@ -29,6 +31,8 @@ import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/fu
 })
 export class TriageComponent {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
     @Select(TriageState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
@@ -48,7 +52,7 @@ export class TriageComponent {
     showTriage: boolean;
 
     tItems: TreeviewItem[];
-    tItemsData = [];
+    tItemsData: ItemTriageData[];
 
     editMode: boolean;
     unsavedModifiche: boolean;
@@ -56,12 +60,15 @@ export class TriageComponent {
     itemValueTitleEdit: string;
     itemTitleEdit: string;
 
+    private subscription = new Subscription();
+
     constructor(private store: Store,
                 private modalService: NgbModal,
                 private selectConfig: NgSelectConfig) {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getDettaglioTipologia(): void {
@@ -80,7 +87,7 @@ export class TriageComponent {
         this.codDettaglioTipologia = codDettaglioTipologia;
         this.store.dispatch([
             new SetDettaglioTipologiaTriage(this.codDettaglioTipologia),
-            new GetTriageByCodDettaglioTipologia(this.codDettaglioTipologia)
+            new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia)
         ]);
     }
 
@@ -92,7 +99,7 @@ export class TriageComponent {
         this.codTipologia = null;
         this.codDettaglioTipologia = null;
         this.tItems = null;
-        this.tItemsData = [];
+        this.tItemsData = null;
         this.showTriage = false;
     }
 
@@ -106,12 +113,9 @@ export class TriageComponent {
         this.addItem();
     }
 
-    getItemData(item: any): any {
-        const itemData = this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
+    getItemData(item: TreeItem): any {
+        const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
-            if (item?.children?.length > 0) {
-                itemData.domandaSeguente = item.children[0].text;
-            }
             return itemData;
         }
     }
@@ -130,13 +134,12 @@ export class TriageComponent {
             });
 
             if (this.tItems) {
-                // TODO: correggere, viene visualizzato il titolo soltanto se la risposta selezionata è sì
-                const itemValueToFind = item.value.slice(0, -2);
+                const itemValueToFind = item.value.slice(2);
                 addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
                 addItemTriageModal.componentInstance.rispostaTitle = item.text;
             }
             addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
-            addItemTriageModal.componentInstance.tItem = item;
+            addItemTriageModal.componentInstance.item = item;
             addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
                 if (res.success) {
                     if (this.tItems) {
@@ -198,6 +201,9 @@ export class TriageComponent {
     }
 
     addOtherData(res: any, item: TreeItem): void {
+        if (!this.tItemsData) {
+            this.tItemsData = [];
+        }
         const otherData = {
             itemValue: item.value,
             soccorsoAereo: null,
@@ -223,7 +229,6 @@ export class TriageComponent {
         }
     }
 
-    // TODO: correggere logica
     editItem(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
@@ -231,10 +236,17 @@ export class TriageComponent {
             centered: true,
             size: 'lg'
         });
+        if (this.tItems) {
+            const itemValueToFind = item.value.slice(2);
+            addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
+            addItemTriageModal.componentInstance.rispostaTitle = item.text;
+        }
         addItemTriageModal.componentInstance.primaDomanda = false;
+        addItemTriageModal.componentInstance.editMode = true;
         addItemTriageModal.componentInstance.disableDomanda = item.children && item.children.length;
-        addItemTriageModal.componentInstance.itemEdit = this.getItemData(item);
-        addItemTriageModal.componentInstance.tItem = item;
+        addItemTriageModal.componentInstance.domandaSeguente = item?.children?.length ? item.children[0].text : null;
+        addItemTriageModal.componentInstance.itemDataEdit = this.getItemData(item);
+        addItemTriageModal.componentInstance.item = item;
         addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
             if (res.success) {
                 if (!item.children && res.data.domandaSeguente) {
@@ -252,7 +264,7 @@ export class TriageComponent {
                     }
                 }
 
-                let editedItem: any;
+                let editedItem: ItemTriageData;
                 if (itemDataFound) {
                     editedItem = {
                         itemValue: item.value,
@@ -286,13 +298,15 @@ export class TriageComponent {
                 }
 
                 if (itemDataFound) {
-                    this.tItemsData[iItemDataFound] = editedItem;
-                } else {
+                    this.tItemsData = this.tItemsData.filter((tItem: ItemTriageData) => tItem.itemValue !== item.value);
+                }
+
+                if (editedItem.soccorsoAereo || editedItem.generiMezzo?.length || editedItem.prioritaConsigliata) {
                     this.tItemsData.push(editedItem);
                 }
+                this.updateTriage(this.tItems[0]);
             }
         });
-        this.updateTriage(this.tItems[0]);
     }
 
     setItemValueEditTitle(item: TreeItem): void {
@@ -368,15 +382,17 @@ export class TriageComponent {
         this.updateTriageData(this.tItemsData);
     }
 
-    updateTriageData(data: any): void {
-        this.store.dispatch(new SetNewTriageData(makeCopy(data)));
+    updateTriageData(data: ItemTriageData[]): void {
+        if (data) {
+            this.store.dispatch(new SetNewTriageData(makeCopy(data)));
+        }
     }
 
     saveTriage(): void {
         if (this.editMode) {
             this.toggleEditMode();
         }
-        this.store.dispatch(new SaveTriage());
+        this.store.dispatch(new AddTriage());
         this.unsavedModifiche = false;
     }
 }

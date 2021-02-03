@@ -7,12 +7,12 @@ using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage
 {
-    public class GetCategorieSoccorsoAereoAuthorization : IQueryAuthorizer<GetTriageQuery, GetTriageResult>
+    public class GetTriageAuthorization : IQueryAuthorizer<GetTriageQuery, GetTriageResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
 
-        public GetCategorieSoccorsoAereoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public GetTriageAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ItemTriageData } from '../../interface/item-triage-data.interface';
 
 @Component({
     selector: 'app-item-triage-modal',
@@ -14,10 +15,13 @@ export class ItemTriageModalComponent implements OnInit {
     rispostaTitle: string;
 
     primaDomanda: boolean;
-    itemEdit: any;
+
+    editMode: boolean;
+    itemDataEdit: ItemTriageData;
+    domandaSeguente: string;
     disableDomanda: any;
 
-    tItem: TreeviewItem;
+    item: TreeviewItem;
 
     addItemTriageForm: FormGroup;
 
@@ -27,9 +31,7 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (this.itemEdit) {
-            this.patchForm();
-        }
+        this.patchForm();
         if (this.disableDomanda) {
             this.f.domandaSeguente.disable();
         }
@@ -37,25 +39,25 @@ export class ItemTriageModalComponent implements OnInit {
 
     initForm(): void {
         this.addItemTriageForm = this.fb.group({
-            domandaSeguente: new FormControl(),
             soccorsoAereo: new FormControl(),
             generiMezzo: new FormControl(),
-            prioritaConsigliata: new FormControl()
+            prioritaConsigliata: new FormControl(),
+            domandaSeguente: new FormControl()
         });
         this.addItemTriageForm = this.fb.group({
-            domandaSeguente: [null],
             soccorsoAereo: [null],
             generiMezzo: [null],
-            prioritaConsigliata: [null]
+            prioritaConsigliata: [null],
+            domandaSeguente: [null]
         });
     }
 
     patchForm(): void {
         this.addItemTriageForm.patchValue({
-            domandaSeguente: this.itemEdit.domandaSeguente,
-            soccorsoAereo: this.itemEdit.soccorsoAereo,
-            generiMezzo: this.itemEdit.generiMezzo,
-            prioritaConsigliata: this.itemEdit.prioritaConsigliata
+            soccorsoAereo: this.itemDataEdit?.soccorsoAereo,
+            generiMezzo: this.itemDataEdit?.generiMezzo,
+            prioritaConsigliata: this.itemDataEdit?.prioritaConsigliata,
+            domandaSeguente: this.domandaSeguente
         });
     }
 
@@ -68,12 +70,12 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     onConferma(): void {
-        if (this.tItem) {
+        if (this.item) {
             const item = {
-                value: this.tItem.value,
+                value: this.item.value,
                 domandaSeguente: this.f.domandaSeguente.value,
                 soccorsoAereo: this.f.soccorsoAereo.value,
-                generiMezzo: this.f.generiMezzo.value,
+                generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
             this.modal.close({ success: true, data: item });

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -33,9 +33,10 @@ import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/list
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
-import { ToggleChiamata } from '../../store/actions/view/view.actions';
+import { ToggleChiamata, ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -43,7 +44,7 @@ import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../.
     styleUrls: ['./form-richiesta.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
+export class FormRichiestaComponent implements OnDestroy, OnChanges {
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
@@ -61,8 +62,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
     // Modifica
     @Input() modifica: boolean;
     @Input() richiestaModifica: SintesiRichiesta;
-
-    @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     ngxGooglePlacesOptions: Options;
 
@@ -129,6 +128,7 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
                     this.modifica = true;
+                    this.patchForm();
                 }
             }
 
@@ -136,9 +136,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
                 return `${operatore.sede.codice}-${operatore.id}-${makeID(8)}`;
             }
         }
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnDestroy(): void {
@@ -184,6 +181,32 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
             stato: [StatoRichiesta.Chiamata],
             emergenza: [false]
         });
+    }
+
+    patchForm(): void {
+        this.store.dispatch(
+            new UpdateFormValue({
+                path: 'schedaTelefonata.richiestaForm',
+                value: {
+                    selectedTipologie: this.richiestaModifica.tipologie[0].codice,
+                    nominativo: this.richiestaModifica.richiedente.nominativo,
+                    telefono: this.richiestaModifica.richiedente.telefono,
+                    indirizzo: this.richiestaModifica.localita.indirizzo,
+                    latitudine: this.richiestaModifica.localita.coordinate.latitudine,
+                    longitudine: this.richiestaModifica.localita.coordinate.longitudine,
+                    piano: this.richiestaModifica.localita.piano,
+                    etichette: this.richiestaModifica.tags,
+                    noteIndirizzo: this.richiestaModifica.localita.note,
+                    rilevanzaGrave: this.richiestaModifica.rilevanteGrave,
+                    rilevanzaStArCu: this.richiestaModifica.rilevanteStArCu,
+                    notePrivate: this.richiestaModifica.notePrivate,
+                    notePubbliche: this.richiestaModifica.notePubbliche,
+                    descrizione: this.richiestaModifica.descrizione,
+                    zoneEmergenza: this.richiestaModifica.zoneEmergenza,
+                    prioritaRichiesta: this.richiestaModifica.prioritaRichiesta
+                }
+            })
+        );
     }
 
     get f(): any {
@@ -262,32 +285,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
 
     checkTipologie(): boolean {
         return !!!(this.f.tipologie.value && (this.f.tipologie.value.length > 0));
-    }
-
-    onAddEnti(ente: any): void {
-        if (!this.nuovaRichiesta.listaEnti) {
-            this.listaEnti = [];
-            this.onAddEnti(ente);
-        } else {
-            this.listaEnti.push(ente);
-        }
-    }
-
-    onRemoveEnti(ente: any): void {
-        this.listaEnti.splice(this.listaEnti.indexOf(ente.codice), 1);
-    }
-
-    onAggiungiNuovoEnte(): void {
-        this.aggiungiNuovoEnte.emit();
-    }
-
-    clearEntiSelezionati(): void {
-        this.f.listaEnti.patchValue([]);
-        this.listaEnti = [];
-    }
-
-    checkEnti(): boolean {
-        return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
     }
 
     onCopiaIndirizzo(): void {
@@ -485,10 +482,16 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    onInAttesa(): void {
+        if (this.checkSubmit()) {
+            this.onSubmit(AzioneChiamataEnum.InAttesa);
+        }
+    }
+
     onChiudiModifica(): void {
         this.store.dispatch([
             new ClearRichiestaModifica(),
-            new ToggleChiamata()
+            new ToggleModifica()
         ]);
     }
 
@@ -528,7 +531,6 @@ export class FormRichiestaComponent implements OnInit, OnDestroy, OnChanges {
                             new DelChiamataMarker(this.idChiamata)
                         ]);
                         this.clearTipologieSelezionate();
-                        this.clearEntiSelezionati();
                         this.reducerSchedaTelefonata('reset');
                         break;
                     case 'ko':

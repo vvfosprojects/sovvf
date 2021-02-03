@@ -19,7 +19,7 @@ export class SetDettaglioTipologiaTriage {
 export class GetTriageByCodDettaglioTipologia {
     static readonly type = '[Triage] Get Triage By CodDettaglioTipologia';
 
-    constructor(public codDettaglioTipologia: number) {
+    constructor(public codTipologia: number, public codDettaglioTipologia: number) {
     }
 }
 
@@ -41,6 +41,14 @@ export class SetNewTriageData {
     }
 }
 
-export class SaveTriage {
-    static readonly type = '[Triage] Save Triage';
+export class AddTriage {
+    static readonly type = '[Triage] Add Triage';
+}
+
+export class UpdateTriage {
+    static readonly type = '[Triage] Update Triage';
+}
+
+export class DeleteTriage {
+    static readonly type = '[Triage] Delete Triage';
 }
