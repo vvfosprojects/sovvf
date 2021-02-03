@@ -19,7 +19,9 @@ namespace SO115App.Persistence.MongoDB.GestioneTriage
         public void Add(AddTriageCommand addTriageCommand)
         {
             _dBContex.TriageCollection.InsertOne(addTriageCommand.Triage);
-            _dBContex.TriageDataCollection.InsertMany(addTriageCommand.ListaTriageData);
+
+            if (addTriageCommand.ListaTriageData != null)
+                _dBContex.TriageDataCollection.InsertMany(addTriageCommand.ListaTriageData);
         }
     }
 }

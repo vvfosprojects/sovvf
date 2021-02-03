@@ -1,6 +1,4 @@
-﻿using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Triage;
+﻿using SO115App.Models.Classi.Triage;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage

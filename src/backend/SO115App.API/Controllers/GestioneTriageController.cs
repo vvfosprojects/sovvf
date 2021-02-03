@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage;
@@ -39,11 +36,14 @@ namespace SO115App.API.Controllers
             triage.Triage.CodDettaglioTipologia = triage.codDettaglioTipologia;
             triage.Triage.CodTipologia = triage.CodTipologia;
 
-            foreach (var item in triage.ListaTriageData)
+            if (triage.ListaTriageData != null)
             {
-                item.CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0];
-                item.CodTipologia = triage.CodTipologia;
-                item.CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0];
+                foreach (var item in triage.ListaTriageData)
+                {
+                    item.CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0];
+                    item.CodTipologia = triage.CodTipologia;
+                    item.CodDettaglioTipologia = triage.codDettaglioTipologia;
+                }
             }
 
             try
@@ -60,20 +60,15 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Get")]
-        public async Task<IActionResult> Get([FromBody] int codTipologia, int codDettaglioTipologia)
+        public async Task<IActionResult> Get([FromBody] GetTriageQuery getTriageQuery)
         {
             var codiceSede = Request.Headers["codicesede"];
 
-            var query = new GetTriageQuery()
-            {
-                CodDettaglioTipologia = codDettaglioTipologia,
-                CodTipologia = codTipologia,
-                CodiceSede = codiceSede
-            };
+            getTriageQuery.CodiceSede = codiceSede;
 
             try
             {
-                return Ok(_getHandler.Handle(query));
+                return Ok(_getHandler.Handle(getTriageQuery));
             }
             catch (Exception ex)
             {

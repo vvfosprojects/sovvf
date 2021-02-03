@@ -20,7 +20,7 @@ namespace SO115App.Persistence.MongoDB.GestioneTriage
 
         Triage IGetTriage.GetTriage(GetTriageQuery getTriageQuery)
         {
-            return _dbContext.TriageCollection.Find(c => c.CodiceSede.Equals(getTriageQuery.CodiceSede) && c.CodDettaglioTipologia.Equals(getTriageQuery.CodDettaglioTipologia) && c.CodTipologia.Equals(getTriageQuery.CodTipologia)).FirstOrDefault();
+            return _dbContext.TriageCollection.Find(c => c.CodiceSede.Equals(getTriageQuery.CodiceSede[0]) && c.CodDettaglioTipologia.Equals(getTriageQuery.CodDettaglioTipologia) && c.CodTipologia.Equals(getTriageQuery.CodTipologia)).FirstOrDefault();
         }
     }
 }
