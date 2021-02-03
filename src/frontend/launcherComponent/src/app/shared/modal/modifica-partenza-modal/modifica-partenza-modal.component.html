@@ -12,7 +12,7 @@
         <!-- operatore e sede -->
         <div class="d-inline-flex mb-3">
             <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
-                    style="margin-left: 0px !important;"
+                    style="margin-left: 0 !important;"
                     ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
                 <i class="fa fa-user"></i>
             </button>
@@ -100,16 +100,16 @@
     </div>
 </div>
 
-<div class="modal-footer">
-    <button *ngIf="!submitted" type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
+<div class="modal-footer" style="place-content: space-between;">
     <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!valid"
             (click)="onConferma()">
-        {{ 'Salva Modifiche' | uppercase }}
+      {{ 'Salva Modifiche' | uppercase }}
     </button>
     <button *ngIf="submitted" type="button" class="btn btn-lg btn-success btn-no-hover" [disabled]="true">
-        <i class="fa fa-spin fa-spinner mr-1"></i>
-        {{ 'Salvataggio Modifiche' | uppercase }}
+      <i class="fa fa-spin fa-spinner mr-1"></i>
+      {{ 'Salvataggio Modifiche' | uppercase }}
+    </button>
+    <button *ngIf="!submitted" type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
     </button>
 </div>

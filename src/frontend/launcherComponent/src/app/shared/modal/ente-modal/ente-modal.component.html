@@ -38,7 +38,7 @@
             </label>
             <input id="telefono" type="tel" formControlName="telefono" class="form-control"
                    placeholder="Inserisci il Telefono" (keypress)="checkInputPattern($event, 'PHONE')"
-                   (paste)="checkInputPattern($event, 'PHONE')"> 
+                   (paste)="checkInputPattern($event, 'PHONE')">
         </div>
         <div class="form-group">
             <label for="fax">
@@ -87,9 +87,9 @@
     </form>
     <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" ngbTooltip="Riempi tutti i campi obbligatori"
+<div class="modal-footer" style="place-content: space-between;">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">Conferma
     </button>
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">Annulla</button>
 </div>

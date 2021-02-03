@@ -7,15 +7,17 @@
       <span class="text-danger"><i class="fa fa-times"></i></span>
     </button>
   </div>
+
   <div *ngIf="richiestaDa" class="modal-body">
     <app-sintesi-richiesta [richiesta]="richiestaDa" [fissata]="false" [fissabile]="false" [isEspanso]="true"
-                           [gestibile]="false" [modificabile]="false" [espandibile]="false" [listaEventi]="false"
+                           [gestibile]="false" [modificabile]="false" [espandibile]="false" [boxAzioni]="false"
                            [composizionePartenza]="false" [idDaSganciare]="idDaSganciare" ></app-sintesi-richiesta>
   </div>
-  <div class="modal-footer">
-    <button style="min-width:126px; font-weight: 600;" type="button" class="btn btn-lg btn-secondary text-uppercase"
+
+  <div class="modal-footer" style="place-content: space-between">
+    <button style="min-width:142px; font-weight: 600;" type="button" class="btn btn-lg btn-danger btn-no-hover text-uppercase"
+            (click)="modal.close(bottoni[1].type)">{{bottoni[1].descrizione}}</button>
+    <button style="min-width:126px; font-weight: 600;" type="button" class="btn btn-lg btn-secondary btn-no-hover text-uppercase"
       (click)="modal.close(bottoni[0].type)">{{bottoni[0].descrizione}}</button>
-      <button style="min-width:142px; font-weight: 600;" type="button" class="btn btn-lg btn-danger text-uppercase"
-      (click)="modal.close(bottoni[1].type)">{{bottoni[1].descrizione}}</button>
   </div>
 </div>

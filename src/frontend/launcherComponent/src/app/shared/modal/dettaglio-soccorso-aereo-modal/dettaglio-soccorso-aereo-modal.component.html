@@ -17,7 +17,7 @@
             style="padding: 10px; opacity: 0.8">Eventi</span>
     </div>
     <div class="clearfix d-inline-flex">
-      <span class="badge h6 w-100 badge-primary mb-0" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
+      <span class="h6 w-100 mb-0 text-muted" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
     </div>
   </div>
   <div class="row my-4 align-items-center">
@@ -219,11 +219,11 @@
   </table>
 
   <div *ngIf="annullamentoFallito" class="row pb-1">
-    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento non riuscita.
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento richiesta AFM non riuscita.
       <span (click)="annullamentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
   </div>
   <div *ngIf="modificaFallito" class="row pb-1">
-    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica non riuscita.
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica della motivazione richiesta AFM non riuscita.
       <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
   </div>
   </span>

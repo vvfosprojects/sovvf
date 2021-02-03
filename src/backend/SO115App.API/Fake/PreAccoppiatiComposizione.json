@@ -3,9 +3,9 @@
     "Id": "3",
     "CodiceSede": "RM.1000",
     "MezzoComposizione": {
-      "id": "O.29319",
+      "id": "O.27536",
       "mezzo": {
-        "codice": "O.29319",
+        "codice": "O.27536",
         "idRichiesta": null,
         "descrizione": "29319",
         "genere": "APS",
@@ -50,11 +50,11 @@
     },
     "SquadreComposizione": [
       {
-        "id": "62",
+        "id": "45",
         "squadra": {
-          "id": "62",
-          "codice": "62",
-          "nome": "RM62",
+          "id": "45",
+          "codice": "45",
+          "nome": "RM45",
           "stato": 0,
           "componenti": [
             {
@@ -317,11 +317,11 @@
     "Id": "9",
     "CodiceSede": "RM.1000",
     "MezzoComposizione": {
-      "id": "O.30000",
+      "id": "O.28320",
       "mezzo": {
-        "codice": "O.30000",
+        "codice": "O.28320",
         "idRichiesta": null,
-        "descrizione": "30000",
+        "descrizione": "28320",
         "genere": "APS",
         "stato": "In Sede",
         "appartenenza": "CORP",
@@ -501,11 +501,11 @@
     "Id": "2",
     "CodiceSede": "RM.1000",
     "MezzoComposizione": {
-      "id": "O.20653",
+      "id": "O.23045",
       "mezzo": {
-        "codice": "O.20653",
+        "codice": "O.23045",
         "idRichiesta": "RM8102000000",
-        "descrizione": "20653",
+        "descrizione": "23045",
         "genere": "APS",
         "stato": "In Sede",
         "appartenenza": "CORP",

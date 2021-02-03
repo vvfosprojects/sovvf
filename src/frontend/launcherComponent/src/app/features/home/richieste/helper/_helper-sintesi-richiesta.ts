@@ -91,12 +91,25 @@ export class HelperSintesiRichiesta {
         let numeroMezzi = 0;
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata && partenza.mezzo.stato !== 'In Rientro') {
                     numeroMezzi++;
                 }
             });
         }
         return numeroMezzi;
+    }
+
+    /* Restituisce il numero dei mezzi in rientro */
+    numeroMezziInRietro(richiesta: SintesiRichiesta): number {
+      let numeroMezzi = 0;
+      if (richiesta.partenzeRichiesta) {
+        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+          if (partenza.mezzo.stato === 'In Rientro' && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+            numeroMezzi++;
+          }
+        });
+      }
+      return numeroMezzi;
     }
 
     /* Permette di colorare l'icona della tipologia */

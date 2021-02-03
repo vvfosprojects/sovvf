@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Composizione
@@ -32,6 +33,11 @@ namespace SO115App.API.Models.Classi.Composizione
 
     public class PreAccoppiatiFakeJson
     {
+        public PreAccoppiatiFakeJson()
+        {
+            MezzoComposizione = new ComposizioneMezzi() { Mezzo = new Mezzo() { PreAccoppiato = true } };
+        }
+
         public string Id { get; set; }
         public string CodiceSede { get; set; }
 

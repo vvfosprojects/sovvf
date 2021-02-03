@@ -21,7 +21,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-lg btn-{{ bottone.colore }}"
+    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-no-hover btn-lg btn-{{ bottone.colore }}"
             style="font-weight:600" (click)="close(bottone.type)">
         {{ bottone.descrizione | uppercase }}
     </button>

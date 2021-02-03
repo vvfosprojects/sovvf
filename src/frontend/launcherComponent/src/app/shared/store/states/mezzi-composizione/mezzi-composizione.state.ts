@@ -446,9 +446,9 @@ export class MezziComposizioneState {
                 let modalSganciamento;
                 const innerWidth = window.innerWidth;
                 if (innerWidth && innerWidth > 3700) {
-                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder modal-left', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl'});
                 } else {
-                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl' });
                 }
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';

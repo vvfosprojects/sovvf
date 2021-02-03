@@ -28,7 +28,7 @@
                                 </ng-template>
                             </ngb-rating>
                         </div>
-                        <div class="clearfix" style="width: 12%"
+                        <div class="clearfix" style="width: 15%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <div class="h6 mb-1 nowrap font-double-monitor">
                                 <i class="guida fa fa-hashtag fa-fw mr-1"
@@ -45,7 +45,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 10%">
+                        <div class="clearfix" style="width: 7%">
                           <button *ngIf="richiesta.prioritaRichiesta > 3 && richiesta.stato === 'Chiamata'" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
                                   ngbTooltip="Chiamata Urgente!"
                                   style="height: 36px; width: 36px; border-radius: 65% ">
@@ -131,16 +131,36 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="clearfix" style="width: 26%"></div>
-                        <div class="clearfix pr-3 text-right" style="width: 15%">
+                        <div class="clearfix" style="width: 18%"></div>
+                        <div class="clearfix pr-3 text-right" style="width: 23%">
                             <div class="h6 mb-0">
+
+                              <!-- stato fonogramma -->
+                                <button *ngIf="richiesta?.fonogramma"
+                                        class="btn btn-light border big_font py-0 mr-1 font-double-monitor"
+                                        [ngClass]="{'btn-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'btn-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'btn-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
+                                        (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
+                                        style="margin: 0; vertical-align: bottom"
+                                        ngbTooltip="Visualizza Fonogramma">
+                                  <i class="guida fa fa-paper-plane-o fa-fw"></i>
+                                  {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
+                                </button>
+
+                              <!-- enti intervenuti -->
+                                <span *ngIf="methods._entiCount(richiesta?.listaEntiIntervenuti?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti;">
+                                    <button class="btn btn-light border big_font py-0 mr-1 font-double-monitor" ngbTooltip="Elenco Enti"
+                                            (click)="onListaEnti(); $event.stopPropagation()">
+                                    <i class="guida fa fa-industry fa-fw"></i>
+                                    {{ totaleEnti }}
+                                  </button>
+                                </span>
 
                                 <!-- soccorso aereo -->
                                 <span *ngIf="richiesta.richiestaSoccorsoAereo" class="nowrap">
-                                          <button class="btn btn-info pl-0 py-0 mr-1 font-double-monitor"
-                                                  style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
-                                              <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa" ngbTooltip="Dettaglio Soccorso Aereo"></i>
-                                          </button>
+                                    <button class="btn btn-info pl-0 py-0 mr-1 font-double-monitor"
+                                            style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
+                                        <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa" ngbTooltip="Dettaglio Soccorso Aereo"></i>
+                                    </button>
                                 </span>
 
                                 <!-- squadre -->
@@ -172,6 +192,7 @@
                                     placement="bottom-right">
                                         <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
+                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}r</span>
                                     </button>
 
                                     <ng-template #popMezzi>
@@ -256,13 +277,7 @@
                                         class="btn btn-primary py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Inserisci nella lista"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
-                                    <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
-                                </button>
-                                <button *ngIf="listaEventi"
-                                        class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"
-                                        ngbTooltip="Elenco eventi"
-                                        (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
-                                    <i class="fa fa-fw fa-list text-secondary"></i>
+                                    <i class="fa fa-fw fa-thumb-tack text-secondary fa-rotate-45"></i>
                                 </button>
                                 <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Gestisci"
@@ -297,6 +312,12 @@
                         <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix text-right" style="width: 14.3%"
                              [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
+                                <button  *ngIf="boxAzioni"
+                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                        [ngbTooltip]="'Visualizza azioni per Richiesta: ' + richiesta.codice"
+                                        (click)="onShowAzioniRichiesta()" >
+                                  <i class="fa fa-fw fa-arrows-alt text-secondary"></i>
+                                </button>
                                 <button *ngIf="!fissata && fissabile"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Fissa in alto"
@@ -310,27 +331,21 @@
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
                                 </button>
-                                <button *ngIf="listaEventi"
-                                        class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"
-                                        ngbTooltip="Elenco eventi"
-                                        (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
-                                    <i class="fa fa-fw fa-list text-secondary"></i>
-                                </button>
                                 <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Gestisci"
                                         [disabled]="disabledGestisciRichiesta"
-                                        [ngClass]="{'btn-light': !inGestione, 'btn-secondary': inGestione, 'cursor-not-allowed': disabledGestisciRichiesta}"
+                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso, 'cursor-not-allowed': disabledGestisciRichiesta}"
                                         (click)="onGestioneRichiesta(); $event.stopPropagation()">
-                                    <i class="fa fa-fw fa-gear"
-                                       [ngClass]="{'text-secondary': !inGestione, 'text-light': inGestione}"></i>
-                                </button>
-                                <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
-                                        ngbTooltip="Espandi"
-                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"
-                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">
                                     <i class="fa fa-fw"
                                        [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>
                                 </button>
+<!--                                <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"-->
+<!--                                        ngbTooltip="Espandi"-->
+<!--                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"-->
+<!--                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">-->
+<!--                                    <i class="fa fa-fw"-->
+<!--                                       [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>-->
+<!--                                </button>-->
                                 <button *ngIf="modificabile"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Modifica"
@@ -541,27 +556,6 @@
                                     </ng-template>
                                 </div>
 
-                                <!-- fonogramma -->
-                                <div class="h6 font-dettaglio">
-                                    <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
-                                       placement="right"></i>
-                                    <span *ngIf="richiesta?.fonogramma"
-                                          class="h6 badge m-0 cursor-pointer font-double-monitor"
-                                          [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
-                                          (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
-                                          ngbTooltip="Visualizza Fonogramma">
-                                    {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
-                                </span>
-                                    <span *ngIf="!richiesta.fonogramma" class="badge badge-secondary text-white">
-                                    Nessun Fonogramma
-                                </span>
-                                    <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
-                                            ngbTooltip="Modifica Fonogramma"
-                                            (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                </div>
-
                                 <!-- Sedi allertate -->
                                 <div>
                                     <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata"
@@ -625,30 +619,6 @@
                                     </ng-template>
                                 </div>
 
-                                <!-- enti intervenuti -->
-                                <div class="h6 text-right font-dettaglio">
-                                    <button *ngIf="inGestione"
-                                            class="btn btn-sm btn-info mr-2"
-                                            ngbTooltip="Modifica Enti Intervenuti"
-                                            (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
-                                            *ngIf="methods._entiCount(richiesta?.listaEntiIntervenuti?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
-                                            (click)="onListaEnti(); $event.stopPropagation()">
-                                        {{ totaleEnti }}
-                                    </button>
-                                    <ng-template #nessunEnte>
-                                    <span class="badge badge-secondary text-light"
-                                          ngbTooltip="Al momento nessun ente è intervenuto">
-                                        Nessun Ente
-                                    </span>
-                                    </ng-template>
-                                    <i class="guida fa fa-industry fa-fw ml-1"
-                                       ngbTooltip="Enti intervenuti o che hanno preso in carico la richiesta"
-                                       placement="right"></i>
-                                </div>
-
                                 <!-- tipo terreno -->
                                 <div class="h6 text-right font-dettaglio">
                                 <span *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
@@ -670,7 +640,7 @@
                                         -
                                     </ng-template>
                                     <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
-                                       placement="right"></i>
+                                       placement="left"></i>
                                 </div>
 
                                 <!-- complessità -->
@@ -679,27 +649,27 @@
                                     <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
                                         richiesta?.complessita?.descrizione }}</span>
                                     <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
-                                       placement="right"></i>
+                                       placement="left"></i>
                                 </div>
 
                                 <!-- Cambio Stato Richiesta (Gestione) -->
-                                <div *ngIf="inGestione" class="border p-2 mt-3"
-                                     style="display: inline-flex; float: right;"
-                                     [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
-                                    <div class="mr-2" style="display: inline-flex;">
-                                        <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
-                                                (click)="onAllertaSede(); $event.stopPropagation()">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </button>
-                                        <button *ngIf="!richiesta?.codiceRichiesta"
-                                                class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
-                                                (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
-                                            <i class="fa fa-send-o"></i>
-                                        </button>
-                                    </div>
-                                    <app-sintesi-richiesta-actions [richiesta]="richiesta"
-                                                                   (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
-                                </div>
+<!--                                <div *ngIf="inGestione" class="border p-2 mt-3"-->
+<!--                                     style="display: inline-flex; float: right;"-->
+<!--                                     [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">-->
+<!--                                    <div class="mr-2" style="display: inline-flex;">-->
+<!--                                        <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"-->
+<!--                                                (click)="onAllertaSede(); $event.stopPropagation()">-->
+<!--                                            <i class="fa fa-exclamation-triangle"></i>-->
+<!--                                        </button>-->
+<!--                                        <button *ngIf="!richiesta?.codiceRichiesta"-->
+<!--                                                class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"-->
+<!--                                                (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">-->
+<!--                                            <i class="fa fa-send-o"></i>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                    <app-sintesi-richiesta-actions [richiesta]="richiesta"-->
+<!--                                                                   (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>-->
+<!--                                </div>-->
                             </div>
                         </div>
                     </div>

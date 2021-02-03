@@ -64,6 +64,7 @@ import { TriageModalComponent } from './modal/triage-modal/triage-modal.componen
 import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
 import { SoccorsoAereoModalComponent } from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
+import { AzioniSintesiRichiestaModalComponent } from './modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
 import { DettaglioSoccorsoAereoModalComponent } from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import { ItemTriageModalComponent } from './modal/item-triage-modal/item-triage-modal.component';
 
@@ -123,7 +124,9 @@ const COMPONENTS = [
     StepDettaglioTipologiaComponent,
     StepDomandeComponent,
     SoccorsoAereoModalComponent,
-    DettaglioSoccorsoAereoModalComponent
+    DettaglioSoccorsoAereoModalComponent,
+    AzioniSintesiRichiestaModalComponent,
+    ItemTriageModalComponent
 ];
 const MODULES = [
     PipeModule
@@ -147,8 +150,7 @@ const MODULES = [
         })
     ],
     declarations: [
-        ...COMPONENTS,
-        ItemTriageModalComponent
+        ...COMPONENTS
     ],
     exports: [
         ...COMPONENTS,

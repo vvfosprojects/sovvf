@@ -1,7 +1,8 @@
-<button type="button" class="btn btn-{{getBtnColor(mezzo.stato)}} px-2 py-0"
+<button type="button" class="btn btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" style="color: #fff"
         (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))"
-        ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
-    <small>{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</small>
+        ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
+  <i class="fa fa-forward"></i>
+  <span class="badge badge-default" style="font-size: initial">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</span>
 </button>
 <!--
 <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
