@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
-import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
-import { SediTreeviewI18n } from './store/states/sedi-treeview/sedi-treeview-i18n.service';
+import { TreeviewModule } from 'ngx-treeview';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
@@ -65,7 +64,7 @@ import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-detta
 import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
 import { SoccorsoAereoModalComponent } from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import { AzioniSintesiRichiestaModalComponent } from './modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
-import { DettaglioSoccorsoAereoModalComponent } from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
+import { DettaglioSoccorsoAereoModalComponent } from './modal/dettaglio-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import { ItemTriageModalComponent } from './modal/item-triage-modal/item-triage-modal.component';
 
 const COMPONENTS = [
