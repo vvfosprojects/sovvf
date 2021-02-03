@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneTriage
 {
     public interface IGetTriage
     {
