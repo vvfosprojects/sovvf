@@ -60,9 +60,9 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede) : base(richiesta, istante, codiceFonte, "ComposizionePartenza")
+            bool fuoriSede, Partenza partenza = null) : base(richiesta, istante, codiceFonte, "ComposizionePartenza")
         {
-            this.Partenza = new Partenza();
+            this.Partenza = partenza;
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
         }
