@@ -200,13 +200,14 @@
                         <i class="fa fa-plus-circle"></i>
                     </button>
                 </ng-template>
-                <!-- TODO: correggere logica motodo => editItem -->
-                <!-- <ng-template [ngIf]="getItemData(item) || item.children?.length > 0">
-                    <button class="btn btn-info ml-3" ngbTooltip="Modifica" (click)="editItem(item)">
+                <ng-template [ngIf]="getItemData(item) || item.children?.length === 1">
+                    <button class="btn btn-info ml-3"
+                            ngbTooltip="Modifica"
+                            (click)="editItem(item)">
                         <i class="fa fa-edit"></i>
                     </button>
-                </ng-template> -->
-                <ng-template [ngIf]="item.children?.length > 1 && item.value.length !== 1">
+                </ng-template>
+                <ng-template [ngIf]="item.children?.length > 1 && item.value.length !== 1 && !itemTitleEdit">
                     <button class="btn btn-danger ml-2"
                             ngbTooltip="Rimuovi"
                             (click)="removeItem(item)">

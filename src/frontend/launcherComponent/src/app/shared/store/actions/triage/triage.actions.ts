@@ -1,46 +1,54 @@
 export class GetDettagliTipologieByCodTipologia {
-    static readonly type = '[Triage] Get Dettagli Tipologie by CodTipologia';
+    static readonly type = '[Triage-CRUD] Get Dettagli Tipologie by CodTipologia';
 
     constructor(public codTipologia: number) {
     }
 }
 
 export class ClearDettagliTipologie {
-    static readonly type = '[Triage] Clear Dettagli Tipologie';
+    static readonly type = '[Triage-CRUD] Clear Dettagli Tipologie';
 }
 
 export class SetDettaglioTipologiaTriage {
-    static readonly type = '[Triage] Set Dettaglio Tipologia Triage';
+    static readonly type = '[Triage-CRUD] Set Dettaglio Tipologia Triage';
 
     constructor(public codDettaglioTipologia: number) {
     }
 }
 
 export class GetTriageByCodDettaglioTipologia {
-    static readonly type = '[Triage] Get Triage By CodDettaglioTipologia';
+    static readonly type = '[Triage-CRUD] Get Triage By CodDettaglioTipologia';
 
     constructor(public codTipologia: number, public codDettaglioTipologia: number) {
     }
 }
 
 export class ClearTriage {
-    static readonly type = '[Triage] Clear Triage';
+    static readonly type = '[Triage-CRUD] Clear Triage';
 }
 
 export class SetNewTriage {
-    static readonly type = '[Triage] Set New Triage';
+    static readonly type = '[Triage-CRUD] Set New Triage';
 
     constructor(public triage: any) {
     }
 }
 
 export class SetNewTriageData {
-    static readonly type = '[Triage] Set New Triage Data';
+    static readonly type = '[Triage-CRUD] Set New Triage Data';
 
     constructor(public data: any[]) {
     }
 }
 
-export class SaveTriage {
-    static readonly type = '[Triage] Save Triage';
+export class AddTriage {
+    static readonly type = '[Triage] Add Triage';
+}
+
+export class UpdateTriage {
+    static readonly type = '[Triage] Update Triage';
+}
+
+export class DeleteTriage {
+    static readonly type = '[Triage] Delete Triage';
 }

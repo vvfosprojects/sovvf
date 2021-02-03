@@ -5,16 +5,18 @@ import {
     ClearTriage,
     GetDettagliTipologieByCodTipologia,
     GetTriageByCodDettaglioTipologia,
-    SaveTriage,
+    AddTriage,
     SetDettaglioTipologiaTriage,
     SetNewTriage,
-    SetNewTriageData
+    SetNewTriageData,
+    UpdateTriage,
+    DeleteTriage
 } from '../../actions/triage/triage.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { TreeviewItem } from 'ngx-treeview';
+import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 
 export interface TriageStateModel {
     dettagliTipologie: DettaglioTipologia[];
@@ -34,11 +36,11 @@ export const TriageStateDefaults: TriageStateModel = {
 
 @Injectable()
 @State<TriageStateModel>({
-    name: 'triage',
+    name: 'triageCRUD',
     defaults: TriageStateDefaults
 })
 
-export class TriageState {
+export class TriageCrudState {
 
     constructor(private detttagliTipologieService: DetttagliTipologieService,
                 private triageService: TriageService) {
@@ -108,15 +110,37 @@ export class TriageState {
         });
     }
 
-    @Action(SaveTriage)
-    saveTriage({ getState }: StateContext<TriageStateModel>): void {
+    @Action(AddTriage)
+    addTriage({ getState }: StateContext<TriageStateModel>): void {
         const state = getState();
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.newTriage;
         const triageData = state.newTriageData;
-        this.triageService.save(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             console.log('Save triage service response', res);
+        });
+    }
+
+    @Action(UpdateTriage)
+    updateTriage({ getState }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const codTipologia = state.dettaglioTipologia.codiceTipologia;
+        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
+        const triage = state.newTriage;
+        const triageData = state.newTriageData;
+        this.triageService.update(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+            console.log('Update triage service response', res);
+        });
+    }
+
+    @Action(DeleteTriage)
+    deleteTriage({ getState }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const codTipologia = state.dettaglioTipologia.codiceTipologia;
+        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
+        this.triageService.delete(codTipologia, codDettaglioTipologia).subscribe((res: any) => {
+            console.log('Delete triage service response', res);
         });
     }
 }

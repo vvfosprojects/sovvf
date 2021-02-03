@@ -60,9 +60,9 @@ import { SchedeContattoComponent } from '../features/home/schede-contatto/schede
 import { SchedaContattoComponent } from './components/scheda-contatto/scheda-contatto.component';
 import { SchedaContattoCollegataComponent } from './components/scheda-contatto-collegata/scheda-contatto-collegata.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { TriageModalComponent } from './modal/triage-modal/triage-modal.component';
-import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
-import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
+import { TriageChiamataModalComponent } from './modal/triage-chiamata-modal/triage-chiamata-modal.component';
+import { StepDettaglioTipologiaComponent } from './modal/triage-chiamata-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
+import { StepDomandeComponent } from './modal/triage-chiamata-modal/step-domande/step-domande.component';
 import { SoccorsoAereoModalComponent } from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import { DettaglioSoccorsoAereoModalComponent } from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import { ItemTriageModalComponent } from './modal/item-triage-modal/item-triage-modal.component';
@@ -119,7 +119,7 @@ const COMPONENTS = [
     SchedaContattoCollegataComponent,
     SostituzionePartenzeFineTunoModalComponent,
     InterventiProssimitaModalComponent,
-    TriageModalComponent,
+    TriageChiamataModalComponent,
     StepDettaglioTipologiaComponent,
     StepDomandeComponent,
     SoccorsoAereoModalComponent,

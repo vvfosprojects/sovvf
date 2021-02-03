@@ -10,17 +10,16 @@ import {
     ClearTriage,
     GetDettagliTipologieByCodTipologia,
     GetTriageByCodDettaglioTipologia,
-    SaveTriage,
+    AddTriage,
     SetDettaglioTipologiaTriage,
     SetNewTriage,
     SetNewTriageData
 } from '../../../shared/store/actions/triage/triage.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { TriageState } from '../../../shared/store/states/triage/triage.state';
+import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
-import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 
@@ -35,8 +34,8 @@ export class TriageComponent {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
-    @Select(TriageState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
+    @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+    @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
     dettaglioTipologia: DettaglioTipologia;
 
     codTipologia: string;
@@ -87,8 +86,7 @@ export class TriageComponent {
     onSetDettaglioTipologia(codDettaglioTipologia: number): void {
         this.codDettaglioTipologia = codDettaglioTipologia;
         this.store.dispatch([
-            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia),
-            new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia)
+            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia)
         ]);
     }
 
@@ -105,7 +103,8 @@ export class TriageComponent {
     }
 
     onShowTriage(): void {
-        if (this.codDettaglioTipologia) {
+        if (this.codDettaglioTipologia && this.codTipologia) {
+            this.store.dispatch(new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia));
             this.showTriage = true;
         }
     }
@@ -117,9 +116,6 @@ export class TriageComponent {
     getItemData(item: TreeItem): any {
         const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
-            if (item?.children?.length > 0) {
-                itemData.domandaSeguente = item.children[0].text;
-            }
             return itemData;
         }
     }
@@ -143,7 +139,7 @@ export class TriageComponent {
                 addItemTriageModal.componentInstance.rispostaTitle = item.text;
             }
             addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
-            addItemTriageModal.componentInstance.tItem = item;
+            addItemTriageModal.componentInstance.item = item;
             addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
                 if (res.success) {
                     if (this.tItems) {
@@ -233,7 +229,6 @@ export class TriageComponent {
         }
     }
 
-    // TODO: correggere logica
     editItem(item: TreeItem): void {
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
@@ -241,10 +236,17 @@ export class TriageComponent {
             centered: true,
             size: 'lg'
         });
+        if (this.tItems) {
+            const itemValueToFind = item.value.slice(2);
+            addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
+            addItemTriageModal.componentInstance.rispostaTitle = item.text;
+        }
         addItemTriageModal.componentInstance.primaDomanda = false;
+        addItemTriageModal.componentInstance.editMode = true;
         addItemTriageModal.componentInstance.disableDomanda = item.children && item.children.length;
-        addItemTriageModal.componentInstance.itemEdit = this.getItemData(item);
-        addItemTriageModal.componentInstance.tItem = item;
+        addItemTriageModal.componentInstance.domandaSeguente = item?.children?.length ? item.children[0].text : null;
+        addItemTriageModal.componentInstance.itemDataEdit = this.getItemData(item);
+        addItemTriageModal.componentInstance.item = item;
         addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
             if (res.success) {
                 if (!item.children && res.data.domandaSeguente) {
@@ -262,7 +264,7 @@ export class TriageComponent {
                     }
                 }
 
-                let editedItem: any;
+                let editedItem: ItemTriageData;
                 if (itemDataFound) {
                     editedItem = {
                         itemValue: item.value,
@@ -296,13 +298,15 @@ export class TriageComponent {
                 }
 
                 if (itemDataFound) {
-                    this.tItemsData[iItemDataFound] = editedItem;
-                } else {
+                    this.tItemsData = this.tItemsData.filter((tItem: ItemTriageData) => tItem.itemValue !== item.value);
+                }
+
+                if (editedItem.soccorsoAereo || editedItem.generiMezzo?.length || editedItem.prioritaConsigliata) {
                     this.tItemsData.push(editedItem);
                 }
+                this.updateTriage(this.tItems[0]);
             }
         });
-        this.updateTriage(this.tItems[0]);
     }
 
     setItemValueEditTitle(item: TreeItem): void {
@@ -388,7 +392,7 @@ export class TriageComponent {
         if (this.editMode) {
             this.toggleEditMode();
         }
-        this.store.dispatch(new SaveTriage());
+        this.store.dispatch(new AddTriage());
         this.unsavedModifiche = false;
     }
 }

@@ -24,6 +24,7 @@ import { ViewInterfaceButton } from '../../shared/interface/view.interface';
 import { ClearRichiestaModifica } from '../home/store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { AnnullaChiamata } from '../home/store/actions/scheda-telefonata/chiamata.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -222,7 +223,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     toggleChiamataStatus(): void {
         this.returnToHome();
-        this.store.dispatch(new ToggleChiamata());
+        this.store.dispatch(new AnnullaChiamata());
     }
 
     toggleModificaRichiesta(): void {

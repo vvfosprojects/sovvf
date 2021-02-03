@@ -8,27 +8,27 @@ import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/sc
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { TriageModalState } from '../../store/states/triage-modal/triage-modal.state';
+import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
+import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
 
 @Component({
-    selector: 'app-triage-modal',
-    templateUrl: './triage-modal.component.html',
-    styleUrls: ['./triage-modal.component.scss']
+    selector: 'app-triage-chiamata-modal',
+    templateUrl: './triage-chiamata-modal.component.html',
+    styleUrls: ['./triage-chiamata-modal.component.scss']
 })
-export class TriageModalComponent implements OnInit {
+export class TriageChiamataModalComponent implements OnInit {
+
+    @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
+    dettagliTipologia: DettaglioTipologia[];
 
     tipologiaSelezionata: Tipologia;
-
-    @Select(TriageModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
-    dettagliTipologia: DettaglioTipologia[];
 
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
-    abilitaTriage: boolean;
     domandeTriage = [
         {
             codice: '1',
@@ -85,6 +85,7 @@ export class TriageModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologiaSelezionata.codice));
         this.getDettagliTipologia();
     }
 
@@ -101,11 +102,11 @@ export class TriageModalComponent implements OnInit {
 
     onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
         this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
+        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato.codiceDettaglioTipologia));
         this.onAbilitaTriage();
     }
 
     onAbilitaTriage(): void {
-        this.abilitaTriage = true;
         this.codDomandaSelezionata = this.domandeTriage[0].codice;
     }
 
