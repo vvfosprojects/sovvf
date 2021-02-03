@@ -11,6 +11,7 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
 import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -22,6 +23,29 @@ export class TriageChiamataModalComponent implements OnInit {
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
 
+    @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
+    domandeTriage: TreeviewItem;
+
+    // TODO: eliminare
+    /* domandeTriage = {
+        value: '1',
+        text: 'C\'è qualcuno in casa?',
+        children: [
+            {
+                value: '1-2',
+                text: 'Si'
+            },
+            {
+                value: '2-1',
+                text: 'No'
+            },
+            {
+                value: '3-1',
+                text: 'Non lo so'
+            },
+        ]
+    } as TreeviewItem; */
+
     tipologiaSelezionata: Tipologia;
 
     dettaglioTipologiaSelezionato: DettaglioTipologia;
@@ -29,49 +53,6 @@ export class TriageChiamataModalComponent implements OnInit {
     nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
-    domandeTriage = [
-        {
-            codice: '1',
-            titolo: 'C\'è qualcuno in casa?',
-            tipo: 'boolean',
-            campo: 'priorita',
-            effettiRisposteSuCampo: [
-                {
-                    risposta: 'si',
-                    valoreSuCampo: '5'
-                },
-                {
-                    risposta: 'no',
-                    valoreSuCampo: '3',
-                    codProssimaDomanda: '3'
-                },
-                {
-                    risposta: 'non lo so',
-                    valoreSuCampo: '3'
-                }
-            ]
-        },
-        {
-            codice: '2',
-            titolo: 'Ci sono persone in pericolo?',
-            tipo: 'boolean',
-            campo: 'priorita',
-            effettiRisposteSuCampo: [
-                {
-                    risposta: 'si',
-                    valoreSuCampo: '5'
-                },
-                {
-                    risposta: 'no',
-                    valoreSuCampo: '3'
-                },
-                {
-                    risposta: 'non lo so',
-                    valoreSuCampo: '3'
-                }
-            ]
-        }
-    ];
     risposteTriage: any[];
     codDomandaSelezionata: string;
 
@@ -107,7 +88,15 @@ export class TriageChiamataModalComponent implements OnInit {
     }
 
     onAbilitaTriage(): void {
-        this.codDomandaSelezionata = this.domandeTriage[0].codice;
+        this.codDomandaSelezionata = this.domandeTriage[0].value;
+    }
+
+    getDomandeTriage(): void {
+        this.subscriptions.add(
+            this.triage$.subscribe((triage: TreeviewItem) => {
+                this.domandeTriage = triage;
+            })
+        );
     }
 
     setRisposta(codDomanda: string, risposta: any): void {
@@ -121,11 +110,11 @@ export class TriageChiamataModalComponent implements OnInit {
     nextDomanda(): void {
         const indexDomandaDaVisualizzare = (+this.codDomandaSelezionata + 1) - 1;
         const domandaSelezionata = this.domandeTriage[indexDomandaDaVisualizzare];
-        this.codDomandaSelezionata = domandaSelezionata ? domandaSelezionata.codice : null;
+        this.codDomandaSelezionata = domandaSelezionata ? domandaSelezionata.value : null;
     }
 
     getDomandaByCodice(codDomanda: string): string {
-        return this.domandeTriage.filter((d: any) => d.codice === codDomanda)[0].titolo;
+        return this.domandeTriage.children.filter((d: any) => d.codice === codDomanda)[0].text;
     }
 
     setEmergenza(): void {

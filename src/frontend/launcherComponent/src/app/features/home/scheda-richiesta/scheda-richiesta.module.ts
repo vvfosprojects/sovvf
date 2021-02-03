@@ -16,6 +16,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { TagInputModule } from 'ngx-chips';
+import { ReportChiamataComponent } from './report-chiamata/report-chiamata.component';
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import { TagInputModule } from 'ngx-chips';
     ],
     declarations: [
         SchedaRichiestaComponent,
-        FormRichiestaComponent
+        FormRichiestaComponent,
+        ReportChiamataComponent
     ],
     exports: [
         SchedaRichiestaComponent

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
     selector: 'app-step-domande',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class StepDomandeComponent implements OnInit {
 
-    @Input() domande: any[];
+    @Input() domande: TreeviewItem;
     @Input() codDomandaSelezionata: string;
 
     @Output() risposta: EventEmitter<any> = new EventEmitter<any>();
