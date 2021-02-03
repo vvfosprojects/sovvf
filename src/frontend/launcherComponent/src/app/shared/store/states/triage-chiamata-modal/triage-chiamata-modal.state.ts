@@ -17,7 +17,7 @@ export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
     codTipologiaSelezionata: number;
     codDettagliTipologiaSelezionato: number;
-    triage: TreeviewItem[];
+    triage: TreeviewItem;
 }
 
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
@@ -45,7 +45,7 @@ export class TriageChiamataModalState {
     }
 
     @Selector()
-    static triage(state: TriageChiamataModalStateModel): any {
+    static triage(state: TriageChiamataModalStateModel): TreeviewItem {
         return state.triage;
     }
 
@@ -85,7 +85,7 @@ export class TriageChiamataModalState {
         const state = getState();
         const codTipologiaSelezionata = state.codTipologiaSelezionata;
         const codDettaglioTipologiaSelezionata = state.codDettagliTipologiaSelezionato;
-        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: TreeviewItem[]) => {
+        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: TreeviewItem) => {
             patchState({
                 triage
             });

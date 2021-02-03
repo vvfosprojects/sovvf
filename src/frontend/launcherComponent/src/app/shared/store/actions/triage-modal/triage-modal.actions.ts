@@ -1,5 +1,3 @@
-import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
-
 export class GetDettagliTipologieByCodTipologia {
     static readonly type = '[TriageChiamataModal] Get Dettagli Tipologie by CodTipologia';
 

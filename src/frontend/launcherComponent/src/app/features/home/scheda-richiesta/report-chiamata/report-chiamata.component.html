@@ -1,0 +1,104 @@
+<ng-template [ngIf]="dettaglioTipologia">
+    <div class="text-center">
+        <h4 class="font-weight-bold">
+            {{ dettaglioTipologia?.descrizione }}
+        </h4>
+    </div>
+</ng-template>
+<div class="my-3">
+    <button class="btn btn-block btn-no-hover btn-lg btn-danger"
+            [disabled]="!tipologie">
+        Visualizza P.O.S.
+    </button>
+</div>
+<ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
+    <!-- RIEPILOGO TRIAGE -->
+    <ngb-panel id="riepilogo-triage"
+               [disabled]="!visualizzaSuggerimentiTriage">
+        <ng-template ngbPanelTitle>
+            <b>RIEPILOGO TRIAGE</b>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <div class="mb-2">
+                <h5>1. <b>Ci sono persone in casa?</b></h5>
+                <h5>Risposta: <b>Sì</b></h5>
+            </div>
+            <div class="mb-2">
+                <h5>2. <b>Ci sono persone in pericolo?</b></h5>
+                <h5>Risposta: <b>No</b></h5>
+            </div>
+            <div class="mt-3">
+                <h5 class="text-danger">
+                    <i class="fa fa-file-pdf-o mr-2"></i>
+                    <b>Istruzioni Pre-Arrivo</b>
+                </h5>
+                <div class="px-3">
+                    <ul class="list-group">
+                        <li>Istruzione 1</li>
+                        <li>Istruzione 2</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-3">
+                <h5 class="text-danger">
+                    <i class="fa fa-truck mr-2"></i>
+                    <b>
+                        MEZZI CONSIGLIATI
+                        <span class="font-weight-bolder">
+                                    ({{ !visualizzaSuggerimentiTriage ? '0' : '2' }})
+                                </span>
+                    </b>
+                </h5>
+                <div class="px-3">
+                    <ul class="list-group">
+                        <li>APS</li>
+                        <li>AS</li>
+                    </ul>
+                </div>
+            </div>
+        </ng-template>
+    </ngb-panel>
+    <!-- NOTE NUE -->
+    <ngb-panel id="note-nue"
+               [disabled]="!schedaContatto">
+        <ng-template ngbPanelTitle>
+            <b>NOTE NUE</b>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
+        </ng-template>
+    </ngb-panel>
+    <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
+    <!-- INTERVENTI IN PROSSIMITA' -->
+    <ngb-panel id="interventi-prossimita"
+               [disabled]="countInterventiProssimita <= 0 || interventiProssimita?.length <= 0">
+        <ng-template ngbPanelTitle>
+            <b>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</b>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <div *ngFor="let interventoProssimita of interventiProssimita">
+                <b>{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta : interventoProssimita?.codice }}</b>
+                - {{ interventoProssimita?.localita.indirizzo }}
+                - {{ interventoProssimita?.richiedente.nominativo }}
+            </div>
+        </ng-template>
+    </ngb-panel>
+    <!-- TODO: INTERVENTI STESSA VIA -->
+    <ngb-panel id="interventi-stessa-via" [disabled]="true">
+        <ng-template ngbPanelTitle>
+            <b>INTERVENTI NELLA STESSA VIA</b>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <!-- TODO: inserire "INTERVENTI NELLA STESSA VIA" -->
+        </ng-template>
+    </ngb-panel>
+    <!-- TODO: INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
+    <ngb-panel id="interventi-chiusi-stesso-indirizzo" [disabled]="true">
+        <ng-template ngbPanelTitle>
+            <b>INTERVENTI CHIUSI CON STESSO INDIRIZZO</b>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <!-- TODO: inserire "INTERVENTI CHIUSI CON STESSO INDIRIZZO" -->
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
