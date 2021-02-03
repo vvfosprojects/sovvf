@@ -80,7 +80,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.DataOraAggiornamento))
                 {
-                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare, stato);
+                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato);
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {

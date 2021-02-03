@@ -42,7 +42,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             var partenzaDaLavorare = richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
-            richiesta.CambiaStatoPartenza(partenzaDaLavorare, new CambioStatoMezzo()
+            richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, new CambioStatoMezzo()
             {
                 CodMezzo = command.IdMezzo,
                 DataOraAggiornamento = command.DataOraAggiornamento,
