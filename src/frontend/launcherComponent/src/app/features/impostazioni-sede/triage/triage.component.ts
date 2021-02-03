@@ -86,8 +86,7 @@ export class TriageComponent {
     onSetDettaglioTipologia(codDettaglioTipologia: number): void {
         this.codDettaglioTipologia = codDettaglioTipologia;
         this.store.dispatch([
-            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia),
-            new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia)
+            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia)
         ]);
     }
 
@@ -104,7 +103,8 @@ export class TriageComponent {
     }
 
     onShowTriage(): void {
-        if (this.codDettaglioTipologia) {
+        if (this.codDettaglioTipologia && this.codTipologia) {
+            this.store.dispatch(new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia));
             this.showTriage = true;
         }
     }
