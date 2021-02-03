@@ -62,8 +62,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
-            /// preparazione del DTO
-            var stato_mezzo = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede });
+            //PREPARAZIONE DTO E VARIABILI
+            command.ConfermaPartenze.richiesta = command.Richiesta;
+
+            var inViaggio = Costanti.MezzoInViaggio;
+            var inUscita = Costanti.MezzoInUscita;
+
+            var dataAdesso = DateTime.UtcNow;
+
+            //CHECK MEZZO OCCUPATO E PARTENZE ESISTENTI
+            bool PartenzaEsistente = false;
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
@@ -73,16 +81,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     if (listaMezzi[0].IdOpPrenotazione != null && !listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))
                         throw new Exception(Costanti.MezzoErroreGiaOccupato);
                 }
-            }
 
-            var attivita = new AttivitaUtente();
-            var idComposizioneDaSganciare = 0;
-            var StatoInViaggio = 0;
-            var StatoSulPosto = 0;
-
-            bool PartenzaEsistente = false;
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
-            {
                 PartenzaEsistente = command.Richiesta.Partenze.Select(x => x.Partenza.Mezzo.Codice.Equals(partenza.Mezzo.Codice) && !x.Partenza.Terminata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Sganciata).FirstOrDefault();
 
                 if (PartenzaEsistente)
@@ -90,6 +89,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             #region SGANCIAMENTO
+
+            var idComposizioneDaSganciare = 0;
+            var StatoInViaggio = 0;
+            var StatoSulPosto = 0;
 
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
             {
@@ -121,13 +124,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
 
                 if (idComposizioneDaSganciare == 1)
-                    command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
+                    command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso);
                 else
                 {
                     if (StatoSulPosto > 0)
-                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
+                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso);
                     else if (StatoInViaggio > 0)
-                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
+                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso);
                 }
 
                 //new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.CodOperatore);
@@ -136,53 +139,39 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-            if (command.Richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
-                new InizioPresaInCarico(command.Richiesta, DateTime.UtcNow, command.Utente.Id);
-
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 partenza.Sganciata = false;
-                new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.Utente.Id, false)
-                {
-                    Partenza = partenza
-                };
+
+                new ComposizionePartenze(command.Richiesta, dataAdesso.AddSeconds(1), command.Utente.Id, false) { Partenza = partenza };
+
+                partenza.Mezzo.IdRichiesta = command.Richiesta.Id;
+
+                //GESTIONE STATO SQUADRE
+                foreach (var squadra in partenza.Squadre)
+                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenza.Mezzo.Stato);
             }
 
-            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.Utente.Id, "", DateTime.UtcNow);
+            new InizioPresaInCarico(command.Richiesta, dataAdesso, command.Utente.Id);
 
-            command.ConfermaPartenze.richiesta = command.Richiesta;
+            //GESTIONE STATO RICHIESTA
+            command.Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.Richiesta.StatoRichiesta, command.Utente.Id, "", dataAdesso);
 
+            //GENERAZIONE CODICE INTERVENTO
             var sedeRichiesta = command.Richiesta.CodSOCompetente;
 
             if (command.Richiesta.CodRichiesta == null)
-                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, DateTime.UtcNow.Year);
+                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, dataAdesso.Year);
 
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
-            {
-                partenza.Mezzo.IdRichiesta = command.Richiesta.Id;
-            }
+            //GESTIONE UTENTE PRESA IN CARICO
             var nominativo = command.Utente.Nome + "." + command.Utente.Cognome;
 
             if (command.Richiesta.UtPresaInCarico != null)
-            {
                 command.Richiesta.UtPresaInCarico.Add(nominativo);
-            }
             else
-            {
-                command.Richiesta.UtPresaInCarico = new List<String>
-                {
-                    nominativo
-                };
-            }
+                command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
-            {
-                foreach (var squadra in partenza.Squadre)
-                {
-                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenza.Mezzo.Stato);
-                }
-            }
-
+            //GESTIONE CODICE PARTENZA
             int ContatorePartenze = 1;
             foreach (var partenza in command.Richiesta.Partenze)
             {
@@ -192,8 +181,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 ContatorePartenze++;
             }
 
-            command.ConfermaPartenze.IdRichiesta = command.Richiesta.Id;
-
+            //SALVO SUL DB
             var confermaPartenze = _updateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;
