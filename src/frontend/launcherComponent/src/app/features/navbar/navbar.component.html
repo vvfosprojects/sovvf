@@ -28,7 +28,6 @@
                             <i class="fa fa-truck"></i>
                         </button>
                         <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
-                                                   [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"
                                                    (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
                     </div>

@@ -63,6 +63,11 @@ export class InsertChiamataSuccess {
 }
 
 
+export class AnnullaChiamata {
+    static readonly type = '[SchedaTelefonata] Annulla chiamata';
+
+}
+
 export class CestinaChiamata {
     static readonly type = '[SchedaTelefonata] Cestina chiamata';
 

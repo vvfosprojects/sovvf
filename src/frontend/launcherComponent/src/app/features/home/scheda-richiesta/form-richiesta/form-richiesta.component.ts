@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +8,6 @@ import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
-import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/scheda-telefonata/clipboard.actions';
@@ -16,7 +15,6 @@ import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/sche
 import { Richiedente } from '../../../../shared/model/richiedente.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
-import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
@@ -33,7 +31,7 @@ import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/list
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
-import { ToggleChiamata, ToggleModifica } from '../../store/actions/view/view.actions';
+import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -398,7 +396,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
-        triageModal.componentInstance.disableEmergenza = this.formIsInvalid(true);
+        triageModal.componentInstance.disableEmergenza = this.formIsInvalid();
         triageModal.result.then((res: any) => {
             switch (res.type) {
                 case 'salvaDettaglio':
@@ -430,15 +428,6 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
         this.reducerSchedaTelefonata('cerca');
-    }
-
-    countErrorForm(): string[] {
-        let error = '';
-        error += this.f.tipologie.errors ? 'Tipologia;' : '';
-        error += this.f.nominativo.errors ? 'Nominativo;' : '';
-        error += this.f.telefono.errors ? 'Telefono;' : '';
-        error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
-        return error.split(/\s*(?:;|$)\s*/);
     }
 
     checkInputPattern(event: any, type: string): void {
@@ -544,77 +533,14 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     }
 
     onAnnullaChiamata(): void {
-        if (!this.checkNessunCampoModificato()) {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-            ];
-
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            this.chiamataForm.reset();
-                            this.reducerSchedaTelefonata('annullata');
-                            break;
-                        case 'ko':
-                            console.log('Azione annullata');
-                            break;
-                    }
-                    console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
-        } else {
-            this.reducerSchedaTelefonata('annullata');
-        }
-    }
-
-    checkNessunCampoModificato(): boolean {
-        let campiModificati = false;
-        if (!this.f.tipologie.value && !this.f.nominativo.value && !this.f.telefono.value
-            && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
-            && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value && !this.f.listaEnti.value
-            && !this.f.notePrivate.value && !this.f.notePubbliche.value && !this.f.descrizione.value && !this.f.zoneEmergenza.value
-            && this.f.prioritaRichiesta.value === 3) {
-            campiModificati = true;
-        }
-        return campiModificati;
+        this.reducerSchedaTelefonata('annullata');
     }
 
     impostaAzioneChiamata(azioneChiamata: AzioneChiamataEnum): void {
-        // if (azioneChiamata === AzioneChiamataEnum.InviaPartenza || azioneChiamata === AzioneChiamataEnum.MettiInCoda) {
-        //     this.nuovaRichiesta.azione = azioneChiamata;
-        // } else {
-        //     this.nuovaRichiesta.azione = azioneChiamata;
-        //     this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;
-        // }
         this.onSubmit(azioneChiamata);
     }
 
-    formIsInvalid(onlyBool?: boolean): boolean {
-        if (!onlyBool) {
-            const messageArr: string[] = this.countErrorForm();
-            let message = messageArr.join(', ');
-            const title = messageArr.length > 1 ? 'Campi obbligatori:' : 'Campo obbligatorio:';
-            if (messageArr.length > 0) {
-                message = message.substring(0, message.length - 2);
-                const type = ToastrType.Error;
-                this.store.dispatch(new ShowToastr(ToastrType.Clear));
-                this.store.dispatch(new ShowToastr(type, title, message));
-            } else {
-                this.store.dispatch(new ShowToastr(ToastrType.Clear));
-            }
-        }
+    formIsInvalid(): boolean {
         return !!this.chiamataForm.invalid;
     }
 
