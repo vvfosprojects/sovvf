@@ -11,6 +11,6 @@ namespace SO115App.Models.Classi.Triage
         public bool internalChecked { get; set; }
         public bool internalCollapsed { get; set; }
         public bool internalDisabled { get; set; }
-        public List<Triage> InternalChildren { get; set; }
+        public List<TreeTriage> InternalChildren { get; set; }
     }
 }
