@@ -435,38 +435,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
           ]);
     }
 
-    confermaPartenzeInUscita(): void {
-        const partenze = makeCopy(this.boxPartenzaList);
-        const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {
-                mezzo: null,
-                squadre: null
-            };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj.mezzo = null;
-            }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj.squadre = [];
-            }
-            return rObj;
-        });
-        const partenzeObj: ConfermaPartenze = {
-            partenze: partenzeMappedArray,
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        this.store.dispatch([
-          new ConfirmPartenze(partenzeObj),
-          new ClearSquadraComposizione()]);
-    }
-
     onClearDirection(): void {
         this.clearDirection.emit();
         this.centraMappa.emit();

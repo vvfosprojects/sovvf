@@ -12,14 +12,10 @@
    <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
    </button>
 </div>
-<div class="btn-group w-50" ngbDropdown role="group" placement='top'>
-  <button class="btn btn-success btn-block card-shadow mt-2 btn-no-hover font-comp-xl" [disabled]="disableConfirmPartenza"
-          ngbDropdownToggle>
+<div class="btn-group w-50">
+  <button (click)="_confirmPartenzaInViaggio()"
+          class="btn btn-success btn-block card-shadow mt-2 btn-no-hover font-comp-xl" [disabled]="disableConfirmPartenza">
     <span class="d-inline-block mr-2">Conferma</span>
     <span class="badge badge-light">{{boxPartenzaLenght}}</span>
   </button>
-  <div class="dropdown-menu" ngbDropdownMenu>
-    <button ngbDropdownItem (click)="_confirmPartenzaInViaggio()">Conferma come In Viaggio</button>
-    <button ngbDropdownItem (click)="_confirmPartenzaInUscita()">Conferma come In Uscita</button>
-  </div>
 </div>

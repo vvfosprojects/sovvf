@@ -8,8 +8,6 @@ import {
   GetAzioniRichiesta
 } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.model';
-import {makeCopy} from '../../../../../shared/helper/function';
-import {ComposizioneSoccorsoAereoState} from '../../../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 @Component({
   selector: 'app-composizione-confirm-button',
@@ -25,7 +23,6 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
   @Input() disableConfirmPartenza = true;
   @Input() richiesta: SintesiRichiesta;
   @Output() confirmPartenzaInViaggio = new EventEmitter();
-  @Output() confirmPartenzaInUscita = new EventEmitter();
 
   subscription = new Subscription();
 
@@ -40,10 +37,6 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
 
   _confirmPartenzaInViaggio(): void {
     this.confirmPartenzaInViaggio.emit();
-  }
-
-  _confirmPartenzaInUscita(): void {
-    this.confirmPartenzaInUscita.emit();
   }
 
   openSoccorsoAereoModal(open: any): void {

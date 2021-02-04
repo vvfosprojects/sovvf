@@ -199,42 +199,6 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 
-    confermaPartenzeInUscita(): void {
-        const boxPartenzaList: BoxPartenza[] = [];
-        this.preAccoppiati.forEach(result => {
-            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
-                boxPartenzaList.push(result);
-            }
-        });
-        const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
-            const rObj = {
-                mezzo: null,
-                squadre: null
-            };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj.mezzo = null;
-            }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj.squadre = [];
-            }
-            return rObj;
-        });
-        const partenzeObj: ConfermaPartenze = {
-            partenze: partenzeMappedArray,
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        this.store.dispatch(new ConfirmPartenze(partenzeObj));
-    }
-
     onClearDirection(): void {
         this.clearDirection.emit();
         this.centraMappa.emit();
