@@ -71,6 +71,7 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoRientrato = "Rientrato";
         public static string MezzoInViaggio = "In Viaggio";
         public static string MezzoInUscita = "In Uscita";
+        public static string MezzoOccupato = "Occupato";
         public static string MezzoIstituto = "Istituto";
         public static string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
         public static string MezzoFuoriServizio = "Fuori Servizio";

@@ -238,6 +238,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     {
                         case "D": stato = Costanti.MezzoInSede; break;
                         case "R": stato = Costanti.MezzoInRientro; break;
+                        case "S": stato = Costanti.MezzoOccupato; break;
                         case "O": stato = Costanti.MezzoOperativoPreaccoppiato; break;
                         case "A": stato = Costanti.MezzoAssegnatoPreaccoppiato; break;
                         default: stato = Costanti.MezzoStatoSconosciuto; break;
