@@ -15,21 +15,24 @@ import {
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
-import { TreeviewItem } from 'ngx-treeview';
+import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
+import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 
 export interface TriageStateModel {
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
-    triageByDettaglioTipologia: any;
-    newTriage: TreeviewItem;
-    newTriageData: any[];
+    triageByDettaglioTipologia: TreeItem;
+    triageDataByDettaglioTipologia: ItemTriageData[];
+    newTriage: TreeItem;
+    newTriageData: ItemTriageData[];
 }
 
 export const TriageStateDefaults: TriageStateModel = {
     dettagliTipologie: null,
     dettaglioTipologia: null,
     triageByDettaglioTipologia: null,
+    triageDataByDettaglioTipologia: null,
     newTriage: null,
     newTriageData: null
 };
@@ -54,6 +57,16 @@ export class TriageCrudState {
     @Selector()
     static dettaglioTipologia(state: TriageStateModel): DettaglioTipologia {
         return state.dettaglioTipologia;
+    }
+
+    @Selector()
+    static triageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+        return state.triageByDettaglioTipologia;
+    }
+
+    @Selector()
+    static triageDataByDettaglioTipologia(state: TriageStateModel): ItemTriageData[] {
+        return state.triageDataByDettaglioTipologia;
     }
 
     @Action(GetDettagliTipologieByCodTipologia)
@@ -82,9 +95,10 @@ export class TriageCrudState {
 
     @Action(GetTriageByCodDettaglioTipologia)
     getTriageByCodDettaglioTipologia({ patchState }: StateContext<TriageStateModel>, action: GetTriageByCodDettaglioTipologia): void {
-        this.triageService.get(action.codTipologia, action.codDettaglioTipologia).subscribe((triage: any) => {
+        this.triageService.get(action.codTipologia, action.codDettaglioTipologia).subscribe((response: { triage: { data: TreeviewItem }, triageData }) => {
             patchState({
-                triageByDettaglioTipologia: triage
+                triageByDettaglioTipologia: response.triage?.data,
+                triageDataByDettaglioTipologia: response.triageData
             });
         });
     }

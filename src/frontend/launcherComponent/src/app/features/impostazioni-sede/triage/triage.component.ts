@@ -31,28 +31,34 @@ import { ItemTriageData } from '../../../shared/interface/item-triage-data.inter
 })
 export class TriageComponent {
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
-    @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
-    dettaglioTipologia: DettaglioTipologia;
-
-    codTipologia: string;
-    codDettaglioTipologia: any;
-
     tConfig = {
         hasAllCheckBox: false,
-        hasFilter: false,
+        hasFilter: true,
         hasCollapseExpand: false,
         decoupleChildFromParent: false,
         maxHeight: 500
     } as TreeviewConfig;
 
-    showTriage: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
-    tItems: TreeviewItem[];
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
+
+    @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+
+    @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
+    dettaglioTipologia: DettaglioTipologia;
+
+    @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeItem>;
+    tItems: TreeItem[];
+
+    @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
+
+    codTipologia: string;
+    codDettaglioTipologia: any;
+
+    showTriage: boolean;
 
     editMode: boolean;
     unsavedModifiche: boolean;
@@ -68,6 +74,10 @@ export class TriageComponent {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
+        this.getDoubleMonitor();
+    }
+
+    getDoubleMonitor(): void {
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
@@ -85,9 +95,7 @@ export class TriageComponent {
 
     onSetDettaglioTipologia(codDettaglioTipologia: number): void {
         this.codDettaglioTipologia = codDettaglioTipologia;
-        this.store.dispatch([
-            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia)
-        ]);
+        this.store.dispatch(new SetDettaglioTipologiaTriage(this.codDettaglioTipologia));
     }
 
     onReset(): void {
@@ -105,8 +113,72 @@ export class TriageComponent {
     onShowTriage(): void {
         if (this.codDettaglioTipologia && this.codTipologia) {
             this.store.dispatch(new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia));
+            this.getTriageByDettaglioTipologia();
+            this.getTriageDataByDettaglioTipologia();
             this.showTriage = true;
         }
+    }
+
+    getTriageByDettaglioTipologia(): void {
+        this.subscription.add(
+            this.triageByDettaglioTipologia$.subscribe((triage: any) => {
+                if (triage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(triage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.tItems = [];
+                    this.tItems[0] = mappedTriage[0];
+                }
+
+                function getFatherMapped(item): TreeviewItem {
+                    return new TreeviewItem({
+                        text: item.text,
+                        value: item.value,
+                        children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                        collapsed: item.internalCollapsed,
+                        disabled: item.internalDisabled
+                    });
+                }
+            })
+        );
+
+        function mapTreeviewItems(childrens: any): any {
+            const childrensCopy = childrens;
+            let childrenIndex = 0;
+            for (const children of childrensCopy) {
+                childrensCopy[childrenIndex] = getChildrenMapped(children);
+                childrenIndex = childrenIndex + 1;
+                if (children?.internalChildren) {
+                    mapTreeviewItems(children.internalChildren);
+                }
+            }
+            childrens = childrensCopy;
+            return childrens;
+        }
+
+        function getChildrenMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
+    }
+
+    getTriageDataByDettaglioTipologia(): void {
+        this.subscription.add(
+            this.triageDataByDettaglioTipologia$.subscribe((triageData: ItemTriageData[]) => {
+                if (triageData) {
+                    this.tItemsData = triageData;
+                }
+            })
+        );
     }
 
     initTriage(): void {
@@ -377,7 +449,8 @@ export class TriageComponent {
         return null;
     }
 
-    updateTriage(triage: any): void {
+    updateTriage(triage: TreeItem): void {
+        console.log('TreeItem', triage);
         this.store.dispatch(new SetNewTriage(makeCopy(triage)));
         this.updateTriageData(this.tItemsData);
     }

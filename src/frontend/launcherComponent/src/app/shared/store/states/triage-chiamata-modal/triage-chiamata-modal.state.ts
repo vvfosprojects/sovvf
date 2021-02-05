@@ -85,9 +85,9 @@ export class TriageChiamataModalState {
         const state = getState();
         const codTipologiaSelezionata = state.codTipologiaSelezionata;
         const codDettaglioTipologiaSelezionata = state.codDettagliTipologiaSelezionato;
-        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: TreeviewItem) => {
+        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: { data: TreeviewItem }) => {
             patchState({
-                triage
+                triage: triage.data
             });
         });
     }

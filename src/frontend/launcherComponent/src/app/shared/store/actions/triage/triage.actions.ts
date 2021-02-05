@@ -1,3 +1,5 @@
+import { TreeItem } from 'ngx-treeview';
+
 export class GetDettagliTipologieByCodTipologia {
     static readonly type = '[Triage-CRUD] Get Dettagli Tipologie by CodTipologia';
 
@@ -30,7 +32,7 @@ export class ClearTriage {
 export class SetNewTriage {
     static readonly type = '[Triage-CRUD] Set New Triage';
 
-    constructor(public triage: any) {
+    constructor(public triage: TreeItem) {
     }
 }
 
