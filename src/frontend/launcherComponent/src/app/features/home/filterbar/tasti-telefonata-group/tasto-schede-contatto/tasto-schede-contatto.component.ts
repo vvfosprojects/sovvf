@@ -1,8 +1,8 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
-import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -36,18 +36,18 @@ export class TastoSchedeContattoComponent {
     }
 
     coloreTasto(): string {
-        let returnClass = 'btn-outline-light';
+        let returnClass = 'btn-light';
         if (this.active) {
-            returnClass = 'btn-light text-danger';
+            returnClass = 'btn-light btn-nav-selected';
         }
         if (this.disabled) {
-            returnClass = 'btn-outline-secondary cursor-not-allowed';
+            returnClass = 'btn-secondary cursor-not-allowed';
         }
         return returnClass;
     }
 
     coloreBadgeContatore(): string {
-        let returnClass = 'badge-danger';
+        let returnClass = 'badge-success';
         if (this.active) {
             returnClass = 'badge-dark';
         }

@@ -50,11 +50,14 @@ export class ListaPartenzeComponent {
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
+      /*
         this.actionMezzo.emit(mezzoAction);
         if (mezzoAction.mezzo.codice && !this.loadingActionMezzoArray.includes(mezzoAction.mezzo.codice)) {
             this.loadingActionMezzoArray.push(mezzoAction.mezzo.codice);
         } else if (!mezzoAction.mezzo.codice) {
             this.loadingActionMezzoArray.shift();
         }
+       */
     }
+
 }

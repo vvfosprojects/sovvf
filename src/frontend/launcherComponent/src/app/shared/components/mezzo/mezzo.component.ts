@@ -23,8 +23,13 @@ export class MezzoComponent {
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();
 
-    constructor(popoverConfig: NgbPopoverConfig,
-                tooltipConfig: NgbTooltipConfig) {
+    storicoStati: any[] = [{
+      state: 'In Viaggio',
+      time: '08:00'
+    }];
+
+  constructor(popoverConfig: NgbPopoverConfig,
+              tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
@@ -60,10 +65,18 @@ export class MezzoComponent {
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }
+        const ora = action.oraEvento.ora + ':' + action.oraEvento.minuti;
+        const obj = {
+          state: action.mezzoAction,
+          time: ora
+        };
+        this.storicoStati.push(obj);
+        console.log('***MEZZO ACTIONS DATA: ' , actionMezzo);
         this.actionMezzo.emit(actionMezzo);
     }
 
     statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
     }
+
 }

@@ -1,16 +1,17 @@
 <div *ngIf="mezzi" class="row px-2 pt-2 pb-0">
     <div class="col-12">
-        <div class="row" style="font-size: larger">
+        <div class="row font-xlarge">
             <div class="clearfix float-left ml-4">
-                <i class="fa fa-truck mb-2 mr-1"></i><span class="font-weight-bold cursor-pointer"
-                                                           ngbTooltip="Mezzi in servizio"
-                                                           (click)="clickMezzi.emit('tutti')">Mezzi in servizio:
+                <i class="fa fa-truck mb-2 mr-1"></i>
+                <span class="font-weight-bold cursor-pointer text-dark"
+                       ngbTooltip="Mezzi in servizio"
+                       (click)="clickMezzi.emit('tutti')">Mezzi in servizio:
                 {{mezzi.inServizio}}</span>
             </div>
-            <div class="col float-right text-secondary text-right" style="width: 30%">
+            <div class="col float-right text-dark text-right" style="width: 30%">
                 <i class="mb-2 mr-1"></i>
                 <span class="mr-2 font-weight-bold" ngbTooltip="Mezzi in servizio per motivi d'istituto">Istituto</span>
-                <span class="badge badge-secondary h6 w-25 cursor-pointer mr-3 mb-0"
+                <span class="badge badge-mod-secondary h6 w-25 cursor-pointer mr-3 mb-0"
                       ngbTooltip="Evidenzia mezzi d'istituto sulla mappa"
                       [ngClass]="{'border-click-checked': boxClick?.mezzi.istituto, 'border-info-aggregate': !boxClick?.mezzi.istituto}"
                       (click)="clickMezzi.emit('istituto')">{{mezzi.istituto}}</span>
@@ -25,13 +26,13 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
+                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('inSede')"><span
-                                    class="position-relative badge badge-success h6 w-75 cursor-pointer"
+                                    class="position-relative badge badge-mod-success h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi in sede sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inSede, 'border-info-aggregate': !boxClick?.mezzi.inSede}"
                                     (click)="clickMezzi.emit('inSede')"><i *ngIf="mezziDiff"
@@ -44,13 +45,13 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
+                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('inRientro')"><span
-                                    class="position-relative d-inline-block badge badge-verdemela h6 w-75 cursor-pointer"
+                                    class="position-relative d-inline-block badge badge-mod-verdemela h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi in rientro sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro, 'border-info-aggregate': !boxClick?.mezzi.inRientro}"
                                     (click)="clickMezzi.emit('inRientro')"><i *ngIf="mezziDiff"
@@ -70,13 +71,13 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
+                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('inViaggio')"><span
-                                    class="position-relative badge badge-warning h6 w-75 cursor-pointer"
+                                    class="position-relative badge badge-mod-warning h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi in viaggio sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inViaggio, 'border-info-aggregate': !boxClick?.mezzi.inViaggio}"
                                     (click)="clickMezzi.emit('inViaggio')"><i *ngIf="mezziDiff"
@@ -89,13 +90,13 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
+                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('sulPosto')"><span
-                                    class="position-relative badge badge-danger h6 w-75 cursor-pointer"
+                                    class="position-relative badge badge-mod-danger h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi sul posto sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.sulPosto, 'border-info-aggregate': !boxClick?.mezzi.sulPosto}"
                                     (click)="clickMezzi.emit('sulPosto')"><i *ngIf="mezziDiff"

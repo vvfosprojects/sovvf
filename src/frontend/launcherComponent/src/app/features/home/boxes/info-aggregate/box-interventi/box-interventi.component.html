@@ -1,30 +1,30 @@
 <div *ngIf="interventi && turno" class="row px-2 pt-2 pb-0">
     <div class="col-12">
-        <div class="row" style="font-size: larger">
+        <div class="row font-xlarge">
             <div class="clearfix float-left ml-4 pr-0">
                 <i class="fa fa-medkit mb-2 mr-1"></i>
-                <span class="font-weight-bold " ngbTooltip="Interventi aperti"
+                <span class="font-weight-bold " ngbTooltip="Interventi aperti" placement="top-left"
                       >Richieste: {{interventi?.totale}}</span>
-                <small>
-          <span ngbTooltip="Interventi aperti nel turno precedente">
+                <span>
+          <span ngbTooltip="Interventi aperti nel turno precedente" placement="top-left">
             <span class="ml-2 mr-1">Turno {{turno?.precedente}}:</span>
             <span class="font-weight-bold">{{interventi?.totTurnoPrecedente}}</span>
           </span>
-                    <span class="mx-1 fa fa-arrow-right fa-fw"></span>
-                    <span ngbTooltip="Interventi aperti nel turno corrente">
+            <span class="mx-1 fa fa-arrow-right fa-fw"></span>
+            <span ngbTooltip="Interventi aperti nel turno corrente" placement="top-left">
             <span class="mr-1">Turno {{turno?.corrente}}:</span>
             <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
           </span>
-                </small>
+                </span>
             </div>
-            <div class="clearfix float-right mr-4 ml-auto pl-0 text-right text-secondary">
+            <div class="clearfix float-right mr-4 ml-auto pl-0 text-right text-dark">
                 <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
-                <small>
+                <span>
           <span ngbTooltip="Totale interventi chiusi dell'anno corrente">
             <span class="mr-1">{{interventi?.annoCorrente}}:</span>
             <span class="font-weight-bold">{{interventi?.totAnnoCorrente}}</span>
           </span>
-                </small>
+                </span>
             </div>
         </div>
         <hr class="m-0 mb-2">
@@ -36,17 +36,16 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
+                            <li><span class="d-inline-block cod-int h6" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('chiamate')"><span
-                                    class="position-relative badge h6 w-75 "
-                                    [ngClass]="{'badge-rosso-des': interventi.chiamate === 0,'badge-danger': interventi.chiamate > 0}"
-                                    ><i *ngIf="interventiDiff"
-                                                                                 class="blink-i-aggregate fa"
-                                                                                 [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
+                                class="position-relative badge h6 w-75 badge-mod-danger "
+                                ><i *ngIf="interventiDiff"
+                                     class="blink-i-aggregate fa"
+                                     [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
                             </li>
                         </ul>
                     </div>
@@ -54,16 +53,16 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
+                    <li><span class="d-inline-block h6 cod-int" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-secondary text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('assegnati')"><span
-                      class="position-relative badge badge-warning h6 w-75 "
+                      class="position-relative badge badge-mod-warning h6 w-75 "
                       ><i *ngIf="interventiDiff"
-                                                                    class="blink-i-aggregate fa"
-                                                                    [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
+                          class="blink-i-aggregate fa"
+                          [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
                     </li>
                   </ul>
                 </div>
@@ -78,16 +77,16 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
+                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('presidiati')"><span
-                                    class="position-relative badge badge-success h6 w-75 "
-                                    ><i *ngIf="interventiDiff"
-                                                                                   class="blink-i-aggregate fa"
-                                                                                   [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
+                                class="position-relative badge badge-mod-success h6 w-75 "
+                                ><i *ngIf="interventiDiff"
+                                     class="blink-i-aggregate fa"
+                                     [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
                             </li>
                         </ul>
                     </div>
@@ -95,16 +94,16 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
+                    <li><span class="d-inline-block h6 cod-int" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-secondary text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('chiusi')"><span
-                      class="position-relative badge bg-secondary text-light h6 w-75 "
+                      class="position-relative badge badge-mod-secondary text-light h6 w-75 "
                       ><i *ngIf="interventiDiff"
-                                                                 class="blink-i-aggregate fa"
-                                                                 [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
+                           class="blink-i-aggregate fa"
+                           [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
                     </li>
                   </ul>
                 </div>

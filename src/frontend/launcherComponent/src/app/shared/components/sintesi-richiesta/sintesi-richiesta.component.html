@@ -30,17 +30,17 @@
                         </div>
                         <div class="clearfix" style="width: 15%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
-                            <div class="h6 mb-1 nowrap font-double-monitor">
-                                <i class="guida fa fa-hashtag fa-fw mr-1"
+                            <div class="h6 mb-1 nowrap">
+                                <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
                                 <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
-                                          class="font-double-monitor">{{ richiesta.codiceRichiesta.slice(0, -5)}}
-                                      <span class="font-double-monitor" style="font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                                          class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                                      <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                                     </span>
                                     <span *ngIf="!richiesta.codiceRichiesta"
-                                          class="font-double-monitor">{{ richiesta.codice.slice(0, -5) }}
-                                      <span class="font-double-monitor" style="font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                                          class="font-xxlarge">{{ richiesta.codice.slice(0, -5) }}
+                                      <span style="font-size: 30px; font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                                     </span>
                                 </a>
                             </div>
@@ -84,7 +84,7 @@
                                 </ng-template>
                                 <span>
                                     <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
-                                       class="h6 font-double-monitor descrizione-int"
+                                       class="h6 font-xxlarge descrizione-int"
                                        ngbTooltip="{{ richiesta?.descrizione }}"
                                        [disableTooltip]="richiesta?.descrizione?.length <= 45">
                                         {{ richiesta.descrizione | truncate:45 }}
@@ -218,11 +218,11 @@
                         </div>
                         <div class="clearfix" style="width: 12%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
-                            <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
-                                <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-clock-o fa-fw mr-1 font-double-monitor" ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
-                                    <span timeago
+                                    <span timeago class="font-xxlarge"
                                           [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
@@ -237,28 +237,28 @@
                                 <i class="guida fa fa-address-book-o fa-fw mr-1" style="font-size: 140%"
                                    ngbTooltip="Richiedente"
                                    container="body"></i>
-                                <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor">
-                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right"
+                                <span *ngIf="richiesta?.richiedente?.nominativo">
+                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right" class="font-xxlarge"
                                        [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
                                         {{ richiesta?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
-                                <span  class="font-double-monitor ml-1">
+                                <span  class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 140%" ngbTooltip="Numero richiedente"></i>
-                                        <a>{{ richiesta?.richiedente?.telefono }}</a>
+                                        <a class="font-xxlarge">{{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                             </div>
                         </div>
                         <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
                             <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%" ngbTooltip="Località"></i>
-                            <span class="font-double-monitor">
-                                      <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
-                                            class="font-double-monitor"
-                                            [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
-                                          {{ richiesta?.localita?.indirizzo | truncate:30 }}
-                                      </span>
-                                </span>
-                            <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor" style="vertical-align: text-bottom;">
+                            <span>
+                              <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
+                                    class="font-xxlarge"
+                                    [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
+                                  {{ richiesta?.localita?.indirizzo | truncate:30 }}
+                              </span>
+                            </span>
+                            <span class="list-inline list-unstyled m-0 ml-2 font-xxlarge" style="vertical-align: text-bottom;">
                                 <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
@@ -296,16 +296,16 @@
                                style="font-size: 140%"
                                ngbTooltip="Richiedente"
                                container="body"></i>
-                            <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor mr-2">
+                            <span *ngIf="richiesta?.richiedente?.nominativo" class="font-xxlarge mr-2">
                                     <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}"
-                                       placement="right" style="font-size: 130%;font-weight: 400;"
+                                       placement="right"
                                        [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
                                         {{ richiesta?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
                             <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
-                                        <a style="font-size: 150% !important; font-weight: 400;">{{ richiesta?.richiedente?.telefono }}</a>
+                                        <a class="font-xxlarge cod-int">{{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                           </div>
                         </div>
@@ -437,7 +437,7 @@
                     </div>
 
                     <!-- box note localita e zone emergenza -->
-                    <div *ngIf="isEspanso" [class.d-none]="partenza" class="col-md-12 default-cursor">
+                    <div *ngIf="isEspanso" [class.d-none]="partenza" class="col-md-12 default-cursor pl-5">
                         <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza || richiesta?.tags"
                              class="col-md-12">
                             <div class="row card bt-0 note-localita mt-1">
@@ -472,13 +472,13 @@
                         <!-- II livello di dettaglio -->
                         <div class="row mt-3">
                             <!-- I colonna -->
-                            <div class="col-md-3">
+                            <div class="clearfix ml-3" style="width: 20%">
                                 <!-- presa in carico -->
                                 <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                        placement="right"></i>
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
-                                         class="d-inline-block h6 m-0 mr-1" [ngbTooltip]="utentePresaInCarico">
+                                         class="d-inline-block h6 m-0 font-xlarge mr-1" [ngbTooltip]="utentePresaInCarico">
                                         {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
                                         <ng-template #utentePresaInCarico>
                                             <div>
@@ -538,7 +538,7 @@
                                         </div>
                                     </div>
                                     <ng-template #nonInLavorazione>
-                                        <a class="badge badge-secondary text-light">Non in lavorazione</a>
+                                        <a class="badge badge-mod-secondary font-xlarge text-light">Non in lavorazione</a>
                                     </ng-template>
                                 </div>
 
@@ -550,7 +550,7 @@
                                         {{ richiesta?.codiceSchedaNue }}
                                     </a>
                                     <ng-template #nessunCodiceNue>
-                                    <span class="badge badge-secondary text-light">
+                                    <span class="badge badge-mod-secondary font-xlarge text-light">
                                         Nessuna scheda NUE
                                     </span>
                                     </ng-template>
@@ -587,7 +587,7 @@
                             </div>
 
                             <!-- II colonna -->
-                            <div class="col-md-6 bg-red border p-2" style="box-shadow: 0 0 3px 0 #000000;"
+                            <div class="col-md-7 bg-red border p-2" style="box-shadow: 0 0 3px 0 #000000;"
                                  [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                                 <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
@@ -605,9 +605,9 @@
                             </div>
 
                             <!-- III colonna-->
-                            <div class="col-md-3">
+                            <div class="clearfix" style="width: 20%">
                                 <!-- turno intervento -->
-                                <div class="h6 text-right font-dettaglio">
+                                <div class="h6 text-right font-xlarge">
                                 <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
                                     {{richiesta?.trnInsChiamata}}
                                     <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
@@ -620,7 +620,7 @@
                                 </div>
 
                                 <!-- tipo terreno -->
-                                <div class="h6 text-right font-dettaglio">
+                                <div class="h6 text-right font-xlarge">
                                 <span *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
                                       class="h6 m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
                                     {{ tipoTerrenoValue?.terrenoHa }}
@@ -644,7 +644,7 @@
                                 </div>
 
                                 <!-- complessità -->
-                                <div class="h6 text-right font-dettaglio">
+                                <div class="h6 text-right font-xlarge">
                                     <a><b>{{ richiesta?.complessita?.indice }}</b></a>
                                     <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
                                         richiesta?.complessita?.descrizione }}</span>

@@ -200,7 +200,7 @@ export function statoMezzoColor(stato: StatoMezzo): string {
             mezzoColor = 'success';
             break;
         case StatoMezzo.InUscita:
-            mezzoColor = 'secondary';
+            mezzoColor = 'warning';
             break;
         case StatoMezzo.InViaggio:
             mezzoColor = 'warning';

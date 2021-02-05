@@ -184,8 +184,9 @@ tag-input {
 }
 
 .cod-int {
-  color: rgb(99, 99, 99) !important;
-  font-weight: bold;
+  color: #000000 !important;
+  font-weight: 500;
+  font-size: 25px;
   cursor: pointer;
 }
 
@@ -661,6 +662,74 @@ tag-input {
 .font-xlarge {
   font-size: 20px;
   font-weight: 500;
+}
+
+.font-xxlarge {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.badge-mod-primary {
+  color: #007bff !important;
+  border: solid thin #007bff !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-info {
+  color: #17a2b8 !important;
+  border: solid thin #17a2b8 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-secondary {
+  color: #6c757d !important;
+  border: solid thin #6c757d !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-danger {
+  color: #dc3545 !important;
+  border: solid thin #dc3545 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-warning {
+  color: #ffc107 !important;
+  border: solid thin #ffc107 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-success {
+  color: #28a745 !important;
+  border: solid thin #28a745 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-dark {
+  color: #343a40 !important;
+  border: solid thin #343a40 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-verdemela {
+  color: #92b565 !important;
+  border: solid thin #92b565 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.btn-nav-selected {
+  box-shadow: 0 0 10px 2px #dc3545 !important;
+  transform: scale(1.1) !important;
+  color: #dc3545 !important;
+  border: solid thin #dc3545;
 }
 
 .required-field {
