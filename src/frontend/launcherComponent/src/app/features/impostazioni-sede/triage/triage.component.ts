@@ -13,8 +13,10 @@ import {
     AddTriage,
     SetDettaglioTipologiaTriage,
     SetNewTriage,
-    SetNewTriageData
-} from '../../../shared/store/actions/triage/triage.actions';
+    AddTriageData,
+    DeleteTriageData,
+    UpdateTriage
+} from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
@@ -50,21 +52,23 @@ export class TriageComponent {
     dettaglioTipologia: DettaglioTipologia;
 
     @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeItem>;
-    tItems: TreeItem[];
-
+    tItems: TreeviewItem[];
     @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
+    @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
+    editMode: boolean;
 
     codTipologia: string;
     codDettaglioTipologia: any;
 
     showTriage: boolean;
 
-    editMode: boolean;
-    unsavedModifiche: boolean;
+    viewEditButtons = true;
 
     itemValueTitleEdit: string;
     itemTitleEdit: string;
+
+    unsavedModifiche: boolean;
 
     private subscription = new Subscription();
 
@@ -75,6 +79,7 @@ export class TriageComponent {
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
         this.getDoubleMonitor();
+        this.getEditMode();
     }
 
     getDoubleMonitor(): void {
@@ -181,6 +186,14 @@ export class TriageComponent {
         );
     }
 
+    getEditMode(): void {
+        this.subscription.add(
+            this.editMode$.subscribe((value: boolean) => {
+                this.editMode = value;
+            })
+        );
+    }
+
     initTriage(): void {
         this.addItem();
     }
@@ -192,12 +205,12 @@ export class TriageComponent {
         }
     }
 
-    toggleEditMode(): void {
-        this.editMode = !this.editMode;
+    toggleViewEditButtons(): void {
+        this.viewEditButtons = !this.viewEditButtons;
     }
 
     addItem(item?: TreeItem): void {
-        if (this.editMode || !item) {
+        if (this.viewEditButtons || !item) {
             const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
@@ -252,7 +265,7 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
-        this.toggleEditMode();
+        this.toggleViewEditButtons();
         this.unsavedModifiche = true;
     }
 
@@ -273,27 +286,23 @@ export class TriageComponent {
     }
 
     addOtherData(res: any, item: TreeItem): void {
-        if (!this.tItemsData) {
-            this.tItemsData = [];
-        }
-        const otherData = {
+        const itemData = {
             itemValue: item.value,
             soccorsoAereo: null,
             generiMezzo: null,
             prioritaConsigliata: null
-        };
+        } as ItemTriageData;
         if (res.data.soccorsoAereo) {
-            otherData.soccorsoAereo = res.data.soccorsoAereo;
+            itemData.soccorsoAereo = res.data.soccorsoAereo;
         }
         if (res.data.generiMezzo) {
-            otherData.generiMezzo = res.data.generiMezzo;
+            itemData.generiMezzo = res.data.generiMezzo;
         }
         if (res.data.prioritaConsigliata) {
-            otherData.prioritaConsigliata = res.data.prioritaConsigliata;
+            itemData.prioritaConsigliata = res.data.prioritaConsigliata;
         }
-        if (otherDataValues(otherData)) {
-            this.tItemsData.push(otherData);
-            this.updateTriageData(this.tItemsData);
+        if (otherDataValues(itemData)) {
+            this.store.dispatch(new AddTriageData(itemData));
         }
 
         function otherDataValues(data: any): boolean {
@@ -336,16 +345,16 @@ export class TriageComponent {
                     }
                 }
 
-                let editedItem: ItemTriageData;
+                let newItemData: ItemTriageData;
                 if (itemDataFound) {
-                    editedItem = {
+                    newItemData = {
                         itemValue: item.value,
                         soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
                         generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
                         prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null
                     };
                 } else {
-                    editedItem = {
+                    newItemData = {
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,
@@ -354,27 +363,27 @@ export class TriageComponent {
                 }
 
                 if (res.data.soccorsoAereo) {
-                    editedItem.soccorsoAereo = res.data.soccorsoAereo;
+                    newItemData.soccorsoAereo = res.data.soccorsoAereo;
                 } else {
-                    editedItem.soccorsoAereo = null;
+                    newItemData.soccorsoAereo = null;
                 }
                 if (res.data.generiMezzo) {
-                    editedItem.generiMezzo = res.data.generiMezzo;
+                    newItemData.generiMezzo = res.data.generiMezzo;
                 } else {
-                    editedItem.generiMezzo = null;
+                    newItemData.generiMezzo = null;
                 }
                 if (res.data.prioritaConsigliata) {
-                    editedItem.prioritaConsigliata = res.data.prioritaConsigliata;
+                    newItemData.prioritaConsigliata = res.data.prioritaConsigliata;
                 } else {
-                    editedItem.prioritaConsigliata = null;
+                    newItemData.prioritaConsigliata = null;
                 }
 
                 if (itemDataFound) {
-                    this.tItemsData = this.tItemsData.filter((tItem: ItemTriageData) => tItem.itemValue !== item.value);
+                    this.store.dispatch(new DeleteTriageData(item.value));
                 }
 
-                if (editedItem.soccorsoAereo || editedItem.generiMezzo?.length || editedItem.prioritaConsigliata) {
-                    this.tItemsData.push(editedItem);
+                if (newItemData.soccorsoAereo || newItemData.generiMezzo?.length || newItemData.prioritaConsigliata) {
+                    this.store.dispatch(new AddTriageData(newItemData));
                 }
                 this.updateTriage(this.tItems[0]);
             }
@@ -394,6 +403,7 @@ export class TriageComponent {
     updateItemTitle(item: TreeItem): void {
         item.text = addQuestionMark(capitalize(this.itemTitleEdit));
         this.clearItemValueEditTitle();
+        this.updateTriage(this.tItems[0]);
     }
 
     removeItem(item: TreeviewItem): void {
@@ -450,22 +460,14 @@ export class TriageComponent {
     }
 
     updateTriage(triage: TreeItem): void {
-        console.log('TreeItem', triage);
         this.store.dispatch(new SetNewTriage(makeCopy(triage)));
-        this.updateTriageData(this.tItemsData);
-    }
-
-    updateTriageData(data: ItemTriageData[]): void {
-        if (data) {
-            this.store.dispatch(new SetNewTriageData(makeCopy(data)));
-        }
     }
 
     saveTriage(): void {
-        if (this.editMode) {
-            this.toggleEditMode();
+        if (this.viewEditButtons) {
+            this.toggleViewEditButtons();
         }
-        this.store.dispatch(new AddTriage());
+        this.editMode ? this.store.dispatch(new UpdateTriage()) : this.store.dispatch(new AddTriage());
         this.unsavedModifiche = false;
     }
 }

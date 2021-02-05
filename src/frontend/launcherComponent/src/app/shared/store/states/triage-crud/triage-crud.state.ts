@@ -10,22 +10,27 @@ import {
     SetNewTriage,
     SetNewTriageData,
     UpdateTriage,
-    DeleteTriage
-} from '../../actions/triage/triage.actions';
+    DeleteTriage,
+    AddTriageData,
+    DeleteTriageData,
+    UpdateTriageData
+} from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
+import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 
 export interface TriageStateModel {
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
     triageByDettaglioTipologia: TreeItem;
     triageDataByDettaglioTipologia: ItemTriageData[];
-    newTriage: TreeItem;
-    newTriageData: ItemTriageData[];
+    _backupTriageByDettaglioTipologia: TreeItem;
+    _backupTriageDataByDettaglioTipologia: ItemTriageData[];
+    editMode: boolean;
 }
 
 export const TriageStateDefaults: TriageStateModel = {
@@ -33,8 +38,9 @@ export const TriageStateDefaults: TriageStateModel = {
     dettaglioTipologia: null,
     triageByDettaglioTipologia: null,
     triageDataByDettaglioTipologia: null,
-    newTriage: null,
-    newTriageData: null
+    _backupTriageByDettaglioTipologia: null,
+    _backupTriageDataByDettaglioTipologia: null,
+    editMode: undefined,
 };
 
 @Injectable()
@@ -69,6 +75,11 @@ export class TriageCrudState {
         return state.triageDataByDettaglioTipologia;
     }
 
+    @Selector()
+    static editMode(state: TriageStateModel): boolean {
+        return state.editMode;
+    }
+
     @Action(GetDettagliTipologieByCodTipologia)
     getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageStateModel>, action: GetDettagliTipologieByCodTipologia): void {
         this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
@@ -98,7 +109,10 @@ export class TriageCrudState {
         this.triageService.get(action.codTipologia, action.codDettaglioTipologia).subscribe((response: { triage: { data: TreeviewItem }, triageData }) => {
             patchState({
                 triageByDettaglioTipologia: response.triage?.data,
-                triageDataByDettaglioTipologia: response.triageData
+                triageDataByDettaglioTipologia: response.triageData,
+                _backupTriageByDettaglioTipologia: response.triage?.data,
+                _backupTriageDataByDettaglioTipologia: response.triageData,
+                editMode: !!response.triage?.data
             });
         });
     }
@@ -106,21 +120,21 @@ export class TriageCrudState {
     @Action(ClearTriage)
     clearTriage({ patchState }: StateContext<TriageStateModel>): void {
         patchState({
-            newTriage: null
+            triageByDettaglioTipologia: null
         });
     }
 
     @Action(SetNewTriage)
     setNewTriage({ patchState }: StateContext<TriageStateModel>, action: SetNewTriage): void {
         patchState({
-            newTriage: action.triage
+            triageByDettaglioTipologia: action.triage
         });
     }
 
     @Action(SetNewTriageData)
     setNewTriageData({ patchState }: StateContext<TriageStateModel>, action: SetNewTriageData): void {
         patchState({
-            newTriageData: action.data
+            triageDataByDettaglioTipologia: action.data
         });
     }
 
@@ -129,8 +143,8 @@ export class TriageCrudState {
         const state = getState();
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        const triage = state.newTriage;
-        const triageData = state.newTriageData;
+        const triage = state.triageByDettaglioTipologia;
+        const triageData = state.triageDataByDettaglioTipologia;
         this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             console.log('Save triage service response', res);
         });
@@ -141,8 +155,8 @@ export class TriageCrudState {
         const state = getState();
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        const triage = state.newTriage;
-        const triageData = state.newTriageData;
+        const triage = state.triageByDettaglioTipologia;
+        const triageData = state.triageDataByDettaglioTipologia;
         this.triageService.update(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             console.log('Update triage service response', res);
         });
@@ -156,5 +170,33 @@ export class TriageCrudState {
         this.triageService.delete(codTipologia, codDettaglioTipologia).subscribe((res: any) => {
             console.log('Delete triage service response', res);
         });
+    }
+
+    @Action(AddTriageData)
+    addTriageData({ setState }: StateContext<TriageStateModel>, action: AddTriageData): void {
+        setState(
+            patch({
+                triageDataByDettaglioTipologia: append<ItemTriageData>([action.itemData])
+            })
+        );
+    }
+
+    // TODO: utilizzare
+    @Action(UpdateTriageData)
+    updateTriageData({ setState }: StateContext<TriageStateModel>, action: UpdateTriageData): void {
+        setState(
+            patch({
+                triageDataByDettaglioTipologia: updateItem<ItemTriageData>((itemData: ItemTriageData) => itemData.itemValue === action.itemData.itemValue, action.itemData)
+            })
+        );
+    }
+
+    @Action(DeleteTriageData)
+    deleteTriageData({ setState }: StateContext<TriageStateModel>, action: DeleteTriageData): void {
+        setState(
+            patch({
+                triageDataByDettaglioTipologia: removeItem<ItemTriageData>((itemData: ItemTriageData) => itemData.itemValue === action.itemDataValue)
+            })
+        );
     }
 }
