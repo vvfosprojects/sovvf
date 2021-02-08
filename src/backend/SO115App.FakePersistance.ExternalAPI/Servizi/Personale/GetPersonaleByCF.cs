@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -20,10 +16,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     ///   classe che estende l'interfaccia e recupera la persona fisica partendo dal codice fiscale
     ///   su Utenti Comuni
     /// </summary>
-    public class GetPersonaleByCF : BaseService, IGetPersonaleByCF
+    public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext) { }
+        private readonly Client.IHttpRequestManager<List<PersonaleVVF>> _client;
+        private readonly IConfiguration _configuration;
+        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration) { _client = client; _configuration = configuration; }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
@@ -58,12 +55,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 Parallel.ForEach(codSede, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                    httpManager.Configure("Personale_" + sede);
+                    //var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+                    _client.Configure("Personale_" + sede);
 
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
-                        listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
+                        listaPersonale.AddRange(_client.GetAsync(url, "").Result);
                 });
             }
             catch (Exception e)

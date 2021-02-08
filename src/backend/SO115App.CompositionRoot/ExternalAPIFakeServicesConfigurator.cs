@@ -20,7 +20,6 @@
 using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.AFM;
@@ -56,7 +55,8 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
-            container.Register<IHttpRequestManager<object>, HttpRequestManager<object>>();
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.HttpRequestManager<>));
+            container.Register(typeof(ExternalAPI.Fake.HttpManager.IHttpRequestManager<>), typeof(ExternalAPI.Fake.HttpManager.HttpRequestManager<>));
 
             #region NUE
 
