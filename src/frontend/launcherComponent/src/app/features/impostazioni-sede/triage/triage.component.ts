@@ -15,7 +15,8 @@ import {
     SetNewTriage,
     AddTriageData,
     DeleteTriageData,
-    UpdateTriage, SetNewTriageData
+    UpdateTriage,
+    SetNewTriageData
 } from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';

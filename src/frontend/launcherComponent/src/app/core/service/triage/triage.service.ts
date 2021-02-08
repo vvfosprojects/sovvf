@@ -27,9 +27,9 @@ export class TriageService {
 
     add(codTipologia: number, codDettaglioTipologia: number, triage: TreeItem, triageData: ItemTriageData[]): Observable<any> {
         const obj = {
+            codTipologia,
+            codDettaglioTipologia,
             triage: {
-                codTipologia,
-                codDettaglioTipologia,
                 data: triage
             },
             listaTriageData: triageData?.length ? triageData : null
@@ -39,11 +39,11 @@ export class TriageService {
 
     update(idTriage: string, codTipologia: number, codDettaglioTipologia: number, triage: TreeItem, triageData: ItemTriageData[]): Observable<any> {
         const obj = {
+            codTipologia,
+            codDettaglioTipologia,
             triage: {
                 id: idTriage,
-                codTipologia,
-                codDettaglioTipologia,
-                data: triage
+                data: triage ? triage : null
             },
             listaTriageData: triageData?.length ? triageData : null
         };
