@@ -19,15 +19,29 @@ namespace SO115App.Persistence.MongoDB.GestioneTriage
         {
             var filter = Builders<Triage>.Filter.Eq(s => s.Id, upDateTriageCommand.Triage.Id);
 
-            _dBContex.TriageCollection.ReplaceOne(filter, upDateTriageCommand.Triage);
+            if (upDateTriageCommand.Triage.data == null)
+                _dBContex.TriageCollection.DeleteOne(filter);
+            else
+                _dBContex.TriageCollection.ReplaceOne(filter, upDateTriageCommand.Triage);
 
             if (upDateTriageCommand.ListaTriageData != null)
             {
+                var filterDataDelete = Builders<TriageData>.Filter.Eq(s => s.CodDettaglioTipologia, upDateTriageCommand.codDettaglioTipologia);
+                filterDataDelete &= Builders<TriageData>.Filter.Eq(s => s.CodTipologia, upDateTriageCommand.CodTipologia);
+                filterDataDelete &= Builders<TriageData>.Filter.Eq(s => s.CodiceSede, upDateTriageCommand.Triage.CodiceSede);
+                _dBContex.TriageDataCollection.DeleteMany(filterDataDelete);
+
                 foreach (var data in upDateTriageCommand.ListaTriageData)
                 {
-                    var filterData = Builders<TriageData>.Filter.Eq(s => s.Id, data.Id);
-                    _dBContex.TriageDataCollection.ReplaceOne(filterData, data);
+                    _dBContex.TriageDataCollection.InsertOne(data);
                 }
+            }
+            else
+            {
+                var filterData = Builders<TriageData>.Filter.Eq(s => s.CodDettaglioTipologia, upDateTriageCommand.codDettaglioTipologia);
+                filterData &= Builders<TriageData>.Filter.Eq(s => s.CodTipologia, upDateTriageCommand.CodTipologia);
+                filterData &= Builders<TriageData>.Filter.Eq(s => s.CodiceSede, upDateTriageCommand.Triage.CodiceSede);
+                _dBContex.TriageDataCollection.DeleteMany(filterData);
             }
         }
     }
