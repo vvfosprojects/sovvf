@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Client
 {
-    public sealed class HttpRequestManager<ResponseObject> : BaseService, IHttpRequestManager<ResponseObject> where ResponseObject : class
+    internal sealed class HttpRequestManager<ResponseObject> : BaseService, IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         private AsyncPolicyWrap<HttpResponseMessage> policies;
 

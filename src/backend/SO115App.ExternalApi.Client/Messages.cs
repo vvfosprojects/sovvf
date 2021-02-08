@@ -20,7 +20,7 @@
 
 namespace SO115App.ExternalAPI.Client
 {
-    public static class Messages
+    internal static class Messages
     {
         public const string ServizioNonRaggiungibile = "Servizio non raggiungibile. Consultare il log e contattare il supporto tecnico.";
 

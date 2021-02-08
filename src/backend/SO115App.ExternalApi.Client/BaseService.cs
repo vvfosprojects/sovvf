@@ -6,7 +6,7 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Client
 {
-    public abstract class BaseService
+    internal abstract class BaseService
     {
         protected readonly HttpClient _client;
         protected readonly IConfiguration _configuration;
@@ -14,7 +14,7 @@ namespace SO115App.ExternalAPI.Client
         protected readonly IWriteLog _writeLog;
         protected readonly IHttpContextAccessor _httpContext;
 
-        private BaseService() { }
+        //private BaseService() { }
         public BaseService(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
         {
             _client = client;

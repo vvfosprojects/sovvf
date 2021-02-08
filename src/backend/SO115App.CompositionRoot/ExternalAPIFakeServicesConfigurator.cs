@@ -41,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -55,7 +56,10 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
-            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.HttpRequestManager<>));
+
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+
+            //Eliminare vecchia implementazione e sostituire con nuova (sopra)
             container.Register(typeof(ExternalAPI.Fake.HttpManager.IHttpRequestManager<>), typeof(ExternalAPI.Fake.HttpManager.HttpRequestManager<>));
 
             #region NUE
