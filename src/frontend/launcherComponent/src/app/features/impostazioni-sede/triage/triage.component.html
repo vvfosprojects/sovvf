@@ -200,6 +200,12 @@
                     {{ getItemData(item)?.prioritaConsigliata }}
                 </label>
             </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.noteOperatore">
+                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    Note Operatore Inserite
+                </label>
+            </ng-template>
             <ng-template [ngIf]="viewEditButtons">
                 <ng-template [ngIf]="item.children?.length <= 0 && !getItemData(item)">
                     <button class="btn btn-primary ml-3"

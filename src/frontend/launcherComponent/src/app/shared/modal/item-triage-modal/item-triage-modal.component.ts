@@ -19,7 +19,7 @@ export class ItemTriageModalComponent implements OnInit {
     editMode: boolean;
     itemDataEdit: ItemTriageData;
     domandaSeguente: string;
-    disableDomanda: any;
+    disableDomanda: boolean;
 
     item: TreeviewItem;
 
@@ -42,13 +42,15 @@ export class ItemTriageModalComponent implements OnInit {
             soccorsoAereo: new FormControl(),
             generiMezzo: new FormControl(),
             prioritaConsigliata: new FormControl(),
-            domandaSeguente: new FormControl()
+            domandaSeguente: new FormControl(),
+            noteOperatore: new FormControl()
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
             generiMezzo: [null],
             prioritaConsigliata: [null],
-            domandaSeguente: [null]
+            domandaSeguente: [null],
+            noteOperatore: [null]
         });
     }
 
@@ -57,6 +59,7 @@ export class ItemTriageModalComponent implements OnInit {
             soccorsoAereo: this.itemDataEdit?.soccorsoAereo,
             generiMezzo: this.itemDataEdit?.generiMezzo,
             prioritaConsigliata: this.itemDataEdit?.prioritaConsigliata,
+            noteOperatore: this.itemDataEdit?.noteOperatore,
             domandaSeguente: this.domandaSeguente
         });
     }
@@ -66,7 +69,7 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     formIsInvalid(): boolean {
-        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value;
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value;
     }
 
     onConferma(): void {
@@ -76,6 +79,7 @@ export class ItemTriageModalComponent implements OnInit {
                 domandaSeguente: this.f.domandaSeguente.value,
                 soccorsoAereo: this.f.soccorsoAereo.value,
                 generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
+                noteOperatore: this.f.noteOperatore.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
             this.modal.close({ success: true, data: item });

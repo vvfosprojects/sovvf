@@ -22,11 +22,9 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
-import { addQuestionMark, capitalize, makeCopy, wipeStringUppercase } from '../../../shared/helper/function';
+import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
-import { GestioneUtenteModalComponent } from '../../gestione-utenti/gestione-utente-modal/gestione-utente-modal.component';
-import { AddUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente } from '../../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -236,7 +234,7 @@ export class TriageComponent implements OnDestroy {
         this.addItem();
     }
 
-    getItemData(item: TreeItem): any {
+    getItemData(item: TreeItem): ItemTriageData {
         const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
             return itemData;
@@ -326,7 +324,8 @@ export class TriageComponent implements OnDestroy {
             itemValue: item.value,
             soccorsoAereo: null,
             generiMezzo: null,
-            prioritaConsigliata: null
+            prioritaConsigliata: null,
+            noteOperatore: null
         } as ItemTriageData;
         if (res.data.soccorsoAereo) {
             itemData.soccorsoAereo = res.data.soccorsoAereo;
@@ -337,12 +336,15 @@ export class TriageComponent implements OnDestroy {
         if (res.data.prioritaConsigliata) {
             itemData.prioritaConsigliata = res.data.prioritaConsigliata;
         }
+        if (res.data.noteOperatore) {
+            itemData.noteOperatore = res.data.noteOperatore;
+        }
         if (otherDataValues(itemData)) {
             this.store.dispatch(new AddTriageData(itemData));
         }
 
         function otherDataValues(data: any): boolean {
-            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata;
+            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata || data?.noteOperatore;
         }
     }
 
@@ -387,14 +389,16 @@ export class TriageComponent implements OnDestroy {
                         itemValue: item.value,
                         soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
                         generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
-                        prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null
+                        prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null,
+                        noteOperatore: itemDataFound.noteOperatore ? itemDataFound.noteOperatore : null
                     };
                 } else {
                     newItemData = {
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,
-                        prioritaConsigliata: null
+                        prioritaConsigliata: null,
+                        noteOperatore: null
                     };
                 }
 
@@ -413,12 +417,17 @@ export class TriageComponent implements OnDestroy {
                 } else {
                     newItemData.prioritaConsigliata = null;
                 }
+                if (res.data.noteOperatore) {
+                    newItemData.noteOperatore = res.data.noteOperatore;
+                } else {
+                    newItemData.noteOperatore = null;
+                }
 
                 if (itemDataFound) {
                     this.store.dispatch(new DeleteTriageData(item.value));
                 }
 
-                if (newItemData.soccorsoAereo || newItemData.generiMezzo?.length || newItemData.prioritaConsigliata) {
+                if (newItemData?.soccorsoAereo || newItemData.generiMezzo?.length || newItemData?.prioritaConsigliata || newItemData?.noteOperatore) {
                     this.store.dispatch(new AddTriageData(newItemData));
                 }
                 this.updateTriage(this.tItems[0]);
@@ -547,6 +556,7 @@ export class TriageComponent implements OnDestroy {
         this.store.dispatch(new SetNewTriage(newTriage));
     }
 
+    // TODO: fixare rimuovendo "internalChildren" ecc. che si modificano ogni volta che, ad esempio, espando un item del treeview
     getSaveButtonActive(): boolean {
         const triageString = JSON.stringify(this.tItems);
         const backupTriageString = JSON.stringify(this.tItemsBackup);
