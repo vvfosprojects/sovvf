@@ -96,14 +96,22 @@
                         </app-checkbox>
                     </div>
                 </ng-template>
-                <div *ngIf="unsavedModifiche" class="alert alert-danger font-weight-bolder mt-3">
+                <div *ngIf="getSaveButtonActive()" class="alert alert-danger font-weight-bolder mt-3">
                     Ci sono modifiche non ancora salvate, si prega di salvare per non perdere le modifiche.
                 </div>
                 <div class="text-left"
-                     [class.mt-4]="!unsavedModifiche">
-                    <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2" (click)="saveTriage()">
-                        {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
-                    </button>
+                     [class.mt-4]="!getSaveButtonActive()">
+                    <ng-template [ngIf]="getSaveButtonActive()">
+                        <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                                (click)="saveTriage()">
+                            {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                        </button>
+                    </ng-template>
+                    <ng-template [ngIf]="tItemsBackup">
+                        <button class="btn btn-lg btn-no-hover btn-danger font-weight-bolder" (click)="removeTriage()">
+                            {{ 'Elimina Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                        </button>
+                    </ng-template>
                 </div>
             </ng-template>
             <ng-template [ngIf]="!tItems">

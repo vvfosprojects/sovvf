@@ -78,6 +78,16 @@ export class TriageCrudState {
     }
 
     @Selector()
+    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+        return state._backupTriageByDettaglioTipologia;
+    }
+
+    @Selector()
+    static _backupTriageDataByDettaglioTipologia(state: TriageStateModel): ItemTriageData[] {
+        return state._backupTriageDataByDettaglioTipologia;
+    }
+
+    @Selector()
     static editMode(state: TriageStateModel): boolean {
         return state.editMode;
     }
@@ -141,31 +151,6 @@ export class TriageCrudState {
         });
     }
 
-    @Action(AddTriage)
-    addTriage({ getState }: StateContext<TriageStateModel>): void {
-        const state = getState();
-        const codTipologia = state.dettaglioTipologia.codiceTipologia;
-        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        const triage = state.triageByDettaglioTipologia;
-        const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
-            console.log('Save triage service response', res);
-        });
-    }
-
-    @Action(UpdateTriage)
-    updateTriage({ getState }: StateContext<TriageStateModel>): void {
-        const state = getState();
-        const idTriage = state.idTriage;
-        const codTipologia = state.dettaglioTipologia.codiceTipologia;
-        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        const triage = state.triageByDettaglioTipologia;
-        const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
-            console.log('Update triage service response', res);
-        });
-    }
-
     @Action(DeleteTriage)
     deleteTriage({ getState }: StateContext<TriageStateModel>): void {
         const state = getState();
@@ -202,5 +187,30 @@ export class TriageCrudState {
                 triageDataByDettaglioTipologia: removeItem<ItemTriageData>((itemData: ItemTriageData) => itemData.itemValue === action.itemDataValue)
             })
         );
+    }
+
+    @Action(AddTriage)
+    addTriage({ getState, dispatch }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const codTipologia = state.dettaglioTipologia.codiceTipologia;
+        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
+        const triage = state.triageByDettaglioTipologia;
+        const triageData = state.triageDataByDettaglioTipologia;
+        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+            dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
+        });
+    }
+
+    @Action(UpdateTriage)
+    updateTriage({ getState, dispatch }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const idTriage = state.idTriage;
+        const codTipologia = state.dettaglioTipologia.codiceTipologia;
+        const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
+        const triage = state.triageByDettaglioTipologia;
+        const triageData = state.triageDataByDettaglioTipologia;
+        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+            dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
+        });
     }
 }
