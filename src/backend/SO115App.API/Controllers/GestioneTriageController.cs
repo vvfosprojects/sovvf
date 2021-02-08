@@ -37,7 +37,7 @@ namespace SO115App.API.Controllers
 
             triage.Triage.CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0];
 
-            triage.Triage.CodDettaglioTipologia = triage.codDettaglioTipologia;
+            triage.Triage.CodDettaglioTipologia = triage.CodDettaglioTipologia;
             triage.Triage.CodTipologia = triage.CodTipologia;
 
             if (triage.ListaTriageData != null)
@@ -46,7 +46,7 @@ namespace SO115App.API.Controllers
                 {
                     item.CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0];
                     item.CodTipologia = triage.CodTipologia;
-                    item.CodDettaglioTipologia = triage.codDettaglioTipologia;
+                    item.CodDettaglioTipologia = triage.CodDettaglioTipologia;
                 }
             }
 
