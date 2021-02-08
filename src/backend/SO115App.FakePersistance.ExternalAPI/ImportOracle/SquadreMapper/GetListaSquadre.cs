@@ -118,9 +118,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                             bool capoPartenza = false; bool autista = false;
                             if (p.FLAG_CAPO_SQUADRA.Equals("S")) capoPartenza = true;
                             if (p.AUTISTA.Equals("S")) autista = true;
-                            Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                            Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.nome, pVVf.nome, capoPartenza, autista, false)
                             {
-                                CodiceFiscale = pVVf.CodFiscale,
+                                CodiceFiscale = pVVf.codiceFiscale,
                             };
                             if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
                             if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;

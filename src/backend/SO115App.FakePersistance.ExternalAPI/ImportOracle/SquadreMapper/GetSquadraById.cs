@@ -92,8 +92,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
                         PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
 
-                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false);
-                        c.CodiceFiscale = pVVf.CodFiscale;
+                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.nome, pVVf.nome, capoPartenza, autista, false);
+                        c.CodiceFiscale = pVVf.codiceFiscale;
 
                         if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
                         if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;

@@ -30,12 +30,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             if (codSede != null)
             {
                 var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(new string[] { codSede }).Result;
-                return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
+                return ListaPersonaleVVF.Find(x => x.codiceFiscale.Equals(codiceFiscale));
             }
             else
             {
                 var Persona = GetPersonaleVVFExternalAPIByCF(new string[] { codiceFiscale }).Result;
-                return Persona.Find(x => x.CodFiscale.Equals(codiceFiscale));
+                return Persona.Find(x => x.codiceFiscale.Equals(codiceFiscale));
             }
         }
 
@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             if (codSede != null)
             {
                 var lstPersonale = GetPersonaleVVFExternalAPI(codSede).Result;
-                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.CodFiscale));
+                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.codiceFiscale));
             }
             else
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
