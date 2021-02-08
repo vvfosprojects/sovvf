@@ -22,9 +22,12 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
-import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
+import { addQuestionMark, capitalize, makeCopy, wipeStringUppercase } from '../../../shared/helper/function';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
+import { GestioneUtenteModalComponent } from '../../gestione-utenti/gestione-utente-modal/gestione-utente-modal.component';
+import { AddUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente } from '../../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-triage',
@@ -408,11 +411,50 @@ export class TriageComponent {
     }
 
     removeItem(item: TreeviewItem): void {
-        const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
-        parent.children = null;
-        this.tItemsData = this.removeItemData(item);
-        this.updateTriage(this.tItems[0]);
-        this.store.dispatch(new SetNewTriageData(this.tItemsData));
+        let removeTriageItemModal;
+        if (this.doubleMonitor) {
+            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        } else {
+            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        }
+        removeTriageItemModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        removeTriageItemModal.componentInstance.titolo = 'Eliminazione "' + item.text + '"';
+        removeTriageItemModal.componentInstance.messaggio = 'Sei sicuro di voler rimuovere "' + item.text + '" ?';
+        removeTriageItemModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i nodi sottostanti verranno eliminati.';
+        removeTriageItemModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        removeTriageItemModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
+                        parent.children = null;
+                        this.tItemsData = this.removeItemData(item);
+                        this.updateTriage(this.tItems[0]);
+                        this.store.dispatch(new SetNewTriageData(this.tItemsData));
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
     }
 
     removeItemData(item: TreeItem): ItemTriageData[] {
