@@ -24,6 +24,7 @@ import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 
 export interface TriageStateModel {
+    idTriage: string;
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
     triageByDettaglioTipologia: TreeItem;
@@ -34,6 +35,7 @@ export interface TriageStateModel {
 }
 
 export const TriageStateDefaults: TriageStateModel = {
+    idTriage: undefined,
     dettagliTipologie: null,
     dettaglioTipologia: null,
     triageByDettaglioTipologia: null,
@@ -106,8 +108,9 @@ export class TriageCrudState {
 
     @Action(GetTriageByCodDettaglioTipologia)
     getTriageByCodDettaglioTipologia({ patchState }: StateContext<TriageStateModel>, action: GetTriageByCodDettaglioTipologia): void {
-        this.triageService.get(action.codTipologia, action.codDettaglioTipologia).subscribe((response: { triage: { data: TreeviewItem }, triageData }) => {
+        this.triageService.get(action.codTipologia, action.codDettaglioTipologia).subscribe((response: { triage: { id: string, data: TreeviewItem }, triageData }) => {
             patchState({
+                idTriage: response.triage?.id,
                 triageByDettaglioTipologia: response.triage?.data,
                 triageDataByDettaglioTipologia: response.triageData,
                 _backupTriageByDettaglioTipologia: response.triage?.data,
@@ -153,11 +156,12 @@ export class TriageCrudState {
     @Action(UpdateTriage)
     updateTriage({ getState }: StateContext<TriageStateModel>): void {
         const state = getState();
+        const idTriage = state.idTriage;
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.triageByDettaglioTipologia;
         const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.update(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             console.log('Update triage service response', res);
         });
     }

@@ -15,7 +15,7 @@ import {
     SetNewTriage,
     AddTriageData,
     DeleteTriageData,
-    UpdateTriage
+    UpdateTriage, SetNewTriageData
 } from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
@@ -409,29 +409,37 @@ export class TriageComponent {
     removeItem(item: TreeviewItem): void {
         const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
         parent.children = null;
-        this.removeItemData(parent);
+        this.tItemsData = this.removeItemData(item);
         this.updateTriage(this.tItems[0]);
+        this.store.dispatch(new SetNewTriageData(this.tItemsData));
     }
 
-    removeItemData(item: TreeItem): void {
+    removeItemData(item: TreeItem): ItemTriageData[] {
+        const itemsData = makeCopy(this.tItemsData);
         // Rimuovo "data" dell'item
-        removeData(this.tItemsData, item);
+        removeData(itemsData, item);
         // Rimuovo "data" dei figli/sottofigli e così via
-        removeDataRecursively(this.tItemsData, item, item.value);
+        removeDataRecursively(itemsData, item, item.value);
 
-        function removeData(tItemsData: any, element: TreeItem): void {
+        return itemsData;
+
+        function removeData(tItemsData: ItemTriageData[], element: TreeItem): void {
             let index = 0;
             let iItemDataFound: number;
+            let deleteItemData: boolean;
             for (const tItemData of tItemsData) {
-                index = index + 1;
                 if (tItemData.itemValue === element.value) {
                     iItemDataFound = index;
+                    deleteItemData = true;
                 }
+                index = index + 1;
             }
-            tItemsData.splice(iItemDataFound, 1);
+            if (deleteItemData) {
+                tItemsData.splice(iItemDataFound, 1);
+            }
         }
 
-        function removeDataRecursively(tItemsData: any, element: TreeItem, value: string): void {
+        function removeDataRecursively(tItemsData: ItemTriageData[], element: TreeItem, value: string): void {
             removeData(tItemsData, element);
             if (element.children != null) {
                 let i: number;
