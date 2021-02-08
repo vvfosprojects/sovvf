@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
@@ -35,7 +35,7 @@ import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confi
     styleUrls: ['./triage.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TriageComponent {
+export class TriageComponent implements OnDestroy {
 
     tConfig = {
         hasAllCheckBox: false,
@@ -56,11 +56,16 @@ export class TriageComponent {
     dettaglioTipologia: DettaglioTipologia;
 
     @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeItem>;
-    tItems: TreeviewItem[];
+    tItems: TreeItem[];
     @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
     @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
     editMode: boolean;
+
+    @Select(TriageCrudState._backupTriageByDettaglioTipologia) backupTriageByDettaglioTipologia$: Observable<TreeItem>;
+    tItemsBackup: TreeItem[];
+    @Select(TriageCrudState._backupTriageDataByDettaglioTipologia) backupTriageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
+    tItemsDataBackup: ItemTriageData[];
 
     codTipologia: string;
     codDettaglioTipologia: any;
@@ -72,8 +77,6 @@ export class TriageComponent {
     itemValueTitleEdit: string;
     itemTitleEdit: string;
 
-    unsavedModifiche: boolean;
-
     private subscription = new Subscription();
 
     constructor(private store: Store,
@@ -84,6 +87,10 @@ export class TriageComponent {
         this.getDettaglioTipologia();
         this.getDoubleMonitor();
         this.getEditMode();
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     getDoubleMonitor(): void {
@@ -130,7 +137,7 @@ export class TriageComponent {
 
     getTriageByDettaglioTipologia(): void {
         this.subscription.add(
-            this.triageByDettaglioTipologia$.subscribe((triage: any) => {
+            this.triageByDettaglioTipologia$.subscribe((triage: TreeItem) => {
                 if (triage) {
                     let index = 0;
                     const mappedTriage = [];
@@ -141,19 +148,39 @@ export class TriageComponent {
                     }
                     this.tItems = [];
                     this.tItems[0] = mappedTriage[0];
-                }
-
-                function getFatherMapped(item): TreeviewItem {
-                    return new TreeviewItem({
-                        text: item.text,
-                        value: item.value,
-                        children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
-                        collapsed: item.internalCollapsed,
-                        disabled: item.internalDisabled
-                    });
+                } else {
+                    this.tItems = null;
                 }
             })
         );
+        this.subscription.add(
+            this.backupTriageByDettaglioTipologia$.subscribe((backupTriage: TreeItem) => {
+                if (backupTriage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(backupTriage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.tItemsBackup = [];
+                    this.tItemsBackup[0] = mappedTriage[0];
+                } else {
+                    this.tItemsBackup = null;
+                }
+            })
+        );
+
+
+        function getFatherMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
 
         function mapTreeviewItems(childrens: any): any {
             const childrensCopy = childrens;
@@ -185,6 +212,13 @@ export class TriageComponent {
             this.triageDataByDettaglioTipologia$.subscribe((triageData: ItemTriageData[]) => {
                 if (triageData) {
                     this.tItemsData = triageData;
+                }
+            })
+        );
+        this.subscription.add(
+            this.backupTriageDataByDettaglioTipologia$.subscribe((backupTriageData: ItemTriageData[]) => {
+                if (backupTriageData) {
+                    this.tItemsDataBackup = backupTriageData;
                 }
             })
         );
@@ -270,7 +304,6 @@ export class TriageComponent {
         ];
         this.updateTriage(this.tItems[0]);
         this.toggleViewEditButtons();
-        this.unsavedModifiche = true;
     }
 
     addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
@@ -286,7 +319,6 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
-        this.unsavedModifiche = true;
     }
 
     addOtherData(res: any, item: TreeItem): void {
@@ -511,7 +543,16 @@ export class TriageComponent {
     }
 
     updateTriage(triage: TreeItem): void {
-        this.store.dispatch(new SetNewTriage(makeCopy(triage)));
+        const newTriage = triage ? makeCopy(triage) : null;
+        this.store.dispatch(new SetNewTriage(newTriage));
+    }
+
+    getSaveButtonActive(): boolean {
+        const triageString = JSON.stringify(this.tItems);
+        const backupTriageString = JSON.stringify(this.tItemsBackup);
+        const triageDataString = JSON.stringify(this.tItemsData);
+        const backupDataTriageString = JSON.stringify(this.tItemsDataBackup);
+        return (triageString !== backupTriageString) || (triageDataString !== backupDataTriageString);
     }
 
     saveTriage(): void {
@@ -519,6 +560,51 @@ export class TriageComponent {
             this.toggleViewEditButtons();
         }
         this.editMode ? this.store.dispatch(new UpdateTriage()) : this.store.dispatch(new AddTriage());
-        this.unsavedModifiche = false;
+    }
+
+    removeTriage(): void {
+        let removeTriageModal;
+        if (this.doubleMonitor) {
+            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        } else {
+            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        }
+        removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
+        removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati.';
+        removeTriageModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        removeTriageModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        if (this.viewEditButtons) {
+                            this.toggleViewEditButtons();
+                        }
+                        this.updateTriage(null);
+                        this.store.dispatch(new UpdateTriage());
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
     }
 }

@@ -78,6 +78,16 @@ export class TriageCrudState {
     }
 
     @Selector()
+    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+        return state._backupTriageByDettaglioTipologia;
+    }
+
+    @Selector()
+    static _backupTriageDataByDettaglioTipologia(state: TriageStateModel): ItemTriageData[] {
+        return state._backupTriageDataByDettaglioTipologia;
+    }
+
+    @Selector()
     static editMode(state: TriageStateModel): boolean {
         return state.editMode;
     }
