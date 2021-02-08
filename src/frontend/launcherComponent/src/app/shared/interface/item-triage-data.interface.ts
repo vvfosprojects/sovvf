@@ -3,4 +3,5 @@ export interface ItemTriageData {
     soccorsoAereo: string;
     generiMezzo: string[];
     prioritaConsigliata: string;
+    noteOperatore: string;
 }

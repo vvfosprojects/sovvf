@@ -28,4 +28,8 @@ export class MezziInServizioService {
         };
         return this.http.post<ResponseInterface>(`${API_MEZZI_IN_SERVIZIO}/GetListaMezzi`, obj);
     }
+
+    public getGeneriMezzo(): Observable<any> {
+        return this.http.get<any>(`${API_MEZZI_IN_SERVIZIO}/GetGeneriMezzo`);
+    }
 }
