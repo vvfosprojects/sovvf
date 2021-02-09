@@ -1,6 +1,6 @@
 <div class="py-2 px-3"
-     [class.text-white]="(sunMode$ | async)"
-     [class.moon-card-light]="(sunMode$ | async)"
+     [class.text-white]="(nightMode$ | async)"
+     [class.moon-card-light]="(nightMode$ | async)"
      [class.double-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
      (click)="richiestaClick(richiesta)"
      (dblclick)="richiestaDoubleClick(richiesta)"
@@ -35,7 +35,7 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
-                                <a class="h6" [class.text-white]="(sunMode$ | async)"
+                                <a class="h6" [class.text-white]="(nightMode$ | async)"
                                    (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
@@ -308,7 +308,7 @@
                                 </span>
                             <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge" [class.text-white]="(sunMode$ | async)">
+                                        <a class="font-xxlarge" [class.text-white]="(nightMode$ | async)">
                                           {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                           </div>
@@ -550,7 +550,7 @@
                                 <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                        placement="right"></i>
-                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-white]="(sunMode$ | async)">
+                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-white]="(nightMode$ | async)">
                                         {{ richiesta?.codiceSchedaNue }}
                                     </a>
                                     <ng-template #nessunCodiceNue>

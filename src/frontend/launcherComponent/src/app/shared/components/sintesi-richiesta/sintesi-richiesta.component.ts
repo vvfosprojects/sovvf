@@ -84,7 +84,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     doubleMonitor: boolean;
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
     mapsIsActive: boolean;
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     methods = new HelperSintesiRichiesta();
@@ -146,8 +146,8 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

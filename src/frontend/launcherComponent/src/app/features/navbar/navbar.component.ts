@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledMezziInServizio: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
@@ -114,8 +114,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

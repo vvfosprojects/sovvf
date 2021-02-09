@@ -26,8 +26,8 @@ import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/im
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
-    sunMode: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -46,7 +46,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -63,19 +63,19 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeBox(): string {
+    nightModeBox(): string {
       let value = '';
-      if (!this.sunMode) {
+      if (!this.nightMode) {
         value = 'card app-shadow';
-      } else if (this.sunMode) {
+      } else if (this.nightMode) {
         value = 'moon-text moon-card-light';
       }
       return value;

@@ -16,7 +16,7 @@ export class FiltriMappaComponent implements OnDestroy {
 
     @Select(MapsFiltroState.filtroMarker) filtroMarker$: Observable<MarkerFiltro[]>;
     filtroMarker: MarkerFiltro[];
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     constructor(private store: Store) {
@@ -30,8 +30,8 @@ export class FiltriMappaComponent implements OnDestroy {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

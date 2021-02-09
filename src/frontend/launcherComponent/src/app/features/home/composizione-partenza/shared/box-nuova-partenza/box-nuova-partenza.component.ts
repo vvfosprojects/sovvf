@@ -37,7 +37,7 @@ export class BoxNuovaPartenzaComponent {
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     itemBloccato: boolean;
@@ -69,8 +69,8 @@ export class BoxNuovaPartenzaComponent {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

@@ -30,7 +30,7 @@ export class SquadraComposizioneComponent {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     private subscription = new Subscription();
@@ -58,8 +58,8 @@ export class SquadraComposizioneComponent {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

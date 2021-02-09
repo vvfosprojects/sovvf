@@ -21,9 +21,7 @@ import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/sto
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
-import {ViewportState} from './shared/store/states/viewport/viewport.state';
-import {ImpostazioniState, ImpostazioniStateModel} from './shared/store/states/impostazioni/impostazioni.state';
-import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
+import {ImpostazioniState} from './shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-root',
@@ -46,7 +44,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
@@ -112,8 +110,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
           const body = document.querySelectorAll('body')[0];
           if (this.sunMode) {
             this.render.addClass(body, 'sun-mode');

@@ -115,7 +115,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     Composizione = Composizione;
@@ -280,8 +280,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }

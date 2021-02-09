@@ -14,7 +14,7 @@ import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni
 })
 export class BoxPersonaleComponent implements OnChanges {
 
-    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     @Input() personaleQty: BoxPersonaleQty;
@@ -58,8 +58,8 @@ export class BoxPersonaleComponent implements OnChanges {
 
     getSunMode(): void {
       this.subscription.add(
-        this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = !sunMode;
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
         })
       );
     }
