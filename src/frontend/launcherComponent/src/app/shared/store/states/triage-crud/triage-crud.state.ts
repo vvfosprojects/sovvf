@@ -13,7 +13,9 @@ import {
     DeleteTriage,
     AddTriageData,
     DeleteTriageData,
-    UpdateTriageData
+    UpdateTriageData,
+    GetGeneriMezzo,
+    ClearGeneriMezzo
 } from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
@@ -22,6 +24,8 @@ import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { GeneriMezzoService } from '../../../../core/service/generi-mezzo/generi-mezzo.service';
+import { GenereMezzo } from '../../../interface/genere-mezzo.interface';
 
 export interface TriageStateModel {
     idTriage: string;
@@ -32,6 +36,7 @@ export interface TriageStateModel {
     _backupTriageByDettaglioTipologia: TreeItem;
     _backupTriageDataByDettaglioTipologia: ItemTriageData[];
     editMode: boolean;
+    generiMezzo: GenereMezzo[];
 }
 
 export const TriageStateDefaults: TriageStateModel = {
@@ -43,6 +48,7 @@ export const TriageStateDefaults: TriageStateModel = {
     _backupTriageByDettaglioTipologia: null,
     _backupTriageDataByDettaglioTipologia: null,
     editMode: undefined,
+    generiMezzo: null
 };
 
 @Injectable()
@@ -54,7 +60,8 @@ export const TriageStateDefaults: TriageStateModel = {
 export class TriageCrudState {
 
     constructor(private detttagliTipologieService: DetttagliTipologieService,
-                private triageService: TriageService) {
+                private triageService: TriageService,
+                private generiMezzoService: GeneriMezzoService) {
     }
 
     @Selector()
@@ -90,6 +97,11 @@ export class TriageCrudState {
     @Selector()
     static editMode(state: TriageStateModel): boolean {
         return state.editMode;
+    }
+
+    @Selector()
+    static generiMezzo(state: TriageStateModel): GenereMezzo[] {
+        return state.generiMezzo;
     }
 
     @Action(GetDettagliTipologieByCodTipologia)
@@ -134,6 +146,22 @@ export class TriageCrudState {
     clearTriage({ patchState }: StateContext<TriageStateModel>): void {
         patchState({
             triageByDettaglioTipologia: null
+        });
+    }
+
+    @Action(GetGeneriMezzo)
+    getGeneriMezzo({ patchState }: StateContext<TriageStateModel>): void {
+        this.generiMezzoService.get().subscribe((generiMezzo: GenereMezzo[]) => {
+            patchState({
+                generiMezzo
+            });
+        });
+    }
+
+    @Action(ClearGeneriMezzo)
+    clearGeneriMezzo({ patchState }: StateContext<TriageStateModel>): void {
+        patchState({
+            generiMezzo: TriageStateDefaults.generiMezzo
         });
     }
 

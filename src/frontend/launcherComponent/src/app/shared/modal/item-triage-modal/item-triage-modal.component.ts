@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
+import { GenereMezzo } from '../../interface/genere-mezzo.interface';
+import { Select, Store } from '@ngxs/store';
+import { TriageCrudState } from '../../store/states/triage-crud/triage-crud.state';
+import { Observable, Subscription } from 'rxjs';
+import { ClearGeneriMezzo } from '../../store/actions/triage-crud/triage-crud.actions';
 
 @Component({
     selector: 'app-item-triage-modal',
     templateUrl: './item-triage-modal.component.html',
     styleUrls: ['./item-triage-modal.component.scss']
 })
-export class ItemTriageModalComponent implements OnInit {
+export class ItemTriageModalComponent implements OnInit, OnDestroy {
+
+    @Select(TriageCrudState.generiMezzo) generiMezzo$: Observable<GenereMezzo[]>;
+    generiMezzo: GenereMezzo[];
 
     domandaTitle: string;
     rispostaTitle: string;
@@ -17,7 +25,9 @@ export class ItemTriageModalComponent implements OnInit {
     primaDomanda: boolean;
 
     editMode: boolean;
+
     itemDataEdit: ItemTriageData;
+
     domandaSeguente: string;
     disableDomanda: boolean;
 
@@ -25,9 +35,15 @@ export class ItemTriageModalComponent implements OnInit {
 
     addItemTriageForm: FormGroup;
 
+    private subscription: Subscription = new Subscription();
+
     constructor(private modal: NgbActiveModal,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private store: Store) {
         this.initForm();
+        if (!this.primaDomanda) {
+            this.getGeneriMezzo();
+        }
     }
 
     ngOnInit(): void {
@@ -35,6 +51,19 @@ export class ItemTriageModalComponent implements OnInit {
         if (this.disableDomanda) {
             this.f.domandaSeguente.disable();
         }
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.store.dispatch(new ClearGeneriMezzo());
+    }
+
+    getGeneriMezzo(): void {
+        this.subscription.add(
+            this.generiMezzo$.subscribe((generiMezzo: GenereMezzo[]) => {
+                this.generiMezzo = generiMezzo;
+            })
+        );
     }
 
     initForm(): void {

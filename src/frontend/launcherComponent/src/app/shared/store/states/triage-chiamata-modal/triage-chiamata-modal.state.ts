@@ -11,20 +11,25 @@ import {
 } from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
-import { TreeviewItem } from 'ngx-treeview';
+import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 
 export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
     codTipologiaSelezionata: number;
     codDettagliTipologiaSelezionato: number;
     triage: TreeviewItem;
+    triageData: ItemTriageData[];
+    idTriage: string;
 }
 
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
     dettagliTipologia: null,
     codTipologiaSelezionata: undefined,
     codDettagliTipologiaSelezionato: undefined,
-    triage: null
+    triage: null,
+    triageData: null,
+    idTriage: undefined
 };
 
 @Injectable()
@@ -85,9 +90,11 @@ export class TriageChiamataModalState {
         const state = getState();
         const codTipologiaSelezionata = state.codTipologiaSelezionata;
         const codDettaglioTipologiaSelezionata = state.codDettagliTipologiaSelezionato;
-        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((triage: { data: TreeviewItem }) => {
+        this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((res: { triage: { id: string, data: TreeviewItem }, triageData: ItemTriageData[] }) => {
             patchState({
-                triage: triage.data
+                idTriage: res?.triage?.id,
+                triage: res?.triage?.data,
+                triageData: res?.triageData
             });
         });
     }
