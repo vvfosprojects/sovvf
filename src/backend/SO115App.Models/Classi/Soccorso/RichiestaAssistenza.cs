@@ -972,7 +972,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         public int CodiceUltimaPartenza => Partenze.Count != 0 ?
             Partenze?.Select(c => c.Partenza.Codice).Max() ?? 0
             : 0;
-        public int CodiceUltimaPartenza => Partenze.Select(c => c.Partenza.Codice).Max();
 
         /// <summary>
         ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
