@@ -29,6 +29,7 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
         /// </summary>
         /// <param name="partenzaDaLavorare">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
@@ -120,7 +121,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                 partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
             }
-
             else if (stato.Stato == Costanti.MezzoSulPosto)
             {
                 new ArrivoSulPosto(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenzaDaLavorare.Partenza.Codice);
@@ -130,7 +130,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
                 partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
             }
-
             else if (stato.Stato == Costanti.MezzoInRientro)
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
@@ -140,7 +139,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                 if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
-
             else if (stato.Stato == Costanti.MezzoRientrato)
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
@@ -152,13 +150,11 @@ namespace SO115App.API.Models.Classi.Soccorso
                 if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
-
             else if (stato.Stato == Costanti.MezzoInViaggio)
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                 partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
             }
-
             else if (stato.Stato == Costanti.MezzoInUscita)
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
@@ -171,7 +167,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Aggiorno lo stato della richiesta in base al vecchio stato
+        ///   Aggiorno lo stato della richiesta in base al vecchio stato
         /// </summary>
         /// <param name="stato">stato da attribuire alla richiesta</param>
         /// <param name="statoRichiesta">stato attuale della richiesta</param>
@@ -923,7 +919,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             if (_eventi.Count != 0 && !_eventi.Any() && evento.Istante >= _eventi.Max(c => c.Istante))
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
-            
+
             _eventi.Add(evento);
         }
 
@@ -963,8 +959,14 @@ namespace SO115App.API.Models.Classi.Soccorso
         public List<Partenza> lstPartenze => Partenze.Select(c => c.Partenza).ToList();
 
         /// <summary>
-        /// Se non ci sono partenze è uguale a 0
+        ///   Se non ci sono partenze è uguale a 0
         /// </summary>
         public int CodiceUltimaPartenza => Partenze.Select(c => c.Partenza.Codice).Max();
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
     }
 }
