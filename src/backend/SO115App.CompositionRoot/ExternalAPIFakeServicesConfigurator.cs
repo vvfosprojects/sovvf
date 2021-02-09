@@ -20,7 +20,6 @@
 using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.AFM;
@@ -42,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -56,7 +56,9 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
-            container.Register<IHttpRequestManager<object>, HttpRequestManager<object>>();
+
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+            container.Register<IGetToken, GetToken>();
 
             #region NUE
 

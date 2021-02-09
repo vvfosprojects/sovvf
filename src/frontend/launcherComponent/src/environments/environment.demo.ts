@@ -40,7 +40,10 @@ export const environment = {
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
-        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        tipologie: '/api/GestioneTipologie',
+        dettagliTipologie: '/api/GestioneDettaglioTipologia',
+        triage: '/api/GestioneTriage'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas-test/login?service=',

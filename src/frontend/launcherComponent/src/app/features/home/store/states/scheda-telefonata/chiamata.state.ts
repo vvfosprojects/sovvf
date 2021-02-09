@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
+    AnnullaChiamata,
     ApriModaleRichiestaDuplicata,
     CestinaChiamata,
     ClearChiamata, ClearIndirizzo,
@@ -18,7 +19,7 @@ import {
     StopLoadingNuovaChiamata
 } from '../../actions/scheda-telefonata/chiamata.actions';
 import { CopyToClipboard } from '../../actions/scheda-telefonata/clipboard.actions';
-import { ToggleChiamata } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
@@ -41,9 +42,11 @@ import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
+import { ConfirmModalComponent } from '../../../../../shared/modal/confirm-modal/confirm-modal.component';
+import { SchedaTelefonataInterface } from '../../../../../shared/interface/scheda-telefonata.interface';
 
 export interface SchedaTelefonataStateModel {
-    nuovaRichiestaForm: {
+    richiestaForm: {
         model: {
             selectedTipologie: string[],
             nominativo: string,
@@ -78,7 +81,7 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
-    nuovaRichiestaForm: {
+    richiestaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -147,7 +150,7 @@ export class ChiamataState {
                 dispatch(new CopyToClipboard(getState().coordinate));
                 break;
             case 'annullata':
-                dispatch(new CestinaChiamata());
+                dispatch(new AnnullaChiamata());
                 break;
             case 'reset':
                 dispatch(new ResetChiamata());
@@ -247,9 +250,13 @@ export class ChiamataState {
                         true
                     )
                 ]);
-            } else if (richiesta && action.nuovaRichiesta.emergenza) {
-                this.store.dispatch(new SetRichiestaModifica(richiesta));
-                this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
+            } else if (richiesta && (action.nuovaRichiesta.emergenza || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+                this.store.dispatch([
+                    new ToggleChiamata(),
+                    new SetRichiestaModifica(richiesta),
+                    new ToggleModifica(),
+                    new SetMarkerRichiestaSelezionato(richiesta.id)
+                ]);
             } else {
                 dispatch(new CestinaChiamata());
             }
@@ -293,6 +300,40 @@ export class ChiamataState {
                 }
             })
         );
+    }
+
+    @Action(AnnullaChiamata)
+    annullaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        this.ngZone.run(() => {
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+            modalConfermaAnnulla.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+            ];
+
+            modalConfermaAnnulla.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            dispatch(new CestinaChiamata());
+                            break;
+                        case 'ko':
+                            console.log('[AnnullaChiamata] Azione annullata');
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
+            );
+        });
     }
 
     @Action(CestinaChiamata)

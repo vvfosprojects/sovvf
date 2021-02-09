@@ -1,28 +1,48 @@
-﻿namespace SO115App.Models.Classi.Utenti.Autenticazione
+﻿using System.Collections.Generic;
+
+namespace SO115App.Models.Classi.Utenti.Autenticazione
 {
     /// <summary>
     ///   classe che mappa il personale in arrivo da oracle o dai servizi esterni
     /// </summary>
     public class PersonaleVVF
     {
-        /// <summary>
-        ///   nominativo composto da nome.cognome
-        /// </summary>
-        public string Nominativo { get; set; }
+        public string codiceFiscale { get; set; }
+        public string nome { get; set; }
+        public string cognome { get; set; }
+        public string accountDipvvf { get; set; }
+        public string emailVigilfuoco { get; set; }
+        public QualificaPersonale qualifica { get; set; }
+        public DistaccamentoPersonale sede { get; set; }
+        public List<Specializzazione> specializzazioni { get; set; }
+        public string turno { get; set; }
+    }
 
-        /// <summary>
-        ///   codice fiscale
-        /// </summary>
-        public string CodFiscale { get; set; }
+    public class QualificaPersonale
+    {
+        public string nome { get; set; }
+        public GruppoPersonale gruppo { get; set; }
+        public string codice { get; set; }
+        public string descrizione { get; set; }
+    }
 
-        /// <summary>
-        ///   il codice della sede
-        /// </summary>
-        public string CodSede { get; set; }
+    public class DistaccamentoPersonale
+    {
+        public string id { get; set; }
+        public string codDistaccamento { get; set; }
+        public string codice { get; set; }
+        public string descrizione { get; set; }
+    }
 
-        /// <summary>
-        ///   la descrizione della sede
-        /// </summary>
-        public string DescSede { get; set; }
+    public class GruppoPersonale
+    {
+        public string codice { get; set; }
+        public string descrizione { get; set; }
+    }
+
+    public class Specializzazione 
+    {
+        public string codice { get; set; }
+        public string descrizione { get; set; }
     }
 }

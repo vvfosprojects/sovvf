@@ -119,6 +119,14 @@ export class RichiestaModificaState {
         }
     }
 
+    @Action(SuccessRichiestaModifica)
+    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>): void {
+        patchState({
+            successModifica: true
+        });
+        dispatch(new ChiudiRichiestaModifica(true));
+    }
+
     @Action(ChiudiRichiestaModifica)
     chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica): void {
         const state = getState();
@@ -127,14 +135,6 @@ export class RichiestaModificaState {
         }
         dispatch(new ToggleModifica(true));
         dispatch(new ClearRichiestaModifica());
-    }
-
-    @Action(SuccessRichiestaModifica)
-    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>): void {
-        patchState({
-            successModifica: true
-        });
-        dispatch(new ChiudiRichiestaModifica(true));
     }
 
     @Action(ClearRichiestaModifica)

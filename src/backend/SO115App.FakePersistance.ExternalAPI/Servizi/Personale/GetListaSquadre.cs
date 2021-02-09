@@ -163,14 +163,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             foreach (var componenteFake in squadraFake.ComponentiSquadra)
             {
-                var pVVf = lstVVF.FirstOrDefault(p => p.CodFiscale.Equals(componenteFake.CodiceFiscale));
+                var pVVf = lstVVF.FirstOrDefault(p => p.codiceFiscale.Equals(componenteFake.CodiceFiscale));
 
                 if (pVVf != null)
                 {
                     var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                    pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                    pVVf.nome, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                     {
-                        CodiceFiscale = pVVf.CodFiscale,
+                        CodiceFiscale = pVVf.codiceFiscale,
                         OrarioFine = componenteFake.OrarioFine,
                         OrarioInizio = componenteFake.OrarioInizio,
                         Telefono = componenteFake.Telefono,
@@ -180,7 +180,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                         CapoTurno = componenteFake.CapoTurno
                     };
                     ComponentiSquadra.Add(componente);
-                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
+                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.codiceFiscale);
                 }
             }
 

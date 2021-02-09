@@ -23,6 +23,7 @@ import { ViewComponentState } from './features/home/store/states/view/view.state
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import {ViewportState} from './shared/store/states/viewport/viewport.state';
 import {ImpostazioniState, ImpostazioniStateModel} from './shared/store/states/impostazioni/impostazioni.state';
+import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
 
 @Component({
     selector: 'app-root',

@@ -35,6 +35,7 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
@@ -77,6 +78,9 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
+            TipologiaDettaglioMap.Map();
+            TriageMap.Map();
+            TriageDataMap.Map();
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
@@ -211,11 +215,35 @@ namespace Persistence.MongoDB
             }
         }
 
+        public IMongoCollection<TipologiaDettaglio> TipologiaDettaglioCollection
+        {
+            get
+            {
+                return database.GetCollection<TipologiaDettaglio>("tipologiaDettaglio");
+            }
+        }
+
         public IMongoCollection<ExternalApiLog> ExternalApiLog
         {
             get
             {
                 return database.GetCollection<ExternalApiLog>("externalApiLog");
+            }
+        }
+
+        public IMongoCollection<Triage> TriageCollection
+        {
+            get
+            {
+                return database.GetCollection<Triage>("triage");
+            }
+        }
+
+        public IMongoCollection<TriageData> TriageDataCollection
+        {
+            get
+            {
+                return database.GetCollection<TriageData>("triageData");
             }
         }
 

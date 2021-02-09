@@ -1,0 +1,16 @@
+<div class="px-3 m-h-820-chiamata">
+    <app-form-richiesta [tipologie]="(tipologie$ | async)"
+                        [operatore]="(utente$ | async)"
+                        [enti]="enti$ | async"
+                        [codiceSchedaContatto]="(schedaContattoTelefonata$ | async)?.codiceScheda"
+                        [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
+                        [loading]="loadingNuovaChiamata$ | async"
+                        [doubleMonitor]="doubleMonitor"
+                        [competenze]="competenze$ | async"
+                        [countInterventiProssimita]="countInterventiProssimita$ | async"
+                        [interventiProssimita]="interventiProssimita$ | async"
+                        [schedaContatto]="schedaContattoTelefonata$ | async"
+                        [richiestaModifica]="richiestaModifica$ | async"
+                        [modifica]="!!(richiestaModifica$ | async)">
+    </app-form-richiesta>
+</div>

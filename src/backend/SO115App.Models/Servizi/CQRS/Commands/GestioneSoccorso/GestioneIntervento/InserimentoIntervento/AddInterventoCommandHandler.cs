@@ -119,7 +119,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodiceSede,
-                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null
+                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
+                TriageSummary = command.Chiamata.TriageSummary
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

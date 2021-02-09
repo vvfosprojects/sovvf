@@ -20,6 +20,7 @@ import { Injectable } from '@angular/core';
 import produce from 'immer';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import {TipologiaRichiesta} from '../../../../../shared/enum/tipologiaRichiesta.enum';
+import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -113,7 +114,7 @@ export class FiltriRichiesteState {
         const state = getState();
 
         const filtriStatici: VoceFiltro[] = state.filtriStaticiRichieste;
-        const tipologie: Tipologia[] = this.store.selectSnapshot(HomeState.tipologie);
+        const tipologie: Tipologia[] = this.store.selectSnapshot(TipologieState.tipologie);
         const filtriRichieste: VoceFiltro[] = [...filtriStatici];
 
         if (tipologie && tipologie.length > 0) {

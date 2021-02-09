@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-settings.interface';
 import { Observable } from 'rxjs';
+import { SetContatoriSchedeContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { Store } from '@ngxs/store';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_NAVBAR = BASE_URL + environment.apiUrl.navbar;
@@ -13,13 +15,17 @@ const API_URL_NAVBAR = BASE_URL + environment.apiUrl.navbar;
 })
 export class NavbarService {
 
-    constructor(private http: HttpClient) {
+    constructor(private store: Store,
+                private http: HttpClient) {
     }
 
     getNavbar(): Observable<AppSettings> {
         return this.http.get<AppSettingsAPI>(API_URL_NAVBAR).pipe(
             map((data: AppSettingsAPI) => mapAppSettings(data)),
-            tap(data => console.log('AppSettings from Api:', data))
+            tap(data => {
+                console.log('AppSettings from Api:', data);
+                this.store.dispatch(new SetContatoriSchedeContatto(data.infoNue));
+            })
         );
 
         function mapAppSettings(data: AppSettingsAPI): AppSettings {

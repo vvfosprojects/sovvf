@@ -112,12 +112,6 @@
 <div class="col-12">
     <div class="clearfix">
         <div class="float-left">
-            <ng-template [ngIf]="!hideTornaIndietro">
-                <button class="btn btn-primary mr-2" (click)="onTornaIndietro()">
-                    <i class="fa fa-arrow-left mr-2"></i>
-                    Torna Indietro
-                </button>
-            </ng-template>
             <div class="d-inline-block" ngbDropdown #dropdownVisualizzazione="ngbDropdown" placement="top">
                 <button *ngIf="statoModalita" class="btn btn-outline-danger mr-3"
                         [disabled]="loading"
@@ -153,9 +147,8 @@
             </div>
         </div>
         <div class="float-right">
-            <div *ngIf="schedeContatto?.length > 0" class="d-flex justify-content-between p-2">
+            <div class="text-right">
                 <pagination-controls class="mt-1 mb-0"
-                                     [autoHide]="true"
                                      [previousLabel]="'Precedente'"
                                      [nextLabel]="'Successiva'"
                                      (pageChange)="onPageChange($event)">

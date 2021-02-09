@@ -7,7 +7,7 @@
                 <div class="clearfix">
                     <!-- Bottoni Sinistra -->
                     <div class="float-left mr-5">
-                        <button class="btn font-xlarge btn-light mr-2"
+                        <button class="btn btn-outline-light font-xlarge btn-light mr-2"
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
                                 placement="right"
                                 [routerLink]="['/' + RoutesPath.Home]"
@@ -25,7 +25,6 @@
                             <i class="fa fa-truck"></i>
                         </button>
                         <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
-                                                   [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"
                                                    (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
                     </div>
@@ -78,10 +77,15 @@
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-users"></i>
                         </button>
-                        <button class="btn btn-light font-xlarge" ngbTooltip="Visualizza Info Aggiornamenti"
+                        <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
                                 [routerLink]="['/' + RoutesPath.Changelog]"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-newspaper-o"></i>
+                        </button>
+                        <button class="btn btn-light font-xlarge" ngbTooltip="Visualizza Impostazioni Sede"
+                                [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fa fa-cogs"></i>
                         </button>
                         <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
                                        (notificheLette)="setNotificheLette()" (logout)="logout()"></app-operatore>

@@ -36,5 +36,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         ///   L'id utente loggato
         /// </summary>
         public string IdUtente { get; set; }
+
+        public string[] CodSedi { get; set; }
     }
 }

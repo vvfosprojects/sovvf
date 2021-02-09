@@ -38,6 +38,7 @@ using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 using SO115App.Models.Classi.Fonogramma;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Triage;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -375,5 +376,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
 
         public Fonogramma Fonogramma { get; set; }
         public List<int> listaEnti { get; set; }
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
     }
 }

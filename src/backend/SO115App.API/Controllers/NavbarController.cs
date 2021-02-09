@@ -52,6 +52,7 @@ namespace SO115App.API.Controllers
             var query = new NavbarQuery()
             {
                 FiltroBox = "",
+                CodSedi = Request.Headers["codiceSede"].ToString().Split(','),
                 IdUtente = Request.Headers["idUtente"]
             };
 
@@ -61,7 +62,10 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    ex.Message
+                });
             }
         }
     }
