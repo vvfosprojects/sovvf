@@ -17,7 +17,9 @@ import {
     DeleteTriageData,
     UpdateTriage,
     SetNewTriageData,
-    GetGeneriMezzo
+    GetGeneriMezzo,
+    ResetTriage,
+    ClearStateTriageCrud
 } from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
@@ -90,7 +92,7 @@ export class TriageComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        this.onReset();
+        this.store.dispatch(new ClearStateTriageCrud());
     }
 
     getDoubleMonitor(): void {
@@ -114,7 +116,7 @@ export class TriageComponent implements OnDestroy {
         this.store.dispatch(new SetDettaglioTipologiaTriage(this.codDettaglioTipologia));
     }
 
-    onReset(): void {
+    onResetRicerca(): void {
         this.store.dispatch([
             new ClearDettagliTipologie(),
             new ClearTriage()
@@ -595,7 +597,8 @@ export class TriageComponent implements OnDestroy {
         }
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
-        removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati.';
+        removeTriageModal.componentInstance.messaggio = 'Stai rimuovendo il Triage di "' + this.dettaglioTipologia.descrizione;
+        removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
         removeTriageModal.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
@@ -609,6 +612,49 @@ export class TriageComponent implements OnDestroy {
                         }
                         this.updateTriage(null);
                         this.store.dispatch(new UpdateTriage());
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
+    }
+
+    resetTriage(): void {
+        let resetTriageModal;
+        if (this.doubleMonitor) {
+            resetTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        } else {
+            resetTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        }
+        resetTriageModal.componentInstance.icona = { descrizione: 'refresh', colore: 'secondary' };
+        resetTriageModal.componentInstance.titolo = 'Reset Triage di "' + this.dettaglioTipologia.descrizione + '"';
+        resetTriageModal.componentInstance.messaggio = 'Stai effettuando il reset delle modifiche al Triage di "' + this.dettaglioTipologia.descrizione + '"';
+        resetTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati non salvati verranno persi';
+        resetTriageModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        resetTriageModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new ResetTriage());
                         break;
                     case 'ko':
                         break;

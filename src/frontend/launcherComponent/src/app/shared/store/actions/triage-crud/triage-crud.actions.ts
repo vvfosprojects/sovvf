@@ -64,6 +64,10 @@ export class DeleteTriage {
     static readonly type = '[Triage] Delete Triage';
 }
 
+export class ResetTriage {
+    static readonly type = '[Triage] Reset Triage';
+}
+
 export class AddTriageData {
     static readonly type = '[Triage-CRUD] Add Triage Data';
 
@@ -83,4 +87,8 @@ export class DeleteTriageData {
 
     constructor(public itemDataValue: string) {
     }
+}
+
+export class ClearStateTriageCrud {
+    static readonly type = '[Triage-CRUD] Clear State Triage CRUD';
 }

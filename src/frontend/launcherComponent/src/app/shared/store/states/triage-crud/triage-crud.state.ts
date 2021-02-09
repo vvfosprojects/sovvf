@@ -15,7 +15,7 @@ import {
     DeleteTriageData,
     UpdateTriageData,
     GetGeneriMezzo,
-    ClearGeneriMezzo
+    ClearGeneriMezzo, ResetTriage, ClearStateTriageCrud
 } from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
@@ -189,6 +189,17 @@ export class TriageCrudState {
         });
     }
 
+    @Action(ResetTriage)
+    resetTriage({ getState, patchState }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const backupTriage = state._backupTriageByDettaglioTipologia;
+        const backupTriageData = state._backupTriageDataByDettaglioTipologia;
+        patchState({
+            triageByDettaglioTipologia: backupTriage,
+            triageDataByDettaglioTipologia: backupTriageData
+        });
+    }
+
     @Action(AddTriageData)
     addTriageData({ setState }: StateContext<TriageStateModel>, action: AddTriageData): void {
         setState(
@@ -240,5 +251,10 @@ export class TriageCrudState {
         this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
+    }
+
+    @Action(ClearStateTriageCrud)
+    clearStateTriageCrud({ patchState }: StateContext<TriageStateModel>): void {
+        patchState(TriageStateDefaults);
     }
 }
