@@ -30,6 +30,14 @@ export class ClearTriage {
     static readonly type = '[Triage-CRUD] Clear Triage';
 }
 
+export class GetGeneriMezzo {
+    static readonly type = '[Triage-CRUD] Get Generi Mezzo';
+}
+
+export class ClearGeneriMezzo {
+    static readonly type = '[Triage-CRUD] Clear Generi Mezzo';
+}
+
 export class SetNewTriage {
     static readonly type = '[Triage-CRUD] Set New Triage';
 

@@ -16,7 +16,8 @@ import {
     AddTriageData,
     DeleteTriageData,
     UpdateTriage,
-    SetNewTriageData
+    SetNewTriageData,
+    GetGeneriMezzo
 } from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
@@ -66,7 +67,7 @@ export class TriageComponent implements OnDestroy {
     tItemsDataBackup: ItemTriageData[];
 
     codTipologia: string;
-    codDettaglioTipologia: any;
+    codDettaglioTipologia: number;
 
     showTriage: boolean;
 
@@ -89,6 +90,7 @@ export class TriageComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        this.onReset();
     }
 
     getDoubleMonitor(): void {
@@ -247,6 +249,7 @@ export class TriageComponent implements OnDestroy {
 
     addItem(item?: TreeItem): void {
         if (this.viewEditButtons || !item) {
+            this.store.dispatch(new GetGeneriMezzo());
             const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
@@ -349,6 +352,7 @@ export class TriageComponent implements OnDestroy {
     }
 
     editItem(item: TreeItem): void {
+        this.store.dispatch(new GetGeneriMezzo());
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',

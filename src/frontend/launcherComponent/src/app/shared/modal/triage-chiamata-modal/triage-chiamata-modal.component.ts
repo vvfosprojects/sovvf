@@ -11,7 +11,8 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
 import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
-import { TreeviewItem } from 'ngx-treeview';
+import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { makeCopy } from '../../helper/function';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -24,27 +25,9 @@ export class TriageChiamataModalComponent implements OnInit {
     dettagliTipologia: DettaglioTipologia[];
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
-    domandeTriage: TreeviewItem;
+    triage: TreeviewItem;
 
-    // TODO: eliminare
-    /* domandeTriage = {
-        value: '1',
-        text: 'C\'è qualcuno in casa?',
-        children: [
-            {
-                value: '1-2',
-                text: 'Si'
-            },
-            {
-                value: '2-1',
-                text: 'No'
-            },
-            {
-                value: '3-1',
-                text: 'Non lo so'
-            },
-        ]
-    } as TreeviewItem; */
+    abilitaTriage: boolean;
 
     tipologiaSelezionata: Tipologia;
 
@@ -54,7 +37,6 @@ export class TriageChiamataModalComponent implements OnInit {
     chiamataMarker: ChiamataMarker;
 
     risposteTriage: any[];
-    codDomandaSelezionata: string;
 
     checkedEmergenza: boolean;
     disableEmergenza: boolean;
@@ -63,6 +45,7 @@ export class TriageChiamataModalComponent implements OnInit {
 
     constructor(private modal: NgbActiveModal,
                 private store: Store) {
+        this.getTriage();
     }
 
     ngOnInit(): void {
@@ -73,12 +56,67 @@ export class TriageChiamataModalComponent implements OnInit {
     getDettagliTipologia(): void {
         this.subscriptions.add(
             this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
-                this.dettagliTipologia = dettagliTipologia;
-                if (dettagliTipologia && dettagliTipologia.length <= 0) {
-                    this.onAbilitaTriage();
+                if (dettagliTipologia) {
+                    this.dettagliTipologia = dettagliTipologia;
+                    if (!dettagliTipologia.length) {
+                        this.onAbilitaTriage();
+                    }
                 }
             })
         );
+    }
+
+    getTriage(): void {
+        this.subscriptions.add(
+            this.triage$.subscribe((triage: TreeviewItem) => {
+                if (triage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(triage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.triage = mappedTriage[0];
+                } else {
+                    this.triage = null;
+                }
+            })
+        );
+
+        function getFatherMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
+
+        function mapTreeviewItems(childrens: any): any {
+            const childrensCopy = childrens;
+            let childrenIndex = 0;
+            for (const children of childrensCopy) {
+                childrensCopy[childrenIndex] = getChildrenMapped(children);
+                childrenIndex = childrenIndex + 1;
+                if (children?.internalChildren) {
+                    mapTreeviewItems(children.internalChildren);
+                }
+            }
+            childrens = childrensCopy;
+            return childrens;
+        }
+
+        function getChildrenMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
     }
 
     onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
@@ -88,33 +126,41 @@ export class TriageChiamataModalComponent implements OnInit {
     }
 
     onAbilitaTriage(): void {
-        this.codDomandaSelezionata = this.domandeTriage[0].value;
+        this.abilitaTriage = true;
     }
 
     getDomandeTriage(): void {
         this.subscriptions.add(
             this.triage$.subscribe((triage: TreeviewItem) => {
-                this.domandeTriage = triage;
+                this.triage = triage;
             })
         );
     }
 
-    setRisposta(codDomanda: string, risposta: any): void {
+    setRisposta(rispostaValue: string, risposta: string): void {
         if (!this.risposteTriage) {
             this.risposteTriage = [];
         }
-        this.risposteTriage.push({ codDomanda, risposta });
-        this.nextDomanda();
+        this.risposteTriage.push({ rispostaValue, risposta });
     }
 
-    nextDomanda(): void {
-        const indexDomandaDaVisualizzare = (+this.codDomandaSelezionata + 1) - 1;
-        const domandaSelezionata = this.domandeTriage[indexDomandaDaVisualizzare];
-        this.codDomandaSelezionata = domandaSelezionata ? domandaSelezionata.value : null;
-    }
+    getDomandaByCodice(rispostaValue: string): TreeviewItem {
+        const parentValue = rispostaValue.slice(2);
+        return findItem(this.triage, parentValue);
 
-    getDomandaByCodice(codDomanda: string): string {
-        return this.domandeTriage.children.filter((d: any) => d.codice === codDomanda)[0].text;
+        function findItem(element: any, value: string): TreeviewItem {
+            if (element.value === value) {
+                return element;
+            } else if (element.children != null) {
+                let i: number;
+                let result = null;
+                for (i = 0; result == null && i < element.children.length; i++) {
+                    result = findItem(element.children[i], value);
+                }
+                return result;
+            }
+            return null;
+        }
     }
 
     setEmergenza(): void {

@@ -373,8 +373,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
 
     openTriage(): void {
         const codTipologia = this.f.tipologie.value;
-        const codTipologiaNumber = +this.f.tipologie.value;
-        this.store.dispatch(new GetDettagliTipologieByCodTipologia(codTipologiaNumber));
+        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         let modalOptions: any;
         if (this.doubleMonitor) {
             modalOptions = {

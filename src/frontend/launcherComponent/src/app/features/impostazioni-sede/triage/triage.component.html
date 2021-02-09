@@ -180,28 +180,29 @@
                 </button>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.soccorsoAereo">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-plane mr-1"></i>
                     {{ getItemData(item)?.soccorsoAereo }}
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.generiMezzo">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-truck mr-1"></i>
                     <span *ngFor="let genereMezzo of getItemData(item)?.generiMezzo, let i = index"
                           class="d-inline-block">
-                        {{ genereMezzo }}
+                        {{ genereMezzo }}<span
+                            *ngIf="getItemData(item)?.generiMezzo?.length > 1 && i !== getItemData(item)?.generiMezzo?.length - 1">, </span>
                     </span>
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.prioritaConsigliata">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-thermometer mr-1"></i>
                     {{ getItemData(item)?.prioritaConsigliata }}
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.noteOperatore">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-sticky-note-o mr-1"></i>
                     Note Operatore Inserite
                 </label>

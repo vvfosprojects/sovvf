@@ -1,8 +1,10 @@
-<h5 class="text-danger font-weight-bold mt-3">Seleziona un dettaglio tipologia</h5>
-<div class="font-weight-bold scroll-y mt-3" style="max-height: 200px">
-    <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
-                  [checkboxState]="{ id: dettaglioTipologia.codiceDettaglioTipologia.toString(), status: getStatus(dettaglioTipologia), label: dettaglioTipologia.descrizione }"
-                  [bigText]="true"
-                  (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codiceDettaglioTipologia)">
-    </app-checkbox>
-</div>
+<ng-template [ngIf]="dettagliTipologie">
+    <h5 class="text-danger font-weight-bold mt-3">Seleziona un dettaglio tipologia</h5>
+    <div class="font-weight-bold scroll-y mt-3" style="max-height: 200px">
+        <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
+                      [checkboxState]="{ id: dettaglioTipologia.codiceDettaglioTipologia.toString(), status: getStatus(dettaglioTipologia), label: dettaglioTipologia.descrizione }"
+                      [bigText]="true"
+                      (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codiceDettaglioTipologia)">
+        </app-checkbox>
+    </div>
+</ng-template>
