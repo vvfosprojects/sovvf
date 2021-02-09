@@ -15,8 +15,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public InfoAFM Annulla(AnnullaRichiestaAFM richiesta, string CodiceRichiesta)
         {
-            _client.Configure();
-
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);
 

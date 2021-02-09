@@ -15,8 +15,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public InfoAFM Aggiorna(NuovaRichiestaAFM richiesta)
         {
-            _client.Configure();
-
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);
 

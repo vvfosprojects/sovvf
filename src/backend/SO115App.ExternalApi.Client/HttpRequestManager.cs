@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Polly;
 using Polly.Caching;
 using Polly.Caching.Memory;
+using Polly.Retry;
+using Polly.Timeout;
 using Polly.Wrap;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
@@ -19,65 +21,21 @@ namespace SO115App.ExternalAPI.Client
     internal sealed class HttpRequestManager<ResponseObject> : BaseService, IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         private AsyncPolicyWrap<HttpResponseMessage> policies;
+        private AsyncTimeoutPolicy<HttpResponseMessage> timeoutPolicy;
+        private AsyncRetryPolicy<HttpResponseMessage> retryPolicy;
 
         public HttpRequestManager(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext) { }
-
-        public void Configure(string cacheString = null)
+            : base(client, configuration, memoryCache, writeLog, httpContext)
         {
-            //TIMEOUT
-            var timeoutPolicy = Policy
-                .TimeoutAsync<HttpResponseMessage>(60);
+            Configure();
+        }
 
-            //ECCEZIONI E RESPONSE
-            var retryPolicy = Policy.HandleResult<HttpResponseMessage>(c =>
-            {
-                if (c.StatusCode != HttpStatusCode.OK)
-                {
-                    var exception = new ExternalApiLog()
-                    {
-                        Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
-                        DataOraEsecuzione = DateTime.Now,
-                        Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
-                        Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
-                        CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
-                        IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
-                    };
+        public void SetCache(string cacheString)
+        {
+            var memoryCacheProvider = new MemoryCacheProvider(_memoryCache);
+            var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(1), c => cacheString);
 
-                    _writeLog.Save(exception);
-
-                    switch (c.StatusCode)
-                    {
-                        case HttpStatusCode.NotFound:
-                            throw new Exception(Messages.ServizioNonRaggiungibile);
-                        case HttpStatusCode.Forbidden:
-                            throw new Exception(Messages.AutorizzazioneNegata);
-                        case HttpStatusCode.UnprocessableEntity:
-                            throw new Exception(Messages.DatiMancanti);
-                        case HttpStatusCode.InternalServerError:
-                            throw new Exception(Messages.ErroreInternoAlServer);
-                        case HttpStatusCode.Created:
-                            throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
-                        case HttpStatusCode.UnsupportedMediaType:
-                            throw new Exception(Messages.OggettoNonValido);
-                        case 0:
-                            throw new Exception(c.ReasonPhrase);
-                    }
-                }
-
-                return false;
-            }).RetryAsync(3);
-
-            //CACHE
-            if (!string.IsNullOrEmpty(cacheString))
-            {
-                var memoryCacheProvider = new MemoryCacheProvider(_memoryCache);
-                var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(8), c => cacheString);
-
-                policies = Policy.WrapAsync(cachePolicy, retryPolicy, timeoutPolicy);
-            }
-            else
-                policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
+            policies = Policy.WrapAsync(cachePolicy, retryPolicy, timeoutPolicy);
         }
 
         public async Task<ResponseObject> GetAsync(Uri url, string token)
@@ -165,6 +123,46 @@ namespace SO115App.ExternalAPI.Client
         MediaTypeWithQualityHeaderValue getMediaType()
         {
             return new MediaTypeWithQualityHeaderValue("application/json");
+        }
+
+        private void Configure()
+        {
+            //TIMEOUT
+            timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(60);
+
+            //ECCEZIONI E RESPONSE
+            retryPolicy = Policy.HandleResult<HttpResponseMessage>(c =>
+            {
+                if (c.StatusCode != HttpStatusCode.OK)
+                {
+                    var exception = new ExternalApiLog()
+                    {
+                        Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
+                        DataOraEsecuzione = DateTime.Now,
+                        Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
+                        Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
+                        CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
+                        IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
+                    };
+
+                    _writeLog.Save(exception);
+
+                    switch (c.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound: throw new Exception(Messages.ServizioNonRaggiungibile);
+                        case HttpStatusCode.Forbidden: throw new Exception(Messages.AutorizzazioneNegata);
+                        case HttpStatusCode.UnprocessableEntity: throw new Exception(Messages.DatiMancanti);
+                        case HttpStatusCode.InternalServerError: throw new Exception(Messages.ErroreInternoAlServer);
+                        case HttpStatusCode.Created: throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
+                        case HttpStatusCode.UnsupportedMediaType: throw new Exception(Messages.OggettoNonValido);
+                        case 0: throw new Exception(c.ReasonPhrase);
+                    }
+                }
+
+                return false;
+            }).RetryAsync(3);
+
+            policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
         }
     }
 }
