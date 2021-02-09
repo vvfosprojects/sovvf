@@ -4,7 +4,7 @@
             <div class="clearfix h-100">
                 <!-- box interventi -->
                 <div class="float-left w-50 px-2">
-                    <div class="card app-shadow">
+                    <div [ngClass]="sunModeBox()">
                         <app-box-interventi [interventi]="(richieste$ | async)"
                                             [boxClick]="(boxClick$ | async)"
                                             [turno]="(turnoCalendario$ | async)"
@@ -14,7 +14,7 @@
                 </div>
                 <!-- box personale -->
                 <div class="float-left w-50 px-2">
-                    <div class="card app-shadow">
+                    <div [ngClass]="sunModeBox()">
                         <app-box-personale [personaleQty]="(personaleQty$ | async)"
                                            [personalePresenze]="(presenze$ | async)"
                                            (clickServizi)="clickServizi($event)"></app-box-personale>
@@ -26,13 +26,13 @@
             <div class="clearfix">
                 <!-- box meteo -->
                 <div class="float-right w-50 px-2">
-                    <div class="card app-shadow">
+                    <div [ngClass]="sunModeBox()">
                         <app-box-meteo [datimeteo]="datimeteo"></app-box-meteo>
                     </div>
                 </div>
                 <!-- box mezzi -->
                 <div class="float-right w-50 px-2">
-                    <div class="card app-shadow">
+                    <div [ngClass]="sunModeBox()">
                         <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
                                        (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
                     </div>

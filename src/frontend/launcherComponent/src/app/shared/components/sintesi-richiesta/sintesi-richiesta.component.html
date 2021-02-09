@@ -1,4 +1,6 @@
-<div class="card row_text py-2 px-3"
+<div class="py-2 px-3"
+     [class.text-white]="!(sunMode$ | async)"
+     [class.moon-card-light]="!(sunMode$ | async)"
      [class.double-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
      (click)="richiestaClick(richiesta)"
      (dblclick)="richiestaDoubleClick(richiesta)"
@@ -33,7 +35,8 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
-                                <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
+                                <a class="h6" [class.text-white]="!(sunMode$ | async)"
+                                   (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                                       <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
@@ -305,7 +308,8 @@
                                 </span>
                             <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge cod-int">{{ richiesta?.richiedente?.telefono }}</a>
+                                        <a class="font-xxlarge" [class.text-white]="!(sunMode$ | async)">
+                                          {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                           </div>
                         </div>
@@ -442,7 +446,7 @@
                              class="col-md-12">
                             <div class="row card bt-0 note-localita mt-1">
                                 <div class="col-md-12 bg_diagonal_grey">
-                                    <div class="row">
+                                    <div class="row text-dark">
                                         <div class="col-12">
                                             <div class="h6 mb-0 pt-2 pb-1">
                                                 <span *ngIf="richiesta?.localita?.note">{{ richiesta?.localita?.note }}</span>
@@ -546,7 +550,7 @@
                                 <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                        placement="right"></i>
-                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
+                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-white]="!(sunMode$ | async)">
                                         {{ richiesta?.codiceSchedaNue }}
                                     </a>
                                     <ng-template #nessunCodiceNue>

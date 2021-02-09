@@ -1,6 +1,6 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside" class="btn-group w-100">
-        <button ngbDropdownToggle class="btn btn-block app-shadow btn-secondary font-xlarge"
+        <button ngbDropdownToggle class="btn btn-block btn-secondary font-xlarge"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -77,7 +77,7 @@
             -->
         </div>
     </div>
-    <button class="btn btn-outline-secondary p-1 altri-filtri font-xlarge" (click)="resetFiltri()" [disabled]="disableFilters">
-        <i class="fa fa-undo text-dark px-1"></i>
+    <button class="btn btn-outline-secondary p-1 altri-filtri" [class.moon-card]="!sunMode" (click)="resetFiltri()" [disabled]="disableFilters">
+        <i class="fa fa-undo px-1" [ngClass]="sunModeStyle()" style="font-size: 20px"></i>
     </button>
 </div>

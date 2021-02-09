@@ -13,6 +13,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Partenza} from '../../model/partenza.model';
 import {Squadra} from '../../model/squadra.model';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -41,13 +42,17 @@ export class MezzoComposizioneComponent implements OnInit {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
+    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    sunMode: boolean;
+
     public sganciamentoDisabilitato = false;
     private subscription = new Subscription();
     viewState: ViewLayouts;
 
-  constructor() {
+    constructor() {
     this.getViewState();
-  }
+    this.getSunMode();
+    }
 
     ngOnInit(): void {
         this.sganciamentoCheck();
@@ -64,6 +69,14 @@ export class MezzoComposizioneComponent implements OnInit {
                     !e.sganciata && !e.terminata && !e.partenzaAnnullata;
             });
         }
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.sunMode$.subscribe((sunMode: boolean) => {
+          this.sunMode = sunMode;
+        })
+      );
     }
 
     onClick(): void {
@@ -136,7 +149,7 @@ export class MezzoComposizioneComponent implements OnInit {
         }
 
         if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
-            returnClass += ' diagonal-stripes bg-lightdanger';
+            returnClass += ' ';
             this.itemBloccato = true;
         }
 

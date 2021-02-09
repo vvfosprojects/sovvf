@@ -7,6 +7,7 @@ import {ViewLayouts} from '../../interface/view.interface';
 import {Observable, Subscription} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -29,13 +30,17 @@ export class SquadraComposizioneComponent {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
+    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    sunMode: boolean;
+
     private subscription = new Subscription();
     viewState: ViewLayouts;
 
 
   constructor() {
       this.getViewState();
-    }
+      this.getSunMode();
+  }
 
     getViewState(): void {
       this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
@@ -49,6 +54,14 @@ export class SquadraComposizioneComponent {
           this.deselezionata.emit(this.squadraComp);
         }
       }
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.sunMode$.subscribe((sunMode: boolean) => {
+          this.sunMode = sunMode;
+        })
+      );
     }
 
     onHoverIn(): void {
@@ -78,7 +91,7 @@ export class SquadraComposizioneComponent {
         }
 
         if (this.squadraComposizioneBusy()) {
-            returnClass += ' diagonal-stripes bg-lightdanger';
+            returnClass += ' ';
         }
         return returnClass;
     }

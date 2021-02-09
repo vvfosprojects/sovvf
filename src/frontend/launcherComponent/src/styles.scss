@@ -37,6 +37,59 @@ html {
   transform: translate(-10px, -110px);
 }
 
+.sun-mode {
+  background-color: #fdfdfd !important;
+}
+
+.moon-mode {
+  background-color: #343a40 !important;
+}
+
+.moon-mode-box {
+  background-color: #343a40 !important;
+  color: #fdfdfd !important;
+}
+
+.moon-text {
+  color: #fdfdfd !important;
+}
+
+.moon-card {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.moon-card-light {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #464e56 !important;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: 1px 1px 2px 1px #dee2e6;
+  -moz-box-shadow: 1px 1px 2px 1px #dee2e6;
+  box-shadow: 1px 1px 2px 1px #dee2e6;
+}
+
+.bg-moon-light {
+  background-color: #464e56 !important;
+}
+
+.moon-cod {
+  color: #fdfdfd !important;
+  font-weight: 500;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.moon-hr {
+  border-top: 1px solid #fdfdfd !important;
+}
 
 .modal-holder {
   animation-name: jumpIn;

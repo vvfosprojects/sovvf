@@ -17,6 +17,7 @@ import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interf
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
 import { AuthState } from '../../../auth/store/auth.state';
+import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -24,6 +25,9 @@ import { AuthState } from '../../../auth/store/auth.state';
     styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
+
+    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    sunMode: boolean;
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -42,6 +46,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
+        this.getSunMode();
     }
 
     ngOnInit(): void {
@@ -56,6 +61,24 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     clickBox(cat: string, tipo: string): void {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.sunMode$.subscribe((sunMode: boolean) => {
+          this.sunMode = sunMode;
+        })
+      );
+    }
+
+    sunModeBox(): string {
+      let value = '';
+      if (this.sunMode) {
+        value = 'card app-shadow';
+      } else if (!this.sunMode) {
+        value = 'moon-text moon-card-light';
+      }
+      return value;
     }
 
     clickServizi(tipo: string): void {

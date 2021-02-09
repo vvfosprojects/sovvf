@@ -21,6 +21,8 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 import { ToggleMezziInServizio, ToggleSchedeContatto } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
+import {SunMode} from '../../shared/store/actions/viewport/viewport.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -35,6 +37,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledMezziInServizio: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
 
+    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    sunMode: boolean;
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
@@ -69,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private authenticationService: AuthService,
                 private clock: ClockService) {
+        this.getSunMode();
         this.setTime();
         this.getClock();
         this.getTurnoCalendario();
@@ -101,6 +106,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTime(): void {
         this.time = new Date();
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.sunMode$.subscribe((sunMode: boolean) => {
+          this.sunMode = sunMode;
+        })
+      );
+    }
+
+    onSwitchSunMode(): void {
+      this.store.dispatch(new SunMode());
     }
 
     getTurnoCalendario(): void {

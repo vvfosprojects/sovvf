@@ -36,6 +36,8 @@ export class FiltriRichiesteComponent {
 
   specialSelected = [false, false, false];
 
+  @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+  sunMode: boolean;
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
@@ -101,6 +103,7 @@ export class FiltriRichiesteComponent {
     dropdownOpts.placement = 'bottom';
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.getFiltriAttiviTooltip();
+    this.getSunMode();
   }
 
   getFiltriAttiviTooltip(): void {
@@ -275,6 +278,24 @@ export class FiltriRichiesteComponent {
     this.store.dispatch(new ResetFiltriStatiZone());
     this.store.dispatch(new RemovePeriodoChiuse());
     this.filtriReset.emit();
+  }
+
+  getSunMode(): void {
+    this.subscription.add(
+      this.sunMode$.subscribe((sunMode: boolean) => {
+        this.sunMode = sunMode;
+      })
+    );
+  }
+
+  sunModeStyle(): string {
+    let value = '';
+    if (this.sunMode) {
+      value = 'cod-int';
+    } else if (!this.sunMode) {
+      value = 'moon-cod';
+    }
+    return value;
   }
 
   checkIndex(index): boolean {
