@@ -3,6 +3,7 @@ import { SchedaContatto } from '../../../../shared/interface/scheda-contatto.int
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-report-chiamata',
@@ -13,7 +14,7 @@ export class ReportChiamataComponent implements OnInit {
 
     @Input() tipologie: Tipologia[];
     @Input() dettaglioTipologia: DettaglioTipologia;
-    @Input() visualizzaSuggerimentiTriage: boolean;
+    @Input() triageSummary: TriageSummary[];
     @Input() schedaContatto: SchedaContatto;
     @Input() countInterventiProssimita: number;
     @Input() interventiProssimita: SintesiRichiesta[];
@@ -23,5 +24,4 @@ export class ReportChiamataComponent implements OnInit {
 
     ngOnInit(): void {
     }
-
 }

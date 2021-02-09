@@ -35,6 +35,8 @@ import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -82,8 +84,9 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         'VV.UU.': false,
     };
 
-    // TODO: Rimuovere (fake triage)
-    visualizzaSuggerimentiTriage: boolean;
+    triageSummary: TriageSummary[];
+
+    test: any;
 
     private subscription = new Subscription();
 
@@ -396,22 +399,27 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.disableEmergenza = this.formIsInvalid();
-        triageModal.result.then((res: any) => {
+        triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
-                case 'salvaDettaglio':
-                    this.f.dettaglioTipologia.patchValue(res.result);
-                    this.visualizzaSuggerimentiTriage = true;
+                case 'success':
+                    this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                    this.triageSummary = res.triageSummary;
                     break;
                 default:
                     this.store.dispatch(new ClearDettagliTipologie());
                     break;
             }
         });
+
+        interface TriageModalResult {
+            type: string;
+            dettaglio: DettaglioTipologia;
+            triageSummary: TriageSummary[];
+        }
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
-
         f.nominativo.patchValue(scheda.richiedente.nominativo);
         f.telefono.patchValue(scheda.richiedente.telefono);
         f.indirizzo.patchValue(scheda.localita.indirizzo);

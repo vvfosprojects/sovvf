@@ -11,8 +11,11 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
 import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { makeCopy } from '../../helper/function';
+import { ItemTriageData } from '../../interface/item-triage-data.interface';
+import { RispostaTriage } from '../../interface/risposta-triage.interface';
+import { TriageSummary } from '../../interface/triage-summary.interface';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -26,6 +29,8 @@ export class TriageChiamataModalComponent implements OnInit {
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
+    @Select(TriageChiamataModalState.triageData) triageData$: Observable<ItemTriageData[]>;
+    triageData: ItemTriageData[];
 
     abilitaTriage: boolean;
 
@@ -36,7 +41,7 @@ export class TriageChiamataModalComponent implements OnInit {
     nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
-    risposteTriage: any[];
+    triageSummary: TriageSummary[];
 
     checkedEmergenza: boolean;
     disableEmergenza: boolean;
@@ -46,6 +51,7 @@ export class TriageChiamataModalComponent implements OnInit {
     constructor(private modal: NgbActiveModal,
                 private store: Store) {
         this.getTriage();
+        this.getTriageData();
     }
 
     ngOnInit(): void {
@@ -119,6 +125,18 @@ export class TriageChiamataModalComponent implements OnInit {
         }
     }
 
+    getTriageData(): void {
+        this.subscriptions.add(
+            this.triageData$.subscribe((triageData: ItemTriageData[]) => {
+                if (triageData) {
+                    this.triageData = triageData;
+                } else {
+                    this.triageData = null;
+                }
+            })
+        );
+    }
+
     onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
         this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
         this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato.codiceDettaglioTipologia));
@@ -137,11 +155,22 @@ export class TriageChiamataModalComponent implements OnInit {
         );
     }
 
-    setRisposta(rispostaValue: string, risposta: string): void {
-        if (!this.risposteTriage) {
-            this.risposteTriage = [];
+    setRisposta(rispostaTriage: RispostaTriage): void {
+        if (!this.triageSummary) {
+            this.triageSummary = [];
         }
-        this.risposteTriage.push({ rispostaValue, risposta });
+        const itemData = this.triageData.filter((t: ItemTriageData) => t.itemValue === rispostaTriage.rispostaValue)[0] as ItemTriageData;
+        const summaryItem = {
+            itemValue: itemData?.itemValue,
+            soccorsoAereo: itemData?.soccorsoAereo,
+            generiMezzo: itemData?.generiMezzo?.length ? itemData?.generiMezzo : null,
+            prioritaConsigliata: itemData?.prioritaConsigliata,
+            noteOperatore: itemData?.noteOperatore,
+            domanda: rispostaTriage.domanda,
+            rispostaValue: rispostaTriage.rispostaValue,
+            risposta: rispostaTriage.risposta
+        } as TriageSummary;
+        this.triageSummary.push(summaryItem);
     }
 
     getDomandaByCodice(rispostaValue: string): TreeviewItem {
@@ -179,7 +208,7 @@ export class TriageChiamataModalComponent implements OnInit {
     }
 
     closeModal(type: string): void {
-        const obj = { type, result: this.dettaglioTipologiaSelezionato };
+        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary };
         this.modal.close(obj);
     }
 }

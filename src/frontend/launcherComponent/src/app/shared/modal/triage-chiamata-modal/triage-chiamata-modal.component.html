@@ -5,7 +5,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height font-xlarge py-4 px-5">
     <div class="h5">
         <span class="d-inline-block mr-1">Tipologia Selezionata:</span>
         <span class="d-inline-block font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</span>
@@ -20,15 +20,21 @@
                                       (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
         </app-step-dettaglio-tipologia>
     </ng-template>
+    <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato">
+        <div class="alert alert-danger font-weight-bold mb-0">
+            Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
+            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni Sede".</small>
+        </div>
+    </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
-        <div *ngFor="let rispostaTriage of risposteTriage" class="alert alert-info">
+        <div *ngFor="let summary of triageSummary" class="alert alert-info">
             <h5 class="mb-0">
-                {{ getDomandaByCodice(rispostaTriage.rispostaValue)?.text }}
-                <b>{{ rispostaTriage.risposta }}</b>
+                {{ getDomandaByCodice(summary.rispostaValue)?.text }}
+                <b>{{ summary.risposta }}</b>
             </h5>
         </div>
         <app-step-domande [triage]="triage"
-                          (risposta)="setRisposta($event.rispostaValue, $event.rispostaString)">
+                          (risposta)="setRisposta($event)">
         </app-step-domande>
     </ng-template>
 </div>
@@ -42,7 +48,7 @@
             </app-checkbox>
         </div>
         <div class="float-right">
-            <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('salvaDettaglio')">
+            <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('success')">
                 {{ 'Chiudi Triage' | uppercase }}
             </button>
         </div>

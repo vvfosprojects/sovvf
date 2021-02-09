@@ -54,6 +54,11 @@ export class TriageChiamataModalState {
         return state.triage;
     }
 
+    @Selector()
+    static triageData(state: TriageChiamataModalStateModel): ItemTriageData[] {
+        return state.triageData;
+    }
+
     @Action(GetDettagliTipologieByCodTipologia)
     getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageChiamataModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
         this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {

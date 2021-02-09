@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
+import { RispostaTriage } from '../../../interface/risposta-triage.interface';
 
 @Component({
     selector: 'app-step-domande',
@@ -12,7 +13,7 @@ export class StepDomandeComponent implements OnChanges {
 
     domandaVisualizzata: TreeviewItem;
 
-    @Output() risposta: EventEmitter<{ rispostaValue, rispostaString }> = new EventEmitter<{ rispostaValue, rispostaString }>();
+    @Output() risposta: EventEmitter<RispostaTriage> = new EventEmitter<RispostaTriage>();
 
     constructor() {
     }
@@ -29,17 +30,12 @@ export class StepDomandeComponent implements OnChanges {
 
     setRisposta(risposta: TreeviewItem): void {
         this.nextDomanda(risposta);
-        this.risposta.emit({ rispostaValue: risposta.value, rispostaString: risposta.text });
-    }
 
-    nextDomanda(risposta: TreeviewItem): void {
-        if (risposta?.children?.length) {
-            this.domandaVisualizzata = risposta.children[0];
-        } else {
-            this.domandaVisualizzata = null;
-        }
+        const parentValue = risposta.value.slice(2);
+        const domanda = findItem(this.triage, parentValue)?.text;
+        this.risposta.emit({ rispostaValue: risposta.value, domanda, risposta: risposta.text });
 
-        /* function findItem(element: any, value: string): TreeviewItem {
+        function findItem(element: any, value: string): TreeviewItem {
             if (element.value === value) {
                 return element;
             } else if (element.children != null) {
@@ -51,6 +47,14 @@ export class StepDomandeComponent implements OnChanges {
                 return result;
             }
             return null;
-        } */
+        }
+    }
+
+    nextDomanda(risposta: TreeviewItem): void {
+        if (risposta?.children?.length) {
+            this.domandaVisualizzata = risposta.children[0];
+        } else {
+            this.domandaVisualizzata = null;
+        }
     }
 }
