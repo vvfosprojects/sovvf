@@ -519,7 +519,7 @@ export class MarkerService implements OnDestroy {
     }
 
     noAction(): void {
-        if (this.viewStateMaps.active !== AppFeatures.ComposizionePartenza) {
+        if (this.viewStateMaps?.active !== AppFeatures.ComposizionePartenza) {
             this.store.dispatch([
                 new ClearRichiestaFissata(),
                 new ClearRichiestaSelezionata(),

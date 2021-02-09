@@ -22,6 +22,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Triage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
             richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti.Select(c => c.ToString()).ToList();
+            richiesta.TriageSummary = command.Chiamata.TriageSummary;
 
             if (command.Chiamata.Tags != null)
             {

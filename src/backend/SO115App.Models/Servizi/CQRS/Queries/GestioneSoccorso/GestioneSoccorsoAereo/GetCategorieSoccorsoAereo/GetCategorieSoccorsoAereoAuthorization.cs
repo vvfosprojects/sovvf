@@ -5,9 +5,9 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorsoAereo.GetCategorieSoccorsoAereo
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage
 {
-    public class GetCategorieSoccorsoAereoAuthorization : IQueryAuthorizer<GetCategorieSoccorsoAereoQuery, GetCategorieSoccorsoAereoResult>
+    public class GetCategorieSoccorsoAereoAuthorization : IQueryAuthorizer<GetTriageQuery, GetTriageResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
@@ -18,7 +18,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorso
             _findUserByUsername = findUserByUsername;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(GetCategorieSoccorsoAereoQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(GetTriageQuery query)
         {
             var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 

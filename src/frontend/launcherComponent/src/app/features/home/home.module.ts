@@ -13,7 +13,7 @@ import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.
 import { RicercaFilterbarState } from './store/states/filterbar/ricerca-filterbar.state';
 import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { BoxesModule } from './boxes/boxes.module';
-import { SchedaRichiestaModule } from './scheda-telefonata/scheda-richiesta.module';
+import { SchedaRichiestaModule } from './scheda-richiesta/scheda-richiesta.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';

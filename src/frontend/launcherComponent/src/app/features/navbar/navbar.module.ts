@@ -32,6 +32,8 @@ import { NgxsModule } from '@ngxs/store';
  */
 import { TurnoState } from './store/states/turno.state';
 import { NavbarState } from './store/states/navbar.state';
+import { TreeviewI18n } from 'ngx-treeview';
+import { SediTreeviewI18n } from '../../shared/store/states/sedi-treeview/sedi-treeview-i18n.service';
 
 @NgModule({
     imports: [
@@ -61,6 +63,7 @@ import { NavbarState } from './store/states/navbar.state';
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoExtraService, useClass: TurnoExtraServiceFake },
+        { provide: TreeviewI18n, useClass: SediTreeviewI18n }
     ]
 })
 export class NavbarModule {

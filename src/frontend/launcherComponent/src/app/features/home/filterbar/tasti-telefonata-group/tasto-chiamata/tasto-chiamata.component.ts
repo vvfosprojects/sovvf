@@ -39,12 +39,4 @@ export class TastoChiamataComponent {
     getActive(): boolean {
         return this.colorButtonChiamata !== this.defaultColorButtonChiamata;
     }
-
-    getTitle(): string {
-        if (!this.getActive()) {
-            return 'nuova chiamata';
-        } else if (this.getActive()) {
-            return 'stai inserendo una nuova chiamata';
-        }
-    }
 }

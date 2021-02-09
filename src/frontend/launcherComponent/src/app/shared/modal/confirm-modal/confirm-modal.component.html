@@ -8,15 +8,15 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body pr-0">
+<div class="modal-body">
     <h5>{{messaggio}}</h5>
-    <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold">
-        {{messaggioAttenzione}}
-    </label>
+    <div *ngIf="messaggioAttenzione" class="alert alert-danger h5 font-weight-bold mt-3 mb-0">
+        {{ messaggioAttenzione }}
+    </div>
 </div>
 <div class="modal-footer">
-    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-lg btn-{{bottone.colore}}"
+    <button *ngFor="let bottone of bottoni" type="button" class="btn  btn-lg btn-{{bottone.colore}} btn-no-hover"
             style="font-weight:600" (click)="modal.close(bottone.type)">
-        {{bottone.descrizione | uppercase}}
+        {{ bottone.descrizione | uppercase }}
     </button>
 </div>

@@ -19,8 +19,12 @@ import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
-import { ToggleMezziInServizio, ToggleSchedeContatto } from '../home/store/actions/view/view.actions';
+import { ToggleChiamata, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
+import { ClearRichiestaModifica } from '../home/store/actions/scheda-telefonata/richiesta-modifica.actions';
+import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { AnnullaChiamata } from '../home/store/actions/scheda-telefonata/chiamata.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -150,7 +154,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.url$.subscribe((url: string) => {
                 this.url = url;
-                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1 && url !== '/auth/utente-non-abilitato') && !this.url.includes('/changelog#')) {
+                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
                     this.store.dispatch(new GetDataNavbar());
                 }
             })
@@ -191,10 +195,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
     onChiamateInterventi(): void {
         const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+        const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+        const modificaRichiestaStatus = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
+        const composizioneStatus = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
         if (mezziInServizioStatus) {
             this.toggleMezziInSerivizo();
         } else if (schedeContattoStatus) {
             this.toggleSchedeContatto();
+        } else if (chiamataStatus) {
+            this.toggleChiamataStatus();
+        } else if (modificaRichiestaStatus) {
+            this.toggleModificaRichiesta();
+        } else if (composizioneStatus) {
+            this.turnOffComposizionePartenza();
         }
     }
 
@@ -206,6 +219,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
     toggleSchedeContatto(): void {
         this.returnToHome();
         this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    toggleChiamataStatus(): void {
+        this.returnToHome();
+        this.store.dispatch(new AnnullaChiamata());
+    }
+
+    toggleModificaRichiesta(): void {
+        this.returnToHome();
+        this.store.dispatch([
+            new ToggleModifica(),
+            new ClearRichiestaModifica()
+        ]);
+    }
+
+
+    turnOffComposizionePartenza(): void {
+        this.returnToHome();
+        this.store.dispatch([
+            new TurnOffComposizione(),
+            new ClearComposizioneAvanzata(),
+            new ClearComposizioneVeloce()
+        ]);
     }
 
     returnToHome(): void {

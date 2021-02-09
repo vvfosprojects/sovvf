@@ -4,8 +4,6 @@ import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interve
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
 import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { ContatoriSchedeContatto } from './contatori-schede-contatto.interface';
-import { Tipologia } from '../model/tipologia.model';
 import { ResponseInterface } from './response.interface';
 import { Ente } from './ente.interface';
 
@@ -17,8 +15,6 @@ export interface Welcome {
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaTipologicheMezzi;
-    infoNue: ContatoriSchedeContatto;
-    tipologie: Tipologia[];
     rubrica: Ente[];
     zoneEmergenza: string[];
 }

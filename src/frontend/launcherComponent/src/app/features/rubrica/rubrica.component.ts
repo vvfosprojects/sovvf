@@ -79,7 +79,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onAddVoceRubrica(): void {
         let addVoceRubricaModal;
-        console.log('TESTTTTT' , this.doubleMonitor);
         if (this.doubleMonitor) {
           addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder modal-left',
