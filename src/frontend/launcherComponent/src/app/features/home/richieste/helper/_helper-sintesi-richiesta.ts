@@ -169,9 +169,9 @@ export class HelperSintesiRichiesta {
     complessitaClass(richiesta: any): any {
         if (richiesta.complessita) {
             return {
-                'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
-                'badge-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
-                'badge-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
+                'badge-mod-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
+                'badge-mod-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
+                'badge-mod-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
             };
         }
     }

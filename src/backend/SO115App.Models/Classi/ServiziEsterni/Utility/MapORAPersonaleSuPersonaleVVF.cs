@@ -13,9 +13,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             {
                 var personaFisica = new PersonaleVVF
                 {
-                    CodFiscale = persona.CodFiscale,
-                    Nominativo = persona.Nominativo,
-                    CodSede = persona.Sede
+                    codiceFiscale = persona.CodFiscale,
+                    nome = persona.Nominativo,
+                    sede = new DistaccamentoPersonale()
+                    {
+                        id = persona.Sede
+                    }
                 };
                 listaPersonale.Add(personaFisica);
             }
@@ -26,9 +29,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         {
             return new PersonaleVVF
             {
-                CodFiscale = persona.CodFiscale,
-                Nominativo = persona.Nominativo,
-                CodSede = persona.Sede
+                codiceFiscale = persona.CodFiscale,
+                nome = persona.Nominativo,
+                sede = new DistaccamentoPersonale()
+                {
+                    id = persona.Sede
+                }
             };
         }
     }

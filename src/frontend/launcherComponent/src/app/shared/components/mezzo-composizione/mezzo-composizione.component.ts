@@ -11,6 +11,8 @@ import {Select} from '@ngxs/store';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 import {Observable, Subscription} from 'rxjs';
 import {ViewLayouts} from '../../interface/view.interface';
+import {Partenza} from '../../model/partenza.model';
+import {Squadra} from '../../model/squadra.model';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -146,7 +148,7 @@ export class MezzoComposizioneComponent implements OnInit {
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-secondary';
+        let result = 'badge-mod-secondary';
 
         if (this.richiesta && this.mezzoComp) {
             const distaccamentoMezzo = this.mezzoComp.mezzo.distaccamento.descrizione;
@@ -154,10 +156,10 @@ export class MezzoComposizioneComponent implements OnInit {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
                     if (competenza.descrizione === distaccamentoMezzo && index === 0) {
-                        result = 'badge-primary';
+                        result = 'badge-mod-primary';
                     }
                     if (competenza.descrizione === distaccamentoMezzo && index === 1) {
-                        result = 'badge-info';
+                        result = 'badge-mod-info';
                     }
                 });
             }
@@ -176,5 +178,31 @@ export class MezzoComposizioneComponent implements OnInit {
     _iconaStatiClass(statoMezzo: string): string {
         return iconaStatiClass(statoMezzo);
     }
+
+  getSquadre(richiesta: SintesiRichiesta): string[] {
+
+    // const nomiSquadre: string[] = [];
+    const squadre = [];
+
+    if (richiesta.partenzeRichiesta) {
+      richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+        if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+          partenza.squadre.forEach((squadra: Squadra) => {
+            squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+          });
+        }
+      });
+    } else {
+      return [];
+    }
+
+    function getUnique(arr, comp): any[] {
+      return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
+    }
+
+    // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+
+    return squadre;
+  }
 
 }

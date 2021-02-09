@@ -5,7 +5,7 @@
         <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
-                    <button class="btn btn-block btn-primary btn-no-hover font-comp-xl" style="width: 65px"
+                    <button class="btn btn-block btn-primary btn-no-hover font-xlarge" style="width: 65px"
                             (click)="turnOffComposizione()" ngbTooltip="Torna Chiamate/Interventi" placement="bottom-left">
                         <i class="fa fa-arrow-left font-comp-xl"></i>
                     </button>
@@ -13,7 +13,7 @@
                 <div class="pl-1" style="display:flex;" (click)="$event.stopPropagation()">
                     <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
                          (click)="$event.stopPropagation()">
-                        <button class="btn btn-info btn-no-hover font-comp-xl" id="dropdownActionsMezzo" ngbDropdownAnchor
+                        <button class="btn btn-info btn-no-hover font-xlarge" id="dropdownActionsMezzo" ngbDropdownAnchor
                                 ngbTooltip="Opzioni" placement="bottom-left"
                                 (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
                             <i class="fa fa-ellipsis-v font-comp-xl"></i>
@@ -50,73 +50,83 @@
         <div [class.col-9]="composizionePartenza"
              [class.align-self-center]="viewState.composizione.active"
              [class.col-12]="sostituzionePartenza">
-            <div class="row pt-1"
-                 [class.pb-2]="sostituzionePartenza">
-                <div class="col-3">
-                    <ng-select class="align-self-center font-comp-xl"
-                               [items]="filtri?.turni"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [searchable]="false"
-                               [loading]="!filtri?.turni"
-                               (change)="addFiltro($event, 'turno')"
-                               (clear)="clearFiltri('turno')"
-                               placeholder="Turno: Corrente">
-                    </ng-select>
-                </div>
-                <div class="col-3">
-                    <ng-select class="align-self-center"
-                               [items]="filtri?.distaccamenti"
-                               bindLabel="descDistaccamento"
-                               bindValue="id"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [notFoundText]="notFoundText"
-                               [loading]="!filtri?.distaccamenti"
-                               (change)="addFiltro($event, 'codiceDistaccamento')"
-                               (clear)="clearFiltri('codiceDistaccamento')"
-                               placeholder="Distaccamento: Competenza">
-                    </ng-select>
-                </div>
-
-                <!-- OLD => [ngClass]="{'col-3': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}" -->
-                <div class="col-3">
-                    <ng-select class="align-self-center"
-                               [items]="filtri?.generiMezzi"
-                               bindLabel="descrizione"
-                               bindValue="descrizione"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [notFoundText]="notFoundText"
-                               [loading]="!filtri?.generiMezzi"
-                               (change)="addFiltro($event, 'tipoMezzo')"
-                               (clear)="clearFiltri('tipoMezzo')"
-                               placeholder="Genere Mezzo: Tutti">
-                    </ng-select>
-                </div>
-                <div [ngClass]="{'col-4': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}">
-                    <ng-select class="align-self-center"
-                               [items]="filtri?.stati"
-                               bindLabel="descrizione"
-                               bindValue="codice"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [notFoundText]="notFoundText"
-                               [loading]="!filtri?.stati"
-                               (change)="addFiltro($event, 'statoMezzo')"
-                               (clear)="clearFiltri('statoMezzo')"
-                               placeholder="Stato: Tutti">
-                        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                            <div><span class="fa fa-eercast mr-2"
-                                       [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
-                        </ng-template>
-                    </ng-select>
-                </div>
+          <div class="row pt-1"
+               [class.pb-2]="sostituzionePartenza">
+            <div class="col-3">
+              <ng-select class="align-self-center font-xlarge"
+                         [items]="filtri?.turni"
+                         [multiple]="false"
+                         [closeOnSelect]="true"
+                         [hideSelected]="true"
+                         [searchable]="false"
+                         [loading]="!filtri?.turni"
+                         (change)="addFiltro($event, 'turno')"
+                         (clear)="clearFiltri('turno')"
+                         placeholder="Turno: Corrente">
+              </ng-select>
             </div>
+            <div class="col-3">
+              <ng-select class="align-self-center font-xlarge"
+                         [items]="filtri?.distaccamenti"
+                         bindLabel="descDistaccamento"
+                         bindValue="id"
+                         [multiple]="false"
+                         [closeOnSelect]="true"
+                         [hideSelected]="true"
+                         [notFoundText]="notFoundText"
+                         [loading]="!filtri?.distaccamenti"
+                         (change)="addFiltro($event, 'codiceDistaccamento')"
+                         (clear)="clearFiltri('codiceDistaccamento')"
+                         placeholder="Distaccamento: Competenza">
+              </ng-select>
+            </div>
+
+            <!-- OLD => [ngClass]="{'col-3': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}" -->
+            <div class="col-3">
+              <ng-select class="align-self-center font-xlarge"
+                         [items]="filtri?.generiMezzi"
+                         bindLabel="descrizione"
+                         bindValue="descrizione"
+                         [multiple]="false"
+                         [closeOnSelect]="true"
+                         [hideSelected]="true"
+                         [notFoundText]="notFoundText"
+                         [loading]="!filtri?.generiMezzi"
+                         (change)="addFiltro($event, 'tipoMezzo')"
+                         (clear)="clearFiltri('tipoMezzo')"
+                         placeholder="Genere Mezzo: Tutti">
+              </ng-select>
+            </div>
+            <div [ngClass]="{'col-4': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}">
+              <ng-select class="align-self-center font-xlarge"
+                         [items]="filtri?.stati"
+                         bindLabel="descrizione"
+                         bindValue="codice"
+                         [multiple]="false"
+                         [closeOnSelect]="true"
+                         [hideSelected]="true"
+                         [notFoundText]="notFoundText"
+                         [loading]="!filtri?.stati"
+                         (change)="addFiltro($event, 'statoMezzo')"
+                         (clear)="clearFiltri('statoMezzo')"
+                         placeholder="Stato: Tutti">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                  <div><span class="fa fa-eercast mr-2"
+                             [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="row pt-1" style="font-size: xx-large"
+               [class.pb-2]="sostituzionePartenza">
+            <div class="col">
+              <div class="font-xxlarge" style="text-align-last: center;">
+                <app-competenza *ngFor="let c of competenze; let i = index"
+                                [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Elimina Filtri Attivi -->
         <!--
@@ -135,14 +145,15 @@
             </a>
         </ng-template>
         -->
-    </div>
-    <div class="row mb-1"  style="font-size: xx-large">
-      <div class="col-8" style="text-align-last: right">
-        <app-competenza *ngFor="let c of competenze; let i = index"
-                        [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
-      </div>
-      <div class="col-4" style="text-align-last: right">
-        <!-- <span>Rilevanza Soccorso Aereo</span> -->
+      <div class="col-2 d-none" [class.d-none]="sostituzionePartenza">
+        <div class="card card-shadow border" style="height: 80px; margin: 5px;">
+          <div class="col">
+            <div>
+<!--              <span class="font-xlarge">Soccorso Aereo</span>-->
+              <i class="fa fa-signal"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 </div>

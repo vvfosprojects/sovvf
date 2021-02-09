@@ -28,7 +28,11 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import {
+  ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
+  SetRicercaMezziComposizione,
+  SetRicercaSquadreComposizione
+} from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
 import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
@@ -95,7 +99,9 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati()
+            new ClearPreaccoppiati(),
+            new ResetRicercaMezziComposizione(),
+            new ResetRicercaSquadreComposizione()
         ]);
         this.subscription.unsubscribe();
         console.log('Componente Composizione distrutto');

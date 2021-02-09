@@ -12,6 +12,7 @@ import { ContatoriSchedeContatto } from '../../../../../shared/interface/contato
 export class TastoSchedeContattoComponent {
 
     @Input() active: boolean;
+    @Input() disabled: boolean;
 
     @Output() toggle: EventEmitter<any> = new EventEmitter<any>();
 
@@ -35,15 +36,18 @@ export class TastoSchedeContattoComponent {
     }
 
     coloreTasto(): string {
-        let returnClass = 'btn-outline-light';
+        let returnClass = 'btn-light';
         if (this.active) {
-            returnClass = 'btn-light text-danger';
+            returnClass = 'btn-light btn-nav-selected';
+        }
+        if (this.disabled) {
+            returnClass = 'btn-secondary cursor-not-allowed';
         }
         return returnClass;
     }
 
     coloreBadgeContatore(): string {
-        let returnClass = 'badge-danger';
+        let returnClass = 'badge-success';
         if (this.active) {
             returnClass = 'badge-dark';
         }

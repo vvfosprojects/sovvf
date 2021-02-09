@@ -1,10 +1,10 @@
 <div class="clearfix">
     <div class="float-left mr-2 mt-2">
-        <b>Filtri Mappa</b>
+        <span class="font-xlarge">Filtri Mappa</span>
     </div>
     <div class="float-left">
-        <div class="btn-group btn-group-sm mt-1 app-shadow" role="group">
-            <button *ngFor="let voce of filtroMarker" class="btn loading-prevent-click-not"
+        <div class="btn-group app-shadow" role="group">
+            <button *ngFor="let voce of filtroMarker" class="btn loading-prevent-click-not font-xlarge"
                     [disabled]="voce?.disable"
                     [ngClass]="{'btn-secondary': voce.isActive, 'btn-outline-secondary': !voce.isActive}"
                     appDebounceClick

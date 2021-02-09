@@ -117,17 +117,17 @@
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
             <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
-                <h6 class="font-weight-normal font-comp-xl">Seleziona un mezzo o una squadra.</h6>
-                <button class="btn btn-primary mt-2 font-comp-xl btn-no-hover" (click)="nuovaPartenza()"
+                <h6 class="font-xlarge">Seleziona un mezzo o una squadra.</h6>
+                <button class="btn btn-primary mt-2 font-xlarge btn-no-hover" (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async)"><i
-                        class="fa fa-plus mr-2 font-comp-xl"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
+                        class="fa fa-plus mr-2 font-xlarge"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
             </div>
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
-                <button class="btn btn-primary font-comp-xl btn-no-hover" (click)="nuovaPartenza()"
+                <button class="btn btn-primary font-xlarge btn-no-hover" (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i
-                        class="fa fa-plus mr-2 font-comp-xl"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
+                        class="fa fa-plus mr-2 font-xlarge"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
             </div>
             <!-- lista box partenze -->
@@ -145,8 +145,7 @@
         <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                          [richiesta]="richiesta"
                                          [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
-                                         (confirmPartenzaInUscita)="confermaPartenzeInUscita()">
+                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
         </app-composizione-confirm-button>
     </div>
 </div>

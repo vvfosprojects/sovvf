@@ -42,11 +42,13 @@ export class SquadraComposizioneComponent {
     }
 
     onClick(): void {
+      if (!this.squadraComposizioneBusy()) {
         if (!this.itemSelezionato) {
-            this.selezionata.emit(this.squadraComp);
+          this.selezionata.emit(this.squadraComp);
         } else {
           this.deselezionata.emit(this.squadraComp);
         }
+      }
     }
 
     onHoverIn(): void {
@@ -90,7 +92,7 @@ export class SquadraComposizioneComponent {
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-secondary';
+        let result = 'badge-mod-secondary';
 
         if (this.richiesta && this.squadraComp) {
             const distaccamentoSquadra = this.squadraComp.squadra.distaccamento.descrizione;
@@ -98,10 +100,10 @@ export class SquadraComposizioneComponent {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
                     if (competenza.descrizione === distaccamentoSquadra && index === 0) {
-                        result = 'badge-primary';
+                        result = 'badge-mod-primary';
                     }
                     if (competenza.descrizione === distaccamentoSquadra && index === 1) {
-                        result = 'badge-info';
+                        result = 'badge-mod-info';
                     }
                 });
             }
