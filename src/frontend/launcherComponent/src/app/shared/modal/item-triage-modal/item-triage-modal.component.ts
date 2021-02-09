@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TreeviewItem } from 'ngx-treeview';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
+import { GenereMezzo } from '../../interface/genere-mezzo.interface';
+import { Select, Store } from '@ngxs/store';
+import { TriageCrudState } from '../../store/states/triage-crud/triage-crud.state';
+import { Observable, Subscription } from 'rxjs';
+import { ClearGeneriMezzo } from '../../store/actions/triage-crud/triage-crud.actions';
 
 @Component({
     selector: 'app-item-triage-modal',
     templateUrl: './item-triage-modal.component.html',
     styleUrls: ['./item-triage-modal.component.scss']
 })
-export class ItemTriageModalComponent implements OnInit {
+export class ItemTriageModalComponent implements OnInit, OnDestroy {
+
+    @Select(TriageCrudState.generiMezzo) generiMezzo$: Observable<GenereMezzo[]>;
+    generiMezzo: GenereMezzo[];
 
     domandaTitle: string;
     rispostaTitle: string;
@@ -17,17 +25,25 @@ export class ItemTriageModalComponent implements OnInit {
     primaDomanda: boolean;
 
     editMode: boolean;
+
     itemDataEdit: ItemTriageData;
+
     domandaSeguente: string;
-    disableDomanda: any;
+    disableDomanda: boolean;
 
     item: TreeviewItem;
 
     addItemTriageForm: FormGroup;
 
+    private subscription: Subscription = new Subscription();
+
     constructor(private modal: NgbActiveModal,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private store: Store) {
         this.initForm();
+        if (!this.primaDomanda) {
+            this.getGeneriMezzo();
+        }
     }
 
     ngOnInit(): void {
@@ -37,18 +53,33 @@ export class ItemTriageModalComponent implements OnInit {
         }
     }
 
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.store.dispatch(new ClearGeneriMezzo());
+    }
+
+    getGeneriMezzo(): void {
+        this.subscription.add(
+            this.generiMezzo$.subscribe((generiMezzo: GenereMezzo[]) => {
+                this.generiMezzo = generiMezzo;
+            })
+        );
+    }
+
     initForm(): void {
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: new FormControl(),
             generiMezzo: new FormControl(),
             prioritaConsigliata: new FormControl(),
-            domandaSeguente: new FormControl()
+            domandaSeguente: new FormControl(),
+            noteOperatore: new FormControl()
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
             generiMezzo: [null],
             prioritaConsigliata: [null],
-            domandaSeguente: [null]
+            domandaSeguente: [null],
+            noteOperatore: [null]
         });
     }
 
@@ -57,6 +88,7 @@ export class ItemTriageModalComponent implements OnInit {
             soccorsoAereo: this.itemDataEdit?.soccorsoAereo,
             generiMezzo: this.itemDataEdit?.generiMezzo,
             prioritaConsigliata: this.itemDataEdit?.prioritaConsigliata,
+            noteOperatore: this.itemDataEdit?.noteOperatore,
             domandaSeguente: this.domandaSeguente
         });
     }
@@ -66,7 +98,7 @@ export class ItemTriageModalComponent implements OnInit {
     }
 
     formIsInvalid(): boolean {
-        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value;
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value;
     }
 
     onConferma(): void {
@@ -76,6 +108,7 @@ export class ItemTriageModalComponent implements OnInit {
                 domandaSeguente: this.f.domandaSeguente.value,
                 soccorsoAereo: this.f.soccorsoAereo.value,
                 generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
+                noteOperatore: this.f.noteOperatore.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value
             };
             this.modal.close({ success: true, data: item });

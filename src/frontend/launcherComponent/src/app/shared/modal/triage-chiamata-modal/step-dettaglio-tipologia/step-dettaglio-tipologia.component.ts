@@ -22,7 +22,6 @@ export class StepDettaglioTipologiaComponent {
             this.codDettaglioTipologiaSelezionato = codice;
             this.changeDettaglioTipologia.emit(codice);
         } else {
-
             this.codDettaglioTipologiaSelezionato = null;
             this.changeDettaglioTipologia.emit(null);
         }

@@ -35,8 +35,8 @@ import { SchedeContattoState } from './features/home/store/states/schede-contatt
 import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
 import { TipologieState } from './shared/store/states/tipologie/tipologie.state';
 import { DettagliTipologieState } from './shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
-import { TriageState } from './shared/store/states/triage/triage.state';
-import { TriageModalState } from './shared/store/states/triage-modal/triage-modal.state';
+import { TriageCrudState } from './shared/store/states/triage-crud/triage-crud.state';
+import { TriageChiamataModalState } from './shared/store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { AuthState } from './features/auth/store/auth.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
 import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
@@ -119,8 +119,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
                 MergeSchedeContattoState,
                 TipologieState,
                 DettagliTipologieState,
-                TriageState,
-                TriageModalState
+                TriageCrudState,
+                TriageChiamataModalState
             ],
             { developmentMode: !environment.production }
         ),

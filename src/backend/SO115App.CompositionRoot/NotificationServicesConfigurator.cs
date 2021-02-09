@@ -128,6 +128,7 @@ namespace SO115App.CompositionRoot
             #region Triage
 
             container.Register<INotificationAddTriage, NotificationAddTriage>();
+            container.Register<INotificationUpDateTriage, NotificationUpDateTriage>();
 
             #endregion Triage
         }

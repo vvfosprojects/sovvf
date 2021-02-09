@@ -2,7 +2,7 @@
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
+using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +20,7 @@ namespace SO115App.Persistence.MongoDB.GestioneTriage
 
         Triage IGetTriage.GetTriage(GetTriageQuery getTriageQuery)
         {
-            return _dbContext.TriageCollection.Find(c => c.CodiceSede.Equals(getTriageQuery.CodiceSede) && c.CodDettaglioTipologia.Equals(getTriageQuery.CodDettaglioTipologia) && c.CodTipologia.Equals(getTriageQuery.CodTipologia)).FirstOrDefault();
+            return _dbContext.TriageCollection.Find(c => c.CodiceSede.Equals(getTriageQuery.CodiceSede[0]) && c.CodDettaglioTipologia.Equals(getTriageQuery.CodDettaglioTipologia) && c.CodTipologia.Equals(getTriageQuery.CodTipologia)).FirstOrDefault();
         }
     }
 }

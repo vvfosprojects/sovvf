@@ -30,11 +30,13 @@ import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/co
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
-import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
+import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -82,8 +84,9 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         'VV.UU.': false,
     };
 
-    // TODO: Rimuovere (fake triage)
-    visualizzaSuggerimentiTriage: boolean;
+    triageSummary: TriageSummary[];
+
+    test: any;
 
     private subscription = new Subscription();
 
@@ -373,8 +376,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
 
     openTriage(): void {
         const codTipologia = this.f.tipologie.value;
-        const codTipologiaNumber = +this.f.tipologie.value;
-        this.store.dispatch(new GetDettagliTipologieByCodTipologia(codTipologiaNumber));
+        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         let modalOptions: any;
         if (this.doubleMonitor) {
             modalOptions = {
@@ -392,27 +394,32 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             };
         }
         this.getNuovaRichiesta();
-        const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
+        const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.disableEmergenza = this.formIsInvalid();
-        triageModal.result.then((res: any) => {
+        triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
-                case 'salvaDettaglio':
-                    this.f.dettaglioTipologia.patchValue(res.result);
-                    this.visualizzaSuggerimentiTriage = true;
+                case 'success':
+                    this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                    this.triageSummary = res.triageSummary;
                     break;
                 default:
                     this.store.dispatch(new ClearDettagliTipologie());
                     break;
             }
         });
+
+        interface TriageModalResult {
+            type: string;
+            dettaglio: DettaglioTipologia;
+            triageSummary: TriageSummary[];
+        }
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
-
         f.nominativo.patchValue(scheda.richiedente.nominativo);
         f.telefono.patchValue(scheda.richiedente.telefono);
         f.indirizzo.patchValue(scheda.localita.indirizzo);

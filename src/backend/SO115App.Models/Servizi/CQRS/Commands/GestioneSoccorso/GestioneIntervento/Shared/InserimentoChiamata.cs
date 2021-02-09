@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Triage;
 using System;
 using System.Collections.Generic;
 
@@ -184,5 +185,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public string Motivazione { get; set; }
 
         public List<int> listaEnti { get; set; }
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
     }
 }

@@ -9,7 +9,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
@@ -270,6 +269,7 @@ namespace SO115App.CompositionRoot
             #region Triage
 
             container.Register<IAddTriage, AddTriage>();
+            container.Register<IUpDateTriage, UpDateTriage>();
             container.Register<IGetTriage, GetTriage>();
             container.Register<IGetTriageData, GetTriageData>();
 

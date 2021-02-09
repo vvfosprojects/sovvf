@@ -72,7 +72,7 @@
                 <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
                 <i class="fa fa-arrow-circle-right mr-3"></i>
                 <ng-template [ngIf]="tItems">
-                    <span *ngIf="editMode">Modifica </span>Triage
+                    <span *ngIf="viewEditButtons">Modifica </span>Triage
                 </ng-template>
                 <ng-template [ngIf]="!tItems">
                     <span class="text-danger font-weight-bolder">Triage non presente per il Dettaglio Tipologia selezionato.</span>
@@ -82,7 +82,7 @@
                 <hr class="mt-3 mb-2">
             </ng-template>
             <ng-template [ngIf]="tItems">
-                <div class="card card-shadow bg-light mt-3 px-4 pb-3">
+                <div class="card card-shadow bg-light mt-3 px-4 py-3">
                     <ngx-treeview [items]="tItems"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">
@@ -91,19 +91,27 @@
                 <ng-template [ngIf]="tItems">
                     <div class="mt-4 pl-2">
                         <app-checkbox [bigText]="true"
-                                      [checkboxState]="{ id: 'editMode', status: editMode, label: !editMode ? 'Abilita Modifica' : 'Disabilita Modifica'}"
-                                      (checkbox)="toggleEditMode()">
+                                      [checkboxState]="{ id: 'editMode', status: viewEditButtons, label: !viewEditButtons ? 'Abilita Modifica' : 'Disabilita Modifica'}"
+                                      (checkbox)="toggleViewEditButtons()">
                         </app-checkbox>
                     </div>
                 </ng-template>
-                <div *ngIf="unsavedModifiche" class="alert alert-danger font-weight-bolder mt-3">
+                <div *ngIf="getSaveButtonActive()" class="alert alert-danger font-weight-bolder mt-3">
                     Ci sono modifiche non ancora salvate, si prega di salvare per non perdere le modifiche.
                 </div>
                 <div class="text-left"
-                     [class.mt-4]="!unsavedModifiche">
-                    <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2" (click)="saveTriage()">
-                        {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
-                    </button>
+                     [class.mt-4]="!getSaveButtonActive()">
+                    <ng-template [ngIf]="getSaveButtonActive()">
+                        <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                                (click)="saveTriage()">
+                            {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                        </button>
+                    </ng-template>
+                    <ng-template [ngIf]="tItemsBackup">
+                        <button class="btn btn-lg btn-no-hover btn-danger font-weight-bolder" (click)="removeTriage()">
+                            {{ 'Elimina Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                        </button>
+                    </ng-template>
                 </div>
             </ng-template>
             <ng-template [ngIf]="!tItems">
@@ -127,7 +135,7 @@
 
 <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
     <div class="form-inline row-item font-xlarge mt-3"
-         [class.item-treeview-custom]="!editMode">
+         [class.item-treeview-custom]="!viewEditButtons">
         <i *ngIf="item.children" class="mr-2 text-info cursor-pointer" (click)="onCollapseExpand()" aria-hidden="true"
            [ngSwitch]="item.collapsed">
             <i *ngSwitchCase="true" class="fa fa-chevron-circle-down"></i>
@@ -142,7 +150,7 @@
                        (click)="item.children ? onCollapseExpand() : addItem(item)">
                     {{ item.text }}
                 </label>
-                <ng-template [ngIf]="editMode && item.children?.length > 1">
+                <ng-template [ngIf]="viewEditButtons && item.children?.length > 1">
                     <div class="d-inline-block ml-2">
                         <button class="btn btn-info"
                                 (click)="setItemValueEditTitle(item)">
@@ -172,27 +180,34 @@
                 </button>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.soccorsoAereo">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-plane mr-1"></i>
                     {{ getItemData(item)?.soccorsoAereo }}
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.generiMezzo">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-truck mr-1"></i>
                     <span *ngFor="let genereMezzo of getItemData(item)?.generiMezzo, let i = index"
                           class="d-inline-block">
-                        {{ genereMezzo }}
+                        {{ genereMezzo }}<span
+                            *ngIf="getItemData(item)?.generiMezzo?.length > 1 && i !== getItemData(item)?.generiMezzo?.length - 1">, </span>
                     </span>
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.prioritaConsigliata">
-                <label class="text-primary form-check-label cursor-pointer ml-2" (click)="onCollapseExpand()">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-thermometer mr-1"></i>
                     {{ getItemData(item)?.prioritaConsigliata }}
                 </label>
             </ng-template>
-            <ng-template [ngIf]="editMode">
+            <ng-template [ngIf]="getItemData(item)?.noteOperatore">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    Note Operatore Inserite
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="viewEditButtons">
                 <ng-template [ngIf]="item.children?.length <= 0 && !getItemData(item)">
                     <button class="btn btn-primary ml-3"
                             ngbTooltip="Aggiungi"

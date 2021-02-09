@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
@@ -13,15 +13,20 @@ import {
     AddTriage,
     SetDettaglioTipologiaTriage,
     SetNewTriage,
-    SetNewTriageData
-} from '../../../shared/store/actions/triage/triage.actions';
+    AddTriageData,
+    DeleteTriageData,
+    UpdateTriage,
+    SetNewTriageData,
+    GetGeneriMezzo
+} from '../../../shared/store/actions/triage-crud/triage-crud.actions';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { TriageState } from '../../../shared/store/states/triage/triage.state';
+import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-triage',
@@ -29,33 +34,44 @@ import { ItemTriageData } from '../../../shared/interface/item-triage-data.inter
     styleUrls: ['./triage.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TriageComponent {
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(TriageState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
-    @Select(TriageState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
-    dettaglioTipologia: DettaglioTipologia;
-
-    codTipologia: string;
-    codDettaglioTipologia: any;
+export class TriageComponent implements OnDestroy {
 
     tConfig = {
         hasAllCheckBox: false,
-        hasFilter: false,
+        hasFilter: true,
         hasCollapseExpand: false,
         decoupleChildFromParent: false,
         maxHeight: 500
     } as TreeviewConfig;
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
+
+    @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+
+    @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
+    dettaglioTipologia: DettaglioTipologia;
+
+    @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeItem>;
+    tItems: TreeItem[];
+    @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
+    tItemsData: ItemTriageData[];
+    @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
+    editMode: boolean;
+
+    @Select(TriageCrudState._backupTriageByDettaglioTipologia) backupTriageByDettaglioTipologia$: Observable<TreeItem>;
+    tItemsBackup: TreeItem[];
+    @Select(TriageCrudState._backupTriageDataByDettaglioTipologia) backupTriageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
+    tItemsDataBackup: ItemTriageData[];
+
+    codTipologia: string;
+    codDettaglioTipologia: number;
+
     showTriage: boolean;
 
-    tItems: TreeviewItem[];
-    tItemsData: ItemTriageData[];
-
-    editMode: boolean;
-    unsavedModifiche: boolean;
+    viewEditButtons = true;
 
     itemValueTitleEdit: string;
     itemTitleEdit: string;
@@ -68,6 +84,16 @@ export class TriageComponent {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
+        this.getDoubleMonitor();
+        this.getEditMode();
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.onReset();
+    }
+
+    getDoubleMonitor(): void {
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
@@ -85,9 +111,7 @@ export class TriageComponent {
 
     onSetDettaglioTipologia(codDettaglioTipologia: number): void {
         this.codDettaglioTipologia = codDettaglioTipologia;
-        this.store.dispatch([
-            new SetDettaglioTipologiaTriage(this.codDettaglioTipologia)
-        ]);
+        this.store.dispatch(new SetDettaglioTipologiaTriage(this.codDettaglioTipologia));
     }
 
     onReset(): void {
@@ -105,27 +129,127 @@ export class TriageComponent {
     onShowTriage(): void {
         if (this.codDettaglioTipologia && this.codTipologia) {
             this.store.dispatch(new GetTriageByCodDettaglioTipologia(+this.codTipologia, this.codDettaglioTipologia));
+            this.getTriageByDettaglioTipologia();
+            this.getTriageDataByDettaglioTipologia();
             this.showTriage = true;
         }
+    }
+
+    getTriageByDettaglioTipologia(): void {
+        this.subscription.add(
+            this.triageByDettaglioTipologia$.subscribe((triage: TreeItem) => {
+                if (triage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(triage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.tItems = [];
+                    this.tItems[0] = mappedTriage[0];
+                } else {
+                    this.tItems = null;
+                }
+            })
+        );
+        this.subscription.add(
+            this.backupTriageByDettaglioTipologia$.subscribe((backupTriage: TreeItem) => {
+                if (backupTriage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(backupTriage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.tItemsBackup = [];
+                    this.tItemsBackup[0] = mappedTriage[0];
+                } else {
+                    this.tItemsBackup = null;
+                }
+            })
+        );
+
+
+        function getFatherMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
+
+        function mapTreeviewItems(childrens: any): any {
+            const childrensCopy = childrens;
+            let childrenIndex = 0;
+            for (const children of childrensCopy) {
+                childrensCopy[childrenIndex] = getChildrenMapped(children);
+                childrenIndex = childrenIndex + 1;
+                if (children?.internalChildren) {
+                    mapTreeviewItems(children.internalChildren);
+                }
+            }
+            childrens = childrensCopy;
+            return childrens;
+        }
+
+        function getChildrenMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
+    }
+
+    getTriageDataByDettaglioTipologia(): void {
+        this.subscription.add(
+            this.triageDataByDettaglioTipologia$.subscribe((triageData: ItemTriageData[]) => {
+                if (triageData) {
+                    this.tItemsData = triageData;
+                }
+            })
+        );
+        this.subscription.add(
+            this.backupTriageDataByDettaglioTipologia$.subscribe((backupTriageData: ItemTriageData[]) => {
+                if (backupTriageData) {
+                    this.tItemsDataBackup = backupTriageData;
+                }
+            })
+        );
+    }
+
+    getEditMode(): void {
+        this.subscription.add(
+            this.editMode$.subscribe((value: boolean) => {
+                this.editMode = value;
+            })
+        );
     }
 
     initTriage(): void {
         this.addItem();
     }
 
-    getItemData(item: TreeItem): any {
+    getItemData(item: TreeItem): ItemTriageData {
         const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
             return itemData;
         }
     }
 
-    toggleEditMode(): void {
-        this.editMode = !this.editMode;
+    toggleViewEditButtons(): void {
+        this.viewEditButtons = !this.viewEditButtons;
     }
 
     addItem(item?: TreeItem): void {
-        if (this.editMode || !item) {
+        if (this.viewEditButtons || !item) {
+            this.store.dispatch(new GetGeneriMezzo());
             const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
@@ -180,8 +304,7 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
-        this.toggleEditMode();
-        this.unsavedModifiche = true;
+        this.toggleViewEditButtons();
     }
 
     addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
@@ -197,39 +320,39 @@ export class TriageComponent {
             })
         ];
         this.updateTriage(this.tItems[0]);
-        this.unsavedModifiche = true;
     }
 
     addOtherData(res: any, item: TreeItem): void {
-        if (!this.tItemsData) {
-            this.tItemsData = [];
-        }
-        const otherData = {
+        const itemData = {
             itemValue: item.value,
             soccorsoAereo: null,
             generiMezzo: null,
-            prioritaConsigliata: null
-        };
+            prioritaConsigliata: null,
+            noteOperatore: null
+        } as ItemTriageData;
         if (res.data.soccorsoAereo) {
-            otherData.soccorsoAereo = res.data.soccorsoAereo;
+            itemData.soccorsoAereo = res.data.soccorsoAereo;
         }
         if (res.data.generiMezzo) {
-            otherData.generiMezzo = res.data.generiMezzo;
+            itemData.generiMezzo = res.data.generiMezzo;
         }
         if (res.data.prioritaConsigliata) {
-            otherData.prioritaConsigliata = res.data.prioritaConsigliata;
+            itemData.prioritaConsigliata = res.data.prioritaConsigliata;
         }
-        if (otherDataValues(otherData)) {
-            this.tItemsData.push(otherData);
-            this.updateTriageData(this.tItemsData);
+        if (res.data.noteOperatore) {
+            itemData.noteOperatore = res.data.noteOperatore;
+        }
+        if (otherDataValues(itemData)) {
+            this.store.dispatch(new AddTriageData(itemData));
         }
 
         function otherDataValues(data: any): boolean {
-            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata;
+            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata || data?.noteOperatore;
         }
     }
 
     editItem(item: TreeItem): void {
+        this.store.dispatch(new GetGeneriMezzo());
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -264,45 +387,52 @@ export class TriageComponent {
                     }
                 }
 
-                let editedItem: ItemTriageData;
+                let newItemData: ItemTriageData;
                 if (itemDataFound) {
-                    editedItem = {
+                    newItemData = {
                         itemValue: item.value,
                         soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
                         generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
-                        prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null
+                        prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null,
+                        noteOperatore: itemDataFound.noteOperatore ? itemDataFound.noteOperatore : null
                     };
                 } else {
-                    editedItem = {
+                    newItemData = {
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,
-                        prioritaConsigliata: null
+                        prioritaConsigliata: null,
+                        noteOperatore: null
                     };
                 }
 
                 if (res.data.soccorsoAereo) {
-                    editedItem.soccorsoAereo = res.data.soccorsoAereo;
+                    newItemData.soccorsoAereo = res.data.soccorsoAereo;
                 } else {
-                    editedItem.soccorsoAereo = null;
+                    newItemData.soccorsoAereo = null;
                 }
                 if (res.data.generiMezzo) {
-                    editedItem.generiMezzo = res.data.generiMezzo;
+                    newItemData.generiMezzo = res.data.generiMezzo;
                 } else {
-                    editedItem.generiMezzo = null;
+                    newItemData.generiMezzo = null;
                 }
                 if (res.data.prioritaConsigliata) {
-                    editedItem.prioritaConsigliata = res.data.prioritaConsigliata;
+                    newItemData.prioritaConsigliata = res.data.prioritaConsigliata;
                 } else {
-                    editedItem.prioritaConsigliata = null;
+                    newItemData.prioritaConsigliata = null;
+                }
+                if (res.data.noteOperatore) {
+                    newItemData.noteOperatore = res.data.noteOperatore;
+                } else {
+                    newItemData.noteOperatore = null;
                 }
 
                 if (itemDataFound) {
-                    this.tItemsData = this.tItemsData.filter((tItem: ItemTriageData) => tItem.itemValue !== item.value);
+                    this.store.dispatch(new DeleteTriageData(item.value));
                 }
 
-                if (editedItem.soccorsoAereo || editedItem.generiMezzo?.length || editedItem.prioritaConsigliata) {
-                    this.tItemsData.push(editedItem);
+                if (newItemData?.soccorsoAereo || newItemData.generiMezzo?.length || newItemData?.prioritaConsigliata || newItemData?.noteOperatore) {
+                    this.store.dispatch(new AddTriageData(newItemData));
                 }
                 this.updateTriage(this.tItems[0]);
             }
@@ -322,34 +452,82 @@ export class TriageComponent {
     updateItemTitle(item: TreeItem): void {
         item.text = addQuestionMark(capitalize(this.itemTitleEdit));
         this.clearItemValueEditTitle();
-    }
-
-    removeItem(item: TreeviewItem): void {
-        const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
-        parent.children = null;
-        this.removeItemData(parent);
         this.updateTriage(this.tItems[0]);
     }
 
-    removeItemData(item: TreeItem): void {
-        // Rimuovo "data" dell'item
-        removeData(this.tItemsData, item);
-        // Rimuovo "data" dei figli/sottofigli e così via
-        removeDataRecursively(this.tItemsData, item, item.value);
+    removeItem(item: TreeviewItem): void {
+        let removeTriageItemModal;
+        if (this.doubleMonitor) {
+            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        } else {
+            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        }
+        removeTriageItemModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        removeTriageItemModal.componentInstance.titolo = 'Eliminazione "' + item.text + '"';
+        removeTriageItemModal.componentInstance.messaggio = 'Sei sicuro di voler rimuovere "' + item.text + '" ?';
+        removeTriageItemModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i nodi sottostanti verranno eliminati.';
+        removeTriageItemModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        removeTriageItemModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        const parent = this.findItem(this.tItems[0], item.value.slice(0, -2));
+                        parent.children = null;
+                        this.tItemsData = this.removeItemData(item);
+                        this.updateTriage(this.tItems[0]);
+                        this.store.dispatch(new SetNewTriageData(this.tItemsData));
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
+    }
 
-        function removeData(tItemsData: any, element: TreeItem): void {
+    removeItemData(item: TreeItem): ItemTriageData[] {
+        const itemsData = makeCopy(this.tItemsData);
+        // Rimuovo "data" dell'item
+        removeData(itemsData, item);
+        // Rimuovo "data" dei figli/sottofigli e così via
+        removeDataRecursively(itemsData, item, item.value);
+
+        return itemsData;
+
+        function removeData(tItemsData: ItemTriageData[], element: TreeItem): void {
             let index = 0;
             let iItemDataFound: number;
+            let deleteItemData: boolean;
             for (const tItemData of tItemsData) {
-                index = index + 1;
                 if (tItemData.itemValue === element.value) {
                     iItemDataFound = index;
+                    deleteItemData = true;
                 }
+                index = index + 1;
             }
-            tItemsData.splice(iItemDataFound, 1);
+            if (deleteItemData) {
+                tItemsData.splice(iItemDataFound, 1);
+            }
         }
 
-        function removeDataRecursively(tItemsData: any, element: TreeItem, value: string): void {
+        function removeDataRecursively(tItemsData: ItemTriageData[], element: TreeItem, value: string): void {
             removeData(tItemsData, element);
             if (element.children != null) {
                 let i: number;
@@ -377,22 +555,70 @@ export class TriageComponent {
         return null;
     }
 
-    updateTriage(triage: any): void {
-        this.store.dispatch(new SetNewTriage(makeCopy(triage)));
-        this.updateTriageData(this.tItemsData);
+    updateTriage(triage: TreeItem): void {
+        const newTriage = triage ? makeCopy(triage) : null;
+        this.store.dispatch(new SetNewTriage(newTriage));
     }
 
-    updateTriageData(data: ItemTriageData[]): void {
-        if (data) {
-            this.store.dispatch(new SetNewTriageData(makeCopy(data)));
-        }
+    // TODO: fixare rimuovendo "internalChildren" ecc. che si modificano ogni volta che, ad esempio, espando un item del treeview
+    getSaveButtonActive(): boolean {
+        const triageString = JSON.stringify(this.tItems);
+        const backupTriageString = JSON.stringify(this.tItemsBackup);
+        const triageDataString = JSON.stringify(this.tItemsData);
+        const backupDataTriageString = JSON.stringify(this.tItemsDataBackup);
+        return (triageString !== backupTriageString) || (triageDataString !== backupDataTriageString);
     }
 
     saveTriage(): void {
-        if (this.editMode) {
-            this.toggleEditMode();
+        if (this.viewEditButtons) {
+            this.toggleViewEditButtons();
         }
-        this.store.dispatch(new AddTriage());
-        this.unsavedModifiche = false;
+        this.editMode ? this.store.dispatch(new UpdateTriage()) : this.store.dispatch(new AddTriage());
+    }
+
+    removeTriage(): void {
+        let removeTriageModal;
+        if (this.doubleMonitor) {
+            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        } else {
+            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        }
+        removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
+        removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati.';
+        removeTriageModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        removeTriageModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        if (this.viewEditButtons) {
+                            this.toggleViewEditButtons();
+                        }
+                        this.updateTriage(null);
+                        this.store.dispatch(new UpdateTriage());
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
     }
 }

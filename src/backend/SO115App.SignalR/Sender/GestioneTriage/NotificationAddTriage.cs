@@ -13,17 +13,14 @@ namespace SO115App.SignalR.Sender.GestioneTriage
     public class NotificationAddTriage : INotificationAddTriage
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IGetTriage _getTriage;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationAddTriage(
             IHubContext<NotificationHub> notificationHubContext,
-            IGetTriage getTriage,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative
             )
         {
             _notificationHubContext = notificationHubContext;
-            _getTriage = getTriage;
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
         }
 
