@@ -18,9 +18,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     /// </summary>
     public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        private readonly Client.IHttpRequestManager<List<PersonaleVVF>> _client;
+        private readonly Client.IHttpRequestManager<List<PersonaleVVF>> _clientPersonale;
         private readonly IConfiguration _configuration;
-        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration) { _client = client; _configuration = configuration; }
+        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration) 
+        { 
+            _clientPersonale = client;
+            _configuration = configuration; 
+        }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
@@ -55,12 +59,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 Parallel.ForEach(codSede, sede =>
                 {
-                    //var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                    _client.Configure("Personale_" + sede);
+                    _clientPersonale.Configure("Personale_" + sede);
 
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
-                        listaPersonale.AddRange(_client.GetAsync(url, "").Result);
+                        listaPersonale.AddRange(_clientPersonale.GetAsync(url, "").Result);
                 });
             }
             catch (Exception e)
