@@ -47,7 +47,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -115,7 +115,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     Composizione = Composizione;
@@ -281,7 +281,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

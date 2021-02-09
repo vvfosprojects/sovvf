@@ -5,8 +5,8 @@ import { setArrow, setBlinking } from '../../../../../shared/helper/function-css
 import { objectDiff } from '../../../../../shared/helper/function';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import {Select} from '@ngxs/store';
-import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-mezzi',
@@ -15,7 +15,7 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class BoxMezziComponent implements OnChanges {
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     mezziDiff: any;
@@ -57,7 +57,7 @@ export class BoxMezziComponent implements OnChanges {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

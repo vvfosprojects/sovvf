@@ -17,7 +17,7 @@ import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interf
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
 import { AuthState } from '../../../auth/store/auth.state';
-import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -26,7 +26,7 @@ import {ViewportState} from '../../../../shared/store/states/viewport/viewport.s
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
@@ -73,9 +73,9 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     sunModeBox(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.sunMode) {
         value = 'card app-shadow';
-      } else if (!this.sunMode) {
+      } else if (this.sunMode) {
         value = 'moon-text moon-card-light';
       }
       return value;

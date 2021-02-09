@@ -34,6 +34,7 @@ import {
   GetEventiSoccorsoAereo
 } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {AzioniSintesiRichiestaModalComponent} from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -83,7 +84,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     doubleMonitor: boolean;
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
     mapsIsActive: boolean;
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     methods = new HelperSintesiRichiesta();
@@ -146,7 +147,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }
@@ -163,9 +164,9 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     sunModeCard(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.sunMode) {
         value = 'card';
-      } else if (!this.sunMode) {
+      } else if (this.sunMode) {
         value = 'moon-card';
       }
       return value;

@@ -10,8 +10,8 @@ import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '..
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -37,7 +37,7 @@ export class BoxNuovaPartenzaComponent {
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     itemBloccato: boolean;
@@ -70,7 +70,7 @@ export class BoxNuovaPartenzaComponent {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

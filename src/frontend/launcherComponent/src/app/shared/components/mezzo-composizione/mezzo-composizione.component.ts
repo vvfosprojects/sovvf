@@ -13,7 +13,7 @@ import {Observable, Subscription} from 'rxjs';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Partenza} from '../../model/partenza.model';
 import {Squadra} from '../../model/squadra.model';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -42,7 +42,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     public sganciamentoDisabilitato = false;
@@ -74,7 +74,7 @@ export class MezzoComposizioneComponent implements OnInit {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

@@ -6,8 +6,8 @@ import { setArrow, setBlinking } from '../../../../../shared/helper/function-css
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TurnoCalendario } from '../../../../navbar/turno/turno-calendario.model';
 import {Select} from '@ngxs/store';
-import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-interventi',
@@ -16,7 +16,7 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class BoxInterventiComponent implements OnChanges {
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     @Input() interventi: BoxInterventi;
@@ -65,7 +65,7 @@ export class BoxInterventiComponent implements OnChanges {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

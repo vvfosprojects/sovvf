@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import {Observable, Subscription} from 'rxjs';
 import {Select} from '@ngxs/store';
-import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-meteo',
@@ -11,7 +11,7 @@ import {ViewportState} from '../../../../../shared/store/states/viewport/viewpor
 })
 export class BoxMeteoComponent {
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
     @Input() datimeteo: Meteo;
@@ -25,7 +25,7 @@ export class BoxMeteoComponent {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }

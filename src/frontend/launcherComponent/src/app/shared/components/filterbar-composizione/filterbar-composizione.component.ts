@@ -21,7 +21,7 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Sede} from '../../model/sede.model';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -43,7 +43,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) sunMode$: Observable<boolean>;
     sunMode: boolean;
 
 
@@ -88,7 +88,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     getSunMode(): void {
       this.subscription.add(
         this.sunMode$.subscribe((sunMode: boolean) => {
-          this.sunMode = sunMode;
+          this.sunMode = !sunMode;
         })
       );
     }
