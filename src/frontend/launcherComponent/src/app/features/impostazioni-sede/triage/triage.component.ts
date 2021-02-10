@@ -56,8 +56,8 @@ export class TriageComponent implements OnDestroy {
     @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
     dettaglioTipologia: DettaglioTipologia;
 
-    @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeItem>;
-    tItems: TreeItem[];
+    @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeviewItem>;
+    tItems: TreeviewItem[];
     @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
     @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;

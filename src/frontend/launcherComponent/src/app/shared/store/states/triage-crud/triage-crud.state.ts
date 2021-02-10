@@ -15,12 +15,14 @@ import {
     DeleteTriageData,
     UpdateTriageData,
     GetGeneriMezzo,
-    ClearGeneriMezzo, ResetTriage, ClearStateTriageCrud
+    ClearGeneriMezzo,
+    ResetTriage,
+    ClearStateTriageCrud
 } from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
@@ -31,9 +33,9 @@ export interface TriageStateModel {
     idTriage: string;
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
-    triageByDettaglioTipologia: TreeItem;
+    triageByDettaglioTipologia: TreeviewItem;
     triageDataByDettaglioTipologia: ItemTriageData[];
-    _backupTriageByDettaglioTipologia: TreeItem;
+    _backupTriageByDettaglioTipologia: TreeviewItem;
     _backupTriageDataByDettaglioTipologia: ItemTriageData[];
     editMode: boolean;
     generiMezzo: GenereMezzo[];
@@ -75,7 +77,7 @@ export class TriageCrudState {
     }
 
     @Selector()
-    static triageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+    static triageByDettaglioTipologia(state: TriageStateModel): TreeviewItem {
         return state.triageByDettaglioTipologia;
     }
 
@@ -85,7 +87,7 @@ export class TriageCrudState {
     }
 
     @Selector()
-    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeviewItem {
         return state._backupTriageByDettaglioTipologia;
     }
 

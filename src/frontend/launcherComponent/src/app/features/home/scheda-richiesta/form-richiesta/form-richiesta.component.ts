@@ -33,10 +33,16 @@ import { Sede } from '../../../../shared/model/sede.model';
 import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/richiesta-modifica.actions';
-import { ClearDettagliTipologie, GetDettagliTipologieByCodTipologia } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
+import {
+    ClearDettaglioTipologiaTriageChiamata,
+    ClearDettagliTipologie,
+    ClearTipologiaTriageChiamata, ClearTriageChiamata,
+    GetDettagliTipologieByCodTipologia
+} from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -84,7 +90,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         'VV.UU.': false,
     };
 
-    triageSummary: TriageSummary[];
+    dettaglioTipologia: DettaglioTipologia;
 
     test: any;
 
@@ -403,13 +409,30 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             switch (res.type) {
                 case 'success':
                     this.f.dettaglioTipologia.patchValue(res.dettaglio);
-                    this.triageSummary = res.triageSummary;
+                    this.dettaglioTipologia = res.dettaglio;
+                    saveTriageSummary(this.store, res.triageSummary);
+                    clearTriageChiamataModalData(this.store);
                     break;
                 default:
-                    this.store.dispatch(new ClearDettagliTipologie());
+                    clearTriageChiamataModalData(this.store);
                     break;
             }
         });
+
+        function saveTriageSummary(store: Store, triageSummary: TriageSummary[]): void {
+            store.dispatch([
+                new SetTriageSummary(triageSummary)
+            ]);
+        }
+
+        function clearTriageChiamataModalData(store: Store): void {
+            store.dispatch([
+                new ClearDettagliTipologie(),
+                new ClearTipologiaTriageChiamata(),
+                new ClearDettaglioTipologiaTriageChiamata(),
+                new ClearTriageChiamata()
+            ]);
+        }
 
         interface TriageModalResult {
             type: string;
