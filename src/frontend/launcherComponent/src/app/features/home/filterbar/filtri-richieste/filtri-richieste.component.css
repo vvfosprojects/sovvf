@@ -5,9 +5,11 @@
 
 .altri-filtri{
     border-left: none;
- }
+    border-color: #e2e2e2 !important;
+
+}
 
 .altri-filtri:hover{
-   background-color: #e2e2e2 !important; 
+   background-color: #e2e2e2 !important;
    border-left: none;
 }

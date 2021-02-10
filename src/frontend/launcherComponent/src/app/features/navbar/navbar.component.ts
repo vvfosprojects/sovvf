@@ -19,12 +19,14 @@ import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
-import { ToggleChiamata, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
+import { ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
+import {SunMode} from '../../shared/store/actions/viewport/viewport.actions';
 import { ClearRichiestaModifica } from '../home/store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { AnnullaChiamata } from '../home/store/actions/scheda-telefonata/chiamata.actions';
+import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-navbar',
@@ -39,6 +41,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledMezziInServizio: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
@@ -73,6 +77,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private authenticationService: AuthService,
                 private clock: ClockService) {
+        this.getSunMode();
         this.setTime();
         this.getClock();
         this.getTurnoCalendario();
@@ -105,6 +110,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTime(): void {
         this.time = new Date();
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
+    }
+
+    onSwitchSunMode(): void {
+      this.store.dispatch(new SunMode());
     }
 
     getTurnoCalendario(): void {

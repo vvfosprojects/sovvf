@@ -1,11 +1,11 @@
 <div class="clearfix">
     <div class="float-left mr-2 mt-2">
-        <span class="font-xlarge">Filtri Mappa</span>
+        <span class="font-xlarge" [class.text-white]="!sunMode">Filtri Mappa</span>
     </div>
     <div class="float-left">
-        <div class="btn-group app-shadow" role="group">
+        <div class="btn-group" role="group">
             <button *ngFor="let voce of filtroMarker" class="btn loading-prevent-click-not font-xlarge"
-                    [disabled]="voce?.disable"
+                    [disabled]="voce?.disable" [class.text-white]="!sunMode"
                     [ngClass]="{'btn-secondary': voce.isActive, 'btn-outline-secondary': !voce.isActive}"
                     appDebounceClick
                     (debounceClick)="onSelected(voce.id)" [debounceTime]="300">

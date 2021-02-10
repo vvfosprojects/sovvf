@@ -7,7 +7,7 @@
             <span class="badge badge-mod-success h6 ml-2 mt-2 font-xlarge">{{datimeteo?.temperatura}}°</span>
         </div>
         <div class="col-12">
-            <hr class="m-0 mb-2">
+            <hr class="m-0 mb-2" [class.moon-hr]="!sunMode">
         </div>
         <div class="col-12">
             <div class="row">
@@ -35,7 +35,7 @@
                             <span>
                                 <i [ngStyle]="{'transform': 'rotate('+datimeteo?.direzione.gradi+'deg)', '-webkit-transform': 'rotate('+datimeteo?.direzione.gradi+'deg)', '-ms-transform': 'rotate('+datimeteo?.direzione.gradi+'deg)'}"
                                     class="pl-2 fa fa-long-arrow-up"></i>
-                                <small class="text-black-50"> {{datimeteo?.direzione.cardinali}}</small>
+                                <small [ngClass]="sunModeStyle()" style="font-size: 15px"> {{datimeteo?.direzione.cardinali}}</small>
                             </span>
                         </div>
                         <div class="col">

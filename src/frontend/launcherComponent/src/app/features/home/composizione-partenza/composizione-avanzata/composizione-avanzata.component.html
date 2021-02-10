@@ -4,7 +4,7 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 pr-0">
-        <div class="card card-shadow mx-auto"
+        <div class="card card-shadow mx-auto"  [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader
                     *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
@@ -59,7 +59,7 @@
         <div class="card card-shadow mx-auto"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
-            <div class="card-header clearfix px-2 py-1">
+            <div class="card-header clearfix px-2 py-1"  [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode">
                 <div class="float-left pt-2">
                     <i class="fa fa-truck mr-2 font-comp-xl"></i>
                     <span class="h6 font-comp-xl">Mezzi</span>
@@ -73,7 +73,7 @@
                     <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi" style="transform: translate(272px, -28px);"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y"
+            <ul class="list-group list-group-flush border-bottom scroll-y" [class.bg-moon-light]="!sunMode"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <li *ngIf="mezziComposizione && mezziComposizione.length <= 0"
                     class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span class="text-muted">Nessun risultato...</span>
@@ -117,7 +117,7 @@
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
             <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
-                <h6 class="font-xlarge">Seleziona un mezzo o una squadra.</h6>
+                <h6 class="font-xlarge" [ngClass]="sunModeText()">Seleziona un mezzo o una squadra.</h6>
                 <button class="btn btn-primary mt-2 font-xlarge btn-no-hover" (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async)"><i
                         class="fa fa-plus mr-2 font-xlarge"></i><span style="vertical-align: text-bottom;">Aggiungi</span>

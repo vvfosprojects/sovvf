@@ -31,7 +31,7 @@
                         <div class="h6 font-weight-bold">Nessun Funzionario</div>
                     </div>
 
-                    <hr class="m-0 mb-2">
+                    <hr class="m-0 mb-2" [class.moon-hr]="!sunMode">
 
                     <!-- Capo Turno -->
                     <div *ngIf="personalePresenze.capoTurno">
@@ -94,7 +94,7 @@
                 </ng-template>
             </div>
         </div>
-        <hr class="m-0 mb-2">
+        <hr class="m-0 mb-2" [class.moon-hr]="!sunMode">
     </div>
     <!-- sinistra -->
     <div class="col-6">
@@ -103,7 +103,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Squadre attualmente in servizio" placement="top">Squadre</span>
+                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Squadre attualmente in servizio" placement="top">Squadre</span>
                             </li>
                         </ul>
                     </div>
@@ -120,7 +120,7 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6 cod-int" ngbTooltip="Squadre impegnate sugli interventi" placement="bottom">Impegnate</span>
+                    <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Squadre impegnate sugli interventi" placement="bottom">Impegnate</span>
                     </li>
                   </ul>
                 </div>
@@ -145,7 +145,7 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span
-                                    class="d-inline-block h6 cod-int"
+                                    class="d-inline-block h6" [ngClass]="sunModeStyle()"
                                     ngbTooltip="Funzionari di guardia" placement="top">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
                             </li>
                         </ul>
@@ -155,7 +155,7 @@
                             <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="position-relative badge badge-mod-dark h6 w-75"><i
+                                    class="position-relative badge badge-mod-secondary h6 w-75"><i
                                     *ngIf="personaleDiff" class="blink-i-aggregate fa"
                                     [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
                         </ul>
@@ -164,7 +164,7 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6 cod-int"
+                    <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()"
                               ngbTooltip="Tecnici di guardia" placement="bottom">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
                     </li>
                   </ul>

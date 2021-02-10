@@ -6,3 +6,23 @@
 .font-composizione-avanzata {
   font-size: 115% !important;
 }
+
+.mezzo-bloccato {
+  z-index: 1 !important;
+  position: absolute !important;
+  transform: translate(20rem, -6px) !important;
+  font-size: 25px !important;
+}
+
+.mezzo-bloccato-hr {
+  position: absolute;
+  width: 53rem;
+  border-top-color: #dc3545;
+  border-top-style: dashed;
+  border-width: thin;
+  transform: translate(0px, 0px);
+}
+
+.opacity-6 {
+  opacity: 0.6;
+}

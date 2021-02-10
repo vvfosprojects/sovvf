@@ -21,6 +21,7 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Sede} from '../../model/sede.model';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -42,9 +43,11 @@ export class FilterbarComposizioneComponent implements OnDestroy {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
 
-  private subscription = new Subscription();
+    private subscription = new Subscription();
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -58,6 +61,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
         this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.getViewState();
+        this.getSunMode();
     }
 
     ngOnDestroy(): void {
@@ -79,6 +83,24 @@ export class FilterbarComposizioneComponent implements OnDestroy {
           this.nuovaPartenza(this.richiesta);
           this.update();
       }
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
+    }
+
+    sunModeBg(): string {
+      let value = '';
+      if (this.sunMode) {
+        value = 'bg-light';
+      } else if (!this.sunMode) {
+        value = 'bg-moon-light';
+      }
+      return value;
     }
 
     clearFiltri(tipo: string): void {

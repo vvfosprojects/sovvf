@@ -34,6 +34,7 @@ import {
   GetEventiSoccorsoAereo
 } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {AzioniSintesiRichiestaModalComponent} from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -83,6 +84,8 @@ export class SintesiRichiestaComponent implements OnChanges {
     doubleMonitor: boolean;
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
     mapsIsActive: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
@@ -108,6 +111,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+        this.getSunMode();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -138,6 +142,34 @@ export class SintesiRichiestaComponent implements OnChanges {
         //     this.toggleEspanso(richiesta.id);
         //     this.doubleClickRichiesta.emit(richiesta);
         // }
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
+    }
+
+    sunModeStyle(): string {
+      let value = '';
+      if (this.sunMode) {
+        value = 'cod-int';
+      } else if (!this.sunMode) {
+        value = 'moon-cod';
+      }
+      return value;
+    }
+
+    sunModeCard(): string {
+      let value = '';
+      if (!this.sunMode) {
+        value = 'card';
+      } else if (this.sunMode) {
+        value = 'moon-card';
+      }
+      return value;
     }
 
     fissaClick(richiesta: SintesiRichiesta): void {

@@ -3,12 +3,12 @@
         <div class="row font-xlarge">
             <div class="clearfix float-left ml-4">
                 <i class="fa fa-truck mb-2 mr-1"></i>
-                <span class="font-weight-bold cursor-pointer text-dark"
+                <span class="font-weight-bold cursor-pointer"
                        ngbTooltip="Mezzi in servizio"
                        (click)="clickMezzi.emit('tutti')">Mezzi in servizio:
                 {{mezzi.inServizio}}</span>
             </div>
-            <div class="col float-right text-dark text-right" style="width: 30%">
+            <div class="col float-right text-right" style="width: 30%">
                 <i class="mb-2 mr-1"></i>
                 <span class="mr-2 font-weight-bold" ngbTooltip="Mezzi in servizio per motivi d'istituto">Istituto</span>
                 <span class="badge badge-mod-secondary h6 w-25 cursor-pointer mr-3 mb-0"
@@ -17,7 +17,7 @@
                       (click)="clickMezzi.emit('istituto')">{{mezzi.istituto}}</span>
             </div>
         </div>
-        <hr class="m-0 mb-2">
+        <hr class="m-0 mb-2" [class.moon-hr]="!sunMode">
     </div>
     <!-- sinistra -->
     <div class="col-6">
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -71,7 +71,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6 cod-int" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
