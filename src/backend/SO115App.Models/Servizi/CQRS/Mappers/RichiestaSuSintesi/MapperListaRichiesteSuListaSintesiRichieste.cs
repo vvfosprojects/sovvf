@@ -50,7 +50,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 sintesi.Eventi = elemento.Eventi.ToList();
                 //sintesi.fonogramma = elemento.Richiesta.StatoInvioFonogramma;
                 sintesi.Id = elemento.Id;
-                sintesi.RichiestaSoccorsoAereo = elemento.RichiestaSoccorsoAereo;
+                //sintesi.RichiestaSoccorsoAereo = elemento.RichiestaSoccorsoAereo;
                 sintesi.IstantePresaInCarico = elemento.IstantePresaInCarico;
                 sintesi.IstantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
 
