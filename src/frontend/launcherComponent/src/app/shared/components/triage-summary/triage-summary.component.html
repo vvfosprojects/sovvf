@@ -14,16 +14,22 @@
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
     <!-- RIEPILOGO TRIAGE -->
     <ngb-panel id="riepilogo-triage"
-               [disabled]="!triageSummary">
+               [disabled]="!summary">
         <ng-template ngbPanelTitle>
             <b>RIEPILOGO TRIAGE</b>
         </ng-template>
         <ng-template ngbPanelContent>
-            <div *ngFor="let summary of triageSummary, let i = index">
-                <div [class.mb-2]="i !== triageSummary.length -1">
-                    <h5>{{ i + 1 }}. <b>{{ summary.domanda }}</b></h5>
-                    <h5>Risposta: <b>{{ summary.risposta }}</b></h5>
-                </div>
+            <div class="px-3">
+                <ul class="list-group font-xlarge">
+                    <li *ngFor="let s of summary, let i = index">
+                        <div>
+                            <b>{{ s.domanda }}</b>
+                        </div>
+                        <div>
+                            Risposta: <b>{{ s.risposta }}</b>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="mt-3">
                 <h5 class="text-danger">
@@ -37,21 +43,21 @@
                     </ul>
                 </div>
             </div>
-            <div class="mt-3">
-                <h5 class="text-danger">
-                    <i class="fa fa-truck mr-2"></i>
-                    <b>MEZZI CONSIGLIATI <span class="text-danger">( inserire contatore )</span></b>
-                </h5>
-                <div class="px-3">
-                    <ul class="list-group font-xlarge">
-                        <li *ngFor="let summary of triageSummary">
-                            <div *ngFor="let genereMezzo of summary.generiMezzo; let i = index">
+            <ng-template [ngIf]="contatoreGeneriMezzo">
+                <div class="mt-3">
+                    <h5 class="text-danger">
+                        <i class="fa fa-truck mr-2"></i>
+                        <b>MEZZI CONSIGLIATI <span class="text-danger">({{ contatoreGeneriMezzo }})</span></b>
+                    </h5>
+                    <div class="px-3">
+                        <ul class="list-group font-xlarge">
+                            <li *ngFor="let genereMezzo of generiMezzo; let i = index">
                                 {{ genereMezzo }}
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </ng-template>
         </ng-template>
     </ngb-panel>
     <!-- NOTE NUE -->

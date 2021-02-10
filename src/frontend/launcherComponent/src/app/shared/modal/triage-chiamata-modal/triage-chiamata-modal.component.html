@@ -20,10 +20,18 @@
                                       (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
         </app-step-dettaglio-tipologia>
     </ng-template>
+    <ng-template [ngIf]="!dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
+        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
+            Nessun Dettaglio Tipologia presente per "{{ tipologiaSelezionata?.descrizione }}".
+            <small class="d-block">Puoi gestire i Dettagli Tipologia nella pagina "Impostazioni
+                Sede".</small>
+        </div>
+    </ng-template>
     <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato">
         <div class="alert alert-danger font-weight-bold mb-0">
             Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
-            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni Sede".</small>
+            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
+                Sede".</small>
         </div>
     </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">

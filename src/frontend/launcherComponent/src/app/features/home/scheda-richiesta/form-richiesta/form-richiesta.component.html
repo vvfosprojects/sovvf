@@ -396,13 +396,12 @@
     </div>
     <!-- Resoconto triage -->
     <div class="col-4 h-100 bg-lightgrey"
-         [class.pt-3]="f.dettaglioTipologia.value">
-        <app-report-chiamata [tipologie]="f.tipologie?.value"
-                             [dettaglioTipologia]="f.dettaglioTIpologia?.value"
-                             [triageSummary]="triageSummary"
-                             [schedaContatto]="schedaContatto"
-                             [countInterventiProssimita]="countInterventiProssimita"
-                             [interventiProssimita]="interventiProssimita">
-        </app-report-chiamata>
+         [class.pt-3]="dettaglioTipologia">
+        <app-triage-summary [tipologie]="f.tipologie?.value"
+                            [dettaglioTipologia]="dettaglioTipologia"
+                            [schedaContatto]="schedaContatto"
+                            [countInterventiProssimita]="countInterventiProssimita"
+                            [interventiProssimita]="interventiProssimita">
+        </app-triage-summary>
     </div>
 </div>
