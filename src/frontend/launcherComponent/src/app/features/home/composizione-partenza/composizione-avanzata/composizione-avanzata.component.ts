@@ -48,6 +48,10 @@ import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import {
+  SetRicercaMezziComposizione,
+  SetRicercaSquadreComposizione
+} from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -267,7 +271,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearBoxPartenze(),
-            new ResetPaginationComposizionePartenza()
+            new ResetPaginationComposizionePartenza(),
+            new SetRicercaMezziComposizione(''),
+            new SetRicercaSquadreComposizione(''),
         ]);
         this.subscription.unsubscribe();
     }
