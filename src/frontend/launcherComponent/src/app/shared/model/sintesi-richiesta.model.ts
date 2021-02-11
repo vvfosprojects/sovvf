@@ -190,10 +190,6 @@ export class SintesiRichiesta {
          */
         public emergenza?: boolean,
         /**
-         * richiesta con soccorso aereo
-         */
-        public richiestaSoccorsoAereo?: boolean,
-        /**
          * resoconto triage
          */
         public triageSummary?: TriageSummary[]

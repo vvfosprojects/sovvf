@@ -20,8 +20,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             string token = "";
 
-            _clientToken.Configure();
-
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetToken}?user=SO115&password=SO115");
             var EsitoToken = _clientToken.GetAsync(url, token).Result;
 

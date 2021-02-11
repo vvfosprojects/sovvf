@@ -26,8 +26,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             var lstUscite = new List<UscitaGAC>() { uscita };
 
-            _client.Configure();
-
             var jsonString = JsonConvert.SerializeObject(lstUscite);
             var content = new StringContent(jsonString);
             var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacUscitaMezzo);

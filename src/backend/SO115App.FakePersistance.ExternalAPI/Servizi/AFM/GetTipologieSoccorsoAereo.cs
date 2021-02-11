@@ -14,7 +14,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public List<TipologiaAFM> Get()
         {
-            _client.Configure();
+            //_client.SetCache();
 
             var result = _client.GetAsync(new Uri(Costanti.AFM + "requestType"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 

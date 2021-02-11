@@ -15,7 +15,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public void Inserisci(NuovaRichiestaAFM richiesta)
         {
-            _client.Configure();
+            //_client.SetCache();
 
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);

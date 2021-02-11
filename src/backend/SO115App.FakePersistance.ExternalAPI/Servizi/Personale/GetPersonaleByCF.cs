@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 Parallel.ForEach(codSede, sede =>
                 {
-                    _clientPersonale.Configure("Personale_" + sede);
+                    _clientPersonale.SetCache("Personale_" + sede);
 
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
