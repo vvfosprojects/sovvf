@@ -68,11 +68,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Il campo viene settato a true solamente nel caso in cui la chiamata di inserimento AFM va a buon fine.
-        /// </summary>
-        public bool RichiestaSoccorsoAereo { get; set; } = false;
-
-        /// <summary>
         ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento
         ///   delle richieste.
         /// </summary>

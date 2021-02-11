@@ -6,7 +6,7 @@ namespace SO115App.ExternalAPI.Client
 {
     public interface IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
-        void Configure(string cacheString = null);
+        void SetCache(string cacheString);
 
         Task<ResponseObject> GetAsync(Uri url, string token);
         Task<ResponseObject> GetAsync(Uri url, string username, string password);

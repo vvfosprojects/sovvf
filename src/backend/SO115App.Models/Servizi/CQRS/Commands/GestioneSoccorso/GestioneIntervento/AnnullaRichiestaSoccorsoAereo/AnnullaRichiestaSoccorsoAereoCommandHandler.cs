@@ -35,7 +35,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             if (!result.IsError()) //OK ANNULLAMENTO
             {
-                command.Richiesta.RichiestaSoccorsoAereo = false;
+                //command.Richiesta.RichiestaSoccorsoAereo = false;
 
                 new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento());
             }

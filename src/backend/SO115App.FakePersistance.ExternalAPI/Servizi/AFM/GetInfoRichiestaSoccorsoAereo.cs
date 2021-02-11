@@ -13,7 +13,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public InfoAFM Get(string requestKey)
         {
-            _client.Configure();
+            //_client.SetCache();
 
             var result = _client.GetAsync(new Uri(Costanti.AFM + "rescueRequest/" + requestKey + "/"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 

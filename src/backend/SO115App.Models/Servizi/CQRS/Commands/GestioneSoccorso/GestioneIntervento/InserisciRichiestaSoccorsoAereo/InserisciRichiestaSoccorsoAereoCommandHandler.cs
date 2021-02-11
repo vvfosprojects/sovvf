@@ -33,13 +33,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             var date = DateTime.Now;
 
-            string azione = "Inserimento";
-
-            if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo)
-            {
-                azione = "Aggiornamento motivazione ";
-            }
-
             #region AFM Servizio
 
             //COMPONGO IL MODELLO PER AFM
@@ -57,6 +50,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
+            string azione = "Inserimento";
+
+            if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo && !responseAFM.IsError())
+            {
+                azione = "Aggiornamento motivazione ";
+            }
+
             #endregion
 
             command.ResponseAFM = responseAFM;
@@ -65,7 +65,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             {
                 new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento());
 
-                command.Richiesta.RichiestaSoccorsoAereo = true;
+                //command.Richiesta.RichiestaSoccorsoAereo = true;
             }
             else //ERRORE INSERIMENTO
             {

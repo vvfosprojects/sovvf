@@ -176,10 +176,6 @@ export class SintesiRichiesta {
          * richiesta inviata in stato di emergenza
          */
         public emergenza?: boolean,
-        /**
-         * richiesta con soccorso aereo
-         */
-        public richiestaSoccorsoAereo?: boolean
     ) {
     }
 }

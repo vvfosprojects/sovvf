@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                _clientMezzi.Configure("Mezzi_" + sede);
+                _clientMezzi.SetCache("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");

@@ -82,7 +82,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 Parallel.ForEach(sedi, sede =>
                 {
-                    _clientMezzi.Configure("Mezzi_" + sede);
+                    _clientMezzi.SetCache("Mezzi_" + sede);
 
                     var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
