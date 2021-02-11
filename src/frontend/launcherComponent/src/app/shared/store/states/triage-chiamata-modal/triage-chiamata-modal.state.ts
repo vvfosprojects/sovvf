@@ -27,11 +27,11 @@ export interface TriageChiamataModalStateModel {
 }
 
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
-    dettagliTipologia: null,
+    dettagliTipologia: undefined,
     codTipologiaSelezionata: undefined,
     codDettaglioTipologiaSelezionato: undefined,
-    triage: null,
-    triageData: null,
+    triage: undefined,
+    triageData: undefined,
     idTriage: undefined
 };
 

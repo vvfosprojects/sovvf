@@ -14,7 +14,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
+import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import {
     ClearMarkerRichiestaHover,
@@ -49,7 +49,8 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -299,17 +300,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
         let modal;
         if (this.doubleMonitor) {
-          modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         } else {
-          modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         }
         modal.result.then(() => {
             },
@@ -318,6 +319,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
+        this.store.dispatch(new SetTriageSummary(richiesta.triageSummary));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
     }

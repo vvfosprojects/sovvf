@@ -67,7 +67,9 @@
             <b>NOTE NUE</b>
         </ng-template>
         <ng-template ngbPanelContent>
-            {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
+            <div class="font-xlarge">
+                {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
+            </div>
         </ng-template>
     </ngb-panel>
     <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
@@ -78,10 +80,22 @@
             <b>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</b>
         </ng-template>
         <ng-template ngbPanelContent>
-            <div *ngFor="let interventoProssimita of interventiProssimita">
-                <b>{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta : interventoProssimita?.codice }}</b>
-                - {{ interventoProssimita?.localita.indirizzo }}
-                - {{ interventoProssimita?.richiedente.nominativo }}
+            <div class="px-3">
+                <ul class="list-group font-xlarge">
+                    <li *ngFor="let interventoProssimita of interventiProssimita" class="font-xlarge mb-2">
+                        <div>
+                            <b>{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta : interventoProssimita?.codice }}</b>
+                        </div>
+                        <div>
+                            <i class="fa fa-map-marker mr-1"></i>
+                            {{ interventoProssimita?.localita?.indirizzo }}
+                        </div>
+                        <div>
+                            <i class="fa fa-user mr-1"></i>
+                            {{ interventoProssimita?.richiedente?.nominativo }}
+                        </div>
+                    </li>
+                </ul>
             </div>
         </ng-template>
     </ngb-panel>
