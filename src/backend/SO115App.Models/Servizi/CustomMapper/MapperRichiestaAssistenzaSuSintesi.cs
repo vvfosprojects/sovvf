@@ -5,6 +5,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
@@ -36,10 +37,9 @@ namespace SO115App.Models.Servizi.CustomMapper
                         .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
                         .ForMember(x => x.CodiceRichiesta, y => y.MapFrom(z => z.CodRichiesta))
                         .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
-                        //.ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
+                        .ForMember(x => x.Eventi, y => y.MapFrom(z => z.ListaEventi.ToEventiSintesi()))
                         .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
-                        //.ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
                         .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
                         .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
                         );

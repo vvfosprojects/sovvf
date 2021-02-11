@@ -69,6 +69,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
 
 @NgModule({
     declarations: [
@@ -120,7 +121,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
                 TipologieState,
                 DettagliTipologieState,
                 TriageCrudState,
-                TriageChiamataModalState
+                TriageChiamataModalState,
+                TriageSummaryState
             ],
             { developmentMode: !environment.production }
         ),

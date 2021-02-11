@@ -15,12 +15,14 @@ import {
     DeleteTriageData,
     UpdateTriageData,
     GetGeneriMezzo,
-    ClearGeneriMezzo
+    ClearGeneriMezzo,
+    ResetTriage,
+    ClearStateTriageCrud
 } from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
@@ -31,9 +33,9 @@ export interface TriageStateModel {
     idTriage: string;
     dettagliTipologie: DettaglioTipologia[];
     dettaglioTipologia: DettaglioTipologia;
-    triageByDettaglioTipologia: TreeItem;
+    triageByDettaglioTipologia: TreeviewItem;
     triageDataByDettaglioTipologia: ItemTriageData[];
-    _backupTriageByDettaglioTipologia: TreeItem;
+    _backupTriageByDettaglioTipologia: TreeviewItem;
     _backupTriageDataByDettaglioTipologia: ItemTriageData[];
     editMode: boolean;
     generiMezzo: GenereMezzo[];
@@ -75,7 +77,7 @@ export class TriageCrudState {
     }
 
     @Selector()
-    static triageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+    static triageByDettaglioTipologia(state: TriageStateModel): TreeviewItem {
         return state.triageByDettaglioTipologia;
     }
 
@@ -85,7 +87,7 @@ export class TriageCrudState {
     }
 
     @Selector()
-    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeItem {
+    static _backupTriageByDettaglioTipologia(state: TriageStateModel): TreeviewItem {
         return state._backupTriageByDettaglioTipologia;
     }
 
@@ -189,6 +191,17 @@ export class TriageCrudState {
         });
     }
 
+    @Action(ResetTriage)
+    resetTriage({ getState, patchState }: StateContext<TriageStateModel>): void {
+        const state = getState();
+        const backupTriage = state._backupTriageByDettaglioTipologia;
+        const backupTriageData = state._backupTriageDataByDettaglioTipologia;
+        patchState({
+            triageByDettaglioTipologia: backupTriage,
+            triageDataByDettaglioTipologia: backupTriageData
+        });
+    }
+
     @Action(AddTriageData)
     addTriageData({ setState }: StateContext<TriageStateModel>, action: AddTriageData): void {
         setState(
@@ -240,5 +253,10 @@ export class TriageCrudState {
         this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
+    }
+
+    @Action(ClearStateTriageCrud)
+    clearStateTriageCrud({ patchState }: StateContext<TriageStateModel>): void {
+        patchState(TriageStateDefaults);
     }
 }

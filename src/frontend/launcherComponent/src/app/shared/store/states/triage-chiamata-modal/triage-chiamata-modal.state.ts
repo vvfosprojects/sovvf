@@ -7,17 +7,20 @@ import {
     ClearDettagliTipologie,
     SetDettaglioTipologiaTriageChiamata,
     SetTipologiaTriageChiamata,
-    SetTriageChiamata
+    SetTriageChiamata,
+    ClearTipologiaTriageChiamata,
+    ClearDettaglioTipologiaTriageChiamata,
+    ClearTriageChiamata
 } from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 
 export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
     codTipologiaSelezionata: number;
-    codDettagliTipologiaSelezionato: number;
+    codDettaglioTipologiaSelezionato: number;
     triage: TreeviewItem;
     triageData: ItemTriageData[];
     idTriage: string;
@@ -26,7 +29,7 @@ export interface TriageChiamataModalStateModel {
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
     dettagliTipologia: null,
     codTipologiaSelezionata: undefined,
-    codDettagliTipologiaSelezionato: undefined,
+    codDettaglioTipologiaSelezionato: undefined,
     triage: null,
     triageData: null,
     idTriage: undefined
@@ -82,25 +85,48 @@ export class TriageChiamataModalState {
         });
     }
 
+    @Action(ClearTipologiaTriageChiamata)
+    clearTipologiaTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        patchState({
+            codTipologiaSelezionata: TriageChiamataModalStateDefaults.codTipologiaSelezionata
+        });
+    }
+
     @Action(SetDettaglioTipologiaTriageChiamata)
     setDettaglioTipologiaTriageChiamata({ patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: SetDettaglioTipologiaTriageChiamata): void {
         patchState({
-            codDettagliTipologiaSelezionato: action.codDettaglioTipologia
+            codDettaglioTipologiaSelezionato: action.codDettaglioTipologia
         });
         dispatch(new SetTriageChiamata());
+    }
+
+    @Action(ClearDettaglioTipologiaTriageChiamata)
+    clearDettaglioTipologiaTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        patchState({
+            codDettaglioTipologiaSelezionato: TriageChiamataModalStateDefaults.codDettaglioTipologiaSelezionato
+        });
     }
 
     @Action(SetTriageChiamata)
     setTriageChiamata({ getState, patchState }: StateContext<TriageChiamataModalStateModel>): void {
         const state = getState();
         const codTipologiaSelezionata = state.codTipologiaSelezionata;
-        const codDettaglioTipologiaSelezionata = state.codDettagliTipologiaSelezionato;
+        const codDettaglioTipologiaSelezionata = state.codDettaglioTipologiaSelezionato;
         this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((res: { triage: { id: string, data: TreeviewItem }, triageData: ItemTriageData[] }) => {
             patchState({
                 idTriage: res?.triage?.id,
                 triage: res?.triage?.data,
                 triageData: res?.triageData
             });
+        });
+    }
+
+    @Action(ClearTriageChiamata)
+    clearTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        patchState({
+            idTriage: TriageChiamataModalStateDefaults.idTriage,
+            triage: TriageChiamataModalStateDefaults.triage,
+            triageData: TriageChiamataModalStateDefaults.triageData
         });
     }
 }

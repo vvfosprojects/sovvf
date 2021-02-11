@@ -55,7 +55,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             this.ZoneEmergenza = new string[0];
             this.Tags = new HashSet<string>();
-            this.Eventi = new List<Evento>();
+            this.Eventi = new List<EventoSintesiRichiesta>();
             this.Competenze = new List<Sede>();
         }
 
@@ -273,18 +273,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
-                var ultimoEventoFonogramma = this.Eventi
-                    .LastOrDefault(e => e is IFonogramma);
+                //if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
+                //var ultimoEventoFonogramma = this.Eventi
+                //    .LastOrDefault(e => e is IFonogramma);
 
-                switch (ultimoEventoFonogramma)
-                {
-                    case FonogrammaInviato _:
-                        return new Classi.Soccorso.Fonogramma.Inviato();
+                //switch (ultimoEventoFonogramma)
+                //{
+                //    case FonogrammaInviato _:
+                //        return new Classi.Soccorso.Fonogramma.Inviato();
 
-                    case InviareFonogramma _:
-                        return new Classi.Soccorso.Fonogramma.DaInviare();
-                }
+                //    case InviareFonogramma _:
+                //        return new Classi.Soccorso.Fonogramma.DaInviare();
+                //}
 
                 return new Classi.Soccorso.Fonogramma.NonNecessario();
             }
@@ -322,7 +322,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista eventi associato alla richiesta
         /// </summary>
-        public List<Evento> Eventi { get; set; }
+        public List<EventoSintesiRichiesta> Eventi { get; set; }
 
         public virtual bool Presidiata
         {
