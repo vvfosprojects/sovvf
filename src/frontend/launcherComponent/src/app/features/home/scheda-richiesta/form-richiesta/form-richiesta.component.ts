@@ -186,8 +186,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             prioritaRichiesta: [3, Validators.required],
             listaEnti: [null],
             stato: [StatoRichiesta.Chiamata],
-            emergenza: [false],
-            soccorsoAereo: [false]
+            emergenza: [false]
         });
     }
 
@@ -279,7 +278,6 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             null,
             null,
             f.emergenza.value,
-            f.soccorsoAereo.value,
             triageSummary
         );
     }
