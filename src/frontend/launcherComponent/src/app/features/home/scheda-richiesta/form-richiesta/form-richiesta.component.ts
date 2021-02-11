@@ -36,13 +36,15 @@ import { ClearRichiestaModifica } from '../../store/actions/scheda-telefonata/ri
 import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearDettagliTipologie,
-    ClearTipologiaTriageChiamata, ClearTriageChiamata,
+    ClearTipologiaTriageChiamata,
+    ClearTriageChiamata,
     GetDettagliTipologieByCodTipologia
 } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { TriageSummaryState } from '../../../../shared/store/states/triage-summary/triage-summary.state';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -91,8 +93,6 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     };
 
     dettaglioTipologia: DettaglioTipologia;
-
-    test: any;
 
     private subscription = new Subscription();
 
@@ -186,7 +186,8 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             prioritaRichiesta: [3, Validators.required],
             listaEnti: [null],
             stato: [StatoRichiesta.Chiamata],
-            emergenza: [false]
+            emergenza: [false],
+            soccorsoAereo: [false]
         });
     }
 
@@ -223,6 +224,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     getNuovaRichiesta(): SintesiRichiesta {
         const f = this.f;
         const tipologia = this.tipologie.filter((t: Tipologia) => t.codice === f.tipologie.value)[0];
+        const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
         return new SintesiRichiesta(
             null,
             null,
@@ -276,7 +278,9 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             null,
             null,
             null,
-            f.emergenza.value
+            f.emergenza.value,
+            f.soccorsoAereo.value,
+            triageSummary
         );
     }
 

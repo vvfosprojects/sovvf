@@ -13,6 +13,7 @@ import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
 import { Ente } from '../interface/ente.interface';
+import { TriageSummary } from '../interface/triage-summary.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -164,9 +165,21 @@ export class SintesiRichiesta {
          * lista di prese in carico utente
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],
+        /**
+         * codici UO di competenza
+         */
         public codUOCompetenza?: string[],
+        /**
+         * codici SO allertate
+         */
         public codSOAllertate?: string[],
+        /**
+         * codici Sedi Allertate
+         */
         public sediAllertate?: Sede[],
+        /**
+         * codice SO competente
+         */
         public codSOCompetente?: string,
         /**
          * lista Enti intervenuti
@@ -179,7 +192,11 @@ export class SintesiRichiesta {
         /**
          * richiesta con soccorso aereo
          */
-        public richiestaSoccorsoAereo?: boolean
+        public richiestaSoccorsoAereo?: boolean,
+        /**
+         * resoconto triage
+         */
+        public triageSummary?: TriageSummary[]
     ) {
     }
 }

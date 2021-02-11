@@ -1,21 +1,22 @@
 <div class="btn-group mx-5" ngbDropdown role="group" placement='top' style="width: 25%">
-  <span *ngIf="richiesta.richiestaSoccorsoAereo" class="w-100" tabindex="0" style="outline: none" ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova">
+  <span *ngIf="richiesta?.richiestaSoccorsoAereo" class="w-100" tabindex="0" style="outline: none"
+        ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova">
     <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge" style="outline: none"
             ngbTooltip="Intervento aereo"
-            placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="richiesta.richiestaSoccorsoAereo">
+            placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="richiesta?.richiestaSoccorsoAereo">
     <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
     </button>
   </span>
-   <button *ngIf="!richiesta.richiestaSoccorsoAereo" class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge"
-           ngbTooltip="Intervento aereo"
-           placement="top" (click)="openSoccorsoAereoModal($event)">
-   <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
-   </button>
+    <button *ngIf="!richiesta?.richiestaSoccorsoAereo" class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge"
+            ngbTooltip="Intervento aereo"
+            placement="top" (click)="openSoccorsoAereoModal($event)">
+        <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
+    </button>
 </div>
 <div class="btn-group w-50">
-  <button (click)="_confirmPartenzaInViaggio()"
-          class="btn btn-success btn-block mt-2 btn-no-hover font-xlarge" [disabled]="disableConfirmPartenza">
-    <span class="d-inline-block mr-2">Conferma</span>
-    <span class="badge badge-light">{{boxPartenzaLenght}}</span>
-  </button>
+    <button (click)="_confirmPartenzaInViaggio()"
+            class="btn btn-success btn-block mt-2 btn-no-hover font-xlarge" [disabled]="disableConfirmPartenza">
+        <span class="d-inline-block mr-2">Conferma</span>
+        <span class="badge badge-light">{{boxPartenzaLenght}}</span>
+    </button>
 </div>
