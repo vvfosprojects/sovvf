@@ -43,7 +43,7 @@ import {
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
-import { SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { ClearTriageSummary, SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { TriageSummaryState } from '../../../../shared/store/states/triage-summary/triage-summary.state';
 
 @Component({
@@ -92,7 +92,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         'VV.UU.': false,
     };
 
-    dettaglioTipologia: DettaglioTipologia;
+    dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     private subscription = new Subscription();
 
@@ -404,18 +404,33 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         this.getNuovaRichiesta();
         const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
+        triageModal.componentInstance.dettaglioTipologiaSelezionato = this.dettaglioTipologiaSelezionato;
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.disableEmergenza = this.formIsInvalid();
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
+                    console.log('TriageModalResult', res);
                     this.f.dettaglioTipologia.patchValue(res.dettaglio);
-                    this.dettaglioTipologia = res.dettaglio;
-                    saveTriageSummary(this.store, res.triageSummary);
+                    this.dettaglioTipologiaSelezionato = res.dettaglio;
+                    if (res?.triageSummary?.length) {
+                        saveTriageSummary(this.store, res.triageSummary);
+                    }
+                    clearTriageChiamataModalData(this.store);
+                    break;
+                case 'dismiss':
+                    console.log('TriageModalResult', res);
+                    this.f.dettaglioTipologia.patchValue(null);
+                    this.dettaglioTipologiaSelezionato = null;
+                    clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
                     break;
                 default:
+                    console.log('TriageModalResult: default');
+                    this.f.dettaglioTipologia.patchValue(null);
+                    this.dettaglioTipologiaSelezionato = null;
+                    clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
                     break;
             }
@@ -424,6 +439,12 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         function saveTriageSummary(store: Store, triageSummary: TriageSummary[]): void {
             store.dispatch([
                 new SetTriageSummary(triageSummary)
+            ]);
+        }
+
+        function clearTriageSummary(store: Store): void {
+            store.dispatch([
+                new ClearTriageSummary()
             ]);
         }
 

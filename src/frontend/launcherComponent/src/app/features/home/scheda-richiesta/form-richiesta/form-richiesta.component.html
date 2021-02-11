@@ -396,9 +396,9 @@
     </div>
     <!-- Resoconto triage -->
     <div class="col-4 h-100 bg-lightgrey scroll-y"
-         [class.pt-3]="dettaglioTipologia">
+         [class.pt-3]="dettaglioTipologiaSelezionato">
         <app-triage-summary [tipologie]="f.tipologie?.value"
-                            [dettaglioTipologia]="dettaglioTipologia"
+                            [dettaglioTipologia]="dettaglioTipologiaSelezionato"
                             [schedaContatto]="schedaContatto"
                             [countInterventiProssimita]="countInterventiProssimita"
                             [interventiProssimita]="interventiProssimita">
