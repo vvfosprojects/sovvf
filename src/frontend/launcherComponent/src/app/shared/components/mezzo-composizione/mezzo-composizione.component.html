@@ -55,9 +55,7 @@
               class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
               ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
           <i class="fa fa-lg fa-lock mr-2"></i>
-          <span>Mezzo {{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}}</span>
-          <span *ngIf="mezzoComp.mezzo.stato === 'Occupato'" class="pl-1">non disponibile</span>
-          <span *ngIf="mezzoComp.mezzo.stato !== 'Occupato'" class="pl-1">impegnato</span>
+          <span>Mezzo {{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}} impegnato</span>
         </span>
         </div>
     </div>
