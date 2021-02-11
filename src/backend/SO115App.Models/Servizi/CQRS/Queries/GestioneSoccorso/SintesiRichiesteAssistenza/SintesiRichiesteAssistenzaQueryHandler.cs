@@ -121,12 +121,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
-            //GILTRO EVENTI CON TARGA
-            foreach (var sintesi in listaSintesi)
-            {
-                sintesi.Eventi = sintesi.Eventi.Where(e => e is RichiestaSoccorsoAereo || e is AnnullamentoRichiestaSoccorsoAereo || e is ComposizionePartenze).ToList();
-            }
-
             var listaSintesiPaginata = new List<SintesiRichiesta>();
             if (query.Filtro.Page > 0 && query.Filtro.PageSize > 0)
             {
