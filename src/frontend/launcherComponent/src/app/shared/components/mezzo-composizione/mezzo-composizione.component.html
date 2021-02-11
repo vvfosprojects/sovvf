@@ -1,6 +1,6 @@
 <li class="list-group-item cursor-pointer border px-0" (click)="onClick()" [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode"
     (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
-    [ngClass]="liClass()" [class.cursor-not-allowed]="itemBloccato"
+    [ngClass]="liClass()"
     [class.font-xlarge]="viewState.composizione.active">
     <div class="row px-3">
         <hr *ngIf="itemBloccato" class="mezzo-bloccato-hr">

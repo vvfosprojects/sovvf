@@ -149,7 +149,7 @@ export class MezzoComposizioneComponent implements OnInit {
         }
 
         if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
-            returnClass += ' ';
+            returnClass += ' cursor-not-allowed';
             this.itemBloccato = true;
         }
 
