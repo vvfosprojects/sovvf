@@ -68,7 +68,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Il campo viene settato a true solamente nel caso in cui la chiamata di inserimento AFM va a buon fine.
+        ///   Il campo viene settato a true solamente nel caso in cui la chiamata di inserimento AFM
+        ///   va a buon fine.
         /// </summary>
         public bool RichiestaSoccorsoAereo { get; set; } = false;
 
@@ -109,7 +110,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
@@ -119,7 +120,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             if (stato.Stato == Costanti.MezzoInUscita)
             {
-                if(!Eventi.OfType<InizioPresaInCarico>().Any())
+                if (!Eventi.OfType<InizioPresaInCarico>().Any())
                 {
                     new InizioPresaInCarico(this, stato.DataOraAggiornamento.AddSeconds(1), CodOperatore);
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
@@ -168,6 +169,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
+
             #endregion SWITCH STATO MEZZI
 
             foreach (var squadra in partenza.Squadre)
@@ -175,7 +177,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Aggiorno lo stato della richiesta in base al vecchio stato
+        ///   Aggiorno lo stato della richiesta in base al vecchio stato
         /// </summary>
         /// <param name="stato">stato da attribuire alla richiesta</param>
         /// <param name="statoRichiesta">stato attuale della richiesta</param>
@@ -978,5 +980,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   consigliati, Priorità,ecc....)
         /// </summary>
         public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }

@@ -382,5 +382,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   consigliati, Priorità,ecc....)
         /// </summary>
         public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }
