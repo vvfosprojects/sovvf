@@ -43,7 +43,7 @@ export class MezzoComposizioneComponent implements OnInit {
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     public sganciamentoDisabilitato = false;
     private subscription = new Subscription();
@@ -51,7 +51,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
     constructor() {
     this.getViewState();
-    this.getSunMode();
+    this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -71,10 +71,10 @@ export class MezzoComposizioneComponent implements OnInit {
         }
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
@@ -149,12 +149,16 @@ export class MezzoComposizioneComponent implements OnInit {
         }
 
         if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
-            returnClass += ' ';
+            returnClass += ' cursor-not-allowed';
             this.itemBloccato = true;
         }
 
         if (this.itemInPrenotazione) {
             returnClass += ' diagonal-stripes bg-lightgrey';
+        }
+
+        if (this.nightMode) {
+          returnClass += ' bg-moon-light text-white';
         }
 
         return returnClass;

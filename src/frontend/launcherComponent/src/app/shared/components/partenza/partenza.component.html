@@ -1,6 +1,6 @@
 <div class="row"  [class.sganciare-mezzo-color]="idDaSganciare === partenza.mezzo.descrizione">
     <div class="col-9 my-1 pr-1 align-self-center">
-        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="false" [mostraNotifiche]="false"
+        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="false" [mostraNotifiche]="false" [listaEventiMezzo]="listaEventiMezzo"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
         <span *ngIf="!partenza.mezzo" class="p-2"> Nessun mezzo</span>

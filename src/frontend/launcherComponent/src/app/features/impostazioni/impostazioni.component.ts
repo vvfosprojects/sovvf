@@ -30,7 +30,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.listaImpostazioni) listaImpostazioni$: Observable<Impostazione[]>;
     listaImpostazioni: Impostazione[];
 
-    @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
+    @Select(ViewportState.sunMode) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     private subscription: Subscription = new Subscription();
@@ -64,6 +64,14 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
                 this.ruoliUtenteLoggato = ruoli;
             })
         );
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
     }
 
     getUtente(): void {

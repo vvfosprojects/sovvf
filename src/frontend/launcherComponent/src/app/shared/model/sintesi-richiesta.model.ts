@@ -192,7 +192,11 @@ export class SintesiRichiesta {
         /**
          * resoconto triage
          */
-        public triageSummary?: TriageSummary[]
+        public triageSummary?: TriageSummary[],
+        /**
+         * eventi relativi a mezzi e velivoli
+         */
+        public eventi?: any
     ) {
     }
 }

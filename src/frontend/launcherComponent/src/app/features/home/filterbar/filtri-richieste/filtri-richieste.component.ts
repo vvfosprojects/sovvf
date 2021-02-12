@@ -16,6 +16,7 @@ import {
   SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
 import {FiltriRichiesteState} from '../../store/states/filterbar/filtri-richieste.state';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -36,8 +37,8 @@ export class FiltriRichiesteComponent {
 
   specialSelected = [false, false, false];
 
-  @Select(ViewportState.sunMode) sunMode$: Observable<boolean>;
-  sunMode: boolean;
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
@@ -103,7 +104,7 @@ export class FiltriRichiesteComponent {
     dropdownOpts.placement = 'bottom';
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.getFiltriAttiviTooltip();
-    this.getSunMode();
+    this.getNightMode();
   }
 
   getFiltriAttiviTooltip(): void {
@@ -280,19 +281,19 @@ export class FiltriRichiesteComponent {
     this.filtriReset.emit();
   }
 
-  getSunMode(): void {
+  getNightMode(): void {
     this.subscription.add(
-      this.sunMode$.subscribe((sunMode: boolean) => {
-        this.sunMode = sunMode;
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
       })
     );
   }
 
-  sunModeStyle(): string {
+  nightModeStyle(): string {
     let value = '';
-    if (this.sunMode) {
+    if (!this.nightMode) {
       value = 'cod-int';
-    } else if (!this.sunMode) {
+    } else if (this.nightMode) {
       value = 'moon-cod';
     }
     return value;

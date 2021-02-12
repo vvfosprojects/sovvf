@@ -38,14 +38,14 @@ export class BoxNuovaPartenzaComponent {
     @Output() hoverOut = new EventEmitter();
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     itemBloccato: boolean;
 
     private subscription = new Subscription();
 
     constructor(private store: Store) {
-      this.getSunMode();
+      this.getNightMode();
     }
 
     onClick(): void {
@@ -67,19 +67,19 @@ export class BoxNuovaPartenzaComponent {
         this.eliminato.emit(this.partenza);
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeBg(): string {
+    nightModeBg(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'bg-light';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'bg-moon-light';
       }
       return value;
@@ -110,7 +110,7 @@ export class BoxNuovaPartenzaComponent {
                 const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
-                if (this.sunMode) {
+                if (!this.nightMode) {
                   returnClass = 'bg-light ';
                 } else { returnClass = 'bg-dark '; }
 

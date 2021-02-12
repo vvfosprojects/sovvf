@@ -30,6 +30,7 @@ namespace SO115App.CompositionRoot
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
+            container.Register<ISetTipologie, SetTipologie>();
 
             #region Gestione richiesta di assistenza
 

@@ -77,7 +77,7 @@
             -->
         </div>
     </div>
-    <button class="btn btn-outline-secondary p-1 altri-filtri" [class.moon-card]="!sunMode" (click)="resetFiltri()" [disabled]="disableFilters">
-        <i class="fa fa-undo px-1" [ngClass]="sunModeStyle()" style="font-size: 20px"></i>
+    <button class="btn btn-outline-secondary p-1" (click)="resetFiltri()" [disabled]="disableFilters">
+        <i class="fa fa-undo px-1" [ngClass]="nightModeStyle()" style="font-size: 20px"></i>
     </button>
 </div>

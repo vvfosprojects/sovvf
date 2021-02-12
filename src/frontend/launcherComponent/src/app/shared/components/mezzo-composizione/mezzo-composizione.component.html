@@ -1,11 +1,11 @@
-<li class="list-group-item cursor-pointer border px-0" (click)="onClick()" [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode"
+<li class="list-group-item cursor-pointer border px-0" (click)="onClick()"
     (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
-    [ngClass]="liClass()" [class.cursor-not-allowed]="itemBloccato"
+    [ngClass]="liClass()"
     [class.font-xlarge]="viewState.composizione.active">
     <div class="row px-3">
         <hr *ngIf="itemBloccato" class="mezzo-bloccato-hr">
         <div class="col-1 pr-0" [class.opacity-6]="itemBloccato">
-          <span class="fa fa-eercast mr-1"
+          <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato" placement="top"
                 [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)">
           </span>
         </div>
@@ -55,7 +55,7 @@
               class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
               ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
           <i class="fa fa-lg fa-lock mr-2"></i>
-          <span>Mezzo {{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}} impegnato</span>
+          <span>{{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}}</span>
         </span>
         </div>
     </div>

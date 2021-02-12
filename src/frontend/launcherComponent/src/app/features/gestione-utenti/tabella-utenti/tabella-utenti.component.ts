@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { wipeStringUppercase } from '../../../shared/helper/function';
+import {Select} from '@ngxs/store';
+import {ImpostazioniState} from '../../../shared/store/states/impostazioni/impostazioni.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-tabella-utenti',
@@ -9,6 +12,9 @@ import { wipeStringUppercase } from '../../../shared/helper/function';
     providers: [DecimalPipe]
 })
 export class TabellaUtentiComponent {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     @Input() listaUtenti: Utente[];
     @Input() page: number;
@@ -24,7 +30,10 @@ export class TabellaUtentiComponent {
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
+    subscription = new Subscription();
+
     constructor() {
+      this.getNightMode();
     }
 
     onRemoveUtente(codFiscale: string, nominativoUtente: string): void {
@@ -35,6 +44,24 @@ export class TabellaUtentiComponent {
     onRemoveRuoloUtente(codFiscale: string, ruolo: Ruolo, nominativoUtente: string): void {
         const obj = { codFiscale, ruolo, nominativoUtente };
         this.removeRoleUser.emit(obj);
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
+    nightModeStyle(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = ' ';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-card-light';
+      }
+      return value;
     }
 
     onAddRuoloUtente(codFiscale: string, fullName: string, ruoliAttuali: Ruolo[]): void {

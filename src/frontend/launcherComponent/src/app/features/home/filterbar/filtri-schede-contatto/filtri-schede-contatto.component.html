@@ -1,16 +1,13 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside" class="btn-group w-100" placement="bottom">
-        <button ngbDropdownToggle class="btn btn-block app-shadow"
-                [ngClass]="{'btn-outline-secondary': filtriSelezionati?.length <= 0, 'btn-secondary': filtriSelezionati?.length > 0}"
+        <button ngbDropdownToggle class="btn btn-block btn-secondary font-xlarge"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 [disabled]="disableFilters">
             <i class="fa fa-filter"></i>
             {{ 'Filtri' | uppercase }}
-            <span class="badge text-light"
-                  [class.badge-secondary]="!filtriSelezionati || filtriSelezionati?.length <= 0"
-                  [class.badge-success]="filtriSelezionati?.length > 0">
+            <span class="badge badge-success text-light">
               {{ filtriSelezionati?.length }}
             </span>
         </button>
@@ -27,8 +24,8 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
+    <button class="btn btn-outline-secondary font-xlarge p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
             [disabled]="disableFilters">
-        <i class="fa fa-undo text-dark px-1"></i>
+        <i class="fa fa-undo text-dark px-1" [class.text-moon]="nightMode"></i>
     </button>
 </div>
