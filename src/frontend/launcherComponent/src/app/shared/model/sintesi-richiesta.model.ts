@@ -176,6 +176,10 @@ export class SintesiRichiesta {
          * richiesta inviata in stato di emergenza
          */
         public emergenza?: boolean,
+        /**
+         * eventi relativi a mezzi e velivoli
+         */
+        public eventi?: any,
     ) {
     }
 }

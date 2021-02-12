@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -6,6 +6,7 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
+import {ListaEventiMezzo} from '../partenza/partenza.component';
 
 @Component({
     selector: 'app-mezzo',
@@ -15,21 +16,18 @@ import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
+    @Input() listaEventi: any;
     @Input() mostraIndicatori: boolean;
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
+    @Input() listaEventiMezzo: ListaEventiMezzo[];
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();
 
-    storicoStati: any[] = [{
-      state: 'In Viaggio',
-      time: '08:00'
-    }];
-
-  constructor(popoverConfig: NgbPopoverConfig,
-              tooltipConfig: NgbTooltipConfig) {
+    constructor(popoverConfig: NgbPopoverConfig,
+                tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
@@ -70,8 +68,6 @@ export class MezzoComponent {
           state: action.mezzoAction,
           time: ora
         };
-        this.storicoStati.push(obj);
-        console.log('***MEZZO ACTIONS DATA: ' , actionMezzo);
         this.actionMezzo.emit(actionMezzo);
     }
 
