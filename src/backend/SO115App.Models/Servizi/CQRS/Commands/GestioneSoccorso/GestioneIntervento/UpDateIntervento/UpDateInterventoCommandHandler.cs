@@ -76,6 +76,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
             richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti.Select(c => c.ToString()).ToList();
             richiesta.TriageSummary = command.Chiamata.TriageSummary;
+            richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
 
             if (command.Chiamata.Tags != null)
             {
