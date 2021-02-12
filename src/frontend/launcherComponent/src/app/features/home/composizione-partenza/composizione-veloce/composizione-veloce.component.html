@@ -1,7 +1,8 @@
-<div class="card card-shadow mx-auto" [ngClass]="{'m-h-boxes-veloce': boxAttivi, 'm-h-no-boxes-veloce': !boxAttivi}">
+<div class="card card-shadow mx-auto" [ngClass]="{'m-h-boxes-veloce': boxAttivi, 'm-h-no-boxes-veloce': !boxAttivi}"
+     [class.moon-text]="nightMode" [class.moon-card-light]="nightMode">
     <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
-    <div class="card-header">
-        <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
+    <div class="card-header font-xlarge" [class.moon-border-bottom]="nightMode">
+        <i class="fa fa-truck mr-2"></i><span class="h6 font-xlarge">Pre-Accoppiati</span>
     </div>
     <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
         <div class="col-4 px-1" *ngFor="let preAcc of preAccoppiati">
