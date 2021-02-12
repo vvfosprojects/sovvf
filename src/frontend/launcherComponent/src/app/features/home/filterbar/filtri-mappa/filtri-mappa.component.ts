@@ -17,21 +17,21 @@ export class FiltriMappaComponent implements OnDestroy {
     @Select(MapsFiltroState.filtroMarker) filtroMarker$: Observable<MarkerFiltro[]>;
     filtroMarker: MarkerFiltro[];
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     constructor(private store: Store) {
         this.getFiltroMarker();
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }

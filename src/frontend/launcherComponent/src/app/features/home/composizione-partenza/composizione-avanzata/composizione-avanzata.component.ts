@@ -120,7 +120,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     pageSizeSquadre: number;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -261,7 +261,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -284,19 +284,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         ]);
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeText(): string {
+    nightModeText(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'text-dark';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'text-white';
       }
       return value;

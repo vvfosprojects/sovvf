@@ -20,7 +20,7 @@ export class ViewModeComponent {
     @Output() toggleMeteo: EventEmitter<boolean> = new EventEmitter();
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     AppFeature = AppFeatures;
     public filtriNonImplementati = true;
@@ -30,7 +30,7 @@ export class ViewModeComponent {
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
         config.placement = 'left';
-        this.getSunMode();
+        this.getNightMode();
     }
 
     buttonViewMode($event): void {
@@ -41,10 +41,10 @@ export class ViewModeComponent {
         this.toggleMeteo.emit(!this.stateSwitch);
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
