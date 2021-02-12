@@ -48,6 +48,10 @@ import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import {
+  SetRicercaMezziComposizione,
+  SetRicercaSquadreComposizione
+} from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -116,7 +120,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     pageSizeSquadre: number;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -257,7 +261,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -267,7 +271,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearBoxPartenze(),
-            new ResetPaginationComposizionePartenza()
+            new ResetPaginationComposizionePartenza(),
+            new SetRicercaMezziComposizione(''),
+            new SetRicercaSquadreComposizione(''),
         ]);
         this.subscription.unsubscribe();
     }
@@ -278,19 +284,19 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         ]);
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeText(): string {
+    nightModeText(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'text-dark';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'text-white';
       }
       return value;

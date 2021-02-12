@@ -1,4 +1,4 @@
-<li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()" [class.bg-moon-light]="!sunMode"
+<li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()" [class.bg-moon-light]="nightMode"
     [class.font-xlarge]="viewState.composizione.active" [class.cursor-not-allowed]="squadraComposizioneBusy()"
     (click)="onClick()" [ngClass]="liClass()">
     <div class="row">
@@ -29,7 +29,7 @@
         <div *ngIf="squadraComposizioneBusy()" class="squadra-bloccata ">
           <span class="badge badge-danger mr-1" style="cursor: not-allowed; vertical-align: text-bottom">
           <i class="fa fa-lg fa-lock mr-2"></i>
-          <span>Squadra {{squadraComp.squadra.nome}} ({{squadraComp.squadra.turno}}) impegnata</span>
+          <span>{{squadraComp.squadra.nome}} ({{squadraComp.squadra.turno}})</span>
         </span>
       </div>
     </div>

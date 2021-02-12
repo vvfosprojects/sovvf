@@ -17,7 +17,7 @@ import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni
 export class BoxInterventiComponent implements OnChanges {
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     @Input() interventi: BoxInterventi;
     @Input() turno: TurnoCalendario;
@@ -53,7 +53,7 @@ export class BoxInterventiComponent implements OnChanges {
         config.container = 'body';
         // config.openDelay = 200;
         // config.closeDelay = 100;
-        this.getSunMode();
+        this.getNightMode();
     }
 
     checkDiff(key: string): string {
@@ -62,19 +62,19 @@ export class BoxInterventiComponent implements OnChanges {
         }
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeStyle(): string {
+    nightModeStyle(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'cod-int';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'moon-cod';
       }
       return value;

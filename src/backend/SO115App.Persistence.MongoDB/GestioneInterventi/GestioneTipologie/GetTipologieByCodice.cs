@@ -40,5 +40,14 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.GestioneTipologie
                 ? _dbContext.TipologieCollection.Find(Builders<Tipologia>.Filter.In("codice", codiciTipologie)).ToList()
                 : _dbContext.TipologieCollection.Find(Builders<Tipologia>.Filter.Empty).ToList();
         }
+
+        public void Set(List<Tipologia> lst)
+        {
+            foreach (var item in lst)
+            {
+
+                _dbContext.TipologieCollection.ReplaceOne(Builders<Tipologia>.Filter.Eq(c => c.Codice, item.Codice), item);
+            }
+        }
     }
 }

@@ -3,6 +3,9 @@ import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { Priorita } from '../../model/sintesi-richiesta.model';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
+import {Select} from '@ngxs/store';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-scheda-contatto',
@@ -10,6 +13,9 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
     styleUrls: ['./scheda-contatto.component.css']
 })
 export class SchedaContattoComponent implements OnChanges {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     @Input() scheda: SchedaContatto;
     @Input() idSchedaContattoHover: string;
@@ -39,6 +45,12 @@ export class SchedaContattoComponent implements OnChanges {
     classificazioneSchedaContatto = ClassificazioneSchedaContatto;
     priorita = Priorita;
 
+    subscription = new Subscription();
+
+    constructor() {
+      this.getNightMode();
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes && changes.scheda && changes.scheda.currentValue) {
             if (changes.scheda.currentValue.letta) {
@@ -49,15 +61,25 @@ export class SchedaContattoComponent implements OnChanges {
             if (changes.scheda.currentValue.gestita) {
                 this.btnGestita = { type: 'btn-outline-warning btn-gestita', tooltip: 'Segna come "Non Gestita"' };
             } else {
-                this.btnGestita = { type: 'btn-warning', tooltip: 'Segna come "Gestita"' };
+                this.btnGestita = { type: 'btn-warning text-moon', tooltip: 'Segna come "Gestita"' };
             }
         }
     }
 
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
     cardClasses(id: string): string {
         let cardClasses = '';
-        if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
+        if (this.idSchedaContattoHover === id && !this.scheda.gestita && !this.nightMode) {
             cardClasses = ' bg-light';
+        } else if (this.idSchedaContattoHover === id && !this.scheda.gestita && this.nightMode) {
+            cardClasses = '';
         }
         switch (this.scheda.classificazione) {
             case ClassificazioneSchedaContatto.Competenza:
@@ -73,6 +95,10 @@ export class SchedaContattoComponent implements OnChanges {
 
         if (this.scheda.gestita) {
             cardClasses += ' gestita';
+        }
+
+        if (this.nightMode) {
+          cardClasses += ' text-moon';
         }
 
         return cardClasses;

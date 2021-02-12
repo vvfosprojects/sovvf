@@ -206,7 +206,7 @@
                                                 <small>{{ m?.genere }}</small>
                                             </span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">
+                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRietro(richiesta) === 0 ">
                                             Nessun Mezzo
                                         </h6>
                                     </ng-template>
@@ -596,6 +596,7 @@
                                 <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
+                                                        [listaEventi]="richiesta.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"
                                                         [idDaSganciare]="idDaSganciare"
