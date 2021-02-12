@@ -1,4 +1,4 @@
-import { TreeItem } from 'ngx-treeview';
+import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 
 export class GetDettagliTipologieByCodTipologia {
@@ -41,7 +41,7 @@ export class ClearGeneriMezzo {
 export class SetNewTriage {
     static readonly type = '[Triage-CRUD] Set New Triage';
 
-    constructor(public triage: TreeItem) {
+    constructor(public triage: TreeviewItem) {
     }
 }
 

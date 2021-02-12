@@ -58,9 +58,7 @@ namespace SO115App.CompositionRoot
 
 
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
-
-            //Eliminare vecchia implementazione e sostituire con nuova (sopra)
-            container.Register(typeof(ExternalAPI.Fake.HttpManager.IHttpRequestManager<>), typeof(ExternalAPI.Fake.HttpManager.HttpRequestManager<>));
+            container.Register<IGetToken, GetToken>();
 
             #region NUE
 

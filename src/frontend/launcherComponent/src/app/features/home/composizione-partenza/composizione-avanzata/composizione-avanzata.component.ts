@@ -47,6 +47,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -113,6 +114,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     totalItemsSquadre: number;
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -253,6 +257,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
+        this.getSunMode();
     }
 
     ngOnInit(): void {
@@ -271,6 +276,24 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
+    }
+
+    sunModeText(): string {
+      let value = '';
+      if (this.sunMode) {
+        value = 'text-dark';
+      } else if (!this.sunMode) {
+        value = 'text-white';
+      }
+      return value;
     }
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {

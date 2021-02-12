@@ -21,10 +21,12 @@ using AutoMapper;
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
@@ -118,6 +120,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             }
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
+
             var listaSintesiPaginata = new List<SintesiRichiesta>();
             if (query.Filtro.Page > 0 && query.Filtro.PageSize > 0)
             {

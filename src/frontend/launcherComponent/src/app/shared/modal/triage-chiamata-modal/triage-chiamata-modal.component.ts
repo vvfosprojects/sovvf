@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
@@ -10,19 +10,24 @@ import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
-import { SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
+import { ClearDettaglioTipologiaTriageChiamata, ClearTriageChiamata, SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
 import { TreeviewItem } from 'ngx-treeview';
 import { makeCopy } from '../../helper/function';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { ViewportState } from '../../store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
     templateUrl: './triage-chiamata-modal.component.html',
     styleUrls: ['./triage-chiamata-modal.component.scss']
 })
-export class TriageChiamataModalComponent implements OnInit {
+export class TriageChiamataModalComponent implements OnInit, OnDestroy {
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
@@ -35,7 +40,6 @@ export class TriageChiamataModalComponent implements OnInit {
     abilitaTriage: boolean;
 
     tipologiaSelezionata: Tipologia;
-
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
     nuovaRichiesta: SintesiRichiesta;
@@ -49,14 +53,27 @@ export class TriageChiamataModalComponent implements OnInit {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
-                private store: Store) {
+                private store: Store,
+                private modalService: NgbModal) {
+        this.getDoubleMonitor();
         this.getTriage();
         this.getTriageData();
     }
 
     ngOnInit(): void {
         this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologiaSelezionata.codice));
+        if (this.dettaglioTipologiaSelezionato) {
+            this.setDettaglioTipologiaSelezionato();
+        }
         this.getDettagliTipologia();
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
+
+    getDoubleMonitor(): void {
+        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getDettagliTipologia(): void {
@@ -65,7 +82,7 @@ export class TriageChiamataModalComponent implements OnInit {
                 if (dettagliTipologia) {
                     this.dettagliTipologia = dettagliTipologia;
                     if (!dettagliTipologia.length) {
-                        this.onAbilitaTriage();
+                        this.setAbilitaTriage(true);
                     }
                 }
             })
@@ -137,14 +154,30 @@ export class TriageChiamataModalComponent implements OnInit {
         );
     }
 
-    onChangeDettaglioTipologia(codDettaglioTipologia: number): void {
-        this.dettaglioTipologiaSelezionato = this.dettagliTipologia.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
-        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato.codiceDettaglioTipologia));
-        this.onAbilitaTriage();
+    setDettaglioTipologiaSelezionato(codDettaglioTipologia?: number): void {
+        if (codDettaglioTipologia) {
+            this.dettaglioTipologiaSelezionato = this.dettagliTipologia?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
+        }
+        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia));
+        this.setAbilitaTriage(true);
     }
 
-    onAbilitaTriage(): void {
-        this.abilitaTriage = true;
+    onResetDettaglioTipologiaSelezionato(): void {
+        this.setAbilitaTriage(false);
+        this.dettaglioTipologiaSelezionato = null;
+        this.store.dispatch([
+            new ClearDettaglioTipologiaTriageChiamata(),
+            new ClearTriageChiamata()
+        ]);
+        this.clearTriageSummary();
+    }
+
+    setAbilitaTriage(value: boolean): void {
+        this.abilitaTriage = value;
+    }
+
+    clearTriageSummary(): void {
+        this.triageSummary = null;
     }
 
     getDomandeTriage(): void {
@@ -208,7 +241,53 @@ export class TriageChiamataModalComponent implements OnInit {
     }
 
     closeModal(type: string): void {
+        if (!this.dettaglioTipologiaSelezionato && !this.triageSummary?.length) {
+            return this.dismissModal('dismiss');
+        }
         const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary };
         this.modal.close(obj);
+    }
+
+    dismissModal(type: string): void {
+        let dismissTriageModal;
+        if (this.doubleMonitor) {
+            dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        } else {
+            dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'md'
+            });
+        }
+        dismissTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        dismissTriageModal.componentInstance.titolo = 'Chiusura Triage';
+        dismissTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Il dettaglio tipologia e le eventuali risposte non verrano salvate.';
+        dismissTriageModal.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        dismissTriageModal.result.then(
+            (val: string) => {
+                switch (val) {
+                    case 'ok':
+                        const obj = { type };
+                        this.modal.close(obj);
+                        break;
+                    case 'ko':
+                        break;
+                    default:
+                        break;
+                }
+            },
+            (err) => {
+                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+            }
+        );
     }
 }

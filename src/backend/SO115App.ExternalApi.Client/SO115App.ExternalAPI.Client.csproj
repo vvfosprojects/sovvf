@@ -16,7 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logging\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

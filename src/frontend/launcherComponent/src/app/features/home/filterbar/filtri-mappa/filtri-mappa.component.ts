@@ -4,6 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { MapsFiltroState } from '../../store/states/maps/maps-filtro.state';
 import { SetFiltroMarker } from '../../store/actions/maps/maps-filtro.actions';
 import { MarkerFiltro } from '../../../../shared/interface/marker-filtro.interface';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-filtri-mappa',
@@ -15,14 +16,24 @@ export class FiltriMappaComponent implements OnDestroy {
 
     @Select(MapsFiltroState.filtroMarker) filtroMarker$: Observable<MarkerFiltro[]>;
     filtroMarker: MarkerFiltro[];
-
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
     constructor(private store: Store) {
         this.getFiltroMarker();
+        this.getSunMode();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
     }
 
     getFiltroMarker(): void {

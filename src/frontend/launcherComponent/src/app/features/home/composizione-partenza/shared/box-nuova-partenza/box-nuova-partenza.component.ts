@@ -3,13 +3,15 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import {Observable, Subscription} from 'rxjs';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -35,9 +37,15 @@ export class BoxNuovaPartenzaComponent {
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
+
     itemBloccato: boolean;
 
+    private subscription = new Subscription();
+
     constructor(private store: Store) {
+      this.getSunMode();
     }
 
     onClick(): void {
@@ -57,6 +65,24 @@ export class BoxNuovaPartenzaComponent {
     onElimina(e: MouseEvent): void {
         e.stopPropagation();
         this.eliminato.emit(this.partenza);
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+        })
+      );
+    }
+
+    sunModeBg(): string {
+      let value = '';
+      if (this.sunMode) {
+        value = 'bg-light';
+      } else if (!this.sunMode) {
+        value = 'bg-moon-light';
+      }
+      return value;
     }
 
     ngClass(): string {
@@ -84,7 +110,9 @@ export class BoxNuovaPartenzaComponent {
                 const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
-                returnClass = 'bg-light ';
+                if (this.sunMode) {
+                  returnClass = 'bg-light ';
+                } else { returnClass = 'bg-dark '; }
 
                 switch (mezzo + '|' + squadra) {
                     case 'mezzo-si|squadra-no':

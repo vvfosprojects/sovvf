@@ -6,7 +6,7 @@
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              class="col-12 test-hover">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
-                 class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
+                 class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)" style="border-top: solid thin #e0e0e0">
                 <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
                 <app-sintesi-richiesta class="non-fissata"
                                        [richiesta]="r"

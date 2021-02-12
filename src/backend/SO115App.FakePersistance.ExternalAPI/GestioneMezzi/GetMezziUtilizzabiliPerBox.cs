@@ -1,40 +1,42 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
+using SO115App.ExternalAPI.Client;
 using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
-    public class GetMezziUtilizzabiliPerBox : BaseService, IGetMezziUtilizzabiliPerBox
+    public class GetMezziUtilizzabiliPerBox : IGetMezziUtilizzabiliPerBox
     {
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
-        public GetMezziUtilizzabiliPerBox(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        private readonly IConfiguration _configuration;
+
+        private readonly IGetToken _getToken;
+        private readonly IHttpRequestManager<List<MezzoDTO>> _clientMezzi;
+
+        public GetMezziUtilizzabiliPerBox(IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext)
+            IGetPosizioneFlotta getPosizioneFlotta, IGetToken getToken, IHttpRequestManager<List<MezzoDTO>> clientMezzi)
         {
             _getStatoMezzi = GetStatoMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
+            _clientMezzi = clientMezzi;
+            _getToken = getToken;
+            _configuration = configuration;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
@@ -63,19 +65,17 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             #region LEGGO DA API ESTERNA
 
-            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
-            var token = getToken.GeneraToken();
+            var token = _getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                httpManager.Configure("Mezzi_" + sede);
+                _clientMezzi.SetCache("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
                 lock (lstMezziDto)
-                    lstMezziDto.AddRange(httpManager.GetAsync(url, token).Result);
+                    lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
             });
 
             #endregion LEGGO DA API ESTERNA

@@ -17,6 +17,7 @@ import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interf
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
 import { AuthState } from '../../../auth/store/auth.state';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -24,6 +25,9 @@ import { AuthState } from '../../../auth/store/auth.state';
     styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -42,6 +46,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
+        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -56,6 +61,24 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     clickBox(cat: string, tipo: string): void {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
+    nightModeBox(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'card app-shadow';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-card-light';
+      }
+      return value;
     }
 
     clickServizi(tipo: string): void {

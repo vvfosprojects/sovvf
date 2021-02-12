@@ -1,20 +1,15 @@
-<li class="list-group-item cursor-pointer border px-0" (click)="onClick()"
+<li class="list-group-item cursor-pointer border px-0" (click)="onClick()" [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode"
     (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
     [ngClass]="liClass()" [class.cursor-not-allowed]="itemBloccato"
     [class.font-xlarge]="viewState.composizione.active">
-    <div class="row px-3" ngbTooltip="Mezzo già impegnato" placement="top"
-         [disableTooltip]="!itemBloccato && !mezzoComp.istanteScadenzaSelezione && !itemPrenotato">
-        <div class="col-1 pr-0">
+    <div class="row px-3">
+        <hr *ngIf="itemBloccato" class="mezzo-bloccato-hr">
+        <div class="col-1 pr-0" [class.opacity-6]="itemBloccato">
           <span class="fa fa-eercast mr-1"
                 [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)">
           </span>
-          <span *ngIf="itemBloccato" (click)="onSganciamento(); $event.stopPropagation()"
-                class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
-             ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
-            <i class="fa fa-lg fa-lock"></i>
-          </span>
         </div>
-        <div class="clearfix w-50 pr-0">
+        <div class="clearfix w-50 pr-0" [class.opacity-6]="itemBloccato">
             <span [ngbTooltip]="mezzoComp.mezzo.descrizione" [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7"
                   class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione | slice: 0:7}}</span>
             <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
@@ -46,15 +41,23 @@
                 <span class="d-inline-block">no GPS</span>
             </span>
         </div>
-        <div *ngIf="viewState.composizione.active" class="clearfix text-right" style="width: 40%;">
+        <div *ngIf="viewState.composizione.active" class="clearfix text-right" [class.opacity-6]="itemBloccato" style="width: 40%;">
             <span class="" [ngClass]="badgeDistaccamentoClass()"
                   [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione}}</span>
         </div>
-        <div *ngIf="!viewState.composizione.active" class="col-1 pl-0 text-right">
+        <div *ngIf="!viewState.composizione.active" class="col-1 pl-0 text-right" [class.opacity-6]="itemBloccato">
             <span class="" [ngClass]="badgeDistaccamentoClass()"
                   [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione
               | slice:0:3}}</span>
       </div>
+        <div *ngIf="itemBloccato" class="mezzo-bloccato">
+          <span (click)="onSganciamento(); $event.stopPropagation()"
+              class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
+              ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
+          <i class="fa fa-lg fa-lock mr-2"></i>
+          <span>Mezzo {{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}} impegnato</span>
+        </span>
+        </div>
     </div>
     <app-prenotazione-progress-bar *ngIf="itemPrenotato && mezzoComp.istanteScadenzaSelezione" [mezzoComp]="mezzoComp"
                                    [itemPrenotato]="itemPrenotato" [graphic]="false"></app-prenotazione-progress-bar>

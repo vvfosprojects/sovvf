@@ -1,14 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -18,26 +16,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
-using Microsoft.AspNetCore.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
-    public class GetMezziUtilizzabili : BaseService, IGetMezziUtilizzabili
+    public class GetMezziUtilizzabili : IGetMezziUtilizzabili
     {
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        private readonly IConfiguration _configuration;
 
-        public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        private readonly IGetToken _getToken;
+        private readonly IHttpRequestManager<List<MezzoDTO>> _clientMezzi;
+
+        public GetMezziUtilizzabili(IHttpRequestManager<List<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta)
         {
             _getStatoMezzi = GetStatoMezzi;
+            _clientMezzi = clientMezzi;
+            _configuration = configuration;
+            _getToken = getToken;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
@@ -75,21 +75,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             #region LEGGO DA API ESTERNA
 
-            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
-            var token = getToken.GeneraToken();
+            var token = _getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
             try
             {
                 Parallel.ForEach(sedi, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                    httpManager.Configure("Mezzi_" + sede);
+                    _clientMezzi.SetCache("Mezzi_" + sede);
 
                     var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
                     lock (lstMezziDto)
-                        lstMezziDto.AddRange(httpManager.GetAsync(url, token).Result);
+                        lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
                 });
             }
             catch (Exception e)

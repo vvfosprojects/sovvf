@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -21,7 +21,7 @@ import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/sto
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
-import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
+import {ImpostazioniState} from './shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-root',
@@ -43,6 +43,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -69,7 +72,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private authService: AuthService,
                 private store: Store,
                 private permessiService: PermessiService,
-                private versionCheckService: VersionCheckService) {
+                private versionCheckService: VersionCheckService,
+                private render: Renderer2) {
+        this.getSunMode();
         this.getRouterEvents();
         this.getViewState();
         this.getImpostazioniLocalStorage();
@@ -101,6 +106,22 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 }
             })
         );
+    }
+
+    getSunMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.sunMode = !nightMode;
+          const body = document.querySelectorAll('body')[0];
+          if (this.sunMode) {
+            this.render.addClass(body, 'sun-mode');
+            this.render.removeClass(body, 'moon-mode');
+          } else {
+            this.render.addClass(body, 'moon-mode');
+            this.render.removeClass(body, 'sun-mode');
+          }
+        })
+      );
     }
 
     getViewState(): void {

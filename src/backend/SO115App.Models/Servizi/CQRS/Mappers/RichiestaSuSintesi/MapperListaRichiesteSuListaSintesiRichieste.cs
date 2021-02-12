@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.Models.Classi.Soccorso.Eventi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
@@ -47,10 +48,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 //sintesi.complessita = elemento.Richiesta.Complessita;
                 sintesi.Descrizione = elemento.Descrizione;
                 sintesi.Tags = elemento.Tags;
-                sintesi.Eventi = elemento.Eventi.ToList();
+                sintesi.Eventi = elemento.ListaEventi.ToEventiSintesi();
                 //sintesi.fonogramma = elemento.Richiesta.StatoInvioFonogramma;
                 sintesi.Id = elemento.Id;
-                sintesi.RichiestaSoccorsoAereo = elemento.RichiestaSoccorsoAereo;
+                //sintesi.RichiestaSoccorsoAereo = elemento.RichiestaSoccorsoAereo;
                 sintesi.IstantePresaInCarico = elemento.IstantePresaInCarico;
                 sintesi.IstantePrimaAssegnazione = elemento.IstantePrimaAssegnazione;
 

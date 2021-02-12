@@ -1,11 +1,11 @@
-<div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2 px-2 font-comp-xl"
+<div *ngIf="filtri" class="border card-shadow rounded mt-1 mb-2 px-2 font-comp-xl" [ngClass]="sunModeBg()"
      [class.font-comp-xl]="viewState.composizione.active">
     <div class="row">
         <!-- Tasti Composizione Partenza -->
         <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
-                    <button class="btn btn-block btn-primary btn-no-hover font-xlarge" style="width: 65px"
+                    <button class="btn btn-block btn-primary btn-no-hover font-xlarge mr-2" style="width: 65px"
                             (click)="turnOffComposizione()" ngbTooltip="Torna Chiamate/Interventi" placement="bottom-left">
                         <i class="fa fa-arrow-left font-comp-xl"></i>
                     </button>
@@ -50,7 +50,7 @@
         <div [class.col-9]="composizionePartenza"
              [class.align-self-center]="viewState.composizione.active"
              [class.col-12]="sostituzionePartenza">
-          <div class="row pt-1"
+          <div class="row pt-1 mt-2"
                [class.pb-2]="sostituzionePartenza">
             <div class="col-3">
               <ng-select class="align-self-center font-xlarge"
@@ -120,7 +120,7 @@
 
           <div class="row pt-1" style="font-size: xx-large"
                [class.pb-2]="sostituzionePartenza">
-            <div class="col">
+            <div class="col mb-2">
               <div class="font-xxlarge" style="text-align-last: center;">
                 <app-competenza *ngFor="let c of competenze; let i = index"
                                 [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>

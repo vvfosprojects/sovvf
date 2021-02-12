@@ -18,3 +18,10 @@ export class SetInnerWidth {
     constructor(public innerWidth: number) {
     }
 }
+
+export class SunMode {
+  static readonly type = '[SunMode] Sun Mode visualizzazione';
+
+  constructor(public sunMode?: boolean) {
+  }
+}

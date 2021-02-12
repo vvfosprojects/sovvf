@@ -16,6 +16,10 @@ export class SetTipologiaTriageChiamata {
     }
 }
 
+export class ClearTipologiaTriageChiamata {
+    static readonly type = '[TriageChiamataModal] Clear Tipologia Triage Chiamata';
+}
+
 export class SetDettaglioTipologiaTriageChiamata {
     static readonly type = '[TriageChiamataModal] Set Dettaglio Tipologia Triage Chiamata';
 
@@ -23,6 +27,16 @@ export class SetDettaglioTipologiaTriageChiamata {
     }
 }
 
+export class ClearDettaglioTipologiaTriageChiamata {
+    static readonly type = '[TriageChiamataModal] Clear Dettaglio Tipologia Triage Chiamata';
+}
+
 export class SetTriageChiamata {
     static readonly type = '[TriageChiamataModal] Set Triage Chiamata';
 }
+
+export class ClearTriageChiamata {
+    static readonly type = '[TriageChiamataModal] Clear Triage Chiamata';
+}
+
+
