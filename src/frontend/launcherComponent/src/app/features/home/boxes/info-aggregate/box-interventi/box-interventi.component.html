@@ -27,7 +27,7 @@
                 </span>
             </div>
         </div>
-        <hr class="m-0 mb-2" [class.moon-hr]="!sunMode">
+        <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
     </div>
     <!-- sinistra -->
     <div class="col-6">
@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -53,7 +53,7 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
+                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-secondary text-center">
@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
+                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -94,7 +94,7 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="sunModeStyle()" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
+                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-secondary text-center">

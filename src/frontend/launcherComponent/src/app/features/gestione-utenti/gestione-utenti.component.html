@@ -1,6 +1,6 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-9 mx-auto mb-2">
+        <div class="col-12 col-md-9 mx-auto mb-2" [class.text-moon]="nightMode">
             <h2>
                 <i class="fa fa-users"></i>
                 Gestione Utenti
@@ -12,7 +12,7 @@
         <div class="col-12 col-md-9 mx-auto">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary mb-2 font-weight-bold" (click)="onAddUtente()">
+                    <button class="btn btn-primary mb-2 font-xlarge" (click)="onAddUtente()">
                         <i class="fa fa-plus mr-1"></i>
                         Aggiungi Utente
                     </button>

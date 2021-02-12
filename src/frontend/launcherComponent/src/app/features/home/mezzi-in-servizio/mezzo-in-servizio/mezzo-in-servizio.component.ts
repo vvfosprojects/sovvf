@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -11,6 +13,9 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
     styleUrls: ['./mezzo-in-servizio.component.css']
 })
 export class MezzoInServizioComponent {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
@@ -28,7 +33,10 @@ export class MezzoInServizioComponent {
     mostraIndicatori = false;
     loadingArray: any[] = [];
 
-    constructor(private store: Store) {
+    subscription = new Subscription();
+
+  constructor(private store: Store) {
+      this.getNightMode();
     }
 
     // tslint:disable-next-line:use-lifecycle-interface
@@ -40,6 +48,14 @@ export class MezzoInServizioComponent {
       }
     }
 
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
     onListaSquadrePartenza(): void {
         const listaSquadre = {
             squadre: this.mezzoInServizio.squadre
@@ -49,10 +65,10 @@ export class MezzoInServizioComponent {
 
     cardClasses(stato: StatoMezzo, idMezzo: string): string {
         let returnClass = statoMezzoBorderClass(stato);
-        if (this.idMezzoInServizioHover === idMezzo) {
+        if (this.idMezzoInServizioHover === idMezzo && !this.nightMode) {
             returnClass += ' bg-light';
         }
-        if (this.idMezzoInServizioSelezionato === idMezzo) {
+        if (this.idMezzoInServizioSelezionato === idMezzo && !this.nightMode) {
             returnClass += ' bg-light';
         }
         return returnClass;

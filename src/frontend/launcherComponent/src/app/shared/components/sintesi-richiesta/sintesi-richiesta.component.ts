@@ -85,7 +85,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
     mapsIsActive: boolean;
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
@@ -111,7 +111,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -144,30 +144,20 @@ export class SintesiRichiestaComponent implements OnChanges {
         // }
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeStyle(): string {
+    nightModeStyle(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'cod-int';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'moon-cod';
-      }
-      return value;
-    }
-
-    sunModeCard(): string {
-      let value = '';
-      if (!this.sunMode) {
-        value = 'card';
-      } else if (this.sunMode) {
-        value = 'moon-card';
       }
       return value;
     }

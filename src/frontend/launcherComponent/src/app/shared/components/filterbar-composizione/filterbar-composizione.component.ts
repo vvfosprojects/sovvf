@@ -44,7 +44,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
 
     private subscription = new Subscription();
@@ -61,7 +61,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
         this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.getViewState();
-        this.getSunMode();
+        this.getNightMode();
     }
 
     ngOnDestroy(): void {
@@ -85,19 +85,19 @@ export class FilterbarComposizioneComponent implements OnDestroy {
       }
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
         })
       );
     }
 
-    sunModeBg(): string {
+    nightModeBg(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'bg-light';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'bg-moon-light';
       }
       return value;
