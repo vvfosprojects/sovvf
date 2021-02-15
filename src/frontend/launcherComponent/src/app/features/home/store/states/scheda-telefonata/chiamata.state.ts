@@ -250,7 +250,7 @@ export class ChiamataState {
                         true
                     )
                 ]);
-            } else if (richiesta && (action.nuovaRichiesta.emergenza || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+            } else if (richiesta && (action.nuovaRichiesta.chiamataUrgente || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
                     new ToggleChiamata(),
                     new SetRichiestaModifica(richiesta),

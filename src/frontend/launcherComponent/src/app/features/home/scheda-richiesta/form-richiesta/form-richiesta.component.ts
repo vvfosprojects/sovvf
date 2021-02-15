@@ -71,6 +71,9 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     @Input() modifica: boolean;
     @Input() richiestaModifica: SintesiRichiesta;
 
+    // Triage Summary
+    @Input() triageSummary: TriageSummary[];
+
     ngxGooglePlacesOptions: Options;
 
     chiamataMarker: ChiamataMarker;
@@ -109,20 +112,20 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
-            if (changes.operatore && changes.operatore.currentValue) {
+            if (changes?.operatore?.currentValue) {
                 const operatore = changes.operatore.currentValue;
                 this.idChiamata = makeIdChiamata(operatore);
             }
-            if (changes.codiceSchedaContatto && changes.codiceSchedaContatto.currentValue) {
+            if (changes?.codiceSchedaContatto?.currentValue) {
                 this.f.contatto.patchValue(changes.codiceSchedaContatto.currentValue);
             }
-            if (changes.resetChiamata && changes.resetChiamata.currentValue) {
+            if (changes?.resetChiamata?.currentValue) {
                 const reset = changes.resetChiamata.currentValue;
                 if (reset) {
                     this.chiamataForm.reset();
                 }
             }
-            if (changes.schedaContatto && changes.schedaContatto.currentValue) {
+            if (changes?.schedaContatto?.currentValue) {
                 const schedaContatto = changes.schedaContatto.currentValue;
                 if (schedaContatto && schedaContatto.codiceScheda) {
                     if (!this.idSchedaContatto) {
@@ -131,11 +134,18 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
                     }
                 }
             }
-            if (changes.richiestaModifica && changes.richiestaModifica.currentValue) {
+            if (changes?.richiestaModifica?.currentValue) {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
                     this.modifica = true;
                     this.patchForm();
+                }
+            }
+
+            if (changes?.triageSummary?.currentValue) {
+                const triageSummary = changes.triageSummary.currentValue;
+                if (triageSummary) {
+                    setPrioritaByTriageSummary(this.f, triageSummary);
                 }
             }
 
@@ -186,7 +196,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             prioritaRichiesta: [3, Validators.required],
             listaEnti: [null],
             stato: [StatoRichiesta.Chiamata],
-            emergenza: [false]
+            urgenza: [false]
         });
     }
 
@@ -195,7 +205,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             new UpdateFormValue({
                 path: 'schedaTelefonata.richiestaForm',
                 value: {
-                    selectedTipologie: this.richiestaModifica.tipologie[0].codice,
+                    tipologie: this.richiestaModifica.tipologie[0].codice,
                     nominativo: this.richiestaModifica.richiedente.nominativo,
                     telefono: this.richiestaModifica.richiedente.telefono,
                     indirizzo: this.richiestaModifica.localita.indirizzo,
@@ -277,7 +287,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             null,
             null,
             null,
-            f.emergenza.value,
+            f.urgenza.value,
             triageSummary
         );
     }
@@ -407,7 +417,8 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         triageModal.componentInstance.dettaglioTipologiaSelezionato = this.dettaglioTipologiaSelezionato;
         triageModal.componentInstance.nuovaRichiesta = this.getNuovaRichiesta();
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
-        triageModal.componentInstance.disableEmergenza = this.formIsInvalid();
+        triageModal.componentInstance.checkedUrgenza = !!(this.f.urgenza.value);
+        triageModal.componentInstance.disableUrgenza = this.formIsInvalid() || !!(this.f.urgenza.value);
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
@@ -423,6 +434,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
                     console.log('TriageModalResult', res);
                     this.f.dettaglioTipologia.patchValue(null);
                     this.dettaglioTipologiaSelezionato = null;
+                    resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
                     break;
@@ -430,32 +442,12 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
                     console.log('TriageModalResult: default');
                     this.f.dettaglioTipologia.patchValue(null);
                     this.dettaglioTipologiaSelezionato = null;
+                    resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
                     break;
             }
         });
-
-        function saveTriageSummary(store: Store, triageSummary: TriageSummary[]): void {
-            store.dispatch([
-                new SetTriageSummary(triageSummary)
-            ]);
-        }
-
-        function clearTriageSummary(store: Store): void {
-            store.dispatch([
-                new ClearTriageSummary()
-            ]);
-        }
-
-        function clearTriageChiamataModalData(store: Store): void {
-            store.dispatch([
-                new ClearDettagliTipologie(),
-                new ClearTipologiaTriageChiamata(),
-                new ClearDettaglioTipologiaTriageChiamata(),
-                new ClearTriageChiamata()
-            ]);
-        }
 
         interface TriageModalResult {
             type: string;
@@ -517,9 +509,9 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         }
     }
 
-    setEmergenza(): void {
-        if (this.checkSubmit() && !this.f.emergenza.value) {
-            this.f.emergenza.value = !this.f.emergenza.value;
+    setUrgenza(): void {
+        if (this.checkSubmit() && !this.f.urgenza.value) {
+            this.f.urgenza.value = true;
             this.onSubmit(AzioneChiamataEnum.MettiInCoda);
         }
     }
@@ -624,4 +616,54 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         }
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
+}
+
+function setPrioritaByTriageSummary(formControls: any, triageSummary: TriageSummary[]): void {
+    let prioritaConsigliata: string;
+    triageSummary.forEach((summary: TriageSummary) => {
+        prioritaConsigliata = summary.prioritaConsigliata;
+    });
+    if (prioritaConsigliata) {
+        switch (prioritaConsigliata) {
+            case 'Molto Bassa':
+                formControls.prioritaRichiesta.patchValue(1);
+                break;
+            case 'Bassa':
+                formControls.prioritaRichiesta.patchValue(2);
+                break;
+            case 'Media':
+                formControls.prioritaRichiesta.patchValue(3);
+                break;
+            case 'Alta':
+                formControls.prioritaRichiesta.patchValue(4);
+                break;
+        }
+    } else {
+        formControls.prioritaRichiesta.patchValue(3);
+    }
+}
+
+function resetPrioritaRichiesta(formControls: any): void {
+    formControls.prioritaRichiesta.patchValue(3);
+}
+
+function saveTriageSummary(store: Store, triageSummary: TriageSummary[]): void {
+    store.dispatch([
+        new SetTriageSummary(triageSummary)
+    ]);
+}
+
+function clearTriageSummary(store: Store): void {
+    store.dispatch([
+        new ClearTriageSummary()
+    ]);
+}
+
+function clearTriageChiamataModalData(store: Store): void {
+    store.dispatch([
+        new ClearDettagliTipologie(),
+        new ClearTipologiaTriageChiamata(),
+        new ClearDettaglioTipologiaTriageChiamata(),
+        new ClearTriageChiamata()
+    ]);
 }

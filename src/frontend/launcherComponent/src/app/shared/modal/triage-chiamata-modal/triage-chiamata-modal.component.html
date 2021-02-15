@@ -31,14 +31,16 @@
         </div>
     </ng-template>
     <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato">
-        <div class="alert alert-danger font-weight-bold mb-0">
+        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
             Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
             <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
                 Sede".</small>
         </div>
     </ng-template>
-    <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
+    <ng-template [ngIf]="triageSummary?.length || triage">
         <hr class="my-3">
+    </ng-template>
+    <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
         <div *ngFor="let summary of triageSummary; let i = index"
              class="alert alert-info"
              [class.mb-0]="i === triageSummary?.length - 1">
@@ -54,10 +56,11 @@
 </div>
 <div class="modal-footer">
     <div class="clearfix w-100">
-        <div class="float-left mt-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-             [disableTooltip]="!disableEmergenza">
+        <div class="float-left mt-2"
+             ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+             [disableTooltip]="!disableUrgenza || checkedUrgenza">
             <app-checkbox
-                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedEmergenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedEmergenza || disableEmergenza }"
+                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedUrgenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedUrgenza || disableUrgenza }"
                     (click)="setEmergenza()">
             </app-checkbox>
         </div>
