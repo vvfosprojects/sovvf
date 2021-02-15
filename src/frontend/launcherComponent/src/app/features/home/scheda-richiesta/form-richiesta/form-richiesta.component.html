@@ -278,8 +278,8 @@
                     <div class="wrapper-grid my-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
                          [disableTooltip]="!formIsInvalid()">
                         <app-checkbox
-                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.emergenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.emergenza.value || formIsInvalid() }"
-                                (click)="setEmergenza()">
+                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.urgenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.urgenza.value || formIsInvalid() }"
+                                (click)="setUrgenza()">
                         </app-checkbox>
                     </div>
                     <div class="wrapper-grid">

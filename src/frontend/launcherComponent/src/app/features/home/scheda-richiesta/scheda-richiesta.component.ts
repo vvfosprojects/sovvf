@@ -17,6 +17,8 @@ import { RichiestaModificaState } from '../store/states/scheda-telefonata/richie
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
+import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
+import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-scheda-richiesta',
@@ -41,6 +43,9 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     // Dettagli Tipologie
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+
+    // Triage Summary
+    @Select(TriageSummaryState.summary) triageSummary$: Observable<TriageSummary[]>;
 
     doubleMonitor: boolean;
     permessiFeature = PermissionFeatures;

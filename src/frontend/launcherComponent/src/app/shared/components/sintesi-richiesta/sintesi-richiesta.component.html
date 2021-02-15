@@ -39,21 +39,22 @@
                                    (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
-                                      <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                                        <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                                     </span>
                                     <span *ngIf="!richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codice.slice(0, -5) }}
-                                      <span style="font-size: 30px; font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                                        <span style="font-size: 30px; font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                                     </span>
                                 </a>
                             </div>
                         </div>
                         <div class="clearfix" style="width: 7%">
-                          <button *ngIf="richiesta.prioritaRichiesta > 3 && richiesta.stato === 'Chiamata'" class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
-                                  ngbTooltip="Chiamata Urgente!"
-                                  style="height: 36px; width: 36px; border-radius: 65% ">
-                            <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
-                          </button>
+                            <button *ngIf="richiesta.chiamataUrgente && richiesta.stato === 'Chiamata'"
+                                    class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
+                                    ngbTooltip="Chiamata Urgente!"
+                                    style="height: 36px; width: 36px; border-radius: 65% ">
+                                <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
+                            </button>
                         </div>
                         <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
                              style="flex: 0 0 54.5% !important;">
@@ -95,7 +96,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix"
+                             style="width: 33%">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
                                 <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
@@ -138,23 +140,24 @@
                         <div class="clearfix pr-3 text-right" style="width: 23%">
                             <div class="h6 mb-0">
 
-                              <!-- stato fonogramma -->
+                                <!-- stato fonogramma -->
                                 <button *ngIf="richiesta?.fonogramma"
                                         class="btn btn-light border big_font py-0 mr-1 font-double-monitor"
                                         [ngClass]="{'btn-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'btn-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'btn-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
                                         (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
                                         style="margin: 0; vertical-align: bottom"
                                         ngbTooltip="Visualizza Fonogramma">
-                                  <i class="guida fa fa-paper-plane-o fa-fw"></i>
-                                  {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
+                                    <i class="guida fa fa-paper-plane-o fa-fw"></i>
+                                    {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
                                 </button>
 
-                              <!-- enti intervenuti -->
+                                <!-- enti intervenuti -->
                                 <span *ngIf="methods._entiCount(richiesta?.listaEntiIntervenuti?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti;">
-                                    <button class="btn btn-light border big_font py-0 mr-1 font-double-monitor" ngbTooltip="Elenco Enti"
+                                    <button class="btn btn-light border big_font py-0 mr-1 font-double-monitor"
+                                            ngbTooltip="Elenco Enti"
                                             (click)="onListaEnti(); $event.stopPropagation()">
                                     <i class="guida fa fa-industry fa-fw"></i>
-                                    {{ totaleEnti }}
+                                        {{ totaleEnti }}
                                   </button>
                                 </span>
 
@@ -162,7 +165,8 @@
                                 <span *ngIf="dettaglioSoccorsoAereo" class="nowrap">
                                     <button class="btn btn-info pl-0 py-0 mr-1 font-double-monitor"
                                             style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
-                                        <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa" ngbTooltip="Dettaglio Soccorso Aereo"></i>
+                                        <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa"
+                                           ngbTooltip="Dettaglio Soccorso Aereo"></i>
                                     </button>
                                 </span>
 
@@ -192,10 +196,11 @@
                                             [ngbPopover]="popMezzi"
                                             popoverTitle="Mezzi" triggers="click" tabindex="0" style="cursor:pointer"
                                             (click)="$event.stopPropagation()"
-                                    placement="bottom-right">
+                                            placement="bottom-right">
                                         <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
-                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}r</span>
+                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}
+                                            r</span>
                                     </button>
 
                                     <ng-template #popMezzi>
@@ -206,7 +211,8 @@
                                                 <small>{{ m?.genere }}</small>
                                             </span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRietro(richiesta) === 0 ">
+                                        <h6 class="mb-0"
+                                            *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRietro(richiesta) === 0 ">
                                             Nessun Mezzo
                                         </h6>
                                     </ng-template>
@@ -222,7 +228,8 @@
                         <div class="clearfix" style="width: 12%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
-                                <i class="guida fa fa-clock-o fa-fw mr-1 font-double-monitor" ngbTooltip="Ricezione richiesta"
+                                <i class="guida fa fa-clock-o fa-fw mr-1 font-double-monitor"
+                                   ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago class="font-xxlarge"
@@ -241,19 +248,23 @@
                                    ngbTooltip="Richiedente"
                                    container="body"></i>
                                 <span *ngIf="richiesta?.richiedente?.nominativo">
-                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right" class="font-xxlarge"
+                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right"
+                                       class="font-xxlarge"
                                        [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
                                         {{ richiesta?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
-                                <span  class="ml-1">
-                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 140%" ngbTooltip="Numero richiedente"></i>
+                                <span class="ml-1">
+                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 140%"
+                                           ngbTooltip="Numero richiedente"></i>
                                         <a class="font-xxlarge">{{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
-                            <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%" ngbTooltip="Località"></i>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix"
+                             style="width: 33%">
+                            <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%"
+                               ngbTooltip="Località"></i>
                             <span>
                               <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
                                     class="font-xxlarge"
@@ -261,7 +272,8 @@
                                   {{ richiesta?.localita?.indirizzo | truncate:30 }}
                               </span>
                             </span>
-                            <span class="list-inline list-unstyled m-0 ml-2 font-xxlarge" style="vertical-align: text-bottom;">
+                            <span class="list-inline list-unstyled m-0 ml-2 font-xxlarge"
+                                  style="vertical-align: text-bottom;">
                                 <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
@@ -292,35 +304,38 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 26%; align-self: center">
-                          <!-- richiedente -->
-                          <div class="h6 mt-1 mb-2 nowrap default-cursor">
-                            <i class="guida fa fa-address-book-o fa-fw mr-1"
-                               style="font-size: 140%"
-                               ngbTooltip="Richiedente"
-                               container="body"></i>
-                            <span *ngIf="richiesta?.richiedente?.nominativo" class="font-xxlarge mr-2">
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix"
+                             style="width: 26%; align-self: center">
+                            <!-- richiedente -->
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-address-book-o fa-fw mr-1"
+                                   style="font-size: 140%"
+                                   ngbTooltip="Richiedente"
+                                   container="body"></i>
+                                <span *ngIf="richiesta?.richiedente?.nominativo" class="font-xxlarge mr-2">
                                     <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}"
                                        placement="right"
                                        [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
                                         {{ richiesta?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
-                            <span class="ml-1">
-                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
+                                <span class="ml-1">
+                                        <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%"
+                                           ngbTooltip="Numero richiedente"></i>
                                         <a class="font-xxlarge" [class.text-moon]="(nightMode$ | async)">
                                           {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
-                          </div>
+                            </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix text-right" style="width: 14.3%"
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix text-right"
+                             style="width: 14.3%"
                              [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
-                                <button  *ngIf="boxAzioni"
-                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                <button *ngIf="boxAzioni"
+                                        class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
                                         [ngbTooltip]="'Visualizza azioni per Richiesta: ' + richiesta.codice"
-                                        (click)="onShowAzioniRichiesta()" >
-                                  <i class="fa fa-fw fa-arrows-alt text-secondary"></i>
+                                        (click)="onShowAzioniRichiesta()">
+                                    <i class="fa fa-fw fa-arrows-alt text-secondary"></i>
                                 </button>
                                 <button *ngIf="!fissata && fissabile"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
@@ -343,13 +358,13 @@
                                     <i class="fa fa-fw"
                                        [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>
                                 </button>
-<!--                                <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"-->
-<!--                                        ngbTooltip="Espandi"-->
-<!--                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"-->
-<!--                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">-->
-<!--                                    <i class="fa fa-fw"-->
-<!--                                       [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>-->
-<!--                                </button>-->
+                                <!--                                <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"-->
+                                <!--                                        ngbTooltip="Espandi"-->
+                                <!--                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"-->
+                                <!--                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">-->
+                                <!--                                    <i class="fa fa-fw"-->
+                                <!--                                       [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>-->
+                                <!--                                </button>-->
                                 <button *ngIf="modificabile"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
                                         ngbTooltip="Modifica"
@@ -482,7 +497,8 @@
                                     <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                        placement="right"></i>
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
-                                         class="d-inline-block h6 m-0 font-xlarge mr-1" [ngbTooltip]="utentePresaInCarico">
+                                         class="d-inline-block h6 m-0 font-xlarge mr-1"
+                                         [ngbTooltip]="utentePresaInCarico">
                                         {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
                                         <ng-template #utentePresaInCarico>
                                             <div>
@@ -542,7 +558,8 @@
                                         </div>
                                     </div>
                                     <ng-template #nonInLavorazione>
-                                        <a class="badge badge-mod-secondary font-xlarge text-light">Non in lavorazione</a>
+                                        <a class="badge badge-mod-secondary font-xlarge text-light">Non in
+                                            lavorazione</a>
                                     </ng-template>
                                 </div>
 
@@ -550,7 +567,8 @@
                                 <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                        placement="right"></i>
-                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-moon]="(nightMode$ | async)">
+                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
+                                       [class.text-moon]="(nightMode$ | async)">
                                         {{ richiesta?.codiceSchedaNue }}
                                     </a>
                                     <ng-template #nessunCodiceNue>
@@ -658,23 +676,23 @@
                                 </div>
 
                                 <!-- Cambio Stato Richiesta (Gestione) -->
-<!--                                <div *ngIf="inGestione" class="border p-2 mt-3"-->
-<!--                                     style="display: inline-flex; float: right;"-->
-<!--                                     [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">-->
-<!--                                    <div class="mr-2" style="display: inline-flex;">-->
-<!--                                        <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"-->
-<!--                                                (click)="onAllertaSede(); $event.stopPropagation()">-->
-<!--                                            <i class="fa fa-exclamation-triangle"></i>-->
-<!--                                        </button>-->
-<!--                                        <button *ngIf="!richiesta?.codiceRichiesta"-->
-<!--                                                class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"-->
-<!--                                                (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">-->
-<!--                                            <i class="fa fa-send-o"></i>-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                    <app-sintesi-richiesta-actions [richiesta]="richiesta"-->
-<!--                                                                   (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>-->
-<!--                                </div>-->
+                                <!--                                <div *ngIf="inGestione" class="border p-2 mt-3"-->
+                                <!--                                     style="display: inline-flex; float: right;"-->
+                                <!--                                     [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">-->
+                                <!--                                    <div class="mr-2" style="display: inline-flex;">-->
+                                <!--                                        <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"-->
+                                <!--                                                (click)="onAllertaSede(); $event.stopPropagation()">-->
+                                <!--                                            <i class="fa fa-exclamation-triangle"></i>-->
+                                <!--                                        </button>-->
+                                <!--                                        <button *ngIf="!richiesta?.codiceRichiesta"-->
+                                <!--                                                class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"-->
+                                <!--                                                (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">-->
+                                <!--                                            <i class="fa fa-send-o"></i>-->
+                                <!--                                        </button>-->
+                                <!--                                    </div>-->
+                                <!--                                    <app-sintesi-richiesta-actions [richiesta]="richiesta"-->
+                                <!--                                                                   (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>

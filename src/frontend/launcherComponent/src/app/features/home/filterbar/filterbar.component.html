@@ -50,7 +50,7 @@
                  class="float-left mr-3">
                 <app-filtri-mappa></app-filtri-mappa>
             </div>
-            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
+            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [stateSwitch]="(stateSwitch$ | async)"

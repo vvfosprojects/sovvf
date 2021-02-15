@@ -188,7 +188,7 @@ export class SintesiRichiesta {
         /**
          * richiesta inviata in stato di emergenza
          */
-        public emergenza?: boolean,
+        public chiamataUrgente?: boolean,
         /**
          * resoconto triage
          */
