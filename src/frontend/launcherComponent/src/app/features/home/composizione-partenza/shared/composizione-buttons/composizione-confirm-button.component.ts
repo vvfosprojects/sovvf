@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {Select, Store} from '@ngxs/store';
 import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
@@ -14,7 +14,7 @@ import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.mo
   templateUrl: './composizione-confirm-button.component.html',
   styleUrls: ['./composizione-confirm-button.component.css']
 })
-export class ComposizioneConfirmButtonComponent implements OnChanges {
+export class ComposizioneConfirmButtonComponent implements OnInit {
 
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
@@ -24,6 +24,8 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
   @Input() richiesta: SintesiRichiesta;
   @Output() confirmPartenzaInViaggio = new EventEmitter();
 
+  dettaglioSoccorsoAereo = false;
+
   subscription = new Subscription();
 
   constructor(private store: Store,
@@ -32,11 +34,20 @@ export class ComposizioneConfirmButtonComponent implements OnChanges {
     this.store.dispatch(new GetAzioniRichiesta());
   }
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
+    this.checkDettaglioSoccorsoAereo();
   }
 
   _confirmPartenzaInViaggio(): void {
     this.confirmPartenzaInViaggio.emit();
+  }
+
+  checkDettaglioSoccorsoAereo(): void {
+    if (this.richiesta.eventi && this.richiesta.eventi.note) {
+      const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
+      const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
+      this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
+    }
   }
 
   openSoccorsoAereoModal(open: any): void {

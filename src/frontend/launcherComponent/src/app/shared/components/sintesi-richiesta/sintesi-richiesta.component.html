@@ -158,8 +158,8 @@
                                   </button>
                                 </span>
 
-                                <!-- soccorso aereo -->
-                                <span *ngIf="false" class="nowrap">
+                                <!-- dettaglio soccorso aereo -->
+                                <span *ngIf="dettaglioSoccorsoAereo" class="nowrap">
                                     <button class="btn btn-info pl-0 py-0 mr-1 font-double-monitor"
                                             style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
                                         <i class="fa fa-plane fa-fw ml-2 pl-1" style="color: #f8f9fa" ngbTooltip="Dettaglio Soccorso Aereo"></i>
@@ -596,7 +596,7 @@
                                 <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
-                                                        [listaEventi]="richiesta.eventi"
+                                                        [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"
                                                         [idDaSganciare]="idDaSganciare"
