@@ -11,9 +11,9 @@
 <div class="modal-body pb-0">
   <div class="row" style="font-size: x-large">
     <div class="col-4">
-      <span (click)="mostraAttivita = true" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
+      <span (click)="mostraAttivita = true" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
             style="padding: 10px; margin-left: 10px;margin-right: 2px; opacity: 0.8">Attività</span>
-      <span (click)="mostraAttivita = false" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
+      <span (click)="mostraAttivita = false" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
             style="padding: 10px; opacity: 0.8">Eventi</span>
     </div>
     <div class="clearfix d-inline-flex">
@@ -22,35 +22,35 @@
   </div>
   <div class="row my-4 align-items-center">
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
         <i class="guida fa fa-hashtag fa-fw mr-1"
            ngbTooltip="Identificativo richiesta" placement="bottom"></i>
         <a class="h6 cod-int">
-          <span *ngIf="richiesta?.codiceRichiesta" class="font-soccorso-lg">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
+          <span *ngIf="richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
             <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codiceRichiesta.slice(richiesta?.codiceRichiesta.length - 5)}}</span>
           </span>
-          <span *ngIf="!richiesta?.codiceRichiesta" class="font-soccorso-lg">{{ richiesta?.codice.slice(0, -5) }}
+          <span *ngIf="!richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codice.slice(0, -5) }}
             <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codice.slice(richiesta?.codice.length - 5)}}</span>
           </span>
         </a>
       </div>
     </div>
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
         <i class="guida fa fa-rss fa-fw mr-1"
            ngbTooltip="Data Trasmissione" placement="bottom"></i>
         <a class="h6 cod-int">
-          <span class="font-soccorso-lg"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
+          <span class="font-xxlarge"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
           </span>
         </a>
       </div>
     </div>
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
         <i class="guida fa fa-address-book fa-fw mr-1"
            ngbTooltip="Operatore SO115" placement="bottom"></i>
         <a class="h6 cod-int">
-          <span *ngIf="richiesta?.operatore" class="font-soccorso-lg">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
+          <span *ngIf="richiesta?.operatore" class="font-xxlarge">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
           </span>
         </a>
       </div>
