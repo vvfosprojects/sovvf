@@ -21,7 +21,7 @@
       <span class=" text-{{statoMezzoColor(s.stato)}} m-0"
             style="color: #fff; padding: 5px; vertical-align: middle" ngbTooltip="Stato Mezzo: {{s.stato}}">
         <i class="fa fa-stop-circle mr-1"></i>
-        {{s.stato}}: {{s.ora.split('T')[1].slice(0,5)}}</span>
+        {{s.stato}}: {{s.ora | date : 'HH:mm'}}</span>
     </span>
 
     <!-- indicatori -->

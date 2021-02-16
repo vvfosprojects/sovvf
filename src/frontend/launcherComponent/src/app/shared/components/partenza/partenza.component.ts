@@ -40,7 +40,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-      this.listaEventi.forEach(x => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro') ? this.listaEventiMezzo.push(x) : null);
+      this.listaEventiMezzo = this.listaEventi.filter(x => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
       const statiMezzo = [];
       this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
       this.listaEventiMezzo = this.listaEventiMezzo.slice(statiMezzo.lastIndexOf('In Viaggio'));
