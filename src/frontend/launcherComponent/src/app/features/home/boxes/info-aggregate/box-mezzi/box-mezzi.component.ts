@@ -4,9 +4,6 @@ import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { objectDiff } from '../../../../../shared/helper/function';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import {Select} from '@ngxs/store';
-import {Observable, Subscription} from 'rxjs';
-import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-mezzi',
@@ -15,18 +12,16 @@ import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni
 })
 export class BoxMezziComponent implements OnChanges {
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     mezziDiff: any;
     @Input() mezzi: BoxMezzi;
     @Input() boxClick: BoxClickInterface;
+    @Input() nightMode: boolean;
+
     @Output() clickMezzi = new EventEmitter<string>();
 
-    private subscription = new Subscription();
 
     ngOnChanges(changes: SimpleChanges): void {
-        const mezzi = changes['mezzi'];
+        const mezzi = changes.mezzi;
         if (mezzi && mezzi.currentValue && mezzi.previousValue) {
             this.mezziDiff = objectDiff(mezzi.currentValue, mezzi.previousValue);
             setTimeout( () => {
@@ -39,7 +34,6 @@ export class BoxMezziComponent implements OnChanges {
         config.container = 'body';
         // config.openDelay = 200;
         // config.closeDelay = 100;
-        this.getNightMode();
     }
 
     checkDiff(key: string): string {
@@ -52,14 +46,6 @@ export class BoxMezziComponent implements OnChanges {
         if (this.mezziDiff) {
             return setArrow(this.mezziDiff[key]);
         }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeStyle(): string {
