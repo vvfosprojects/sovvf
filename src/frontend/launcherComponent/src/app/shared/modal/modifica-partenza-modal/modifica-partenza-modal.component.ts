@@ -7,7 +7,7 @@ import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import { Partenza } from './../../model/partenza.model';
+import { Partenza } from '../../model/partenza.model';
 import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
@@ -45,7 +45,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     public time = { hour: 13, minute: 30, second: 30 };
     public timeAnnullamento = { hour: 13, minute: 30 };
     listaStatoMezzo: string[];
-    statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
     hideBox = true;
