@@ -333,9 +333,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
     }
 
-    nuovaPartenza($event: SintesiRichiesta): void {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
-        this.store.dispatch(new RichiestaComposizione($event));
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
+        this.store.dispatch([
+            new SetMarkerRichiestaSelezionato(richiesta.id),
+            new RichiestaComposizione(richiesta),
+            new SetTriageSummary(richiesta.triageSummary)
+        ]);
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {

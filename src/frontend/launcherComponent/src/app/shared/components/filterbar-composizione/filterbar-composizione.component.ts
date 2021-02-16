@@ -5,23 +5,25 @@ import { ComposizionePartenzaState } from '../../../features/home/store/states/c
 import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
-import {Observable, Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { iconaStatiClass } from '../../helper/composizione-functions';
 import {
-  AddFiltroSelezionatoComposizione,
-  ClearFiltriComposizione,
-  ResetFiltriComposizione,
-  SetFiltriDistaccamentoDefault
+    AddFiltroSelezionatoComposizione,
+    ClearFiltriComposizione,
+    ResetFiltriComposizione,
+    SetFiltriDistaccamentoDefault
 } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import {ViewLayouts} from '../../interface/view.interface';
-import {Sede} from '../../model/sede.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewLayouts } from '../../interface/view.interface';
+import { Sede } from '../../model/sede.model';
+import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
+import { TriageSummary } from '../../interface/triage-summary.interface';
+import { TriageSummaryComponent } from '../triage-summary/triage-summary.component';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -38,6 +40,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     @Input() composizionePartenza: boolean;
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
+    @Input() triageSummary: TriageSummary[];
 
     @Output() confirmPrenota = new EventEmitter<boolean>();
 
@@ -55,7 +58,8 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     codCompetenzeDefault: string[] = [];
 
     constructor(private store: Store,
-                private dropdownConfig: NgbDropdownConfig) {
+                private dropdownConfig: NgbDropdownConfig,
+                private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
@@ -69,52 +73,67 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     }
 
     getViewState(): void {
-      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+    }
+
+    getNoteOperatoreTriage(): string[] {
+        if (!!this.triageSummary) {
+            const note = [];
+            this.triageSummary.forEach((summary: TriageSummary) => {
+                const noteOperatore = summary.noteOperatore;
+                if (noteOperatore) {
+                    note.push(noteOperatore);
+                }
+            });
+            return note;
+        }
     }
 
     addFiltro(event: any, tipo: string): void {
-      this.store.dispatch(new StartListaComposizioneLoading());
-      if (event) {
-          if (event?.id || event?.descrizione) {
-              this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
-          } else {
-              this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
-          }
-          this.nuovaPartenza(this.richiesta);
-          this.update();
-      }
+        this.store.dispatch(new StartListaComposizioneLoading());
+        if (event) {
+            if (event?.id || event?.descrizione) {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            } else {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+            }
+            this.nuovaPartenza(this.richiesta);
+            this.update();
+        }
     }
 
     getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+            })
+        );
     }
 
     nightModeBg(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'bg-light';
-      } else if (this.nightMode) {
-        value = 'bg-moon-light';
-      }
-      return value;
+        let value = '';
+        if (!this.nightMode) {
+            value = 'bg-light';
+        } else if (this.nightMode) {
+            value = 'bg-moon-light';
+        }
+        return value;
     }
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
         if (tipo === 'codiceDistaccamento') {
-          this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-          this.update();
-        } else { this.update(); }
+            this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
+            this.update();
+        } else {
+            this.update();
+        }
     }
 
     resetFiltri(): void {
-      this.store.dispatch(new ClearFiltriComposizione());
-      this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-      this.update();
+        this.store.dispatch(new ClearFiltriComposizione());
+        this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
+        this.update();
     }
 
     update(): void {
@@ -137,6 +156,15 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         return iconaStatiClass(statoMezzo);
     }
 
+    openDettaglioTriage(): void {
+        let modal: any;
+        modal = this.modalService.open(TriageSummaryComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+    }
+
     _confirmPrenota(): void {
         const value = !this.prenotato;
         this.confirmPrenota.emit(value);
@@ -155,6 +183,5 @@ export class FilterbarComposizioneComponent implements OnDestroy {
                 new RichiestaComposizione(richiesta)
             ]);
         }
-
     }
 }

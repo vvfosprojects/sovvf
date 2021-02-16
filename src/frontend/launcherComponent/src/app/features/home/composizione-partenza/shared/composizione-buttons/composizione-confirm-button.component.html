@@ -1,21 +1,28 @@
-<div class="btn-group mx-5" ngbDropdown role="group" placement='top' style="width: 25%">
-  <span *ngIf="dettaglioSoccorsoAereo" class="w-100" tabindex="0" style="outline: none" ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova">
-    <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge" style="outline: none"
-            ngbTooltip="Intervento aereo"
-            placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
-    <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
-    </button>
-  </span>
-   <button *ngIf="!dettaglioSoccorsoAereo" class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge"
-           ngbTooltip="Intervento aereo"
-           placement="top" (click)="openSoccorsoAereoModal($event)">
-   <i class="guida fa fa-plane" style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
-   </button>
-</div>
-<div class="btn-group w-50">
-  <button (click)="_confirmPartenzaInViaggio()"
-          class="btn btn-success btn-block mt-2 btn-no-hover font-xlarge" [disabled]="disableConfirmPartenza">
-    <span class="d-inline-block mr-2">Conferma</span>
-    <span class="badge badge-light">{{boxPartenzaLenght}}</span>
-  </button>
+<div class="clearfix">
+    <div class="float-left w-50 px-2">
+        <ng-template [ngIf]="dettaglioSoccorsoAereo">
+            <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge" style="outline: none"
+                    ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova"
+                    placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
+                <i class="guida fa fa-plane"
+                   style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
+            </button>
+        </ng-template>
+        <ng-template [ngIf]="!dettaglioSoccorsoAereo">
+            <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge"
+                    ngbTooltip="Intervento aereo"
+                    placement="top" (click)="openSoccorsoAereoModal($event)">
+                <i class="guida fa fa-plane"
+                   style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
+            </button>
+        </ng-template>
+    </div>
+    <div class="float-left w-50 px-2">
+        <button class="btn btn-success btn-block mt-2 btn-no-hover font-xlarge"
+                [disabled]="disableConfirmPartenza"
+                (click)="_confirmPartenzaInViaggio()">
+            <span class="d-inline-block mr-2">Conferma</span>
+            <span class="badge badge-light">{{boxPartenzaLenght}}</span>
+        </button>
+    </div>
 </div>

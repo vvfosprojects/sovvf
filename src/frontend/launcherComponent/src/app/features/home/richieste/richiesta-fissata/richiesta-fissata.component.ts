@@ -49,7 +49,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-            console.log('Componente RichiestaFissata creato');
+        console.log('Componente RichiestaFissata creato');
         if (this.richiestaFissata) {
             this.animazioneIn();
             const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
@@ -58,7 +58,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-            console.log('Componente RichiestaFissata distrutto');
+        console.log('Componente RichiestaFissata distrutto');
     }
 
     // Ritorna la richiesta nella lista, defissandola

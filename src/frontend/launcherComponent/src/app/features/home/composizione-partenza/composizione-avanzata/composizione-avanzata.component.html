@@ -4,7 +4,7 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 pr-0">
-        <div class="card card-shadow mx-auto"  [class.bg-moon-light]="nightMode" [class.text-white]="nightMode"
+        <div class="card card-shadow mx-auto" [class.bg-moon-light]="nightMode" [class.text-white]="nightMode"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader
                     *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
@@ -15,7 +15,8 @@
                 </div>
                 <div class="float-right w-50">
                     <label for="ricercaSquadre" class="d-none"></label>
-                    <input id="ricercaSquadre" type="text" name="ricercaSquadre" class="form-control" style="font-size: 115%"
+                    <input id="ricercaSquadre" type="text" name="ricercaSquadre" class="form-control"
+                           style="font-size: 115%"
                            placeholder="Cerca..." [(ngModel)]="ricercaSquadre" appDebounceKeyUp
                            (debounceKeyUp)="onSearchSquadre()" (search)="onClearSearchSquadre()"
                            [debounceTime]="1000"
@@ -27,7 +28,8 @@
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <li *ngIf="squadreComposizione && squadreComposizione.length <= 0"
-                    class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span class="text-muted">Nessun risultato...</span>
+                    class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span
+                        class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                     <app-squadra-composizione
@@ -59,24 +61,28 @@
         <div class="card card-shadow mx-auto"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
-            <div class="card-header clearfix px-2 py-1"  [class.bg-moon-light]="nightMode" [class.text-white]="nightMode">
+            <div class="card-header clearfix px-2 py-1" [class.bg-moon-light]="nightMode"
+                 [class.text-white]="nightMode">
                 <div class="float-left pt-2">
                     <i class="fa fa-truck mr-2 font-comp-xl"></i>
                     <span class="h6 font-comp-xl">Mezzi</span>
                 </div>
                 <div class="float-right" style="width: 35%">
                     <label for="ricercaMezzi" class="d-none"></label>
-                    <input id="ricercaMezzi" type="text" name="ricercaMezzi" class="form-control" style="font-size: 115%"
+                    <input id="ricercaMezzi" type="text" name="ricercaMezzi" class="form-control"
+                           style="font-size: 115%"
                            placeholder="Cerca..." [(ngModel)]="ricercaMezzi" appDebounceKeyUp
                            (debounceKeyUp)="onSearchMezzi()" [debounceTime]="1000"
                            [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}">
-                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi" style="transform: translate(272px, -28px);"></i>
+                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi"
+                       style="transform: translate(272px, -28px);"></i>
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y" [class.bg-moon-light]="nightMode"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <li *ngIf="mezziComposizione && mezziComposizione.length <= 0"
-                    class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span class="text-muted">Nessun risultato...</span>
+                    class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span
+                        class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
                     <div *ngFor="let mC of mezziComposizione">
@@ -89,7 +95,7 @@
                                                     [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
                                                     [richiesta]="richiesta"
                                                     (selezionato)="mezzoSelezionato($event)"
-                                                    (deselezionato)="mezzoDeselezionato($event)"
+                                                    (deselezionato)="mezzoDeselezionato()"
                                                     (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
                                                     (mezzoCoordinate)="mezzoCoordinate($event)"
                                                     (sganciamento)="sganciamento.emit($event)">
@@ -116,18 +122,20 @@
         <div class="w-100 py-2 px-1 scroll-y"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
-            <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
+            <!-- <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
                 <h6 class="font-xlarge" [ngClass]="nightModeText()">Seleziona un mezzo o una squadra.</h6>
                 <button class="btn btn-primary mt-2 font-xlarge btn-no-hover" (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async)"><i
-                        class="fa fa-plus mr-2 font-xlarge"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
+                        class="fa fa-plus mr-2 font-xlarge"></i><span
+                        style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
-            </div>
+            </div> -->
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
                 <button class="btn btn-primary font-xlarge btn-no-hover" (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i
-                        class="fa fa-plus mr-2 font-xlarge"></i><span style="vertical-align: text-bottom;">Aggiungi</span>
+                        class="fa fa-plus mr-2 font-xlarge"></i><span
+                        style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
             </div>
             <!-- lista box partenze -->
@@ -142,10 +150,17 @@
                 </div>
             </div>
         </div>
-        <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
-                                         [richiesta]="richiesta"
-                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
-        </app-composizione-confirm-button>
+        <div class="clearfix">
+            <div class="float-left">
+                {{ getSoccorsoAereoTriage() }}
+            </div>
+        </div>
+        <div>
+            <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
+                                             [richiesta]="richiesta"
+                                             [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                             (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
+            </app-composizione-confirm-button>
+        </div>
     </div>
 </div>
