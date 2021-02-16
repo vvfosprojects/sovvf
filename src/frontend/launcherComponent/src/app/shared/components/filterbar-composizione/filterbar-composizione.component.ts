@@ -30,7 +30,7 @@ import { TriageSummaryComponent } from '../triage-summary/triage-summary.compone
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnDestroy {
+export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() prenotato: any;
@@ -66,6 +66,12 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.getViewState();
         this.getNightMode();
+    }
+
+    ngOnInit(): void {
+        // TODO: implementare logica
+        const tipoMezzo = getGeneriMezzoTriage(this.triageSummary);
+        this.addFiltro(tipoMezzo[0], 'tipoMezzo');
     }
 
     ngOnDestroy(): void {
@@ -184,4 +190,21 @@ export class FilterbarComposizioneComponent implements OnDestroy {
             ]);
         }
     }
+}
+
+
+function getGeneriMezzoTriage(triageSummary: TriageSummary[]): string[] {
+    if (triageSummary) {
+        const generiMezzo = [];
+        triageSummary.forEach((summary: TriageSummary) => {
+            summary?.generiMezzo?.forEach((genereMezzo: string) => {
+                const genereMezzoFound = generiMezzo.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
+                if (!genereMezzoFound) {
+                    generiMezzo.push(genereMezzo);
+                }
+            });
+        });
+        return generiMezzo;
+    }
+    return null;
 }

@@ -4,7 +4,7 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { TriageSummaryState } from '../../store/states/triage-summary/triage-summary.state';
 import { Observable, Subscription } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class TriageSummaryComponent implements OnDestroy {
 
     subscription: Subscription = new Subscription();
 
-    constructor(private store: Store) {
+    constructor() {
         this.getSummary();
     }
 

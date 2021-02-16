@@ -264,10 +264,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch([
-            new GetFiltriComposizione(),
-            new SetFiltriGeneriMezzoTriage(getGeneriMezzo(this.triageSummary))
-        ]);
+        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnDestroy(): void {
@@ -503,18 +500,3 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 }
 
-function getGeneriMezzo(triageSummary: TriageSummary[]): string[] {
-    if (triageSummary) {
-        const generiMezzo = [];
-        triageSummary.forEach((summary: TriageSummary) => {
-            summary?.generiMezzo?.forEach((genereMezzo: string) => {
-                const genereMezzoFound = generiMezzo.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
-                if (!genereMezzoFound) {
-                    generiMezzo.push(genereMezzo);
-                }
-            });
-        });
-        return generiMezzo;
-    }
-    return null;
-}
