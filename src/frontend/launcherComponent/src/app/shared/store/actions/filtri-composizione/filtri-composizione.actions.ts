@@ -7,10 +7,17 @@ export class SetFiltriComposizione {
 }
 
 export class SetFiltriDistaccamentoDefault {
-  static readonly type = '[FiltriComposizione] Set Filtri Distaccamento Default';
+    static readonly type = '[FiltriComposizione] Set Filtri Distaccamento Default';
 
-  constructor( public distaccamenti: any[]) {
-  }
+    constructor(public distaccamenti: any[]) {
+    }
+}
+
+export class SetFiltriGeneriMezzoTriage {
+    static readonly type = '[FiltriComposizione] Set Filtri Generi Mezzo Triage';
+
+    constructor(public generiMezzo: string[]) {
+    }
 }
 
 export class AddFiltroSelezionatoComposizione {
@@ -35,5 +42,5 @@ export class ResetFiltriComposizione {
 }
 
 export class ClearFiltriComposizione {
-  static readonly type = '[FiltriComposizione] Clear Filtri Composizione';
+    static readonly type = '[FiltriComposizione] Clear Filtri Composizione';
 }

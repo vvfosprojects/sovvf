@@ -43,15 +43,12 @@ import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { GetFiltriComposizione, SetFiltriGeneriMezzoTriage } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
-import {
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione
-} from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
@@ -267,7 +264,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new GetFiltriComposizione());
+        this.store.dispatch([
+            new GetFiltriComposizione(),
+            new SetFiltriGeneriMezzoTriage(getGeneriMezzo(this.triageSummary))
+        ]);
     }
 
     ngOnDestroy(): void {
@@ -501,4 +501,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         };
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
+}
+
+function getGeneriMezzo(triageSummary: TriageSummary[]): string[] {
+    if (triageSummary) {
+        const generiMezzo = [];
+        triageSummary.forEach((summary: TriageSummary) => {
+            summary?.generiMezzo?.forEach((genereMezzo: string) => {
+                const genereMezzoFound = generiMezzo.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
+                if (!genereMezzoFound) {
+                    generiMezzo.push(genereMezzo);
+                }
+            });
+        });
+        return generiMezzo;
+    }
+    return null;
 }

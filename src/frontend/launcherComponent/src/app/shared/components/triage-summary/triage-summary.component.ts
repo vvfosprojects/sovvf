@@ -7,7 +7,6 @@ import { TriageSummary } from '../../interface/triage-summary.interface';
 import { Select, Store } from '@ngxs/store';
 import { TriageSummaryState } from '../../store/states/triage-summary/triage-summary.state';
 import { Observable, Subscription } from 'rxjs';
-import { ClearTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-triage-summary',
@@ -35,7 +34,7 @@ export class TriageSummaryComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.clearSummaryData();
+        this.subscription.unsubscribe();
     }
 
     getSummary(): void {
@@ -50,10 +49,6 @@ export class TriageSummaryComponent implements OnDestroy {
                 }
             })
         );
-    }
-
-    clearSummaryData(): void {
-        this.store.dispatch(new ClearTriageSummary());
     }
 
     setContatoreGeneriMezzo(): void {

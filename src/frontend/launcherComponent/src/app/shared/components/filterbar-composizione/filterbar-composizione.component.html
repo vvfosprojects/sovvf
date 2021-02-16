@@ -5,9 +5,11 @@
         <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
-                    <button class="btn btn-block btn-danger btn-no-hover font-xlarge mr-2" style="width: 65px"
-                            (click)="turnOffComposizione()" ngbTooltip="Esci dalla Composizione Partenza"
-                            placement="bottom-left">
+                    <button class="btn btn-block btn-danger btn-no-hover font-xlarge mr-2"
+                            style="width: 65px"
+                            ngbTooltip="Esci dalla Composizione Partenza"
+                            placement="bottom-left"
+                            (click)="turnOffComposizione()">
                         <i class="fa fa-arrow-left font-comp-xl"></i>
                     </button>
                 </div>
@@ -15,9 +17,11 @@
                      (click)="$event.stopPropagation()">
                     <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
                          (click)="$event.stopPropagation()">
-                        <button class="btn btn-info btn-no-hover font-xlarge" id="dropdownActionsMezzo"
+                        <button id="dropdownActionsMezzo"
+                                class="btn btn-info btn-no-hover font-xlarge"
                                 ngbDropdownAnchor
-                                ngbTooltip="Opzioni" placement="bottom-left"
+                                ngbTooltip="Opzioni"
+                                placement="bottom-left"
                                 (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
                             <i class="fa fa-ellipsis-v font-comp-xl"></i>
                         </button>
@@ -29,8 +33,10 @@
                                 </app-tasto-comp-partenza>
                             </div>
                             <div ngbDropdownItem>
-                                <button class="btn btn-block btn-no-hover" [ngbTooltip]="tooltipPrenota"
-                                        (click)="_confirmPrenota()" [disabled]="disableComposizioneMode">
+                                <button class="btn btn-block btn-no-hover"
+                                        [ngbTooltip]="tooltipPrenota"
+                                        [disabled]="disableComposizioneMode"
+                                        (click)="_confirmPrenota()">
                                     <i class="fa fa-hand-paper-o mr-1"></i>
                                     <span *ngIf="!prenotato">
                                         Prenota
@@ -50,6 +56,8 @@
                 <div class="float-left pt-2"
                      (click)="$event.stopPropagation()">
                     <button class="btn btn-block btn-primary btn-no-hover font-weight-bolder"
+                            ngbTooltip="Visualizza Dettaglio Triage"
+                            placement="bottom-left"
                             (click)="openDettaglioTriage()">
                         {{ 'Triage' | uppercase }}
                     </button>

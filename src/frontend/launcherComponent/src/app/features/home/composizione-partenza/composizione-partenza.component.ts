@@ -13,8 +13,6 @@ import { ClearDirection, SetDirection } from '../store/actions/maps/maps-directi
 import { wipeStatoRichiesta } from '../../../shared/helper/function';
 import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
-import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
@@ -29,7 +27,8 @@ import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squ
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import {
-    ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
+    ResetRicercaMezziComposizione,
+    ResetRicercaSquadreComposizione,
     SetRicercaMezziComposizione,
     SetRicercaSquadreComposizione
 } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
@@ -38,7 +37,6 @@ import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizi
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
-import { TriageSummaryComponent } from '../../../shared/components/triage-summary/triage-summary.component';
 import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
@@ -166,4 +164,3 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         ]);
     }
 }
-

@@ -158,6 +158,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
+        clearSummaryData(this.store);
     }
 
     clearFormDisconnection(): void {
@@ -666,4 +667,8 @@ function clearTriageChiamataModalData(store: Store): void {
         new ClearDettaglioTipologiaTriageChiamata(),
         new ClearTriageChiamata()
     ]);
+}
+
+function clearSummaryData(store: Store): void {
+    store.dispatch(new ClearTriageSummary());
 }

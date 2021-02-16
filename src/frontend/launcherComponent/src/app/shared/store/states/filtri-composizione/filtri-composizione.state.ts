@@ -3,11 +3,14 @@ import { ComposizioneFilterbar } from '../../../../features/home/composizione-pa
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { Composizione } from '../../../enum/composizione.enum';
 import {
-  AddFiltroSelezionatoComposizione,
-  GetFiltriComposizione,
-  ResetFiltriComposizione,
-  RemoveFiltroSelezionatoComposizione,
-  SetFiltriComposizione, ClearFiltriComposizione, SetFiltriDistaccamentoDefault
+    AddFiltroSelezionatoComposizione,
+    GetFiltriComposizione,
+    ResetFiltriComposizione,
+    RemoveFiltroSelezionatoComposizione,
+    SetFiltriComposizione,
+    ClearFiltriComposizione,
+    SetFiltriDistaccamentoDefault,
+    SetFiltriGeneriMezzoTriage
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
@@ -16,7 +19,7 @@ import { ComposizionePartenzaState } from '../../../../features/home/store/state
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { makeCopy } from '../../../helper/function';
-import {FiltroTurnoSquadre} from '../../../enum/filtro-turno-composizione-partenza.enum';
+import { FiltroTurnoSquadre } from '../../../enum/filtro-turno-composizione-partenza.enum';
 
 export interface FiltriComposizioneStateStateModel {
     filtri: ListaTipologicheMezzi;
@@ -71,10 +74,18 @@ export class FiltriComposizioneState {
     }
 
     @Action(SetFiltriDistaccamentoDefault)
-    setFiltriDistaccamentoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: any): void {
-      patchState({
-        codiceDistaccamento: action.distaccamenti,
-      });
+    setFiltriDistaccamentoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetFiltriDistaccamentoDefault): void {
+        patchState({
+            codiceDistaccamento: action.distaccamenti
+        });
+    }
+
+    @Action(SetFiltriGeneriMezzoTriage)
+    setFiltriGeneriMezzoTriage({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetFiltriGeneriMezzoTriage): void {
+        console.log('SetFiltriGeneriMezzoTriage', action.generiMezzo);
+        patchState({
+            tipoMezzo: action.generiMezzo
+        });
     }
 
     @Action(SetFiltriComposizione)
@@ -116,7 +127,7 @@ export class FiltriComposizioneState {
                     })
                 );*/
                 ctx.patchState({
-                  codiceDistaccamento: [],
+                    codiceDistaccamento: [],
                 });
                 ctx.setState(
                     patch({
@@ -213,15 +224,15 @@ export class FiltriComposizioneState {
     }
 
     @Action(ClearFiltriComposizione)
-    clearFiltriComposizione( ctx: StateContext<FiltriComposizioneStateStateModel>): void {
-      ctx.setState(
-        patch({
-          turno: FiltriComposizioneStateDefaults.turno,
-          codiceDistaccamento: FiltriComposizioneStateDefaults.codiceDistaccamento,
-          tipoMezzo: FiltriComposizioneStateDefaults.tipoMezzo,
-          statoMezzo: FiltriComposizioneStateDefaults.statoMezzo
-          }
-        )
-      );
+    clearFiltriComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>): void {
+        ctx.setState(
+            patch({
+                    turno: FiltriComposizioneStateDefaults.turno,
+                    codiceDistaccamento: FiltriComposizioneStateDefaults.codiceDistaccamento,
+                    tipoMezzo: FiltriComposizioneStateDefaults.tipoMezzo,
+                    statoMezzo: FiltriComposizioneStateDefaults.statoMezzo
+                }
+            )
+        );
     }
 }
