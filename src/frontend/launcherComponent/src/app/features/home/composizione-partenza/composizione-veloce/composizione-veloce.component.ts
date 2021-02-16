@@ -26,6 +26,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -37,6 +38,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() triageSummary: TriageSummary[];
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];

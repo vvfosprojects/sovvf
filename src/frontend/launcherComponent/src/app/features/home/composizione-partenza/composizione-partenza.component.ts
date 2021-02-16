@@ -29,13 +29,17 @@ import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squ
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import {
-  ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
-  SetRicercaMezziComposizione,
-  SetRicercaSquadreComposizione
+    ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione
 } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
+import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
+import { TriageSummaryComponent } from '../../../shared/components/triage-summary/triage-summary.component';
+import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -47,6 +51,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
 
+    @Select(TriageSummaryState.summary) summary$: Observable<TriageSummary[]>;
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
@@ -101,13 +106,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new ClearListaSquadreComposizione(),
             new ClearPreaccoppiati(),
             new ResetRicercaMezziComposizione(),
-            new ResetRicercaSquadreComposizione()
+            new ResetRicercaSquadreComposizione(),
+            new ClearTriageSummary()
         ]);
         this.subscription.unsubscribe();
         console.log('Componente Composizione distrutto');
     }
 
-    cardClasses(r: SintesiRichiesta): void {
+    cardClasses(r: SintesiRichiesta): any {
         return this.methods.cardBorder(r);
     }
 
@@ -121,19 +127,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centraMappa(): void {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
-    }
-
-    onVisualizzaEventiRichiesta(idRichiesta: string): void {
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        let modal;
-        if (this.doubleMonitor) {
-          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
-        } else {
-          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-        }
-        modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     _checkPrenotato(sintesi: SintesiRichiesta): boolean {

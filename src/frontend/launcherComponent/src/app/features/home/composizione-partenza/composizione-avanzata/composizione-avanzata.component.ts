@@ -30,13 +30,13 @@ import {
     DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
-  ClearSquadraComposizione,
-  HoverInSquadraComposizione,
-  HoverOutSquadraComposizione,
-  SelectSquadraComposizione,
-  UnselectSquadraComposizione
+    ClearSquadraComposizione,
+    HoverInSquadraComposizione,
+    HoverOutSquadraComposizione,
+    SelectSquadraComposizione,
+    UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -47,11 +47,12 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
 import {
-  SetRicercaMezziComposizione,
-  SetRicercaSquadreComposizione
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione
 } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -63,6 +64,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() triageSummary: TriageSummary[];
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -122,9 +124,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     nightMode: boolean;
 
-    Composizione = Composizione;
-    subscription = new Subscription();
-
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();
     @Output() clearDirection = new EventEmitter();
@@ -133,9 +132,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
+    Composizione = Composizione;
 
     ricercaSquadre: string;
     ricercaMezzi: string;
+
+    subscription = new Subscription();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -272,8 +274,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearBoxPartenze(),
             new ResetPaginationComposizionePartenza(),
-            new SetRicercaMezziComposizione(''),
-            new SetRicercaSquadreComposizione(''),
+            new SetRicercaMezziComposizione(undefined),
+            new SetRicercaSquadreComposizione(undefined),
         ]);
         this.subscription.unsubscribe();
     }
@@ -285,24 +287,37 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+            })
+        );
     }
 
     nightModeText(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'text-dark';
-      } else if (this.nightMode) {
-        value = 'text-white';
-      }
-      return value;
+        let value = '';
+        if (!this.nightMode) {
+            value = 'text-dark';
+        } else if (this.nightMode) {
+            value = 'text-white';
+        }
+        return value;
     }
 
-    mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
+    getSoccorsoAereoTriage(): string {
+        if (!!this.triageSummary) {
+            let soccorsoAereoTriage: string;
+            this.triageSummary.forEach((summary: TriageSummary) => {
+                const soccorsoAereo = summary.soccorsoAereo;
+                if (soccorsoAereo) {
+                    soccorsoAereoTriage = soccorsoAereo;
+                }
+            });
+            return soccorsoAereoTriage;
+        }
+    }
+
+    mezzoDeselezionato(): void {
         this.store.dispatch(new UnselectMezzoComposizione());
         this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato());
         this.onClearDirection();
@@ -459,9 +474,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
         this.store.dispatch([
-          new ConfirmPartenze(partenzeObj),
-          new ClearSquadraComposizione()
-          ]);
+            new ConfirmPartenze(partenzeObj),
+            new ClearSquadraComposizione()
+        ]);
     }
 
     onClearDirection(): void {
