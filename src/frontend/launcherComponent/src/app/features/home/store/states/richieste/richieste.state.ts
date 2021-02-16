@@ -333,6 +333,7 @@ export class RichiesteState {
             dataOraAggiornamento: action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+            dispatch(new StopLoadingActionMezzo());
             },
             error => dispatch(new StopLoadingActionMezzo())
         );

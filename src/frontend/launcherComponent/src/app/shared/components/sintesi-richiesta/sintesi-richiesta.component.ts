@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgbActiveModal, NgbModal, NgbModalOptions, NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
@@ -43,7 +43,7 @@ import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.st
     providers: [NgbPopoverConfig, NgbTooltipConfig],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SintesiRichiestaComponent implements OnChanges {
+export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
@@ -91,6 +91,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     isSingleClick = true;
     live = true;
     private subscription = new Subscription();
+    dettaglioSoccorsoAereo = false;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -112,6 +113,10 @@ export class SintesiRichiestaComponent implements OnChanges {
         tooltipConfig.placement = 'bottom';
         this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         this.getNightMode();
+    }
+
+    ngOnInit(): void {
+      this.checkDettaglioSoccorsoAereo();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -142,6 +147,14 @@ export class SintesiRichiestaComponent implements OnChanges {
         //     this.toggleEspanso(richiesta.id);
         //     this.doubleClickRichiesta.emit(richiesta);
         // }
+    }
+
+    checkDettaglioSoccorsoAereo(): void {
+      if (this.richiesta.eventi && this.richiesta.eventi.note) {
+        const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
+        const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
+        this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
+      }
     }
 
     getNightMode(): void {
