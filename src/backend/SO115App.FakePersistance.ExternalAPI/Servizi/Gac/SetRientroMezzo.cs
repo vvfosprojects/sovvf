@@ -25,12 +25,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(RientroGAC rientro)
         {
-            var lstRientri = new List<RientroGAC>() { rientro };
-            var jsonString = JsonConvert.SerializeObject(lstRientri);
-            var content = new StringContent(jsonString);
-            var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacRientroMezzo);
+            try
+            {
+                var lstRientri = new List<RientroGAC>() { rientro };
+                var jsonString = JsonConvert.SerializeObject(lstRientri);
+                var content = new StringContent(jsonString);
+                var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacRientroMezzo);
 
-            var result = _client.PutAsync(uri, content, _getToken.GeneraToken()).Result;
+                var result = _client.PutAsync(uri, content, _getToken.GeneraToken()).Result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Errore servizio rientro gac");
+            }
         }
     }
 }
