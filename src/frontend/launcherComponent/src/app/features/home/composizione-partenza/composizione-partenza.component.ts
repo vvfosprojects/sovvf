@@ -46,6 +46,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;

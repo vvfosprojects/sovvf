@@ -39,6 +39,8 @@ export class FilterbarComponent {
 
     @Input() colorButton: ViewInterfaceButton;
     @Input() viewState: ViewLayouts;
+    @Input() nightMode: boolean;
+
 
     permessiFeature = PermissionFeatures;
 

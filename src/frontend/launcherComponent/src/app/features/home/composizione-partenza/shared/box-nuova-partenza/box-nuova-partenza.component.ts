@@ -3,15 +3,13 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {Select, Store} from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import {Observable, Subscription} from 'rxjs';
-import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -25,6 +23,7 @@ export class BoxNuovaPartenzaComponent {
     @Input() itemSelezionato: boolean;
     @Input() itemHover: boolean;
     @Input() itemOccupato: boolean;
+    @Input() nightMode: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -37,15 +36,9 @@ export class BoxNuovaPartenzaComponent {
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     itemBloccato: boolean;
 
-    private subscription = new Subscription();
-
     constructor(private store: Store) {
-      this.getNightMode();
     }
 
     onClick(): void {
@@ -65,14 +58,6 @@ export class BoxNuovaPartenzaComponent {
     onElimina(e: MouseEvent): void {
         e.stopPropagation();
         this.eliminato.emit(this.partenza);
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeBg(): string {

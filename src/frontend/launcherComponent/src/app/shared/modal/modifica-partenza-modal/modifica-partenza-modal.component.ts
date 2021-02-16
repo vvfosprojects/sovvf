@@ -38,6 +38,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     operatore: string;
     sede: string;
+    nightMode: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
@@ -188,6 +189,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             select,
             codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value
         });
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-mode';
+      }
+      return value;
     }
 
     onRemoveSequenza(): void {

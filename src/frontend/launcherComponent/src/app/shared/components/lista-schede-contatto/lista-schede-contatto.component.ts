@@ -28,6 +28,7 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Input() classificazioneMerge: ClassificazioneSchedaContatto;
     @Input() loading: boolean;
     @Input() rangeVisualizzazione: RangeSchedeContattoEnum;
+    @Input() nightMode: boolean;
 
     @Output() tabSelected: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();

@@ -36,6 +36,7 @@ import {ViewportState} from '../../../shared/store/states/viewport/viewport.stat
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;

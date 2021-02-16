@@ -14,7 +14,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
+import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import {
     ClearMarkerRichiestaHover,
@@ -60,6 +60,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };

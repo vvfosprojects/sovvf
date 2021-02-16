@@ -16,7 +16,6 @@ import {
   SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
 import {FiltriRichiesteState} from '../../store/states/filterbar/filtri-richieste.state';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
   selector: 'app-filtri-richieste',
@@ -30,6 +29,7 @@ export class FiltriRichiesteComponent {
   @Input() filtri: VoceFiltro[];
   @Input() filtriSelezionati: VoceFiltro[];
   @Input() disableFilters: boolean;
+  @Input() nightMode: boolean;
 
   @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
   @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
@@ -37,8 +37,6 @@ export class FiltriRichiesteComponent {
 
   specialSelected = [false, false, false];
 
-  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-  nightMode: boolean;
   @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
   doubleMonitor: boolean;
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
@@ -104,7 +102,6 @@ export class FiltriRichiesteComponent {
     dropdownOpts.placement = 'bottom';
     this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.getFiltriAttiviTooltip();
-    this.getNightMode();
   }
 
   getFiltriAttiviTooltip(): void {
@@ -279,14 +276,6 @@ export class FiltriRichiesteComponent {
     this.store.dispatch(new ResetFiltriStatiZone());
     this.store.dispatch(new RemovePeriodoChiuse());
     this.filtriReset.emit();
-  }
-
-  getNightMode(): void {
-    this.subscription.add(
-      this.nightMode$.subscribe((nightMode: boolean) => {
-        this.nightMode = nightMode;
-      })
-    );
   }
 
   nightModeStyle(): string {

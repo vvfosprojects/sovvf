@@ -47,7 +47,6 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 import {
   SetRicercaMezziComposizione,
   SetRicercaSquadreComposizione
@@ -63,6 +62,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -118,9 +118,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     totalItemsSquadre: number;
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -261,7 +258,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -282,14 +278,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeText(): string {

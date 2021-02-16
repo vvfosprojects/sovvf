@@ -2,10 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
-import {Select, Store} from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
-import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -14,13 +12,11 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class MezzoInServizioComponent {
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
     @Input() loading: string;
+    @Input() nightMode: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -33,10 +29,8 @@ export class MezzoInServizioComponent {
     mostraIndicatori = false;
     loadingArray: any[] = [];
 
-    subscription = new Subscription();
 
-  constructor(private store: Store) {
-      this.getNightMode();
+    constructor(private store: Store) {
     }
 
     // tslint:disable-next-line:use-lifecycle-interface
@@ -46,14 +40,6 @@ export class MezzoInServizioComponent {
       } else if (!this.loading) {
         this.loadingArray.shift();
       }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     onListaSquadrePartenza(): void {

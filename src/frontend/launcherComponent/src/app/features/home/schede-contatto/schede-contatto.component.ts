@@ -47,6 +47,7 @@ import { ViewportState } from '../../../shared/store/states/viewport/viewport.st
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
