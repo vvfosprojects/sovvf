@@ -37,7 +37,6 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -48,6 +47,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -83,9 +83,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
     permessiFeature = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
@@ -101,8 +98,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
         this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
         this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
-
     }
 
     ngOnInit(): void {

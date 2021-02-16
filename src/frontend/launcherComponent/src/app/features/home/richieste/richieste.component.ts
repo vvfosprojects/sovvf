@@ -49,7 +49,6 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-richieste',
@@ -61,6 +60,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Input() split: boolean;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -96,9 +96,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
     loaderRichieste = true;
     listHeightClass = 'm-h-690';
     permessiFeature = PermissionFeatures;
@@ -121,7 +118,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Richieste creato');
     }
 

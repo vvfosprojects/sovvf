@@ -26,7 +26,6 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -37,6 +36,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -54,8 +54,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioSelezionato: string;
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
+
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
@@ -72,7 +71,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new ClearRicercaFilterbar());
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Mezzo in Servizio creato');
     }
 

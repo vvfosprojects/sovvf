@@ -37,6 +37,7 @@
     </div>
     <div  *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="btn-stick-bottom">
       <app-composizione-confirm-button (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                       [doubleMonitor]="doubleMonitor"
                                        [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
                                        [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
       </app-composizione-confirm-button>

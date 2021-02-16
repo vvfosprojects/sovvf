@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../../../features/home/store/states/filterbar/ricerca-filterbar.state';
 import { Observable, Subscription } from 'rxjs';
@@ -10,7 +10,6 @@ import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { MergeSchedeContattoState } from '../../../features/home/store/states/schede-contatto/merge-schede-contatto.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
-import { ViewportState } from '../../store/states/viewport/viewport.state';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
     ClearSchedaContattoHover,
@@ -24,7 +23,7 @@ import {
     ToggleCollapsed,
     UndoMergeSchedeContatto
 } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
-import { ToggleChiamata, ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
+import { ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
 import {
     CheckboxError,
     ClearMergeSchedeContatto,
@@ -44,7 +43,7 @@ import { AreaMappaState } from '../../../features/home/store/states/maps/area-ma
     templateUrl: './lista-schede-contatto-modal.component.html',
     styleUrls: ['./lista-schede-contatto-modal.component.scss']
 })
-export class ListaSchedeContattoModalComponent implements OnInit {
+export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -80,7 +79,6 @@ export class ListaSchedeContattoModalComponent implements OnInit {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
 
     permessiFeature = PermissionFeatures;
@@ -99,7 +97,6 @@ export class ListaSchedeContattoModalComponent implements OnInit {
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
         this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
         this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
 
     }
 
@@ -113,6 +110,7 @@ export class ListaSchedeContattoModalComponent implements OnInit {
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
+        this.subscriptions.unsubscribe();
         console.log('Componente Schede Contatto distrutto');
     }
 

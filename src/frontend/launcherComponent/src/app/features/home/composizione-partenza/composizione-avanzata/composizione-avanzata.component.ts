@@ -63,6 +63,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;

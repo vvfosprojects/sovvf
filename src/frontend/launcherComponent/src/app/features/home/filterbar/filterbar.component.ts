@@ -26,7 +26,6 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
@@ -40,9 +39,10 @@ export class FilterbarComponent {
     @Input() colorButton: ViewInterfaceButton;
     @Input() viewState: ViewLayouts;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
 
-    permessiFeature = PermissionFeatures;
+  permessiFeature = PermissionFeatures;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
@@ -82,8 +82,6 @@ export class FilterbarComponent {
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa

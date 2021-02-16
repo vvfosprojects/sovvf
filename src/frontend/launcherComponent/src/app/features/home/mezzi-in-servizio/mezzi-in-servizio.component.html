@@ -10,6 +10,7 @@
         <div *ngIf="mezziInServizio" class="row">
             <div *ngFor="let m of mezziInServizio" class="col-6 pl-4 mb-1">
                 <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
+                                       [doubleMonitor]="doubleMonitor"
                                        [nightMode]="nightMode"
                                        [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
                                        [loading]="(loadingActionMezzo$ | async)"

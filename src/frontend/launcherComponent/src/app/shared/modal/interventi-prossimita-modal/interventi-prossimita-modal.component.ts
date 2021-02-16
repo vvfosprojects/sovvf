@@ -4,9 +4,6 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioFonogrammaModalComponent } from '../dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
-import { Select } from '@ngxs/store';
-import { ViewportState } from '../../store/states/viewport/viewport.state';
-import { Observable } from 'rxjs';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
@@ -18,9 +15,6 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
     styleUrls: ['./interventi-prossimita-modal.component.css']
 })
 export class InterventiProssimitaModalComponent {
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     fissata = false;
     fissabile = true;
@@ -37,6 +31,7 @@ export class InterventiProssimitaModalComponent {
     disabledComposizionePartenza: boolean;
     loadingEliminaPartenza = false;
     idDaSganciare = '';
+    doubleMonitor: boolean;
 
     submitted: boolean;
     methods = new HelperSintesiRichiesta();

@@ -24,8 +24,7 @@ import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
-import {Observable, Subscription} from 'rxjs';
+import { Observable } from 'rxjs';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 import {DettaglioSoccorsoAereoModalComponent} from '../../modal/dettaglio-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
@@ -63,6 +62,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledComposizionePartenza = false;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() clickRichiesta = new EventEmitter<any>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
@@ -80,14 +80,11 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
 
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
     live = true;
-    private subscription = new Subscription();
     dettaglioSoccorsoAereo = false;
 
     // Enum
@@ -108,7 +105,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnInit(): void {
@@ -324,6 +320,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
         modalModificaPartenza.componentInstance.nightMode = this.nightMode;
+        modalModificaPartenza.componentInstance.doubleMonitor = this.doubleMonitor;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
@@ -512,6 +509,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
       }
       const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
       modal.componentInstance.richiesta = this.richiesta;
+      modal.componentInstance.doubleMonitor = this.doubleMonitor;
       modal.result.then((res: string) => {
         switch (res) {
           case 'ok':

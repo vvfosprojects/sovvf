@@ -17,6 +17,7 @@ export class MezzoInServizioComponent {
     @Input() idMezzoInServizioSelezionato: string;
     @Input() loading: string;
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
