@@ -36,7 +36,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                throw new Exception("Errore servizio rientro gac");
+                //throw new Exception("Errore servizio rientro gac");
             }
         }
     }
