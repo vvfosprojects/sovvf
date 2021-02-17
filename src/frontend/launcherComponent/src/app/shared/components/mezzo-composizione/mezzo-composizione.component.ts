@@ -13,7 +13,6 @@ import {Observable, Subscription} from 'rxjs';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Partenza} from '../../model/partenza.model';
 import {Squadra} from '../../model/squadra.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -29,6 +28,7 @@ export class MezzoComposizioneComponent implements OnInit {
     @Input() itemPrenotato: boolean;
     @Input() itemInPrenotazione: boolean;
     @Input() itemBloccato: boolean;
+    @Input() nightMode: boolean;
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
@@ -42,8 +42,6 @@ export class MezzoComposizioneComponent implements OnInit {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     public sganciamentoDisabilitato = false;
     private subscription = new Subscription();
@@ -51,7 +49,6 @@ export class MezzoComposizioneComponent implements OnInit {
 
     constructor() {
     this.getViewState();
-    this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -69,14 +66,6 @@ export class MezzoComposizioneComponent implements OnInit {
                     !e.sganciata && !e.terminata && !e.partenzaAnnullata;
             });
         }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     onClick(): void {

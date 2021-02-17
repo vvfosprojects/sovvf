@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-impostazioni-sede',
@@ -13,6 +15,8 @@ import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettag
     styleUrls: ['./impostazioni-sede.component.scss']
 })
 export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     constructor(private store: Store) {
         this.fetchTipologie();
@@ -33,7 +37,6 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
     }
-
 
     fetchTipologie(): void {
         this.store.dispatch(new GetTipologie());

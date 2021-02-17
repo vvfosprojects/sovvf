@@ -13,7 +13,6 @@ import {
   statoRichiestaColor
 } from '../../helper/function';
 import {ActionRichiestaModalComponent} from '../action-richiesta-modal/action-richiesta-modal.component';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {
   ActionRichiesta,
   AllertaSede,
@@ -42,11 +41,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
-  @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-  doubleMonitor: boolean;
 
   subscription: Subscription = new Subscription();
 
+  doubleMonitor: boolean;
   richiesta: SintesiRichiesta;
   statoRichiestaString: Array<StatoRichiestaActions>;
 
@@ -213,6 +211,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
       });
     }
     modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+    modalModificaEntiIntervenuti.componentInstance.doubleMonitor = this.doubleMonitor;
     modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
     modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
       switch (res.status) {

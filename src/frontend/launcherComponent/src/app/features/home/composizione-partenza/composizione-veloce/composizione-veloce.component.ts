@@ -25,7 +25,6 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -37,6 +36,8 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
@@ -56,9 +57,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     totalItemsPreaccoppiati: number;
     @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizePreaccoppiati$: Observable<number>;
     pageSizePreaccoppiati: number;
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     Composizione = Composizione;
 
@@ -120,7 +118,6 @@ export class FasterComponent implements OnInit, OnDestroy {
                 this.pageSizePreaccoppiati = pageSizePreaccoppiati;
             })
         );
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -130,14 +127,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch(new ResetPaginationPreaccoppiati());
         this.subscription.unsubscribe();
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza): void {

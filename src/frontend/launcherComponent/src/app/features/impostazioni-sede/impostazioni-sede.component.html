@@ -14,7 +14,7 @@
                         DETTAGLI TIPOLOGIE
                     </ng-template>
                     <ng-template ngbPanelContent>
-                        <app-dettagli-tipologie></app-dettagli-tipologie>
+                        <app-dettagli-tipologie [doubleMonitor]="(doubleMonitor$ | async)"></app-dettagli-tipologie>
                     </ng-template>
                 </ngb-panel>
                 <ngb-panel id="triage">

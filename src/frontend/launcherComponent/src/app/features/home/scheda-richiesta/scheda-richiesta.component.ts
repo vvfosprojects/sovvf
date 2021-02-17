@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
@@ -8,7 +8,6 @@ import { ChiamataState } from '../store/states/scheda-telefonata/chiamata.state'
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
 import { Ente } from 'src/app/shared/interface/ente.interface';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
@@ -25,6 +24,8 @@ import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologi
 })
 export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
+    @Input() doubleMonitor: boolean;
+
     @Select(ChiamataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(ChiamataState.competenze) competenze$: Observable<Sede[]>;
     @Select(ChiamataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
@@ -34,7 +35,6 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
@@ -42,17 +42,13 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     // Dettagli Tipologie
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
 
-    doubleMonitor: boolean;
     permessiFeature = PermissionFeatures;
-
-    private subscription = new Subscription();
 
     constructor() {
     }
 
     ngOnInit(): void {
         console.log('Componente Scheda Richiesta creato');
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnDestroy(): void {

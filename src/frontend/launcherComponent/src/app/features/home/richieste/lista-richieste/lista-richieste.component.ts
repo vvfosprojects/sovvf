@@ -36,6 +36,8 @@ export class ListaRichiesteComponent {
     @Input() totalItems: number;
     // FIltri Selezionati
     @Input() codiciFiltriSelezionati: string[];
+    // Night Mode
+    @Input() nightMode: boolean;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

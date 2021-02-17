@@ -21,7 +21,6 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Sede} from '../../model/sede.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -38,13 +37,12 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     @Input() composizionePartenza: boolean;
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
+    @Input() nightMode: boolean;
 
     @Output() confirmPrenota = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
 
     private subscription = new Subscription();
@@ -61,7 +59,6 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
         this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.getViewState();
-        this.getNightMode();
     }
 
     ngOnDestroy(): void {
@@ -83,14 +80,6 @@ export class FilterbarComposizioneComponent implements OnDestroy {
           this.nuovaPartenza(this.richiesta);
           this.update();
       }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeBg(): string {

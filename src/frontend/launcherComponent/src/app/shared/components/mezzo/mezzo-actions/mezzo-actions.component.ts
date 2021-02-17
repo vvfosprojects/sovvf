@@ -6,9 +6,6 @@ import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
 import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface';
-import {Select} from '@ngxs/store';
-import {ViewportState} from '../../../store/states/viewport/viewport.state';
-import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -18,15 +15,12 @@ import {Observable, Subscription} from 'rxjs';
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
+    @Input() doubleMonitor: Mezzo;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
     statoMezzoActions: StatoMezzoActions;
     statoMezzoString: Array<string>;
-    private subscription = new Subscription();
 
     constructor(
         dropdownConfig: NgbDropdownConfig,
@@ -41,7 +35,6 @@ export class MezzoActionsComponent implements OnInit {
 
     ngOnInit(): void {
         this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     onClick(action?: string, event?: MouseEvent): void {

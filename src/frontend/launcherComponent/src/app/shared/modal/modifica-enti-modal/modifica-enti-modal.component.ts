@@ -7,7 +7,6 @@ import { Observable, Subscription } from 'rxjs';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { EnteModalComponent } from '../ente-modal/ente-modal.component';
 import { ClearFormEnte, RequestAddEnte } from '../../store/actions/enti/enti.actions';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-modifica-enti-modal',
@@ -18,10 +17,9 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     enti: Ente[];
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     listaEntiIntervenuti: Ente[];
+    doubleMonitor: boolean;
 
     modificaEntiIntervenutiForm: FormGroup;
     submitted: boolean;
@@ -43,7 +41,6 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
             listaEnti: [this.listaEntiIntervenuti ? this.listaEntiIntervenuti.map(e => e.codice) : null],
         });
         this.getEnti();
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getEnti(): void {

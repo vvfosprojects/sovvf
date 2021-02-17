@@ -24,8 +24,7 @@ import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
-import {Observable, Subscription} from 'rxjs';
+import { Observable } from 'rxjs';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 import {DettaglioSoccorsoAereoModalComponent} from '../../modal/dettaglio-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import {ApplyFiltriTipologiaSelezionatiRichieste} from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
@@ -34,7 +33,6 @@ import {
   GetEventiSoccorsoAereo
 } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import {AzioniSintesiRichiestaModalComponent} from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -63,6 +61,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledComposizionePartenza = false;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() clickRichiesta = new EventEmitter<any>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
@@ -80,17 +80,11 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
-    mapsIsActive: boolean;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
     live = true;
-    private subscription = new Subscription();
     dettaglioSoccorsoAereo = false;
 
     // Enum
@@ -111,8 +105,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -155,14 +147,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
         this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
       }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeStyle(): string {
@@ -335,6 +319,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
+        modalModificaPartenza.componentInstance.nightMode = this.nightMode;
+        modalModificaPartenza.componentInstance.doubleMonitor = this.doubleMonitor;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
@@ -523,6 +509,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
       }
       const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
       modal.componentInstance.richiesta = this.richiesta;
+      modal.componentInstance.doubleMonitor = this.doubleMonitor;
       modal.result.then((res: string) => {
         switch (res) {
           case 'ok':

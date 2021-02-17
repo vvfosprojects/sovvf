@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private listeSediLoaded: boolean;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    nightMode: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2) {
-        this.getSunMode();
+        this.getNightMode();
         this.getRouterEvents();
         this.getViewState();
         this.getImpostazioniLocalStorage();
@@ -108,12 +108,12 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
     }
 
-    getSunMode(): void {
+    getNightMode(): void {
       this.subscription.add(
         this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
+          this.nightMode = nightMode;
           const body = document.querySelectorAll('body')[0];
-          if (this.sunMode) {
+          if (!this.nightMode) {
             this.render.addClass(body, 'sun-mode');
             this.render.removeClass(body, 'moon-mode');
           } else {

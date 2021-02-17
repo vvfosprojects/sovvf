@@ -7,7 +7,6 @@ import {ViewLayouts} from '../../interface/view.interface';
 import {Observable, Subscription} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -21,6 +20,7 @@ export class SquadraComposizioneComponent {
     @Input() itemHover: boolean;
     @Input() itemPrenotato: boolean;
     @Input() itemBloccato: boolean;
+    @Input() nightMode: boolean;
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
     @Output() deselezionata = new EventEmitter<SquadraComposizione>();
@@ -30,8 +30,6 @@ export class SquadraComposizioneComponent {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     private subscription = new Subscription();
     viewState: ViewLayouts;
@@ -39,7 +37,6 @@ export class SquadraComposizioneComponent {
 
   constructor() {
       this.getViewState();
-      this.getNightMode();
   }
 
     getViewState(): void {
@@ -54,14 +51,6 @@ export class SquadraComposizioneComponent {
           this.deselezionata.emit(this.squadraComp);
         }
       }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     onHoverIn(): void {

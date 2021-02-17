@@ -35,7 +35,6 @@ import {
 } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -46,6 +45,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
@@ -53,8 +54,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;
@@ -79,7 +78,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 this.loadingListe = loading;
             })
         );
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnInit(): void {

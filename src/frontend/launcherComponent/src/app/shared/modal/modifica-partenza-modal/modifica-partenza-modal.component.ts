@@ -7,7 +7,7 @@ import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import { Partenza } from './../../model/partenza.model';
+import { Partenza } from '../../model/partenza.model';
 import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
@@ -19,8 +19,6 @@ import { ModificaPartenzaService } from '../../../core/service/modifica-partenza
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
-
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -33,11 +31,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     operatore: string;
     sede: string;
+    nightMode: boolean;
+    doubleMonitor: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
@@ -45,7 +43,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     public time = { hour: 13, minute: 30, second: 30 };
     public timeAnnullamento = { hour: 13, minute: 30 };
     listaStatoMezzo: string[];
-    statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
     hideBox = true;
@@ -86,7 +83,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.f.mezzo.patchValue(this.partenza.mezzo);
         this.f.squadre.patchValue(this.partenza.squadre);
         this.checkStatoMezzoSequenza();
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     initForm(): void {
@@ -189,6 +185,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             select,
             codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value
         });
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-mode';
+      }
+      return value;
     }
 
     onRemoveSequenza(): void {

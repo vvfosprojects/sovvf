@@ -5,6 +5,7 @@
     <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
     <div class="col-12">
         <app-lista-schede-contatto [ricerca]="ricerca"
+                                   [nightMode]="nightMode"
                                    [tabAttivo]="tabAttivo$ | async"
                                    [schedeContatto]="schedeContatto"
                                    [contatoriSchedeContatto]="contatoriSchedeContatto"

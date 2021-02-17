@@ -2,15 +2,15 @@
     <h3>{{ title }}</h3>
 </ng-template>
 <div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo"
-     class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
+     class="border-partenza-box app-shadow pb-4 d-flex font-xlarge" [class.bg-moon-light]="nightMode" style="place-content: space-evenly;">
     <div class="mb-3" style="display: contents;">
         <div>
             <label class="mb-3">Mezzo</label>
             <div *ngIf="!boxSostitutivo">
                 <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
-                <b class="font-box-partenza t-color">{{ partenza?.mezzo['descrizione'] }}</b>
-                <span class="badge badge-default m-0 t-color">{{ partenza?.mezzo['genere'] }}</span>
+                <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
+                <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
             <div *ngIf="boxSostitutivo && !nuovoMezzo['descrizione']" class="font-box-partenza">
@@ -19,16 +19,16 @@
             <div *ngIf="boxSostitutivo && nuovoMezzo['descrizione']">
                 <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ nuovoMezzo['stato'] }}"></i>
-                <b class="font-box-partenza t-color">{{ nuovoMezzo['descrizione'] }}</b>
-                <span class="badge badge-default m-0 t-color">{{ nuovoMezzo['genere'] }}</span>
+                <b class="font-box-partenza">{{ nuovoMezzo['descrizione'] }}</b>
+                <span class="badge badge-default m-0">{{ nuovoMezzo['genere'] }}</span>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
         <span *ngIf="!boxSostitutivo">
-        <div *ngIf="partenza?.squadre?.length === 1" style="color:#666666">
+        <div *ngIf="partenza?.squadre?.length === 1">
             <div class="mb-2">
                 <label>Squadra</label>
-                <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
+                <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
                         style="padding: 5px !important; line-height: 0px;"
                         (click)="onListaSquadrePartenza($event)">
                     <span><i class="fa fa-search"></i></span>
@@ -39,10 +39,10 @@
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
-        <div *ngIf="partenza?.squadre.length > 1" style="color:#666666">
+        <div *ngIf="partenza?.squadre.length > 1">
             <div class="mb-2">
                 <label>Squadre</label>
-                <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
+                <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                         style="padding: 5px !important; line-height: 0px;"
                         (click)="onListaSquadrePartenza($event)">
                     <span><i class="fa fa-search"></i></span>
@@ -59,7 +59,7 @@
             <div>
                 <div *ngIf="nuoveSquadre?.length === 0 || nuoveSquadre?.length === 1" class="mb-2">
                     <label>Squadra</label>
-                    <button *ngIf="nuoveSquadre?.length === 1" class="btn btn-sm btn-light border ml-2 p-1 mr-2"
+                    <button *ngIf="nuoveSquadre?.length === 1" class="btn font-xlarge btn-light border ml-2 p-1 mr-2"
                             ngbTooltip="Elenco squadra"
                             style="padding: 5px !important; line-height: 0px;"
                             (click)="onListaSquadrePartenza($event)">
@@ -68,16 +68,16 @@
                 </div>
                 <div *ngIf="!nuoveSquadre[0]" class="font-box-partenza"><span
                         class="text-muted">Nessun risultato...</span></div>
-                <div *ngIf="nuoveSquadre?.length === 1" class="t-color"><i class="fa fa-group mr-2 t-color"
+                <div *ngIf="nuoveSquadre?.length === 1" class=""><i class="fa fa-group mr-2"
                                                                            ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
                     <b class="font-box-partenza ml-1">({{ nuoveSquadre[0]?.turno }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
             </div>
-            <div *ngIf="nuoveSquadre?.length > 1" class="t-color">
+            <div *ngIf="nuoveSquadre?.length > 1">
                     <label class="mb-3">Squadre</label>
-                    <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
+                    <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                             style="padding: 5px !important; line-height: 0px;"
                             (click)="onListaSquadrePartenza($event)">
                         <span><i class="fa fa-search"></i></span>

@@ -1,7 +1,7 @@
 <div class="py-2 px-3"
-     [class.text-moon]="(nightMode$ | async)"
-     [class.moon-card-light]="(nightMode$ | async)"
-     [class.double-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
+     [class.text-moon]="nightMode"
+     [class.moon-card-light]="nightMode"
+     [class.double-monitor]="!(mapsIsActive$ | async) || doubleMonitor"
      (click)="richiestaClick(richiesta)"
      (dblclick)="richiestaDoubleClick(richiesta)"
      (mouseenter)="richiestaHoverIn(richiesta)"
@@ -31,11 +31,11 @@
                             </ngb-rating>
                         </div>
                         <div class="clearfix" style="width: 15%"
-                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
+                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || doubleMonitor">
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
-                                <a class="h6" [class.text-moon]="(nightMode$ | async)"
+                                <a class="h6" [class.text-moon]="nightMode"
                                    (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
@@ -55,7 +55,7 @@
                             <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
                           </button>
                         </div>
-                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
+                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
@@ -95,7 +95,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
+                        <div *ngIf="!(mapsIsActive$ | async) || doubleMonitor" class="clearfix" style="width: 33%">
                             <!-- descrizione intervento -->
                             <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
                                 <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
@@ -220,7 +220,7 @@
 
                         </div>
                         <div class="clearfix" style="width: 12%"
-                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
+                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || doubleMonitor">
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1 font-double-monitor" ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
@@ -233,7 +233,7 @@
                             </div>
                         </div>
                         <div class="clearfix" style="width: 10%"></div>
-                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
+                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="col-7"
                              style="flex: 0 0 54.5% !important;">
                             <!-- richiedente -->
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
@@ -252,7 +252,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 33%">
+                        <div *ngIf="!(mapsIsActive$ | async) || doubleMonitor" class="clearfix" style="width: 33%">
                             <i class="guida fa fa-map-marker fa-fw mr-1" style="font-size: 140%" ngbTooltip="Località"></i>
                             <span>
                               <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
@@ -266,7 +266,7 @@
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
                         </div>
-                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
+                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor"
                              class="col-2 pr-3 text-right" [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
                                 <button *ngIf="!fissata && fissabile"
@@ -292,7 +292,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix" style="width: 26%; align-self: center">
+                        <div *ngIf="!(mapsIsActive$ | async) || doubleMonitor" class="clearfix" style="width: 26%; align-self: center">
                           <!-- richiedente -->
                           <div class="h6 mt-1 mb-2 nowrap default-cursor">
                             <i class="guida fa fa-address-book-o fa-fw mr-1"
@@ -308,12 +308,12 @@
                                 </span>
                             <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%" ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge" [class.text-moon]="(nightMode$ | async)">
+                                        <a class="font-xxlarge" [class.text-moon]="nightMode">
                                           {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                           </div>
                         </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="clearfix text-right" style="width: 14.3%"
+                        <div *ngIf="!(mapsIsActive$ | async) || doubleMonitor" class="clearfix text-right" style="width: 14.3%"
                              [ngClass]="{'mb-1': isEspanso}">
                             <div class="h6 m-0 nowrap mt-1">
                                 <button  *ngIf="boxAzioni"
@@ -375,7 +375,7 @@
                         </div>
                     </div>
                     <!-- TERZA RIGA IN SINGLE MONITOR -->
-                    <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="row">
+                    <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="row">
                         <div class="clearfix mx-3">
                         </div>
                         <div class="col-3">
@@ -550,7 +550,7 @@
                                 <div class="h6 font-dettaglio">
                                     <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                        placement="right"></i>
-                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-moon]="(nightMode$ | async)">
+                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue" [class.text-moon]="nightMode">
                                         {{ richiesta?.codiceSchedaNue }}
                                     </a>
                                     <ng-template #nessunCodiceNue>
@@ -596,6 +596,7 @@
                                 <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
+                                                        [doubleMonitor]="doubleMonitor"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"

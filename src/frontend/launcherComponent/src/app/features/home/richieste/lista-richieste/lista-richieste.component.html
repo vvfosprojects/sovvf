@@ -16,6 +16,7 @@
                                        [isEspanso]="isEspanso(r.id)"
                                        [espandibile]="true"
                                        [sostituzioneFineTurno]="true"
+                                       [nightMode]="nightMode"
                                        [inGestione]="richiestaGestione?.id === r.id"
                                        [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                        [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"

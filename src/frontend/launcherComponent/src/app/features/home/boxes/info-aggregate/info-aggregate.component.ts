@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../box-interface/box-click-interface';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
@@ -17,7 +17,6 @@ import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interf
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
 import { AuthState } from '../../../auth/store/auth.state';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -26,8 +25,6 @@ import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/im
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -38,7 +35,8 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
 
-    subscription = new Subscription();
+    @Input() nightMode: boolean;
+
 
     timerMeteo: NodeJS.Timer;
 
@@ -46,7 +44,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 private meteoService: MeteoService) {
         this.startMeteo();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -54,21 +51,12 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
         clearInterval(this.timerMeteo);
         console.log('Componente Info Aggregate Distrutto');
     }
 
     clickBox(cat: string, tipo: string): void {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     nightModeBox(): string {
