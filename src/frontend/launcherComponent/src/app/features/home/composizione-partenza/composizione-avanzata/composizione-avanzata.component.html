@@ -94,6 +94,7 @@
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                             <app-mezzo-composizione [mezzoComp]="mC"
                                                     [nightMode]="nightMode"
+                                                    [boxPartenzaList]="(boxPartenzaList$ | async)"
                                                     [itemSelezionato]="mC.id === idMezzoSelezionato"
                                                     [itemHover]="mC.id === idMezzoHover"
                                                     [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"

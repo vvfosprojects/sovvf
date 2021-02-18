@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -8,10 +8,10 @@ import { ViewComponentState } from '../../../features/home/store/states/view/vie
 import { Observable, Subscription } from 'rxjs';
 import { iconaStatiClass } from '../../helper/composizione-functions';
 import {
-    AddFiltroSelezionatoComposizione,
-    ClearFiltriComposizione,
-    ResetFiltriComposizione,
-    SetFiltriDistaccamentoDefault
+  AddFiltroSelezionatoComposizione,
+  ClearFiltriComposizione,
+  ResetFiltriComposizione,
+  SetFiltriDistaccamentoDefault
 } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
@@ -29,7 +29,7 @@ import { TriageSummaryModalComponent } from '../triage-summary-modal/triage-summ
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
+export class FilterbarComposizioneComponent implements OnDestroy {
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() prenotato: any;
@@ -50,7 +50,8 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
-    codCompetenzeDefault: string[] = [];
+    distaccamentiSelezionati: string[];
+    genereMezzoSelezionato: string[];
 
     private subscription = new Subscription();
 
@@ -59,18 +60,26 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
-        this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
+        this.setDistaccamentiDefault();
+        this.setGenereMezzoDefault();
         this.getViewState();
-    }
-
-    ngOnInit(): void {
-        // TODO: implementare logica
-        // const tipoMezzo = getGeneriMezzoTriageSummary(this.triageSummary);
     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
+    }
+
+    setDistaccamentiDefault(): void {
+        this.distaccamentiSelezionati = [];
+        this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+        const distaccamentiDefault = [];
+        this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+        this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+    }
+
+    setGenereMezzoDefault(): void {
+        this.genereMezzoSelezionato = ['APS'];
+        this.store.dispatch(new SetGenereMezzoDefault(this.genereMezzoSelezionato));
     }
 
     getViewState(): void {
@@ -115,17 +124,11 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
-        if (tipo === 'codiceDistaccamento') {
-            this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-            this.update();
-        } else {
-            this.update();
-        }
+        this.update();
     }
 
     resetFiltri(): void {
         this.store.dispatch(new ClearFiltriComposizione());
-        this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.update();
     }
 
