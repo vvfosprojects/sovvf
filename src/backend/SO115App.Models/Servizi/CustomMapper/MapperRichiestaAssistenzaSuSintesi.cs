@@ -63,6 +63,9 @@ namespace SO115App.Models.Servizi.CustomMapper
                     {
                         var utente = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
 
+                        if (ListaAttivita.Select(a => a.IdUtente).Contains(utente.Id)) 
+                            continue;
+
                         AttivitaUtente attivita = new AttivitaUtente()
                         {
                             Nominativo = utente.Nome + " " + utente.Cognome,
@@ -101,7 +104,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                 };
             }
 
-            return ListaAttivita;
+            return ListaAttivita.Distinct().ToList();
         }
     }
 }
