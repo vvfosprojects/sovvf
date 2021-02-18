@@ -56,9 +56,10 @@
                 <div class="float-left pt-2"
                      (click)="$event.stopPropagation()">
                     <button class="btn btn-block btn-primary btn-no-hover font-weight-bolder"
-                            ngbTooltip="Visualizza Dettaglio Triage"
+                            [ngbTooltip]="richiesta?.triageSummary ? 'Visualizza Dettaglio Triage' : 'Triage non disponibile'"
                             placement="bottom-left"
-                            (click)="openDettaglioTriage()">
+                            (click)="openDettaglioTriage()"
+                            [disabled]="!richiesta?.triageSummary">
                         {{ 'Triage' | uppercase }}
                     </button>
                 </div>

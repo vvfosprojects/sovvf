@@ -2,14 +2,18 @@ import { TriageSummary } from '../interface/triage-summary.interface';
 
 export function getGeneriMezzoTriageSummary(summary: TriageSummary[]): string[] {
     let generiMezzoResult: string[];
-    for (const s of summary) {
-        for (const genereMezzo of s?.generiMezzo) {
-            if (!generiMezzoResult) {
-                generiMezzoResult = [];
-            }
-            const genereMezzoFound = generiMezzoResult.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
-            if (!genereMezzoFound) {
-                generiMezzoResult.push(genereMezzo);
+    if (summary?.length) {
+        for (const s of summary) {
+            if (s?.generiMezzo?.length) {
+                for (const genereMezzo of s?.generiMezzo) {
+                    if (!generiMezzoResult) {
+                        generiMezzoResult = [];
+                    }
+                    const genereMezzoFound = generiMezzoResult.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
+                    if (!genereMezzoFound) {
+                        generiMezzoResult.push(genereMezzo);
+                    }
+                }
             }
         }
     }
@@ -18,9 +22,13 @@ export function getGeneriMezzoTriageSummary(summary: TriageSummary[]): string[] 
 
 export function getContatoreGeneriMezzo(summary: TriageSummary[]): number {
     let count = 0;
-    for (const s of summary) {
-        for (const genereMezzo of s?.generiMezzo) {
-            count = count + 1;
+    if (summary?.length) {
+        for (const s of summary) {
+            if (s?.generiMezzo?.length) {
+                for (const genereMezzo of s?.generiMezzo) {
+                    count = count + 1;
+                }
+            }
         }
     }
     return count;
