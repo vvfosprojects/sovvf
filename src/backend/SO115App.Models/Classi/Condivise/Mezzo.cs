@@ -149,6 +149,6 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         /// Definisce se il mezzo è preaccoppiato con le squadre
         /// </summary>
-        public bool PreAccoppiato { get; set; }
+        public bool PreAccoppiato { get; set; } = false;
     }
 }
