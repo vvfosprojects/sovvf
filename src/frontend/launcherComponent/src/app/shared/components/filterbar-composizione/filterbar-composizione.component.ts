@@ -8,10 +8,10 @@ import { ViewComponentState } from '../../../features/home/store/states/view/vie
 import { Observable, Subscription } from 'rxjs';
 import { iconaStatiClass } from '../../helper/composizione-functions';
 import {
-  AddFiltroSelezionatoComposizione,
-  ClearFiltriComposizione,
-  ResetFiltriComposizione,
-  SetFiltriDistaccamentoDefault
+    AddFiltroSelezionatoComposizione,
+    ClearFiltriComposizione,
+    ResetFiltriComposizione,
+    SetGenereMezzoDefault
 } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
