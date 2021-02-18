@@ -3,7 +3,7 @@ import {
     ClearPartenza,
     ConfirmPartenze,
     ReducerFilterListeComposizione,
-    RichiestaComposizione,
+    SetRichiestaComposizione,
     SetComposizioneMode,
     StartInvioPartenzaLoading,
     StartListaComposizioneLoading,
@@ -48,6 +48,7 @@ import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
 import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -134,12 +135,15 @@ export class ComposizionePartenzaState {
         }
     }
 
-    @Action(RichiestaComposizione)
-    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione): void {
+    @Action(SetRichiestaComposizione)
+    setRichiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetRichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
-        dispatch(new AddInLavorazione(action.richiesta));
+        dispatch([
+            new AddInLavorazione(action.richiesta),
+            new SetTriageSummary(action.richiesta.triageSummary)
+        ]);
     }
 
     @Action(ToggleComposizioneMode)

@@ -62,7 +62,6 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     @Input() enti: Ente[];
     @Input() codiceSchedaContatto: string;
     @Input() disabledInviaPartenza = false;
-    @Input() loading: boolean;
     @Input() doubleMonitor: boolean;
     @Input() resetChiamata: boolean;
     @Input() schedaContatto: SchedaContatto;

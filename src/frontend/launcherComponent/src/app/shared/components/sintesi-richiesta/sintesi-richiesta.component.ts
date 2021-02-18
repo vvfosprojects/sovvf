@@ -90,12 +90,13 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
     live = true;
-    private subscription = new Subscription();
     dettaglioSoccorsoAereo = false;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
-    StatoFonogramma = StatoFonogramma;
+    StatoFonogramma = StatoFonogramma
+
+    private subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private activeModal: NgbActiveModal,

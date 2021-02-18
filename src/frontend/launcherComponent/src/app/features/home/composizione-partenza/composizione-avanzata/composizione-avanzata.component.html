@@ -17,10 +17,13 @@
                     <label for="ricercaSquadre" class="d-none"></label>
                     <input id="ricercaSquadre" type="text" name="ricercaSquadre" class="form-control"
                            style="font-size: 115%"
-                           placeholder="Cerca..." [(ngModel)]="ricercaSquadre" appDebounceKeyUp
-                           (debounceKeyUp)="onSearchSquadre()" (search)="onClearSearchSquadre()"
+                           placeholder="Cerca..."
+                           [(ngModel)]="ricercaSquadre"
+                           appDebounceKeyUp
                            [debounceTime]="1000"
-                           [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}">
+                           [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}"
+                           (debounceKeyUp)="onSearchSquadre()"
+                           (search)="onClearSearchSquadre()">
                     <i *ngIf="ricercaSquadre" (click)="onClearSearchSquadre()"
                        class="fa fa-times clear-search-squadre" style="transform: translate(225px, -28px);"></i>
                 </div>
@@ -28,8 +31,9 @@
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <li *ngIf="squadreComposizione && squadreComposizione.length <= 0"
-                    class="list-group-item cursor-pointer border font-comp-xl" style="cursor: default"><span
-                        class="text-muted">Nessun risultato...</span>
+                    class="list-group-item cursor-pointer border font-comp-xl"
+                    style="cursor: default">
+                    <span class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                     <app-squadra-composizione
@@ -151,8 +155,28 @@
             </div>
         </div>
         <div class="clearfix">
-            <div class="float-left">
+            <!-- <div class="float-left">
                 {{ getSoccorsoAereoTriage() }}
+            </div> -->
+            <div class="float-left w-100 pl-4" style="width: 2%">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <ngb-rating [rate]="getSoccorsoAereoTriage()?.value"
+                                    [max]="4"
+                                    [readonly]="true">
+                            <ng-template let-fill="fill" let-index="index">
+                                <div class="circle d-inline-block font-double-monitor"
+                                     [class.filled]="fill === 100"
+                                     [class.bad]="index > 2 && fill === 100">
+                                    <i class="fa fa-circle mr-1"></i>
+                                </div>
+                            </ng-template>
+                        </ngb-rating>
+                    </div>
+                    <div class="float-left">
+                        {{ getSoccorsoAereoTriage()?.desc }}
+                    </div>
+                </div>
             </div>
         </div>
         <div>

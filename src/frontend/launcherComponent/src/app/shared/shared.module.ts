@@ -67,6 +67,7 @@ import { AzioniSintesiRichiestaModalComponent } from './modal/azioni-sintesi-ric
 import { DettaglioSoccorsoAereoModalComponent } from './modal/dettaglio-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 import { ItemTriageModalComponent } from './modal/item-triage-modal/item-triage-modal.component';
 import { TriageSummaryComponent } from './components/triage-summary/triage-summary.component';
+import { TriageSummaryModalComponent } from './components/triage-summary-modal/triage-summary-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -151,7 +152,8 @@ const MODULES = [
         })
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
+        TriageSummaryModalComponent
     ],
     exports: [
         ...COMPONENTS,

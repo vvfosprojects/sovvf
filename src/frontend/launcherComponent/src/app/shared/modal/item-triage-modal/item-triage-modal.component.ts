@@ -8,6 +8,7 @@ import { Select, Store } from '@ngxs/store';
 import { TriageCrudState } from '../../store/states/triage-crud/triage-crud.state';
 import { Observable, Subscription } from 'rxjs';
 import { ClearGeneriMezzo } from '../../store/actions/triage-crud/triage-crud.actions';
+import { NecessitaSoccorsoAereoEnum } from '../../enum/necessita-soccorso-aereo.enum';
 
 @Component({
     selector: 'app-item-triage-modal',
@@ -34,6 +35,8 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     item: TreeviewItem;
 
     addItemTriageForm: FormGroup;
+
+    NecessitaSoccorsoAereoValues = Object.values(NecessitaSoccorsoAereoEnum);
 
     private subscription: Subscription = new Subscription();
 

@@ -43,13 +43,14 @@ import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { GetFiltriComposizione, SetFiltriGeneriMezzoTriage } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -301,17 +302,42 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         return value;
     }
 
-    getSoccorsoAereoTriage(): string {
+    getSoccorsoAereoTriage(): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
         if (!!this.triageSummary) {
             let soccorsoAereoTriage: string;
-            this.triageSummary.forEach((summary: TriageSummary) => {
+            for (const summary of this.triageSummary) {
                 const soccorsoAereo = summary.soccorsoAereo;
                 if (soccorsoAereo) {
                     soccorsoAereoTriage = soccorsoAereo;
                 }
-            });
-            return soccorsoAereoTriage;
+            }
+            switch (soccorsoAereoTriage) {
+                case NecessitaSoccorsoAereoEnum.NonNecessario:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.NonNecessario,
+                        value: 1
+                    };
+                case NecessitaSoccorsoAereoEnum.Utile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.Utile,
+                        value: 1
+                    };
+                case NecessitaSoccorsoAereoEnum.MoltoUtile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.MoltoUtile,
+                        value: 1
+                    };
+                case NecessitaSoccorsoAereoEnum.Indispensabile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.Indispensabile,
+                        value: 1
+                    };
+            }
         }
+        return {
+            desc: 'Non Impostata',
+            value: 0
+        };
     }
 
     mezzoDeselezionato(): void {

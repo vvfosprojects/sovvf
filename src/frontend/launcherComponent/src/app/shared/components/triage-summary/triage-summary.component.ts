@@ -7,6 +7,7 @@ import { TriageSummary } from '../../interface/triage-summary.interface';
 import { Select } from '@ngxs/store';
 import { TriageSummaryState } from '../../store/states/triage-summary/triage-summary.state';
 import { Observable, Subscription } from 'rxjs';
+import { getContatoreGeneriMezzo, getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 
 @Component({
     selector: 'app-triage-summary',
@@ -27,7 +28,7 @@ export class TriageSummaryComponent implements OnDestroy {
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
 
-    subscription: Subscription = new Subscription();
+    private subscription: Subscription = new Subscription();
 
     constructor() {
         this.getSummary();
@@ -42,36 +43,12 @@ export class TriageSummaryComponent implements OnDestroy {
             this.summary$.subscribe((triageSummary: TriageSummary[]) => {
                 if (triageSummary) {
                     this.summary = triageSummary;
-                    this.setContatoreGeneriMezzo();
-                    this.setGeneriMezzo();
+                    this.contatoreGeneriMezzo = getContatoreGeneriMezzo(this.summary);
+                    this.generiMezzo = getGeneriMezzoTriageSummary(this.summary);
                 } else {
                     this.summary = null;
                 }
             })
         );
-    }
-
-    setContatoreGeneriMezzo(): void {
-        let count = 0;
-        this.summary?.forEach((summary: TriageSummary) => {
-            summary?.generiMezzo?.forEach((genereMezzo: string) => {
-                count = count + 1;
-            });
-        });
-        this.contatoreGeneriMezzo = count;
-    }
-
-    setGeneriMezzo(): void {
-        this.summary?.forEach((summary: TriageSummary) => {
-            summary?.generiMezzo?.forEach((genereMezzo: string) => {
-                if (!this.generiMezzo) {
-                    this.generiMezzo = [];
-                }
-                const genereMezzoFound = this.generiMezzo.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
-                if (!genereMezzoFound) {
-                    this.generiMezzo.push(genereMezzo);
-                }
-            });
-        });
     }
 }

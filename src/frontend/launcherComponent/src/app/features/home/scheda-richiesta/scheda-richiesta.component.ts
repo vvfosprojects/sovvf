@@ -27,7 +27,6 @@ import { TriageSummary } from '../../../shared/interface/triage-summary.interfac
 })
 export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
-    @Select(ChiamataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(ChiamataState.competenze) competenze$: Observable<Sede[]>;
     @Select(ChiamataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
     @Select(ChiamataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
@@ -37,6 +36,10 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+
+    // Loading
+    @Select(ChiamataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
+    loadingNuovaChiamata: boolean;
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
@@ -53,6 +56,7 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     private subscription = new Subscription();
 
     constructor() {
+        this.getLoadingNuovaChiamata();
     }
 
     ngOnInit(): void {
@@ -62,5 +66,13 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         console.log('Componente Scheda Richiesta distrutto');
+    }
+
+    getLoadingNuovaChiamata(): void {
+        this.subscription.add(
+            this.loadingNuovaChiamata$.subscribe((loading: boolean) => {
+                this.loadingNuovaChiamata = loading;
+            })
+        );
     }
 }

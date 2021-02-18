@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, OnDestroy, Output } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { ReducerFilterListeComposizione, RichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
@@ -23,7 +23,7 @@ import { ViewLayouts } from '../../interface/view.interface';
 import { Sede } from '../../model/sede.model';
 import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
 import { TriageSummary } from '../../interface/triage-summary.interface';
-import { TriageSummaryComponent } from '../triage-summary/triage-summary.component';
+import { TriageSummaryModalComponent } from '../triage-summary-modal/triage-summary-modal.component';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -49,13 +49,12 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     nightMode: boolean;
 
-
-    private subscription = new Subscription();
-
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
     codCompetenzeDefault: string[] = [];
+
+    private subscription = new Subscription();
 
     constructor(private store: Store,
                 private dropdownConfig: NgbDropdownConfig,
@@ -70,8 +69,7 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         // TODO: implementare logica
-        const tipoMezzo = getGeneriMezzoTriage(this.triageSummary);
-        this.addFiltro(tipoMezzo[0], 'tipoMezzo');
+        // const tipoMezzo = getGeneriMezzoTriageSummary(this.triageSummary);
     }
 
     ngOnDestroy(): void {
@@ -163,12 +161,18 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
     }
 
     openDettaglioTriage(): void {
-        let modal: any;
-        modal = this.modalService.open(TriageSummaryComponent, {
+        let dettaglioTriageModal: any;
+        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
             windowClass: 'xlModal',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            size: 'lg'
         });
+        dettaglioTriageModal.componentInstance.tipologie = this.richiesta.tipologie;
+        // TODO: rivedere backend (aggiugnere "dettaglioTipologia" in "GetRichieste")
+        dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
+        // TODO: rivedere backend (aggiugnere "schedaContatto" in "GetRichieste", con tutti i dati relativi alla scheda)
+        dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
     }
 
     _confirmPrenota(): void {
@@ -181,30 +185,13 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
             const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
             this.store.dispatch([
                 new SetMarkerRichiestaSelezionato(idRichiesta),
-                new RichiestaComposizione(richiesta)
+                new SetRichiestaComposizione(richiesta)
             ]);
         } else {
             this.store.dispatch([
                 new SetMarkerRichiestaSelezionato(richiesta.id),
-                new RichiestaComposizione(richiesta)
+                new SetRichiestaComposizione(richiesta)
             ]);
         }
     }
-}
-
-
-function getGeneriMezzoTriage(triageSummary: TriageSummary[]): string[] {
-    if (triageSummary) {
-        const generiMezzo = [];
-        triageSummary.forEach((summary: TriageSummary) => {
-            summary?.generiMezzo?.forEach((genereMezzo: string) => {
-                const genereMezzoFound = generiMezzo.filter((gMezzo: string) => gMezzo === genereMezzo)[0];
-                if (!genereMezzoFound) {
-                    generiMezzo.push(genereMezzo);
-                }
-            });
-        });
-        return generiMezzo;
-    }
-    return null;
 }

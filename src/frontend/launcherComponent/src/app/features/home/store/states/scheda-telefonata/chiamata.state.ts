@@ -230,11 +230,10 @@ export class ChiamataState {
 
     @Action(InsertChiamata)
     insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
+        dispatch(new StartLoadingNuovaChiamata());
         patchState({
             azioneChiamata: action.azioneChiamata
         });
-        console.log('InsertChiamata', action.azioneChiamata);
-        dispatch(new StartLoadingNuovaChiamata());
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
@@ -284,6 +283,7 @@ export class ChiamataState {
             dispatch(new SetNeedRefresh(true));
         }
         dispatch(new StopLoadingNuovaChiamata());
+        dispatch(new ToggleChiamata());
         if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
@@ -340,7 +340,6 @@ export class ChiamataState {
     cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new ClearMarkerChiamata());
         dispatch(new ResetChiamata());
-        dispatch(new ToggleChiamata());
         dispatch(new ClearChiamata());
         dispatch(new GetInitCentroMappa());
     }

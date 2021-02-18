@@ -25,7 +25,7 @@ import {
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/scheda-telefonata/richiesta-modifica.actions';
-import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -336,8 +336,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.store.dispatch([
             new SetMarkerRichiestaSelezionato(richiesta.id),
-            new RichiestaComposizione(richiesta),
-            new SetTriageSummary(richiesta.triageSummary)
+            new SetRichiestaComposizione(richiesta)
         ]);
     }
 

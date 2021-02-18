@@ -20,10 +20,13 @@
                             <i class="guida fa fa-thermometer-half fa-fw font-double-monitor d-none"
                                [class.high-priority]="richiesta.prioritaRichiesta > 3"
                                ngbTooltip="Priorità della richiesta" placement="right"></i>
-                            <ngb-rating [(rate)]="richiesta.prioritaRichiesta" [max]="4" [readonly]="true"
+                            <ngb-rating [(rate)]="richiesta.prioritaRichiesta"
+                                        [max]="4"
+                                        [readonly]="true"
                                         style="position: absolute; display: inline-grid !important; font: small-caption; transform: rotate(180deg)">
                                 <ng-template let-fill="fill" let-index="index">
-                                            <span class="circle font-double-monitor" [class.filled]="fill === 100"
+                                            <span class="circle font-double-monitor"
+                                                  [class.filled]="fill === 100"
                                                   [class.bad]="index > 2 && fill === 100">
                                                 <i class="fa fa-circle mr-1"></i>
                                             </span>
