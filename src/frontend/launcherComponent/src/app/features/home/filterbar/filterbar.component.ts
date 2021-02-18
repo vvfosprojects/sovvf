@@ -2,11 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import {
-    ClearFiltroSelezionatoRichieste,
-    ResetFiltriSelezionatiRichieste,
-    SetFiltroSelezionatoRichieste
-} from '../store/actions/filterbar/filtri-richieste.actions';
+import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
@@ -40,9 +36,6 @@ export class FilterbarComponent {
     @Input() viewState: ViewLayouts;
     @Input() nightMode: boolean;
     @Input() doubleMonitor: boolean;
-
-
-  permessiFeature = PermissionFeatures;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
@@ -89,6 +82,8 @@ export class FilterbarComponent {
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
+
+    permessiFeature = PermissionFeatures;
 
     constructor(private store: Store) {
     }
