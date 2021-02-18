@@ -2,9 +2,6 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import {Select} from '@ngxs/store';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
-import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-filtri-schede-contatto',
@@ -18,21 +15,15 @@ export class FiltriSchedeContattoComponent {
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() disableFilters: boolean;
+    @Input() nightMode: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     Categoria = Categoria;
-
-    subscription = new Subscription();
-
 
     constructor(private dropdownConfig: NgbDropdownConfig) {
         dropdownConfig.placement = 'bottom-right';
-        this.getNightMode();
     }
 
     onSelezioneFiltro(filtro: VoceFiltro): void {
@@ -43,14 +34,6 @@ export class FiltriSchedeContattoComponent {
             }
         });
         this.filtroSelezionato.emit(filtro);
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     eliminaFiltriAttivi(): void {

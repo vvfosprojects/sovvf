@@ -18,10 +18,9 @@ import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actio
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewLayouts } from '../../interface/view.interface';
 import { Sede } from '../../model/sede.model';
-import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { TriageSummaryModalComponent } from '../triage-summary-modal/triage-summary-modal.component';
 
@@ -40,14 +39,13 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
     @Input() composizionePartenza: boolean;
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
+    @Input() nightMode: boolean;
     @Input() triageSummary: TriageSummary[];
 
     @Output() confirmPrenota = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -64,7 +62,6 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
         this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
         this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
         this.getViewState();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -104,14 +101,6 @@ export class FilterbarComposizioneComponent implements OnInit, OnDestroy {
             this.nuovaPartenza(this.richiesta);
             this.update();
         }
-    }
-
-    getNightMode(): void {
-        this.subscription.add(
-            this.nightMode$.subscribe((nightMode: boolean) => {
-                this.nightMode = nightMode;
-            })
-        );
     }
 
     nightModeBg(): string {

@@ -47,7 +47,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
+
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
@@ -63,6 +63,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
     @Input() triageSummary: TriageSummary[];
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -119,9 +121,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();
     @Output() clearDirection = new EventEmitter();
@@ -135,7 +134,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     ricercaSquadre: string;
     ricercaMezzi: string;
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -261,7 +260,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -282,14 +280,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
-    }
-
-    getNightMode(): void {
-        this.subscription.add(
-            this.nightMode$.subscribe((nightMode: boolean) => {
-                this.nightMode = nightMode;
-            })
-        );
     }
 
     nightModeText(): string {
@@ -525,4 +515,3 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 }
-

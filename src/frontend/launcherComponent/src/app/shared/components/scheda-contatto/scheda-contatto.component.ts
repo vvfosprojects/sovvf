@@ -3,9 +3,6 @@ import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { Priorita } from '../../model/sintesi-richiesta.model';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import {Select} from '@ngxs/store';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
-import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-scheda-contatto',
@@ -13,9 +10,6 @@ import {Observable, Subscription} from 'rxjs';
     styleUrls: ['./scheda-contatto.component.css']
 })
 export class SchedaContattoComponent implements OnChanges {
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     @Input() scheda: SchedaContatto;
     @Input() idSchedaContattoHover: string;
@@ -28,6 +22,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() disableGestisci: boolean;
     @Input() disableRaggruppamento: boolean;
     @Input() disableEliminaRaggruppamento: boolean;
+    @Input() nightMode: boolean;
 
     @Output() hoverIn: EventEmitter<string> = new EventEmitter<string>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -45,10 +40,7 @@ export class SchedaContattoComponent implements OnChanges {
     classificazioneSchedaContatto = ClassificazioneSchedaContatto;
     priorita = Priorita;
 
-    subscription = new Subscription();
-
     constructor() {
-      this.getNightMode();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -64,14 +56,6 @@ export class SchedaContattoComponent implements OnChanges {
                 this.btnGestita = { type: 'btn-warning text-moon', tooltip: 'Segna come "Gestita"' };
             }
         }
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     cardClasses(id: string): string {

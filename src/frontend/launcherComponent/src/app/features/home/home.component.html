@@ -14,7 +14,8 @@
              [class.mt-3]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
              [class.d-none]="viewState.composizione.active">
             <app-filterbar [colorButton]="(colorButton$ | async)"
-                           [viewState]="viewState">
+                           [doubleMonitor]="(doubleMonitor$ | async)"
+                           [viewState]="viewState" [nightMode]="(nightMode$ | async)">
             </app-filterbar>
         </div>
     </div>
@@ -25,23 +26,31 @@
              [class.col-12]="(((chiamataConMappa$ | async) === false) || ((doubleMonitor$ | async) === false)) && (viewState.chiamata.active || viewState.modifica.active || viewState.richieste.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
             <!-- Richieste -->
             <app-richieste [class.d-none]="!viewState.richieste.active"
+                           [doubleMonitor]="(doubleMonitor$ | async)"
+                           [nightMode]="(nightMode$ | async)"
                            [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
             <!-- Scheda Richiesta -->
-            <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active">
+            <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active" [doubleMonitor]="(doubleMonitor$ | async)">
             </app-scheda-richiesta>
             <!-- Composizione Partenza -->
             <app-composizione-partenza *ngIf="viewState.composizione.active"
+                                       [doubleMonitor]="(doubleMonitor$ | async)"
+                                       [nightMode]="(nightMode$ | async)"
                                        [boxAttivi]="boxAttivi"
                                        [compPartenzaMode]="(composizioneMode$ | async)">
             </app-composizione-partenza>
             <!-- Mezzi in Servizio -->
             <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"
+                                   [doubleMonitor]="(doubleMonitor$ | async)"
+                                   [nightMode]="(nightMode$ | async)"
                                    [boxAttivi]="boxAttivi">
             </app-mezzi-in-servizio>
             <!-- Schede Contatto -->
             <app-schede-contatto *ngIf="viewState.schedeContatto.active"
+                                 [doubleMonitor]="(doubleMonitor$ | async)"
+                                 [nightMode]="(nightMode$ | async)"
                                  [boxAttivi]="boxAttivi">
             </app-schede-contatto>
         </div>

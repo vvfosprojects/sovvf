@@ -22,6 +22,7 @@ export class MezzoComponent {
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
     @Input() listaEventiMezzo: ListaEventiMezzo[];
+    @Input() doubleMonitor: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();

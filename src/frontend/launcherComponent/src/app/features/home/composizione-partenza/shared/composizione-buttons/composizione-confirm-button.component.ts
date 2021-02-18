@@ -1,12 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { Select, Store } from '@ngxs/store';
-import { ViewportState } from '../../../../../shared/store/states/viewport/viewport.state';
-import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { Subscription } from 'rxjs';
 import { SoccorsoAereoModalComponent } from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
-import {
-    GetAzioniRichiesta
-} from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
+import { GetAzioniRichiesta } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
@@ -16,9 +13,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 })
 export class ComposizioneConfirmButtonComponent implements OnInit {
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
+    @Input() doubleMonitor: boolean;
     @Input() boxPartenzaLenght: number;
     @Input() disableConfirmPartenza = true;
     @Input() richiesta: SintesiRichiesta;
@@ -27,11 +22,10 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
 
     dettaglioSoccorsoAereo = false;
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         this.store.dispatch(new GetAzioniRichiesta());
     }
 

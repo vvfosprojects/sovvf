@@ -38,6 +38,7 @@
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                     <app-squadra-composizione
                             *ngFor="let sC of squadreComposizione"
+                            [nightMode]="nightMode"
                             [squadraComp]="sC"
                             [itemSelezionato]="checkSquadraSelezione(sC.id)"
                             [itemHover]="sC.id === idSquadraHover"
@@ -92,6 +93,7 @@
                     <div *ngFor="let mC of mezziComposizione">
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                             <app-mezzo-composizione [mezzoComp]="mC"
+                                                    [nightMode]="nightMode"
                                                     [itemSelezionato]="mC.id === idMezzoSelezionato"
                                                     [itemHover]="mC.id === idMezzoHover"
                                                     [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
@@ -146,6 +148,7 @@
             <div *ngIf="boxPartenzaList.length > 0">
                 <div *ngFor="let p of boxPartenzaList.slice().reverse()">
                     <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
+                                            [nightMode]="nightMode"
                                             [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
                                             [compPartenzaMode]="Composizione.Avanzata"
                                             [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
@@ -155,9 +158,6 @@
             </div>
         </div>
         <div class="clearfix">
-            <!-- <div class="float-left">
-                {{ getSoccorsoAereoTriage() }}
-            </div> -->
             <div class="float-left w-100 pl-4" style="width: 2%">
                 <div class="clearfix">
                     <div class="float-left">
@@ -182,7 +182,8 @@
         <div>
             <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                              [richiesta]="richiesta"
-                                             [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                             [doubleMonitor]="doubleMonitor"
+                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
                                              (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
             </app-composizione-confirm-button>
         </div>

@@ -356,6 +356,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         }
         modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
         modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
+        modalInterventiProssimita.componentInstance.doubleMonitor = this.doubleMonitor;
         modalInterventiProssimita.result.then(
             (val) => {
                 switch (val) {
@@ -389,7 +390,8 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
                 size: 'xl'
             };
         }
-        this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
+        const schedeContatto = this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
+        schedeContatto.componentInstance.doubleMonitor = this.doubleMonitor;
     }
 
     openTriage(): void {

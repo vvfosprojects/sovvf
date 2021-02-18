@@ -10,6 +10,8 @@
             </div>
             <div class="float-left mr-3">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
+                                      [doubleMonitor]="doubleMonitor"
+                                      [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [disableFilters]="loadingRichieste$ | async"
@@ -18,6 +20,7 @@
                                       (filtriReset)="eliminaFiltriAttiviRichieste()">
                 </app-filtri-richieste>
                 <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
+                                            [nightMode]="nightMode"
                                             [filtri]="filtriSchedeContatto$ | async"
                                             [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
                                             [disableFilters]="loadingSchedeContatto$ | async"
@@ -48,11 +51,12 @@
         <div class="clearfix">
             <div *ngIf="((((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && (mapsStatus$ | async) || (doubleMonitor$ | async))"
                  class="float-left mr-3">
-                <app-filtri-mappa></app-filtri-mappa>
+                <app-filtri-mappa [nightMode]="nightMode"></app-filtri-mappa>
             </div>
             <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               [nightMode]="nightMode"
                                [stateSwitch]="(stateSwitch$ | async)"
                                [mapStatus]="(mapsStatus$ | async)"
                                (toggleMeteo)="onMeteoSwitch($event)"

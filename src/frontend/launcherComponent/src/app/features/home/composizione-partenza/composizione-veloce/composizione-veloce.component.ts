@@ -38,6 +38,8 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
     @Input() triageSummary: TriageSummary[];
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
@@ -58,9 +60,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     totalItemsPreaccoppiati: number;
     @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizePreaccoppiati$: Observable<number>;
     pageSizePreaccoppiati: number;
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     Composizione = Composizione;
 
@@ -122,7 +121,6 @@ export class FasterComponent implements OnInit, OnDestroy {
                 this.pageSizePreaccoppiati = pageSizePreaccoppiati;
             })
         );
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -132,14 +130,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch(new ResetPaginationPreaccoppiati());
         this.subscription.unsubscribe();
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza): void {

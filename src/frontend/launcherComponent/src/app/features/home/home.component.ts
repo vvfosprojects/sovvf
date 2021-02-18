@@ -35,14 +35,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     boxAttivi: boolean;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     constructor(private store: Store) {
         this.getDettagliTipologie(true);
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -61,14 +59,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onMapFullLoaded(): void {
         this.store.dispatch(new SetMapLoaded(true));
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     getDettagliTipologie(pageAttuale: boolean): void {

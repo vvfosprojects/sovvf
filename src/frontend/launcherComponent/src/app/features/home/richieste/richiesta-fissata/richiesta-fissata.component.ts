@@ -16,6 +16,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() nightMode: boolean;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;

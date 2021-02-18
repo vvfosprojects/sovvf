@@ -7,6 +7,7 @@
     <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
         <div class="col-4 px-1" *ngFor="let preAcc of preAccoppiati">
             <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
+                                    [nightMode]="nightMode"
                                     [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
                                     [itemHover]="preAcc.id === idPreaccoppiatoHover"
                                     [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
@@ -36,6 +37,7 @@
     </div>
     <div  *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="btn-stick-bottom">
       <app-composizione-confirm-button (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                       [doubleMonitor]="doubleMonitor"
                                        [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
                                        [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
       </app-composizione-confirm-button>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -11,7 +11,6 @@ import {
 } from '../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
@@ -33,8 +32,9 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 })
 export class DettagliTipologieComponent implements OnDestroy {
 
-    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Input() doubleMonitor: boolean;
 
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
     dettagliTipologie: DettaglioTipologia[];
     @Select(DettagliTipologieState.ricerca) ricerca$: Observable<string>;
@@ -46,8 +46,6 @@ export class DettagliTipologieComponent implements OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     page: number;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -59,7 +57,6 @@ export class DettagliTipologieComponent implements OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
-        this.getMonitorSize();
         this.getRicerca();
         this.getPageSize();
         this.getTotalItems();
@@ -263,10 +260,6 @@ export class DettagliTipologieComponent implements OnDestroy {
                 this.page = page;
             })
         );
-    }
-
-    getMonitorSize(): void {
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
 }
