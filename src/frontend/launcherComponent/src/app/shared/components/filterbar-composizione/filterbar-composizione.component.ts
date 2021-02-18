@@ -10,8 +10,7 @@ import { iconaStatiClass } from '../../helper/composizione-functions';
 import {
   AddFiltroSelezionatoComposizione,
   ClearFiltriComposizione,
-  ResetFiltriComposizione,
-  SetFiltriDistaccamentoDefault
+  ResetFiltriComposizione, SetGenereMezzoDefault
 } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
@@ -50,19 +49,33 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
-    codCompetenzeDefault: string[] = [];
+    distaccamentiSelezionati: string[];
+    genereMezzoSelezionato: string[];
 
     constructor(private store: Store,
                 private dropdownConfig: NgbDropdownConfig) {
         dropdownConfig.placement = 'right';
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
-        this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
+        this.setDistaccamentiDefault();
+        this.setGenereMezzoDefault();
         this.getViewState();
     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
+    }
+
+    setDistaccamentiDefault(): void {
+      this.distaccamentiSelezionati = [];
+      this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+      const distaccamentiDefault = [];
+      this.richiesta.competenze.forEach(x => distaccamentiDefault.push({id : x.codice}));
+      this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+    }
+
+    setGenereMezzoDefault(): void {
+      this.genereMezzoSelezionato = ['APS'];
+      this.store.dispatch(new SetGenereMezzoDefault(this.genereMezzoSelezionato));
     }
 
     getViewState(): void {
@@ -94,15 +107,11 @@ export class FilterbarComposizioneComponent implements OnDestroy {
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
-        if (tipo === 'codiceDistaccamento') {
-          this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-          this.update();
-        } else { this.update(); }
+        this.update();
     }
 
     resetFiltri(): void {
       this.store.dispatch(new ClearFiltriComposizione());
-      this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
       this.update();
     }
 

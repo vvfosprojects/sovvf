@@ -7,7 +7,7 @@ import {
   GetFiltriComposizione,
   ResetFiltriComposizione,
   RemoveFiltroSelezionatoComposizione,
-  SetFiltriComposizione, ClearFiltriComposizione, SetFiltriDistaccamentoDefault
+  SetFiltriComposizione, ClearFiltriComposizione, SetFiltriDistaccamentoDefault, SetGenereMezzoDefault,
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
@@ -77,6 +77,13 @@ export class FiltriComposizioneState {
       });
     }
 
+    @Action(SetGenereMezzoDefault)
+    setGenereMezzoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: any): void {
+      patchState({
+        tipoMezzo: action.genereMezzo,
+      });
+    }
+
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
@@ -110,31 +117,20 @@ export class FiltriComposizioneState {
                 );
                 break;
             case 'codiceDistaccamento':
-                /*ctx.setState(
-                    patch({
-                        codiceDistaccamento: removeItem(codiceDistaccamento => codiceDistaccamento !== action.id)
-                    })
-                );*/
+                const codiciDistaccamento = [];
+                const copyCodici = makeCopy(action.id);
+                copyCodici.forEach(x => codiciDistaccamento.push(x.id));
                 ctx.patchState({
-                  codiceDistaccamento: [],
+                        codiceDistaccamento: codiciDistaccamento,
                 });
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: insertItem(action.id)
-                    })
-                );
                 break;
             case 'tipoMezzo':
-                ctx.setState(
-                    patch({
-                        tipoMezzo: removeItem(tipoMezzo => tipoMezzo !== action.id)
-                    })
-                );
-                ctx.setState(
-                    patch({
-                        tipoMezzo: insertItem(action.id)
-                    })
-                );
+                const tipoMezzo = [];
+                const copyTipoMezzo = makeCopy(action.id);
+                copyTipoMezzo.forEach(x => tipoMezzo.push(x.descrizione));
+                ctx.patchState({
+                  tipoMezzo,
+                });
                 break;
             case 'statoMezzo':
                 ctx.setState(
