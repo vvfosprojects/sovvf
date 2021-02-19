@@ -1,18 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
+import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable, Subscription } from 'rxjs';
 import { iconaStatiClass } from '../../helper/composizione-functions';
-import {
-    AddFiltroSelezionatoComposizione,
-    ClearFiltriComposizione,
-    ResetFiltriComposizione,
-    SetGenereMezzoDefault
-} from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
@@ -22,14 +17,15 @@ import { ViewLayouts } from '../../interface/view.interface';
 import { Sede } from '../../model/sede.model';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TriageSummary } from '../../interface/triage-summary.interface';
-import { TriageSummaryModalComponent } from '../triage-summary-modal/triage-summary-modal.component';
+import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
+import { getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
 
 @Component({
     selector: 'app-filterbar-composizione',
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnDestroy {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() prenotato: any;
@@ -40,9 +36,10 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
     @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
     @Input() triageSummary: TriageSummary[];
 
-    @Output() confirmPrenota = new EventEmitter<boolean>();
+    @Output() confirmPrenota: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
@@ -51,7 +48,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
     distaccamentiSelezionati: string[];
-    genereMezzoSelezionato: string[];
+    generiMezzoSelezionato: string[];
 
     private subscription = new Subscription();
 
@@ -61,8 +58,13 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         dropdownConfig.placement = 'right';
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         this.setDistaccamentiDefault();
-        this.setGenereMezzoDefault();
         this.getViewState();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.triageSummary?.currentValue) {
+            this.setGenereMezzoDefault();
+        }
     }
 
     ngOnDestroy(): void {
@@ -78,8 +80,10 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     }
 
     setGenereMezzoDefault(): void {
-        this.genereMezzoSelezionato = ['APS'];
-        this.store.dispatch(new SetGenereMezzoDefault(this.genereMezzoSelezionato));
+        this.generiMezzoSelezionato = getGeneriMezzoTriageSummary(this.triageSummary);
+        if (this.generiMezzoSelezionato) {
+            this.store.dispatch(new SetGenereMezzoDefault(this.generiMezzoSelezionato));
+        }
     }
 
     getViewState(): void {
@@ -87,16 +91,7 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     }
 
     getNoteOperatoreTriage(): string[] {
-        if (!!this.triageSummary) {
-            const note = [];
-            this.triageSummary.forEach((summary: TriageSummary) => {
-                const noteOperatore = summary.noteOperatore;
-                if (noteOperatore) {
-                    note.push(noteOperatore);
-                }
-            });
-            return note;
-        }
+        return getNoteOperatoreTriageSummary(this.triageSummary);
     }
 
     addFiltro(event: any, tipo: string): void {
@@ -154,12 +149,22 @@ export class FilterbarComposizioneComponent implements OnDestroy {
 
     openDettaglioTriage(): void {
         let dettaglioTriageModal: any;
-        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
+        if (this.doubleMonitor) {
+            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        } else {
+            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        }
+        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
         dettaglioTriageModal.componentInstance.tipologie = this.richiesta.tipologie;
         // TODO: rivedere backend (aggiugnere "dettaglioTipologia" in "GetRichieste")
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;

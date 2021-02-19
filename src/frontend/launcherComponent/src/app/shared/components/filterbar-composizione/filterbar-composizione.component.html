@@ -60,13 +60,15 @@
                             placement="bottom-left"
                             (click)="openDettaglioTriage()"
                             [disabled]="!richiesta?.triageSummary">
+                        <i class="fa fa-question-circle mr-1"></i>
                         {{ 'Triage' | uppercase }}
                     </button>
                 </div>
             </div>
         </div>
         <!-- Select Filtri -->
-        <div [class.col-9]="composizionePartenza"
+        <div [class.col-8]="composizionePartenza"
+             [class.pr-0]="composizionePartenza"
              [class.align-self-center]="viewState.composizione.active"
              [class.col-12]="sostituzionePartenza">
             <div class="row pt-1 mt-1"
@@ -92,8 +94,8 @@
                                bindValue="descrizione"
                                [multiple]="true"
                                [closeOnSelect]="true"
-                               [hideSelected]="true"[appendTo]="'body'"
-                         [(ngModel)]="genereMezzoSelezionato"
+                               [hideSelected]="true" [appendTo]="'body'"
+                               [(ngModel)]="generiMezzoSelezionato"
                                [notFoundText]="notFoundText"
                                [loading]="!filtri?.generiMezzi"
                                (change)="addFiltro($event, 'tipoMezzo')"
@@ -124,22 +126,22 @@
             <div class="row pt-1"
                  [class.pb-2]="sostituzionePartenza">
                 <div class="col-7 mb-2" style="max-height: 75px; overflow: auto;">
-                <ng-select class="align-self-center font-xlarge"
-                           [items]="filtri?.distaccamenti"
-                           bindLabel="descDistaccamento"
-                           bindValue="id"
-                           [multiple]="true"
-                           [appendTo]="'body'"
-                           [closeOnSelect]="true"
-                           [hideSelected]="true"
-                           [(ngModel)]="distaccamentiSelezionati"
-                           [notFoundText]="notFoundText"
-                           [loading]="!filtri?.distaccamenti"
-                           (change)="addFiltro($event, 'codiceDistaccamento')"
-                           placeholder="Distaccamento: Tutti">
-                </ng-select>
-            </div>
-            <span class="d-inline-flex">
+                    <ng-select class="align-self-center font-xlarge"
+                               [items]="filtri?.distaccamenti"
+                               bindLabel="descDistaccamento"
+                               bindValue="id"
+                               [multiple]="true"
+                               [appendTo]="'body'"
+                               [closeOnSelect]="true"
+                               [hideSelected]="true"
+                               [(ngModel)]="distaccamentiSelezionati"
+                               [notFoundText]="notFoundText"
+                               [loading]="!filtri?.distaccamenti"
+                               (change)="addFiltro($event, 'codiceDistaccamento')"
+                               placeholder="Distaccamento: Tutti">
+                    </ng-select>
+                </div>
+                <span class="d-inline-flex">
               <button class="btn btn-sm btn-primary mr-1 btn-no-hover" (click)="setDistaccamentiDefault()"
                       ngbTooltip="Imposta Distaccamenti di competenza" style="height: fit-content; margin-top: 5px">
                 <i class="fa fa-filter"></i>
@@ -151,16 +153,23 @@
                 </span>
             </div>
         </div>
-        <div class="col-2 pl-0"
+        <div class="col-3 pl-0"
              [class.d-none]="sostituzionePartenza || !triageSummary">
-            <ng-template [ngIf]="getNoteOperatoreTriage()">
-                <div class="p-1">
-                    <small class="font-weight-bolder">Note Operatore Triage</small>
+            <div class="p-1">
+                <small class="font-weight-bolder">Note Operatore Triage</small>
+                <ng-template [ngIf]="getNoteOperatoreTriage()?.length">
                     <div class="scroll-y" style="max-height:60px">
                         <h6 *ngFor="let nota of getNoteOperatoreTriage(); let i = index">{{ i + 1 }}. {{ nota }}</h6>
                     </div>
-                </div>
-            </ng-template>
+                </ng-template>
+                <ng-template [ngIf]="!getNoteOperatoreTriage()?.length">
+                    <div class="alert alert-secondary mb-0 mt-2 p-1">
+                        Non disponibili per la
+                        richiesta <span
+                            class="font-weight-bolder">{{ richiesta?.codiceRichiesta ? richiesta?.codiceRichiesta : richiesta?.codice }}</span>
+                    </div>
+                </ng-template>
+            </div>
         </div>
     </div>
 </div>

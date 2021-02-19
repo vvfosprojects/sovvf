@@ -243,7 +243,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             f.stato.value,
             f.prioritaRichiesta.value,
             [tipologia],
-            null, // f.dettaglioTipologia.value,
+            f.dettaglioTipologia.value,
             f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : (f.tipologie.length > 0 ? f.tipologie[0].descrizione : null),
             new Richiedente(f.telefono.value, f.nominativo.value),
             {

@@ -2,7 +2,7 @@ import { TriageSummary } from '../interface/triage-summary.interface';
 
 export function getGeneriMezzoTriageSummary(summary: TriageSummary[]): string[] {
     let generiMezzoResult: string[];
-    if (summary?.length) {
+    if (!!summary && summary?.length) {
         for (const s of summary) {
             if (s?.generiMezzo?.length) {
                 for (const genereMezzo of s?.generiMezzo) {
@@ -22,7 +22,7 @@ export function getGeneriMezzoTriageSummary(summary: TriageSummary[]): string[] 
 
 export function getContatoreGeneriMezzo(summary: TriageSummary[]): number {
     let count = 0;
-    if (summary?.length) {
+    if (!!summary && summary?.length) {
         for (const s of summary) {
             if (s?.generiMezzo?.length) {
                 for (const genereMezzo of s?.generiMezzo) {
@@ -32,4 +32,17 @@ export function getContatoreGeneriMezzo(summary: TriageSummary[]): number {
         }
     }
     return count;
+}
+
+export function getNoteOperatoreTriageSummary(summary: TriageSummary[]): string[] {
+    if (!!summary && summary?.length) {
+        const note = [];
+        summary.forEach((s: TriageSummary) => {
+            const noteOperatore = s.noteOperatore;
+            if (noteOperatore) {
+                note.push(noteOperatore);
+            }
+        });
+        return note;
+    }
 }
