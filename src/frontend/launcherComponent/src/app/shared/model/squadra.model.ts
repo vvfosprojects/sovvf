@@ -34,6 +34,10 @@ export class Squadra {
          * Turno di appartenza
          */
         public turno?: string,
+        /**
+         * Se la squadra ha mezzo pre accoppiato
+         */
+        public preAccoppiato?: boolean,
     ) {
     }
 }

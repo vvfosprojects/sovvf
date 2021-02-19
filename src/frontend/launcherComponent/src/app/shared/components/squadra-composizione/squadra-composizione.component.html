@@ -16,7 +16,7 @@
               </ng-template>
               <span class="font-weight-bolder">{{squadraComp.squadra.nome}}</span>
               <span class="d-inline-block ml-1">({{squadraComp.squadra.turno}})</span>
-        <span class="nowrap ml-1" *ngIf="true" ngbTooltip="Mezzo PreAccoppiato">
+        <span class="nowrap ml-1" *ngIf="squadraComp.squadra.preAccoppiato" ngbTooltip="Mezzo PreAccoppiato">
                 <ng-container>
                     <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                             [ngbPopover]="popMezzi" container="body" popoverTitle="Mezzo"
