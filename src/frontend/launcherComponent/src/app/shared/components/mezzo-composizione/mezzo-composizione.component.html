@@ -14,7 +14,7 @@
                   class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione | slice: 0:7}}</span>
             <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
             <span class="nowrap" *ngIf="mezzoComp.mezzo.preAccoppiato" ngbTooltip="Squadre PreAccoppiate">
-                <ng-container *ngIf=" getSquadre(richiesta) as squadre">
+                <ng-container>
                     <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                             [ngbPopover]="popSquadre" container="body" popoverTitle="Lista Squadre"
                             triggers="click" tabindex="0" style="cursor:pointer; vertical-align: baseline"
@@ -23,9 +23,9 @@
                         <i class="fa fa-users fa-fw ml-1"></i>
                     </button>
                     <ng-template #popSquadre>
-                        <div class="h6" *ngFor="let s of squadre">
-                            <span>{{ s['nome'] }}</span>
-                            <span> ({{ s['turno'] }})</span>
+                        <div class="h6">
+                            <span> Squadra -</span>
+                            <span> Turno</span>
                         </div>
                     </ng-template>
                 </ng-container>
@@ -54,8 +54,17 @@
           <span (click)="onSganciamento(); $event.stopPropagation()"
               class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
               ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
-          <i class="fa fa-lg fa-lock mr-2"></i>
-          <span>{{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}}</span>
+          <i class="fa fa-lg fa-lock mr-3 ml-2"></i>
+            <span *ngIf="!mezzoComp.mezzo.coordinateFake">
+              <i class="fa fa-road guida mr-1"></i>
+              <span class="d-inline-block mr-2">{{mezzoComp.km}} km</span>
+              <i class="fa fa-clock-o guida mr-1"></i>
+              <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}} min</span>
+            </span>
+            <span *ngIf="mezzoComp.mezzo.coordinateFake">
+                <i class="icon-wifi text-warning mr-1"></i>
+                <span class="d-inline-block">no GPS</span>
+            </span>
         </span>
         </div>
     </div>

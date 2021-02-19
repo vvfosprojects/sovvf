@@ -9,7 +9,14 @@ export class SetFiltriComposizione {
 export class SetFiltriDistaccamentoDefault {
   static readonly type = '[FiltriComposizione] Set Filtri Distaccamento Default';
 
-  constructor( public distaccamenti: any[]) {
+  constructor( public distaccamenti: string[]) {
+  }
+}
+
+export class SetGenereMezzoDefault {
+  static readonly type = '[FiltriComposizione] Set Generi Mezzi Default';
+
+  constructor( public genereMezzo: string[]) {
   }
 }
 

@@ -19,6 +19,6 @@
 .squadra-bloccata {
   z-index: 1 !important;
   position: absolute !important;
-  transform: translate(5rem, -6px) !important;
+  transform: translate(13rem, -6px) !important;
   font-size: 25px !important;
 }

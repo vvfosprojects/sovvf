@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -19,7 +19,7 @@ import {Squadra} from '../../model/squadra.model';
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit {
+export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() mezzoComp: MezzoComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() partenze: BoxPartenza[];
@@ -29,6 +29,7 @@ export class MezzoComposizioneComponent implements OnInit {
     @Input() itemInPrenotazione: boolean;
     @Input() itemBloccato: boolean;
     @Input() nightMode: boolean;
+    @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
@@ -46,6 +47,7 @@ export class MezzoComposizioneComponent implements OnInit {
     public sganciamentoDisabilitato = false;
     private subscription = new Subscription();
     viewState: ViewLayouts;
+    itemPrenotatoInBox = false;
 
     constructor() {
     this.getViewState();
@@ -53,10 +55,31 @@ export class MezzoComposizioneComponent implements OnInit {
 
     ngOnInit(): void {
         this.sganciamentoCheck();
+        this.mezzoInPartenzaCheck();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+      const boxPartenzaList = changes['boxPartenzaList'];
+      if (boxPartenzaList && boxPartenzaList.currentValue && boxPartenzaList.previousValue && this.boxPartenzaList.length > 0 && (boxPartenzaList.currentValue.length !== boxPartenzaList.previousValue.length)) {
+        let shouldSkip = false;
+        boxPartenzaList.previousValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) <= 0 ? shouldSkip = true : null);
+        boxPartenzaList.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) <= 0 ? shouldSkip = false : null);
+        if (shouldSkip) { return; }
+        boxPartenzaList.currentValue.forEach( x => x.mezzoComposizione && (x.mezzoComposizione.id !== this.mezzoComp.id) ? this.itemPrenotatoInBox = false :  null);
+        if ((boxPartenzaList.currentValue.length < boxPartenzaList.previousValue.length) && !boxPartenzaList.currentValue[0].mezzoComposizione ) {
+          this.itemPrenotatoInBox = false;
+        }
+      }
     }
 
     getViewState(): void {
       this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+    }
+
+    mezzoInPartenzaCheck(): void {
+      if (this.mezzoComp && this.mezzoComp.id && this.boxPartenzaList && this.boxPartenzaList.length > 1 ) {
+        this.boxPartenzaList.forEach( (x, i) => x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp.id) && this.boxPartenzaList[i + 1] ? this.itemPrenotatoInBox = true :  null);
+      }
     }
 
     sganciamentoCheck(): void {
@@ -69,7 +92,7 @@ export class MezzoComposizioneComponent implements OnInit {
     }
 
     onClick(): void {
-        if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
+        if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
             this.selezionato.emit(this.mezzoComp);
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
@@ -77,7 +100,7 @@ export class MezzoComposizioneComponent implements OnInit {
                     this.mezzoDirection(this.mezzoComp);
                 }
             }
-        } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
+        } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato  && !this.itemPrenotatoInBox) {
             this.deselezionato.emit(this.mezzoComp);
         }
     }
@@ -111,7 +134,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
         const hover = this.itemHover ? 'hover-si' : 'hover-no';
         const selezionato = this.itemSelezionato ? 'selezionato-si' : 'selezionato-no';
-        const prenotato = this.itemPrenotato ? 'prenotato-si' : 'prenotato-no';
+        const prenotato = (this.itemPrenotato || this.itemPrenotatoInBox) ? 'prenotato-si' : 'prenotato-no';
 
         switch (hover + '|' + selezionato + '|' + prenotato) {
             case 'hover-si|selezionato-no|prenotato-no':
