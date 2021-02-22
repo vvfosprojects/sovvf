@@ -285,11 +285,12 @@ export class ChiamataState {
         } else {
             dispatch(new SetNeedRefresh(true));
         }
-        dispatch([
-            new StopLoadingNuovaChiamata(),
-            new ToggleChiamata()
-        ]);
-        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
+        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id) {
+            dispatch([
+                new StopLoadingNuovaChiamata(),
+                new ToggleChiamata()
+            ]);
+        } else {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }
