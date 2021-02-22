@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div class="modal-header" [ngClass]="onNightMode()">
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'AZIONI RICHIESTA '}} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
   </h4>
@@ -8,7 +8,7 @@
   </button>
 </div>
 
-<div class="modal-body pb-3">
+<div class="modal-body pb-3" [ngClass]="onNightMode()">
 
   <div class="row" style="place-content: center">
     <!-- LISTA EVENTI -->
@@ -93,7 +93,7 @@
 
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" [ngClass]="onNightMode()">
   <div class="row w-100">
     <div class="col-12 text-right">
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"

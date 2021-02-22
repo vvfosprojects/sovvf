@@ -15,6 +15,7 @@ export class FiltriMezziServizioComponent {
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() disableFilters: boolean;
+    @Input() nightMode: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();

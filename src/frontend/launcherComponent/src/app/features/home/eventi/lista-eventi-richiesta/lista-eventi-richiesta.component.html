@@ -18,9 +18,10 @@
                 Note
             </th>
             </thead>
-            <tbody class="h6">
+            <tbody class="h6 font-xlarge" [ngClass]="onNightMode()">
                 <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r"
                     [nomeClasseEvento]="r.nomeClasseEvento"
+                    [nightMode]="nightMode"
                     [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
                     [operatore]="r.operatore"
                     (filtroTarga)="setRicercaTargaMezzo($event)"></tr>

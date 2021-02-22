@@ -319,7 +319,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
-        modalModificaPartenza.componentInstance.nightMode = this.nightMode;
         modalModificaPartenza.componentInstance.doubleMonitor = this.doubleMonitor;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
