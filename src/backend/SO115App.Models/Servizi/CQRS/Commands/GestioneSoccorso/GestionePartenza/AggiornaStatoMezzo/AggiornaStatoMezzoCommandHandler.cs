@@ -36,21 +36,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(AggiornaStatoMezzoCommand command)
         {
             var richiesta = command.Richiesta;
-
-            if (command.DataOraAggiornamento == null || command.DataOraAggiornamento == DateTime.MinValue)
-                command.DataOraAggiornamento = DateTime.UtcNow;
+            var dataAdesso = DateTime.UtcNow;
 
             var partenzaDaLavorare = richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
             richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, new CambioStatoMezzo()
             {
                 CodMezzo = command.IdMezzo,
-                DataOraAggiornamento = command.DataOraAggiornamento,
+                DataOraAggiornamento = dataAdesso,
                 Stato = command.StatoMezzo
             });
 
             if (richiesta.StatoRichiesta is Sospesa)
-                new ChiusuraRichiesta("", richiesta, command.DataOraAggiornamento, richiesta.CodOperatore);
+                new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
 
             _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
             {
@@ -58,7 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodRichiesta = richiesta.Codice,
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
-                DataOraAggiornamento = command.DataOraAggiornamento,
+                DataOraAggiornamento = dataAdesso.AddSeconds(2),
                 StatoMezzo = command.StatoMezzo,
                 IdMezzo = command.IdMezzo
             });
