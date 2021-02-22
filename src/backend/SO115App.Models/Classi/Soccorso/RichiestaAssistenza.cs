@@ -431,6 +431,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
         public virtual List<string> Tipologie { get; set; }
+        public TipologiaDettaglio TipologiaDettaglio { get; set; }
 
         /// <summary>
         ///   La località dove è avvenuto il fatto
