@@ -120,7 +120,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodiceSede,
                 CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
-                TipologiaDettaglio = command.Chiamata.DettaglioTipologia,
+                DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
                 ChiamataUrgente = command.Chiamata.ChiamataUrgente
             };
