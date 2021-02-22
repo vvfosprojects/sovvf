@@ -18,11 +18,11 @@
               <span class="d-inline-block ml-1">({{squadraComp.squadra.turno}})</span>
         <span class="nowrap ml-1" *ngIf="squadraComp.squadra.preAccoppiato" ngbTooltip="Mezzo PreAccoppiato">
                 <ng-container>
-                    <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
+                    <button class="btn btn-danger pl-0 py-0 pr-1 big_numbers font-double-monitor btn-no-hover"
                             [ngbPopover]="popMezzi" container="body" popoverTitle="Mezzo"
                             triggers="click" tabindex="0" style="cursor:pointer; vertical-align: baseline"
                             (click)="$event.stopPropagation()">
-                        <span class="ml-2" style="font-weight: 500">P</span>
+                        <span class="ml-1" style="font-weight: 500">P</span>
                         <i class="fa fa-truck fa-fw ml-1"></i>
                     </button>
                     <ng-template #popMezzi>
@@ -37,13 +37,12 @@
         </div>
         <div *ngIf="viewState.composizione.active" class="clearfix font-xlarge text-right pr-1" style="width: 55%;" [class.opacity-6]="squadraComposizioneBusy()">
           <span class="" [ngClass]="badgeDistaccamentoClass()"
-                [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione}}</span>
+                [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra?.distaccamento.descrizione.length <= 18 ?  squadraComp.squadra?.distaccamento.descrizione : (squadraComp.squadra?.distaccamento.descrizione | truncate:15) }}</span>
         </div>
         <div *ngIf="!viewState.composizione.active" class="col-2 pl-0" [class.opacity-6]="squadraComposizioneBusy()">
         <span class="" [ngClass]="badgeDistaccamentoClass()"
-            [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione
-        | slice:0:3}}</span>
-      </div>
+            [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione | slice:0:3}}</span>
+        </div>
         <div *ngIf="squadraComposizioneBusy()" class="squadra-bloccata" ngbTooltip="Squadra impegnata">
           <span class="badge badge-danger mr-1" style="cursor: not-allowed; vertical-align: text-bottom">
           <i class="fa fa-lg fa-lock mx-1"></i>
