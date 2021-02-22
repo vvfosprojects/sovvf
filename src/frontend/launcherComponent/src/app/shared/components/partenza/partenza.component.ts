@@ -3,6 +3,7 @@ import { Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
+import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 
 
 export interface ListaEventiMezzo {
@@ -35,6 +36,10 @@ export class PartenzaComponent implements OnInit {
 
     statoRichiestaEnum = StatoRichiesta;
     listaEventiMezzo: ListaEventiMezzo[] = [];
+
+    constructor(config: NgbDropdownConfig) {
+      config.placement = 'bottom-left';
+    }
 
     ngOnInit(): void {
       this.checkListaEventiMezzo();
