@@ -57,18 +57,14 @@ export class MezzoComponent {
             const orario = action.oraEvento;
             data.setHours(orario.ora);
             data.setMinutes(orario.minuti);
-            data.setSeconds(0);
+            data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
             actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data };
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }
-        const ora = action.oraEvento.ora + ':' + action.oraEvento.minuti;
-        const obj = {
-          state: action.mezzoAction,
-          time: ora
-        };
+        const ora = action.oraEvento.ora + ':' + action.oraEvento.minuti + ':' + action.oraEvento.secondi;
         this.actionMezzo.emit(actionMezzo);
     }
 
