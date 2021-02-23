@@ -18,8 +18,7 @@ import { Sede } from '../../model/sede.model';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
-import { getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
-import { NoteOperatoreTriageModalComponent } from '../../modal/note-operatore-triage-modal/note-operatore-triage-modal.component';
+import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -89,31 +88,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
 
     getViewState(): void {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
-    }
-
-    getNoteOperatoreTriage(): string[] {
-        return getNoteOperatoreTriageSummary(this.triageSummary);
-    }
-
-    openNoteOperatoreTriageModal(): void {
-        let dettaglioTriageModal: any;
-        if (this.doubleMonitor) {
-            dettaglioTriageModal = this.modalService.open(NoteOperatoreTriageModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl'
-            });
-        } else {
-            dettaglioTriageModal = this.modalService.open(NoteOperatoreTriageModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl'
-            });
-        }
-        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
-        dettaglioTriageModal.componentInstance.noteOperatore = this.getNoteOperatoreTriage();
     }
 
     addFiltro(event: any, tipo: string): void {

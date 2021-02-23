@@ -200,7 +200,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         this.triageSummary.push(summaryItem);
     }
 
-    getDomandaByCodice(rispostaValue: string): TreeviewItem {
+    getDomandaByRispostaValue(rispostaValue: string): TreeviewItem {
         const parentValue = rispostaValue.slice(2);
         return findItem(this.triage, parentValue);
 
@@ -217,6 +217,14 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             }
             return null;
         }
+    }
+
+    getSuggerimentoByRispostaValue(rispostaValue: string): string {
+        const triageData = this.triageData.filter((data: ItemTriageData) => data.itemValue === rispostaValue)[0];
+        if (triageData) {
+            return triageData?.noteOperatore;
+        }
+        return null;
     }
 
     setEmergenza(): void {

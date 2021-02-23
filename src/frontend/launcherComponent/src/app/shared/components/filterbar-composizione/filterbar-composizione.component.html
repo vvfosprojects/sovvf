@@ -2,7 +2,8 @@
      [class.font-comp-xl]="viewState.composizione.active">
     <div class="row">
         <!-- Tasti Composizione Partenza -->
-        <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
+        <div *ngIf="composizionePartenza"
+             class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
                     <button class="btn btn-block btn-danger btn-no-hover font-xlarge mr-2"
@@ -59,7 +60,7 @@
                             [ngbTooltip]="richiesta?.triageSummary ? 'Visualizza Dettaglio Triage' : 'Triage non disponibile'"
                             placement="bottom-left"
                             (click)="openDettaglioTriage()"
-                            [disabled]="!richiesta?.triageSummary">
+                            [disabled]="!richiesta?.triageSummary?.length">
                         <i class="fa fa-question-circle mr-1"></i>
                         {{ 'Triage' | uppercase }}
                     </button>
@@ -67,8 +68,7 @@
             </div>
         </div>
         <!-- Select Filtri -->
-        <div [class.col-9]="composizionePartenza"
-             [class.pr-0]="composizionePartenza"
+        <div [class.col-11]="composizionePartenza"
              [class.align-self-center]="viewState.composizione.active"
              [class.col-12]="sostituzionePartenza">
             <div class="row pt-1 mt-1"
@@ -151,31 +151,6 @@
                                         [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
                     </div>
                 </span>
-            </div>
-        </div>
-        <div class="col-2 pl-0"
-             [class.d-none]="sostituzionePartenza || !triageSummary">
-            <div class="font-xlarge">
-                <div class="font-weight-bolder">
-                    Note Operatore Triage
-                    <small *ngIf="getNoteOperatoreTriage()?.length"
-                           class="d-inline-block text-primary cursor-pointer ml-1"
-                           (click)="openNoteOperatoreTriageModal()">
-                        <i class="fa fa-external-link-square ml-1"></i>
-                    </small>
-                </div>
-                <ng-template [ngIf]="getNoteOperatoreTriage()?.length">
-                    <div class="scroll-y" style="max-height:60px">
-                        <h6 *ngFor="let nota of getNoteOperatoreTriage(); let i = index">{{ i + 1 }}. {{ nota }}</h6>
-                    </div>
-                </ng-template>
-                <ng-template [ngIf]="!getNoteOperatoreTriage()?.length">
-                    <div class="alert alert-secondary mb-0 mt-2 p-1">
-                        Non disponibili per la
-                        richiesta <span
-                            class="font-weight-bolder">{{ richiesta?.codiceRichiesta ? richiesta?.codiceRichiesta : richiesta?.codice }}</span>
-                    </div>
-                </ng-template>
             </div>
         </div>
     </div>
