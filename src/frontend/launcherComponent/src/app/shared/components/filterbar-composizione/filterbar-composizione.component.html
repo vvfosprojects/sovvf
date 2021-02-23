@@ -96,8 +96,8 @@
                          (clear)="clearFiltri('statoMezzo')"
                          placeholder="Stato: Tutti">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                  <div><span class="fa fa-eercast mr-2"
-                             [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
+                  <div class="d-inline-flex"><div class="mr-2"
+                             [ngClass]="_boxStatiClass(item.descrizione)"></div>{{item.descrizione}}</div>
                 </ng-template>
               </ng-select>
             </div>
@@ -105,8 +105,9 @@
 
           <div class="row pt-1" style="font-size: xx-large"
                [class.pb-2]="sostituzionePartenza">
-            <div class="col-7 mb-2" style="max-height: 75px; overflow: auto;">
+            <div class="clearfix ml-3 mb-2 d-inline-flex" style="max-height: 75px; overflow: auto;">
                 <ng-select class="align-self-center font-xlarge"
+                           style="width: 762px; min-width: 762px"
                            [items]="filtri?.distaccamenti"
                            bindLabel="descDistaccamento"
                            bindValue="id"
@@ -120,17 +121,17 @@
                            (change)="addFiltro($event, 'codiceDistaccamento')"
                            placeholder="Distaccamento: Tutti">
                 </ng-select>
-            </div>
-            <span class="d-inline-flex">
-              <button class="btn btn-sm btn-primary mr-1 btn-no-hover" (click)="setDistaccamentiDefault()"
-                      ngbTooltip="Imposta Distaccamenti di competenza" style="height: fit-content; margin-top: 5px">
+              <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti" (click)="setDistaccamentiDefault()"
+                      ngbTooltip="Imposta Distaccamenti di competenza">
                 <i class="fa fa-filter"></i>
               </button>
+              <span class="d-inline-flex ml-2">
               <div class="font-xxlarge" style="text-align-last: center;">
                 <app-competenza *ngFor="let c of competenze; let i = index"
                                 [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
               </div>
             </span>
+            </div>
           </div>
         </div>
         <!-- Elimina Filtri Attivi -->
