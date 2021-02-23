@@ -19,6 +19,7 @@ import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
+import { NoteOperatoreTriageModalComponent } from '../../modal/note-operatore-triage-modal/note-operatore-triage-modal.component';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -94,6 +95,27 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         return getNoteOperatoreTriageSummary(this.triageSummary);
     }
 
+    openNoteOperatoreTriageModal(): void {
+        let dettaglioTriageModal: any;
+        if (this.doubleMonitor) {
+            dettaglioTriageModal = this.modalService.open(NoteOperatoreTriageModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl'
+            });
+        } else {
+            dettaglioTriageModal = this.modalService.open(NoteOperatoreTriageModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl'
+            });
+        }
+        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
+        dettaglioTriageModal.componentInstance.noteOperatore = this.getNoteOperatoreTriage();
+    }
+
     addFiltro(event: any, tipo: string): void {
         this.store.dispatch(new StartListaComposizioneLoading());
         if (event) {
@@ -166,7 +188,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         }
         dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
         dettaglioTriageModal.componentInstance.tipologie = this.richiesta.tipologie;
-        // TODO: rivedere backend (aggiugnere "dettaglioTipologia" in "GetRichieste")
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
         // TODO: rivedere backend (aggiugnere "schedaContatto" in "GetRichieste", con tutti i dati relativi alla scheda)
         dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;

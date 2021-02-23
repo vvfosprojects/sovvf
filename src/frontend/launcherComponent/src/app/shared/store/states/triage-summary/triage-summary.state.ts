@@ -1,14 +1,18 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { TriageSummary } from '../../../interface/triage-summary.interface';
-import { ClearTriageSummary, SetTriageSummary } from '../../actions/triage-summary/triage-summary.actions';
+import { ClearTriageSummary, SetSchedaContattoTriageSummary, SetTriageSummary } from '../../actions/triage-summary/triage-summary.actions';
+import { SchedaContatto } from '../../../interface/scheda-contatto.interface';
+import { SchedeContattoService } from '../../../../core/service/schede-contatto/schede-contatto.service';
 
 export interface TriageSummaryStateModel {
     summary: TriageSummary[];
+    schedaContatto: SchedaContatto;
 }
 
 export const TriageSummaryStateDefaults: TriageSummaryStateModel = {
-    summary: undefined
+    summary: undefined,
+    schedaContatto: undefined
 };
 
 @Injectable()
@@ -19,12 +23,17 @@ export const TriageSummaryStateDefaults: TriageSummaryStateModel = {
 
 export class TriageSummaryState {
 
-    constructor() {
+    constructor(private schedeContattoService: SchedeContattoService) {
     }
 
     @Selector()
     static summary(state: TriageSummaryStateModel): TriageSummary[] {
         return state.summary;
+    }
+
+    @Selector()
+    static schedaContatto(state: TriageSummaryStateModel): SchedaContatto {
+        return state.schedaContatto;
     }
 
     @Action(SetTriageSummary)
@@ -37,7 +46,17 @@ export class TriageSummaryState {
     @Action(ClearTriageSummary)
     clearTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>): void {
         patchState({
-            summary: TriageSummaryStateDefaults.summary
+            summary: TriageSummaryStateDefaults.summary,
+            schedaContatto: TriageSummaryStateDefaults.schedaContatto
+        });
+    }
+
+    @Action(SetSchedaContattoTriageSummary)
+    setSchedaContattoTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>, action: SetSchedaContattoTriageSummary): void {
+        this.schedeContattoService.getSchedaContatto(action.codScheda).subscribe((schedaContatto: SchedaContatto) => {
+            patchState({
+                schedaContatto
+            });
         });
     }
 }

@@ -14,18 +14,11 @@ export class TriageSummaryModalComponent {
     codRichiesta: string;
     tipologie: Tipologia[];
     dettaglioTipologia: DettaglioTipologia;
-    schedaContatto: SchedaContatto;
 
     constructor(private modal: NgbActiveModal) {
     }
 
     closeModal(type: string): void {
         this.modal.close({ success: false, data: type });
-    }
-
-    getTitle(): string {
-        if (this.codRichiesta) {
-            return 'Dettaglio Triage della richiesta ' + this.codRichiesta;
-        }
     }
 }

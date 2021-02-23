@@ -1,7 +1,7 @@
 <div class="clearfix">
     <div class="float-left w-50 px-2">
         <ng-template [ngIf]="dettaglioSoccorsoAereo">
-            <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge" style="outline: none"
+            <button class="btn btn-warning btn-block btn-no-hover font-xlarge" style="outline: none"
                     ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova"
                     placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
                 <i class="guida fa fa-plane"
@@ -9,7 +9,7 @@
             </button>
         </ng-template>
         <ng-template [ngIf]="!dettaglioSoccorsoAereo">
-            <button class="btn btn-warning btn-block mt-2 btn-no-hover font-xlarge"
+            <button class="btn btn-warning btn-block btn-no-hover font-xlarge"
                     ngbTooltip="Intervento aereo"
                     placement="top" (click)="openSoccorsoAereoModal($event)">
                 <i class="guida fa fa-plane"
@@ -18,7 +18,7 @@
         </ng-template>
     </div>
     <div class="float-left w-50 px-2">
-        <button class="btn btn-success btn-block mt-2 btn-no-hover font-xlarge"
+        <button class="btn btn-success btn-block btn-no-hover font-xlarge"
                 [disabled]="disableConfirmPartenza"
                 (click)="_confirmPartenzaInViaggio()">
             <span class="d-inline-block mr-2">Conferma</span>

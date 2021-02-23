@@ -30,6 +30,10 @@ export class SchedeContattoService {
         return this.http.post<ResponseInterface>(`${API_SCHEDE_CONTATTO}/GetSchede`, obj);
     }
 
+    getSchedaContatto(codScheda: string): Observable<SchedaContatto> {
+        return this.http.get<SchedaContatto>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
+    }
+
     mergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita);
     }

@@ -155,8 +155,15 @@
         </div>
         <div class="col-2 pl-0"
              [class.d-none]="sostituzionePartenza || !triageSummary">
-            <div class="p-1">
-                <small class="font-weight-bolder">Note Operatore Triage</small>
+            <div class="font-xlarge">
+                <div class="font-weight-bolder">
+                    Note Operatore Triage
+                    <small *ngIf="getNoteOperatoreTriage()?.length"
+                           class="d-inline-block text-primary cursor-pointer ml-1"
+                           (click)="openNoteOperatoreTriageModal()">
+                        <i class="fa fa-external-link-square ml-1"></i>
+                    </small>
+                </div>
                 <ng-template [ngIf]="getNoteOperatoreTriage()?.length">
                     <div class="scroll-y" style="max-height:60px">
                         <h6 *ngFor="let nota of getNoteOperatoreTriage(); let i = index">{{ i + 1 }}. {{ nota }}</h6>

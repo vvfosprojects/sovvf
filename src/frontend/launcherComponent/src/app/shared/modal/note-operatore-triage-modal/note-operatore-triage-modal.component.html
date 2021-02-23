@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">
-        {{ 'Dettaglio Triage della richiesta '  | uppercase }} <span
+        {{ 'Note Operatore Triage della richiesta '  | uppercase }} <span
             class="font-weight-bolder">{{ this.codRichiesta }}</span>
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
@@ -9,11 +9,20 @@
     </button>
 </div>
 <div class="modal-body height bg-light py-4 px-5">
-    <div class="px-4">
-        <app-triage-summary [tipologie]="tipologie"
-                            [dettaglioTipologia]="dettaglioTipologia">
-        </app-triage-summary>
-    </div>
+    <ng-template [ngIf]="noteOperatore?.length">
+        <div class="font-xxlarge">
+            <span *ngFor="let nota of noteOperatore; let i = index"
+                  class="d-inline-block">{{ i + 1 }}. {{ nota }}
+            </span>
+        </div>
+    </ng-template>
+    <ng-template [ngIf]="!noteOperatore?.length">
+        <div class="alert alert-secondary mb-0 mt-2 p-1">
+            Non disponibili per la
+            richiesta <span
+                class="font-weight-bolder">{{ codRichiesta }}</span>
+        </div>
+    </ng-template>
 </div>
 <div class="modal-footer">
     <div class="clearfix w-100">

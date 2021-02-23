@@ -310,17 +310,17 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
                 case NecessitaSoccorsoAereoEnum.Utile:
                     return {
                         desc: NecessitaSoccorsoAereoEnum.Utile,
-                        value: 1
+                        value: 2
                     };
                 case NecessitaSoccorsoAereoEnum.MoltoUtile:
                     return {
                         desc: NecessitaSoccorsoAereoEnum.MoltoUtile,
-                        value: 1
+                        value: 3
                     };
                 case NecessitaSoccorsoAereoEnum.Indispensabile:
                     return {
                         desc: NecessitaSoccorsoAereoEnum.Indispensabile,
-                        value: 1
+                        value: 4
                     };
             }
         }
