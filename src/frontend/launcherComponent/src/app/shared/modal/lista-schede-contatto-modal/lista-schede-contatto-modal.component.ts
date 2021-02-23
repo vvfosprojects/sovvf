@@ -37,6 +37,7 @@ import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component'
 import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../../features/home/store/actions/maps/schede-contatto-markers.actions';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
 import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-lista-schede-contatto-modal',
@@ -45,6 +46,8 @@ import { AreaMappaState } from '../../../features/home/store/states/maps/area-ma
 })
 export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -92,6 +95,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
         this.getSchedeContatto();
         this.getSchedeContattoMarkers();
         this.getSchedeContattoHover();
+        this.getNightMode();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
@@ -123,6 +127,24 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getNightMode(): void {
+      this.subscriptions.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-mode';
+      }
+      return value;
     }
 
     getSchedeContatto(): void {
