@@ -13,6 +13,7 @@ export class ChangelogItemComponent implements OnInit {
     @Input() changelogId: string;
     @Input() ultimoChangelog: boolean;
     @Input() disableIndice: boolean;
+    @Input() nightMode: boolean;
 
     indiceVisible = true;
 
@@ -22,6 +23,16 @@ export class ChangelogItemComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text bg-moon-light';
+      }
+      return value;
     }
 
     toggleIndiceVisible(): void {
