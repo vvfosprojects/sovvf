@@ -12,11 +12,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
     public class SetRientroMezzo : ISetRientroMezzo
     {
-        private readonly IHttpRequestManager<RientroGAC> _client;
+        private readonly IHttpRequestManager<List<RientroGacResponse>> _client;
         private readonly IGetToken _getToken;
         private readonly IConfiguration _configuration;
 
-        public SetRientroMezzo(IGetToken getToken, IHttpRequestManager<RientroGAC> client, IConfiguration configuration)
+        public SetRientroMezzo(IGetToken getToken, IHttpRequestManager<List<RientroGacResponse>> client, IConfiguration configuration)
         {
             _client = client;
             _getToken = getToken;
@@ -30,13 +30,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 var lstRientri = new List<RientroGAC>() { rientro };
                 var jsonString = JsonConvert.SerializeObject(lstRientri);
                 var content = new StringContent(jsonString);
+
                 var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacRientroMezzo);
 
                 var result = _client.PutAsync(uri, content, _getToken.GeneraToken()).Result;
             }
             catch (Exception e)
             {
-                //throw new Exception("Errore servizio rientro gac");
+                throw new Exception("Errore servizio rientro gac");
             }
         }
     }
