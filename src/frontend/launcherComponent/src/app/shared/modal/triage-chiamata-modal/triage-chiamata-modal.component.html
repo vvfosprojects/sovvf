@@ -42,16 +42,26 @@
     </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
         <div *ngFor="let summary of triageSummary; let i = index"
-             class="alert alert-info"
+             class="alert"
+             [class.alert-info]="!getSuggerimentoByRispostaValue(summary.rispostaValue)"
+             [class.alert-danger]="getSuggerimentoByRispostaValue(summary.rispostaValue)"
              [class.mb-0]="i === triageSummary?.length - 1">
-            <h5 class="mb-0">
-                {{ getDomandaByCodice(summary.rispostaValue)?.text }}
-                <b>{{ summary.risposta }}</b>
+            <h5>
+                {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
+                <span class="font-weight-bolder">{{ summary.risposta }}</span>
             </h5>
+            <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
+                <h5 class="mb-0 font-weight-bolder">
+                    <i class="fa fa-exclamation-triangle mr-1"></i>
+                    {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
+                </h5>
+            </ng-template>
         </div>
-        <app-step-domande [triage]="triage"
-                          (risposta)="setRisposta($event)">
-        </app-step-domande>
+        <div class="mt-2">
+            <app-step-domande [triage]="triage"
+                              (risposta)="setRisposta($event)">
+            </app-step-domande>
+        </div>
     </ng-template>
 </div>
 <div class="modal-footer">

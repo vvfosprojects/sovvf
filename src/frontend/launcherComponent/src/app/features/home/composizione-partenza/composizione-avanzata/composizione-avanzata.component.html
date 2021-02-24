@@ -160,7 +160,7 @@
             </div>
         </div>
         <div class="clearfix">
-            <div class="float-left w-100 pl-4" style="width: 2%">
+            <div class="float-left w-100 pl-2" style="width: 2%">
                 <div class="clearfix">
                     <div class="float-left">
                         <ngb-rating [rate]="getSoccorsoAereoTriage()?.value"
@@ -175,9 +175,6 @@
                             </ng-template>
                         </ngb-rating>
                     </div>
-                    <div class="float-left">
-                        {{ getSoccorsoAereoTriage()?.desc }}
-                    </div>
                 </div>
             </div>
         </div>
@@ -185,7 +182,7 @@
             <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                              [richiesta]="richiesta"
                                              [doubleMonitor]="doubleMonitor"
-                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                             [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
                                              (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
             </app-composizione-confirm-button>
         </div>

@@ -142,7 +142,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public Priorita PrioritaRichiesta { get; set; }
 
         public List<Tipologia> Tipologie { get; set; }
-        public TipologiaDettaglio TipologiaDettaglio { get; set; }
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta

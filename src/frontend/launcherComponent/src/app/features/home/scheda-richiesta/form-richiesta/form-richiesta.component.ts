@@ -45,6 +45,7 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { ClearTriageSummary, SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { TriageSummaryState } from '../../../../shared/store/states/triage-summary/triage-summary.state';
+import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -243,7 +244,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
             f.stato.value,
             f.prioritaRichiesta.value,
             [tipologia],
-            null, // f.dettaglioTipologia.value,
+            f.dettaglioTipologia.value,
             f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : (f.tipologie.length > 0 ? f.tipologie[0].descrizione : null),
             new Richiedente(f.telefono.value, f.nominativo.value),
             {
@@ -621,10 +622,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
 }
 
 function setPrioritaByTriageSummary(formControls: any, triageSummary: TriageSummary[]): void {
-    let prioritaConsigliata: string;
-    triageSummary.forEach((summary: TriageSummary) => {
-        prioritaConsigliata = summary.prioritaConsigliata;
-    });
+    const prioritaConsigliata = getPrioritaTriage(triageSummary);
     if (prioritaConsigliata) {
         switch (prioritaConsigliata) {
             case 'Molto Bassa':

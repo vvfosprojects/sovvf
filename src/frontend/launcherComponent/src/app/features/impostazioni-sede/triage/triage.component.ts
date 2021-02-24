@@ -243,6 +243,10 @@ export class TriageComponent implements OnDestroy {
         if (itemData) {
             return itemData;
         }
+        // else {
+        //     const parentValue = item.value.slice(2);
+        //     return this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === parentValue)[0];
+        // }
     }
 
     toggleViewEditButtons(): void {
@@ -560,15 +564,6 @@ export class TriageComponent implements OnDestroy {
     updateTriage(triage: TreeItem): void {
         const newTriage = triage ? makeCopy(triage) : null;
         this.store.dispatch(new SetNewTriage(newTriage));
-    }
-
-    // TODO: fixare rimuovendo "internalChildren" ecc. che si modificano ogni volta che, ad esempio, espando un item del treeview
-    getSaveButtonActive(): boolean {
-        const triageString = JSON.stringify(this.tItems);
-        const backupTriageString = JSON.stringify(this.tItemsBackup);
-        const triageDataString = JSON.stringify(this.tItemsData);
-        const backupDataTriageString = JSON.stringify(this.tItemsDataBackup);
-        return (triageString !== backupTriageString) || (triageDataString !== backupDataTriageString);
     }
 
     saveTriage(): void {
