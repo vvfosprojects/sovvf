@@ -87,8 +87,8 @@ export function boxStatiClass(stato: string): string {
       returnClass = 'box-stato bg-danger';
       break;
 
-    default:
-      break;
+    default: returnClass = 'box-stato bg-dark';
+             break;
   }
   return returnClass;
 }
