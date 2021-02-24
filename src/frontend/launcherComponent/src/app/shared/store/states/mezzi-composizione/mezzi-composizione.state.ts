@@ -55,6 +55,7 @@ import { GetListeComposizioneAvanzata } from '../../../../features/home/store/ac
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
+import { SelectSquadraComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -228,8 +229,11 @@ export class MezziComposizioneState {
                     if (!action.mezzoComp.mezzo.coordinateFake) {
                         dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
                     }
-                    dispatch(new SelectMezzoComposizione(action.mezzoComp));
-                    dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
+                    dispatch([
+                        new SelectMezzoComposizione(action.mezzoComp),
+                        new AddMezzoBoxPartenzaSelezionato(action.mezzoComp),
+                        new SelectSquadreComposizione(action.mezzoComp?.squadrePreaccoppiate)
+                    ]);
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
                 dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
@@ -446,9 +450,14 @@ export class MezziComposizioneState {
                 let modalSganciamento;
                 const innerWidth = window.innerWidth;
                 if (innerWidth && innerWidth > 3700) {
-                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder modal-left', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl'});
+                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, {
+                        windowClass: 'modal-holder modal-left',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true,
+                        size: 'xl'
+                    });
                 } else {
-                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl' });
+                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl' });
                 }
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
