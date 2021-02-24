@@ -31,10 +31,10 @@ export class RemoveBoxPartenzaByMezzoId {
     }
 }
 
-export class AddSquadraBoxPartenza {
-    static readonly type = '[BoxPartenza] Add Squadra Box Partenza';
+export class AddSquadreBoxPartenza {
+    static readonly type = '[BoxPartenza] Add Squadre Box Partenza';
 
-    constructor(public squadra: SquadraComposizione) {
+    constructor(public squadre: SquadraComposizione[]) {
     }
 }
 

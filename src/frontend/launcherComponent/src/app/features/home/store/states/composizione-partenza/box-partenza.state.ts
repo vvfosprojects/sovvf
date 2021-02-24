@@ -3,7 +3,7 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenzaSelezionato,
-    AddSquadraBoxPartenza,
+    AddSquadreBoxPartenza,
     ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveBoxPartenzaByMezzoId,
@@ -258,14 +258,16 @@ export class BoxPartenzaState {
         // dispatch(new GetListeComposizioneAvanzata());
     }
 
-    @Action(AddSquadraBoxPartenza)
-    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadraBoxPartenza): void {
+    @Action(AddSquadreBoxPartenza)
+    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
-                        box.squadreComposizione.push(action.squadra);
+                        action.squadre.forEach((squadra: SquadraComposizione) => {
+                            box.squadreComposizione.push(squadra);
+                        });
                     }
                 });
             })

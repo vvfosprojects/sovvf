@@ -46,17 +46,10 @@ export class UnselectSquadraComposizione {
     }
 }
 
-export class SelectSquadra {
-    static readonly type = '[SquadreComposizione] Select Squadra';
+export class SelectSquadreComposizione {
+    static readonly type = '[SquadreComposizione] Select Squadre Composizione';
 
-    constructor(public idSquadra: string) {
-    }
-}
-
-export class UnselectSquadra {
-    static readonly type = '[SquadreComposizione] Unselect Squadra';
-
-    constructor(public idSquadra: string) {
+    constructor(public squadreComp: SquadraComposizione[]) {
     }
 }
 
