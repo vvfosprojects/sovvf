@@ -137,11 +137,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         var comp =  new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
-                            Squadra = squadra
+                            Squadra = squadra,
+                            MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
                         };
 
                         squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
-
 
                         return comp;
                     });
