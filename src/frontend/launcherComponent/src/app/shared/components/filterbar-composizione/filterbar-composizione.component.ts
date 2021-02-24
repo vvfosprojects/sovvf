@@ -6,7 +6,7 @@ import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import {Observable, Subscription} from 'rxjs';
-import { iconaStatiClass } from '../../helper/composizione-functions';
+import {boxStatiClass, iconaStatiClass} from '../../helper/composizione-functions';
 import {
   AddFiltroSelezionatoComposizione,
   ClearFiltriComposizione,
@@ -71,6 +71,10 @@ export class FilterbarComposizioneComponent implements OnDestroy {
       const distaccamentiDefault = [];
       this.richiesta.competenze.forEach(x => distaccamentiDefault.push({id : x.codice}));
       this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+    }
+
+    _boxStatiClass(statoMezzo: string): string {
+      return boxStatiClass(statoMezzo);
     }
 
     setGenereMezzoDefault(): void {

@@ -261,7 +261,7 @@
                                   {{ richiesta?.localita?.indirizzo | truncate:30 }}
                               </span>
                             </span>
-                            <span class="list-inline list-unstyled m-0 ml-2 font-xxlarge" style="vertical-align: text-bottom;">
+                            <span *ngIf="!partenza" class="list-inline list-unstyled m-0 ml-2 font-xxlarge" style="vertical-align: text-bottom;">
                                 <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>

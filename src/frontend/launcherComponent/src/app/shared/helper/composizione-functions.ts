@@ -65,6 +65,34 @@ export function iconaStatiClass(stato: string): string {
     return returnClass;
 }
 
+export function boxStatiClass(stato: string): string {
+  let returnClass = '';
+  switch (stato) {
+    case StatoMezzo.InSede:
+      returnClass = 'box-stato bg-success';
+      break;
+    case StatoMezzo.Rientrato:
+      returnClass = 'box-stato bg-success';
+      break;
+    case StatoMezzo.InUscita:
+      returnClass = 'box-stato bg-secondary';
+      break;
+    case StatoMezzo.InViaggio:
+      returnClass = 'box-stato bg-warning';
+      break;
+    case StatoMezzo.InRientro:
+      returnClass = 'box-stato bg-verdemela';
+      break;
+    case StatoMezzo.SulPosto:
+      returnClass = 'box-stato bg-danger';
+      break;
+
+    default: returnClass = 'box-stato bg-dark';
+             break;
+  }
+  return returnClass;
+}
+
 export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string): boolean {
     return codDistaccamentoSquadra === codDistaccamentoMezzo;
 }
