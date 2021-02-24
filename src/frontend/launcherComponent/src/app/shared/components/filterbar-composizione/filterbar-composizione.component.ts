@@ -47,6 +47,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
+    disableDefaultDistaccamenti = true;
     distaccamentiSelezionati: string[];
     generiMezzoSelezionato: string[];
 
@@ -59,16 +60,26 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         this.setDistaccamentiDefault();
         this.getViewState();
+        this.checkDistaccamenti();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.triageSummary?.currentValue) {
             this.setGenereMezzoDefault();
         }
-    }
+        if (changes?.competenze) {
+          this.checkDistaccamenti();
+        }
+     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
+    }
+
+    checkDistaccamenti(): void {
+      const distaccamentiDefault = [];
+      this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
+      JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ?  this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
     }
 
     setDistaccamentiDefault(): void {

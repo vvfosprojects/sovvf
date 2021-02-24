@@ -148,8 +148,9 @@
                     </ng-select>
                     <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
                             (click)="setDistaccamentiDefault()"
+                            [disabled]="disableDefaultDistaccamenti"
                             ngbTooltip="Imposta Distaccamenti di competenza">
-                        <i class="fa fa-filter"></i>
+                        <i class="fa fa-filter pr-1"></i>
                     </button>
                     <span class="d-inline-flex ml-2">
                   <div class="font-xxlarge" style="text-align-last: center;">
