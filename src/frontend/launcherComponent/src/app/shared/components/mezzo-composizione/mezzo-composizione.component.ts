@@ -4,7 +4,7 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { iconaStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
+import {boxStatiClass, mezzoComposizioneBusy} from '../../helper/composizione-functions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { Sede } from '../../model/sede.model';
 import {Select} from '@ngxs/store';
@@ -92,16 +92,20 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     onClick(): void {
-        if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
+        if (this.itemBloccato) {
+          this.onSganciamento();
+        } else {
+          if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
             this.selezionato.emit(this.mezzoComp);
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                if (!this.mezzoComp.mezzo.coordinateFake) {
-                    this.mezzoDirection(this.mezzoComp);
-                }
+              if (!this.mezzoComp.mezzo.coordinateFake) {
+                this.mezzoDirection(this.mezzoComp);
+              }
             }
-        } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato  && !this.itemPrenotatoInBox) {
+          } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato  && !this.itemPrenotatoInBox) {
             this.deselezionato.emit(this.mezzoComp);
+          }
         }
     }
 
@@ -161,7 +165,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
 
         if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
-            returnClass += ' cursor-not-allowed';
+            returnClass += ' ';
             this.itemBloccato = true;
         }
 
@@ -204,8 +208,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         this.mezzoCoordinate.emit(mezzoDirection);
     }
 
-    _iconaStatiClass(statoMezzo: string): string {
-        return iconaStatiClass(statoMezzo);
+    _boxStatiClass(statoMezzo: string): string {
+        return boxStatiClass(statoMezzo);
     }
 
   getSquadre(richiesta: SintesiRichiesta): string[] {

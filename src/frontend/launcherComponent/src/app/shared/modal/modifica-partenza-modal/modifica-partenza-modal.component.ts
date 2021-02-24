@@ -19,6 +19,7 @@ import { ModificaPartenzaService } from '../../../core/service/modifica-partenza
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -31,10 +32,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     operatore: string;
     sede: string;
-    nightMode: boolean;
     doubleMonitor: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
@@ -72,6 +74,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modificaPartenzaService: ModificaPartenzaService) {
         this.initForm();
         this.getFormValid();
+        this.getNightMode();
         this.inizializzaUser();
         this.formatTime();
     }
@@ -120,6 +123,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
     }
 
     getFormValid(): void {

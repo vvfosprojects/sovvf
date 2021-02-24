@@ -415,6 +415,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
+    squadraShortcut(): void {
+        // ToDo: aggiungere nuovo box partenza con squadra già inserita
+    }
+
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
         if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
             const mezzoComp = boxPartenza.mezzoComposizione;

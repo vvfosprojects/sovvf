@@ -9,3 +9,8 @@
 .ng-select.custom ::ng-deep .ng-select-container  {
   height: 42px !important;
 }
+
+.border-distaccamenti {
+  border-radius: 0 50px 50px 0;
+}
+

@@ -922,8 +922,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (_eventi.Count != 0 && !_eventi.Any() && evento.Istante >= _eventi.Max(c => c.Istante))
-                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
+            if (_eventi.Count > 0)
+                if (evento.Istante.AddSeconds(1) < _eventi.Max(c => c.Istante))
+                    throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
 
             _eventi.Add(evento);
         }

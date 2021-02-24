@@ -21,14 +21,14 @@
                     </button>
                     <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
                         <div class="float-right" style="display:flex;" (click)="$event.stopPropagation()">
-                            <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
+                            <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown" container="body"
                                  (click)="$event.stopPropagation()">
                                 <button class="btn btn-info btn-no-hover" id="dropdownActionsMezzo" ngbDropdownAnchor
                                         ngbTooltip="Opzioni"
                                         (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
                                     <i class="fa fa-ellipsis-v"></i>
                                 </button>
-                                <div ngbDropdownMenu>
+                                <div ngbDropdownMenu aria-labelledby="dropdownConfig">
                                     <button ngbDropdownItem class="btn btn-block btn-no-hover"
                                             (click)="modificaPartenza.emit(index); $event.stopPropagation()">
                                         <i class="fa fa-cog mr-1"></i>

@@ -4,6 +4,7 @@ import {NgbActiveModal, NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {Select} from '@ngxs/store';
 import {TurnoState} from '../../../../navbar/store/states/turno.state';
 import {TurnoCalendario} from '../../../../navbar/turno/turno-calendario.model';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
   selector: 'app-modal-richieste-chiuse',
@@ -14,6 +15,8 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
 
   @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
   turnoCalendario: TurnoCalendario;
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
 
   prefix: {} = {
     DaA: false,
@@ -40,6 +43,7 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
     this.getTurnoCalendario();
     this.todayDate = calendar.getToday();
+    this.getNightMode();
   }
 
   ngOnDestroy(): void {
@@ -52,6 +56,24 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
         this.turnoCalendario = turnoC;
       })
     );
+  }
+
+  getNightMode(): void {
+    this.subscription.add(
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
+      })
+    );
+  }
+
+  onNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = '';
+    } else if (this.nightMode) {
+      value = 'moon-text moon-mode';
+    }
+    return value;
   }
 
   formatDate(date: any): any {

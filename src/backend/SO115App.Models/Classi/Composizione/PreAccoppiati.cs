@@ -36,6 +36,7 @@ namespace SO115App.API.Models.Classi.Composizione
         public PreAccoppiatiFakeJson()
         {
             MezzoComposizione = new ComposizioneMezzi() { Mezzo = new Mezzo() { PreAccoppiato = true } };
+            //SquadreComposizione = new List<ComposizioneSquadre>() { new ComposizioneSquadre() { Squadra = new Squadra() { PreAccoppiato = true } } };
         }
 
         public string Id { get; set; }

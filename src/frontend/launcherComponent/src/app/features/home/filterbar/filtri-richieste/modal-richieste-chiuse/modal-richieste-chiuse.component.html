@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div class="modal-header" [ngClass]="onNightMode()">
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'SELEZIONA FILTRO PER RICHIESTE CHIUSE' | uppercase }}
   </h4>
@@ -8,7 +8,7 @@
   </button>
 </div>
 
-<div class="modal-body pb-0">
+<div class="modal-body pb-0" [ngClass]="onNightMode()">
   <div class="row pt-4" style="justify-content: center; font-size: x-large">
     <div class="clearfix form-check">
       <input (click)="onCheckFiltro('DaA')" class="checkbox-size" type="checkbox" id="DaA" name="DaA"
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="row" style="margin-top: 30px; justify-content: center; margin-bottom: 20px;">
+  <div class="row" style="margin-top: 30px; justify-content: center; padding-bottom: 20px;">
       <form *ngIf="prefix['Del']" class="form-inline">
         <div class="form-group">
           <div class="input-group">
@@ -67,18 +67,14 @@
   </div>
 </div>
 
-<div class="modal-footer">
-  <div class="row w-100">
-    <div class="col-12 text-right">
-      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
-              (click)="chiudiModalFiltriTipologia('ko')">
-        {{ 'Chiudi' | uppercase }}
-      </button>
-      <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
-              (click)="chiudiModalFiltriTipologia('ok')">
-        {{ 'Applica Filtro' | uppercase }}
-      </button>
-    </div>
-  </div>
+<div class="modal-footer" [ngClass]="onNightMode()" style="place-content: space-between;">
+  <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
+          (click)="chiudiModalFiltriTipologia('ok')">
+    {{ 'Applica Filtro' | uppercase }}
+  </button>
+  <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
+          (click)="chiudiModalFiltriTipologia('ko')">
+    {{ 'Chiudi' | uppercase }}
+  </button>
 </div>
 

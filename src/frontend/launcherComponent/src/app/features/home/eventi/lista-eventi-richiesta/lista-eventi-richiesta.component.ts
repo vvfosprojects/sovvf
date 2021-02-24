@@ -10,11 +10,22 @@ export class ListaEventiRichiestaComponent {
 
     @Input() loading: boolean;
     @Input() elencoEventi: EventoRichiesta[];
-    @Output() targheSelezionate = new EventEmitter<string[]>();
-
+    @Input() nightMode: boolean;
     @Input() iconeNomeClasseEvento: boolean;
 
+    @Output() targheSelezionate = new EventEmitter<string[]>();
+
     constructor() {
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = ' moon-text bg-moon-light';
+      }
+      return value;
     }
 
     setRicercaTargaMezzo(targa: string): void {

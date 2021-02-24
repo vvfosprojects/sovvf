@@ -29,6 +29,7 @@
                 </app-filtri-schede-contatto>
                 <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
                                            [filtri]="filtriMezziInServizio$ | async"
+                                           [nightMode]="nightMode"
                                            [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
                                            [disableFilters]="loadingMezziInServizio$ | async"
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"

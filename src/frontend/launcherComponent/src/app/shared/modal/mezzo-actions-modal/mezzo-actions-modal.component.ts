@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class MezzoActionsModalComponent implements OnInit {
 
-    public time = { hour: 13, minute: 30 };
+    public time = { hour: 13, minute: 30, second: 0 };
 
     timeActionForm: FormGroup;
     submitted: boolean;
@@ -32,6 +32,8 @@ export class MezzoActionsModalComponent implements OnInit {
         const d = new Date();
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
+
     }
 
     onCancel(): void {

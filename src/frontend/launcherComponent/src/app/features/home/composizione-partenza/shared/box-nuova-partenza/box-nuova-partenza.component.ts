@@ -32,6 +32,7 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
+    @Output() squadraShortcut = new EventEmitter<boolean>();
 
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
@@ -194,6 +195,10 @@ export class BoxNuovaPartenzaComponent {
         if (this.compPartenzaMode === Composizione.Veloce) {
             this.hoverOut.emit();
         }
+    }
+
+    squadraShortcutEvent(): void {
+        this.squadraShortcut.emit();
     }
 
 }
