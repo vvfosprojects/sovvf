@@ -47,8 +47,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Stato = command.StatoMezzo
             });
 
-            if (richiesta.StatoRichiesta is Sospesa)
-                new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
+            //if (richiesta.StatoRichiesta is Sospesa)
+                //new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
 
             _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
             {
