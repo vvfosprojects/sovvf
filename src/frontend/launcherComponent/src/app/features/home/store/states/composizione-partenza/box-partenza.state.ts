@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
     AddBoxPartenza,
@@ -71,7 +71,7 @@ export class BoxPartenzaState {
         return disableConfirmPartenza(state.boxPartenzaList, true);
     }
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     @Action(RequestAddBoxPartenza)
@@ -142,7 +142,7 @@ export class BoxPartenzaState {
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
                 action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                    dispatch(new UnselectSquadraComposizione(squadra));
+                    dispatch(new UnselectSquadraComposizione(squadra, true));
                 });
             }
         }

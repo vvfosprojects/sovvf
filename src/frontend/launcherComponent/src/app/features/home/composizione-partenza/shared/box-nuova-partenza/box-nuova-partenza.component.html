@@ -26,7 +26,7 @@
                 <i class="guida fa fa-group mr-1 font-weight-bold"
                    [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i><span>{{partenza.squadreComposizione[0].squadra.nome}}</span>
                 <button *ngIf="partenza.mezzoComposizione" class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
-                        [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
+                        [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
                         (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
                   <span class="mr-1" style="font-weight: 500">Dividi</span>
                   <i class="fa fa-files-o font-weight-bold"></i>

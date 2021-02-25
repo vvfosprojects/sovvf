@@ -416,10 +416,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     squadraShortcut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch([
-          new AddBoxPartenza(),
-          new SelectSquadraComposizione(squadraComposizione),
-        ]);    }
+        this.store.dispatch(new AddBoxPartenza());
+        this.dopoAggiungiBoxPartenza();
+        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione, true));
+    }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
         if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
@@ -429,6 +429,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
         this.onClearDirection();
+        this.store.dispatch(new GetListeComposizioneAvanzata());
     }
 
     dopoAggiungiBoxPartenza(): void {

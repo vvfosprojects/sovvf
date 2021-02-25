@@ -61,14 +61,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
       const boxPartenzaList = changes['boxPartenzaList'];
       if (boxPartenzaList && boxPartenzaList.currentValue && boxPartenzaList.previousValue && this.boxPartenzaList.length > 0 && (boxPartenzaList.currentValue.length !== boxPartenzaList.previousValue.length)) {
-        let shouldSkip = false;
-        boxPartenzaList.previousValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) <= 0 ? shouldSkip = true : null);
-        boxPartenzaList.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) <= 0 ? shouldSkip = false : null);
+        let shouldSkip = true;
+        boxPartenzaList.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) ? shouldSkip = false : null);
         if (shouldSkip) { return; }
         boxPartenzaList.currentValue.forEach( x => x.mezzoComposizione && (x.mezzoComposizione.id !== this.mezzoComp.id) ? this.itemPrenotatoInBox = false :  null);
-        if ((boxPartenzaList.currentValue.length < boxPartenzaList.previousValue.length) && !boxPartenzaList.currentValue[0].mezzoComposizione ) {
-          this.itemPrenotatoInBox = false;
-        }
       }
     }
 
