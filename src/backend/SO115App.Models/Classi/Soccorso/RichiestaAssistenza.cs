@@ -120,8 +120,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
                 }
 
-                var dataUscita = stato.DataOraAggiornamento.AddSeconds(2);
-                new UscitaPartenza(this, partenza.Mezzo.Codice, dataUscita, CodOperatore, partenza.Codice);
+                new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
 
                 partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 partenza.Mezzo.IdRichiesta = Id;
@@ -149,8 +148,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                //    new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
             }
             else if (stato.Stato == Costanti.MezzoRientrato)
             {
@@ -160,8 +159,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                //    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
 
             #endregion SWITCH STATO MEZZI
@@ -924,6 +923,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             if (_eventi.Count > 0)
                 if (evento.Istante.AddSeconds(1) < _eventi.Max(c => c.Istante))
+                  if (!(evento is UscitaPartenza && _eventi.Where(e => e.Istante == _eventi.Max(c => c.Istante)).FirstOrDefault() is ComposizionePartenze))
                     throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
 
             _eventi.Add(evento);

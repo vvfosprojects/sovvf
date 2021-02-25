@@ -137,11 +137,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         var comp =  new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
-                            Squadra = squadra
+                            Squadra = squadra,
+                            MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
                         };
 
                         squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
-
 
                         return comp;
                     });
@@ -154,6 +154,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     foreach (var mezzo in lstmezzi.Result)
                         mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+
+
 
                     var composizioneMezzi = (from mezzo in lstmezzi.Result
                                              let kmGen = new Random().Next(1, 60).ToString()
@@ -197,6 +199,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
                         c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
+
+                        c.SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == c.Mezzo.Codice)?.SquadreComposizione;
 
                         return c;
                     });

@@ -276,12 +276,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        this.store.dispatch([
-            new ReducerSelectMezzoComposizione(mezzoComposizione),
-        ]);
-    }
-
     nightModeText(): string {
         let value = '';
         if (!this.nightMode) {
@@ -328,6 +322,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             desc: 'Non Impostata',
             value: 0
         };
+    }
+
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch([
+            new ReducerSelectMezzoComposizione(mezzoComposizione),
+        ]);
     }
 
     mezzoDeselezionato(): void {
