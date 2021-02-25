@@ -21,8 +21,10 @@
                     </button>
                     <ng-template #popSquadre>
                         <div class="h6">
-                            <span> Squadra -</span>
-                            <span> Turno</span>
+                            <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate">
+                              <span>{{s.squadra.nome}}</span>
+                              <span> {{s.squadra.turno}}</span>
+                            </div>
                         </div>
                     </ng-template>
                 </ng-container>
