@@ -1,8 +1,11 @@
 <li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()" [class.bg-moon-light]="nightMode"
     [class.font-xlarge]="viewState.composizione.active" (click)="onClick()" [ngClass]="liClass()">
     <div class="row">
-        <div class="clearfix pl-0" style="width: 45%">
-        <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right"
+        <div class="clearfix pl-0" style="width: 80%">
+          <div class="d-inline-flex mr-2" style="vertical-align: text-top;">
+            <div class="" [ngClass]="_boxStatiSquadraClass(squadraComp.squadra.stato)" [ngbTooltip]="_nomeStatiSquadra(squadraComp.squadra.stato)" placement="top"></div>
+          </div>
+          <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right"
               triggers="mouseenter:mouseleave">
           <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadraComp.squadra.componenti.length}}</span>
         </span>
@@ -16,9 +19,9 @@
 <!--                    class="badge badge-danger mr-1" style="cursor: not-allowed; height: fit-content; margin-top: 3px;">-->
 <!--                      <i class="fa fa-lg fa-lock"></i>-->
 <!--              </span>-->
-              <span class="font-weight-bolder">{{squadraComp.squadra.nome}}</span>
-              <span class="d-inline-block ml-1">({{squadraComp.squadra.turno}})</span>
-        <span class="nowrap ml-1" *ngIf="squadraComp.squadra.preAccoppiato" ngbTooltip="Mezzo PreAccoppiato">
+          <span class="font-weight-bolder">{{squadraComp.squadra.nome}}</span>
+          <span class="d-inline-block ml-1">({{squadraComp.squadra.turno}})</span>
+          <span class="nowrap ml-1" *ngIf="squadraComp.squadra.preAccoppiato" ngbTooltip="Mezzo PreAccoppiato">
                 <ng-container>
                     <button class="btn btn-danger pl-0 py-0 pr-1 big_numbers font-double-monitor btn-no-hover"
                             [ngbPopover]="popMezzi" container="body" popoverTitle="Mezzo"
@@ -37,7 +40,7 @@
             </span>
 
         </div>
-        <div *ngIf="viewState.composizione.active" class="clearfix font-xlarge text-right pr-1" style="width: 55%;">
+        <div *ngIf="viewState.composizione.active" class="clearfix font-xlarge text-right pr-1" style="width: 20%;">
           <span class="" [ngClass]="badgeDistaccamentoClass()"
                 [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione | competenzaFormat}}</span>
         </div>

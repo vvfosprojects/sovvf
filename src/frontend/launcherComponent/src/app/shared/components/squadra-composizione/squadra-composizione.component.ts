@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { squadraComposizioneBusy } from '../../helper/composizione-functions';
+import {boxStatiSquadraClass, nomeStatiSquadra, squadraComposizioneBusy} from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Observable, Subscription} from 'rxjs';
@@ -59,6 +59,14 @@ export class SquadraComposizioneComponent {
 
     onHoverOut(): void {
         this.hoverOut.emit(this.squadraComp);
+    }
+
+    _boxStatiSquadraClass(statoSquadra: number): string {
+      return boxStatiSquadraClass(statoSquadra);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+      return nomeStatiSquadra(statoSquadra);
     }
 
     liClass(): string {
