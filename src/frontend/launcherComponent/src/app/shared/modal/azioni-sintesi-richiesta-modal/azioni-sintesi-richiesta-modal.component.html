@@ -12,7 +12,7 @@
 
   <div class="row" style="place-content: center">
     <!-- LISTA EVENTI -->
-    <div class="col-3">
+    <div class="clearfix w-25">
       <button class="btn btn-light border w-100 py-0 px-1 btn-no-hover" style="height: 150px; font-size: 25px"
               (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
         <i class="fa fa-fw fa-list text-secondary"></i>
@@ -20,68 +20,30 @@
         <span>Elenco eventi</span>
       </button>
     </div>
-    <!-- MODIFICA ENTI INTERVENUTI -->
-    <div class="col-3">
-      <button class="btn btn-sm btn-info btn-no-hover w-100" style="height: 150px; font-size: 25px"
-              (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-        <i class="fa fa-edit"></i>
-        <br>
-        <span>Modifica Enti Intervenuti</span>
-      </button>
-    </div>
-    <!-- MODIFICA FONOGRAMMA -->
-    <div class="col-3">
-      <button class="btn btn-sm btn-info btn-no-hover w-100" style="height: 150px; font-size: 25px"
-              (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
-        <i class="fa fa-edit"></i>
-        <br>
-        <span>Modifica Fonogramma</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="row mt-3" style="place-content: center">
-    <!-- STATO CHIAMATA -->
-    <div class="col-3">
+    <!-- CHIUDI CHIAMATA -->
+    <div class="clearfix w-25 mx-3">
       <div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()" style="height: 150px;">
         <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"
                 (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))" style="font-size: 25px;">
-          <i class="fa fa-angle-double-right"></i>
-          <br>
-          <span>Seleziona stato:</span>
+          <i class="fa fa-forward"></i>
           <br>
           <span>{{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}</span>
         </button>
-        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" style="opacity: 0.85;" placement="bottom-right">
-          <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split btn-no-hover"
-                  ngbTooltip="Altro" placement="bottom-right"
-                  ngbDropdownToggle>
-            <i class="fa fa-chevron-up"></i>
-          </button>
-          <div class="dropdown-menu" ngbDropdownMenu>
-            <button *ngFor="let stato of statoRichiestaString" ngbDropdownItem
-                    (click)="onClick(stato)">{{stato}}
-            </button>
-            <ng-template [ngIf]="statoRichiestaString && statoRichiestaString.length <= 0">
-              <div class="px-2">
-                Nessuna azione secondaria disponibile
-              </div>
-            </ng-template>
-          </div>
-        </div>
       </div>
     </div>
-    <!-- TRASFERIMENTO CHIAMATA -->
-    <div class="col-3">
-      <button class="btn btn-sm btn-danger btn-no-hover w-100" style="height: 150px; font-size: 25px"
-              (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
-        <i class="fa fa-send-o"></i>
-        <br>
-        <span>Trasferisci ad altro comando</span>
-      </button>
+    <!-- SOSPENDI CHIAMATA -->
+    <div *ngIf="statoRichiestaString.length" class="clearfix w-25">
+      <div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()" style="height: 150px;">
+        <button *ngFor="let stato of statoRichiestaString" (click)="onClick(stato)"
+                class="btn btn-sm btn-warning px-2 py-0 btn-no-hover"  style="font-size: 25px;">
+          <i class="fa fa-pause moon-text"></i>
+          <br>
+          {{stato}}
+        </button>
+      </div>
     </div>
     <!-- ALLERTA SEDE -->
-    <div class="col-3">
+    <div *ngIf="!statoRichiestaString.length" class="clearfix w-25">
       <button class="btn btn-sm btn-warning btn-no-hover w-100" style="height: 150px; font-size: 25px"
               (click)="onAllertaSede(); $event.stopPropagation()">
         <i class="fa fa-exclamation-triangle"></i>
@@ -90,7 +52,77 @@
       </button>
     </div>
   </div>
+  <div class="row mt-3" style="place-content: center">
+    <!-- STATO CHIAMATA -->
+<!--    <div class="col-3">-->
+<!--      <div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()" style="height: 150px;">-->
+<!--        <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"-->
+<!--                (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))" style="font-size: 25px;">-->
+<!--          <i class="fa fa-angle-double-right"></i>-->
+<!--          <br>-->
+<!--          <span>Seleziona stato:</span>-->
+<!--          <br>-->
+<!--          <span>{{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}</span>-->
+<!--        </button>-->
+<!--        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown" style="opacity: 0.85;" placement="bottom-right">-->
+<!--          <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split btn-no-hover"-->
+<!--                  ngbTooltip="Altro" placement="bottom-right"-->
+<!--                  ngbDropdownToggle>-->
+<!--            <i class="fa fa-chevron-up"></i>-->
+<!--          </button>-->
+<!--          <div class="dropdown-menu" ngbDropdownMenu>-->
+<!--            <button *ngFor="let stato of statoRichiestaString" ngbDropdownItem-->
+<!--                    (click)="onClick(stato)">{{stato}}-->
+<!--            </button>-->
+<!--            <ng-template [ngIf]="statoRichiestaString && statoRichiestaString.length <= 0">-->
+<!--              <div class="px-2">-->
+<!--                Nessuna azione secondaria disponibile-->
+<!--              </div>-->
+<!--            </ng-template>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
+    <!-- MODIFICA ENTI INTERVENUTI -->
+    <div class="clearfix w-25">
+      <button class="btn btn-sm btn-info btn-no-hover w-100" style="height: 150px; font-size: 25px"
+              (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
+        <i class="fa fa-edit"></i>
+        <br>
+        <span>Modifica Enti Intervenuti</span>
+      </button>
+    </div>
+    <!-- MODIFICA FONOGRAMMA -->
+    <div class="clearfix w-25 mx-3">
+      <button class="btn btn-sm btn-info btn-no-hover w-100" style="height: 150px; font-size: 25px"
+              (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
+        <i class="fa fa-edit"></i>
+        <br>
+        <span>Modifica Fonogramma</span>
+      </button>
+    </div>
+    <!-- TRASFERIMENTO CHIAMATA -->
+    <div class="clearfix w-25">
+      <button class="btn btn-sm btn-danger btn-no-hover w-100" style="height: 150px; font-size: 25px"
+              (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
+        <i class="fa fa-send-o"></i>
+        <br>
+        <span>Trasferisci ad altro comando</span>
+      </button>
+    </div>
+</div>
+  <div *ngIf="statoRichiestaString.length" class="row mt-3" style="place-content: center">
+    <!-- ALLERTA SEDE -->
+    <div class="clearfix w-25">
+      <button class="btn btn-sm btn-warning btn-no-hover w-100" style="height: 150px; font-size: 25px"
+              (click)="onAllertaSede(); $event.stopPropagation()">
+        <i class="fa fa-exclamation-triangle"></i>
+        <br>
+        <span>Allerta Sede</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-footer" [ngClass]="onNightMode()">
