@@ -21,7 +21,7 @@
             <app-filterbar-composizione [filtri]="filtri$ | async"
                                         [nightMode]="nightMode"
                                         [doubleMonitor]="doubleMonitor"
-                                        [competenze]="richiesta.competenze"
+                                        [competenze]="richiesta?.competenze"
                                         [disableComposizioneMode]="loadingListe"
                                         [composizionePartenza]="true"
                                         [prenotato]="prenotato"

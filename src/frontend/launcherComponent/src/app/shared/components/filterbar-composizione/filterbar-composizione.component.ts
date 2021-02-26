@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -6,7 +6,7 @@ import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable, Subscription } from 'rxjs';
-import {boxStatiClass, iconaStatiClass} from '../../helper/composizione-functions';
+import { boxStatiClass } from '../../helper/composizione-functions';
 import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
@@ -25,7 +25,7 @@ import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() prenotato: any;
@@ -43,6 +43,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -57,23 +59,33 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
                 private dropdownConfig: NgbDropdownConfig,
                 private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
-        this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        this.setDistaccamentiDefault();
+        this.subscription.add(
+          this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
+            this.richiesta = r;
+          })
+        );
         this.getViewState();
-        this.checkDistaccamenti();
+    }
+
+    ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.triageSummary?.currentValue) {
             this.setGenereMezzoDefault();
         }
-        if (changes?.competenze) {
+        if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
           this.checkDistaccamenti();
+        }
+        if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
+          this.checkDistaccamenti();
+          this.setDistaccamentiDefault();
         }
      }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
+        this.subscription.unsubscribe();
     }
 
     checkDistaccamenti(): void {
@@ -152,10 +164,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
 
     compPartenzaSwitch(event: Composizione): void {
         this.store.dispatch(new SwitchComposizione(event));
-    }
-
-    _iconaStatiClass(statoMezzo: string): string {
-        return iconaStatiClass(statoMezzo);
     }
 
     openDettaglioTriage(): void {
