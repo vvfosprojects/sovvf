@@ -48,6 +48,9 @@ using ComposizioneMezzi = SO115App.API.Models.Classi.Composizione.ComposizioneMe
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.Models.Classi.Filtri;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -66,8 +69,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
         private readonly IGetTurno _getTurno;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
+        private readonly IGetSquadraByCodiceMezzo _getSquadraByCodiceMezzo;
+        private readonly IGetComposizioneSquadre _getComposizioneSquadre;
 
-        #endregion
+        #endregion Servizi
 
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
@@ -80,7 +86,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             IGetTipologieByCodice getTipologieByCodice,
             IConfiguration configuration,
             IMemoryCache memoryCache,
-            IGetTurno getTurno)
+            IGetTurno getTurno,
+            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza,
+            IGetSquadraByCodiceMezzo getSquadraByCodiceMezzo,
+            IGetComposizioneSquadre getComposizioneSquadre)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
@@ -93,6 +102,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _configuration = configuration;
             _memoryCache = memoryCache;
             _getTurno = getTurno;
+            _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
+            _getSquadraByCodiceMezzo = getSquadraByCodiceMezzo;
+            _getComposizioneSquadre = getComposizioneSquadre;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
@@ -108,14 +120,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
             lstPreaccoppiati = lstPreaccoppiati.Select(p =>
-            { 
-                p.SquadreComposizione = p.SquadreComposizione.Select(comp => 
-                { 
-                    comp.Squadra.PreAccoppiato = true; 
-                    return comp; 
+            {
+                p.SquadreComposizione = p.SquadreComposizione.Select(comp =>
+                {
+                    comp.Squadra.PreAccoppiato = true;
+                    return comp;
                 }).ToList();
 
-                return p; 
+                return p;
             }).ToList();
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
@@ -134,7 +146,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         else
                             squadra.Stato = Squadra.StatoSquadra.InSede;
 
-                        var comp =  new Classi.Composizione.ComposizioneSquadre()
+                        var comp = new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
                             Squadra = squadra,
@@ -150,12 +162,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var lstMezzi = Task.Factory.StartNew(() => _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
-                .ContinueWith(lstmezzi => //Mapping 
+                .ContinueWith(lstmezzi => //Mapping
                 {
                     foreach (var mezzo in lstmezzi.Result)
                         mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
-
-
 
                     var composizioneMezzi = (from mezzo in lstmezzi.Result
                                              let kmGen = new Random().Next(1, 60).ToString()
@@ -187,6 +197,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                             if (c.Mezzo.Stato.Equals("In Sede"))
                                 c.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
+
+                            if (c.Mezzo.Stato.Equals("Sul Posto"))
+                            {
+                                c.IndirizzoIntervento = GetIndirizzoIntervento(c.Mezzo.IdRichiesta);
+                            }
+
+                            if (c.Mezzo.Stato.Equals("In Rientro"))
+                            {
+                                c.ListaSquadre = GetListaSquare(c.Mezzo.Codice, lstSquadre.Result);
+                            }
                         }
 
                         //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
@@ -248,6 +268,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 ComposizionePartenzaAvanzata = composizioneAvanzata
             };
+        }
+
+        private List<Classi.Composizione.ComposizioneSquadre> GetListaSquare(string codice, List<Classi.Composizione.ComposizioneSquadre> lstSquadre)
+        {
+            var listaCodiciSquadre = _getSquadraByCodiceMezzo.Get(codice).Select(x => x.IdSquadra).ToArray();
+            return lstSquadre.FindAll(x => listaCodiciSquadre.Any(s => s.Equals(x.Squadra.Codice)));
+        }
+
+        private string GetIndirizzoIntervento(string idRichiesta)
+        {
+            var sintesi = _getSintesiRichiestaAssistenza.GetSintesi(idRichiesta);
+
+            return sintesi.Localita.Indirizzo;
         }
 
         private List<Classi.Composizione.ComposizioneMezzi> FiltraMezzi(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
@@ -387,7 +420,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 case 2: ValoreCompetenza = 1000; break;
             }
 
-            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) 
+            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400)
                 + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo + ValoreCompetenza;
         }
 
@@ -410,7 +443,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 var response = await _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("DistanceMatrix").Value + $"&{origine}&{destination}&{mode}&{sensor}", queryString).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 using HttpContent content = response.Content;
-                
+
                 string data = await content.ReadAsStringAsync().ConfigureAwait(false);
                 distanza = JsonConvert.DeserializeObject<DistanceMatrix>(data);
 
@@ -457,7 +490,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
     internal class OrdinamentoSquadre
     {
-        RichiestaAssistenza _Richiesta;
+        private RichiestaAssistenza _Richiesta;
+
         public OrdinamentoSquadre(RichiestaAssistenza Richiesta)
         {
             _Richiesta = Richiesta;

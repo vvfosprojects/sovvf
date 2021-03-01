@@ -14,6 +14,7 @@ using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
 
@@ -115,8 +116,9 @@ namespace SO115App.CompositionRoot
 
             #region StatoSquadra
 
-            container.Register<ISetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.SetStatoSquadra>();
-            container.Register<IGetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.GetStatoSquadra>();
+            container.Register<ISetStatoSquadra, SetStatoSquadra>();
+            container.Register<IGetStatoSquadra, GetStatoSquadra>();
+            container.Register<IGetSquadraByCodiceMezzo, GetSquadreByCodiceMezzo>();
 
             #endregion StatoSquadra
 
