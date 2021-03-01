@@ -1,25 +1,27 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import {boxStatiClass, mezzoComposizioneBusy} from '../../helper/composizione-functions';
+import { boxStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { Sede } from '../../model/sede.model';
-import {Select} from '@ngxs/store';
-import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
-import {Observable, Subscription} from 'rxjs';
-import {ViewLayouts} from '../../interface/view.interface';
-import {Partenza} from '../../model/partenza.model';
-import {Squadra} from '../../model/squadra.model';
+import { Select } from '@ngxs/store';
+import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
+import { Observable, Subscription } from 'rxjs';
+import { ViewLayouts } from '../../interface/view.interface';
 
 @Component({
     selector: 'app-mezzo-composizione',
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit, OnChanges {
+export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy {
+
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    viewState: ViewLayouts;
+
     @Input() mezzoComp: MezzoComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() partenze: BoxPartenza[];
@@ -41,16 +43,14 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
-    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-
-    public sganciamentoDisabilitato = false;
-    private subscription = new Subscription();
-    viewState: ViewLayouts;
+    sganciamentoDisabilitato = false;
     itemPrenotatoInBox = false;
 
+    private subscription = new Subscription();
+
     constructor() {
-    this.getViewState();
+        this.getViewState();
     }
 
     ngOnInit(): void {
@@ -59,23 +59,29 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-      const boxPartenzaList = changes['boxPartenzaList'];
-      if (boxPartenzaList && boxPartenzaList.currentValue && boxPartenzaList.previousValue && this.boxPartenzaList.length > 0 && (boxPartenzaList.currentValue.length !== boxPartenzaList.previousValue.length)) {
-        let shouldSkip = true;
-        boxPartenzaList.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) ? shouldSkip = false : null);
-        if (shouldSkip) { return; }
-        boxPartenzaList.currentValue.forEach( x => x.mezzoComposizione && (x.mezzoComposizione.id !== this.mezzoComp.id) ? this.itemPrenotatoInBox = false :  null);
-      }
+        const boxPartenzaList = changes?.boxPartenzaList;
+        if (boxPartenzaList?.currentValue && boxPartenzaList?.previousValue && this.boxPartenzaList?.length && (boxPartenzaList?.currentValue?.length !== boxPartenzaList?.previousValue?.length)) {
+            let shouldSkip = true;
+            boxPartenzaList?.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione?.length) ? shouldSkip = false : null);
+            if (shouldSkip) {
+                return;
+            }
+            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione?.id !== this.mezzoComp?.id) ? this.itemPrenotatoInBox = false : null);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     getViewState(): void {
-      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     mezzoInPartenzaCheck(): void {
-      if (this.mezzoComp && this.mezzoComp.id && this.boxPartenzaList && this.boxPartenzaList.length > 1 ) {
-        this.boxPartenzaList.forEach( (x, i) => x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp.id) && this.boxPartenzaList[i + 1] ? this.itemPrenotatoInBox = true :  null);
-      }
+        if (this.mezzoComp && this.mezzoComp.id && this.boxPartenzaList && this.boxPartenzaList.length > 1) {
+            this.boxPartenzaList.forEach((x, i) => x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp.id) && this.boxPartenzaList[i + 1] ? this.itemPrenotatoInBox = true : null);
+        }
     }
 
     sganciamentoCheck(): void {
@@ -89,19 +95,19 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
 
     onClick(): void {
         if (this.itemBloccato) {
-          this.onSganciamento();
+            this.onSganciamento();
         } else {
-          if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
-            this.selezionato.emit(this.mezzoComp);
-            // mappa
-            if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-              if (!this.mezzoComp.mezzo.coordinateFake) {
-                this.mezzoDirection(this.mezzoComp);
-              }
+            if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
+                this.selezionato.emit(this.mezzoComp);
+                // mappa
+                if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
+                    if (!this.mezzoComp.mezzo.coordinateFake) {
+                        this.mezzoDirection(this.mezzoComp);
+                    }
+                }
+            } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
+                this.deselezionato.emit(this.mezzoComp);
             }
-          } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato  && !this.itemPrenotatoInBox) {
-            this.deselezionato.emit(this.mezzoComp);
-          }
         }
     }
 
@@ -170,7 +176,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
         }
 
         if (this.nightMode) {
-          returnClass += ' bg-moon-light text-white';
+            returnClass += ' bg-moon-light text-white';
         }
 
         return returnClass;
@@ -207,31 +213,4 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges {
     _boxStatiClass(statoMezzo: string): string {
         return boxStatiClass(statoMezzo);
     }
-
-  getSquadre(richiesta: SintesiRichiesta): string[] {
-
-    // const nomiSquadre: string[] = [];
-    const squadre = [];
-
-    if (richiesta.partenzeRichiesta) {
-      richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-        if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-          partenza.squadre.forEach((squadra: Squadra) => {
-            squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
-          });
-        }
-      });
-    } else {
-      return [];
-    }
-
-    function getUnique(arr, comp): any[] {
-      return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
-    }
-
-    // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
-
-    return squadre;
-  }
-
 }

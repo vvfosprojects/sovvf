@@ -18,11 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using System;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
@@ -36,14 +33,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(AggiornaStatoMezzoCommand command)
         {
             var richiesta = command.Richiesta;
-            var dataAdesso = DateTime.UtcNow;
+            var data = command.DataOraAggiornamento;
 
             var partenzaDaLavorare = richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
             richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, new CambioStatoMezzo()
             {
                 CodMezzo = command.IdMezzo,
-                DataOraAggiornamento = dataAdesso,
+                DataOraAggiornamento = data,
                 Stato = command.StatoMezzo
             });
 
@@ -56,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodRichiesta = richiesta.Codice,
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
-                DataOraAggiornamento = dataAdesso.AddSeconds(2),
+                DataOraAggiornamento = data,
                 StatoMezzo = command.StatoMezzo,
                 IdMezzo = command.IdMezzo
             });

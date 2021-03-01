@@ -55,7 +55,8 @@ import { GetListeComposizioneAvanzata } from '../../../../features/home/store/ac
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
-import { SelectSquadraComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { BoxPartenza } from '../../../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -215,6 +216,8 @@ export class MezziComposizioneState {
     reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione): void {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
+        const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
+        const boxPartenzaSelezionato = boxPartenzaList.filter((boxPartenza: BoxPartenza) => boxPartenza.id === idBoxPartenzaSelezionato)[0];
 
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
@@ -231,9 +234,11 @@ export class MezziComposizioneState {
                     }
                     dispatch([
                         new SelectMezzoComposizione(action.mezzoComp),
-                        new AddMezzoBoxPartenzaSelezionato(action.mezzoComp),
-                        new SelectSquadreComposizione(action.mezzoComp?.squadrePreaccoppiate)
+                        new AddMezzoBoxPartenzaSelezionato(action.mezzoComp)
                     ]);
+                    if (!boxPartenzaSelezionato?.squadreComposizione?.length && action.mezzoComp?.squadrePreaccoppiate) {
+                        dispatch(new SelectSquadreComposizione(action.mezzoComp.squadrePreaccoppiate));
+                    }
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
                 dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
@@ -270,11 +275,11 @@ export class MezziComposizioneState {
             idMezzoSelezionato: action.mezzoComp.mezzo.codice
         });
 
-        // verifico se devo filtrare la lista
+        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+
         if (boxPartenzaSelezionato && richiestaComposizione && (!boxPartenzaSelezionato?.squadreComposizione || boxPartenzaSelezionato?.squadreComposizione?.length <= 0)) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
@@ -284,12 +289,14 @@ export class MezziComposizioneState {
 
     @Action(UnselectMezzoComposizione)
     unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void {
+        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+        const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null
         });
-        const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 0 && richiestaComposizione) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
@@ -310,6 +317,7 @@ export class MezziComposizioneState {
         patchState({
             idMezzoComposizioneHover: action.idMezzoComp
         });
+
         if (!action.coordinateFake) {
             dispatch(new SetMarkerMezzoHover(action.idMezzoComp));
         }
@@ -320,6 +328,7 @@ export class MezziComposizioneState {
         patchState({
             idMezzoComposizioneHover: null
         });
+
         dispatch(new ClearMarkerMezzoHover());
     }
 
@@ -329,7 +338,9 @@ export class MezziComposizioneState {
             codiceMezzo: action.mezzoComp.mezzo.codice,
             codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
         };
+
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
+
         this.compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             if (action.addBoxPartenza) {
                 dispatch(new AddBoxPartenza());
@@ -344,6 +355,7 @@ export class MezziComposizioneState {
         const state = getState();
         const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo)[0] : null;
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
+
         if (idMezzoComp) {
             if (state.idMezziPrenotati.indexOf(idMezzoComp) === -1) {
                 setState(
@@ -379,6 +391,7 @@ export class MezziComposizioneState {
         const state = getState();
         const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo);
         const idMezzoComp = mezzoComp && mezzoComp.length > 0 ? mezzoComp[0].id : null;
+
         if (idMezzoComp && state.idMezziPrenotati.indexOf(idMezzoComp) > -1) {
             setState(
                 patch({

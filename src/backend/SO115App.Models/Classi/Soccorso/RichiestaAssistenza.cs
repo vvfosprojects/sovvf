@@ -108,7 +108,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, RichiestaAssistenza richiestaDaRientrare = null)
         {
             #region SWITCH STATO MEZZI
 
