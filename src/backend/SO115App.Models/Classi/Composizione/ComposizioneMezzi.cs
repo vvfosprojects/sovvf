@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Composizione
@@ -35,5 +36,15 @@ namespace SO115App.API.Models.Classi.Composizione
         ///   mezzi, dal più opportuno al meno opportuno nella composizione partenza
         /// </summary>
         public decimal IndiceOrdinamento { get; set; }
+
+        /// <summary>
+        ///   E' la lista delle squadre che sono state assegnate ad un mezzo
+        /// </summary>
+        public List<Squadra> ListaSquadre { get; set; }
+
+        /// <summary>
+        ///   Se un mezzo si trova sul posto indicare anche l'indirizzo dell'intervento
+        /// </summary>
+        public string IndirizzoIntervento { get; set; }
     }
 }
