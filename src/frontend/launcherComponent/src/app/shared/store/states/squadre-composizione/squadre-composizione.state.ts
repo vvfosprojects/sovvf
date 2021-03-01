@@ -20,6 +20,8 @@ import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { ReducerSelectMezzoComposizione, SelectMezzoComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
+import { mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -116,43 +118,48 @@ export class SquadreComposizioneState {
 
     @Action(SelectSquadraComposizione)
     selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione): void {
-        if (action.dividiSquadra) {
-          // Ripulisco lo store se sto dividendo squadra tramite shortcut
-          setState(
-            patch({
-              idSquadreComposizioneSelezionate: SquadreComposizioneStateDefaults.idSquadreComposizioneSelezionate,
-              idSquadreSelezionate: SquadreComposizioneStateDefaults.idSquadreSelezionate,
-            })
-          );
-        }
         const state = getState();
+        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+
+        if (action.dividiSquadra) {
+            // Ripulisco lo store se sto dividendo squadra tramite shortcut
+            setState(
+                patch({
+                    idSquadreComposizioneSelezionate: SquadreComposizioneStateDefaults.idSquadreComposizioneSelezionate,
+                    idSquadreSelezionate: SquadreComposizioneStateDefaults.idSquadreSelezionate,
+                })
+            );
+        }
         if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());
         }
         setState(
-          patch({
-            idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
-            idSquadreSelezionate: !state.idSquadreSelezionate.includes(action.squadraComp.squadra.id) ? append([action.squadraComp.squadra.id]) : state.idSquadreSelezionate,
-          })
+            patch({
+                idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(action.squadraComp.squadra.id) ? append([action.squadraComp.squadra.id]) : state.idSquadreSelezionate,
+            })
         );
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(action.squadraComp)) {
             this.store.dispatch(new AddSquadreBoxPartenza([action.squadraComp]));
+        }
+        if (!boxPartenzaSelezionato?.mezzoComposizione && action.squadraComp?.mezzoPreaccoppiato && !mezzoComposizioneBusy(action.squadraComp?.mezzoPreaccoppiato?.mezzo?.stato)) {
+            dispatch(new ReducerSelectMezzoComposizione(action.squadraComp.mezzoPreaccoppiato));
         }
     }
 
     @Action(SelectSquadreComposizione)
     selectSquadreComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadreComposizione): void {
         if (action.squadreComp) {
+            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+
             if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
                 dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
@@ -180,9 +187,9 @@ export class SquadreComposizioneState {
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
             if (richiestaComposizione && ((boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
-              dispatch(new GetListeComposizioneAvanzata());
+                dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
-              dispatch(new GetListaMezziSquadre());
+                dispatch(new GetListaMezziSquadre());
             }
         }
         setState(

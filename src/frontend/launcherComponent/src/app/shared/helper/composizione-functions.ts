@@ -23,6 +23,8 @@ export function mezzoComposizioneBusy(stato: StatoMezzo): boolean {
             return true;
         case StatoMezzo.Istituto:
             return true;
+        case StatoMezzo.Occupato:
+            return true;
         default:
             return false;
     }

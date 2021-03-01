@@ -11,4 +11,6 @@ export interface MezzoComposizione {
     istanteScadenzaSelezione?: any;
     idRichiesta?: string;
     squadrePreaccoppiate?: SquadraComposizione[];
+    listaSquadre?: SquadraComposizione[];
+    indirizzoIntervento?: string;
 }
