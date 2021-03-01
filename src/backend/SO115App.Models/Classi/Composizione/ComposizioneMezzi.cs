@@ -29,9 +29,10 @@ namespace SO115App.API.Models.Classi.Composizione
         public Mezzo Mezzo { get; set; }
 
         /// <summary>
-        /// Squadre preaccoppiate
+        ///   Squadre preaccoppiate
         /// </summary>
         public List<ComposizioneSquadre> SquadrePreaccoppiate { get; set; } = null;
+
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
         public DateTime? IstanteScadenzaSelezione { get; set; }
@@ -43,9 +44,9 @@ namespace SO115App.API.Models.Classi.Composizione
         public decimal IndiceOrdinamento { get; set; }
 
         /// <summary>
-        ///   E' la lista delle squadre che sono state assegnate ad un mezzo
+        ///   E' la lista delle squadre che si trovano su un mezzo in rientro
         /// </summary>
-        public List<Squadra> ListaSquadre { get; set; }
+        public List<ComposizioneSquadre> ListaSquadre { get; set; }
 
         /// <summary>
         ///   Se un mezzo si trova sul posto indicare anche l'indirizzo dell'intervento
