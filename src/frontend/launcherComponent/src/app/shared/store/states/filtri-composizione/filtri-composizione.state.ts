@@ -1,6 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { Composizione } from '../../../enum/composizione.enum';
 import {
     AddFiltroSelezionatoComposizione,
@@ -100,7 +99,8 @@ export class FiltriComposizioneState {
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
         if (composizioneMode === Composizione.Avanzata && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
-            dispatch(new GetListeComposizioneAvanzata());
+            // Lista loadata in filterbar-composizione per distaccamenti di competenza default.
+            // dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());

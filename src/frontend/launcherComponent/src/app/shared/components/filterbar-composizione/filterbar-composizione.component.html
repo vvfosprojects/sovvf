@@ -76,7 +76,7 @@
             <div class="row pt-1 mt-1"
                  [class.pb-2]="sostituzionePartenza">
                 <div class="col-3">
-                    <ng-select class="align-self-center font-xlargecustom"
+                    <ng-select class="align-self-center font-xlarge custom"
                                [items]="filtri?.turni"
                                [multiple]="false"
                                [closeOnSelect]="true"
@@ -89,7 +89,7 @@
                     </ng-select>
                 </div>
                 <div class="col-3">
-                    <ng-select class="align-self-center font-xlarge"
+                    <ng-select class="align-self-center font-xlarge custom"
                                style="max-height: 45px; overflow: auto"
                                [items]="filtri?.generiMezzi"
                                bindLabel="descrizione"
@@ -107,7 +107,7 @@
                     </div>
                     <div [class.col-4]="!composizionePartenza && sostituzionePartenza"
                          [class.col-3]="composizionePartenza && !sostituzionePartenza">
-                        <ng-select class="align-self-center font-xlargecustom"
+                        <ng-select class="align-self-center font-xlarge custom"
                                    [items]="filtri?.stati"
                                    bindLabel="descrizione"
                                    bindValue="codice"
@@ -148,8 +148,9 @@
                     </ng-select>
                     <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
                             (click)="setDistaccamentiDefault()"
+                            [disabled]="disableDefaultDistaccamenti"
                             ngbTooltip="Imposta Distaccamenti di competenza">
-                        <i class="fa fa-filter"></i>
+                        <i class="fa fa-filter pr-1"></i>
                     </button>
                     <span class="d-inline-flex ml-2">
                   <div class="font-xxlarge" style="text-align-last: center;">

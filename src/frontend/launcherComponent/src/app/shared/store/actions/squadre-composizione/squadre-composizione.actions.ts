@@ -35,14 +35,14 @@ export class UpdateSquadraComposizione {
 export class SelectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione';
 
-    constructor(public squadraComp: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
     }
 }
 
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
 
-    constructor(public squadraComp: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
     }
 }
 

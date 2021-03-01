@@ -60,7 +60,9 @@ export class SquadreComposizioneState {
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
             state.idSquadreSelezionate.forEach((idS: string) => {
                 if (s.id === idS) {
-                    squadreSelez.push(s);
+                    let duplicate = false;
+                    squadreSelez.forEach(x => x.id === s.id ? duplicate = true : null);
+                    !duplicate ? squadreSelez.push(s) : null;
                 }
             });
         });
@@ -114,6 +116,16 @@ export class SquadreComposizioneState {
 
     @Action(SelectSquadraComposizione)
     selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione): void {
+        if (action.dividiSquadra) {
+          // Ripulisco lo store se sto dividendo squadra tramite shortcut
+          setState(
+            patch({
+              idSquadreComposizioneSelezionate: SquadreComposizioneStateDefaults.idSquadreComposizioneSelezionate,
+              idSquadreSelezionate: SquadreComposizioneStateDefaults.idSquadreSelezionate,
+            })
+          );
+        }
+        const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
@@ -124,10 +136,10 @@ export class SquadreComposizioneState {
             dispatch(new GetListaMezziSquadre());
         }
         setState(
-            patch({
-                idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
-                idSquadreSelezionate: append([action.squadraComp.squadra.id])
-            })
+          patch({
+            idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
+            idSquadreSelezionate: !state.idSquadreSelezionate.includes(action.squadraComp.squadra.id) ? append([action.squadraComp.squadra.id]) : state.idSquadreSelezionate,
+          })
         );
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(action.squadraComp)) {
             this.store.dispatch(new AddSquadreBoxPartenza([action.squadraComp]));
@@ -167,10 +179,10 @@ export class SquadreComposizioneState {
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-            if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
-                dispatch(new GetListeComposizioneAvanzata());
+            if (richiestaComposizione && ((boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
+              dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
-                dispatch(new GetListaMezziSquadre());
+              dispatch(new GetListaMezziSquadre());
             }
         }
         setState(

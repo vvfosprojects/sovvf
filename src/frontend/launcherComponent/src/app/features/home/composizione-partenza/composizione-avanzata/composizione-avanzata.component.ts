@@ -21,13 +21,13 @@ import {
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
-    AddBoxPartenza,
-    ClearBoxPartenze,
-    RemoveBoxPartenza,
-    RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza,
-    RequestAddBoxPartenza,
-    DeselectBoxPartenza
+  AddBoxPartenza,
+  ClearBoxPartenze,
+  RemoveBoxPartenza,
+  RemoveMezzoBoxPartenzaSelezionato,
+  RemoveSquadraBoxPartenza,
+  RequestAddBoxPartenza,
+  DeselectBoxPartenza,
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSquadraComposizione,
@@ -415,8 +415,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
-    squadraShortcut(): void {
-        // ToDo: aggiungere nuovo box partenza con squadra già inserita
+    squadraShortcut(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new AddBoxPartenza());
+        this.dopoAggiungiBoxPartenza();
+        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione, true));
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
@@ -427,6 +429,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
         this.onClearDirection();
+        this.store.dispatch(new GetListeComposizioneAvanzata());
     }
 
     dopoAggiungiBoxPartenza(): void {

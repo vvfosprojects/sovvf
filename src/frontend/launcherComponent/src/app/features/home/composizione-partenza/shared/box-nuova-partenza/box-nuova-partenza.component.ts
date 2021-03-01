@@ -1,22 +1,31 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import {Observable, Subscription} from 'rxjs';
+import {BoxPartenzaState} from '../../../store/states/composizione-partenza/box-partenza.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
     templateUrl: './box-nuova-partenza.component.html',
     styleUrls: ['./box-nuova-partenza.component.css']
 })
-export class BoxNuovaPartenzaComponent {
+export class BoxNuovaPartenzaComponent implements OnDestroy {
+
+    // BoxPartenza Composizione
+    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
+    boxPartenzaList: BoxPartenza[];
+
+    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+
     @Input() partenza: BoxPartenza;
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
@@ -32,14 +41,27 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
-    @Output() squadraShortcut = new EventEmitter<boolean>();
+    @Output() squadraShortcut = new EventEmitter<SquadraComposizione>();
 
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
     itemBloccato: boolean;
 
+    private subscription = new Subscription();
+
+
     constructor(private store: Store) {
+      // Prendo i box partenza
+      this.subscription.add(
+        this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
+          this.boxPartenzaList = boxPartenza;
+        })
+      );
+    }
+
+    ngOnDestroy(): void {
+      this.subscription.unsubscribe();
     }
 
     onClick(): void {
@@ -198,7 +220,7 @@ export class BoxNuovaPartenzaComponent {
     }
 
     squadraShortcutEvent(): void {
-        this.squadraShortcut.emit();
+        this.squadraShortcut.emit(this.partenza.squadreComposizione[0]);
     }
 
 }
