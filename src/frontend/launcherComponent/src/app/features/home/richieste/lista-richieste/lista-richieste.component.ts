@@ -5,7 +5,6 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
-import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
 
@@ -15,8 +14,8 @@ import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-s
     styleUrls: ['./lista-richieste.component.scss']
 })
 export class ListaRichiesteComponent {
+
     @Input() ricerca: any;
-    @Input() split: boolean;
     @Input() richieste: SintesiRichiesta[] = [];
     @Input() richiestaHover: SintesiRichiesta;
     @Input() richiestaSelezionata: SintesiRichiesta;
@@ -68,7 +67,7 @@ export class ListaRichiesteComponent {
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
-    vociFiltroDefault = VociFiltroDefault;
+
     actionRichiestaArray: any[] = [];
 
     constructor() {
@@ -141,7 +140,6 @@ export class ListaRichiesteComponent {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    /* NgClass List Height */
     heightControl(): string {
         if (this.richieste.length > 0) {
             return this.listHeightClass;
@@ -150,7 +148,6 @@ export class ListaRichiesteComponent {
         }
     }
 
-    /* NgClass Card Status */
     cardClasses(r: SintesiRichiesta): any {
         const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
         const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;

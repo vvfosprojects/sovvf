@@ -12,7 +12,7 @@ import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interfa
     styleUrls: ['./richiesta-fissata.component.css']
 })
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
-    @Input() splitted: boolean;
+
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;

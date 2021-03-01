@@ -18,7 +18,8 @@
             </div>
             <span class="d-inline-block mr-2">{{ mezzoComp.mezzo.genere }}</span>
             <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato">
-                <div class="nowrap" ngbTooltip="Squadre PreAccoppiate">
+                <div class="d-inline-block nowrap"
+                     ngbTooltip="Squadre PreAccoppiate">
                     <ng-container>
                         <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popSquadre"
