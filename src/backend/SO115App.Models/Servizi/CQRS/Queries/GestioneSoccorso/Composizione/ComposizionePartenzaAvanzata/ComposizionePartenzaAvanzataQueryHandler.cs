@@ -342,6 +342,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     case null: s.Squadra.Turno = turnoCorrente.Codice; break;
                 }
 
+                if (s.Squadra.Stato == Squadra.StatoSquadra.InRientro)
+                    s.Squadra.Turno = turnoPrecedente.Codice;
+
                 return s;
             })
             .Where(s => s != null)
