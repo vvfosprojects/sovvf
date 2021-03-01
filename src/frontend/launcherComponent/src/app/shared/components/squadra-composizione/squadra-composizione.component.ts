@@ -1,19 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import {boxStatiSquadraClass, nomeStatiSquadra, squadraComposizioneBusy} from '../../helper/composizione-functions';
+import { boxStatiSquadraClass, nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
-import {ViewLayouts} from '../../interface/view.interface';
-import {Observable, Subscription} from 'rxjs';
-import {Select} from '@ngxs/store';
-import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
+import { ViewLayouts } from '../../interface/view.interface';
+import { Observable, Subscription } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 
 @Component({
     selector: 'app-squadra-composizione',
     templateUrl: './squadra-composizione.component.html',
     styleUrls: ['./squadra-composizione.component.css']
 })
-export class SquadraComposizioneComponent {
+export class SquadraComposizioneComponent implements OnDestroy {
+
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    viewState: ViewLayouts;
+
     @Input() squadraComp: SquadraComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() itemSelezionato: boolean;
@@ -28,29 +32,28 @@ export class SquadraComposizioneComponent {
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
-    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-
-
     private subscription = new Subscription();
-    viewState: ViewLayouts;
 
+    constructor() {
+        this.getViewState();
+    }
 
-  constructor() {
-      this.getViewState();
-  }
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
 
     getViewState(): void {
-      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     onClick(): void {
-      if (!this.squadraComposizioneBusy()) {
-        if (!this.itemSelezionato) {
-          this.selezionata.emit(this.squadraComp);
-        } else {
-          this.deselezionata.emit(this.squadraComp);
+        if (!this.squadraComposizioneBusy()) {
+            if (!this.itemSelezionato) {
+                this.selezionata.emit(this.squadraComp);
+            } else {
+                this.deselezionata.emit(this.squadraComp);
+            }
         }
-      }
     }
 
     onHoverIn(): void {
@@ -62,11 +65,11 @@ export class SquadraComposizioneComponent {
     }
 
     _boxStatiSquadraClass(statoSquadra: number): string {
-      return boxStatiSquadraClass(statoSquadra);
+        return boxStatiSquadraClass(statoSquadra);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {
-      return nomeStatiSquadra(statoSquadra);
+        return nomeStatiSquadra(statoSquadra);
     }
 
     liClass(): string {
