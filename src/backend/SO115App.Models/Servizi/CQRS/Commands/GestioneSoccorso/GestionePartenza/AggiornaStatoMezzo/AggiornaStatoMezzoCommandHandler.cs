@@ -53,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodRichiesta = richiesta.Codice,
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
-                DataOraAggiornamento = data.AddSeconds(1),
+                DataOraAggiornamento = data,
                 StatoMezzo = command.StatoMezzo,
                 IdMezzo = command.IdMezzo
             });

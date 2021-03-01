@@ -82,6 +82,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     throw new Exception(Costanti.PartenzaGiaPresente);
 
                 //GESTISCO STATI, EVENTI E PARTENZE
+
+                if(partenza.Mezzo.IdRichiesta != null && partenza.Mezzo.IdRichiesta != command.Richiesta.Codice)
+                {
+                    //SE IL MEZZO E' IN RIENTRO SU UN'ALTRA RICHIESTA, FACCIO RIENTRARE LE PARTENZE E GESTISCO LA RICHIESTA
+                    var richiestaDaRientrare = _getRichiestaById.GetByCodice(partenza.Mezzo.IdRichiesta);
+
+                    var partenzaDaRientrare = richiestaDaRientrare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
+
+                    if (partenzaDaRientrare.Mezzo.Stato == Costanti.MezzoInRientro)
+                    {
+                        command.Richiesta.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
+                        {
+                            CodMezzo = partenzaDaRientrare.Mezzo.Codice,
+                            DataOraAggiornamento = dataAdesso,
+                            Stato = Costanti.MezzoRientrato
+                        });
+
+                        _updateRichiestaAssistenza.UpDate(richiestaDaRientrare);
+                    }
+                }
+
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
