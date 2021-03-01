@@ -3,9 +3,6 @@ import { objectDiff } from '../../../../../shared/helper/function';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import {Select} from '@ngxs/store';
-import {Observable, Subscription} from 'rxjs';
-import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-box-personale',
@@ -14,17 +11,13 @@ import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni
 })
 export class BoxPersonaleComponent implements OnChanges {
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
-
     @Input() personaleQty: BoxPersonaleQty;
     @Input() personalePresenze: BoxPersonalePresenze;
+    @Input() nightMode: boolean;
 
     @Output() clickServizi = new EventEmitter<string>();
 
     personaleDiff: any;
-
-    private subscription = new Subscription();
 
     ngOnChanges(changes: SimpleChanges): void {
         const personaleQty = changes['personaleQty'];
@@ -41,7 +34,6 @@ export class BoxPersonaleComponent implements OnChanges {
         config.container = 'body';
         // config.openDelay = 200;
         // config.closeDelay = 100;
-        this.getSunMode();
     }
 
     checkDiff(key: string): string {
@@ -56,19 +48,11 @@ export class BoxPersonaleComponent implements OnChanges {
         }
     }
 
-    getSunMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
-        })
-      );
-    }
-
-    sunModeStyle(): string {
+    nightModeStyle(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'cod-int';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'moon-cod';
       }
       return value;

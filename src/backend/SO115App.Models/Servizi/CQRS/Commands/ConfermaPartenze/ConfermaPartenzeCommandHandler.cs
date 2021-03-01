@@ -96,7 +96,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     Stato = Costanti.MezzoInViaggio
                 });
 
-                dataAdesso.AddSeconds(1);
+                dataAdesso = dataAdesso.AddSeconds(1);
             }
 
             #region SGANCIAMENTO

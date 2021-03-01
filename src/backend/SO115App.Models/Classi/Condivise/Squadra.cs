@@ -69,6 +69,8 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Turno = Turno;
         }
 
+        public Squadra() { }
+
         public string Id { get; set; }
 
         public bool ColonnaMobile { get; set; }
@@ -108,5 +110,10 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string Turno { get; set; }
         public DateTime DataInServizio { get; set; }
+
+        /// <summary>
+        /// Definisce se la squadra è preaccoppiata con un mezzo
+        /// </summary>
+        public bool PreAccoppiato { get; set; } = false;
     }
 }

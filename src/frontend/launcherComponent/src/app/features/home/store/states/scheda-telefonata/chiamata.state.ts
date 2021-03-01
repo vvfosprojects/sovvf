@@ -43,7 +43,6 @@ import { ResponseInterface } from '../../../../../shared/interface/response.inte
 import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ConfirmModalComponent } from '../../../../../shared/modal/confirm-modal/confirm-modal.component';
-import { SchedaTelefonataInterface } from '../../../../../shared/interface/scheda-telefonata.interface';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -156,10 +155,12 @@ export class ChiamataState {
                 dispatch(new ResetChiamata());
                 break;
             case 'cerca':
-                dispatch(new MarkerChiamata(action.schedaTelefonata.markerChiamata));
-                dispatch(new SetCompetenze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
-                dispatch(new SetCountInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
-                dispatch(new SetInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
+                dispatch([
+                    new MarkerChiamata(action.schedaTelefonata.markerChiamata),
+                    new SetCompetenze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate),
+                    new SetCountInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate),
+                    new SetInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate)
+                ]);
                 break;
             case 'inserita':
                 dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
@@ -230,11 +231,10 @@ export class ChiamataState {
 
     @Action(InsertChiamata)
     insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
+        dispatch(new StartLoadingNuovaChiamata());
         patchState({
             azioneChiamata: action.azioneChiamata
         });
-        console.log('InsertChiamata', action.azioneChiamata);
-        dispatch(new StartLoadingNuovaChiamata());
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
@@ -250,7 +250,7 @@ export class ChiamataState {
                         true
                     )
                 ]);
-            } else if (richiesta && (action.nuovaRichiesta.emergenza || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+            } else if (richiesta && (action.nuovaRichiesta.chiamataUrgente || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
                     new ToggleChiamata(),
                     new SetRichiestaModifica(richiesta),
@@ -278,13 +278,19 @@ export class ChiamataState {
         const idUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser).id;
         if (!idRichiestaSelezionata && !idRichiestaGestione) {
             const currentPage = this.store.selectSnapshot(PaginationState.page);
-            dispatch(new GetListaRichieste({ page: currentPage }));
-            dispatch(new SetNeedRefresh(false));
+            dispatch([
+                new GetListaRichieste({ page: currentPage }),
+                new SetNeedRefresh(false)
+            ]);
         } else {
             dispatch(new SetNeedRefresh(true));
         }
-        dispatch(new StopLoadingNuovaChiamata());
-        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
+        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id) {
+            dispatch([
+                new StopLoadingNuovaChiamata(),
+                new ToggleChiamata()
+            ]);
+        } else {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }
@@ -323,7 +329,10 @@ export class ChiamataState {
                 (val) => {
                     switch (val) {
                         case 'ok':
-                            dispatch(new CestinaChiamata());
+                            dispatch([
+                                new CestinaChiamata(),
+                                new ToggleChiamata()
+                            ]);
                             break;
                         case 'ko':
                             console.log('[AnnullaChiamata] Azione annullata');
@@ -338,11 +347,12 @@ export class ChiamataState {
 
     @Action(CestinaChiamata)
     cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        dispatch(new ClearMarkerChiamata());
-        dispatch(new ResetChiamata());
-        dispatch(new ToggleChiamata());
-        dispatch(new ClearChiamata());
-        dispatch(new GetInitCentroMappa());
+        dispatch([
+            new ClearMarkerChiamata(),
+            new ResetChiamata(),
+            new ClearChiamata(),
+            new GetInitCentroMappa()
+        ]);
     }
 
     @Action(ClearChiamata)

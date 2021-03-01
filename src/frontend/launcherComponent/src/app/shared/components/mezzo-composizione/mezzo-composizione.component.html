@@ -1,20 +1,17 @@
-<li class="list-group-item cursor-pointer border px-0" (click)="onClick()" [class.bg-moon-light]="!sunMode" [class.text-white]="!sunMode"
+<li class="list-group-item cursor-pointer border px-0" (click)="onClick()"
     (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
-    [ngClass]="liClass()" [class.cursor-not-allowed]="itemBloccato"
+    [ngClass]="liClass()"
     [class.font-xlarge]="viewState.composizione.active">
     <div class="row px-3">
-        <hr *ngIf="itemBloccato" class="mezzo-bloccato-hr">
-        <div class="col-1 pr-0" [class.opacity-6]="itemBloccato">
-          <span class="fa fa-eercast mr-1"
-                [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)">
-          </span>
+        <div class="clearfix d-inline-flex">
+          <div class="" [ngClass]="_boxStatiClass(mezzoComp.mezzo.stato)" [ngbTooltip]="mezzoComp.mezzo.stato" placement="top"></div>
         </div>
-        <div class="clearfix w-50 pr-0" [class.opacity-6]="itemBloccato">
+        <div class="col pr-0">
             <span [ngbTooltip]="mezzoComp.mezzo.descrizione" [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7"
                   class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione | slice: 0:7}}</span>
             <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
             <span class="nowrap" *ngIf="mezzoComp.mezzo.preAccoppiato" ngbTooltip="Squadre PreAccoppiate">
-                <ng-container *ngIf=" getSquadre(richiesta) as squadre">
+                <ng-container>
                     <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                             [ngbPopover]="popSquadre" container="body" popoverTitle="Lista Squadre"
                             triggers="click" tabindex="0" style="cursor:pointer; vertical-align: baseline"
@@ -23,9 +20,11 @@
                         <i class="fa fa-users fa-fw ml-1"></i>
                     </button>
                     <ng-template #popSquadre>
-                        <div class="h6" *ngFor="let s of squadre">
-                            <span>{{ s['nome'] }}</span>
-                            <span> ({{ s['turno'] }})</span>
+                        <div class="h6">
+                            <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate">
+                              <span>{{s.squadra.nome}}</span>
+                              <span> {{s.squadra.turno}}</span>
+                            </div>
                         </div>
                     </ng-template>
                 </ng-container>
@@ -36,28 +35,16 @@
                 <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
                 <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}} min</span>
             </span>
-            <span *ngIf="mezzoComp.mezzo.coordinateFake">
-                <i class="icon-wifi text-warning ml-3 mr-1" ngbTooltip="GPS ASSENTE"></i>
-                <span class="d-inline-block">no GPS</span>
-            </span>
         </div>
-        <div *ngIf="viewState.composizione.active" class="clearfix text-right" [class.opacity-6]="itemBloccato" style="width: 40%;">
+        <div *ngIf="viewState.composizione.active" class="clearfix pr-2 text-right">
             <span class="" [ngClass]="badgeDistaccamentoClass()"
-                  [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione}}</span>
+                  [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione | competenzaFormat}}</span>
         </div>
-        <div *ngIf="!viewState.composizione.active" class="col-1 pl-0 text-right" [class.opacity-6]="itemBloccato">
+        <div *ngIf="!viewState.composizione.active" class="col-1 pl-0 text-right">
             <span class="" [ngClass]="badgeDistaccamentoClass()"
                   [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">{{mezzoComp.mezzo.distaccamento.descrizione
               | slice:0:3}}</span>
       </div>
-        <div *ngIf="itemBloccato" class="mezzo-bloccato">
-          <span (click)="onSganciamento(); $event.stopPropagation()"
-              class="badge badge-danger mr-1" style="cursor: pointer; vertical-align: text-bottom"
-              ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato">
-          <i class="fa fa-lg fa-lock mr-2"></i>
-          <span>Mezzo {{mezzoComp.mezzo.descrizione | slice: 0:7}} {{mezzoComp.mezzo.genere}} impegnato</span>
-        </span>
-        </div>
     </div>
     <app-prenotazione-progress-bar *ngIf="itemPrenotato && mezzoComp.istanteScadenzaSelezione" [mezzoComp]="mezzoComp"
                                    [itemPrenotato]="itemPrenotato" [graphic]="false"></app-prenotazione-progress-bar>

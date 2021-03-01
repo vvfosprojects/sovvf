@@ -32,6 +32,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import {ViewportState} from '../../shared/store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -58,6 +59,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     subscriptions: Subscription = new Subscription();
 
@@ -68,6 +71,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
             this.store.dispatch(new SetPageSize(10));
         }
         this.getUtente();
+        this.getNightMode();
         this.getRicerca();
         this.getPageSize();
         this.getUtentiGestione(true);
@@ -92,6 +96,14 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRicercaUtenti(ricerca: any): void {
         this.store.dispatch(new SetRicercaUtenti(ricerca));
+    }
+
+    getNightMode(): void {
+      this.subscriptions.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
     }
 
     onFiltroSediChange(filtroSede: string): void {

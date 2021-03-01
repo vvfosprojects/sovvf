@@ -9,6 +9,7 @@ import {CompPartenzaService} from '../../../core/service/comp-partenza-service/c
 import {
   ComposizioneSoccorsoAereoState, DettaglioAFM, EventiAFM
 } from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
   dettaglioAFM: DettaglioAFM;
   @Select(ComposizioneSoccorsoAereoState.eventiAFM) dataEventiAFM$: Observable<Utente>;
   eventiAFM: EventiAFM;
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
 
   subscription: Subscription = new Subscription();
   richiesta: SintesiRichiesta;
@@ -42,6 +45,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
     this.getUtente();
     this.getDettaglioAFM();
     this.getEventiAFM();
+    this.getNightMode();
     this.showAttivita = true;
     this.showDettaglio = false;
     this.modificaMotivazione = false;
@@ -60,6 +64,44 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
 
   onShowDettaglio(): void {
     this.showDettaglio = !this.showDettaglio;
+  }
+
+  getNightMode(): void {
+    this.subscription.add(
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
+      })
+    );
+  }
+
+  onNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = '';
+    } else if (this.nightMode) {
+      value = 'moon-text moon-mode';
+    }
+    return value;
+  }
+
+  textNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = ' cod-int';
+    } else if (this.nightMode) {
+      value = ' moon-text';
+    }
+    return value;
+  }
+
+  iconNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = ' guida';
+    } else if (this.nightMode) {
+      value = ' moon-text';
+    }
+    return value;
   }
 
   onModificaMotivazione(): void {

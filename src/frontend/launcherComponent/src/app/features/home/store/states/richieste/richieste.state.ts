@@ -37,7 +37,7 @@ import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from '../scheda-telefonata/richiesta-modifica.state';
 import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
-import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -319,7 +319,7 @@ export class RichiesteState {
             new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
             new SetMarkerRichiestaSelezionato(action.richiesta.id),
-            new RichiestaComposizione(action.richiesta)
+            new SetRichiestaComposizione(action.richiesta)
         ]);
     }
 
@@ -333,6 +333,7 @@ export class RichiesteState {
             dataOraAggiornamento: action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+            dispatch(new StopLoadingActionMezzo());
             },
             error => dispatch(new StopLoadingActionMezzo())
         );

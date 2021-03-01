@@ -1,11 +1,11 @@
-<div class="col-12 scroll-y" style="height: calc(100% - 50px)">
+<div class="col-12 scroll-y font-xlarge" style="height: calc(100% - 50px)">
     <ng-template [ngIf]="ricerca">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </ng-template>
     <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
         <ngb-tab [id]="ClassificazioneEnum.Competenza">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipCompetenza">
+                <div [ngbTooltip]="tipCompetenza" placement="top-left">
                     <i class="fa fa-square text-danger mr-2"></i>
                     <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }})</b>
                 </div>
@@ -26,7 +26,7 @@
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Differibile">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipDifferibile">
+                <div [ngbTooltip]="tipDifferibile" placement="top-left">
                     <i class="fa fa-square text-secondary mr-2"></i>
                     <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
                 </div>
@@ -46,7 +46,7 @@
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipConoscenza">
+                <div [ngbTooltip]="tipConoscenza" placement="top-left">
                     <i class="fa fa-square text-warning mr-2"></i>
                     <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }})</b>
                 </div>
@@ -67,7 +67,7 @@
         </ngb-tab>
         <ngb-tab id="Tutte">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipTutte">
+                <div [ngbTooltip]="tipTutte" placement="top-left">
                     <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipTutte>
@@ -87,6 +87,7 @@
     <ul class="my-2 list-unstyled">
         <app-scheda-contatto *ngFor="let scheda of schedeContatto"
                              [scheda]="scheda"
+                             [nightMode]="nightMode"
                              [idVisualizzati]="idVisualizzati"
                              [idCollapsed]="idCollapsed"
                              [idSchedaContattoHover]="codiceSchedaContattoHover"

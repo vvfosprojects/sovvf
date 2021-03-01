@@ -21,6 +21,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
@@ -28,6 +29,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
@@ -47,6 +49,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _listaMezziMarkerHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperRichiesta;
 
         public NotificationAggiornaStatoMezzo(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
@@ -56,7 +59,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           IQueryHandler<MezziMarkerQuery, MezziMarkerResult> listaMezziMarkerHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          MapperRichiestaAssistenzaSuSintesi mapperRichiesta)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -67,6 +71,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _listaMezziMarkerHandler = listaMezziMarkerHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _mapperRichiesta = mapperRichiesta;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -87,8 +92,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 },
                 CodiciSede = SediDaNotificare.ToArray()
             };
-            var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
+            //var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+            //intervento.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Codice == intervento.CodRichiesta);
+
+            intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
 
             Task.Factory.StartNew(() =>
             {

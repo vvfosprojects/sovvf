@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -11,20 +11,28 @@ import { SquadraComposizione } from '../../../../../shared/interface/squadra-com
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import {Observable, Subscription} from 'rxjs';
-import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import {BoxPartenzaState} from '../../../store/states/composizione-partenza/box-partenza.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
     templateUrl: './box-nuova-partenza.component.html',
     styleUrls: ['./box-nuova-partenza.component.css']
 })
-export class BoxNuovaPartenzaComponent {
+export class BoxNuovaPartenzaComponent implements OnDestroy {
+
+    // BoxPartenza Composizione
+    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
+    boxPartenzaList: BoxPartenza[];
+
+    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+
     @Input() partenza: BoxPartenza;
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
     @Input() itemSelezionato: boolean;
     @Input() itemHover: boolean;
     @Input() itemOccupato: boolean;
+    @Input() nightMode: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -33,19 +41,27 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
+    @Output() squadraShortcut = new EventEmitter<SquadraComposizione>();
 
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
 
     itemBloccato: boolean;
 
     private subscription = new Subscription();
 
+
     constructor(private store: Store) {
-      this.getSunMode();
+      // Prendo i box partenza
+      this.subscription.add(
+        this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
+          this.boxPartenzaList = boxPartenza;
+        })
+      );
+    }
+
+    ngOnDestroy(): void {
+      this.subscription.unsubscribe();
     }
 
     onClick(): void {
@@ -67,19 +83,11 @@ export class BoxNuovaPartenzaComponent {
         this.eliminato.emit(this.partenza);
     }
 
-    getSunMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
-        })
-      );
-    }
-
-    sunModeBg(): string {
+    nightModeBg(): string {
       let value = '';
-      if (this.sunMode) {
+      if (!this.nightMode) {
         value = 'bg-light';
-      } else if (!this.sunMode) {
+      } else if (this.nightMode) {
         value = 'bg-moon-light';
       }
       return value;
@@ -110,7 +118,7 @@ export class BoxNuovaPartenzaComponent {
                 const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
-                if (this.sunMode) {
+                if (!this.nightMode) {
                   returnClass = 'bg-light ';
                 } else { returnClass = 'bg-dark '; }
 
@@ -209,6 +217,10 @@ export class BoxNuovaPartenzaComponent {
         if (this.compPartenzaMode === Composizione.Veloce) {
             this.hoverOut.emit();
         }
+    }
+
+    squadraShortcutEvent(): void {
+        this.squadraShortcut.emit(this.partenza.squadreComposizione[0]);
     }
 
 }

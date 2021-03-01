@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {ZoneEmergenzaState} from '../../../store/states/filterbar/zone-emergenza.state';
 import {makeCopy} from '../../../../../shared/helper/function';
+import {ImpostazioniState} from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
   selector: 'app-modal-zona-emergenza',
@@ -11,6 +12,9 @@ import {makeCopy} from '../../../../../shared/helper/function';
   styleUrls: ['./modal-zona-emergenza.component.css']
 })
 export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
+
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
 
   nessunaZonaSelected = false;
   nessunaZonaLocked = false;
@@ -22,6 +26,7 @@ export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
       const zoneEmergenza = makeCopy(this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenza));
       this.zonaEmergenzaArrayFake = zoneEmergenza;
       console.log('zonaEmergenzaArrayFake ', this.zonaEmergenzaArrayFake);
+      this.getNightMode();
   }
 
   ngOnInIt(): void {
@@ -31,6 +36,24 @@ export class ModalZonaEmergenzaComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  getNightMode(): void {
+    this.subscription.add(
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
+      })
+    );
+  }
+
+  onNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = '';
+    } else if (this.nightMode) {
+      value = ' moon-mode';
+    }
+    return value;
   }
 
   chiudiModalFiltriTipologia(closeRes: string): void {

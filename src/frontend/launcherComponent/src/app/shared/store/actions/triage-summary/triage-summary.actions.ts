@@ -10,3 +10,10 @@ export class SetTriageSummary {
 export class ClearTriageSummary {
     static readonly type = '[TriageSummary] Clear Triage Summary';
 }
+
+export class SetSchedaContattoTriageSummary {
+    static readonly type = '[TriageSummary] Set Scheda Contatto Triage Summary';
+
+    constructor(public codScheda: string) {
+    }
+}

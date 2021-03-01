@@ -42,6 +42,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
                         .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
                         .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
+                        .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia))
                         );
                 _mapper = mapConfing.CreateMapper();
                 return _mapper.Map<SintesiRichiesta>(richiesta);
@@ -62,6 +63,9 @@ namespace SO115App.Models.Servizi.CustomMapper
                     if (!(evento is Telefonata) && !(evento is AssegnazionePriorita))
                     {
                         var utente = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
+
+                        if (ListaAttivita.Select(a => a.IdUtente).Contains(utente.Id)) 
+                            continue;
 
                         AttivitaUtente attivita = new AttivitaUtente()
                         {
@@ -101,7 +105,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                 };
             }
 
-            return ListaAttivita;
+            return ListaAttivita.Distinct().ToList();
         }
     }
 }

@@ -1,9 +1,9 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenzaSelezionato,
-    AddSquadraBoxPartenza,
+    AddSquadreBoxPartenza,
     ClearBoxPartenze,
     RemoveBoxPartenza,
     RemoveBoxPartenzaByMezzoId,
@@ -71,7 +71,7 @@ export class BoxPartenzaState {
         return disableConfirmPartenza(state.boxPartenzaList, true);
     }
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     @Action(RequestAddBoxPartenza)
@@ -142,7 +142,7 @@ export class BoxPartenzaState {
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
                 action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                    dispatch(new UnselectSquadraComposizione(squadra));
+                    dispatch(new UnselectSquadraComposizione(squadra, true));
                 });
             }
         }
@@ -258,14 +258,16 @@ export class BoxPartenzaState {
         // dispatch(new GetListeComposizioneAvanzata());
     }
 
-    @Action(AddSquadraBoxPartenza)
-    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadraBoxPartenza): void {
+    @Action(AddSquadreBoxPartenza)
+    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
-                        box.squadreComposizione.push(action.squadra);
+                        action.squadre.forEach((squadra: SquadraComposizione) => {
+                            box.squadreComposizione.push(squadra);
+                        });
                     }
                 });
             })

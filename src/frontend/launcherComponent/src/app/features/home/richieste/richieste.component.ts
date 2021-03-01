@@ -25,7 +25,7 @@ import {
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/scheda-telefonata/richiesta-modifica.actions';
-import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -49,7 +49,6 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
@@ -61,6 +60,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -96,9 +97,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
     loaderRichieste = true;
     listHeightClass = 'm-h-690';
     permessiFeature = PermissionFeatures;
@@ -121,7 +119,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Richieste creato');
     }
 
@@ -333,9 +330,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
     }
 
-    nuovaPartenza($event: SintesiRichiesta): void {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
-        this.store.dispatch(new RichiestaComposizione($event));
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
+        this.store.dispatch([
+            new SetMarkerRichiestaSelezionato(richiesta.id),
+            new SetRichiestaComposizione(richiesta)
+        ]);
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {

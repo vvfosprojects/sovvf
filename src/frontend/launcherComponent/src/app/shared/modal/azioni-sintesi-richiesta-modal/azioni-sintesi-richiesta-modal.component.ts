@@ -13,7 +13,6 @@ import {
   statoRichiestaColor
 } from '../../helper/function';
 import {ActionRichiestaModalComponent} from '../action-richiesta-modal/action-richiesta-modal.component';
-import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {
   ActionRichiesta,
   AllertaSede,
@@ -30,6 +29,7 @@ import {ModificaEntiModalComponent} from '../modifica-enti-modal/modifica-enti-m
 import {ModificaFonogrammaModalComponent} from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import {ClearEventiRichiesta, SetIdRichiestaEventi} from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
 import {EventiRichiestaComponent} from '../../../features/home/eventi/eventi-richiesta.component';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 
 @Component({
@@ -42,17 +42,19 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
-  @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-  doubleMonitor: boolean;
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
 
   subscription: Subscription = new Subscription();
 
+  doubleMonitor: boolean;
   richiesta: SintesiRichiesta;
   statoRichiestaString: Array<StatoRichiestaActions>;
 
 
   constructor(private modal: NgbActiveModal, private store: Store, private modalService: NgbModal) {
     this.getUtente();
+    this.getNightMode();
   }
 
   ngOnInit(): void {
@@ -62,6 +64,24 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  getNightMode(): void {
+    this.subscription.add(
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
+      })
+    );
+  }
+
+  onNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = '';
+    } else if (this.nightMode) {
+      value = 'moon-text moon-mode';
+    }
+    return value;
   }
 
   getUtente(): void {
@@ -213,6 +233,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
       });
     }
     modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+    modalModificaEntiIntervenuti.componentInstance.doubleMonitor = this.doubleMonitor;
     modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
     modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
       switch (res.status) {

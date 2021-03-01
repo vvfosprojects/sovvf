@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { iconaStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
+import {boxStatiClass, mezzoComposizioneBusy} from '../../helper/composizione-functions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { Sede } from '../../model/sede.model';
 import {Select} from '@ngxs/store';
@@ -13,14 +13,13 @@ import {Observable, Subscription} from 'rxjs';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Partenza} from '../../model/partenza.model';
 import {Squadra} from '../../model/squadra.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-mezzo-composizione',
     templateUrl: './mezzo-composizione.component.html',
     styleUrls: ['./mezzo-composizione.component.css']
 })
-export class MezzoComposizioneComponent implements OnInit {
+export class MezzoComposizioneComponent implements OnInit, OnChanges {
     @Input() mezzoComp: MezzoComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() partenze: BoxPartenza[];
@@ -29,6 +28,8 @@ export class MezzoComposizioneComponent implements OnInit {
     @Input() itemPrenotato: boolean;
     @Input() itemInPrenotazione: boolean;
     @Input() itemBloccato: boolean;
+    @Input() nightMode: boolean;
+    @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
@@ -42,24 +43,39 @@ export class MezzoComposizioneComponent implements OnInit {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
 
     public sganciamentoDisabilitato = false;
     private subscription = new Subscription();
     viewState: ViewLayouts;
+    itemPrenotatoInBox = false;
 
     constructor() {
     this.getViewState();
-    this.getSunMode();
     }
 
     ngOnInit(): void {
         this.sganciamentoCheck();
+        this.mezzoInPartenzaCheck();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+      const boxPartenzaList = changes['boxPartenzaList'];
+      if (boxPartenzaList && boxPartenzaList.currentValue && boxPartenzaList.previousValue && this.boxPartenzaList.length > 0 && (boxPartenzaList.currentValue.length !== boxPartenzaList.previousValue.length)) {
+        let shouldSkip = true;
+        boxPartenzaList.currentValue.forEach(x => (!x.mezzoComp && x.squadreComposizione.length) ? shouldSkip = false : null);
+        if (shouldSkip) { return; }
+        boxPartenzaList.currentValue.forEach( x => x.mezzoComposizione && (x.mezzoComposizione.id !== this.mezzoComp.id) ? this.itemPrenotatoInBox = false :  null);
+      }
     }
 
     getViewState(): void {
       this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+    }
+
+    mezzoInPartenzaCheck(): void {
+      if (this.mezzoComp && this.mezzoComp.id && this.boxPartenzaList && this.boxPartenzaList.length > 1 ) {
+        this.boxPartenzaList.forEach( (x, i) => x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp.id) && this.boxPartenzaList[i + 1] ? this.itemPrenotatoInBox = true :  null);
+      }
     }
 
     sganciamentoCheck(): void {
@@ -71,25 +87,21 @@ export class MezzoComposizioneComponent implements OnInit {
         }
     }
 
-    getSunMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
-        })
-      );
-    }
-
     onClick(): void {
-        if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
+        if (this.itemBloccato) {
+          this.onSganciamento();
+        } else {
+          if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
             this.selezionato.emit(this.mezzoComp);
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                if (!this.mezzoComp.mezzo.coordinateFake) {
-                    this.mezzoDirection(this.mezzoComp);
-                }
+              if (!this.mezzoComp.mezzo.coordinateFake) {
+                this.mezzoDirection(this.mezzoComp);
+              }
             }
-        } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
+          } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato  && !this.itemPrenotatoInBox) {
             this.deselezionato.emit(this.mezzoComp);
+          }
         }
     }
 
@@ -122,7 +134,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
         const hover = this.itemHover ? 'hover-si' : 'hover-no';
         const selezionato = this.itemSelezionato ? 'selezionato-si' : 'selezionato-no';
-        const prenotato = this.itemPrenotato ? 'prenotato-si' : 'prenotato-no';
+        const prenotato = (this.itemPrenotato || this.itemPrenotatoInBox) ? 'prenotato-si' : 'prenotato-no';
 
         switch (hover + '|' + selezionato + '|' + prenotato) {
             case 'hover-si|selezionato-no|prenotato-no':
@@ -157,6 +169,10 @@ export class MezzoComposizioneComponent implements OnInit {
             returnClass += ' diagonal-stripes bg-lightgrey';
         }
 
+        if (this.nightMode) {
+          returnClass += ' bg-moon-light text-white';
+        }
+
         return returnClass;
     }
 
@@ -188,8 +204,8 @@ export class MezzoComposizioneComponent implements OnInit {
         this.mezzoCoordinate.emit(mezzoDirection);
     }
 
-    _iconaStatiClass(statoMezzo: string): string {
-        return iconaStatiClass(statoMezzo);
+    _boxStatiClass(statoMezzo: string): string {
+        return boxStatiClass(statoMezzo);
     }
 
   getSquadre(richiesta: SintesiRichiesta): string[] {

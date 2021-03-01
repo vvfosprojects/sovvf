@@ -49,6 +49,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// </summary>
         public string Id { get; set; }
 
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
+
         /// <summary>
         ///   Identifica il codice della Chiamata
         /// </summary>
@@ -191,5 +193,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   consigliati, Priorità,ecc....)
         /// </summary>
         public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }

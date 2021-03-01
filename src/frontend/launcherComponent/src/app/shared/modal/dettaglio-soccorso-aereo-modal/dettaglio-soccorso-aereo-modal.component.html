@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div class="modal-header" [ngClass]="onNightMode()">
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'DETTAGLIO RICHIESTA SOCCORSO AEREO' }}
   </h4>
@@ -8,49 +8,49 @@
   </button>
 </div>
 
-<div class="modal-body pb-0">
+<div class="modal-body pb-3" [ngClass]="onNightMode()">
   <div class="row" style="font-size: x-large">
     <div class="col-4">
-      <span (click)="mostraAttivita = true" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
+      <span (click)="mostraAttivita = true" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
             style="padding: 10px; margin-left: 10px;margin-right: 2px; opacity: 0.8">Attività</span>
-      <span (click)="mostraAttivita = false" class="badge h6 mb-0 cursor-pointer badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
+      <span (click)="mostraAttivita = false" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
             style="padding: 10px; opacity: 0.8">Eventi</span>
     </div>
     <div class="clearfix d-inline-flex">
-      <span class="h6 w-100 mb-0 text-muted" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
+      <span class="h6 w-100 mb-0" [ngClass]="iconNightMode()" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
     </div>
   </div>
   <div class="row my-4 align-items-center">
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
-        <i class="guida fa fa-hashtag fa-fw mr-1"
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-hashtag fa-fw mr-1" [ngClass]="iconNightMode()"
            ngbTooltip="Identificativo richiesta" placement="bottom"></i>
-        <a class="h6 cod-int">
-          <span *ngIf="richiesta?.codiceRichiesta" class="font-soccorso-lg">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
+        <a class="h6" [ngClass]="textNightMode()">
+          <span *ngIf="richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
             <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codiceRichiesta.slice(richiesta?.codiceRichiesta.length - 5)}}</span>
           </span>
-          <span *ngIf="!richiesta?.codiceRichiesta" class="font-soccorso-lg">{{ richiesta?.codice.slice(0, -5) }}
+          <span *ngIf="!richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codice.slice(0, -5) }}
             <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codice.slice(richiesta?.codice.length - 5)}}</span>
           </span>
         </a>
       </div>
     </div>
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
-        <i class="guida fa fa-rss fa-fw mr-1"
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-rss fa-fw mr-1" [ngClass]="iconNightMode()"
            ngbTooltip="Data Trasmissione" placement="bottom"></i>
-        <a class="h6 cod-int">
-          <span class="font-soccorso-lg"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
+        <a class="h6" [ngClass]="textNightMode()">
+          <span class="font-xxlarge"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
           </span>
         </a>
       </div>
     </div>
     <div class="col-4">
-      <div class="h6 mb-1 nowrap font-soccorso-lg" style="text-align-last: center">
-        <i class="guida fa fa-address-book fa-fw mr-1"
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-address-book fa-fw mr-1" [ngClass]="iconNightMode()"
            ngbTooltip="Operatore SO115" placement="bottom"></i>
-        <a class="h6 cod-int">
-          <span *ngIf="richiesta?.operatore" class="font-soccorso-lg">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
+        <a class="h6" [ngClass]="textNightMode()">
+          <span *ngIf="richiesta?.operatore" class="font-xxlarge">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
           </span>
         </a>
       </div>
@@ -69,7 +69,7 @@
     <div class="row w-100">
       <div class="clearfix input-soccorso-format mr-3" style="width: 51%; margin-left: 2.5rem">
         <label for="localita" class="d-none">Località</label>
-        <i class="guida fa fa-map-marker fa-fw mr-1" ngbTooltip="Località" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-map-marker fa-fw mr-1" [ngClass]="iconNightMode()" ngbTooltip="Località" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="localita" [(ngModel)]="richiesta.localita.indirizzo" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
       </div>
       <div class="clearfix input-soccorso-format mr-2" style="width: 20%">
@@ -86,24 +86,24 @@
     <div class="row w-100 my-4 d-inline-flex">
       <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
         <label for="tipologia" class="d-none">Tipologia Intervento</label>
-        <i class="guida fa fa-exclamation-triangle fa-fw mx-1" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
+        <i class="fa fa-exclamation-triangle fa-fw mx-1" [ngClass]="iconNightMode()" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
         <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
       </div>
       <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
-        <i class="guida fa fa-address-book-o fa-fw mx-3" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-address-book-o fa-fw mx-3" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" [ngClass]="iconNightMode()" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
       <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
-        <i class="guida fa fa-phone fa-fw mx-1" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-phone fa-fw mx-1" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" [ngClass]="iconNightMode()" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
       </div>
     </div>
     <div class="row d-inline-flex w-100">
       <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
         <label class="d-none" for="noteintervento">Note Intervento</label>
-        <i class="guida fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
+        <i class="fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" [ngClass]="iconNightMode()" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
         <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
                   placeholder="Nessuna Nota Pubblica disponibile"
                   class="form-control font-xlarge area-size" disabled></textarea>
@@ -230,7 +230,7 @@
 
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" [ngClass]="onNightMode()">
   <div class="row w-100">
     <div class="col-12 text-right">
       <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"

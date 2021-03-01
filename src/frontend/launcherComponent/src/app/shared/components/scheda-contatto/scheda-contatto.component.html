@@ -1,5 +1,5 @@
 <ng-container *ngIf="idVisualizzati.includes(scheda.codiceScheda)">
-    <li class="cursor-pointer border-top border-bottom py-1"
+    <li class="cursor-pointer border-top border-bottom font-xlarge py-1"
         [ngClass]="cardClasses(scheda.codiceScheda)"
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)"
         (mouseleave)="hoverOut.emit()"
@@ -18,7 +18,7 @@
                 <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
                 <ng-template #bassaPriorita>Scheda a bassa priorità</ng-template>
             </div>
-            <div class="col-2 px-0 py-1">
+            <div class="col-3 px-0 py-1">
                 {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss'}}
             </div>
             <div class="col py-1">

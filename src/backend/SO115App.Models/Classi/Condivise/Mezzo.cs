@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 
@@ -149,6 +150,6 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         /// Definisce se il mezzo è preaccoppiato con le squadre
         /// </summary>
-        public bool PreAccoppiato { get; set; }
+        public bool PreAccoppiato { get; set; } = false;
     }
 }

@@ -92,7 +92,7 @@ html {
 }
 
 .text-moon {
-  color: #fff !important;
+  color: #fdfdfd !important;
 }
 
 .modal-holder {
@@ -546,6 +546,10 @@ tag-input {
   background-color: #ff8800 !important;
 }
 
+.bg-verdemela {
+  background-color: #92b565 !important;
+}
+
 .no-resize {
   resize: none;
 }
@@ -803,4 +807,11 @@ tag-input {
   bottom: 0 !important;
   left: 50% !important;
   margin-left: -135px;
+}
+
+.box-stato {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
 }

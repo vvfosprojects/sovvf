@@ -34,6 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+
     constructor(private store: Store) {
         this.getDettagliTipologie(true);
         this.getViewState();

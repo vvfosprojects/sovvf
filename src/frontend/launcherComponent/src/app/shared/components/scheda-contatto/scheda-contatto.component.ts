@@ -22,6 +22,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() disableGestisci: boolean;
     @Input() disableRaggruppamento: boolean;
     @Input() disableEliminaRaggruppamento: boolean;
+    @Input() nightMode: boolean;
 
     @Output() hoverIn: EventEmitter<string> = new EventEmitter<string>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -39,6 +40,9 @@ export class SchedaContattoComponent implements OnChanges {
     classificazioneSchedaContatto = ClassificazioneSchedaContatto;
     priorita = Priorita;
 
+    constructor() {
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes && changes.scheda && changes.scheda.currentValue) {
             if (changes.scheda.currentValue.letta) {
@@ -49,15 +53,17 @@ export class SchedaContattoComponent implements OnChanges {
             if (changes.scheda.currentValue.gestita) {
                 this.btnGestita = { type: 'btn-outline-warning btn-gestita', tooltip: 'Segna come "Non Gestita"' };
             } else {
-                this.btnGestita = { type: 'btn-warning', tooltip: 'Segna come "Gestita"' };
+                this.btnGestita = { type: 'btn-warning text-moon', tooltip: 'Segna come "Gestita"' };
             }
         }
     }
 
     cardClasses(id: string): string {
         let cardClasses = '';
-        if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
+        if (this.idSchedaContattoHover === id && !this.scheda.gestita && !this.nightMode) {
             cardClasses = ' bg-light';
+        } else if (this.idSchedaContattoHover === id && !this.scheda.gestita && this.nightMode) {
+            cardClasses = '';
         }
         switch (this.scheda.classificazione) {
             case ClassificazioneSchedaContatto.Competenza:
@@ -73,6 +79,10 @@ export class SchedaContattoComponent implements OnChanges {
 
         if (this.scheda.gestita) {
             cardClasses += ' gestita';
+        }
+
+        if (this.nightMode) {
+          cardClasses += ' text-moon';
         }
 
         return cardClasses;

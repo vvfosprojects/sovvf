@@ -10,7 +10,12 @@ import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
-import { ClearDettaglioTipologiaTriageChiamata, ClearTriageChiamata, SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata } from '../../store/actions/triage-modal/triage-modal.actions';
+import {
+    ClearDettaglioTipologiaTriageChiamata,
+    ClearTriageChiamata,
+    SetDettaglioTipologiaTriageChiamata,
+    SetTipologiaTriageChiamata
+} from '../../store/actions/triage-modal/triage-modal.actions';
 import { TreeviewItem } from 'ngx-treeview';
 import { makeCopy } from '../../helper/function';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
@@ -37,8 +42,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     @Select(TriageChiamataModalState.triageData) triageData$: Observable<ItemTriageData[]>;
     triageData: ItemTriageData[];
 
-    abilitaTriage: boolean;
-
     tipologiaSelezionata: Tipologia;
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
@@ -47,8 +50,8 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     triageSummary: TriageSummary[];
 
-    checkedEmergenza: boolean;
-    disableEmergenza: boolean;
+    checkedUrgenza: boolean;
+    disableUrgenza: boolean;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -81,9 +84,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
                 if (dettagliTipologia) {
                     this.dettagliTipologia = dettagliTipologia;
-                    if (!dettagliTipologia.length) {
-                        this.setAbilitaTriage(true);
-                    }
                 }
             })
         );
@@ -159,21 +159,15 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             this.dettaglioTipologiaSelezionato = this.dettagliTipologia?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
         }
         this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia));
-        this.setAbilitaTriage(true);
     }
 
     onResetDettaglioTipologiaSelezionato(): void {
-        this.setAbilitaTriage(false);
         this.dettaglioTipologiaSelezionato = null;
         this.store.dispatch([
             new ClearDettaglioTipologiaTriageChiamata(),
             new ClearTriageChiamata()
         ]);
         this.clearTriageSummary();
-    }
-
-    setAbilitaTriage(value: boolean): void {
-        this.abilitaTriage = value;
     }
 
     clearTriageSummary(): void {
@@ -206,7 +200,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         this.triageSummary.push(summaryItem);
     }
 
-    getDomandaByCodice(rispostaValue: string): TreeviewItem {
+    getDomandaByRispostaValue(rispostaValue: string): TreeviewItem {
         const parentValue = rispostaValue.slice(2);
         return findItem(this.triage, parentValue);
 
@@ -225,10 +219,15 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    setEmergenza(): void {
-        // TODO: rimuovere (fake check emergenza)
-        this.checkedEmergenza = true;
+    getSuggerimentoByRispostaValue(rispostaValue: string): string {
+        const triageData = this.triageData.filter((data: ItemTriageData) => data.itemValue === rispostaValue)[0];
+        if (triageData) {
+            return triageData?.noteOperatore;
+        }
+        return null;
+    }
 
+    setEmergenza(): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
             nuovaRichiesta: this.nuovaRichiesta,
@@ -236,7 +235,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         };
         schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
         schedaTelefonata.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
-        schedaTelefonata.nuovaRichiesta.emergenza = true;
+        schedaTelefonata.nuovaRichiesta.chiamataUrgente = true;
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 

@@ -107,12 +107,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
+            lstPreaccoppiati = lstPreaccoppiati.Select(p =>
+            { 
+                p.SquadreComposizione = p.SquadreComposizione.Select(comp => 
+                { 
+                    comp.Squadra.PreAccoppiato = true; 
+                    return comp; 
+                }).ToList();
+
+                return p; 
+            }).ToList();
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
                 .ContinueWith(lstsquadre =>
                 {
                     var statiOperativi = _getStatoSquadre.Get(lstSedi);
+
+                    foreach (var squadra in lstsquadre.Result)
+                        squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
 
                     return lstsquadre.Result.Select(squadra =>
                     {
@@ -124,11 +137,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         var comp =  new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
-                            Squadra = squadra
+                            Squadra = squadra,
+                            MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
                         };
 
                         squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
-
 
                         return comp;
                     });
@@ -140,9 +153,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 .ContinueWith(lstmezzi => //Mapping 
                 {
                     foreach (var mezzo in lstmezzi.Result)
-                    {
                         mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
-                    }
+
+
 
                     var composizioneMezzi = (from mezzo in lstmezzi.Result
                                              let kmGen = new Random().Next(1, 60).ToString()
@@ -186,6 +199,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
                         c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
+
+                        c.SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == c.Mezzo.Codice)?.SquadreComposizione;
 
                         return c;
                     });

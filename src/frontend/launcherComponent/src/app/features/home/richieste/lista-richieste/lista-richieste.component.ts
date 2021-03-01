@@ -25,17 +25,23 @@ export class ListaRichiesteComponent {
     @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
+
     // Loading
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
+
     // Paginazione
     @Input() page: number;
     @Input() pageSize: number;
     @Input() totalItems: number;
+
     // FIltri Selezionati
     @Input() codiciFiltriSelezionati: string[];
+
+    // Night Mode
+    @Input() nightMode: boolean;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
@@ -70,11 +76,11 @@ export class ListaRichiesteComponent {
 
     // tslint:disable-next-line:use-lifecycle-interface
     ngOnChanges(): void {
-      if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
-        this.actionRichiestaArray.push(this.loadingActionRichiesta);
-      } else if (!this.loadingActionRichiesta) {
-        this.actionRichiestaArray.shift();
-      }
+        if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
+            this.actionRichiestaArray.push(this.loadingActionRichiesta);
+        } else if (!this.loadingActionRichiesta) {
+            this.actionRichiestaArray.shift();
+        }
     }
 
     /* Gestisce il singolo click sulla richiesta */

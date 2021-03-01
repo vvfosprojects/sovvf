@@ -63,13 +63,13 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
             else if (evento is ComposizionePartenze)
             {
                 EventoSintesi.CodiceMezzo = ((ComposizionePartenze)evento).Partenza.Mezzo.Codice;
-                EventoSintesi.Stato = Costanti.AssegnataRichiesta;
+                EventoSintesi.Stato = Costanti.MezzoInViaggio;
             }
-            else if (evento is UscitaPartenza)
-            {
-                EventoSintesi.CodiceMezzo = ((UscitaPartenza)evento).CodiceMezzo;
-                EventoSintesi.Stato = Costanti.MezzoInUscita;
-            }
+            //else if (evento is UscitaPartenza)
+            //{
+            //    EventoSintesi.CodiceMezzo = ((UscitaPartenza)evento).CodiceMezzo;
+            //    EventoSintesi.Stato = Costanti.MezzoInUscita;
+            //}
             else if (evento is ArrivoSulPosto)
             {
                 EventoSintesi.CodiceMezzo = ((ArrivoSulPosto)evento).CodiceMezzo;

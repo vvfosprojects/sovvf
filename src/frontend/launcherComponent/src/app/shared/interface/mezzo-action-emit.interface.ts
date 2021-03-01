@@ -4,6 +4,7 @@ export interface MezzoActionEmit {
     mezzoAction: StatoMezzoActions;
     oraEvento: {
         ora: number,
-        minuti: number
+        minuti: number,
+        secondi: number
     };
 }

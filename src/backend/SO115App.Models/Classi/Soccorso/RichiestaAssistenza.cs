@@ -104,7 +104,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
@@ -114,14 +114,13 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             if (stato.Stato == Costanti.MezzoInUscita)
             {
-                if(!Eventi.OfType<InizioPresaInCarico>().Any())
+                if (!Eventi.OfType<InizioPresaInCarico>().Any())
                 {
                     new InizioPresaInCarico(this, stato.DataOraAggiornamento.AddSeconds(1), CodOperatore);
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
                 }
 
-                var dataUscita = stato.DataOraAggiornamento.AddSeconds(2);
-                new UscitaPartenza(this, partenza.Mezzo.Codice, dataUscita, CodOperatore, partenza.Codice);
+                new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
 
                 partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 partenza.Mezzo.IdRichiesta = Id;
@@ -149,8 +148,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                //    new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
             }
             else if (stato.Stato == Costanti.MezzoRientrato)
             {
@@ -160,9 +159,10 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                //    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
+
             #endregion SWITCH STATO MEZZI
 
             foreach (var squadra in partenza.Squadre)
@@ -170,7 +170,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        /// Aggiorno lo stato della richiesta in base al vecchio stato
+        ///   Aggiorno lo stato della richiesta in base al vecchio stato
         /// </summary>
         /// <param name="stato">stato da attribuire alla richiesta</param>
         /// <param name="statoRichiesta">stato attuale della richiesta</param>
@@ -430,6 +430,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
         public virtual List<string> Tipologie { get; set; }
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
         ///   La località dove è avvenuto il fatto
@@ -920,8 +921,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (_eventi.Count != 0 && !_eventi.Any() && evento.Istante >= _eventi.Max(c => c.Istante))
-                throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
+            if (_eventi.Count > 0)
+                if (evento.Istante.AddSeconds(1) < _eventi.Max(c => c.Istante))
+                  if (!(evento is UscitaPartenza && _eventi.Where(e => e.Istante == _eventi.Max(c => c.Istante)).FirstOrDefault() is ComposizionePartenze))
+                    throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
 
             _eventi.Add(evento);
         }
@@ -973,5 +976,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   consigliati, Priorità,ecc....)
         /// </summary>
         public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }

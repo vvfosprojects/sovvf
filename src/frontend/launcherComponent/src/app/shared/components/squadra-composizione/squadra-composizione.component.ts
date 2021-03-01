@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { squadraComposizioneBusy } from '../../helper/composizione-functions';
+import {boxStatiSquadraClass, nomeStatiSquadra, squadraComposizioneBusy} from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
 import {ViewLayouts} from '../../interface/view.interface';
 import {Observable, Subscription} from 'rxjs';
 import {Select} from '@ngxs/store';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -21,6 +20,7 @@ export class SquadraComposizioneComponent {
     @Input() itemHover: boolean;
     @Input() itemPrenotato: boolean;
     @Input() itemBloccato: boolean;
+    @Input() nightMode: boolean;
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
     @Output() deselezionata = new EventEmitter<SquadraComposizione>();
@@ -30,8 +30,6 @@ export class SquadraComposizioneComponent {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
 
     private subscription = new Subscription();
     viewState: ViewLayouts;
@@ -39,7 +37,6 @@ export class SquadraComposizioneComponent {
 
   constructor() {
       this.getViewState();
-      this.getSunMode();
   }
 
     getViewState(): void {
@@ -56,20 +53,20 @@ export class SquadraComposizioneComponent {
       }
     }
 
-    getSunMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
-        })
-      );
-    }
-
     onHoverIn(): void {
         this.hoverIn.emit(this.squadraComp);
     }
 
     onHoverOut(): void {
         this.hoverOut.emit(this.squadraComp);
+    }
+
+    _boxStatiSquadraClass(statoSquadra: number): string {
+      return boxStatiSquadraClass(statoSquadra);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+      return nomeStatiSquadra(statoSquadra);
     }
 
     liClass(): string {

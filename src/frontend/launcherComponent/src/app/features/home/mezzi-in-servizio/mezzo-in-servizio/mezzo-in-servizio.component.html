@@ -1,4 +1,4 @@
-<div class="row border rounded shadow-sm p-2 h-100"
+<div class="row border rounded shadow-sm p-2 h-100 font-xlarge" [class.moon-text]="nightMode" [class.bg-moon-light]="nightMode"
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
      (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
@@ -11,7 +11,7 @@
             <!-- Prima Colonna (Prima riga) -->
             <div class="col-9">
                 <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori" [mostraNotifiche]="true"
-                           [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
+                           [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede" [doubleMonitor]="doubleMonitor"
                            (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                 </app-mezzo>
             </div>

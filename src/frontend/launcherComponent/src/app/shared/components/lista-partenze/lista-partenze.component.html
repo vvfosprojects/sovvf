@@ -5,11 +5,13 @@
     <div *ngFor="let p of partenze; let index = index">
         <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
             <app-partial-loader
-                    *ngIf="loadingActionMezzoArray.includes(p.mezzo.codice)"></app-partial-loader>
+                    *ngIf="loadingActionMezzo$ | async"></app-partial-loader>
             <app-partenza [partenza]="p"
+                          [listaEventi]="listaEventi"
                           [inGestione]="inGestione"
                           [statoRichiesta]="statoRichiesta"
                           [idDaSganciare]="idDaSganciare"
+                          [doubleMonitor]="doubleMonitor"
                           [index]="index"
                           (listaSquadre)="onListaSquadrePartenza($event)"
                           (actionMezzo)="onActionMezzo($event)"

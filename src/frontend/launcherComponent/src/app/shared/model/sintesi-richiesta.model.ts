@@ -188,11 +188,15 @@ export class SintesiRichiesta {
         /**
          * richiesta inviata in stato di emergenza
          */
-        public emergenza?: boolean,
+        public chiamataUrgente?: boolean,
         /**
          * resoconto triage
          */
-        public triageSummary?: TriageSummary[]
+        public triageSummary?: TriageSummary[],
+        /**
+         * eventi relativi a mezzi e velivoli
+         */
+        public eventi?: any
     ) {
     }
 }

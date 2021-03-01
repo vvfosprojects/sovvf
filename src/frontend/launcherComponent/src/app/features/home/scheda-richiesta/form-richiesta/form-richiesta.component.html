@@ -1,5 +1,4 @@
 <div class="row mt-2 h-100 shadow-lg">
-    <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- FORM RICHIESTA -->
     <div class="col-8 mx-auto border border-light">
         <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.richiestaForm" autocomplete="off">
@@ -278,8 +277,8 @@
                     <div class="wrapper-grid my-2" ngbTooltip="Necessaria la compilazione dei campi obbligatori"
                          [disableTooltip]="!formIsInvalid()">
                         <app-checkbox
-                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.emergenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.emergenza.value || formIsInvalid() }"
-                                (click)="setEmergenza()">
+                                [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.urgenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.urgenza.value || formIsInvalid() }"
+                                (click)="setUrgenza()">
                         </app-checkbox>
                     </div>
                     <div class="wrapper-grid">
@@ -397,11 +396,13 @@
     <!-- Resoconto triage -->
     <div class="col-4 h-100 bg-lightgrey scroll-y"
          [class.pt-3]="dettaglioTipologiaSelezionato">
-        <app-triage-summary [tipologie]="f.tipologie?.value"
-                            [dettaglioTipologia]="dettaglioTipologiaSelezionato"
-                            [schedaContatto]="schedaContatto"
-                            [countInterventiProssimita]="countInterventiProssimita"
-                            [interventiProssimita]="interventiProssimita">
-        </app-triage-summary>
+        <div class="px-3">
+            <app-triage-summary [tipologie]="f.tipologie?.value"
+                                [dettaglioTipologia]="dettaglioTipologiaSelezionato"
+                                [codSchedaContatto]="schedaContatto?.codiceScheda"
+                                [countInterventiProssimita]="countInterventiProssimita"
+                                [interventiProssimita]="interventiProssimita">
+            </app-triage-summary>
+        </div>
     </div>
 </div>

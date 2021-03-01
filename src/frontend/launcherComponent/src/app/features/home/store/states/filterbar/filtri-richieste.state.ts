@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { HomeState } from '../home.state';
 import { _isStatico } from '../../../../../shared/helper/function-filtro';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
@@ -86,7 +85,7 @@ export class FiltriRichiesteState {
 
     @Selector()
     static filtriTipologie(state: FiltriRichiesteStateModel): VoceFiltro[] {
-        return state.filtriRichieste;
+        return state.filtriStaticiRichieste;
     }
 
     @Selector()

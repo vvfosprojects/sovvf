@@ -1,34 +1,31 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
-import { ReducerFilterListeComposizione, RichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
+import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
-import {Observable, Subscription} from 'rxjs';
-import { iconaStatiClass } from '../../helper/composizione-functions';
-import {
-  AddFiltroSelezionatoComposizione,
-  ClearFiltriComposizione,
-  ResetFiltriComposizione,
-  SetFiltriDistaccamentoDefault
-} from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { Observable, Subscription } from 'rxjs';
+import { boxStatiClass } from '../../helper/composizione-functions';
+import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import {ViewLayouts} from '../../interface/view.interface';
-import {Sede} from '../../model/sede.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import { ViewLayouts } from '../../interface/view.interface';
+import { Sede } from '../../model/sede.model';
+import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TriageSummary } from '../../interface/triage-summary.interface';
+import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
+import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 
 @Component({
     selector: 'app-filterbar-composizione',
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnDestroy {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() prenotato: any;
@@ -38,83 +35,119 @@ export class FilterbarComposizioneComponent implements OnDestroy {
     @Input() composizionePartenza: boolean;
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
+    @Input() triageSummary: TriageSummary[];
 
-    @Output() confirmPrenota = new EventEmitter<boolean>();
+    @Output() confirmPrenota: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    sunMode: boolean;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
 
-
-    private subscription = new Subscription();
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
-    codCompetenzeDefault: string[] = [];
+    disableDefaultDistaccamenti = true;
+    distaccamentiSelezionati: string[];
+    generiMezzoSelezionato: string[];
+
+    private subscription = new Subscription();
 
     constructor(private store: Store,
-                private dropdownConfig: NgbDropdownConfig) {
+                private dropdownConfig: NgbDropdownConfig,
+                private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
-        this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        this.richiesta.competenze.forEach(x => this.codCompetenzeDefault.push(x.codice));
-        this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
+        this.subscription.add(
+          this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
+            this.richiesta = r;
+          })
+        );
         this.getViewState();
-        this.getSunMode();
     }
+
+    ngOnInit(): void {
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.triageSummary?.currentValue) {
+            this.setGenereMezzoDefault();
+        }
+        if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
+          this.checkDistaccamenti();
+        }
+        if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
+          this.checkDistaccamenti();
+          this.setDistaccamentiDefault();
+        }
+     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
+        this.subscription.unsubscribe();
+    }
+
+    checkDistaccamenti(): void {
+      const distaccamentiDefault = [];
+      this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
+      JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ?  this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
+    }
+
+    setDistaccamentiDefault(): void {
+        this.distaccamentiSelezionati = [];
+        this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+        const distaccamentiDefault = [];
+        this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+        this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+    }
+
+    _boxStatiClass(statoMezzo: string): string {
+      return boxStatiClass(statoMezzo);
+    }
+
+    setGenereMezzoDefault(): void {
+        this.generiMezzoSelezionato = getGeneriMezzoTriageSummary(this.triageSummary);
+        if (this.generiMezzoSelezionato) {
+            this.store.dispatch(new SetGenereMezzoDefault(this.generiMezzoSelezionato));
+        }
     }
 
     getViewState(): void {
-      this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     addFiltro(event: any, tipo: string): void {
-      this.store.dispatch(new StartListaComposizioneLoading());
-      if (event) {
-          if (event?.id || event?.descrizione) {
-              this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
-          } else {
-              this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
-          }
-          this.nuovaPartenza(this.richiesta);
-          this.update();
-      }
+        this.store.dispatch(new StartListaComposizioneLoading());
+        if (event) {
+            if (event?.id || event?.descrizione) {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            } else {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+            }
+            this.nuovaPartenza(this.richiesta);
+            this.update();
+        }
     }
 
-    getSunMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.sunMode = !nightMode;
-        })
-      );
-    }
-
-    sunModeBg(): string {
-      let value = '';
-      if (this.sunMode) {
-        value = 'bg-light';
-      } else if (!this.sunMode) {
-        value = 'bg-moon-light';
-      }
-      return value;
+    nightModeBg(): string {
+        let value = '';
+        if (!this.nightMode) {
+            value = 'bg-light';
+        } else if (this.nightMode) {
+            value = 'bg-moon-light';
+        }
+        return value;
     }
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
-        if (tipo === 'codiceDistaccamento') {
-          this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-          this.update();
-        } else { this.update(); }
+        this.update();
     }
 
     resetFiltri(): void {
-      this.store.dispatch(new ClearFiltriComposizione());
-      this.store.dispatch(new SetFiltriDistaccamentoDefault(this.codCompetenzeDefault));
-      this.update();
+        this.store.dispatch(new ClearFiltriComposizione());
+        this.update();
     }
 
     update(): void {
@@ -133,8 +166,27 @@ export class FilterbarComposizioneComponent implements OnDestroy {
         this.store.dispatch(new SwitchComposizione(event));
     }
 
-    _iconaStatiClass(statoMezzo: string): string {
-        return iconaStatiClass(statoMezzo);
+    openDettaglioTriage(): void {
+        let dettaglioTriageModal: any;
+        if (this.doubleMonitor) {
+            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        } else {
+            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+        }
+        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
+        dettaglioTriageModal.componentInstance.tipologie = this.richiesta.tipologie;
+        dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
+        dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
     }
 
     _confirmPrenota(): void {
@@ -147,14 +199,13 @@ export class FilterbarComposizioneComponent implements OnDestroy {
             const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
             this.store.dispatch([
                 new SetMarkerRichiestaSelezionato(idRichiesta),
-                new RichiestaComposizione(richiesta)
+                new SetRichiestaComposizione(richiesta)
             ]);
         } else {
             this.store.dispatch([
                 new SetMarkerRichiestaSelezionato(richiesta.id),
-                new RichiestaComposizione(richiesta)
+                new SetRichiestaComposizione(richiesta)
             ]);
         }
-
     }
 }

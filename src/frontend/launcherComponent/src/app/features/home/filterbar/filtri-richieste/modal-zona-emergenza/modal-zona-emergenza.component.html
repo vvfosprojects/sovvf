@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div class="modal-header" [ngClass]="onNightMode()" [class.text-moon]="nightMode">
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'SELEZIONA ZONA EMERGENZA' | uppercase }}
   </h4>
@@ -8,7 +8,7 @@
   </button>
 </div>
 
-<div class="modal-body pb-0">
+<div class="modal-body" [ngClass]="onNightMode()">
   <div>
     <button (click)="onResetZoneEmergenza()" class="btn btn-no-hover btn-secondary btn-reset-filtri" ngbTooltip="Reset filtri zona emergenza" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
       <i class="fa fa-undo px-1"></i>
@@ -24,17 +24,13 @@
   </div>
 </div>
 
-<div class="modal-footer">
-  <div class="row w-100">
-    <div class="col-12 text-right">
-      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
-              (click)="chiudiModalFiltriTipologia('ko')">
-        {{ 'Chiudi' | uppercase }}
-      </button>
-      <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
-              (click)="chiudiModalFiltriTipologia('ok')" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
-        {{ 'Applica Filtro' | uppercase }}
-      </button>
-    </div>
-  </div>
+<div class="modal-footer" style="place-content: space-between;" [ngClass]="onNightMode()">
+  <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
+          (click)="chiudiModalFiltriTipologia('ok')" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
+    {{ 'Applica Filtro' | uppercase }}
+  </button>
+  <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
+          (click)="chiudiModalFiltriTipologia('ko')">
+    {{ 'Chiudi' | uppercase }}
+  </button>
 </div>
