@@ -69,7 +69,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             else
                 ListaPosizioneFlotta = posizioneFlotta;
 
-            var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
+            //var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
 
             var ListaMezzi = new List<Mezzo>();
 
@@ -102,8 +102,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 //if (!mezzoFake.Equals("CMOB"))
                 //{
-                var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(m.Descrizione));
-                var mezzo = MapMezzo(anagraficaMezzo, m);
+                //var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(m.Descrizione));
+                var mezzo = MapMezzo(m);
                 if (mezzo != null)
                 {
                     //listaMezziBySedeAppo.Add(mezzo);
@@ -156,7 +156,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             return listaMezzi;
         }
 
-        private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoDTO mezzoDto)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
             var coordinate = new Coordinate(0, 0);
             //bool CoordinateFake = false;
@@ -169,56 +169,38 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                 distaccamento != null ? distaccamento.Coordinate : null,
                                 "", "", "", "", "");
 
-            if (anagraficaMezzo != null)
-            {
-                Mezzo mezzo = new Mezzo(mezzoDto.CodiceMezzo,
-                    mezzoDto.Descrizione,
-                    anagraficaMezzo.GenereMezzo.Codice,
-                    GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoDto.Movimentazione.StatoOperativo),
-                   mezzoDto.CodiceDistaccamento, sede, coordinate)
-                {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                };
-                return mezzo;
-            }
-            else
-            {
-                var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere,
+            Mezzo mezzo = new Mezzo(mezzoDto.CodiceMezzo,
+                mezzoDto.Descrizione,
+                mezzoDto.Genere,
                 GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
-                mezzoDto.CodiceDistaccamento, sede, coordinate)
-                {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                };
-                return mezzo;
-            }
+               mezzoDto.CodiceDistaccamento, sede, coordinate)
+            {
+                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+            };
+            return mezzo;
         }
 
-        private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
-        {
-            var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
-            try
-            {
-                using var _client = new HttpClient();
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+        //private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
+        //{
+        //    var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
+        //    try
+        //    {
+        //        using var _client = new HttpClient();
+        //        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
 
-                var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",", ListCodComando)}").Result;
-                response.EnsureSuccessStatusCode();
+        // var response =
+        // _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",",
+        // ListCodComando)}").Result; response.EnsureSuccessStatusCode();
 
-                if (response == null)
-                    throw new HttpRequestException();
+        // if (response == null) throw new HttpRequestException();
 
-                using HttpContent contentMezzo = response.Content;
-                var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
+        // using HttpContent contentMezzo = response.Content; var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
 
-                listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Elenco dei mezzi non disponibile");
-            }
+        // listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data); }
+        // catch (Exception e) { throw new Exception("Elenco dei mezzi non disponibile"); }
 
-            return listaAnagraficaMezzo;
-        }
+        //    return listaAnagraficaMezzo;
+        //}
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
         {
