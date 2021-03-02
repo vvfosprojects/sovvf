@@ -998,11 +998,11 @@
     "Id": "5",
     "CodiceSede": "RM.1000",
     "MezzoComposizione": {
-      "id": "O.21562",
+      "id": "O.24602",
       "mezzo": {
-        "codice": "O.21562",
+        "codice": "O.24602",
         "idRichiesta": null,
-        "descrizione": "21562",
+        "descrizione": "24602",
         "genere": "APS",
         "stato": "In Sede",
         "appartenenza": "CORP",
