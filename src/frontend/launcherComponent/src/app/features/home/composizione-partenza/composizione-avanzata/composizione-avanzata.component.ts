@@ -21,13 +21,13 @@ import {
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
-  AddBoxPartenza,
-  ClearBoxPartenze,
-  RemoveBoxPartenza,
-  RemoveMezzoBoxPartenzaSelezionato,
-  RemoveSquadraBoxPartenza,
-  RequestAddBoxPartenza,
-  DeselectBoxPartenza,
+    AddBoxPartenza,
+    ClearBoxPartenze,
+    RemoveBoxPartenza,
+    RemoveMezzoBoxPartenzaSelezionato,
+    RemoveSquadraBoxPartenza,
+    RequestAddBoxPartenza,
+    DeselectBoxPartenza,
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSquadraComposizione,
@@ -47,7 +47,6 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
@@ -58,13 +57,6 @@ import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-so
     styleUrls: ['./composizione-avanzata.component.css']
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
-
-    @Input() richiesta: SintesiRichiesta;
-    @Input() loadingInvioPartenza: boolean;
-    @Input() boxAttivi: boolean;
-    @Input() triageSummary: TriageSummary[];
-    @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -120,6 +112,14 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     totalItemsSquadre: number;
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
+
+
+    @Input() richiesta: SintesiRichiesta;
+    @Input() loadingInvioPartenza: boolean;
+    @Input() boxAttivi: boolean;
+    @Input() triageSummary: TriageSummary[];
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();
