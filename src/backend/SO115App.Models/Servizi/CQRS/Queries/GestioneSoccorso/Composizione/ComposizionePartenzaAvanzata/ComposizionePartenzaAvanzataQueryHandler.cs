@@ -204,7 +204,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
-                        c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
+                        c.IndiceOrdinamento = GetIndiceOrdinamento(query.Richiesta, c, c.Mezzo.CoordinateFake);
 
                         c.SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == c.Mezzo.Codice)?.SquadreComposizione;
 
@@ -392,35 +392,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             return ValoreCompetenza;
         }
-    }
 
-    internal class OrdinamentoMezzi
-    {
-        private readonly RichiestaAssistenza _Richiesta;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-
-        public OrdinamentoMezzi(RichiestaAssistenza Richiesta, IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration, IMemoryCache memoryCache)
-        {
-            _Richiesta = Richiesta;
-            _getTipologieByCodice = getTipologieByCodice;
-            _configuration = configuration;
-            _memoryCache = memoryCache;
-        }
-
-        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
+        private decimal GetIndiceOrdinamento(RichiestaAssistenza Richiesta, Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
 
-            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(_Richiesta.Tipologie, composizione.Mezzo.Genere);
+            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
             if (!CoordinateFake)
-                composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
+                composizione = GetDistanceByGoogle(composizione, Richiesta).Result;
 
             int ValoreCompetenza = 0;
-            switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
+            switch (Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
             {
                 case 0: ValoreCompetenza = 3000; break;
                 case 1: ValoreCompetenza = 2000; break;
