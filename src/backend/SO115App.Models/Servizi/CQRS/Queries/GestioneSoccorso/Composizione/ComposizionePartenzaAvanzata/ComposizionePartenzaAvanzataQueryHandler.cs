@@ -119,6 +119,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             var mezziPrenotati = _getMezziPrenotati.Get(query.CodiceSede);
+            var statiOperativiSquadre = _getStatoSquadre.Get(lstSedi);
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
             lstPreaccoppiati = lstPreaccoppiati.Select(p =>
@@ -136,15 +137,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
                 .ContinueWith(lstsquadre =>
                 {
-                    var statiOperativi = _getStatoSquadre.Get(lstSedi);
-
-                    foreach (var squadra in lstsquadre.Result)
-                        squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
-
                     return lstsquadre.Result.Select(squadra =>
                     {
-                        if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
-                            squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
+                        squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
+
+                        if (statiOperativiSquadre.Exists(x => x.IdSquadra.Equals(squadra.Id)))
+                            squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
                         else
                             squadra.Stato = Squadra.StatoSquadra.InSede;
 
@@ -169,9 +167,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
                 .ContinueWith(lstmezzi => //Mapping
                 {
-                    foreach (var mezzo in lstmezzi.Result)
-                        mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
-
                     var composizioneMezzi = (from mezzo in lstmezzi.Result
                                              let kmGen = new Random().Next(1, 60).ToString()
                                              let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
@@ -190,6 +185,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     return composizioneMezzi.Select(c =>
                     {
+                        c.Mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == c.Mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+
                         if (c.IstanteScadenzaSelezione < DateTime.Now)
                             c.IstanteScadenzaSelezione = null;
 
@@ -202,14 +199,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                                 c.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
 
                             if (c.Mezzo.Stato.Equals("Sul Posto"))
-                            {
                                 c.IndirizzoIntervento = GetIndirizzoIntervento(c.Mezzo.IdRichiesta);
-                            }
 
                             if (c.Mezzo.Stato.Equals("In Rientro"))
-                            {
                                 c.ListaSquadre = GetListaSquare(c.Mezzo.Codice, lstSquadre.Result);
-                            }
                         }
 
                         //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
