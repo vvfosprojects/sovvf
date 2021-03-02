@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -45,11 +45,11 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
 
-
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
     viewState: ViewLayouts;
     disableDefaultDistaccamenti = true;
+
     distaccamentiSelezionati: string[];
     generiMezzoSelezionato: string[];
 
@@ -60,9 +60,9 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
                 private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
         this.subscription.add(
-          this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
-            this.richiesta = r;
-          })
+            this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
+                this.richiesta = r;
+            })
         );
         this.getViewState();
     }
@@ -75,13 +75,13 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.setGenereMezzoDefault();
         }
         if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
-          this.checkDistaccamenti();
+            this.checkDistaccamenti();
         }
         if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
-          this.checkDistaccamenti();
-          this.setDistaccamentiDefault();
+            this.checkDistaccamenti();
+            this.setDistaccamentiDefault();
         }
-     }
+    }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
@@ -89,9 +89,9 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     checkDistaccamenti(): void {
-      const distaccamentiDefault = [];
-      this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
-      JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ?  this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
+        const distaccamentiDefault = [];
+        this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
+        JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ? this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
     }
 
     setDistaccamentiDefault(): void {
@@ -103,7 +103,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     _boxStatiClass(statoMezzo: string): string {
-      return boxStatiClass(statoMezzo);
+        return boxStatiClass(statoMezzo);
     }
 
     setGenereMezzoDefault(): void {

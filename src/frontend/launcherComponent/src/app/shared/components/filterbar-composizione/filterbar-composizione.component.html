@@ -71,37 +71,36 @@
             </div>
             <!-- Select Filtri -->
             <div [class.col-11]="composizionePartenza"
-             [class.align-self-center]="viewState.composizione.active"
-             [class.col-12]="sostituzionePartenza">
-            <div class="row pt-1 mt-1"
-                 [class.pb-2]="sostituzionePartenza">
-                <div class="col-3">
-                    <ng-select class="align-self-center font-xlarge custom"
-                               [items]="filtri?.turni"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [searchable]="false"
-                               [loading]="!filtri?.turni"
-                               (change)="addFiltro($event, 'turno')"
-                               (clear)="clearFiltri('turno')"
-                               placeholder="Turno: Corrente">
-                    </ng-select>
-                </div>
-                <div class="col-3">
-                    <ng-select class="align-self-center font-xlarge custom"
-                               style="max-height: 45px; overflow: auto"
-                               [items]="filtri?.generiMezzi"
-                               bindLabel="descrizione"
-                               bindValue="descrizione"
-                               [multiple]="true"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true" [appendTo]="'body'"
-                               [(ngModel)]="generiMezzoSelezionato"
+                 [class.align-self-center]="viewState.composizione.active"
+                 [class.col-12]="sostituzionePartenza">
+                <div class="row pt-1 mt-1"
+                     [class.pb-2]="sostituzionePartenza">
+                    <div class="col-3">
+                        <ng-select class="align-self-center font-xlarge custom"
+                                   [items]="filtri?.turni"
+                                   [multiple]="false"
+                                   [closeOnSelect]="true"
+                                   [hideSelected]="true"
+                                   [searchable]="false"
+                                   [loading]="!filtri?.turni"
+                                   (change)="addFiltro($event, 'turno')"
+                                   (clear)="clearFiltri('turno')"
+                                   placeholder="Turno: Corrente">
+                        </ng-select>
+                    </div>
+                    <div class="col-3">
+                        <ng-select class="align-self-center font-xlarge custom"
+                                   style="max-height: 45px; overflow: auto"
+                                   [items]="filtri?.generiMezzi"
+                                   bindLabel="descrizione"
+                                   bindValue="descrizione"
+                                   [multiple]="true"
+                                   [closeOnSelect]="true"
+                                   [hideSelected]="true" [appendTo]="'body'"
+                                   [(ngModel)]="generiMezzoSelezionato"
                                    [notFoundText]="notFoundText"
                                    [loading]="!filtri?.generiMezzi"
                                    (change)="addFiltro($event, 'tipoMezzo')"
-
                                    placeholder="Genere Mezzo: Tutti">
                         </ng-select>
                     </div>
@@ -121,44 +120,44 @@
                                    placeholder="Stato: Tutti">
                             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
                                 <div class="d-inline-flex">
-                                <div class="mr-2"
-                                     [ngClass]="_boxStatiClass(item.descrizione)"></div>
-                                {{item.descrizione}}</div>
-                        </ng-template>
-                    </ng-select>
+                                    <div class="mr-2"
+                                         [ngClass]="_boxStatiClass(item.descrizione)"></div>
+                                    {{item.descrizione}}</div>
+                            </ng-template>
+                        </ng-select>
+                    </div>
                 </div>
-            </div>
-            <div class="row pt-1"
-                 [class.pb-2]="sostituzionePartenza">
-                <div class="clearfix ml-3 mb-2 d-inline-flex" style="max-height: 75px; overflow: auto;">
-                    <ng-select class="align-self-center font-xlarge"
-                               style="width: 762px; min-width: 762px"
-                               [items]="filtri?.distaccamenti"
-                               bindLabel="descDistaccamento"
-                               bindValue="id"
-                               [multiple]="true"
-                               [appendTo]="'body'"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [(ngModel)]="distaccamentiSelezionati"
-                               [notFoundText]="notFoundText"
-                               [loading]="!filtri?.distaccamenti"
-                               (change)="addFiltro($event, 'codiceDistaccamento')"
-                               placeholder="Distaccamento: Tutti">
-                    </ng-select>
-                    <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
-                            (click)="setDistaccamentiDefault()"
-                            [disabled]="disableDefaultDistaccamenti"
-                            ngbTooltip="Imposta Distaccamenti di competenza">
-                        <i class="fa fa-filter pr-1"></i>
-                    </button>
-                    <span class="d-inline-flex ml-2">
-                  <div class="font-xxlarge" style="text-align-last: center;">
-                    <app-competenza *ngFor="let c of competenze; let i = index"
-                                    [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
-                  </div>
-              </span>
-                </div>
+                <div class="row pt-1"
+                     [class.pb-2]="sostituzionePartenza">
+                    <div class="clearfix ml-3 mb-2 d-inline-flex" style="max-height: 75px; overflow: auto;">
+                        <ng-select class="align-self-center font-xlarge"
+                                   style="width: 762px; min-width: 762px"
+                                   [items]="filtri?.distaccamenti"
+                                   bindLabel="descDistaccamento"
+                                   bindValue="id"
+                                   [multiple]="true"
+                                   [appendTo]="'body'"
+                                   [closeOnSelect]="true"
+                                   [hideSelected]="true"
+                                   [(ngModel)]="distaccamentiSelezionati"
+                                   [notFoundText]="notFoundText"
+                                   [loading]="!filtri?.distaccamenti"
+                                   (change)="addFiltro($event, 'codiceDistaccamento')"
+                                   placeholder="Distaccamento: Tutti">
+                        </ng-select>
+                        <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
+                                (click)="setDistaccamentiDefault()"
+                                [disabled]="disableDefaultDistaccamenti"
+                                ngbTooltip="Imposta Distaccamenti di competenza">
+                            <i class="fa fa-filter pr-1"></i>
+                        </button>
+                        <div class="d-inline-flex ml-2">
+                            <div class="font-xxlarge" style="text-align-last: center;">
+                                <app-competenza *ngFor="let c of competenze; let i = index"
+                                                [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@
                 {{ mezzoComp.mezzo.descrizione | slice: 0:7 }}
             </div>
             <span class="d-inline-block mr-2">{{ mezzoComp.mezzo.genere }}</span>
-            <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato">
+            <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
                 <div class="d-inline-block nowrap"
                      ngbTooltip="Squadre PreAccoppiate">
                     <ng-container>
@@ -66,7 +66,7 @@
                 <div class="d-inline-block nowrap"
                      ngbTooltip="Squadre su Mezzo per Intervento">
                     <ng-container>
-                        <button class="btn btn-success py-0 big_numbers font-double-monitor btn-no-hover"
+                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popSquadreIntervento"
                                 [popoverTitle]="'Squadre su ' + mezzoComp.mezzo?.descrizione + ' per Intervento'"
                                 container="body"
@@ -80,8 +80,8 @@
                         </button>
                         <ng-template #popSquadreIntervento>
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
-                                <div class="d-inline-block">{{ s.squadra.nome }}</div>
-                                <div class="d-inline-block"> {{ s.squadra.turno }}</div>
+                                <div class="d-inline-block font-weight-bold">{{ s.squadra.nome }}</div>
+                                <div *ngIf="s.squadra.turno" class="d-inline-block">({{ s.squadra.turno }})</div>
                             </div>
                         </ng-template>
                     </ng-container>
