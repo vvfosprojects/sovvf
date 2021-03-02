@@ -27,13 +27,17 @@ using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Utenti;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
@@ -43,14 +47,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ComposizioneSquadre = SO115App.API.Models.Classi.Composizione.ComposizioneSquadre;
-using ComposizioneMezzi = SO115App.API.Models.Classi.Composizione.ComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.Models.Classi.Filtri;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -71,7 +67,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetTurno _getTurno;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
         private readonly IGetSquadraByCodiceMezzo _getSquadraByCodiceMezzo;
-        private readonly IGetComposizioneSquadre _getComposizioneSquadre;
 
         #endregion Servizi
 
@@ -88,8 +83,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             IMemoryCache memoryCache,
             IGetTurno getTurno,
             IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza,
-            IGetSquadraByCodiceMezzo getSquadraByCodiceMezzo,
-            IGetComposizioneSquadre getComposizioneSquadre)
+            IGetSquadraByCodiceMezzo getSquadraByCodiceMezzo)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
@@ -104,7 +98,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getTurno = getTurno;
             _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
             _getSquadraByCodiceMezzo = getSquadraByCodiceMezzo;
-            _getComposizioneSquadre = getComposizioneSquadre;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
@@ -119,6 +112,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             var mezziPrenotati = _getMezziPrenotati.Get(query.CodiceSede);
+            var statiOperativiSquadre = _getStatoSquadre.Get(lstSedi);
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
             lstPreaccoppiati = lstPreaccoppiati.Select(p =>
@@ -134,62 +128,55 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
-                .ContinueWith(lstsquadre =>
+                .ContinueWith(lstsquadre => lstsquadre.Result.Select(squadra => //Mapping 
                 {
-                    var statiOperativi = _getStatoSquadre.Get(lstSedi);
+                    squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
 
-                    foreach (var squadra in lstsquadre.Result)
-                        squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
+                    if (statiOperativiSquadre.Exists(x => x.IdSquadra.Equals(squadra.Id)))
+                        squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
+                    else
+                        squadra.Stato = Squadra.StatoSquadra.InSede;
 
-                    return lstsquadre.Result.Select(squadra =>
+                    var comp = new Classi.Composizione.ComposizioneSquadre()
                     {
-                        if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
-                            squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
-                        else
-                            squadra.Stato = Squadra.StatoSquadra.InSede;
+                        Id = squadra.Id,
+                        Squadra = squadra,
+                        MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
+                    };
 
-                        var comp = new Classi.Composizione.ComposizioneSquadre()
-                        {
-                            Id = squadra.Id,
-                            Squadra = squadra,
-                            MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
-                        };
+                    if(comp.MezzoPreaccoppiato != null && comp.MezzoPreaccoppiato.Mezzo != null && mezziPrenotati.Count > 0)
+                        comp.MezzoPreaccoppiato.Mezzo.Stato = mezziPrenotati.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo;
 
-                        if(comp.MezzoPreaccoppiato != null && comp.MezzoPreaccoppiato.Mezzo != null && mezziPrenotati.Count > 0)
-                            comp.MezzoPreaccoppiato.Mezzo.Stato = mezziPrenotati.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo;
+                    squadra.IndiceOrdinamento = GetIndiceOrdinamento(comp, query.Richiesta);
 
-                        squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
-
-                        return comp;
-                    });
-                })
-                .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo)).Result);
+                    return comp;
+                }))
+                .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo)).Result);
 
             var lstMezzi = Task.Factory.StartNew(() => _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
-                .ContinueWith(lstmezzi => //Mapping
+                .ContinueWith(lstmezzi => //Mapping 
                 {
-                    foreach (var mezzo in lstmezzi.Result)
-                        mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
-
-                    var composizioneMezzi = (from mezzo in lstmezzi.Result
-                                             let kmGen = new Random().Next(1, 60).ToString()
-                                             let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
-                                             select new Classi.Composizione.ComposizioneMezzi()
-                                             {
-                                                 Id = mezzo.Codice,
-                                                 Mezzo = mezzo,
-                                                 Km = kmGen,
-                                                 TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
-                                             }).ToList();
-
                     decimal totaleKM = 0;
                     decimal totaleTempoPercorrenza = 0;
                     string mediaDistanza;
                     string mediaTempoPercorrenza;
 
-                    return composizioneMezzi.Select(c =>
+                    return lstmezzi.Result.Select(m =>
                     {
+                        var kmGen = new Random().Next(1, 60).ToString();
+                        var tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
+
+                        var c = new Classi.Composizione.ComposizioneMezzi()
+                        {
+                            Id = m.Codice,
+                            Mezzo = m,
+                            Km = kmGen,
+                            TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
+                        };
+
+                        c.Mezzo.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(m => m.MezzoComposizione.Mezzo.Codice == c.Mezzo.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+
                         if (c.IstanteScadenzaSelezione < DateTime.Now)
                             c.IstanteScadenzaSelezione = null;
 
@@ -202,33 +189,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                                 c.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
 
                             if (c.Mezzo.Stato.Equals("Sul Posto"))
-                            {
-                                c.IndirizzoIntervento = GetIndirizzoIntervento(c.Mezzo.IdRichiesta);
-                            }
+                                c.IndirizzoIntervento = _getSintesiRichiestaAssistenza.GetSintesi(c.Mezzo.IdRichiesta).Localita.Indirizzo;
 
                             if (c.Mezzo.Stato.Equals("In Rientro"))
-                            {
                                 c.ListaSquadre = GetListaSquare(c.Mezzo.Codice, lstSquadre.Result);
-                            }
                         }
 
                         //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
                         totaleKM += Convert.ToDecimal(c.Km.Replace(".", ","));
                         totaleTempoPercorrenza += Convert.ToDecimal(c.TempoPercorrenza.Replace(".", ","));
 
-                        mediaDistanza = Math.Round(totaleKM / composizioneMezzi.Count(), 2).ToString(CultureInfo.InvariantCulture);
-                        mediaTempoPercorrenza = Math.Round(totaleTempoPercorrenza / composizioneMezzi.Count(), 2).ToString(CultureInfo.InvariantCulture);
+                        mediaDistanza = Math.Round(totaleKM / lstmezzi.Result.Count(), 2).ToString(CultureInfo.InvariantCulture);
+                        mediaTempoPercorrenza = Math.Round(totaleTempoPercorrenza / lstmezzi.Result.Count(), 2).ToString(CultureInfo.InvariantCulture);
 
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
-                        c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
+                        c.IndiceOrdinamento = GetIndiceOrdinamento(query.Richiesta, c, c.Mezzo.CoordinateFake);
 
                         c.SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == c.Mezzo.Codice)?.SquadreComposizione;
 
                         return c;
                     });
                 })
-                .ContinueWith(lstCompMezzi => FiltraMezzi(query, lstCompMezzi.Result)).Result);
+                .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result)).Result);
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
@@ -276,17 +259,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private List<Classi.Composizione.ComposizioneSquadre> GetListaSquare(string codice, List<Classi.Composizione.ComposizioneSquadre> lstSquadre)
         {
             var listaCodiciSquadre = _getSquadraByCodiceMezzo.Get(codice).Select(x => x.IdSquadra).ToArray();
+
             return lstSquadre.FindAll(x => listaCodiciSquadre.Any(s => s.Equals(x.Squadra.Codice)));
         }
 
-        private string GetIndirizzoIntervento(string idRichiesta)
-        {
-            var sintesi = _getSintesiRichiestaAssistenza.GetSintesi(idRichiesta);
-
-            return sintesi.Localita.Indirizzo;
-        }
-
-        private List<Classi.Composizione.ComposizioneMezzi> FiltraMezzi(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
+        private List<Classi.Composizione.ComposizioneMezzi> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
         {
             return lstCompMezzi.Where(m =>
             {
@@ -323,10 +300,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
                     return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
                 return true;
-            }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
+            })
+            .OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
+            .ThenByDescending(m => m.IndiceOrdinamento)
+            .ToList();
         }
 
-        private List<Classi.Composizione.ComposizioneSquadre> FiltraSquadre(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
+        private List<Classi.Composizione.ComposizioneSquadre> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
         {
             return lstCompSquadre.Where(s =>
             {
@@ -385,38 +368,43 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             })
             .Where(s => s != null)
 #endif
-            .OrderByDescending(c => c.Squadra.IndiceOrdinamento)
+            .OrderByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InSede)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InRientro)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InViaggio)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.SulPosto)
+            .ThenByDescending(c => c.Squadra.IndiceOrdinamento)
             .ToList();
         }
-    }
-
-    internal class OrdinamentoMezzi
-    {
-        private readonly RichiestaAssistenza _Richiesta;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-
-        public OrdinamentoMezzi(RichiestaAssistenza Richiesta, IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration, IMemoryCache memoryCache)
+        
+        private decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneSquadre composizione, RichiestaAssistenza richiesta)
         {
-            _Richiesta = Richiesta;
-            _getTipologieByCodice = getTipologieByCodice;
-            _configuration = configuration;
-            _memoryCache = memoryCache;
+            int ValoreCompetenza = 0;
+
+            if (composizione.Squadra.Stato == Squadra.StatoSquadra.InSede)
+            {
+                switch (richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Squadra.Distaccamento.Descrizione)))
+                {
+                    case 0: ValoreCompetenza = 3000; break;
+                    case 1: ValoreCompetenza = 2000; break;
+                    case 2: ValoreCompetenza = 1000; break;
+                }
+            }
+
+            return ValoreCompetenza;
         }
 
-        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
+        private decimal GetIndiceOrdinamento(RichiestaAssistenza Richiesta, Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
 
-            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(_Richiesta.Tipologie, composizione.Mezzo.Genere);
+            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
             if (!CoordinateFake)
-                composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
+                composizione = GetDistanceByGoogle(composizione, Richiesta).Result;
 
             int ValoreCompetenza = 0;
-            switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
+            switch (Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
             {
                 case 0: ValoreCompetenza = 3000; break;
                 case 1: ValoreCompetenza = 2000; break;
@@ -488,33 +476,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             }
             return 10;
-        }
-    }
-
-    internal class OrdinamentoSquadre
-    {
-        private RichiestaAssistenza _Richiesta;
-
-        public OrdinamentoSquadre(RichiestaAssistenza Richiesta)
-        {
-            _Richiesta = Richiesta;
-        }
-
-        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneSquadre composizione)
-        {
-            int ValoreCompetenza = 0;
-
-            if (composizione.Squadra.Stato == Squadra.StatoSquadra.InSede)
-            {
-                switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Squadra.Distaccamento.Descrizione)))
-                {
-                    case 0: ValoreCompetenza = 3000; break;
-                    case 1: ValoreCompetenza = 2000; break;
-                    case 2: ValoreCompetenza = 1000; break;
-                }
-            }
-
-            return ValoreCompetenza;
         }
     }
 }
