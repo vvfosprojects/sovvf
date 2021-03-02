@@ -171,8 +171,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             if (anagraficaMezzo != null)
             {
-                Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
-                    anagraficaMezzo.Targa,
+                Mezzo mezzo = new Mezzo(mezzoDto.CodiceMezzo,
+                    mezzoDto.Descrizione,
                     anagraficaMezzo.GenereMezzo.Codice,
                     GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoDto.Movimentazione.StatoOperativo),
                    mezzoDto.CodiceDistaccamento, sede, coordinate)
