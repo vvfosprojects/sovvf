@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 
 export interface ListaEventiMezzo {
-  codiceMezzo: string;
-  note: string;
-  ora: string;
-  stato: any;
+    codiceMezzo: string;
+    note: string;
+    ora: string;
+    stato: any;
 }
 
 @Component({
@@ -38,18 +38,20 @@ export class PartenzaComponent implements OnInit {
     listaEventiMezzo: ListaEventiMezzo[] = [];
 
     constructor(config: NgbDropdownConfig) {
-      config.placement = 'bottom-left';
+        config.placement = 'bottom-left';
     }
 
     ngOnInit(): void {
-      this.checkListaEventiMezzo();
+        this.checkListaEventiMezzo();
     }
 
     checkListaEventiMezzo(): void {
-      this.listaEventiMezzo = this.listaEventi.filter(x => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
-      const statiMezzo = [];
-      this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
-      this.listaEventiMezzo = this.listaEventiMezzo.slice(statiMezzo.lastIndexOf('In Viaggio'));
+        this.listaEventiMezzo = this.listaEventi?.filter(x => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        const statiMezzo = [];
+        if (this.listaEventiMezzo?.length) {
+            this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
+            this.listaEventiMezzo = this.listaEventiMezzo.slice(statiMezzo.lastIndexOf('In Viaggio'));
+        }
     }
 
     onListaSquadrePartenza(): void {

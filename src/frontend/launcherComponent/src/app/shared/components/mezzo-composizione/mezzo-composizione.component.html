@@ -37,8 +37,8 @@
                         </button>
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block">{{ s.squadra.nome }}</div>
-                                <div class="d-inline-block"> {{ s.squadra.turno }}</div>
+                                <div class="d-inline-block font-weight-bold">{{ s.squadra.nome }}</div>
+                                <div *ngIf="s.squadra.turno" class="d-inline-block">({{ s.squadra.turno }})</div>
                             </div>
                         </ng-template>
                     </ng-container>
@@ -50,6 +50,41 @@
                     <div class="d-inline-block mr-2">{{ mezzoComp.km }} km</div>
                     <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
                     <div class="d-inline-block mr-2">{{ mezzoComp.tempoPercorrenza }} min</div>
+                </div>
+            </ng-template>
+            <!-- Indirizzo Intervento -->
+            <ng-template [ngIf]="mezzoComp.indirizzoIntervento">
+                <div class="d-inline-block"
+                     [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
+                     [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
+                    <i class="fa fa-map-marker text-success mr-2" ngbTooltip="Posizione Attuale"></i>
+                    <div class="d-inline-block font-weight-bold">{{ mezzoComp.indirizzoIntervento | truncate:30 }}</div>
+                </div>
+            </ng-template>
+            <!-- Squadre su Mezzo per Intervento -->
+            <ng-template [ngIf]="mezzoComp.listaSquadre?.length">
+                <div class="d-inline-block nowrap"
+                     ngbTooltip="Squadre su Mezzo per Intervento">
+                    <ng-container>
+                        <button class="btn btn-success py-0 big_numbers font-double-monitor btn-no-hover"
+                                [ngbPopover]="popSquadreIntervento"
+                                [popoverTitle]="'Squadre su ' + mezzoComp.mezzo?.descrizione + ' per Intervento'"
+                                container="body"
+                                triggers="click"
+                                tabindex="0"
+                                style="cursor:pointer; vertical-align: baseline"
+                                (click)="$event.stopPropagation()">
+                            <i class="fa fa-users fa-fw"></i>
+                            <i class="fa fa-arrow-right guida fa-fw mx-1"></i>
+                            <i class="fa fa-truck fa-fw"></i>
+                        </button>
+                        <ng-template #popSquadreIntervento>
+                            <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
+                                <div class="d-inline-block">{{ s.squadra.nome }}</div>
+                                <div class="d-inline-block"> {{ s.squadra.turno }}</div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
                 </div>
             </ng-template>
         </div>
