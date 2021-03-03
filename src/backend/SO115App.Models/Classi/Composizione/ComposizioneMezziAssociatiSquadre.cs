@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ComposizioneSquadre.cs" company="CNVVF">
+// <copyright file="ComposizioneMezzi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -23,14 +23,24 @@ using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
-    public class ComposizioneSquadre
+    public class ComposizioneMezziAssociatiSquadre
     {
         public string Id { get; set; }
-        public Squadra Squadra { get; set; }
-        public DateTime IstanteScadenzaSelezione { get; set; }
-        public string IdOperatore { get; set; }
-        public ComposizioneMezzi MezzoPreaccoppiato { get; set; }
+        public Mezzo Mezzo { get; set; }
 
-        public List<ComposizioneMezziAssociatiSquadre> ListaMezzi { get; set; }
+        public string Km { get; set; }
+        public string TempoPercorrenza { get; set; }
+        public DateTime? IstanteScadenzaSelezione { get; set; }
+
+        /// <summary>
+        ///   Incide generato dinamicamente, cambia da richiesta a richiesta. Serve ad ordinare i
+        ///   mezzi, dal più opportuno al meno opportuno nella composizione partenza
+        /// </summary>
+        public decimal IndiceOrdinamento { get; set; }
+
+        /// <summary>
+        ///   Se un mezzo si trova sul posto indicare anche l'indirizzo dell'intervento
+        /// </summary>
+        public string IndirizzoIntervento { get; set; }
     }
 }
