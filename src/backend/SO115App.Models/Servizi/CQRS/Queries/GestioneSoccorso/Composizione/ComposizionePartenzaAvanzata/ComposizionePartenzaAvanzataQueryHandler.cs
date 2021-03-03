@@ -193,7 +193,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                             if (c.Mezzo.Stato.Equals("In Rientro"))
                             {
-                                var listaCodiciSquadre = statiOperativiSquadre.Select(x => x.IdSquadra).ToArray();
+                                var listaCodiciSquadre = statiOperativiSquadre.FindAll(x => x.CodMezzo.Equals(c.Mezzo.Codice)).Select(x => x.IdSquadra).ToArray();
                                 c.ListaSquadre = lstSquadre.Result.FindAll(x => listaCodiciSquadre.Any(s => s.Equals(x.Squadra.Codice)));
                             }
                         }
@@ -220,7 +220,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 if (composizione.Squadra.Stato == Squadra.StatoSquadra.InRientro)
                 {
-                    var listaCodiciMezzo = mezziPrenotati.Select(x => x.CodiceMezzo).ToArray();
+                    var listaCodiciMezzo = statiOperativiSquadre.FindAll(x => x.IdSquadra.Equals(composizione.Squadra.Id)).Select(x => x.CodMezzo).ToArray(); // mezziPrenotati.Select(x => x.CodiceMezzo).ToArray();
                     var lista = lstMezzi.Result.FindAll(x => listaCodiciMezzo.Any(s => s.Equals(x.Mezzo.Codice)));
                     List<Classi.Composizione.ComposizioneMezziAssociatiSquadre> listaMezziAssociati = new List<Classi.Composizione.ComposizioneMezziAssociatiSquadre>();
 
@@ -296,13 +296,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezziDataArray = lstMezzi.Result
-                    .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
-                    .Take(query.Filtro.MezziPagination.PageSize).ToList(),
+                ComposizioneMezziDataArray = ComposizioneMezziArray,
 
-                ComposizioneSquadreDataArray = lstSquadre.Result
-                    .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                    .Take(query.Filtro.SquadrePagination.PageSize).ToList(),
+                ComposizioneSquadreDataArray = ComposizioneSquareArray,
 
                 MezziPagination = new Paginazione()
                 {
