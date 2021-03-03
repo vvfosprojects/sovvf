@@ -63,6 +63,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             //PREPARAZIONE DTO E VARIABILI
             command.ConfermaPartenze.richiesta = command.Richiesta;
 
+            for (int i = 1; i == command.ConfermaPartenze.Partenze.Count; i++)
+                command.ConfermaPartenze.Partenze.ToArray()[i - 1].Codice = command.Richiesta.CodiceUltimaPartenza + i;
+
             var dataAdesso = DateTime.UtcNow;
             var PartenzaEsistente = false;
 

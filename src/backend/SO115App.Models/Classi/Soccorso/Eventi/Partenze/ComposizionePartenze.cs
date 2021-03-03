@@ -37,15 +37,15 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica
     ///   categoria (risorsa strumentale).
     /// </remarks>
-    public class ComposizionePartenze : Evento, IPartenza
+    public class ComposizionePartenze : AbstractPartenza, IPartenza
     {
-        [JsonConstructor]
-        public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
-        {
-            this.Partenza = new Partenza();
-            this.Componenti = new HashSet<ComponentePartenza>();
-            this.FuoriSede = fuoriSede;
-        }
+        //[JsonConstructor]
+        //public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
+        //{
+        //    this.Partenza = new Partenza();
+        //    this.Componenti = new HashSet<ComponentePartenza>();
+        //    this.FuoriSede = fuoriSede;
+        //}
 
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
@@ -60,7 +60,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede, Partenza partenza = null) : base(richiesta, istante, codiceFonte, "ComposizionePartenza")
+            bool fuoriSede, Partenza partenza) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
         {
             this.Partenza = partenza;
             this.Componenti = new HashSet<ComponentePartenza>();
@@ -134,7 +134,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        ISet<string> IPartenza.CodiciMezzo
+        public ISet<string> CodiciMezzo
         {
             get
             {
@@ -155,7 +155,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         /// <param name="stato">Lo stato da visitare</param>
         /// <returns>Il nuovo stato a seguito della transizione di stato</returns>
-        IStatoMezzo IVisitorStatoMezzo.Visit(ICanAcceptVisitorStatoMezzo stato)
+        public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
         {
             return stato.AcceptVisitor(this);
         }

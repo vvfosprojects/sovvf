@@ -48,7 +48,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
-        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento, string SedeOperatore = "")
+        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento, int? codicePartenza = null, string SedeOperatore = "")
         {
             if (richiesta == null)
             {
@@ -65,11 +65,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
                 throw new ArgumentException("Cannot be null or whitespace", nameof(CodiceFonte));
             }
 
-            this.Istante = istante;
+            this.Istante = istante; 
             this.CodiceFonte = codiceFonte;
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;
             this.TipoEvento = tipoEvento;
+            this.CodicePartenza = codicePartenza;
             this.SedeOperatore = SedeOperatore;
             this.DataOraInserimento = DateTime.Now;
             richiesta.AddEvento(this);
@@ -110,5 +111,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// (risiede sul db, nella collection utenti).
         /// </summary>
         public string SedeOperatore { get; set; }
+
+        public int? CodicePartenza { get; set; } = null;
     }
 }

@@ -74,26 +74,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 PartenzaMontante.Partenza.Terminata = true;
 
                 //GESTIONE NUOVA PARTENZA SMONTANTE
-                var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false)
+                var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Partenza = new Partenza()
-                    {
-                        Codice = command.Richiesta.CodiceUltimaPartenza + 1,
-                        Mezzo = PartenzaSmontante.Partenza.Mezzo,
-                        Squadre = PartenzaMontante.Partenza.Squadre
-                    }
-                };
+                    Codice = command.Richiesta.CodiceUltimaPartenza + 1,
+                    Mezzo = PartenzaSmontante.Partenza.Mezzo,
+                    Squadre = PartenzaMontante.Partenza.Squadre
+                });
 
                 //GESTIONE NUOVA PARTENZA MONTANTE
-                var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false)
+                var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Partenza = new Partenza()
-                    {
-                        Codice = command.Richiesta.CodiceUltimaPartenza + 1,
-                        Mezzo = PartenzaMontante.Partenza.Mezzo,
-                        Squadre = SquadreSwitch
-                    }
-                };
+                    Codice = command.Richiesta.CodiceUltimaPartenza + 1,
+                    Mezzo = PartenzaMontante.Partenza.Mezzo,
+                    Squadre = SquadreSwitch
+                });
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 

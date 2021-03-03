@@ -45,15 +45,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //COMPOSIZIONE ---
                 var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
 
-                var nuovaPartenza = new ComposizionePartenze(Richiesta, dataComposizione, command.IdOperatore, false)
+                var nuovaPartenza = new ComposizionePartenze(Richiesta, dataComposizione, command.IdOperatore, false, new Partenza()
                 {
-                    Partenza = new Partenza()
-                    {
-                        Mezzo = command.ModificaPartenza.Mezzo,
-                        Squadre = command.ModificaPartenza.Squadre,
-                        Sganciata = false
-                    }
-                };
+                    Mezzo = command.ModificaPartenza.Mezzo,
+                    Squadre = command.ModificaPartenza.Squadre,
+                    Sganciata = false
+                });
 
                 nuovaPartenza.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 foreach (var squadra in nuovaPartenza.Partenza.Squadre)

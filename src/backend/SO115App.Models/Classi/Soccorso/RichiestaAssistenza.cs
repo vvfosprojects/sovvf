@@ -148,8 +148,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                //    new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
+                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
             }
             else if (stato.Stato == Costanti.MezzoRientrato)
             {
@@ -921,10 +921,33 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
+            const string messaggio = "Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
+
             if (_eventi.Count > 0)
-                if (evento.Istante.AddSeconds(1) < _eventi.Max(c => c.Istante))
-                  if (!(evento is UscitaPartenza && _eventi.Where(e => e.Istante == _eventi.Max(c => c.Istante)).FirstOrDefault() is ComposizionePartenze))
-                    throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
+            {
+                if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
+                {
+                    var eventiPartenza = _eventi.OfType<AbstractPartenza>()
+                        .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                        .Where(e => this.Aperta)
+                        .ToList();
+
+                    if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) < eventiPartenza.Max(e => e.Istante))
+                        throw new InvalidOperationException(messaggio);
+                }
+            }
+
+
+            //if (_eventi.Count > 0 && evento is ComposizionePartenze && _eventi.OfType<ComposizionePartenze>().Any())
+            //{
+            //    var eventiComposizionePartenze = _eventi.OfType<ComposizionePartenze>()
+            //        .Where(e => e.Partenza.Codice == ((ComposizionePartenze)evento).Partenza.Codice)
+            //        .Where(e => this.Aperta)
+            //        .ToList();
+
+            //    if (eventiComposizionePartenze.Any() && evento.Istante.AddSeconds(1) < eventiComposizionePartenze.Max(e => e.Istante))
+            //        throw new InvalidOperationException(messaggio);
+            //}
 
             _eventi.Add(evento);
         }
