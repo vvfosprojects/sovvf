@@ -17,6 +17,7 @@
                 {{ mezzoComp.mezzo.descrizione | slice: 0:7 }}
             </div>
             <span class="d-inline-block mr-2">{{ mezzoComp.mezzo.genere }}</span>
+            <!-- Squadre Preaccoppiate -->
             <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
                 <div class="d-inline-block nowrap">
                     <ng-container>
@@ -43,6 +44,7 @@
                     </ng-container>
                 </div>
             </ng-template>
+            <!-- Km / Tempo Percorrenza -->
             <ng-template [ngIf]="!mezzoComp.mezzo?.coordinateFake">
                 <div class="d-inline-block ml-2">
                     <i class="fa fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
@@ -63,7 +65,8 @@
                 </div>
             </ng-template>
             <!-- Squadre su Mezzo per Intervento -->
-            <ng-template [ngIf]="mezzoComp.listaSquadre?.length">
+            <ng-template
+                    [ngIf]="mezzoComp.listaSquadre?.length && !itemSelezionato && !itemBloccato && !itemPrenotatoInBox && !itemPrenotato">
                 <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
