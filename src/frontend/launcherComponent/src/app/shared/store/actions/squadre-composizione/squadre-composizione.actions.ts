@@ -39,10 +39,24 @@ export class SelectSquadraComposizione {
     }
 }
 
+export class SelectSquadraComposizioneInRientro {
+    static readonly type = '[SquadreComposizione] Select Squadra Composizione In Rientro';
+
+    constructor(public squadraComp: SquadraComposizione) {
+    }
+}
+
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
 
     constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
+    }
+}
+
+export class UnselectSquadraComposizioneInRientro {
+    static readonly type = '[SquadreComposizione] Unselect Squadra Composizione In Rientro';
+
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
 

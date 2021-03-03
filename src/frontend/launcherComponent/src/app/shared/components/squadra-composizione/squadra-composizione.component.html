@@ -38,21 +38,20 @@
             <div class="d-inline-block font-weight-bolder">{{ squadraComp.squadra.nome }}</div>
             <div class="d-inline-block ml-1">({{ squadraComp.squadra.turno }})</div>
             <ng-template [ngIf]="squadraComp.squadra?.preAccoppiato">
-                <div class="d-inline-block ml-2"
-                     ngbTooltip="Mezzo PreAccoppiato">
+                <div class="d-inline-block ml-2">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popMezzi"
                                 [popoverTitle]="'Mezzo di ' + squadraComp.squadra?.nome"
                                 container="body"
-                                triggers="click"
+                                triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="$event.stopPropagation()">
-                            <span class="d-inline-block font-weight-bold"
+                                (click)="onClick(true); $event.stopPropagation()">
+                            <div class="d-inline-block font-weight-bold"
                                  style="font-weight: 500">
                                 P
-                            </span>
+                            </div>
                             <i class="fa fa-truck fa-fw ml-1"></i>
                         </button>
                         <ng-template #popMezzi>

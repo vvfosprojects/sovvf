@@ -55,7 +55,9 @@
                             [itemHover]="checkSquadraHover(sC.id)"
                             [richiesta]="richiesta"
                             (selezionata)="squadraSelezionata($event)"
+                            (selezionataInRientro)="squadraSelezionataInRientro($event)"
                             (deselezionata)="squadraDeselezionata($event)"
+                            (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
                             (hoverIn)="squadraHoverIn($event)"
                             (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
                 </ng-template>
@@ -129,7 +131,9 @@
                                                     [itemBloccato]="idMezziBloccati ? idMezziBloccati.indexOf(mC.id) !== -1 : false"
                                                     [richiesta]="richiesta"
                                                     (selezionato)="mezzoSelezionato($event)"
-                                                    (deselezionato)="mezzoDeselezionato()"
+                                                    (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
+                                                    (deselezionato)="mezzoDeselezionato($event)"
+                                                    (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
                                                     (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
                                                     (mezzoCoordinate)="mezzoCoordinate($event)"
                                                     (sganciamento)="sganciamento.emit($event)">

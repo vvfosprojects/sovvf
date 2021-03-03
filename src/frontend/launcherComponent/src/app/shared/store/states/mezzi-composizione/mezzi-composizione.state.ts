@@ -8,8 +8,10 @@ import {
     ClearMezzoComposizione,
     ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
-    HoverOutMezzoComposizione, LockMezzoComposizione,
+    HoverOutMezzoComposizione,
+    LockMezzoComposizione,
     ReducerSelectMezzoComposizione,
+    ReducerSelectMezzoComposizioneInRientro,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     RemoveMezzoComposizione,
@@ -27,7 +29,7 @@ import {
     UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
-import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
@@ -50,8 +52,6 @@ import { ComposizionePartenzaState } from '../../../../features/home/store/state
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
 import { ClearSelectedSquadreComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
-import { BoxPartenza } from '../../../../features/home/composizione-partenza/interface/box-partenza-interface';
-import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -208,70 +208,81 @@ export class MezziComposizioneState {
     }
 
     @Action(ReducerSelectMezzoComposizione)
-    reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione): void {
+    reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ReducerSelectMezzoComposizione): void {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
-        const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
-        const boxPartenzaSelezionato = boxPartenzaList.filter((boxPartenza: BoxPartenza) => boxPartenza.id === idBoxPartenzaSelezionato)[0];
-        // controllo se lo stato del mezzo è diverso da "In Rientro"
-        if (action.mezzoComp.mezzo.stato !== StatoMezzo.InRientro) {
-            // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
-            if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
-                // controllo se è un mezzo prenotato oppure se è in prenotazione
-                if (getMezzoCompNonPrenotato(state, action.mezzoComp.id)) {
-                    let addBoxPartenza = false;
-                    if (boxPartenzaList.length <= 0) {
-                        addBoxPartenza = true;
-                        dispatch(new AddBoxPartenza());
-                    }
-                    setTimeout(() => {
-                        if (!action.mezzoComp.mezzo.coordinateFake) {
-                            dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
-                        }
-                        dispatch([
-                            new SelectMezzoComposizione(action.mezzoComp),
-                            new AddMezzoBoxPartenzaSelezionato(action.mezzoComp)
-                        ]);
-                        if (!boxPartenzaSelezionato?.squadreComposizione?.length && action.mezzoComp?.squadrePreaccoppiate) {
-                            dispatch(new SelectSquadreComposizione(action.mezzoComp.squadrePreaccoppiate));
-                        }
-                    }, calcolaTimeout(addBoxPartenza));
-                } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
-                    dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-                } else if (state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) !== -1) {
-                    dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
-                }
-            } else {
-                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
-            }
-        } else {
-            // controllo se è un mezzo prenotato oppure se è in prenotazione
-            if (getMezzoCompNonPrenotato(state, action.mezzoComp.id)) {
+        const mezzoComp = action.mezzoComp;
+        const mezzo = action.mezzoComp.mezzo;
+
+        if (!mezzoComposizioneBusy(mezzo.stato)) {
+            if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
                 let addBoxPartenza = false;
                 if (boxPartenzaList.length <= 0) {
                     addBoxPartenza = true;
                     dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
-                    if (!action.mezzoComp.mezzo.coordinateFake) {
-                        dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
+                    if (!mezzo.coordinateFake) {
+                        dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
                     }
                     dispatch([
-                        new SelectMezzoComposizione(action.mezzoComp),
-                        new AddMezzoBoxPartenzaSelezionato(action.mezzoComp)
+                        new SelectMezzoComposizione(mezzoComp),
+                        new AddMezzoBoxPartenzaSelezionato(mezzoComp)
                     ]);
-                    if (action.mezzoComp?.listaSquadre?.length) {
-                        dispatch([
-                            new ClearSelectedSquadreComposizione(),
-                            new SelectSquadreComposizione(action.mezzoComp.listaSquadre)
-                        ]);
-                    }
+
+                    // Todo: rivedere (preAccoppiati)
+                    // if (!boxPartenzaSelezionato?.squadreComposizione?.length && action.mezzoComp?.squadrePreaccoppiate) {
+                    //     dispatch(new SelectSquadreComposizione(action.mezzoComp.squadrePreaccoppiate));
+                    // }
                 }, calcolaTimeout(addBoxPartenza));
-            } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
+            } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
                 dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-            } else if (state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) !== -1) {
+            } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
                 dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
             }
+        } else {
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
+        }
+
+        function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {
+            return store.idMezziPrenotati.indexOf(idMezzoComp) === -1 && store.idMezziInPrenotazione.indexOf(idMezzoComp) === -1;
+        }
+    }
+
+    @Action(ReducerSelectMezzoComposizioneInRientro)
+    reducerSelectMezzoComposizioneInRientro({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ReducerSelectMezzoComposizioneInRientro): void {
+        const state = getState();
+        const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
+        const mezzoComp = action.mezzoComp;
+        const mezzo = action.mezzoComp.mezzo;
+
+        if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
+            let addBoxPartenza = false;
+            if (boxPartenzaList.length <= 0) {
+                addBoxPartenza = true;
+                dispatch(new AddBoxPartenza());
+            }
+            setTimeout(() => {
+                if (!mezzo.coordinateFake) {
+                    dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
+                }
+                dispatch([
+                    new SelectMezzoComposizione(mezzoComp),
+                    new AddMezzoBoxPartenzaSelezionato(mezzoComp)
+                ]);
+
+                if (mezzoComp?.listaSquadre?.length) {
+                    // Seleziono squadre in rientro con il mezzo in quel momento
+                    dispatch([
+                        new ClearSelectedSquadreComposizione(),
+                        new SelectSquadreComposizione(mezzoComp.listaSquadre)
+                    ]);
+                }
+            }, calcolaTimeout(addBoxPartenza));
+        } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
+        } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
         }
 
         function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {
@@ -317,7 +328,7 @@ export class MezziComposizioneState {
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void {
+    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UnselectMezzoComposizione): void {
         const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
 
