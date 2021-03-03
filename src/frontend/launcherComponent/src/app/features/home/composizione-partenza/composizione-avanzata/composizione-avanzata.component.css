@@ -20,19 +20,19 @@
 }
 
 .clear-search-mezzi {
-    transform: translate(175px, -26px);
+    transform: translate(230px, -28px);
     position: fixed;
     cursor: pointer
 }
 
 .clear-search-squadre {
-  transform: translate(78px, -26px);
-  position: fixed;
-  cursor: pointer
+    transform: translate(185px, -28px);
+    position: fixed;
+    cursor: pointer
 }
 
 .font-comp-xl {
-  font-size: 130% !important;
+    font-size: 130% !important;
 }
 
 .circle {

@@ -186,7 +186,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = makeCopy(squadreComp);
+                if (squadreComp) {
+                    this.squadreComposizione = makeCopy(squadreComp);
+                }
             })
         );
         // Prendo la squadra selezionata
@@ -284,6 +286,42 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             value = 'text-white';
         }
         return value;
+    }
+
+    checkSquadraSelezione(idSquadra: string): boolean {
+        let squadraSelezionata = false;
+        if (this.idSquadreSelezionate) {
+            this.idSquadreSelezionate.forEach((id: string) => {
+                if (id === idSquadra) {
+                    squadraSelezionata = true;
+                }
+            });
+        }
+        return squadraSelezionata;
+    }
+
+    checkSquadraHover(idSquadra: string): boolean {
+        let squadraHover = false;
+        if (this.idSquadraHover && this.idSquadraHover === idSquadra) {
+            squadraHover = true;
+        }
+        return squadraHover;
+    }
+
+    checkMezzoSelezione(idMezzo: string): boolean {
+        let mezzoSelezionato = false;
+        if (this.idMezzoSelezionato && this.idMezzoSelezionato === idMezzo) {
+            mezzoSelezionato = true;
+        }
+        return mezzoSelezionato;
+    }
+
+    checkMezzoHover(idMezzo: string): boolean {
+        let mezzoHover = false;
+        if (this.idMezzoHover && this.idMezzoHover === idMezzo) {
+            mezzoHover = true;
+        }
+        return mezzoHover;
     }
 
     getSoccorsoAereoTriage(): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
@@ -388,16 +426,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     onClearSearchMezzi(): void {
         this.ricercaMezzi = '';
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
-    }
-
-    checkSquadraSelezione(idSquadra: string): boolean {
-        let squadraSelezionata = false;
-        this.idSquadreSelezionate.forEach((id: string) => {
-            if (id === idSquadra) {
-                squadraSelezionata = true;
-            }
-        });
-        return squadraSelezionata;
     }
 
     boxPartenzaSelezionato(boxPartenza: BoxPartenza): void {

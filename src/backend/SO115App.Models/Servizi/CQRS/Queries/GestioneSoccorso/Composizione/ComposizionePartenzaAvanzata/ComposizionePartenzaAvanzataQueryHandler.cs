@@ -128,7 +128,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = Task.Factory.StartNew(() => _getListaSquadre.Get(lstSedi)
-                .ContinueWith(lstsquadre => lstsquadre.Result.Select(squadra =>
+                .ContinueWith(lstsquadre => lstsquadre.Result.Select(squadra => //Mapping
                 {
                     squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
 
@@ -151,7 +151,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     return comp;
                 }))
-                .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo)).Result);
+                .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo)).Result);
 
             var lstMezzi = Task.Factory.StartNew(() => _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
@@ -207,14 +207,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
-                        c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
+                        c.IndiceOrdinamento = GetIndiceOrdinamento(query.Richiesta, c, c.Mezzo.CoordinateFake);
 
                         c.SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == c.Mezzo.Codice)?.SquadreComposizione;
 
                         return c;
                     });
                 })
-                .ContinueWith(lstCompMezzi => FiltraMezzi(query, lstCompMezzi.Result)).Result);
+                .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result)).Result);
 
             foreach (var composizione in lstSquadre.Result)
             {
@@ -326,7 +326,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             };
         }
 
-        private List<Classi.Composizione.ComposizioneMezzi> FiltraMezzi(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
+        private List<Classi.Composizione.ComposizioneMezzi> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
         {
             return lstCompMezzi.Where(m =>
             {
@@ -363,10 +363,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
                     return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
                 return true;
-            }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
+            })
+            .OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
+            .ThenByDescending(m => m.IndiceOrdinamento)
+            .ToList();
         }
 
-        private List<Classi.Composizione.ComposizioneSquadre> FiltraSquadre(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
+        private List<Classi.Composizione.ComposizioneSquadre> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
         {
             return lstCompSquadre.Where(s =>
             {
@@ -425,7 +431,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             })
             .Where(s => s != null)
 #endif
-            .OrderByDescending(c => c.Squadra.IndiceOrdinamento)
+            .OrderByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InSede)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InRientro)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InViaggio)
+            .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.SulPosto)
+            .ThenByDescending(c => c.Squadra.IndiceOrdinamento)
             .ToList();
         }
 
@@ -445,35 +455,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             return ValoreCompetenza;
         }
-    }
 
-    internal class OrdinamentoMezzi
-    {
-        private readonly RichiestaAssistenza _Richiesta;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-
-        public OrdinamentoMezzi(RichiestaAssistenza Richiesta, IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration, IMemoryCache memoryCache)
-        {
-            _Richiesta = Richiesta;
-            _getTipologieByCodice = getTipologieByCodice;
-            _configuration = configuration;
-            _memoryCache = memoryCache;
-        }
-
-        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
+        private decimal GetIndiceOrdinamento(RichiestaAssistenza Richiesta, Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
 
-            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(_Richiesta.Tipologie, composizione.Mezzo.Genere);
+            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
             if (!CoordinateFake)
-                composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
+                composizione = GetDistanceByGoogle(composizione, Richiesta).Result;
 
             int ValoreCompetenza = 0;
-            switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
+            switch (Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
             {
                 case 0: ValoreCompetenza = 3000; break;
                 case 1: ValoreCompetenza = 2000; break;
