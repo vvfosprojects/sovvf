@@ -148,7 +148,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
             }
             else if (stato.Stato == Costanti.MezzoRientrato)
@@ -159,8 +159,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                //if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                //    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
             }
 
             #endregion SWITCH STATO MEZZI
