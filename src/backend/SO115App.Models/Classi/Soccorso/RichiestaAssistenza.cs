@@ -934,20 +934,10 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) < eventiPartenza.Max(e => e.Istante))
                         throw new InvalidOperationException(messaggio);
+
+                    //TODO FARE TIPO PARTENZA PER TIPO PARTENZA, SE NON VA IL CONTROLLO PER CODICE PARTENZA (PARTENZE MULTIPLE)
                 }
             }
-
-
-            //if (_eventi.Count > 0 && evento is ComposizionePartenze && _eventi.OfType<ComposizionePartenze>().Any())
-            //{
-            //    var eventiComposizionePartenze = _eventi.OfType<ComposizionePartenze>()
-            //        .Where(e => e.Partenza.Codice == ((ComposizionePartenze)evento).Partenza.Codice)
-            //        .Where(e => this.Aperta)
-            //        .ToList();
-
-            //    if (eventiComposizionePartenze.Any() && evento.Istante.AddSeconds(1) < eventiComposizionePartenze.Max(e => e.Istante))
-            //        throw new InvalidOperationException(messaggio);
-            //}
 
             _eventi.Add(evento);
         }
@@ -990,8 +980,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Se non ci sono partenze è uguale a 0
         /// </summary>
-        public int CodiceUltimaPartenza => Partenze.Count != 0 ?
-            Partenze?.Select(c => c.Partenza.Codice).Max() ?? 0
+        public int CodiceUltimaPartenza => _eventi.OfType<AbstractPartenza>().Count() != 0 ?
+            _eventi.OfType<AbstractPartenza>().Select(e => e.CodicePartenza).Max() ?? 0
             : 0;
 
         /// <summary>
