@@ -268,7 +268,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                         .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
-                    ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi.Any(y => y.Mezzo.Codice.Equals(CodiceMezzo)))
+                    ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => y.Mezzo.Codice.Equals(CodiceMezzo)))
                         .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
