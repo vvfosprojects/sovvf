@@ -27,7 +27,9 @@ export class SquadraComposizioneComponent implements OnDestroy {
     @Input() nightMode: boolean;
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
+    @Output() selezionataInRientro = new EventEmitter<SquadraComposizione>();
     @Output() deselezionata = new EventEmitter<SquadraComposizione>();
+    @Output() deselezionataInRientro = new EventEmitter<SquadraComposizione>();
     @Output() hoverIn = new EventEmitter<SquadraComposizione>();
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
@@ -46,12 +48,18 @@ export class SquadraComposizioneComponent implements OnDestroy {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
-    onClick(): void {
+    onClick(inRientro?: boolean): void {
         if (!this.squadraComposizioneBusy()) {
             if (!this.itemSelezionato) {
                 this.selezionata.emit(this.squadraComp);
             } else {
                 this.deselezionata.emit(this.squadraComp);
+            }
+        } else if (inRientro) {
+            if (!this.itemSelezionato) {
+                this.selezionataInRientro.emit(this.squadraComp);
+            } else {
+                this.deselezionataInRientro.emit(this.squadraComp);
             }
         }
     }
@@ -97,7 +105,7 @@ export class SquadraComposizioneComponent implements OnDestroy {
     }
 
     squadraComposizioneBusy(): boolean {
-        if (this.squadraComp && this.squadraComp.squadra) {
+        if (this.squadraComp?.squadra) {
             return squadraComposizioneBusy(this.squadraComp.squadra.stato);
         } else {
             return true;

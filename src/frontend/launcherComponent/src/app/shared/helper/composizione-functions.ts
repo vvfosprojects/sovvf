@@ -8,6 +8,8 @@ export function squadraComposizioneBusy(stato: StatoSquadra): boolean {
             return true;
         case StatoSquadra.InViaggio:
             return true;
+        case StatoSquadra.InRientro:
+            return true;
         default:
             return false;
     }
@@ -24,6 +26,8 @@ export function mezzoComposizioneBusy(stato: StatoMezzo): boolean {
         case StatoMezzo.Istituto:
             return true;
         case StatoMezzo.Occupato:
+            return true;
+        case StatoMezzo.InRientro:
             return true;
         default:
             return false;

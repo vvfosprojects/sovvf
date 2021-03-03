@@ -34,7 +34,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
+    @Output() selezionatoInRientro = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
+    @Output() deselezionatoInRientro = new EventEmitter<MezzoComposizione>();
     @Output() hoverIn = new EventEmitter<MezzoComposizione>();
     @Output() hoverOut = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
@@ -42,7 +44,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
-
 
     sganciamentoDisabilitato = false;
     itemPrenotatoInBox = false;
@@ -93,20 +94,30 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         }
     }
 
-    onClick(): void {
+    onClick(inRientro?: boolean): void {
         if (this.itemBloccato) {
             this.onSganciamento();
         } else {
-            if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
-                this.selezionato.emit(this.mezzoComp);
-                // mappa
-                if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                    if (!this.mezzoComp.mezzo.coordinateFake) {
-                        this.mezzoDirection(this.mezzoComp);
-                    }
+            if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
+                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                    this.selezionato.emit(this.mezzoComp);
+                } else if (this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                    this.deselezionato.emit(this.mezzoComp);
                 }
-            } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato && !this.itemPrenotatoInBox) {
-                this.deselezionato.emit(this.mezzoComp);
+                // mappa
+                if (!this.mezzoComp.mezzo.coordinateFake) {
+                    this.mezzoDirection(this.mezzoComp);
+                }
+            } else if (inRientro) {
+                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                    this.selezionatoInRientro.emit(this.mezzoComp);
+                } else {
+                    this.deselezionatoInRientro.emit(this.mezzoComp);
+                }
+                // mappa
+                if (!this.mezzoComp.mezzo.coordinateFake) {
+                    this.mezzoDirection(this.mezzoComp);
+                }
             }
         }
     }
@@ -166,9 +177,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 break;
         }
 
-        if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
+        if (mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
             returnClass += ' ';
-            this.itemBloccato = true;
         }
 
         if (this.itemInPrenotazione) {

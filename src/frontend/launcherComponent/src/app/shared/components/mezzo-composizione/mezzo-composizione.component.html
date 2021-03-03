@@ -1,9 +1,9 @@
 <li class="list-group-item border cursor-pointer px-1"
     [class.font-xlarge]="viewState.composizione.active"
     [ngClass]="liClass()"
-    (click)="onClick()"
     (mouseenter)="onHoverIn()"
-    (mouseleave)="onHoverOut()">
+    (mouseleave)="onHoverOut()"
+    (click)="onClick()">
     <div class="row px-3">
         <div class="clearfix d-inline-flex">
             <div [ngClass]="_boxStatiClass(mezzoComp.mezzo.stato)"
@@ -18,21 +18,20 @@
             </div>
             <span class="d-inline-block mr-2">{{ mezzoComp.mezzo.genere }}</span>
             <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
-                <div class="d-inline-block nowrap"
-                     ngbTooltip="Squadre PreAccoppiate">
+                <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popSquadre"
                                 [popoverTitle]="'Squadre di ' + mezzoComp.mezzo?.descrizione"
                                 container="body"
-                                triggers="click"
+                                triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
                                 (click)="$event.stopPropagation()">
-                            <span class="d-inline-block ml-2"
-                                  style="font-weight: 500">
+                            <div class="d-inline-block ml-2"
+                                 style="font-weight: 500">
                                 P
-                            </span>
+                            </div>
                             <i class="fa fa-users fa-fw ml-1"></i>
                         </button>
                         <ng-template #popSquadre>
@@ -58,22 +57,23 @@
                      [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
                      [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
                     <i class="fa fa-map-marker text-success mr-2" ngbTooltip="Posizione Attuale"></i>
-                    <div class="d-inline-block font-weight-bold">{{ mezzoComp.indirizzoIntervento | truncate:30 }}</div>
+                    <div class="d-inline-block font-weight-bold">
+                        {{ mezzoComp.indirizzoIntervento | truncate:30 }}
+                    </div>
                 </div>
             </ng-template>
             <!-- Squadre su Mezzo per Intervento -->
             <ng-template [ngIf]="mezzoComp.listaSquadre?.length">
-                <div class="d-inline-block nowrap"
-                     ngbTooltip="Squadre su Mezzo per Intervento">
+                <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popSquadreIntervento"
                                 [popoverTitle]="'Squadre su ' + mezzoComp.mezzo?.descrizione + ' per Intervento'"
                                 container="body"
-                                triggers="click"
+                                triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="$event.stopPropagation()">
+                                (click)="onClick(true); $event.stopPropagation()">
                             <i class="fa fa-users fa-fw"></i>
                             <i class="fa fa-arrow-right guida fa-fw mx-1"></i>
                             <i class="fa fa-truck fa-fw"></i>

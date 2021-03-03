@@ -62,6 +62,11 @@ export class BoxPartenzaState {
     }
 
     @Selector()
+    static boxPartenzaSelezionato(state: BoxPartenzaStateModel): BoxPartenza {
+        return state.boxPartenzaList.filter((boxPartenza: BoxPartenza) => boxPartenza.id === state.idBoxPartenzaSelezionato)[0];
+    }
+
+    @Selector()
     static disableConfirmPartenza(state: BoxPartenzaStateModel): boolean {
         return disableConfirmPartenza(state.boxPartenzaList);
     }

@@ -26,6 +26,7 @@ import { PatchPaginationComposizionePartenza } from '../../../../../shared/store
 import { RicercaComposizioneState } from 'src/app/shared/store/states/ricerca-composizione/ricerca-composizione.state';
 import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -80,7 +81,6 @@ export class ComposizioneAvanzataState {
         } as FiltriComposizione;
         console.log('*******OBJ CHE MANDIAMO ', obj);
         this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-            console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata);
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezziDataArray) {
@@ -93,18 +93,18 @@ export class ComposizioneAvanzataState {
                 dispatch(new PatchPaginationComposizionePartenza('mezzi', listeCompAvanzata.mezziPagination));
                 dispatch(new PatchPaginationComposizionePartenza('squadre', listeCompAvanzata.squadrePagination));
 
-                if (listaBoxPartenza.length > 0) {
+                if (listaBoxPartenza?.length) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
-                    if (listaBoxMezzi.length > 0) {
+                    if (listaBoxMezzi?.length) {
                         const mezziOccupati = [];
                         listeCompAvanzata.composizioneMezziDataArray.forEach(mezzo => {
                             if (mezzoComposizioneBusy(mezzo.mezzo.stato)) {
                                 mezziOccupati.push(mezzo.id);
                             }
                         });
-                        if (mezziOccupati.length > 0) {
+                        if (mezziOccupati?.length) {
                             listaBoxPartenza.forEach(box => {
-                                if (box.mezzoComposizione && mezziOccupati.includes(box.mezzoComposizione.id)) {
+                                if (box.mezzoComposizione && box.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && mezziOccupati.includes(box.mezzoComposizione.id)) {
                                     dispatch(new RemoveBoxPartenza(box));
                                 }
                             });

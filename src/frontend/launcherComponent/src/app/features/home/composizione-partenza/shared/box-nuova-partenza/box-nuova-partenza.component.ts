@@ -1,17 +1,17 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {Select, Store} from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import {Observable, Subscription} from 'rxjs';
-import {BoxPartenzaState} from '../../../store/states/composizione-partenza/box-partenza.state';
+import { Observable, Subscription } from 'rxjs';
+import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -48,20 +48,22 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
 
     itemBloccato: boolean;
 
+    StatoMezzo = StatoMezzo;
+
     private subscription = new Subscription();
 
 
     constructor(private store: Store) {
-      // Prendo i box partenza
-      this.subscription.add(
-        this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
-          this.boxPartenzaList = boxPartenza;
-        })
-      );
+        // Prendo i box partenza
+        this.subscription.add(
+            this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
+                this.boxPartenzaList = boxPartenza;
+            })
+        );
     }
 
     ngOnDestroy(): void {
-      this.subscription.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     onClick(): void {
@@ -84,13 +86,13 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     }
 
     nightModeBg(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'bg-light';
-      } else if (this.nightMode) {
-        value = 'bg-moon-light';
-      }
-      return value;
+        let value = '';
+        if (!this.nightMode) {
+            value = 'bg-light';
+        } else if (this.nightMode) {
+            value = 'bg-moon-light';
+        }
+        return value;
     }
 
     ngClass(): string {
@@ -119,8 +121,10 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
                 if (!this.nightMode) {
-                  returnClass = 'bg-light ';
-                } else { returnClass = 'bg-dark '; }
+                    returnClass = 'bg-light ';
+                } else {
+                    returnClass = 'bg-dark ';
+                }
 
                 switch (mezzo + '|' + squadra) {
                     case 'mezzo-si|squadra-no':

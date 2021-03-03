@@ -1,4 +1,5 @@
-<div class="card cursor-pointer p-2 mb-2 font-comp-xl" (click)="onClick()" (mouseleave)="onHoverOut()" (mouseenter)="onHoverIn()"
+<div class="card cursor-pointer p-2 mb-2 font-comp-xl" (click)="onClick()" (mouseleave)="onHoverOut()"
+     (mouseenter)="onHoverIn()"
      [class.text-white]="nightMode" [class.bg-moon-light]="nightMode"
      [ngClass]="ngClass()">
     <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"
@@ -8,10 +9,13 @@
             <i class="fa fa-truck mr-1"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
-        <div *ngIf="partenza.mezzoComposizione" class="col">
+        <div *ngIf="partenza.mezzoComposizione"
+             class="col">
             <div class="nowrap">
-                <i class="guida fa fa-truck mr-1" [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
-                   ngbTooltip="Mezzo {{partenza.mezzoComposizione.mezzo.stato}}" placement="top"></i>
+                <i class="guida fa fa-truck mr-1"
+                   [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
+                   ngbTooltip="Mezzo {{ partenza.mezzoComposizione.mezzo.stato }}"
+                   placement="top"></i>
                 <span class="font-weight-bold mr-1" [ngbTooltip]="partenza.mezzoComposizione.mezzo.descrizione"
                       [disableTooltip]="partenza.mezzoComposizione.mezzo.descrizione.length <= 7">{{partenza.mezzoComposizione.mezzo.descrizione | slice: 0:7}}</span>
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
@@ -24,20 +28,23 @@
         <div *ngIf="partenza.squadreComposizione?.length === 1" class="col">
             <div class="nowrap">
                 <i class="guida fa fa-group mr-1 font-weight-bold"
-                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i><span>{{partenza.squadreComposizione[0].squadra.nome}}</span>
-                <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1" class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
+                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i>
+                <span>{{ partenza.squadreComposizione[0].squadra.nome }}</span>
+                <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1 && partenza.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro"
+                        class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
                         [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
                         (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
-                  <span class="mr-1" style="font-weight: 500">Dividi</span>
-                  <i class="fa fa-files-o font-weight-bold"></i>
+                    <span class="mr-1" style="font-weight: 500">Dividi</span>
+                    <i class="fa fa-files-o font-weight-bold"></i>
                 </button>
             </div>
         </div>
         <div *ngIf="partenza.squadreComposizione?.length > 1" class="col">
-      <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-        <i class="guida fa fa-group mr-1"
-           [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i><small>{{partenza.squadreComposizione.length}}
-          squadre</small></span>
+            <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
+                <i class="guida fa fa-group mr-1"
+                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i>
+                <small>{{ partenza.squadreComposizione.length }} squadre</small>
+            </span>
             <ng-template #piusquadre>
                 <div *ngFor="let sC of partenza.squadreComposizione" class="text-center nowrap">
                     <span class="d-inline-block mb-1">{{sC.squadra.nome}}</span>
@@ -47,7 +54,8 @@
     </div>
     <div class="row">
         <!-- Km da percorrere -->
-        <div *ngIf="partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col nowrap">
+        <div *ngIf="partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
+             class="col nowrap">
             <i class="guida fa fa-road mr-1"></i>
             <span>{{partenza.mezzoComposizione.km}} km</span>
         </div>
@@ -55,12 +63,14 @@
             <i class="icon-wifi text-warning mr-1"></i>
             <span ngbTooltip="GPS ASSENTE">-</span>
         </div>
-        <div *ngIf="!partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col nowrap text-danger">
+        <div *ngIf="!partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
+             class="col nowrap text-danger">
             <i class="fa fa-road mr-1 text-danger"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
         <!-- Tempo di percorrenza -->
-        <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col">
+        <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
+             class="col">
             <i class="guida fa fa-clock-o mr-1"></i>
             <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
         </div>
@@ -68,7 +78,8 @@
             <i class="fa fa-clock-o mr-1 text-warning"></i>
             <span ngbTooltip="GPS ASSENTE"><b>-</b></span>
         </div>
-        <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col text-danger">
+        <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
+             class="col text-danger">
             <i class="fa fa-clock-o mr-1 text-danger"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>

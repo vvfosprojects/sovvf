@@ -16,7 +16,7 @@ import {
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione
+    ReducerSelectMezzoComposizione, ReducerSelectMezzoComposizioneInRientro
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -30,11 +30,12 @@ import {
     DeselectBoxPartenza,
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
+    ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
-    SelectSquadraComposizione,
-    UnselectSquadraComposizione
+    SelectSquadraComposizione, SelectSquadraComposizioneInRientro,
+    UnselectSquadraComposizione, UnselectSquadraComposizioneInRientro
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
@@ -363,14 +364,29 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        this.store.dispatch([
-            new ReducerSelectMezzoComposizione(mezzoComposizione),
-        ]);
+        this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
     }
 
-    mezzoDeselezionato(): void {
-        this.store.dispatch(new UnselectMezzoComposizione());
-        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato());
+    mezzoSelezionatoInRientro(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch(new ReducerSelectMezzoComposizioneInRientro(mezzoComposizione));
+    }
+
+    mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new RemoveMezzoBoxPartenzaSelezionato()
+        ]);
+        this.onClearDirection();
+    }
+
+    mezzoDeselezionatoInRientro(mezzoComposizione: MezzoComposizione): void {
+        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new ClearSelectedSquadreComposizione(),
+            new RemoveBoxPartenza(boxPartenzaSelezionato),
+            new GetListeComposizioneAvanzata()
+        ]);
         this.onClearDirection();
     }
 
@@ -397,8 +413,24 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
+    squadraSelezionataInRientro(squadraComposizione: SquadraComposizione): void {
+        if (squadraComposizione) {
+            if (this.boxPartenzaList.length <= 0) {
+                this.store.dispatch(new AddBoxPartenza());
+            }
+            this.store.dispatch([
+                new SelectSquadraComposizioneInRientro(squadraComposizione),
+            ]);
+        }
+    }
+
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+    }
+
+    squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
     }
 
@@ -470,30 +502,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         });
     }
 
-    // Interazione con Mappa
-    mezzoCoordinate(obj: MezzoDirection): void {
-        if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
-            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
-                const direction: DirectionInterface = {
-                    origin: {
-                        lat: obj.coordinateMezzo.latitudine,
-                        lng: obj.coordinateMezzo.longitudine
-                    },
-                    destination: {
-                        lat: this.richiesta.localita.coordinate.latitudine,
-                        lng: this.richiesta.localita.coordinate.longitudine
-                    },
-                    isVisible: true
-                };
-
-                this.sendDirection.emit(direction);
-            }
-        } else {
-            this.onClearDirection();
-            console.error('coordinate mezzo / coordinate richiesta non presenti');
-        }
-    }
-
     confermaPartenzeInViaggio(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
@@ -548,5 +556,29 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             }
         };
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
+    }
+
+    // Interazione con Mappa
+    mezzoCoordinate(obj: MezzoDirection): void {
+        if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
+            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
+                const direction: DirectionInterface = {
+                    origin: {
+                        lat: obj.coordinateMezzo.latitudine,
+                        lng: obj.coordinateMezzo.longitudine
+                    },
+                    destination: {
+                        lat: this.richiesta.localita.coordinate.latitudine,
+                        lng: this.richiesta.localita.coordinate.longitudine
+                    },
+                    isVisible: true
+                };
+
+                this.sendDirection.emit(direction);
+            }
+        } else {
+            this.onClearDirection();
+            console.error('coordinate mezzo / coordinate richiesta non presenti');
+        }
     }
 }
