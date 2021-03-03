@@ -58,7 +58,7 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
                     CodUOCompetenzaAppo[contatore + 1] = CompetenzeVicine[0].codProv + ".1000";
                 }
 
-                return CodUOCompetenzaAppo;
+                return CodUOCompetenzaAppo.Take(3).ToArray();
             }
             catch (Exception ex)
             {
