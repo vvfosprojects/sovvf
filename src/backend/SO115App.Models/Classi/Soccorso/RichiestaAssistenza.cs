@@ -921,7 +921,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            const string messaggio = "Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
+            const string messaggio = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
 
             if (_eventi.Count > 0)
             {
@@ -934,8 +934,6 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) < eventiPartenza.Max(e => e.Istante))
                         throw new InvalidOperationException(messaggio);
-
-                    //TODO FARE TIPO PARTENZA PER TIPO PARTENZA, SE NON VA IL CONTROLLO PER CODICE PARTENZA (PARTENZE MULTIPLE)
                 }
             }
 
