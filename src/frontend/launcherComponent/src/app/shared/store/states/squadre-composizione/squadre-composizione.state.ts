@@ -17,14 +17,12 @@ import {
     UpdateSquadraComposizione
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { AddBoxesPartenzaInRientro, AddBoxPartenza, AddSquadreBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxesPartenzaInRientro, AddSquadreBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
-import { ReducerSelectMezzoComposizioneInRientro } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
-import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];

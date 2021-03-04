@@ -81,9 +81,9 @@ export class SelectBoxPartenza {
     }
 }
 
-export class UnselectBoxPartenza {
-    static readonly type = '[BoxPartenza] Unselect Box Partenza';
+export class AddBoxesPartenzaInRientro {
+    static readonly type = '[BoxPartenza] Add Boxes Partenza In Rientro';
 
-    constructor(public idBoxPartenza: string) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
