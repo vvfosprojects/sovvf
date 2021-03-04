@@ -167,9 +167,9 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze): void {
+        const state = getState();
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
-            const state = getState();
             if (state.composizioneMode === Composizione.Avanzata) {
                 dispatch([
                     new ClearBoxPartenze(),
@@ -198,7 +198,26 @@ export class ComposizionePartenzaState {
             }
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
-            dispatch(new StopInvioPartenzaLoading());
+            dispatch([
+                new StopInvioPartenzaLoading(),
+            ]);
+            if (state.composizioneMode === Composizione.Avanzata) {
+                dispatch([
+                    new ClearBoxPartenze(),
+                    new ClearSelectedMezziComposizione(),
+                    new ClearSelectedSquadreComposizione(),
+                    new UnselectMezziAndSquadreComposizioneAvanzata(),
+                    new ClearListaMezziComposizione(),
+                    new ClearListaSquadreComposizione(),
+                    new GetListeComposizioneAvanzata()
+                ]);
+            } else if (state.composizioneMode === Composizione.Veloce) {
+                dispatch([
+                    new ClearPreAccoppiatiSelezionatiComposizione(),
+                    new ClearPreaccoppiati(),
+                    new GetListaComposizioneVeloce()
+                ]);
+            }
         });
     }
 
