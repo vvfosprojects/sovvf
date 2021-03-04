@@ -27,7 +27,7 @@ import {
     RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
     RequestAddBoxPartenza,
-    DeselectBoxPartenza,
+    DeselectBoxPartenza, AddSquadreBoxPartenza,
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedSquadreComposizione,
@@ -415,9 +415,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     squadraSelezionataInRientro(squadraComposizione: SquadraComposizione): void {
         if (squadraComposizione) {
-            if (this.boxPartenzaList.length <= 0) {
-                this.store.dispatch(new AddBoxPartenza());
-            }
             this.store.dispatch([
                 new SelectSquadraComposizioneInRientro(squadraComposizione),
             ]);

@@ -42,7 +42,7 @@ export class SelectSquadraComposizione {
 export class SelectSquadraComposizioneInRientro {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione In Rientro';
 
-    constructor(public squadraComp: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione, public noAddBox?: boolean) {
     }
 }
 

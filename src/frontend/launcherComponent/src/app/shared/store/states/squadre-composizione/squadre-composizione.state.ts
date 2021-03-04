@@ -17,12 +17,14 @@ import {
     UpdateSquadraComposizione
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { AddSquadreBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxesPartenzaInRientro, AddBoxPartenza, AddSquadreBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { ReducerSelectMezzoComposizioneInRientro } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
+import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -147,6 +149,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.id) ? append([squadra.id]) : state.idSquadreSelezionate,
             })
         );
+        console.log('squadraComposizione', action.squadraComp);
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(squadraComp)) {
             this.store.dispatch(new AddSquadreBoxPartenza([squadraComp]));
         }
@@ -160,16 +163,9 @@ export class SquadreComposizioneState {
     @Action(SelectSquadraComposizioneInRientro)
     selectSquadraComposizioneInRientro({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizioneInRientro): void {
         const state = getState();
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
         const squadraComp = action.squadraComp;
         const squadra = action.squadraComp.squadra;
-
-        if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
-            dispatch(new GetListeComposizioneAvanzata());
-        } else if (!richiestaComposizione) {
-            dispatch(new GetListaMezziSquadre());
-        }
+        const noAddBox = action.noAddBox;
 
         setState(
             patch({
@@ -178,8 +174,8 @@ export class SquadreComposizioneState {
             })
         );
 
-        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(squadraComp)) {
-            this.store.dispatch(new AddSquadreBoxPartenza([squadraComp]));
+        if (!noAddBox) {
+            dispatch(new AddBoxesPartenzaInRientro(squadraComp));
         }
     }
 
