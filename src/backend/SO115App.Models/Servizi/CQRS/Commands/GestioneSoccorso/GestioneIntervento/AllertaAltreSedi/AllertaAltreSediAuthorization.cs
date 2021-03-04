@@ -37,11 +37,11 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
         public AllertaAltreSediAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

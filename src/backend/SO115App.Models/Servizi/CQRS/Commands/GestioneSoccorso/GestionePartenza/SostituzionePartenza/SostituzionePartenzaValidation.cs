@@ -12,9 +12,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class SostituzionePartenzaValidation : ICommandValidator<SostituzionePartenzaCommand>
     {
-        private IGetRichiestaById _getRichiesta;
+        private IGetRichiesta _getRichiesta;
 
-        public SostituzionePartenzaValidation(IGetRichiestaById getRichiesta) => _getRichiesta = getRichiesta;
+        public SostituzionePartenzaValidation(IGetRichiesta getRichiesta) => _getRichiesta = getRichiesta;
 
         public IEnumerable<ValidationResult> Validate(SostituzionePartenzaCommand command)
         {

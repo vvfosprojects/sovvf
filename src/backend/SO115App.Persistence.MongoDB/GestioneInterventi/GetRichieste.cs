@@ -17,57 +17,41 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using AutoMapper;
 using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SO115App.Persistence.MongoDB
 {
-    public class GetRichiesta : IGetRichiestaById, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
+    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
     {
         private readonly DbContext _dbContext;
-        private readonly IMapper _mapper;
-        private readonly IGetTipologieByCodice _getTipologiaByCodice;
-        private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
-        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
         private readonly IGetRubrica _getRubrica;
         private readonly IGetTurno _getTurno;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
-            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetRubrica getRubrica, IGetTurno getTurno)
+        public GetRichiesta(DbContext dbContext,
+            IMapperRichiestaSuSintesi mapperSintesi,
+            IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
+            IGetRubrica getRubrica, IGetTurno getTurno)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
-            _getTipologiaByCodice = getTipologiaByCodice;
-            _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
             _mapperSintesi = mapperSintesi;
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getCooDistaccamento = getCooDistaccamento;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getRubrica = getRubrica;
             _getTurno = getTurno;
@@ -75,20 +59,7 @@ namespace SO115App.Persistence.MongoDB
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
-            try
-            {
-                var richiesta = _dbContext.RichiestaAssistenzaCollection
-                    .Find(s => s.Codice == codiceRichiesta)
-                    .Single();
-
-                //richiesta.ent
-
-                return richiesta;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Codice == codiceRichiesta).Single();
         }
 
         public RichiestaAssistenza GetById(string idRichiesta)
@@ -172,15 +143,15 @@ namespace SO115App.Persistence.MongoDB
             {
                 if (filtro.PeriodoChiuse.Data != null)
                     return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Value.Day);
-                
+
                 else if (filtro.PeriodoChiuse.Turno != null)
                 {
                     var turno = _getTurno.Get(r.IstanteChiusura);
 
                     return r.Aperta == true || (r.Chiusa == true && turno.Codice.Contains(filtro.PeriodoChiuse.Turno));
                 }
-                
-                else if(filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
+
+                else if (filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
                     return r.Aperta == true || (r.IstanteChiusura >= filtro.PeriodoChiuse.Da && r.IstanteChiusura <= filtro.PeriodoChiuse.A);
 
                 return true;

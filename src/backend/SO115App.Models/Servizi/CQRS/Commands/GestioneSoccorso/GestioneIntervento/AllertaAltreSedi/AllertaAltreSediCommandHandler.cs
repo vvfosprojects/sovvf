@@ -34,11 +34,11 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
     public class AllertaAltreSediCommandHandler : ICommandHandler<AllertaAltreSediCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
         public AllertaAltreSediCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;

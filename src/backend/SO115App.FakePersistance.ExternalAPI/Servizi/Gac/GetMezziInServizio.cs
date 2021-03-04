@@ -39,10 +39,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetMezziInServizio(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById, IGetStatoMezzi getStatoMezzi)
+        public GetMezziInServizio(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiesta getRichiestaById, IGetStatoMezzi getStatoMezzi)
         {
             _getInfoRichiesta = getInfoRichiesta;
             _getMezziUtilizzabili = getMezziUtilizzabili;

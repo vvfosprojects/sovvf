@@ -27,13 +27,13 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 {
     public class MessaInLavorazioneCommandHandler : ICommandHandler<MessaInLavorazioneCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
         private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
         public MessaInLavorazioneCommandHandler(
-            IGetRichiestaById GetRichiestaById,
+            IGetRichiesta GetRichiestaById,
             IGetUtenteById GetUtenteById,
             IUpDateRichiestaAssistenza UpDateRichiestaAssistenza
             )

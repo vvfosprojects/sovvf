@@ -15,12 +15,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class OrdinamentoMezzi
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
-        public OrdinamentoMezzi(IGetRichiestaById getRichiestaById, IGetTipologieByCodice getTipologieByCodice, HttpClient client, IConfiguration configuration)
+        public OrdinamentoMezzi(IGetRichiesta getRichiestaById, IGetTipologieByCodice getTipologieByCodice, HttpClient client, IConfiguration configuration)
         {
             _getRichiestaById = getRichiestaById;
             _getTipologieByCodice = getTipologieByCodice;

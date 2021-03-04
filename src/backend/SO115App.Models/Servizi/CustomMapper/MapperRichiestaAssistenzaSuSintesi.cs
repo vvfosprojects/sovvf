@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
@@ -11,11 +11,10 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {
-    public class MapperRichiestaAssistenzaSuSintesi
+    public class MapperRichiestaAssistenzaSuSintesi : IMapperRichiestaSuSintesi
     {
         private IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
@@ -32,24 +31,24 @@ namespace SO115App.Models.Servizi.CustomMapper
         {
             try
             {
-                var mapConfing = new MapperConfiguration(
-                    cfg => cfg.CreateMap<RichiestaAssistenza, SintesiRichiesta>()
-                        .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
-                        .ForMember(x => x.CodiceRichiesta, y => y.MapFrom(z => z.CodRichiesta))
-                        .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
-                        .ForMember(x => x.Eventi, y => y.MapFrom(z => z.ListaEventi.ToEventiSintesi()))
-                        .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
-                        .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
-                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
-                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
-                        .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia))
-                        );
+                var mapConfing = new MapperConfiguration(cfg => cfg.CreateMap<RichiestaAssistenza, SintesiRichiesta>()
+                  .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
+                  .ForMember(x => x.CodiceRichiesta, y => y.MapFrom(z => z.CodRichiesta))
+                  .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
+                  .ForMember(x => x.Eventi, y => y.MapFrom(z => z.ListaEventi.ToEventiSintesi()))
+                  .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
+                  .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
+                  .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
+                  .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
+                  .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia)));
+
                 _mapper = mapConfing.CreateMapper();
+
                 return _mapper.Map<SintesiRichiesta>(richiesta);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return null;
+                throw new Exception("Errore mapping richiesta");
             }
         }
 
@@ -64,7 +63,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                     {
                         var utente = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
 
-                        if (ListaAttivita.Select(a => a.IdUtente).Contains(utente.Id)) 
+                        if (ListaAttivita.Select(a => a.IdUtente).Contains(utente.Id))
                             continue;
 
                         AttivitaUtente attivita = new AttivitaUtente()

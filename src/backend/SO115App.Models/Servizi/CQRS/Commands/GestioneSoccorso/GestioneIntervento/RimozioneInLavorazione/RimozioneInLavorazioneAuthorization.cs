@@ -34,11 +34,11 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
+        private readonly IGetRichiesta _getRichiestaAssistenzaById;
 
         public RimozioneInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiestaAssistenzaById)
+            IGetRichiesta getRichiestaAssistenzaById)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

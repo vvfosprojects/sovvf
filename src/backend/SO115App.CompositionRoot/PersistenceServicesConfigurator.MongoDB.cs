@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Persistence.MongoDB;
 using SimpleInjector;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
@@ -33,12 +35,15 @@ namespace SO115App.CompositionRoot
             container.Register<IResetDB, ResetDB>();
             container.Register<ISetTipologie, SetTipologie>();
 
+            container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
+
+
             #region Gestione richiesta di assistenza
 
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
             container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
-            container.Register<IGetRichiestaById, GetRichiesta>();
+            container.Register<IGetRichiesta, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
 
             container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,

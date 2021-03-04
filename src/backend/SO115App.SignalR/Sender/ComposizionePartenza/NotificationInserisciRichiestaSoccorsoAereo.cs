@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo;
 using SO115App.Models.Servizi.CustomMapper;
@@ -15,11 +16,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
     public class NotificationInserisciRichiestaSoccorsoAereo : INotificationInserisciRichiestaSoccorsoAereo
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IGetBoxRichieste _getBoxRichieste;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
 
-        public NotificationInserisciRichiestaSoccorsoAereo(IHubContext<NotificationHub> notificationHubContext, IGetBoxRichieste getBoxRichieste, GetGerarchiaToSend getGerarchiaToSend, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
+        private readonly IGetBoxRichieste _getBoxRichieste;
+
+        public NotificationInserisciRichiestaSoccorsoAereo(IHubContext<NotificationHub> notificationHubContext, IGetBoxRichieste getBoxRichieste, GetGerarchiaToSend getGerarchiaToSend, IMapperRichiestaSuSintesi mapperSintesi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getBoxRichieste = getBoxRichieste;

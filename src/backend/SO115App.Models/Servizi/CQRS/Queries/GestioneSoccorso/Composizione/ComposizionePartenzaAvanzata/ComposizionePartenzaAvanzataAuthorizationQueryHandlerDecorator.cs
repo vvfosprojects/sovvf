@@ -33,13 +33,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
+        private readonly IGetRichiesta _getRichiestaAssistenzaById;
 
         public ComposizionePartenzaAvanzataAuthorizationQueryHandlerDecorator(
             IPrincipal currentUser,
             IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiestaAssistenzaById)
+            IGetRichiesta getRichiestaAssistenzaById)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

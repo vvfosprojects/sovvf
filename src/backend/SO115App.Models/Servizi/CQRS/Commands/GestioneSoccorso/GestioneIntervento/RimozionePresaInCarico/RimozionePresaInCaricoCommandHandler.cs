@@ -32,12 +32,12 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 {
     public class RimozionePresaInCaricoCommandHandler : ICommandHandler<RimozionePresaInCaricoCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetUtenteById _getUtenteById;
 
         public RimozionePresaInCaricoCommandHandler(
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetUtenteById getUtenteById
             )

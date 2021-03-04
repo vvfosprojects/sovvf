@@ -25,7 +25,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
     /// <summary>
     ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
     /// </summary>
-    public interface IGetRichiestaById
+    public interface IGetRichiesta
     {
         /// <summary>
         ///   Restituisce una Richiesta di Assistenza

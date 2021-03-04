@@ -34,11 +34,11 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiesteById;
+        private readonly IGetRichiesta _getRichiesteById;
 
         public RimozionePresaInCaricoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiesteById)
+            IGetRichiesta getRichiesteById)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;

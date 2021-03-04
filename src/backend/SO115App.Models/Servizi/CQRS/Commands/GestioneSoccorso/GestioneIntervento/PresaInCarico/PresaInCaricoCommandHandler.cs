@@ -30,12 +30,12 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 {
     public class PresaInCaricoCommandHandler : ICommandHandler<PresaInCaricoCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
 
         public PresaInCaricoCommandHandler(
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IGetUtenteById getUtenteById,
             IUpDateRichiestaAssistenza updateRichiestaAssistenza
             )

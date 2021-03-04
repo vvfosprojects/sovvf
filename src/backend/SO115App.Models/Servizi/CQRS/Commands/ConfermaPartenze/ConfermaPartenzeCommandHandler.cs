@@ -39,11 +39,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiestaById getRichiestaById,
+        public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza, IGetStatoMezzi getStatoMezzi)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
@@ -88,7 +88,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if(partenza.Mezzo.IdRichiesta != null && partenza.Mezzo.IdRichiesta != command.Richiesta.Codice)
                 {
                     //SE IL MEZZO E' IN RIENTRO SU UN'ALTRA RICHIESTA, FACCIO RIENTRARE LE PARTENZE E GESTISCO LA RICHIESTA
-                    command.RichiestaDaSganciare = _getRichiestaById.GetById(partenza.Mezzo.IdRichiesta);
+                    command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(partenza.Mezzo.IdRichiesta);
 
                     var partenzaDaRientrare = command.RichiestaDaSganciare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
 

@@ -6,9 +6,9 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 {
     internal class GetInfoRichiesta : IGetInfoRichiesta
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
-        public GetInfoRichiesta(IGetRichiestaById getRichiestaById)
+        public GetInfoRichiesta(IGetRichiesta getRichiestaById)
         {
             _getRichiestaById = getRichiestaById;
         }

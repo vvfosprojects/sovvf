@@ -34,10 +34,10 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         private readonly IPrincipal currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
+        private readonly IGetRichiesta _getRichiestaAssistenzaById;
 
         public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiestaAssistenzaById)
+            IGetRichiesta getRichiestaAssistenzaById)
         {
             this.currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
