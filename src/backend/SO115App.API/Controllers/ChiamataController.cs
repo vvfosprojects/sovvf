@@ -17,8 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.AddIntervento;
 using DomainModel.CQRS.Commands.UpDateIntervento;
@@ -28,6 +26,8 @@ using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

@@ -40,7 +40,7 @@ namespace SO115App.Models.Classi.Utenti.Autenticazione
         public string descrizione { get; set; }
     }
 
-    public class Specializzazione 
+    public class Specializzazione
     {
         public string codice { get; set; }
         public string descrizione { get; set; }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.Models.Classi.Matrix
+﻿namespace SO115App.Models.Classi.Matrix
 {
     public class SendMessage
     {

@@ -1,10 +1,8 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage
 {

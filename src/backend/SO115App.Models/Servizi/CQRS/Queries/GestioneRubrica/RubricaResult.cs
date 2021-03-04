@@ -1,5 +1,4 @@
-﻿using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
+﻿using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using System.Collections.Generic;
 

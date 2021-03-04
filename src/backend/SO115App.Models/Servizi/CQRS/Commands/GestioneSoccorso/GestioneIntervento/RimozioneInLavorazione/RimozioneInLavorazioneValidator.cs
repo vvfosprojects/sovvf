@@ -17,9 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione

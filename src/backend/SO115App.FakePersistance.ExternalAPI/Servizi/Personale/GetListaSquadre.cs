@@ -17,25 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
-using System.IO;
-using SO115App.ExternalAPI.Fake.Classi.DTOFake;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
-using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using Microsoft.Extensions.Caching.Memory;
-using System;
+using SO115App.ExternalAPI.Fake.Classi.DTOFake;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
@@ -81,14 +80,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             #region LEGGO DA JSON FAKE
 
-                var filepath = Costanti.ListaSquadre;
-                string json;
-                using (var r = new StreamReader(filepath))
-                {
-                    json = r.ReadToEnd();
-                }
+            var filepath = Costanti.ListaSquadre;
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
 
-                #endregion LEGGO DA JSON FAKE
+            #endregion LEGGO DA JSON FAKE
 
             //PAGINARE QUI LE SQUADRE
             var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
@@ -107,15 +106,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 {
                     #region LEGGO DA API ESTERNA
 
-                        //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                        //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                        //response.EnsureSuccessStatusCode();
-                        //using HttpContent content = response.Content;
+                    //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                    //response.EnsureSuccessStatusCode();
+                    //using HttpContent content = response.Content;
 
-                        //string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                        //List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
+                    //string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    //List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
 
-                        #endregion LEGGO DA API ESTERNA
+                    #endregion LEGGO DA API ESTERNA
 
                     var ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
 
@@ -124,11 +123,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     foreach (var squadraFake in ListaSquadreSede)
                     {
                         Squadra squadra;
-                        lock(squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
-                        
+                        lock (squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
+
                         listaSquadraBySedeAppo.Add(squadra);
 
-                        lock(result) result.Add(squadra);
+                        lock (result) result.Add(squadra);
                     }
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));

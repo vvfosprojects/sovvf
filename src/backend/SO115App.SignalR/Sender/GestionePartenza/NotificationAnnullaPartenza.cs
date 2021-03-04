@@ -164,7 +164,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
                 });
 
-                
+
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
             });
         }

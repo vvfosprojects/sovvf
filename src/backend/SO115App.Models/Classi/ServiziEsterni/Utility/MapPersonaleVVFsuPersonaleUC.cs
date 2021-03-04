@@ -23,8 +23,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
                 listaPersonaleVVF.Add(new PersonaleVVF
                 {
                     codiceFiscale = personaUC.CodiceFiscale,
-                    sede = new DistaccamentoPersonale() 
-                    { 
+                    sede = new DistaccamentoPersonale()
+                    {
                         id = personaUC.Sede.Id,
                         descrizione = personaUC.Sede.Descrizione
                     },

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
+﻿namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
 {
     /// <summary> La classe che mappa i dati in arrivo dal file fake ListaMezzi </summary> </summary>
     public class MezzoFake

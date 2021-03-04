@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CQRS.Queries;
+﻿using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Marker;
@@ -7,9 +6,6 @@ using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
-using SO115App.Models.Servizi.CustomMapper;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.SignalR.Utility;
@@ -57,7 +53,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 CodiceSede = command.CodSede.First(),
                 IdOperatore = command.IdOperatore,
                 IdRichiesta = command.Richiesta.Id,
-                Chiamata =  _mapperSintesi.Map(command.Richiesta),
+                Chiamata = _mapperSintesi.Map(command.Richiesta),
                 Partenze = command.Richiesta.lstPartenze,
                 richiesta = command.Richiesta
             };

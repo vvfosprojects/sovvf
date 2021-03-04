@@ -17,17 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using AutoMapper;
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,8 +107,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            query.Filtro.UnitaOperative = pinNodi.ToHashSet();																											 
-			if (query.Filtro.IncludiRichiesteAperte == false && query.Filtro.IncludiRichiesteChiuse == false)
+            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
+            if (query.Filtro.IncludiRichiesteAperte == false && query.Filtro.IncludiRichiesteChiuse == false)
             {
                 query.Filtro.IncludiRichiesteAperte = true;
                 query.Filtro.IncludiRichiesteChiuse = true;

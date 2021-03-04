@@ -19,10 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Classi.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
-using SO115App.Models.Servizi.Infrastruttura.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 

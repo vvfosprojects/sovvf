@@ -1,6 +1,4 @@
 ﻿using CQRS.Queries;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia.GetDettagliTipoligiaByIdTipologia
 {

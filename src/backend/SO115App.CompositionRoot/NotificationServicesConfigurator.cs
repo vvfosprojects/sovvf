@@ -5,8 +5,8 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipol
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
-using SO115App.SignalR.Sender.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
+using SO115App.SignalR.Sender.ComposizionePartenza;
 using SO115App.SignalR.Sender.GestioneDettaglioTipologia;
 using SO115App.SignalR.Sender.GestioneEnti;
 using SO115App.SignalR.Sender.GestioneIntervento;

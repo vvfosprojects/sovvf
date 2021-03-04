@@ -1,16 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using System.Collections.Generic;
-using System.Linq;
-using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {

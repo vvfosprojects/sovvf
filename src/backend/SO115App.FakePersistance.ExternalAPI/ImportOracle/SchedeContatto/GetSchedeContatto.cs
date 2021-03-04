@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using SO115App.Models.Classi.ServiziEsterni.Oracle;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
 {

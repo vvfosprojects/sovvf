@@ -17,10 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
 using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo

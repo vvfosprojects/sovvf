@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.Models.Classi.NUE
+﻿namespace SO115App.Models.Classi.NUE
 {
     /// <summary>
     ///   descrive l'operatore che gestisce la scheda contatto in uscita dal NUE

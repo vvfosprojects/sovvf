@@ -41,7 +41,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiestaSubentrata,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte, 
+            string codiceFonte,
             int codicePartenza) : base(richiesta, codiceMezzo, istante, codiceFonte, codicePartenza)
         {
             if (richiestaSubentrata == null)

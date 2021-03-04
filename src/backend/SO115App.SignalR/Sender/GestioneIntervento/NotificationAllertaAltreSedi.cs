@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
 using SO115App.SignalR.Utility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneIntervento

@@ -51,7 +51,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 
             if (richiesta.UtInLavorazione != null)
             {
-                if(!richiesta.UtInLavorazione.Contains(nominativoInLavorazione))
+                if (!richiesta.UtInLavorazione.Contains(nominativoInLavorazione))
                     richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             }
             else

@@ -1,20 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Geo;
+using SO115App.Models.Classi.ServiziEsterni;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-
-using SO115App.API.Models.Classi.Geo;
-using SO115App.Models.Classi.ServiziEsterni;
-using System;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {

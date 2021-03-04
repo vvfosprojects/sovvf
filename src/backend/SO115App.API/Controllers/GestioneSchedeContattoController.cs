@@ -20,7 +20,6 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;

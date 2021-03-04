@@ -1,9 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.InserisciRichiestaSoccorsoAereo
 {

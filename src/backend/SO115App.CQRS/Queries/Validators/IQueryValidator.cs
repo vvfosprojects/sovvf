@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using CQRS.Validation;
+using System.Collections.Generic;
 
 namespace CQRS.Queries.Validators
 {

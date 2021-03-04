@@ -25,7 +25,6 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUtente;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.DettaglioUtente;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

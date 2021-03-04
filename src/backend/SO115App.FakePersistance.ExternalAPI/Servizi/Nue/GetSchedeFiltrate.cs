@@ -1,11 +1,8 @@
-﻿using MongoDB.Driver;
-using Persistence.MongoDB;
+﻿using Persistence.MongoDB;
 using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue
 {

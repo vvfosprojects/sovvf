@@ -20,7 +20,6 @@
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.GeneratoreFakeRichieste;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.CompositionRoot

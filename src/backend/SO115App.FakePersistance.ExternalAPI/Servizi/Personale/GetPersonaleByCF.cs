@@ -20,10 +20,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     {
         private readonly Client.IHttpRequestManager<List<PersonaleVVF>> _clientPersonale;
         private readonly IConfiguration _configuration;
-        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration) 
-        { 
+        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration)
+        {
             _clientPersonale = client;
-            _configuration = configuration; 
+            _configuration = configuration;
         }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)

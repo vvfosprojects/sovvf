@@ -2,10 +2,8 @@
 using CQRS.Queries.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
-using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
 {

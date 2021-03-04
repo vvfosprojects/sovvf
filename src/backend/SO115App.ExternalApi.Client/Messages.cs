@@ -26,10 +26,10 @@ namespace SO115App.ExternalAPI.Client
 
         public const string AutorizzazioneNegata = "Il servizio ha negato l'autorizzazione ad eseguire l'operazione richiesta. Consultare il log e contattare il supporto tecnico.";
         public const string DatiMancanti = "Il servizio segnala dati mancanti inviati da SO115. Consultare il log e contattare il supporto tecnico.";
-               
+
         public const string ErroreInternoAlServer = "Il servizio ha segnalato un errore interno. Consultare il log e contattare il supporto tecnico.";
         public const string NonTuttiIDatiInviatiSonoStatiProcessati = "Il servizio non è riuscito a processare tutti i dati che sono stati inviati. Consultare il log e contattare il supporto tecnico.";
-               
+
         public const string OggettoNonValido = "E' stato inviato un oggetto al servizio diverso da quello atteso. Consultare il log e contattare il supporto tecnico.";
     }
 }

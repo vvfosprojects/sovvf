@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
-using SO115App.Persistence.MongoDB.GestioneInterventi.GestioneTipologie;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneDB
 {

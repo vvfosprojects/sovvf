@@ -25,7 +25,6 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.IO;

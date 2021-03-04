@@ -5,9 +5,6 @@ using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipologia;
 using SO115App.SignalR.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia

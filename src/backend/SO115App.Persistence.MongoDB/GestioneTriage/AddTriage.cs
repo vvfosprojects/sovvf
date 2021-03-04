@@ -1,9 +1,6 @@
 ﻿using Persistence.MongoDB;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneTriage
 {
