@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -29,26 +28,22 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
     public class GetListaSquadre : IGetListaSquadre
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPersonaleByCF _getPersonaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration,
+        public GetListaSquadre(
              IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
              IGetPersonaleByCF GetPersonaleByCF,
              IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
@@ -58,8 +53,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             _getPersonaleByCF = GetPersonaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
-            _client = client;
-            _configuration = configuration;
         }
 
         public async Task<IEnumerable<Squadra>> Get(List<string> sedi)
@@ -103,41 +96,41 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             Parallel.ForEach(ListaCodiciSedi, CodSede =>
             {
                 var listaSquadraBySede = new List<Squadra>();
-                if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
+                //if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
+                //{
+                #region LEGGO DA API ESTERNA
+
+                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                //response.EnsureSuccessStatusCode();
+                //using HttpContent content = response.Content;
+
+                //string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                //List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
+
+                #endregion LEGGO DA API ESTERNA
+
+                var ListaSquadreSede = listaSquadreJson.Where(x => x.Sede.Equals(CodSede));
+
+                var listaSquadraBySedeAppo = new List<Squadra>();
+
+                foreach (var squadraFake in ListaSquadreSede)
                 {
-                    #region LEGGO DA API ESTERNA
+                    Squadra squadra;
+                    lock (squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
 
-                    //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                    //response.EnsureSuccessStatusCode();
-                    //using HttpContent content = response.Content;
+                    listaSquadraBySedeAppo.Add(squadra);
 
-                    //string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                    //List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
-
-                    #endregion LEGGO DA API ESTERNA
-
-                    var ListaSquadreSede = listaSquadreJson.Where(x => x.Sede.Equals(CodSede));
-
-                    var listaSquadraBySedeAppo = new List<Squadra>();
-
-                    foreach (var squadraFake in ListaSquadreSede)
-                    {
-                        Squadra squadra;
-                        lock (squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
-
-                        listaSquadraBySedeAppo.Add(squadra);
-
-                        result.Enqueue(squadra);
-                    }
-
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
-                    _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                    result.Enqueue(squadra);
                 }
-                else
-                {
-                    lock (result) { result.Concat(listaSquadraBySede); }
-                }
+
+                //var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
+                //_memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                //}
+                //else
+                //{
+                //    result.Concat(listaSquadraBySede);
+                //}
             });
 
             return result;
