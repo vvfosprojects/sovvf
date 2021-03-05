@@ -18,9 +18,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     /// </summary>
     public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        private readonly Client.IHttpRequestManager<List<PersonaleVVF>> _clientPersonale;
+        private readonly Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> _clientPersonale;
         private readonly IConfiguration _configuration;
-        public GetPersonaleByCF(Client.IHttpRequestManager<List<PersonaleVVF>> client, IConfiguration configuration)
+        public GetPersonaleByCF(Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> client, IConfiguration configuration)
         {
             _clientPersonale = client;
             _configuration = configuration;

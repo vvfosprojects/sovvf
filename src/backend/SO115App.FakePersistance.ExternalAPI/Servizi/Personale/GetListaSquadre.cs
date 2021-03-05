@@ -30,6 +30,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,7 +62,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             _configuration = configuration;
         }
 
-        public async Task<List<Squadra>> Get(List<string> sedi)
+        public async Task<IEnumerable<Squadra>> Get(List<string> sedi)
         {
             var pinNodi = sedi.Select(s => new PinNodo(s, true));
             var ListaCodiciSedi = new List<string>();
@@ -90,14 +91,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             #endregion LEGGO DA JSON FAKE
 
             //PAGINARE QUI LE SQUADRE
-            var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
+            var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
 
             var lstcodicifiscali = listaSquadreJson
                 .SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
 
             var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
 
-            var result = new List<Squadra>();
+            var result = new ConcurrentQueue<Squadra>();
 
             Parallel.ForEach(ListaCodiciSedi, CodSede =>
             {
@@ -116,7 +117,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                     #endregion LEGGO DA API ESTERNA
 
-                    var ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
+                    var ListaSquadreSede = listaSquadreJson.Where(x => x.Sede.Equals(CodSede));
 
                     var listaSquadraBySedeAppo = new List<Squadra>();
 
@@ -127,7 +128,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         listaSquadraBySedeAppo.Add(squadra);
 
-                        lock (result) result.Add(squadra);
+                        result.Enqueue(squadra);
                     }
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
@@ -135,7 +136,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 }
                 else
                 {
-                    lock (result) { result.AddRange(listaSquadraBySede); }
+                    lock (result) { result.Concat(listaSquadraBySede); }
                 }
             });
 

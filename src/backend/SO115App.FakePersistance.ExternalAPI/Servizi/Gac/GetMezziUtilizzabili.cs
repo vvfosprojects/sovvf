@@ -26,9 +26,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IConfiguration _configuration;
 
         private readonly IGetToken _getToken;
-        private readonly IHttpRequestManager<List<MezzoDTO>> _clientMezzi;
+        private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
-        public GetMezziUtilizzabili(IHttpRequestManager<List<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta)
         {
