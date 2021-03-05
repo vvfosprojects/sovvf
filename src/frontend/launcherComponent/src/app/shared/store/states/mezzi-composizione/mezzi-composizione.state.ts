@@ -275,8 +275,8 @@ export class MezziComposizioneState {
                     // Seleziono squadre in rientro con il mezzo in quel momento
                     dispatch([
                         new ClearSelectedSquadreComposizione(),
-                        new SelectSquadreComposizione(mezzoComp.listaSquadre)
                     ]);
+                    action.noSelect ? dispatch(new SelectSquadreComposizione(mezzoComp.listaSquadre, true)) :  dispatch(new SelectSquadreComposizione(mezzoComp.listaSquadre));
                 }
             }, calcolaTimeout(addBoxPartenza));
         } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {

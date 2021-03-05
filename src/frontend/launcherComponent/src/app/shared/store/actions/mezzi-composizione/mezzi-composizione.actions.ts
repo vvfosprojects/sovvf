@@ -54,7 +54,7 @@ export class ReducerSelectMezzoComposizione {
 export class ReducerSelectMezzoComposizioneInRientro {
     static readonly type = '[MezziComposizione] Reducer Select Mezzo ComposizioneIn Rientro';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzoComp: MezzoComposizione, public noSelect?: boolean) {
     }
 }
 
