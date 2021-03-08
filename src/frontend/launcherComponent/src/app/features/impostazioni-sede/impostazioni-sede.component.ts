@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {Select, Store} from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
@@ -8,6 +8,7 @@ import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.act
 import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { Observable } from 'rxjs';
+import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-impostazioni-sede',
@@ -18,7 +19,9 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
-    constructor(private store: Store) {
+    constructor(ngbAccordionconfig: NgbAccordionConfig,
+                private store: Store) {
+        ngbAccordionconfig.type = 'dark';
         this.fetchTipologie();
     }
 

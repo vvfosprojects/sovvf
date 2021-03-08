@@ -10,8 +10,10 @@
             <ngb-accordion [closeOthers]="true" activeIds="triage">
                 <ngb-panel id="dettagliTipologie">
                     <ng-template ngbPanelTitle>
-                        <i class="fa fa-list"></i>
-                        DETTAGLI TIPOLOGIE
+                        <div class="font-xlarge font-weight-bold text-white">
+                            <i class="fa fa-list"></i>
+                            DETTAGLI TIPOLOGIE
+                        </div>
                     </ng-template>
                     <ng-template ngbPanelContent>
                         <app-dettagli-tipologie [doubleMonitor]="(doubleMonitor$ | async)"></app-dettagli-tipologie>
@@ -19,8 +21,10 @@
                 </ngb-panel>
                 <ngb-panel id="triage">
                     <ng-template ngbPanelTitle>
-                        <i class="fa fa-question-circle"></i>
-                        TRIAGE
+                        <div class="font-xlarge font-weight-bold text-white">
+                            <i class="fa fa-question-circle"></i>
+                            TRIAGE
+                        </div>
                     </ng-template>
                     <ng-template ngbPanelContent>
                         <app-triage></app-triage>

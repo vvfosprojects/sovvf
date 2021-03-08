@@ -32,7 +32,7 @@
                 <th scope="col" style="width:35%">Azioni</th>
             </tr>
             </thead>
-            <tbody class="font-xxlarge">
+            <tbody class="font-xlarge">
             <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
                 <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
                 <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>
@@ -61,7 +61,7 @@
     </div>
     <div class="col-12">
         <div class="clearfix">
-            <div class="float-left">
+            <div class="float-left mt-2">
                 <button class="btn btn-lg btn-primary btn-no-hover" (click)="onAddDettaglioTipologia()">
                     <i class="fa fa-plus"></i>
                     Aggiungi Dettaglio
