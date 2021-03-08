@@ -435,8 +435,13 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
                     break;
                 case 'dismiss':
                     console.log('TriageModalResult', res);
-                    this.f.dettaglioTipologia.patchValue(null);
-                    this.dettaglioTipologiaSelezionato = null;
+                    if (res?.dettaglio) {
+                        this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                        this.dettaglioTipologiaSelezionato = res.dettaglio;
+                    } else {
+                        this.f.dettaglioTipologia.patchValue(null);
+                        this.dettaglioTipologiaSelezionato = null;
+                    }
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);

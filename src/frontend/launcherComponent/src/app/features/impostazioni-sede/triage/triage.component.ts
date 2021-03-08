@@ -243,10 +243,6 @@ export class TriageComponent implements OnDestroy {
         if (itemData) {
             return itemData;
         }
-        // else {
-        //     const parentValue = item.value.slice(2);
-        //     return this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === parentValue)[0];
-        // }
     }
 
     toggleViewEditButtons(): void {
@@ -254,6 +250,7 @@ export class TriageComponent implements OnDestroy {
     }
 
     addItem(item?: TreeItem): void {
+        console.log('addItem', item);
         if (this.viewEditButtons || !item) {
             this.store.dispatch(new GetGeneriMezzo());
             const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
@@ -270,6 +267,18 @@ export class TriageComponent implements OnDestroy {
             }
             addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
             addItemTriageModal.componentInstance.item = item;
+
+            const rispostaParentItemValue = item.value.slice(2).slice(0, -2);
+            if (rispostaParentItemValue) {
+                const rispostaParentItem = this.findItem(this.tItems[0], rispostaParentItemValue);
+                if (rispostaParentItem) {
+                    const parentItemData = this.getItemData(rispostaParentItem);
+                    if (parentItemData) {
+                        addItemTriageModal.componentInstance.parentItemData = parentItemData;
+                    }
+                }
+            }
+
             addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
                 if (res.success) {
                     if (this.tItems) {
@@ -329,6 +338,7 @@ export class TriageComponent implements OnDestroy {
     }
 
     addOtherData(res: any, item: TreeItem): void {
+        console.log('addOtherData', item);
         const itemData = {
             itemValue: item.value,
             soccorsoAereo: null,
@@ -358,6 +368,7 @@ export class TriageComponent implements OnDestroy {
     }
 
     editItem(item: TreeItem): void {
+        console.log('editItem', item);
         this.store.dispatch(new GetGeneriMezzo());
         const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',

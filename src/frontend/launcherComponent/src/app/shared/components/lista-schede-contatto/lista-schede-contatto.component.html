@@ -12,8 +12,8 @@
                 <ng-template #tipCompetenza>
                     <div>Tutte: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte }}</div>
                     <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }}
-                    </b></div>
+                            Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }}
+                        </b></div>
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
@@ -53,8 +53,8 @@
                 <ng-template #tipConoscenza>
                     <div>Tutte: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte }}</div>
                     <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }}
-                    </b></div>
+                            Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }}
+                        </b></div>
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
@@ -85,28 +85,19 @@
         </ngb-tab>
     </ngb-tabset>
     <ul class="my-2 list-unstyled">
-        <app-scheda-contatto *ngFor="let scheda of schedeContatto"
-                             [scheda]="scheda"
-                             [nightMode]="nightMode"
-                             [idVisualizzati]="idVisualizzati"
-                             [idCollapsed]="idCollapsed"
-                             [idSchedaContattoHover]="codiceSchedaContattoHover"
-                             [editSchedaContatto]="statoModalita"
-                             [schedeContattoSelezionate]="idSelezionatiMerge"
-                             [classificazione]="classificazioneMerge"
-                             [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             (hoverIn)="onHoverIn($event)"
-                             (hoverOut)="onHoverOut()"
-                             (collapsed)="onCollapsed($event)"
-                             (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
-                             (dettaglioScheda)="onDettaglioScheda($event)"
-                             (editSelezionata)="onEditSchedaSelezionata($event)"
-                             (checkBoxError)="onCheckboxError()"
-                             (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
-                             (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
+        <app-scheda-contatto *ngFor="let scheda of schedeContatto" [scheda]="scheda" [nightMode]="nightMode"
+            [idVisualizzati]="idVisualizzati" [idCollapsed]="idCollapsed"
+            [idSchedaContattoHover]="codiceSchedaContattoHover" [editSchedaContatto]="statoModalita"
+            [schedeContattoSelezionate]="idSelezionatiMerge" [classificazione]="classificazioneMerge"
+            [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+            [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+            [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+            [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+            (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()" (collapsed)="onCollapsed($event)"
+            (undoRaggruppamento)="onUndoMergeSchedaContatto($event)" (dettaglioScheda)="onDettaglioScheda($event)"
+            (editSelezionata)="onEditSchedaSelezionata($event)" (checkBoxError)="onCheckboxError()"
+            (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
+            (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
         </app-scheda-contatto>
     </ul>
 </div>
@@ -114,45 +105,45 @@
     <div class="clearfix">
         <div class="float-left">
             <div class="d-inline-block" ngbDropdown #dropdownVisualizzazione="ngbDropdown" placement="top">
-                <button *ngIf="statoModalita" class="btn btn-outline-danger mr-3"
-                        [disabled]="loading"
+                <ng-template [ngIf]="!hideRaggruppa">
+                    <button *ngIf="statoModalita" class="btn btn-outline-danger mr-3" [disabled]="loading"
                         (click)="onToggleModalitaMerge()">
-                    <i class="fa fa-undo mr-1"></i>
-                    Annulla
-                </button>
-                <button *ngIf="statoModalita" class="btn btn-outline-success mr-3"
-                        [disabled]="idSelezionatiMerge.length <= 1 || loading"
-                        (click)="onSaveMerge()">
-                    <i class="fa fa-save mr-1"></i>
-                    Raggruppa selezionate
-                </button>
-                <button *ngIf="!statoModalita" class="btn btn-outline-primary mr-3"
+                        <i class="fa fa-undo mr-1"></i>
+                        Annulla
+                    </button>
+                    <button *ngIf="statoModalita" class="btn btn-outline-success mr-3"
+                        [disabled]="idSelezionatiMerge.length <= 1 || loading" (click)="onSaveMerge()">
+                        <i class="fa fa-save mr-1"></i>
+                        Raggruppa selezionate
+                    </button>
+                    <button *ngIf="!statoModalita" class="btn btn-outline-primary mr-3"
                         (click)="onToggleModalitaMerge()">
-                    <i class="fa fa-object-group mr-1"></i>
-                    Raggruppa
-                </button>
-                <button ngbDropdownAnchor class="btn mr-2"
+                        <i class="fa fa-object-group mr-1"></i>
+                        Raggruppa
+                    </button>
+                </ng-template>
+                <ng-template [ngIf]="!hideRangeVisualizzazione">
+                    <button ngbDropdownAnchor class="btn mr-2"
                         [class.btn-primary]="rangeVisualizzazione !== RangeVisualizzazione.DaSempre"
                         [class.btn-outline-primary]="rangeVisualizzazione === RangeVisualizzazione.DaSempre"
                         (focus)="dropdownVisualizzazione.open()">
-                    <i class="fa fa-clock-o mr-1"></i>
-                    {{ rangeVisualizzazione }}
-                </button>
-                <div ngbDropdownMenu>
-                    <button *ngFor="let r of rangeSchedeContattoEnumValues" ngbDropdownItem
+                        <i class="fa fa-clock-o mr-1"></i>
+                        {{ rangeVisualizzazione }}
+                    </button>
+                    <div ngbDropdownMenu>
+                        <button *ngFor="let r of rangeSchedeContattoEnumValues" ngbDropdownItem
                             [ngClass]="{'bg-primary text-light': r === rangeVisualizzazione}"
                             (click)="onSetFiltroRange(r)">
-                        {{ r }}
-                    </button>
-                </div>
+                            {{ r }}
+                        </button>
+                    </div>
+                </ng-template>
             </div>
         </div>
         <div class="float-right">
             <div class="text-right">
-                <pagination-controls class="mt-1 mb-0"
-                                     [previousLabel]="'Precedente'"
-                                     [nextLabel]="'Successiva'"
-                                     (pageChange)="onPageChange($event)">
+                <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                    [autoHide]="true" (pageChange)="onPageChange($event)">
                 </pagination-controls>
             </div>
         </div>

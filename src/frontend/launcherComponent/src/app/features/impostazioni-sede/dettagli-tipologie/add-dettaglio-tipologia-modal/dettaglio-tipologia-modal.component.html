@@ -1,49 +1,40 @@
 <div class="modal-header">
     <h4 class="modal-title">{{ 'Crea Dettaglio Tipologia' | uppercase }}</h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-            (click)="onDismiss()">
+        (click)="onDismiss()">
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body">
     <form [formGroup]="dettaglioTipologiaForm" ngxsForm="dettaglioTipologiaModal.dettaglioTipologiaForm">
         <div class="mb-3">
-            <label for="tipologia">Scegli una Tipologia</label>
-            <ng-select id="tipologia"
-                       placeholder="Seleziona una tipologia dall'elenco"
-                       [items]="tipologie$ | async"
-                       bindLabel="codiceDescrizione"
-                       bindValue="codice"
-                       formControlName="codTipologia">
+            <label for="tipologia" class="font-xxlarge">
+                Scegli una Tipologia
+            </label>
+            <ng-select id="tipologia" placeholder="Seleziona una tipologia dall'elenco" [items]="tipologie$ | async"
+                bindLabel="codiceDescrizione" bindValue="codice" formControlName="codTipologia">
             </ng-select>
         </div>
-        <div>
-            <label for="dettaglioTipologia">Descrivi il Dettaglio della Tipologia</label>
-            <input id="dettaglioTipologia"
-                   type="text"
-                   placeholder="Dettaglio Tipologia"
-                   class="form-control"
-                   formControlName="descrizione">
+        <div class="font-xxlarge">
+            <label for="dettaglioTipologia" class="font-xxlarge">
+                Descrivi il Dettaglio della Tipologia
+            </label>
+            <input id="dettaglioTipologia" type="text" placeholder="Dettaglio Tipologia" class="form-control"
+                formControlName="descrizione">
         </div>
     </form>
 </div>
 <div class="modal-footer">
     <ng-template [ngIf]="!editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2"
-                [disabled]="!formValid"
-                (click)="onConfermaERiapri()">
+        <button class="btn btn-lg btn-success btn-no-hover mr-2" [disabled]="!formValid" (click)="onConfermaERiapri()">
             {{ 'Conferma e Continua' | uppercase }}
         </button>
-        <button class="btn btn-lg btn-secondary btn-no-hover"
-                [disabled]="!formValid"
-                (click)="onConfermaEChiudi()">
+        <button class="btn btn-lg btn-secondary btn-no-hover" [disabled]="!formValid" (click)="onConfermaEChiudi()">
             {{ 'Conferma e Chiudi' | uppercase }}
         </button>
     </ng-template>
     <ng-template [ngIf]="editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2"
-                [disabled]="!formValid"
-                (click)="onConfermaEChiudi()">
+        <button class="btn btn-lg btn-success btn-no-hover mr-2" [disabled]="!formValid" (click)="onConfermaEChiudi()">
             {{ 'Conferma Modifica' | uppercase }}
         </button>
     </ng-template>

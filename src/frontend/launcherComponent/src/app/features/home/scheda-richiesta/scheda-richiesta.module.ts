@@ -24,9 +24,9 @@ import { TagInputModule } from 'ngx-chips';
         FormsModule,
         TagInputModule,
         GooglePlaceModule,
-        NgbModule,
         ClipboardModule,
         ReactiveFormsModule,
+        NgbModule,
         SharedModule,
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([

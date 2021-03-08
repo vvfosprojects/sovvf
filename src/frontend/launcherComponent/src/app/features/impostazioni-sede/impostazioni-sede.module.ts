@@ -27,8 +27,9 @@ import { TriageComponent } from './triage/triage.component';
     imports: [
         CommonModule,
         ImpostazioniSedeRoutingModule,
+        NgbModule,
+        SharedModule,
         TreeviewModule.forRoot(),
-        SharedModule.forRoot(),
         NgxsModule.forFeature([
             DettaglioTipologiaModalState
         ]),
@@ -36,8 +37,6 @@ import { TriageComponent } from './triage/triage.component';
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,
-        SharedModule,
-        NgbModule,
         ReactiveFormsModule
     ]
 })

@@ -45,9 +45,11 @@
                 </ng-container>
                 <div *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length <= 0"
                      class="float-right py-1">
-                    <app-checkbox appClickStopPropagation [typeName]="'nue' + scheda.classificazione"
+                    <app-checkbox appClickStopPropagation
+                                  [typeName]="'nue' + scheda.classificazione"
                                   [checkboxState]="disableRaggruppamento ? { disabled: true} : {id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
-                                  (checkbox)="onEditSchedaSelezionata($event)" [tooltipMessage]="checkMessage()"
+                                  [tooltipMessage]="checkMessage()"
+                                  (checkbox)="onEditSchedaSelezionata($event)"
                                   (container)="onCheckBoxClick()"></app-checkbox>
                 </div>
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length > 0">

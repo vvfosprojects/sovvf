@@ -28,6 +28,8 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Input() classificazioneMerge: ClassificazioneSchedaContatto;
     @Input() loading: boolean;
     @Input() rangeVisualizzazione: RangeSchedeContattoEnum;
+    @Input() hideRangeVisualizzazione: boolean;
+    @Input() hideRaggruppa: boolean;
     @Input() nightMode: boolean;
 
     @Output() tabSelected: EventEmitter<any> = new EventEmitter<any>();

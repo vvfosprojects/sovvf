@@ -59,8 +59,8 @@ import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state'
         FormsModule,
         ReactiveFormsModule,
         FilterPipeModule,
-        SharedModule,
         NgbModule,
+        SharedModule,
         NgxsModule.forFeature(
             [
                 HomeState,

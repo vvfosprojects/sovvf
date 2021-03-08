@@ -56,8 +56,8 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
-                private store: Store,
-                private modalService: NgbModal) {
+        private store: Store,
+        private modalService: NgbModal) {
         this.getDoubleMonitor();
         this.getTriage();
         this.getTriageData();
@@ -240,7 +240,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     closeModal(type: string): void {
-        if (!this.dettaglioTipologiaSelezionato && !this.triageSummary?.length) {
+        if (this.dettaglioTipologiaSelezionato && !this.triageSummary?.length) {
             return this.dismissModal('dismiss');
         }
         const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary };
@@ -248,7 +248,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     dismissModal(type: string): void {
-        let dismissTriageModal;
+        let dismissTriageModal: any;
         if (this.doubleMonitor) {
             dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
                 windowClass: 'modal-holder modal-left',
@@ -266,7 +266,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         }
         dismissTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         dismissTriageModal.componentInstance.titolo = 'Chiusura Triage';
-        dismissTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Il dettaglio tipologia e le eventuali risposte non verrano salvate.';
+        dismissTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Le eventuali risposte del triage non verrano salvate.';
         dismissTriageModal.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
@@ -275,7 +275,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             (val: string) => {
                 switch (val) {
                     case 'ok':
-                        const obj = { type };
+                        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato };
                         this.modal.close(obj);
                         break;
                     case 'ko':
@@ -288,5 +288,9 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
                 console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
             }
         );
+    }
+
+    getTitle(): string {
+        return !this.dettaglioTipologiaSelezionato ? 'Dettaglio Tipologia' : 'Triage';
     }
 }

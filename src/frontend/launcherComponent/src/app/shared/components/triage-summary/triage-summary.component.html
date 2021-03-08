@@ -15,29 +15,26 @@
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
     <!-- RIEPILOGO TRIAGE -->
     <ng-template [ngIf]="summary?.length">
-        <ngb-panel id="riepilogo-triage"
-                   [disabled]="!summary">
+        <ngb-panel id="riepilogo-triage" [disabled]="!summary">
             <ng-template ngbPanelTitle>
                 <b>RIEPILOGO TRIAGE</b>
             </ng-template>
             <ng-template ngbPanelContent>
                 <!-- RISPOSTE -->
-                <div class="px-3">
-                    <h5 class="text-danger">
-                        <i class="fa fa-question-circle mr-2"></i>
-                        <b>RISPOSTE <span class="text-danger">({{ summary?.length }})</span></b>
-                    </h5>
-                    <ul class="list-group font-xlarge">
-                        <li *ngFor="let s of summary, let i = index">
-                            <div>
-                                <b>{{ s.domanda }}</b>
-                            </div>
-                            <div>
-                                Risposta: <b>{{ s.risposta }}</b>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                <h5 class="text-danger">
+                    <i class="fa fa-question-circle mr-2"></i>
+                    <b>RISPOSTE <span class="text-danger">({{ summary?.length }})</span></b>
+                </h5>
+                <ul class="list-group font-xlarge px-3">
+                    <li *ngFor="let s of summary, let i = index">
+                        <div>
+                            <b>{{ s.domanda }}</b>
+                        </div>
+                        <div>
+                            Risposta: <b>{{ s.risposta }}</b>
+                        </div>
+                    </li>
+                </ul>
                 <!-- ISTRUZIONI PRE-ARRIVO -->
                 <ng-template [ngIf]="false">
                     <div class="mt-3">
@@ -77,8 +74,7 @@
                             <b>Suggerimenti <span class="text-danger">({{ noteOperatore.length }})</span></b>
                         </h5>
                         <div class="font-xlarge">
-                            <span *ngFor="let nota of noteOperatore; let i = index"
-                                  class="d-inline-block">
+                            <span *ngFor="let nota of noteOperatore; let i = index" class="d-inline-block">
                                 {{ i + 1 }}. {{ nota }}
                             </span>
                         </div>
@@ -89,8 +85,7 @@
     </ng-template>
     <!-- NOTE NUE -->
     <ng-template [ngIf]="schedaContatto">
-        <ngb-panel id="note-nue"
-                   [disabled]="!schedaContatto">
+        <ngb-panel id="note-nue" [disabled]="!schedaContatto">
             <ng-template ngbPanelTitle>
                 <b>NOTE NUE</b>
             </ng-template>
@@ -104,8 +99,7 @@
     <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
     <!-- INTERVENTI IN PROSSIMITA' -->
     <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
-        <ngb-panel id="interventi-prossimita"
-                   [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
+        <ngb-panel id="interventi-prossimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
             <ng-template ngbPanelTitle>
                 <b>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</b>
             </ng-template>
@@ -114,7 +108,8 @@
                     <ul class="list-group font-xlarge">
                         <li *ngFor="let interventoProssimita of interventiProssimita" class="font-xlarge mb-2">
                             <div>
-                                <b>{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta : interventoProssimita?.codice }}</b>
+                                <b>{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
+                                    interventoProssimita?.codice }}</b>
                             </div>
                             <div>
                                 <i class="fa fa-map-marker mr-1"></i>

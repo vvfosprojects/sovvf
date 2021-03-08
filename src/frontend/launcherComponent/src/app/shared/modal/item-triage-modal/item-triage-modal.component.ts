@@ -38,6 +38,8 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
 
     NecessitaSoccorsoAereoValues = Object.values(NecessitaSoccorsoAereoEnum);
 
+    parentItemData: ItemTriageData;
+
     private subscription: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
@@ -53,6 +55,14 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         this.patchForm();
         if (this.disableDomanda) {
             this.f.domandaSeguente.disable();
+        }
+        if (this.parentItemData) {
+            this.addItemTriageForm.patchValue({
+                soccorsoAereo: this.parentItemData?.soccorsoAereo,
+                generiMezzo: this.parentItemData?.generiMezzo,
+                prioritaConsigliata: this.parentItemData?.prioritaConsigliata,
+                noteOperatore: this.parentItemData?.noteOperatore
+            });
         }
     }
 
