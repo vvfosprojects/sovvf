@@ -74,11 +74,6 @@ export class ViewportState {
         return state.innerWidth > state.maxInnerWidthDoubleMonitor;
     }
 
-    @Selector()
-    static chiamataConMappa(state: ViewportStateModel): boolean {
-        return state.innerWidth > state.maxInnerWidthChiamataConMappa;
-    }
-
     @Action(SetAvailHeight)
     setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight): void {
         patchState({ availHeight });

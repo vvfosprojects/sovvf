@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    @Select(ViewportState.chiamataConMappa) chiamataConMappa$: Observable<boolean>;
 
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
