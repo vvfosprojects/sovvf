@@ -1,6 +1,5 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using System.Collections.Generic;
 using System.Linq;

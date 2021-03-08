@@ -2,7 +2,7 @@
 using System;
 
 namespace SO115App.Models.Classi.ServiziEsterni.Gac
-{ 
+{
     /// <summary>
     ///   L'oggetto MovimentazioneDTO è l'oggetto che viene passato al servizio GAC per aggiornare
     ///   la movimentazione di un mezzo. Contiene informazioni quali lo stato del mezzo e l'id della

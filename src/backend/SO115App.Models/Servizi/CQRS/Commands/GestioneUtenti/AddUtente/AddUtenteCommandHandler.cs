@@ -28,7 +28,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente

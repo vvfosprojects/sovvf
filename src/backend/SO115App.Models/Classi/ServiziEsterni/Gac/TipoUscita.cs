@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace SO115App.Models.Classi.ServiziEsterni.Gac
+﻿namespace SO115App.Models.Classi.ServiziEsterni.Gac
 {
     /// <summary>
     ///   Modello per il tipo di uscito da inviare al servizio GacWeb al compimento della

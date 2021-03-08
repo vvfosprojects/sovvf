@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +9,8 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTi
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTipologie.ModificaDettaglioTipologia;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia.GetDettagliTipoligiaByIdTipologia;
-using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

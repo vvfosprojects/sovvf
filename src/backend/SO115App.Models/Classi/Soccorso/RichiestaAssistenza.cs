@@ -28,7 +28,6 @@ using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using System;

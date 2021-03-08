@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +6,8 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.UpDateTriage;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

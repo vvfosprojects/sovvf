@@ -3,7 +3,6 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
@@ -40,7 +39,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> Get([FromBody]RubricaQuery rubricaQuery)
+        public async Task<IActionResult> Get([FromBody] RubricaQuery rubricaQuery)
         {
             try
             {

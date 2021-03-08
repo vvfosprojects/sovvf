@@ -17,28 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Fonogramma;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Triage;
+using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
-using SO115App.Models.Classi.Fonogramma;
-using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Classi.Triage;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {

@@ -1,8 +1,5 @@
-﻿using SO115App.Models.Classi.ServiziEsterni.AFM;
-using SO115App.Models.Classi.Triage;
-using System;
+﻿using SO115App.Models.Classi.Triage;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage
 {

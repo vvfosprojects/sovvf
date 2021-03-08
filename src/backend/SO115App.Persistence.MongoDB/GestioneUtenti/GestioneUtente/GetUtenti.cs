@@ -21,7 +21,6 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente

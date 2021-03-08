@@ -3,9 +3,6 @@ using Persistence.MongoDB;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneTriage
 {

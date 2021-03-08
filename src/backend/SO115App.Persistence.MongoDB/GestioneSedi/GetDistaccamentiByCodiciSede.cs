@@ -9,7 +9,6 @@ using SO115App.Persistence.MongoDB.GestioneSedi.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {

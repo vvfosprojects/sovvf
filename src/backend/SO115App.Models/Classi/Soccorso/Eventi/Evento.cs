@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi
 {
@@ -65,7 +65,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
                 throw new ArgumentException("Cannot be null or whitespace", nameof(CodiceFonte));
             }
 
-            this.Istante = istante; 
+            this.Istante = istante;
             this.CodiceFonte = codiceFonte;
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;

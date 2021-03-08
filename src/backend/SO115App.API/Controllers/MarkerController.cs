@@ -17,9 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +26,9 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

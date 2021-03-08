@@ -17,8 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +25,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
@@ -14,7 +13,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
@@ -28,9 +26,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IConfiguration _configuration;
 
         private readonly IGetToken _getToken;
-        private readonly IHttpRequestManager<List<MezzoDTO>> _clientMezzi;
+        private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
-        public GetMezziUtilizzabili(IHttpRequestManager<List<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta)
         {

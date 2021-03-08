@@ -2,7 +2,6 @@
 using SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli;
-using System;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneRuoli

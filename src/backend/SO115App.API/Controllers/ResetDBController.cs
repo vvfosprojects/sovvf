@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Queries;
+﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

@@ -17,13 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {

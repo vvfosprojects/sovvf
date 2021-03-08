@@ -264,7 +264,7 @@ export class BoxPartenzaState {
                     if (box.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro) {
                         dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
                     } else {
-                        dispatch(new ReducerSelectMezzoComposizioneInRientro(box.mezzoComposizione));
+                        dispatch(new ReducerSelectMezzoComposizioneInRientro(box.mezzoComposizione, true));
                     }
                 }
                 if (box.squadreComposizione.length > 0) {

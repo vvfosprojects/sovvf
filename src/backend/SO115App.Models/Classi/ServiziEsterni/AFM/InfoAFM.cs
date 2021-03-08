@@ -34,7 +34,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
         {
             if (IsError())
                 return azione + " soccorso AFM fallito: " + string.Concat(errors.Select(e => MapErrorsAFM.Map(e) + ". ")).TrimEnd();
-            else 
+            else
                 return azione + " soccorso AFM accettato: " + activities.Last().activityStatusType;
         }
         public string GetTargaEvento() => activities?.Last().aircraft.regMark ?? "";

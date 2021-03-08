@@ -63,7 +63,7 @@ export class UnselectSquadraComposizioneInRientro {
 export class SelectSquadreComposizione {
     static readonly type = '[SquadreComposizione] Select Squadre Composizione';
 
-    constructor(public squadreComp: SquadraComposizione[]) {
+    constructor(public squadreComp: SquadraComposizione[], public noSelect?: boolean) {
     }
 }
 

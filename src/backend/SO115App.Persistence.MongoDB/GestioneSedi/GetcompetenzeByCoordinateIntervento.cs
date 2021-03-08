@@ -2,13 +2,11 @@
 using MongoDB.Driver.GeoJsonObjectModel;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {

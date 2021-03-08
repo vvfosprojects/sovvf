@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SO115App.Models.Classi.ServiziEsterni.Oracle
+﻿namespace SO115App.Models.Classi.ServiziEsterni.Oracle
 {
     public class ORAGruppo_Tipologie
     {

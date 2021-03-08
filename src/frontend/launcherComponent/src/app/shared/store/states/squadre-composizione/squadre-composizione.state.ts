@@ -179,6 +179,7 @@ export class SquadreComposizioneState {
 
     @Action(SelectSquadreComposizione)
     selectSquadreComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadreComposizione): void {
+        const state = getState();
         if (action.squadreComp) {
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
@@ -193,11 +194,11 @@ export class SquadreComposizioneState {
             setState(
                 patch({
                     idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id)),
-                    idSquadreSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.squadra.id))
+                    idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.squadra.id)) : state.idSquadreSelezionate,
                 })
             );
-            if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length) {
-                this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp));
+            if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
+                this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp)); // qui
             }
         }
     }

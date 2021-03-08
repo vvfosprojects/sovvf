@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.Models.Classi.Condivise
+﻿namespace SO115App.Models.Classi.Condivise
 {
     public class CompetenzeRichiesta
     {
