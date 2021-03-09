@@ -111,7 +111,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoPrecedente = _getTurno.Get(turnoCorrente.DataOraInizio.AddMilliseconds(-1));
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
-            var mezziPrenotati = _getMezziPrenotati.Get(query.CodiceSede);
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiceSede);
             var statiOperativiSquadre = _getStatoSquadre.Get(lstSedi);
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
@@ -120,6 +120,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 p.SquadreComposizione = p.SquadreComposizione.Select(comp =>
                 {
                     comp.Squadra.PreAccoppiato = true;
+                    comp.MezzoPreaccoppiato = p.MezzoComposizione;
+                    comp.MezzoPreaccoppiato.Mezzo.Stato = statiOperativiMezzi?.FirstOrDefault(m => m.CodiceMezzo.Equals(p.MezzoComposizione.Mezzo.Codice))?.StatoOperativo ?? Costanti.MezzoInSede ?? Costanti.MezzoInSede;
                     return comp;
                 }).ToList();
 
@@ -144,8 +146,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
                     };
 
-                    if (comp.MezzoPreaccoppiato != null && comp.MezzoPreaccoppiato.Mezzo != null && mezziPrenotati.Count > 0)
-                        comp.MezzoPreaccoppiato.Mezzo.Stato = mezziPrenotati.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo;
+                    if (comp.MezzoPreaccoppiato != null && comp.MezzoPreaccoppiato.Mezzo != null && statiOperativiMezzi.Count > 0)
+                        comp.MezzoPreaccoppiato.Mezzo.Stato = statiOperativiMezzi.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo;
 
                     squadra.IndiceOrdinamento = GetIndiceOrdinamento(comp, query.Richiesta);
 
@@ -180,13 +182,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         if (c.IstanteScadenzaSelezione < DateTime.Now)
                             c.IstanteScadenzaSelezione = null;
 
-                        if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)) != null)
+                        if (statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)) != null)
                         {
                             c.Id = c.Mezzo.Codice;
-                            c.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).IstanteScadenzaSelezione;
+                            c.IstanteScadenzaSelezione = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).IstanteScadenzaSelezione;
 
                             if (c.Mezzo.Stato.Equals("In Sede"))
-                                c.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
+                                c.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
 
                             if (c.Mezzo.Stato.Equals("Sul Posto"))
                                 c.IndirizzoIntervento = _getSintesiRichiestaAssistenza.GetSintesi(c.Mezzo.IdRichiesta).Localita.Indirizzo;
