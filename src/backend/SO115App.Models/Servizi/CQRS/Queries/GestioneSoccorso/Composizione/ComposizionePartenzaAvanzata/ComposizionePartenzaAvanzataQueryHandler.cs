@@ -392,7 +392,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
                 return true;
             })
-            .OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
+            .OrderByDescending(c =>
+            {
+                if (query.Filtro.Squadre?.Any(s => s.PreAccoppiato) ?? false)
+                    return c.Mezzo.PreAccoppiato;
+                return false;
+            })
+            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
@@ -458,7 +464,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 return s;
             })
             .Where(s => s != null)
-#endif
+#endif      
+            .OrderByDescending(c =>
+            {
+                if (query.Filtro.Mezzo?.PreAccoppiato ?? false)
+                    return c.Squadra.PreAccoppiato;
+                return false;
+            })
             .OrderByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InSede)
             .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InRientro)
             .ThenByDescending(c => c.Squadra.Stato == Squadra.StatoSquadra.InViaggio)
