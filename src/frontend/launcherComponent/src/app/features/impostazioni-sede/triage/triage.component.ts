@@ -268,13 +268,15 @@ export class TriageComponent implements OnDestroy {
             addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
             addItemTriageModal.componentInstance.item = item;
 
-            const rispostaParentItemValue = item.value.slice(2).slice(0, -2);
-            if (rispostaParentItemValue) {
-                const rispostaParentItem = this.findItem(this.tItems[0], rispostaParentItemValue);
-                if (rispostaParentItem) {
-                    const parentItemData = this.getItemData(rispostaParentItem);
-                    if (parentItemData) {
-                        addItemTriageModal.componentInstance.parentItemData = parentItemData;
+            if (item) {
+                const rispostaParentItemValue = item.value.slice(2).slice(0, -2);
+                if (rispostaParentItemValue) {
+                    const rispostaParentItem = this.findItem(this.tItems[0], rispostaParentItemValue);
+                    if (rispostaParentItem) {
+                        const parentItemData = this.getItemData(rispostaParentItem);
+                        if (parentItemData) {
+                            addItemTriageModal.componentInstance.parentItemData = parentItemData;
+                        }
                     }
                 }
             }
