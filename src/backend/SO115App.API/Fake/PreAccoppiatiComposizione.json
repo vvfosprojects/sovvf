@@ -1312,11 +1312,11 @@
     "Id": "7",
     "CodiceSede": "RM.1000",
     "MezzoComposizione": {
-      "id": "O.23037",
+      "id": "O.24754",
       "mezzo": {
-        "codice": "O.23037",
+        "codice": "O.24754",
         "idRichiesta": null,
-        "descrizione": "23037",
+        "descrizione": "24754",
         "genere": "APS",
         "stato": "In Sede",
         "appartenenza": "CORP",
