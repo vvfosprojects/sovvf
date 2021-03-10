@@ -68,6 +68,7 @@ import { DettaglioSoccorsoAereoModalComponent } from './modal/dettaglio-soccorso
 import { ItemTriageModalComponent } from './modal/item-triage-modal/item-triage-modal.component';
 import { TriageSummaryComponent } from './components/triage-summary/triage-summary.component';
 import { TriageSummaryModalComponent } from './modal/triage-summary-modal/triage-summary-modal.component';
+import { IconaStatoComponent } from './components/icona-stato/icona-stato.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -129,7 +130,8 @@ const COMPONENTS = [
     AzioniSintesiRichiestaModalComponent,
     ItemTriageModalComponent,
     TriageSummaryComponent,
-    TriageSummaryModalComponent
+    TriageSummaryModalComponent,
+    IconaStatoComponent,
 ];
 const MODULES = [
     PipeModule

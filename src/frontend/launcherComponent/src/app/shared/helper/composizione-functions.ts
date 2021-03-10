@@ -84,10 +84,10 @@ export function boxStatiClass(stato: string): string {
       returnClass = 'box-stato bg-secondary';
       break;
     case StatoMezzo.InViaggio:
-      returnClass = 'box-stato bg-warning';
+      returnClass = 'box-stato bg-danger';
       break;
     case StatoMezzo.InRientro:
-      returnClass = 'box-stato bg-verdemela';
+      returnClass = 'box-stato bg-success';
       break;
     case StatoMezzo.SulPosto:
       returnClass = 'box-stato bg-danger';

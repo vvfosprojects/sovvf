@@ -1,33 +1,33 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import {
-    AddBookingMezzoComposizione,
-    AddBookMezzoComposizione,
-    AddMezzoComposizione,
-    ClearListaMezziComposizione,
-    ClearMezzoComposizione,
-    ClearSelectedMezziComposizione,
-    HoverInMezzoComposizione,
-    HoverOutMezzoComposizione,
-    LockMezzoComposizione,
-    ReducerSelectMezzoComposizione,
-    ReducerSelectMezzoComposizioneInRientro,
-    RemoveBookingMezzoComposizione,
-    RemoveBookMezzoComposizione,
-    RemoveMezzoComposizione,
-    RequestBookMezzoComposizione,
-    RequestRemoveBookMezzoComposizione,
-    RequestResetBookMezzoComposizione,
-    RequestUnlockMezzoComposizione,
-    ResetBookMezzoComposizione,
-    SelectMezzoComposizione,
-    SelectMezzoComposizioneFromMappa,
-    SetListaMezziComposizione,
-    SganciamentoMezzoComposizione,
-    UnlockMezzoComposizione,
-    UnselectMezzoComposizione,
-    UpdateMezzoComposizione,
-    UpdateMezzoComposizioneScadenzaByCodiceMezzo
+  AddBookingMezzoComposizione,
+  AddBookMezzoComposizione,
+  AddMezzoComposizione,
+  ClearListaMezziComposizione,
+  ClearMezzoComposizione,
+  ClearSelectedMezziComposizione,
+  HoverInMezzoComposizione,
+  HoverOutMezzoComposizione,
+  LockMezzoComposizione,
+  ReducerSelectMezzoComposizione,
+  ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati,
+  RemoveBookingMezzoComposizione,
+  RemoveBookMezzoComposizione,
+  RemoveMezzoComposizione,
+  RequestBookMezzoComposizione,
+  RequestRemoveBookMezzoComposizione,
+  RequestResetBookMezzoComposizione,
+  RequestUnlockMezzoComposizione,
+  ResetBookMezzoComposizione,
+  SelectMezzoComposizione,
+  SelectMezzoComposizioneFromMappa,
+  SetListaMezziComposizione,
+  SganciamentoMezzoComposizione,
+  UnlockMezzoComposizione,
+  UnselectMezzoComposizione,
+  UpdateMezzoComposizione,
+  UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
@@ -62,6 +62,7 @@ export interface MezziComposizioneStateStateModel {
     idMezziInPrenotazione: string[];
     idMezziPrenotati: string[];
     idMezziBloccati: string[];
+    mezzoSelezionato: MezzoComposizione;
 }
 
 export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = {
@@ -72,7 +73,8 @@ export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = 
     idMezzoSelezionato: null,
     idMezziPrenotati: [],
     idMezziInPrenotazione: [],
-    idMezziBloccati: []
+    idMezziBloccati: [],
+    mezzoSelezionato: null,
 };
 
 @Injectable()
@@ -95,11 +97,14 @@ export class MezziComposizioneState {
     @Selector()
     static mezzoSelezionato(state: MezziComposizioneStateStateModel): MezzoComposizione {
         let mezzoSelez = null as MezzoComposizione;
-        state.allMezziComposizione.forEach((m: MezzoComposizione) => {
-            if (m.id === state.idMezzoSelezionato) {
-                mezzoSelez = m;
-            }
-        });
+        // state.allMezziComposizione.forEach((m: MezzoComposizione) => {
+        //     if (m.id === state.idMezzoSelezionato) {
+        //         mezzoSelez = m;
+        //     }
+        // });
+        if (state.idMezzoSelezionato && (state.idMezzoSelezionato === state.mezzoSelezionato.id)) {
+          mezzoSelez = state.mezzoSelezionato;
+        }
         return mezzoSelez;
     }
 
@@ -229,11 +234,6 @@ export class MezziComposizioneState {
                         new SelectMezzoComposizione(mezzoComp),
                         new AddMezzoBoxPartenzaSelezionato(mezzoComp)
                     ]);
-
-                    // Todo: rivedere (preAccoppiati)
-                    // if (!boxPartenzaSelezionato?.squadreComposizione?.length && action.mezzoComp?.squadrePreaccoppiate) {
-                    //     dispatch(new SelectSquadreComposizione(action.mezzoComp.squadrePreaccoppiate));
-                    // }
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
                 dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
@@ -290,6 +290,47 @@ export class MezziComposizioneState {
         }
     }
 
+    @Action(ReducerSelectMezzoComposizionePreAccoppiati)
+    reducerSelectMezzoComposizionePreAccoppiati({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ReducerSelectMezzoComposizioneInRientro): void {
+      const state = getState();
+      const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
+      const mezzoComp = action.mezzoComp;
+      const mezzo = action.mezzoComp.mezzo;
+
+      if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
+        let addBoxPartenza = false;
+        if (boxPartenzaList.length <= 0) {
+          addBoxPartenza = true;
+          dispatch(new AddBoxPartenza());
+        }
+        setTimeout(() => {
+          if (!mezzo.coordinateFake) {
+            dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
+          }
+          dispatch([
+            new SelectMezzoComposizione(mezzoComp),
+            new AddMezzoBoxPartenzaSelezionato(mezzoComp)
+          ]);
+
+          if (mezzoComp?.squadrePreaccoppiate?.length) {
+            // Seleziono squadre pre accoppiate con il mezzo in quel momento
+            dispatch([
+              new ClearSelectedSquadreComposizione(),
+            ]);
+            dispatch(new SelectSquadreComposizione(mezzoComp.squadrePreaccoppiate, false, true));
+          }
+        }, calcolaTimeout(addBoxPartenza));
+      } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
+        dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
+      } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
+        dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
+      }
+
+      function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {
+        return store.idMezziPrenotati.indexOf(idMezzoComp) === -1 && store.idMezziInPrenotazione.indexOf(idMezzoComp) === -1;
+      }
+    }
+
     @Action(SelectMezzoComposizioneFromMappa)
     selectMezzoComposizioneFromMappa({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizioneFromMappa): void {
         if (action && action.mezzoId) {
@@ -312,18 +353,18 @@ export class MezziComposizioneState {
     selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione): void {
         patchState({
             idMezzoComposizioneSelezionato: action.mezzoComp.id,
-            idMezzoSelezionato: action.mezzoComp.mezzo.codice
+            idMezzoSelezionato: action.mezzoComp.mezzo.codice,
+            mezzoSelezionato: action.mezzoComp,
         });
-
         const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
 
         if (boxPartenzaSelezionato && richiestaComposizione && (!boxPartenzaSelezionato?.squadreComposizione || boxPartenzaSelezionato?.squadreComposizione?.length <= 0)) {
-            dispatch(new GetListeComposizioneAvanzata());
+          dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
-            dispatch(new GetListaMezziSquadre());
+          dispatch(new GetListaMezziSquadre());
         }
     }
 
@@ -504,13 +545,12 @@ export class MezziComposizioneState {
                 const innerWidth = window.innerWidth;
                 if (innerWidth && innerWidth > 3700) {
                     modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, {
-                        windowClass: 'modal-holder modal-left',
+                        windowClass: 'modal-holder modal-left sganciamentoModal',
                         backdropClass: 'light-blue-backdrop',
                         centered: true,
-                        size: 'xl'
                     });
                 } else {
-                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder', backdropClass: 'light-blue-backdrop', centered: true, size: 'xl' });
+                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'modal-holder sganciamentoModal', backdropClass: 'light-blue-backdrop', centered: true});
                 }
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';

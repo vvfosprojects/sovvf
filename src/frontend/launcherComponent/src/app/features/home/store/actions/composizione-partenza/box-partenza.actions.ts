@@ -34,7 +34,7 @@ export class RemoveBoxPartenzaByMezzoId {
 export class AddSquadreBoxPartenza {
     static readonly type = '[BoxPartenza] Add Squadre Box Partenza';
 
-    constructor(public squadre: SquadraComposizione[]) {
+    constructor(public squadre: SquadraComposizione[], public preAccoppiato?: boolean) {
     }
 }
 
@@ -86,4 +86,11 @@ export class AddBoxesPartenzaInRientro {
 
     constructor(public squadraComp: SquadraComposizione) {
     }
+}
+
+export class AddBoxesPartenzaPreAccoppiato {
+  static readonly type = '[BoxPartenza] Add Boxes Partenza Pre Accoppiato';
+
+  constructor(public squadraComp: SquadraComposizione) {
+  }
 }

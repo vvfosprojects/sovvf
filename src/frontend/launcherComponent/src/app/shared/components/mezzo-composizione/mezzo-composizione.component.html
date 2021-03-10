@@ -5,11 +5,7 @@
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
     <div class="row px-3">
-        <div class="clearfix d-inline-flex">
-            <div [ngClass]="_boxStatiClass(mezzoComp.mezzo.stato)"
-                 [ngbTooltip]="mezzoComp.mezzo.stato"
-                 placement="top"></div>
-        </div>
+        <app-icona-stato [stato]="mezzoComp.mezzo.stato"></app-icona-stato>
         <div class="col pr-0">
             <div class="d-inline-block font-weight-bold mr-1"
                  [ngbTooltip]="mezzoComp.mezzo.descrizione"
@@ -28,7 +24,7 @@
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="$event.stopPropagation()">
+                                (click)="onClick(false, true);$event.stopPropagation()">
                             <div class="d-inline-block ml-2"
                                  style="font-weight: 500">
                                 P
@@ -37,8 +33,9 @@
                         </button>
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s.squadra.nome }}</div>
-                                <div *ngIf="s.squadra.turno" class="d-inline-block">({{ s.squadra.turno }})</div>
+                                <div class="d-inline-block font-weight-bold">{{ s.squadra?.nome}}</div>
+                                <div *ngIf="s.squadra.turno" class="d-inline-block"> ({{ s.squadra?.turno }}) </div>
+                                <div class="d-inline"> - {{ _nomeStatiSquadra(s.squadra?.stato) }}</div>
                             </div>
                         </ng-template>
                     </ng-container>

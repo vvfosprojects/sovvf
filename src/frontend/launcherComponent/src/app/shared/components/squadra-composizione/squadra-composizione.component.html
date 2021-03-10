@@ -8,16 +8,12 @@
     <div class="row px-3">
         <div class="clearfix"
              style="width: 80%">
-            <div class="d-inline-flex mr-2"
-                 style="vertical-align: text-top;">
-                <div [ngClass]="_boxStatiSquadraClass(squadraComp.squadra.stato)"
-                     [ngbTooltip]="_nomeStatiSquadra(squadraComp.squadra.stato)"
-                     placement="top"></div>
-            </div>
-            <div class="badge badge-info mr-2 py-1"
+          <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp.squadra.stato)"></app-icona-stato>
+          <div class="badge badge-info mx-2 py-1"
                  [ngbPopover]="componenti"
                  placement="right"
-                 triggers="mouseenter:mouseleave">
+                 triggers="mouseenter:mouseleave"
+                  style="vertical-align: text-bottom;">
                 <i class="fa fa-user mr-1"></i>
                 <ng-template [ngIf]="squadraComp.squadra.componenti?.length">
                     <div class="d-inline-block">
@@ -48,7 +44,7 @@
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="onClick(true); $event.stopPropagation()">
+                                (click)="onClick(false, true); $event.stopPropagation()">
                             <div class="d-inline-block font-weight-bold"
                                  style="font-weight: 500">
                                 P
@@ -62,6 +58,9 @@
                                 </div>
                                 <div class="d-inline-block">
                                     {{ squadraComp.mezzoPreaccoppiato?.mezzo?.genere }}
+                                </div>
+                                <div class="d-inline">
+                                  - {{ squadraComp.mezzoPreaccoppiato?.mezzo?.stato }}
                                 </div>
                             </div>
                         </ng-template>

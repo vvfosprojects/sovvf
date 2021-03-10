@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { boxStatiSquadraClass, nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/composizione-functions';
+import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
 import { ViewLayouts } from '../../interface/view.interface';
 import { Observable, Subscription } from 'rxjs';
@@ -28,8 +28,10 @@ export class SquadraComposizioneComponent implements OnDestroy {
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
     @Output() selezionataInRientro = new EventEmitter<SquadraComposizione>();
+    @Output() selezionataPreAccoppiati = new EventEmitter<SquadraComposizione>();
     @Output() deselezionata = new EventEmitter<SquadraComposizione>();
     @Output() deselezionataInRientro = new EventEmitter<SquadraComposizione>();
+    @Output() deselezionataPreAccoppiati = new EventEmitter<SquadraComposizione>();
     @Output() hoverIn = new EventEmitter<SquadraComposizione>();
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
@@ -48,19 +50,27 @@ export class SquadraComposizioneComponent implements OnDestroy {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
-    onClick(inRientro?: boolean): void {
-        if (!this.squadraComposizioneBusy()) {
+    onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
+        if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
             if (!this.itemSelezionato) {
-                this.selezionata.emit(this.squadraComp);
+              this.selezionata.emit(this.squadraComp);
             } else {
                 this.deselezionata.emit(this.squadraComp);
             }
         } else if (inRientro) {
             if (!this.itemSelezionato) {
-                this.selezionataInRientro.emit(this.squadraComp);
+              this.selezionataInRientro.emit(this.squadraComp);
             } else {
-                this.deselezionataInRientro.emit(this.squadraComp);
+              this.deselezionataInRientro.emit(this.squadraComp);
             }
+        } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
+          if (this.squadraComp.mezzoPreaccoppiato?.mezzo?.stato === 'In Sede') {
+            if (!this.itemSelezionato) {
+              this.selezionataPreAccoppiati.emit(this.squadraComp);
+            } else {
+              this.deselezionataPreAccoppiati.emit(this.squadraComp);
+            }
+          }
         }
     }
 
@@ -70,10 +80,6 @@ export class SquadraComposizioneComponent implements OnDestroy {
 
     onHoverOut(): void {
         this.hoverOut.emit(this.squadraComp);
-    }
-
-    _boxStatiSquadraClass(statoSquadra: number): string {
-        return boxStatiSquadraClass(statoSquadra);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {
