@@ -417,7 +417,7 @@ export class TriageComponent implements OnDestroy {
         editItemTriageModal.componentInstance.itemDataEdit = this.getItemData(item);
         editItemTriageModal.componentInstance.item = item;
 
-        if (item && !this.getItemData(item)) {
+        if (item) {
             getParentItemDataEdit(item.value, this.tItems[0], this.tItemsData, editItemTriageModal);
         }
 

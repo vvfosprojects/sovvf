@@ -56,14 +56,6 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         if (this.disableDomanda) {
             this.f.domandaSeguente.disable();
         }
-        if (this.parentItemData) {
-            this.addItemTriageForm.patchValue({
-                soccorsoAereo: this.parentItemData?.soccorsoAereo,
-                generiMezzo: this.parentItemData?.generiMezzo,
-                prioritaConsigliata: this.parentItemData?.prioritaConsigliata,
-                noteOperatore: this.parentItemData?.noteOperatore
-            });
-        }
     }
 
     ngOnDestroy(): void {
@@ -97,11 +89,15 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     patchForm(): void {
+        const soccorsoAereo = this.itemDataEdit?.soccorsoAereo ? this.itemDataEdit?.soccorsoAereo : this.parentItemData?.soccorsoAereo;
+        const generiMezzo = this.itemDataEdit?.generiMezzo ? this.itemDataEdit?.generiMezzo : this.parentItemData?.generiMezzo;
+        const prioritaConsigliata = this.itemDataEdit?.prioritaConsigliata ? this.itemDataEdit?.prioritaConsigliata : this.parentItemData?.prioritaConsigliata;
+        const noteOperatore = this.itemDataEdit?.noteOperatore ? this.itemDataEdit?.noteOperatore : this.parentItemData?.noteOperatore;
         this.addItemTriageForm.patchValue({
-            soccorsoAereo: this.itemDataEdit?.soccorsoAereo,
-            generiMezzo: this.itemDataEdit?.generiMezzo,
-            prioritaConsigliata: this.itemDataEdit?.prioritaConsigliata,
-            noteOperatore: this.itemDataEdit?.noteOperatore,
+            soccorsoAereo,
+            generiMezzo,
+            prioritaConsigliata,
+            noteOperatore,
             domandaSeguente: this.domandaSeguente
         });
     }
@@ -115,7 +111,17 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     onConferma(): void {
-        if (this.item && (!this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs()))) {
+        if (this.item && this.parentItemData && this.getParentItemDataDiffs()) {
+            const item = {
+                value: this.item.value,
+                domandaSeguente: this.f.domandaSeguente.value,
+                soccorsoAereo: this.getItemDataDiffs().soccorsoAereo,
+                generiMezzo: this.getItemDataDiffs().generiMezzo && this.getItemDataDiffs().generiMezzo.length > 0 ? this.getItemDataDiffs().generiMezzo : null,
+                noteOperatore: this.getItemDataDiffs().noteOperatore,
+                prioritaConsigliata: this.getItemDataDiffs().prioritaConsigliata
+            };
+            this.modal.close({ success: true, data: item });
+        } else if (this.item && !this.parentItemData) {
             const item = {
                 value: this.item.value,
                 domandaSeguente: this.f.domandaSeguente.value,
@@ -157,6 +163,33 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         }
 
         return diffs;
+    }
+
+    getItemDataDiffs(): ItemTriageData {
+        const itemDiffs = {
+            soccorsoAereo: null,
+            generiMezzo: null,
+            noteOperatore: null,
+            prioritaConsigliata: null
+        } as ItemTriageData;
+
+        if (this.parentItemData?.soccorsoAereo !== this.f.soccorsoAereo.value) {
+            itemDiffs.soccorsoAereo = this.f.soccorsoAereo.value;
+        }
+
+        if (this.parentItemData?.generiMezzo !== this.f.generiMezzo.value) {
+            itemDiffs.generiMezzo = this.f.generiMezzo.value;
+        }
+
+        if (this.parentItemData?.prioritaConsigliata !== this.f.prioritaConsigliata.value) {
+            itemDiffs.prioritaConsigliata = this.f.prioritaConsigliata.value;
+        }
+
+        if (this.parentItemData?.noteOperatore !== this.f.noteOperatore.value) {
+            itemDiffs.noteOperatore = this.f.noteOperatore.value;
+        }
+
+        return itemDiffs;
     }
 
     getTitle(): string {

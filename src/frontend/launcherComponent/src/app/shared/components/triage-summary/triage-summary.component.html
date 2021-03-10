@@ -74,9 +74,9 @@
                             <b>Suggerimenti <span class="text-danger">({{ noteOperatore.length }})</span></b>
                         </h5>
                         <div class="font-xlarge">
-                            <span *ngFor="let nota of noteOperatore; let i = index" class="d-inline-block">
+                            <div *ngFor="let nota of noteOperatore; let i = index">
                                 {{ i + 1 }}. {{ nota }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 </ng-template>
