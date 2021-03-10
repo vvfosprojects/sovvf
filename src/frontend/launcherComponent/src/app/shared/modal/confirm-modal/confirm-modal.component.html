@@ -1,8 +1,8 @@
 <div class="modal-header"
      [ngClass]="onNightMode()">
-    <h4 class="modal-title" style="font-weight: 700">
+    <h4 class="modal-title font-weight-bold">
         <!-- <i class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> -->
-        {{titolo | uppercase}}
+        {{ titolo | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('cross')">

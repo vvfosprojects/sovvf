@@ -675,7 +675,6 @@ export class TriageComponent implements OnDestroy {
         }
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
-        removeTriageModal.componentInstance.messaggio = 'Stai rimuovendo il Triage di "' + this.dettaglioTipologia.descrizione;
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
         removeTriageModal.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },

@@ -9,7 +9,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImpostazioniSedeComponent } from './impostazioni-sede.component';
 import { DettagliTipologieComponent } from './dettagli-tipologie/dettagli-tipologie.component';
-import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
+import { DettaglioTipologiaModalComponent } from './dettagli-tipologie/dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
 import { ImpostazioniSedeRoutingModule } from './impostazioni-sede.routing';
 import { NgxsModule } from '@ngxs/store';
 import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-dettagli-tipologie/ricerca-dettagli-tipologie.component';

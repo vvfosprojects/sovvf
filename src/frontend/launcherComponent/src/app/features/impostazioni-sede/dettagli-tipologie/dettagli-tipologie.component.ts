@@ -14,7 +14,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
-import { DettaglioTipologiaModalComponent } from './add-dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
+import { DettaglioTipologiaModalComponent } from './dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
 import {
     ClearFormDettaglioTipologia,
     RequestAddDettaglioTipologia,
