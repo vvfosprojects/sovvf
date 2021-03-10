@@ -250,7 +250,6 @@ export class TriageComponent implements OnDestroy {
     }
 
     addItem(item?: TreeItem): void {
-        console.log('addItem', item);
         if (this.viewEditButtons || !item) {
             this.store.dispatch(new GetGeneriMezzo());
             const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
@@ -269,16 +268,7 @@ export class TriageComponent implements OnDestroy {
             addItemTriageModal.componentInstance.item = item;
 
             if (item) {
-                const rispostaParentItemValue = item.value.slice(2).slice(0, -2);
-                if (rispostaParentItemValue) {
-                    const rispostaParentItem = this.findItem(this.tItems[0], rispostaParentItemValue);
-                    if (rispostaParentItem) {
-                        const parentItemData = this.getItemData(rispostaParentItem);
-                        if (parentItemData) {
-                            addItemTriageModal.componentInstance.parentItemData = parentItemData;
-                        }
-                    }
-                }
+                getParentItemDataAdd(item.value, this.tItems[0], this.tItemsData, addItemTriageModal);
             }
 
             addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
@@ -293,6 +283,44 @@ export class TriageComponent implements OnDestroy {
                     }
                 }
             });
+        }
+
+        function getParentItemDataAdd(itemValue, tItems, tItemsData, modal): void {
+            if (itemValue) {
+                const rispostaParentItemValue = itemValue.slice(2).slice(0, -2);
+                if (rispostaParentItemValue) {
+                    const rispostaParentItem = findItem(tItems, rispostaParentItemValue);
+                    if (rispostaParentItem) {
+                        const parentItemData = getItemData(rispostaParentItem, tItemsData);
+                        if (parentItemData) {
+                            modal.componentInstance.parentItemData = parentItemData;
+                        } else {
+                            getParentItemDataAdd(rispostaParentItemValue, tItems, tItemsData, modal);
+                        }
+                    }
+                }
+            }
+        }
+
+        function findItem(element: any, value: string): TreeviewItem {
+            if (element.value === value) {
+                return element;
+            } else if (element.children != null) {
+                let i: number;
+                let result = null;
+                for (i = 0; result == null && i < element.children.length; i++) {
+                    result = findItem(element.children[i], value);
+                }
+                return result;
+            }
+            return null;
+        }
+
+        function getItemData(item2: TreeItem, tItemsData: any): ItemTriageData {
+            const itemData = tItemsData?.length && tItemsData.filter((data: any) => data.itemValue === item2.value)[0];
+            if (itemData) {
+                return itemData;
+            }
         }
     }
 
@@ -370,9 +398,8 @@ export class TriageComponent implements OnDestroy {
     }
 
     editItem(item: TreeItem): void {
-        console.log('editItem', item);
         this.store.dispatch(new GetGeneriMezzo());
-        const addItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
+        const editItemTriageModal = this.modalService.open(ItemTriageModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -380,16 +407,21 @@ export class TriageComponent implements OnDestroy {
         });
         if (this.tItems) {
             const itemValueToFind = item.value.slice(2);
-            addItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
-            addItemTriageModal.componentInstance.rispostaTitle = item.text;
+            editItemTriageModal.componentInstance.domandaTitle = this.findItem(this.tItems[0], itemValueToFind)?.text;
+            editItemTriageModal.componentInstance.rispostaTitle = item.text;
         }
-        addItemTriageModal.componentInstance.primaDomanda = false;
-        addItemTriageModal.componentInstance.editMode = true;
-        addItemTriageModal.componentInstance.disableDomanda = item.children && item.children.length;
-        addItemTriageModal.componentInstance.domandaSeguente = item?.children?.length ? item.children[0].text : null;
-        addItemTriageModal.componentInstance.itemDataEdit = this.getItemData(item);
-        addItemTriageModal.componentInstance.item = item;
-        addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
+        editItemTriageModal.componentInstance.primaDomanda = false;
+        editItemTriageModal.componentInstance.editMode = true;
+        editItemTriageModal.componentInstance.disableDomanda = item.children && item.children.length;
+        editItemTriageModal.componentInstance.domandaSeguente = item?.children?.length ? item.children[0].text : null;
+        editItemTriageModal.componentInstance.itemDataEdit = this.getItemData(item);
+        editItemTriageModal.componentInstance.item = item;
+
+        if (item && !this.getItemData(item)) {
+            getParentItemDataEdit(item.value, this.tItems[0], this.tItemsData, editItemTriageModal);
+        }
+
+        editItemTriageModal.result.then((res: { success: boolean, data: any }) => {
             if (res.success) {
                 if (!item.children && res.data.domandaSeguente) {
                     this.addDomandaSeguente(item, res.data.domandaSeguente);
@@ -456,6 +488,44 @@ export class TriageComponent implements OnDestroy {
                 this.updateTriage(this.tItems[0]);
             }
         });
+
+        function getParentItemDataEdit(itemValue, tItems, tItemsData, modal): void {
+            if (itemValue) {
+                const rispostaParentItemValue = itemValue.slice(2).slice(0, -2);
+                if (rispostaParentItemValue) {
+                    const rispostaParentItem = findItem(tItems, rispostaParentItemValue);
+                    if (rispostaParentItem) {
+                        const parentItemData = getItemData(rispostaParentItem, tItemsData);
+                        if (parentItemData) {
+                            modal.componentInstance.parentItemData = parentItemData;
+                        } else {
+                            getParentItemDataEdit(rispostaParentItemValue, tItems, tItemsData, modal);
+                        }
+                    }
+                }
+            }
+        }
+
+        function findItem(element: any, value: string): TreeviewItem {
+            if (element.value === value) {
+                return element;
+            } else if (element.children != null) {
+                let i: number;
+                let result = null;
+                for (i = 0; result == null && i < element.children.length; i++) {
+                    result = findItem(element.children[i], value);
+                }
+                return result;
+            }
+            return null;
+        }
+
+        function getItemData(item2: TreeItem, tItemsData: any): ItemTriageData {
+            const itemData = tItemsData?.length && tItemsData.filter((data: any) => data.itemValue === item2.value)[0];
+            if (itemData) {
+                return itemData;
+            }
+        }
     }
 
     setItemValueEditTitle(item: TreeItem): void {

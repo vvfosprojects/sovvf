@@ -36,9 +36,9 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
 
     addItemTriageForm: FormGroup;
 
-    NecessitaSoccorsoAereoValues = Object.values(NecessitaSoccorsoAereoEnum);
-
     parentItemData: ItemTriageData;
+
+    NecessitaSoccorsoAereoValues = Object.values(NecessitaSoccorsoAereoEnum);
 
     private subscription: Subscription = new Subscription();
 
@@ -84,15 +84,15 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             soccorsoAereo: new FormControl(),
             generiMezzo: new FormControl(),
             prioritaConsigliata: new FormControl(),
-            domandaSeguente: new FormControl(),
-            noteOperatore: new FormControl()
+            noteOperatore: new FormControl(),
+            domandaSeguente: new FormControl()
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
             generiMezzo: [null],
             prioritaConsigliata: [null],
-            domandaSeguente: [null],
-            noteOperatore: [null]
+            noteOperatore: [null],
+            domandaSeguente: [null]
         });
     }
 
@@ -115,7 +115,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     onConferma(): void {
-        if (this.item) {
+        if (this.item && (!this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs()))) {
             const item = {
                 value: this.item.value,
                 domandaSeguente: this.f.domandaSeguente.value,
@@ -135,6 +135,28 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
 
     closeModal(type: string): void {
         this.modal.close({ success: false, data: type });
+    }
+
+    getParentItemDataDiffs(): boolean {
+        let diffs = false;
+
+        if (this.parentItemData?.soccorsoAereo !== this.f.soccorsoAereo.value) {
+            diffs = true;
+        }
+
+        if (this.parentItemData?.generiMezzo !== this.f.generiMezzo.value) {
+            diffs = true;
+        }
+
+        if (this.parentItemData?.prioritaConsigliata !== this.f.prioritaConsigliata.value) {
+            diffs = true;
+        }
+
+        if (this.parentItemData?.noteOperatore !== this.f.noteOperatore.value) {
+            diffs = true;
+        }
+
+        return diffs;
     }
 
     getTitle(): string {
