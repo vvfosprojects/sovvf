@@ -114,11 +114,21 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         if (this.item && !this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs())) {
             const item = {
                 value: this.item.value,
-                domandaSeguente: this.f.domandaSeguente.value,
                 soccorsoAereo: this.f.soccorsoAereo.value,
                 generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
                 noteOperatore: this.f.noteOperatore.value,
-                prioritaConsigliata: this.f.prioritaConsigliata.value
+                prioritaConsigliata: this.f.prioritaConsigliata.value,
+                domandaSeguente: this.f.domandaSeguente.value
+            };
+            this.modal.close({ success: true, data: item });
+        } else if (this.item && !this.parentItemData || (this.parentItemData && !this.getParentItemDataDiffs())) {
+            const item = {
+                value: this.item.value,
+                soccorsoAereo: null,
+                generiMezzo: null,
+                noteOperatore: null,
+                prioritaConsigliata: null,
+                domandaSeguente: this.f.domandaSeguente.value
             };
             this.modal.close({ success: true, data: item });
         } else {
@@ -140,7 +150,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             diffs = true;
         }
 
-        if (this.parentItemData?.generiMezzo !== this.f.generiMezzo.value) {
+        if (!isEqual(this.parentItemData?.generiMezzo, this.f.generiMezzo.value)) {
             diffs = true;
         }
 
@@ -153,6 +163,25 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         }
 
         return diffs;
+
+        function isEqual(a, b): boolean {
+            if (!a) {
+                return false;
+            }
+            if (!b) {
+                return false;
+            }
+            if (a?.length !== b?.length) {
+                return true;
+            } else {
+                for (let i = 0; i < a.length; i++) {
+                    if (a[i] !== b[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
     }
 
     getTitle(): string {
