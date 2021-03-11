@@ -294,7 +294,7 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
     }
 
     onChangeTipologia(codTipologia: string): void {
-        if (codTipologia) {
+        if (codTipologia && !this.richiestaModifica) {
             this.openTriage();
         }
     }
