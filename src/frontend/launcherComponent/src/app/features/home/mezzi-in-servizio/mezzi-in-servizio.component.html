@@ -8,7 +8,7 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </ng-template>
         <div *ngIf="mezziInServizio" class="row">
-            <div *ngFor="let m of mezziInServizio" class="col-6 pl-4 mb-1">
+            <div *ngFor="let m of mezziInServizio | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }" class="col-6 pl-4 mb-1">
                 <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
                                        [doubleMonitor]="doubleMonitor"
                                        [nightMode]="nightMode"

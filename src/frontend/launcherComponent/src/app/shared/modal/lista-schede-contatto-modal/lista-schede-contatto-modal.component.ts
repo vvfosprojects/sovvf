@@ -59,9 +59,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 

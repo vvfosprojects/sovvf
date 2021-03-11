@@ -52,17 +52,13 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 

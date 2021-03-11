@@ -1,4 +1,4 @@
-<div class="col-12 scroll-y font-xlarge" style="height: calc(100% - 50px)">
+<div class="col-12 scroll-y font-xlarge">
     <ng-template [ngIf]="ricerca">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </ng-template>
@@ -18,7 +18,7 @@
             </ng-template>
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div *ngIf="idSchedeCompetenza?.length === 0" class="col-12 mt-4">
+                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
                         <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
             </ng-template>
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div *ngIf="idSchedeDifferibili?.length === 0" class="col-12 mt-4">
+                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
                         <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
             </ng-template>
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div *ngIf="idSchedeConoscenza?.length === 0" class="col-12 mt-4">
+                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
                         <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
                     </div>
                 </div>
@@ -86,28 +86,29 @@
         </ngb-tab>
     </ngb-tabset>
     <ul class="my-2 list-unstyled">
-        <app-scheda-contatto *ngFor="let scheda of schedeContatto"
-                             [scheda]="scheda"
-                             [nightMode]="nightMode"
-                             [idVisualizzati]="idVisualizzati"
-                             [idCollapsed]="idCollapsed"
-                             [idSchedaContattoHover]="codiceSchedaContattoHover"
-                             [editSchedaContatto]="statoModalita"
-                             [schedeContattoSelezionate]="idSelezionatiMerge"
-                             [classificazione]="classificazioneMerge"
-                             [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                             (hoverIn)="onHoverIn($event)"
-                             (hoverOut)="onHoverOut()"
-                             (collapsed)="onCollapsed($event)"
-                             (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
-                             (dettaglioScheda)="onDettaglioScheda($event)"
-                             (editSelezionata)="onEditSchedaSelezionata($event)"
-                             (checkBoxError)="onCheckboxError()"
-                             (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
-                             (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
+        <app-scheda-contatto
+                *ngFor="let scheda of schedeContatto | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
+                [scheda]="scheda"
+                [nightMode]="nightMode"
+                [idVisualizzati]="idVisualizzati"
+                [idCollapsed]="idCollapsed"
+                [idSchedaContattoHover]="codiceSchedaContattoHover"
+                [editSchedaContatto]="statoModalita"
+                [schedeContattoSelezionate]="idSelezionatiMerge"
+                [classificazione]="classificazioneMerge"
+                [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                (hoverIn)="onHoverIn($event)"
+                (hoverOut)="onHoverOut()"
+                (collapsed)="onCollapsed($event)"
+                (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
+                (dettaglioScheda)="onDettaglioScheda($event)"
+                (editSelezionata)="onEditSchedaSelezionata($event)"
+                (checkBoxError)="onCheckboxError()"
+                (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
+                (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
         </app-scheda-contatto>
     </ul>
 </div>
