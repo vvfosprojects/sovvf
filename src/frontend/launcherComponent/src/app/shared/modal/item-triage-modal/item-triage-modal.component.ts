@@ -111,17 +111,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     onConferma(): void {
-        if (this.item && this.parentItemData && this.getParentItemDataDiffs()) {
-            const item = {
-                value: this.item.value,
-                domandaSeguente: this.f.domandaSeguente.value,
-                soccorsoAereo: this.getItemDataDiffs().soccorsoAereo,
-                generiMezzo: this.getItemDataDiffs().generiMezzo && this.getItemDataDiffs().generiMezzo.length > 0 ? this.getItemDataDiffs().generiMezzo : null,
-                noteOperatore: this.getItemDataDiffs().noteOperatore,
-                prioritaConsigliata: this.getItemDataDiffs().prioritaConsigliata
-            };
-            this.modal.close({ success: true, data: item });
-        } else if (this.item && !this.parentItemData) {
+        if (this.item && !this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs())) {
             const item = {
                 value: this.item.value,
                 domandaSeguente: this.f.domandaSeguente.value,
@@ -163,33 +153,6 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         }
 
         return diffs;
-    }
-
-    getItemDataDiffs(): ItemTriageData {
-        const itemDiffs = {
-            soccorsoAereo: null,
-            generiMezzo: null,
-            noteOperatore: null,
-            prioritaConsigliata: null
-        } as ItemTriageData;
-
-        if (this.parentItemData?.soccorsoAereo !== this.f.soccorsoAereo.value) {
-            itemDiffs.soccorsoAereo = this.f.soccorsoAereo.value;
-        }
-
-        if (this.parentItemData?.generiMezzo !== this.f.generiMezzo.value) {
-            itemDiffs.generiMezzo = this.f.generiMezzo.value;
-        }
-
-        if (this.parentItemData?.prioritaConsigliata !== this.f.prioritaConsigliata.value) {
-            itemDiffs.prioritaConsigliata = this.f.prioritaConsigliata.value;
-        }
-
-        if (this.parentItemData?.noteOperatore !== this.f.noteOperatore.value) {
-            itemDiffs.noteOperatore = this.f.noteOperatore.value;
-        }
-
-        return itemDiffs;
     }
 
     getTitle(): string {
