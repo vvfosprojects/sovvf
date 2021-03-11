@@ -40,7 +40,9 @@ export class TriageSummaryComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new SetSchedaContattoTriageSummary(this.codSchedaContatto));
+        if (this.codSchedaContatto) {
+            this.store.dispatch(new SetSchedaContattoTriageSummary(this.codSchedaContatto));
+        }
     }
 
     ngOnDestroy(): void {
