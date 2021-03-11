@@ -212,10 +212,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {
-        let classificazione: ClassificazioneSchedaContatto = null;
-        if ($event.nextId !== 'Tutte') {
-            classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        }
+        const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 

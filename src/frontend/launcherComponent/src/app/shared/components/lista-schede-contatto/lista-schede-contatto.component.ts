@@ -99,9 +99,10 @@ export class ListaSchedeContattoComponent implements OnInit {
         this.schedaContattoGestita.emit({ scheda, value });
     }
 
-    onTornaIndietro(): void {
-        this.indietro.emit();
-    }
+    // Todo: eliminare
+    // onTornaIndietro(): void {
+    //     this.indietro.emit();
+    // }
 
     onToggleModalitaMerge(): void {
         this.toggleModalitaMerge.emit();

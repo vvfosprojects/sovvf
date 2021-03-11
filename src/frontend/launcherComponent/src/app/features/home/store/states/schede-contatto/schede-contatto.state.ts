@@ -34,10 +34,7 @@ import { SchedeContattoService } from '../../../../../core/service/schede-contat
 import { FiltersSchedeContatto } from '../../../../../shared/interface/filters/filters-schede.contatto';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
-import {
-    resetFiltriSelezionati as _resetFiltriSelezionati,
-    setFiltroSelezionato as _setFiltroSelezionato
-} from '../../../../../shared/helper/function-filtro';
+import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
@@ -309,15 +306,13 @@ export class SchedeContattoState {
 
     @Action(SetTabAttivo)
     setTabAttivo({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetTabAttivo): void {
-        if (action.tabAttivo) {
-            patchState({
-                tabAttivo: action.tabAttivo,
-            });
+        console.log('SetTabAttivo', action.tabAttivo);
+        patchState({
+            tabAttivo: action.tabAttivo,
+        });
+        if (action.tabAttivo !== ClassificazioneSchedaContatto.Tutte) {
             dispatch(new ToggleOpacitaSchedeContattoMarkers(true, action.tabAttivo));
         } else {
-            patchState({
-                tabAttivo: SchedeContattoStateDefaults.tabAttivo,
-            });
             dispatch(new ToggleOpacitaSchedeContattoMarkers(false));
         }
         dispatch(new SetIdVisualizzati());
@@ -326,7 +321,7 @@ export class SchedeContattoState {
     @Action(SetIdVisualizzati)
     setIdVisualizzati({ getState, patchState }: StateContext<SchedeContattoStateModel>): void {
         const state = getState();
-        if (state.tabAttivo) {
+        if (state.tabAttivo !== ClassificazioneSchedaContatto.Tutte) {
             patchState({
                 idVisualizzati: state.schedeContatto.filter(scheda => scheda.classificazione === state.tabAttivo).map(value => value.codiceScheda)
             });
@@ -515,29 +510,29 @@ export class SchedeContattoState {
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         const innerWidth = window.innerWidth;
         if (innerWidth && innerWidth > 3700) {
-          this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-              { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
-            );
-            modal.componentInstance.schedaContatto = schedaContattoDetail;
-            modal.result.then(
-              () => {
-              },
-              () => dispatch(new ClearMarkerSCSelezionato())
-            );
-          });
+            this.ngZone.run(() => {
+                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                    { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
+                );
+                modal.componentInstance.schedaContatto = schedaContattoDetail;
+                modal.result.then(
+                    () => {
+                    },
+                    () => dispatch(new ClearMarkerSCSelezionato())
+                );
+            });
         } else {
-          this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-              { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
-            );
-            modal.componentInstance.schedaContatto = schedaContattoDetail;
-            modal.result.then(
-              () => {
-              },
-              () => dispatch(new ClearMarkerSCSelezionato())
-            );
-          });
+            this.ngZone.run(() => {
+                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                    { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
+                );
+                modal.componentInstance.schedaContatto = schedaContattoDetail;
+                modal.result.then(
+                    () => {
+                    },
+                    () => dispatch(new ClearMarkerSCSelezionato())
+                );
+            });
         }
     }
 

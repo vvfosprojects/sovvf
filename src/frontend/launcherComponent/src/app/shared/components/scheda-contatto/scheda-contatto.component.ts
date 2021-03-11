@@ -82,10 +82,20 @@ export class SchedaContattoComponent implements OnChanges {
         }
 
         if (this.nightMode) {
-          cardClasses += ' text-moon';
+            cardClasses += ' text-moon';
         }
 
         return cardClasses;
+    }
+
+    getCheckboxState(scheda: SchedaContatto): CheckboxInterface {
+        let checkBox: CheckboxInterface;
+        if (this.disableRaggruppamento) {
+            checkBox = { id: scheda.codiceScheda, status: this.schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: true };
+        } else {
+            checkBox = { id: scheda.codiceScheda, status: this.schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: this.checkDisabled() };
+        }
+        return checkBox;
     }
 
     checkDisabled(): boolean {
