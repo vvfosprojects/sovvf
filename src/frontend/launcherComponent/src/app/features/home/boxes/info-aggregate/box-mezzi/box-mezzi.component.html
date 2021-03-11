@@ -51,7 +51,7 @@
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('inRientro')"><span
-                                    class="position-relative d-inline-block badge badge-mod-verdemela h6 w-75 cursor-pointer"
+                                    class="position-relative d-inline-block badge badge-mod-success h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi in rientro sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro, 'border-info-aggregate': !boxClick?.mezzi.inRientro}"
                                     (click)="clickMezzi.emit('inRientro')"><i *ngIf="mezziDiff"
@@ -77,7 +77,7 @@
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('inViaggio')"><span
-                                    class="position-relative badge badge-mod-warning h6 w-75 cursor-pointer"
+                                    class="position-relative badge badge-mod-danger h6 w-75 cursor-pointer"
                                     ngbTooltip="Evidenzia mezzi in viaggio sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inViaggio, 'border-info-aggregate': !boxClick?.mezzi.inViaggio}"
                                     (click)="clickMezzi.emit('inViaggio')"><i *ngIf="mezziDiff"

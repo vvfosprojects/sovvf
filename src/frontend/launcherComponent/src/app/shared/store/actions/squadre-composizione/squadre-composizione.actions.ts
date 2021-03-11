@@ -46,6 +46,13 @@ export class SelectSquadraComposizioneInRientro {
     }
 }
 
+export class SelectSquadraComposizionePreAccoppiati {
+    static readonly type = '[SquadreComposizione] Select Squadra Composizione Pre Accoppiati';
+
+    constructor(public squadraComp: SquadraComposizione, public noAddBox?: boolean) {
+    }
+}
+
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
 
@@ -60,10 +67,17 @@ export class UnselectSquadraComposizioneInRientro {
     }
 }
 
+export class UnselectSquadraComposizionePreAccoppiati {
+    static readonly type = '[SquadreComposizione] Unselect Squadra Composizione Pre Accoppiati';
+
+    constructor(public squadraComp: SquadraComposizione) {
+    }
+}
+
 export class SelectSquadreComposizione {
     static readonly type = '[SquadreComposizione] Select Squadre Composizione';
 
-    constructor(public squadreComp: SquadraComposizione[], public noSelect?: boolean) {
+    constructor(public squadreComp: SquadraComposizione[], public noSelect?: boolean, public preAccoppiato?: boolean) {
     }
 }
 

@@ -96,7 +96,8 @@
                                    bindValue="descrizione"
                                    [multiple]="true"
                                    [closeOnSelect]="true"
-                                   [hideSelected]="true" [appendTo]="'body'"
+                                   [hideSelected]="true"
+                                   [appendTo]="'body'"
                                    [(ngModel)]="generiMezzoSelezionato"
                                    [notFoundText]="notFoundText"
                                    [loading]="!filtri?.generiMezzi"
@@ -119,10 +120,8 @@
                                    (clear)="clearFiltri('statoMezzo')"
                                    placeholder="Stato: Tutti">
                             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                                <div class="d-inline-flex">
-                                    <div class="mr-2"
-                                         [ngClass]="_boxStatiClass(item.descrizione)"></div>
-                                    {{item.descrizione}}</div>
+                              <app-icona-stato [stato]="item.descrizione"></app-icona-stato>
+                              {{item.descrizione}}
                             </ng-template>
                         </ng-select>
                     </div>

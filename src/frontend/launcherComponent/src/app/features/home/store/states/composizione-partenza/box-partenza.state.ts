@@ -1,20 +1,20 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
-    AddBoxesPartenzaInRientro,
-    AddBoxPartenza,
-    AddMezzoBoxPartenzaSelezionato,
-    AddSquadreBoxPartenza,
-    ClearBoxPartenze,
-    DeselectBoxPartenza,
-    RemoveBoxPartenza,
-    RemoveBoxPartenzaByMezzoId,
-    RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza,
-    RequestAddBoxPartenza,
-    RequestSelectBoxPartenza,
-    SelectBoxPartenza,
-    UpdateMezzoBoxPartenza
+  AddBoxesPartenzaInRientro, AddBoxesPartenzaPreAccoppiato,
+  AddBoxPartenza,
+  AddMezzoBoxPartenzaSelezionato,
+  AddSquadreBoxPartenza,
+  ClearBoxPartenze,
+  DeselectBoxPartenza,
+  RemoveBoxPartenza,
+  RemoveBoxPartenzaByMezzoId,
+  RemoveMezzoBoxPartenzaSelezionato,
+  RemoveSquadraBoxPartenza,
+  RequestAddBoxPartenza,
+  RequestSelectBoxPartenza,
+  SelectBoxPartenza,
+  UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedMezziComposizione,
@@ -265,6 +265,7 @@ export class BoxPartenzaState {
                         dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
                     } else {
                         dispatch(new ReducerSelectMezzoComposizioneInRientro(box.mezzoComposizione, true));
+                        dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
                     }
                 }
                 if (box.squadreComposizione.length > 0) {
@@ -284,17 +285,32 @@ export class BoxPartenzaState {
     @Action(AddSquadreBoxPartenza)
     addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
-        setState(
+        if (action.preAccoppiato) {
+          setState(
             produce(state, draft => {
-                draft.boxPartenzaList.forEach((box: BoxPartenza) => {
-                    if (box.id === state.idBoxPartenzaSelezionato) {
-                        action.squadre.forEach((squadra: SquadraComposizione) => {
-                            box.squadreComposizione.push(squadra);
-                        });
-                    }
-                });
+              draft.boxPartenzaList.forEach((box: BoxPartenza) => {
+                if (box.id === state.idBoxPartenzaSelezionato) {
+                  box.squadreComposizione = [];
+                  action.squadre.forEach((squadra: SquadraComposizione) => {
+                    box.squadreComposizione.push(squadra);
+                  });
+                }
+              });
             })
-        );
+          );
+        } else {
+          setState(
+            produce(state, draft => {
+              draft.boxPartenzaList.forEach((box: BoxPartenza) => {
+                if (box.id === state.idBoxPartenzaSelezionato) {
+                  action.squadre.forEach((squadra: SquadraComposizione) => {
+                    box.squadreComposizione.push(squadra);
+                  });
+                }
+              });
+            })
+          );
+        }
     }
 
     @Action(RemoveSquadraBoxPartenza)
@@ -425,6 +441,53 @@ export class BoxPartenzaState {
             new GetListeComposizioneAvanzata()
         ]);
     }
+
+    @Action(AddBoxesPartenzaPreAccoppiato)
+    addBoxesPartenzaPreAccoppiato({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddBoxesPartenzaPreAccoppiato): void {
+    const state = getState();
+    const idBoxPartenzaSelezionato = state.idBoxPartenzaSelezionato;
+    const boxPartenzaSelezionato = state.boxPartenzaList.filter((box: BoxPartenza) => box.id === state.idBoxPartenzaSelezionato)[0];
+    const squadraComp = action.squadraComp;
+
+    let skip = false;
+    // controllo se il mezzo pre accoppiato è gia presente in un box lista partenza
+    state.boxPartenzaList.forEach(x => x.mezzoComposizione?.id === squadraComp.mezzoPreaccoppiato.id ? skip = true : null);
+    if (!skip) {
+      if (!validateBoxPartenza(boxPartenzaSelezionato)) {
+        setState(
+          patch({
+            boxPartenzaList: removeItem((box: BoxPartenza) => box.id === idBoxPartenzaSelezionato)
+          })
+        );
+      }
+
+      const newBoxes = [];
+      // creo boxes
+      for (const mezzoComp of [squadraComp.mezzoPreaccoppiato]) {
+        const id = makeID();
+        newBoxes.push({
+          id,
+          mezzoComposizione: mezzoComp,
+          squadreComposizione: [squadraComp]
+        });
+      }
+      console.log('newBoxes', newBoxes);
+
+      // creo i nuovi box partenza
+      setState(
+        patch({
+          boxPartenzaList: append(newBoxes)
+        })
+      );
+
+      dispatch([
+        new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id),
+        new SelectSquadraComposizione(squadraComp),
+        new SelectMezzoComposizione(newBoxes[newBoxes.length - 1].mezzoComposizione),
+        new GetListeComposizioneAvanzata()
+      ]);
+    }
+  }
 }
 
 export function validateBoxPartenza(boxPartenza: BoxPartenza): boolean {

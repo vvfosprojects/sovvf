@@ -4,8 +4,7 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { boxStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
-import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { mezzoComposizioneBusy, nomeStatiSquadra } from '../../helper/composizione-functions';
 import { Sede } from '../../model/sede.model';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
@@ -35,8 +34,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();
     @Output() selezionatoInRientro = new EventEmitter<MezzoComposizione>();
+    @Output() selezionatoPreAccoppiati = new EventEmitter<MezzoComposizione>();
     @Output() deselezionato = new EventEmitter<MezzoComposizione>();
     @Output() deselezionatoInRientro = new EventEmitter<MezzoComposizione>();
+    @Output() deselezionatoPreAccoppiati = new EventEmitter<MezzoComposizione>();
     @Output() hoverIn = new EventEmitter<MezzoComposizione>();
     @Output() hoverOut = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
@@ -94,11 +95,18 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         }
     }
 
-    onClick(inRientro?: boolean): void {
-        if (this.itemBloccato) {
-            this.onSganciamento();
+    _nomeStatiSquadra(statoSquadra: number): string {
+      return nomeStatiSquadra(statoSquadra);
+    }
+
+    onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
+        // if (this.itemBloccato) {
+        //     this.onSganciamento();
+        // }
+        if (this.mezzoComp.mezzo.stato === 'In Viaggio' || this.mezzoComp.mezzo.stato === 'Sul Posto') {
+          this.onSganciamento();
         } else {
-            if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
+            if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato) && !inRientro && !preAccoppiato) {
                 if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
                     this.selezionato.emit(this.mezzoComp);
                 } else if (this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
@@ -118,6 +126,20 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 if (!this.mezzoComp.mezzo.coordinateFake) {
                     this.mezzoDirection(this.mezzoComp);
                 }
+            } else if (preAccoppiato && !mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
+              let skip = false;
+              this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.squadra.stato) !== 'In Sede' ? skip = true : null);
+              if (!skip) {
+                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                  this.selezionatoPreAccoppiati.emit(this.mezzoComp);
+                } else {
+                  this.deselezionatoPreAccoppiati.emit(this.mezzoComp);
+                }
+                // mappa
+                if (!this.mezzoComp.mezzo.coordinateFake) {
+                  this.mezzoDirection(this.mezzoComp);
+                }
+              }
             }
         }
     }
@@ -218,9 +240,5 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             coordinateMezzo: mezzoComp.mezzo.coordinate
         } as MezzoDirection;
         this.mezzoCoordinate.emit(mezzoDirection);
-    }
-
-    _boxStatiClass(statoMezzo: string): string {
-        return boxStatiClass(statoMezzo);
     }
 }

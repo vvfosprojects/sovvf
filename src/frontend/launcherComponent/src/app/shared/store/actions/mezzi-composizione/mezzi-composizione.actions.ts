@@ -52,10 +52,17 @@ export class ReducerSelectMezzoComposizione {
 }
 
 export class ReducerSelectMezzoComposizioneInRientro {
-    static readonly type = '[MezziComposizione] Reducer Select Mezzo ComposizioneIn Rientro';
+    static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione In Rientro';
 
     constructor(public mezzoComp: MezzoComposizione, public noSelect?: boolean) {
     }
+}
+
+export class ReducerSelectMezzoComposizionePreAccoppiati {
+  static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione Pre Accoppiati';
+
+  constructor(public mezzoComp: MezzoComposizione) {
+  }
 }
 
 export class SelectMezzoComposizioneFromMappa {

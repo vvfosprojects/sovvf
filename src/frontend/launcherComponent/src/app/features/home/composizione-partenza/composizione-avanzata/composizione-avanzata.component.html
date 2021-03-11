@@ -56,8 +56,10 @@
                             [richiesta]="richiesta"
                             (selezionata)="squadraSelezionata($event)"
                             (selezionataInRientro)="squadraSelezionataInRientro($event)"
+                            (selezionataPreAccoppiati)="squadraSelezionataPreAccoppiati($event)"
                             (deselezionata)="squadraDeselezionata($event)"
                             (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
+                            (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
                             (hoverIn)="squadraHoverIn($event)"
                             (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
                 </ng-template>
@@ -132,8 +134,10 @@
                                                     [richiesta]="richiesta"
                                                     (selezionato)="mezzoSelezionato($event)"
                                                     (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
+                                                    (selezionatoPreAccoppiati)="mezzoSelezionatoPreAccoppiati($event)"
                                                     (deselezionato)="mezzoDeselezionato($event)"
                                                     (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
+                                                    (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
                                                     (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
                                                     (mezzoCoordinate)="mezzoCoordinate($event)"
                                                     (sganciamento)="sganciamento.emit($event)">

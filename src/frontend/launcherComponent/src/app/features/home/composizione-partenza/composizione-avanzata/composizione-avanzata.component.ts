@@ -12,12 +12,12 @@ import { ComposizionePartenzaState } from '../../store/states/composizione-parte
 import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import {
-    HoverInMezzoComposizione,
-    HoverOutMezzoComposizione,
-    RequestRemoveBookMezzoComposizione,
-    UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione,
-    ReducerSelectMezzoComposizioneInRientro
+  HoverInMezzoComposizione,
+  HoverOutMezzoComposizione,
+  RequestRemoveBookMezzoComposizione,
+  UnselectMezzoComposizione,
+  ReducerSelectMezzoComposizione,
+  ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -31,14 +31,14 @@ import {
     DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
-    ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione,
-    HoverInSquadraComposizione,
-    HoverOutSquadraComposizione,
-    SelectSquadraComposizione,
-    SelectSquadraComposizioneInRientro,
-    UnselectSquadraComposizione,
-    UnselectSquadraComposizioneInRientro
+  ClearSelectedSquadreComposizione,
+  ClearSquadraComposizione,
+  HoverInSquadraComposizione,
+  HoverOutSquadraComposizione,
+  SelectSquadraComposizione,
+  SelectSquadraComposizioneInRientro, SelectSquadraComposizionePreAccoppiati,
+  UnselectSquadraComposizione,
+  UnselectSquadraComposizioneInRientro, UnselectSquadraComposizionePreAccoppiati
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
@@ -374,6 +374,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ReducerSelectMezzoComposizioneInRientro(mezzoComposizione));
     }
 
+    mezzoSelezionatoPreAccoppiati(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch(new ReducerSelectMezzoComposizionePreAccoppiati(mezzoComposizione));
+    }
+
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([
             new UnselectMezzoComposizione(),
@@ -390,6 +394,17 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             new RemoveBoxPartenza(boxPartenzaSelezionato),
             new GetListeComposizioneAvanzata()
         ]);
+        this.onClearDirection();
+    }
+
+    mezzoDeselezionatoPreAccoppiati(mezzoComposizione: MezzoComposizione): void {
+        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
+        this.store.dispatch([
+        new UnselectMezzoComposizione(),
+        new ClearSelectedSquadreComposizione(),
+        new RemoveBoxPartenza(boxPartenzaSelezionato),
+        new GetListeComposizioneAvanzata()
+      ]);
         this.onClearDirection();
     }
 
@@ -424,6 +439,14 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
+    squadraSelezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
+        if (squadraComposizione) {
+            this.store.dispatch([
+                new SelectSquadraComposizionePreAccoppiati(squadraComposizione),
+            ]);
+        }
+    }
+
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
@@ -431,6 +454,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+    }
+
+    squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
     }
 
@@ -486,7 +514,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             const mezzoComp = boxPartenza.mezzoComposizione;
             this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
         } else {
-            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+          this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
         this.onClearDirection();
         this.store.dispatch(new GetListeComposizioneAvanzata());

@@ -71,7 +71,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes?.triageSummary?.currentValue) {
+        if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue) {
             this.setGenereMezzoDefault();
         }
         if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
@@ -107,10 +107,9 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     setGenereMezzoDefault(): void {
+        this.generiMezzoSelezionato = [];
         this.generiMezzoSelezionato = getGeneriMezzoTriageSummary(this.triageSummary);
-        if (this.generiMezzoSelezionato) {
-            this.store.dispatch(new SetGenereMezzoDefault(this.generiMezzoSelezionato));
-        }
+        this.store.dispatch(new SetGenereMezzoDefault(this.generiMezzoSelezionato));
     }
 
     getViewState(): void {
@@ -123,7 +122,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             if (event?.id || event?.descrizione) {
                 this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             } else {
-                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+              this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
             }
             this.nuovaPartenza(this.richiesta);
             this.update();
