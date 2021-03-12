@@ -509,9 +509,26 @@ export class FormRichiestaComponent implements OnDestroy, OnChanges {
         if (this.scorciatoieTelefono[key]) {
             this.scorciatoieTelefono[key] = false;
             f.telefono.patchValue('');
+            f.nominativo.patchValue('');
         } else {
             Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === key);
             f.telefono.patchValue(key);
+            let nominativo = null;
+            switch (key) {
+                case '112':
+                    nominativo = 'Carabinieri';
+                    break;
+                case '113':
+                    nominativo = 'Polizia';
+                    break;
+                case '118':
+                    nominativo = 'Ambulanza';
+                    break;
+                case 'VV.UU.':
+                    nominativo = 'Polizia Municipale';
+                    break;
+            }
+            f.nominativo.patchValue(nominativo);
         }
     }
 
