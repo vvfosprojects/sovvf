@@ -163,6 +163,9 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     compPartenzaSwitch(event: Composizione): void {
         this.store.dispatch(new SwitchComposizione(event));
+        if (event === 1) {
+          this.setDistaccamentiDefault();
+        }
     }
 
     openDettaglioTriage(): void {
