@@ -205,7 +205,7 @@ export class SchedeContattoState {
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: boxesVisibili ? 13 : 15
+            pageSize: boxesVisibili ? 11 : 14
         } as PaginationInterface;
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch([

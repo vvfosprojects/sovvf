@@ -10,6 +10,9 @@
 <div class="modal-body height py-4 px-5" [ngClass]="onNightMode()">
     <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
     <app-lista-schede-contatto [ricerca]="ricerca"
+                               [page]="page$ | async"
+                               [pageSize]="pageSize$ | async"
+                               [totalItems]="totalItems$ | async"
                                [tabAttivo]="tabAttivo$ | async"
                                [schedeContatto]="schedeContatto"
                                [contatoriSchedeContatto]="contatoriSchedeContatto"

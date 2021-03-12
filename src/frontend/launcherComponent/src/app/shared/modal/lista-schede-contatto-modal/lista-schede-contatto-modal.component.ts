@@ -48,10 +48,10 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     nightMode: boolean;
+
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
