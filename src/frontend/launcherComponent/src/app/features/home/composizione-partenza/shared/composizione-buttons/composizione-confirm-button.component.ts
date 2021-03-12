@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
-import { Subscription } from 'rxjs';
 import { SoccorsoAereoModalComponent } from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import { GetAzioniRichiesta } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -22,8 +21,6 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
 
     dettaglioSoccorsoAereo = false;
 
-    private subscription = new Subscription();
-
     constructor(private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new GetAzioniRichiesta());
@@ -38,7 +35,7 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
     }
 
     checkDettaglioSoccorsoAereo(): void {
-        if (this.richiesta.eventi && this.richiesta.eventi.note) {
+        if (this.richiesta && this.richiesta.eventi && this.richiesta.eventi.note) {
             const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
             const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
             this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
