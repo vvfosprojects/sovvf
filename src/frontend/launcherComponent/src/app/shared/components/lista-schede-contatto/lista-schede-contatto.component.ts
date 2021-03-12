@@ -14,12 +14,12 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 export class ListaSchedeContattoComponent implements OnInit {
 
     @Input() ricerca: string;
+    @Input() pageSize: number;
+    @Input() totalItems: number;
+    @Input() page: number;
     @Input() tabAttivo: string;
     @Input() schedeContatto: SchedaContatto[];
     @Input() contatoriSchedeContatto: ContatoriSchedeContatto;
-    @Input() idSchedeCompetenza: string[];
-    @Input() idSchedeDifferibili: string[];
-    @Input() idSchedeConoscenza: string[];
     @Input() idVisualizzati: string[];
     @Input() idCollapsed: string[];
     @Input() codiceSchedaContattoHover: string;
@@ -99,9 +99,10 @@ export class ListaSchedeContattoComponent implements OnInit {
         this.schedaContattoGestita.emit({ scheda, value });
     }
 
-    onTornaIndietro(): void {
-        this.indietro.emit();
-    }
+    // Todo: eliminare
+    // onTornaIndietro(): void {
+    //     this.indietro.emit();
+    // }
 
     onToggleModalitaMerge(): void {
         this.toggleModalitaMerge.emit();

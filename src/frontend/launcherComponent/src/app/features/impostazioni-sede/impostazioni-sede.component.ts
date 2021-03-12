@@ -19,7 +19,7 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
-    constructor(ngbAccordionconfig: NgbAccordionConfig,
+    constructor(private ngbAccordionconfig: NgbAccordionConfig,
                 private store: Store) {
         ngbAccordionconfig.type = 'dark';
         this.fetchTipologie();

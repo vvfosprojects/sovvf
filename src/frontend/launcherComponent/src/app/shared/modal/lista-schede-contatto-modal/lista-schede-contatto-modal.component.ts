@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../../../features/home/store/states/filterbar/ricerca-filterbar.state';
 import { Observable, Subscription } from 'rxjs';
@@ -37,7 +37,7 @@ import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component'
 import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../../features/home/store/actions/maps/schede-contatto-markers.actions';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
 import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-lista-schede-contatto-modal',
@@ -59,9 +59,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
@@ -130,21 +127,21 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     }
 
     getNightMode(): void {
-      this.subscriptions.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
+        this.subscriptions.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+            })
+        );
     }
 
     onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
+        let value = '';
+        if (!this.nightMode) {
+            value = '';
+        } else if (this.nightMode) {
+            value = 'moon-text moon-mode';
+        }
+        return value;
     }
 
     getSchedeContatto(): void {
@@ -235,10 +232,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {
-        let classificazione: ClassificazioneSchedaContatto = null;
-        if ($event.nextId !== 'Tutte') {
-            classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        }
+        const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 

@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-12">
                     <!-- Richieste -->
-                    <app-richieste [class.d-none]="!viewState.richieste.active"
+                    <app-richieste *ngIf="viewState.richieste.active"
                                    [doubleMonitor]="(doubleMonitor$ | async)"
                                    [nightMode]="(nightMode$ | async)"
                                    [split]="viewState.richieste.split"

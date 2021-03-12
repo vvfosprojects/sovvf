@@ -217,14 +217,14 @@
                 </label>
             </ng-template>
             <ng-template [ngIf]="viewEditButtons">
-                <ng-template [ngIf]="item.children?.length <= 0 && !getItemData(item)">
+                <ng-template [ngIf]="!item.children?.length && !getItemData(item)">
                     <button class="btn btn-primary ml-3"
                             ngbTooltip="Aggiungi"
                             (click)="addItem(item)">
                         <i class="fa fa-plus-circle"></i>
                     </button>
                 </ng-template>
-                <ng-template [ngIf]="getItemData(item) || item.children?.length === 1">
+                <ng-template [ngIf]="getItemData(item) && !item.children?.length">
                     <button class="btn btn-info ml-3"
                             ngbTooltip="Modifica"
                             (click)="editItem(item)">

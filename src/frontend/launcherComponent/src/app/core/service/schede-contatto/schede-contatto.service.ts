@@ -23,7 +23,8 @@ export class SchedeContattoService {
             filters: {
                 search: filters.search,
                 gestita: filters.gestita,
-                rangeVisualizzazione: filters.rangeVisualizzazione
+                rangeVisualizzazione: filters.rangeVisualizzazione,
+                classificazione: filters.classificazione
             },
             pagination
         };
