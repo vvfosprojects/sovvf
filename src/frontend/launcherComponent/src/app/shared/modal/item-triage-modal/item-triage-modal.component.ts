@@ -107,7 +107,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value;
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value;
     }
 
     onConferma(): void {
@@ -164,15 +164,11 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
 
         return diffs;
 
-        function isEqual(a, b): boolean {
-            if (!a) {
-                return false;
-            }
-            if (!b) {
-                return false;
-            }
-            if (a?.length !== b?.length) {
+        function isEqual(a: string[], b: string[]): boolean {
+            if (!a?.length && !b?.length) {
                 return true;
+            } else if (a?.length !== b?.length) {
+                return false;
             } else {
                 for (let i = 0; i < a.length; i++) {
                     if (a[i] !== b[i]) {

@@ -105,7 +105,7 @@
             <button type="button"
                     class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
                     ngbTooltip="Riempi tutti i campi obbligatori"
-                    [disableTooltip]="!formIsInvalid() && !!editMode"
+                    [disableTooltip]="!formIsInvalid() || !!editMode"
                     [disabled]="formIsInvalid() && !editMode"
                     (click)="onConferma()">
                 {{ 'Conferma' | uppercase }}
