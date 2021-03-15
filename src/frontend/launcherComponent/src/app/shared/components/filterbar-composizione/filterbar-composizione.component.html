@@ -95,14 +95,18 @@
                                    bindLabel="descrizione"
                                    bindValue="descrizione"
                                    [multiple]="true"
-                                   [closeOnSelect]="true"
-                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   [hideSelected]="false"
                                    [appendTo]="'body'"
                                    [(ngModel)]="generiMezzoSelezionato"
                                    [notFoundText]="notFoundText"
                                    [loading]="!filtri?.generiMezzi"
                                    (change)="addFiltro($event, 'tipoMezzo')"
                                    placeholder="Genere Mezzo: Tutti">
+                            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                              <input type="checkbox" [checked]="generiMezzoSelezionato && generiMezzoSelezionato?.includes(item.descrizione)"/>
+                              {{item.descrizione}}
+                            </ng-template>
                         </ng-select>
                     </div>
                     <div [class.col-4]="!composizionePartenza && sostituzionePartenza"
@@ -136,13 +140,17 @@
                                    bindValue="id"
                                    [multiple]="true"
                                    [appendTo]="'body'"
-                                   [closeOnSelect]="true"
-                                   [hideSelected]="true"
+                                   [closeOnSelect]="false"
+                                   [hideSelected]="false"
                                    [(ngModel)]="distaccamentiSelezionati"
                                    [notFoundText]="notFoundText"
                                    [loading]="!filtri?.distaccamenti"
                                    (change)="addFiltro($event, 'codiceDistaccamento')"
                                    placeholder="Distaccamento: Tutti">
+                            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                              <input type="checkbox" [checked]="distaccamentiSelezionati && distaccamentiSelezionati?.includes(item.id)"/>
+                              {{item.descDistaccamento}}
+                            </ng-template>
                         </ng-select>
                         <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
                                 (click)="setDistaccamentiDefault()"
