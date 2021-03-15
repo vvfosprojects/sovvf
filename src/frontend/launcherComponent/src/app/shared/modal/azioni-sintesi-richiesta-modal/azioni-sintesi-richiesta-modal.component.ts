@@ -16,8 +16,7 @@ import {ActionRichiestaModalComponent} from '../action-richiesta-modal/action-ri
 import {
   ActionRichiesta,
   AllertaSede,
-  ModificaStatoFonogramma,
-  PatchRichiesta
+  ModificaStatoFonogramma
 } from '../../../features/home/store/actions/richieste/richieste.actions';
 import {TrasferimentoChiamataModalComponent} from '../trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import {
@@ -30,6 +29,7 @@ import {ModificaFonogrammaModalComponent} from '../modifica-fonogramma-modal/mod
 import {ClearEventiRichiesta, SetIdRichiestaEventi} from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
 import {EventiRichiestaComponent} from '../../../features/home/eventi/eventi-richiesta.component';
 import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 
 
 @Component({

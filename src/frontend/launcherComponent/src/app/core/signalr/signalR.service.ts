@@ -16,7 +16,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/scheda-telefonata/chiamata.actions';
+import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/chiamata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,

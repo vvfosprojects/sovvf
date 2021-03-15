@@ -17,7 +17,7 @@ import { SetSchedaContattoTriageSummary } from '../../store/actions/triage-summa
 })
 export class TriageSummaryComponent implements OnInit, OnDestroy {
 
-    @Input() tipologie: Tipologia[];
+    @Input() tipologia: Tipologia;
     @Input() dettaglioTipologia: DettaglioTipologia;
     @Input() codSchedaContatto: string;
     @Input() countInterventiProssimita: number;

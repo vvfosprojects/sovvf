@@ -122,7 +122,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             if (event?.id || event?.descrizione) {
                 this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             } else {
-              this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
             }
             this.nuovaPartenza(this.richiesta);
             this.update();
@@ -164,7 +164,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     compPartenzaSwitch(event: Composizione): void {
         this.store.dispatch(new SwitchComposizione(event));
         if (event === 1) {
-          this.setDistaccamentiDefault();
+            this.setDistaccamentiDefault();
         }
     }
 
@@ -186,7 +186,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             });
         }
         dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
-        dettaglioTriageModal.componentInstance.tipologie = this.richiesta.tipologie;
+        dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
         dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
     }

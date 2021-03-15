@@ -22,10 +22,10 @@ import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 import { ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
 import {SunMode} from '../../shared/store/actions/viewport/viewport.actions';
-import { ClearRichiestaModifica } from '../home/store/actions/scheda-telefonata/richiesta-modifica.actions';
+import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { AnnullaChiamata } from '../home/store/actions/scheda-telefonata/chiamata.actions';
+import { AnnullaChiamata } from '../home/store/actions/form-richiesta/chiamata.actions';
 
 @Component({
     selector: 'app-navbar',

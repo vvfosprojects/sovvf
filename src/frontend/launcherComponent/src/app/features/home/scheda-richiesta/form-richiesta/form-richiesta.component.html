@@ -1,7 +1,9 @@
 <div class="row mt-2 h-100 shadow-lg">
     <!-- FORM RICHIESTA -->
     <div class="col-8 mx-auto border border-light">
-        <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.richiestaForm" autocomplete="off">
+        <form [formGroup]="richiestaForm"
+              ngxsForm="schedaTelefonata.richiestaForm"
+              autocomplete="off">
             <div class="row">
                 <!-- TIPOLOGIA  -->
                 <div class="col-12 px-0">
@@ -12,28 +14,27 @@
                         <div class="clearfix">
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
-                                <div class="required-field">
-                                    <ng-select class="border font-xlarge test-ng-select"
-                                               [class.errore]="submitted && checkTipologie()"
+                                <div [class.required-field]="!modifica">
+                                    <ng-select class="border font-xlarge"
+                                               [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"
                                                bindValue="codice"
                                                clearAllText="Clear"
                                                placeholder="Seleziona Tipologia Intervento"
-                                               formControlName="tipologie"
+                                               formControlName="codTipologia"
                                                [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
                                                [items]="tipologie"
                                                [multiple]="false"
                                                [closeOnSelect]="true"
                                                [hideSelected]="true"
-                                               [disabled]="modifica"
                                                (ngModelChange)="onChangeTipologia($event)">
                                     </ng-select>
                                 </div>
-                                <div *ngIf="submitted && checkTipologie()" class="text-danger">
+                                <div *ngIf="submitted && !checkTipologie()" class="text-danger">
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <ng-template [ngIf]="f.tipologie.value && !modifica">
+                            <ng-template [ngIf]="f.codTipologia.value && !modifica">
                                 <div class="float-left w-25 px-2">
                                     <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()">
                                         {{ 'Apri Triage' | uppercase }}
@@ -59,10 +60,11 @@
                                type="text"
                                formControlName="indirizzo"
                                placeholder="Ricerca indirizzo"
+                               role="presentation"
                                ngx-google-places-autocomplete
                                [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
-                               role="presentation">
+                               (keyup)="modificaIndirizzo()">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
@@ -198,12 +200,13 @@
                                    class="form-control font-xlarge"/>
                         </div>
                         <div class="col-2 pl-1">
-                            <ng-template [ngIf]="f?.contatto?.value">
+                            <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                 <label class="d-none" for="contatto">Contatto</label>
-                                <input id="contatto" type="text" placeholder="Contatto" formControlName="contatto"
-                                       class="form-control font-xlarge" disabled/>
+                                <input id="contatto" type="text" placeholder="Contatto"
+                                       formControlName="codSchedaContatto"
+                                       class="form-control font-xlarge"/>
                             </ng-template>
-                            <ng-template [ngIf]="!f?.contatto?.value">
+                            <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                 <button class="btn btn-secondary btn-block btn-no-hover mt-1"
                                         (click)="openModalSchedeContatto()">S. Contatto
                                 </button>
@@ -447,10 +450,10 @@
     </div>
     <!-- Resoconto triage -->
     <div class="col-4 h-100 bg-lightgrey scroll-y"
-         [class.pt-3]="dettaglioTipologiaSelezionato">
+         [class.pt-3]="f.dettaglioTipologia?.value">
         <div class="px-3">
-            <app-triage-summary [tipologie]="f.tipologie?.value"
-                                [dettaglioTipologia]="dettaglioTipologiaSelezionato"
+            <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
+                                [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"
                                 [countInterventiProssimita]="countInterventiProssimita"
                                 [interventiProssimita]="interventiProssimita">

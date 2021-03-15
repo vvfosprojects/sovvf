@@ -22,7 +22,7 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
+import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({

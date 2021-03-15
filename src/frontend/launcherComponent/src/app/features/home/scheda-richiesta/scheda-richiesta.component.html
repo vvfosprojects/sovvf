@@ -3,7 +3,6 @@
     <app-form-richiesta [tipologie]="(tipologie$ | async)"
                         [operatore]="(utente$ | async)"
                         [enti]="enti$ | async"
-                        [codiceSchedaContatto]="(schedaContattoTelefonata$ | async)?.codiceScheda"
                         [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                         [doubleMonitor]="doubleMonitor"
                         [competenze]="competenze$ | async"

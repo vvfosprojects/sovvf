@@ -22,7 +22,7 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { HomeState } from './store/states/home.state';
-import { RichiestaModificaState } from './store/states/scheda-telefonata/richiesta-modifica.state';
+import { RichiestaModificaState } from './store/states/form-richiesta/richiesta-modifica.state';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { TipologicheMezziState } from './store/states/composizione-partenza/tipologiche-mezzi.state';

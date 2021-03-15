@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -12,7 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class TriageSummaryModalComponent {
 
     codRichiesta: string;
-    tipologie: Tipologia[];
+    tipologia: Tipologia;
     dettaglioTipologia: DettaglioTipologia;
 
     constructor(private modal: NgbActiveModal) {

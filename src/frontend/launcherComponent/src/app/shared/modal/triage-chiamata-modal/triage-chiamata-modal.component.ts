@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
-import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
-import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/scheda-telefonata/chiamata.actions';
+import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/form-richiesta/chiamata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
@@ -45,7 +44,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     tipologiaSelezionata: Tipologia;
     dettaglioTipologiaSelezionato: DettaglioTipologia;
 
-    nuovaRichiesta: SintesiRichiesta;
     chiamataMarker: ChiamataMarker;
 
     triageSummary: TriageSummary[];
@@ -56,8 +54,8 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
-        private store: Store,
-        private modalService: NgbModal) {
+                private store: Store,
+                private modalService: NgbModal) {
         this.getDoubleMonitor();
         this.getTriage();
         this.getTriageData();
@@ -230,12 +228,9 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     setEmergenza(): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
-            nuovaRichiesta: this.nuovaRichiesta,
             markerChiamata: this.chiamataMarker
         };
         schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
-        schedaTelefonata.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
-        schedaTelefonata.nuovaRichiesta.chiamataUrgente = true;
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 

@@ -14,6 +14,7 @@ import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
 import { Ente } from '../interface/ente.interface';
 import { TriageSummary } from '../interface/triage-summary.interface';
+import { DettaglioTipologia } from '../interface/dettaglio-tipologia.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -59,7 +60,7 @@ export class SintesiRichiesta {
         /**
          * dettaglio della tipologia
          */
-        public dettaglioTipologia: string,
+        public dettaglioTipologia: DettaglioTipologia,
         /**
          * descrizione della richiesta
          */

@@ -27,6 +27,13 @@ export class ModificaIndirizzo {
     }
 }
 
+export class PatchRichiesta {
+    static readonly type = '[RichiestaModifica] Request Modifica Richiesta';
+
+    constructor(public sintesiRichiesta?: SintesiRichiesta) {
+    }
+}
+
 export class SuccessRichiestaModifica {
     static readonly type = '[RichiestaModifica] Modifica Richiesta Success';
 }

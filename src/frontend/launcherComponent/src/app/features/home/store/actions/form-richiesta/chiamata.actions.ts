@@ -2,7 +2,6 @@ import { SchedaTelefonataInterface } from '../../../../../shared/interface/sched
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
-import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 
 export class ReducerSchedaTelefonata {
@@ -51,7 +50,7 @@ export class ClearChiamata {
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
-    constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
+    constructor(public azioneChiamata: AzioneChiamataEnum) {
     }
 }
 

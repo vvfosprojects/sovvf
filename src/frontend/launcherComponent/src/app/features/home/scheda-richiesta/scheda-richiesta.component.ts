@@ -4,7 +4,7 @@ import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
-import { ChiamataState } from '../store/states/scheda-telefonata/chiamata.state';
+import { ChiamataState } from '../store/states/form-richiesta/chiamata.state';
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
 import { Ente } from 'src/app/shared/interface/ente.interface';
@@ -12,7 +12,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
+import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';

@@ -4,8 +4,8 @@ import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ChiamataState } from '../scheda-telefonata/chiamata.state';
-import { ClearIndirizzo } from '../../actions/scheda-telefonata/chiamata.actions';
+import { ChiamataState } from '../form-richiesta/chiamata.state';
+import { ClearIndirizzo } from '../../actions/form-richiesta/chiamata.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import {
     ClearChiamateMarkers,

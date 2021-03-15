@@ -17,8 +17,8 @@ import {
     StartChiamata,
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
-} from '../../actions/scheda-telefonata/chiamata.actions';
-import { CopyToClipboard } from '../../actions/scheda-telefonata/clipboard.actions';
+} from '../../actions/form-richiesta/chiamata.actions';
+import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
@@ -40,29 +40,75 @@ import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/ri
 import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
-import { SetRichiestaModifica, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
+import { PatchRichiesta, SetRichiestaModifica } from '../../actions/form-richiesta/richiesta-modifica.actions';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ConfirmModalComponent } from '../../../../../shared/modal/confirm-modal/confirm-modal.component';
+import { Tipologia } from '../../../../../shared/model/tipologia.model';
+import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
+import { Richiedente } from '../../../../../shared/model/richiedente.model';
+import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
+import { Ente } from '../../../../../shared/interface/ente.interface';
+import { Utente } from '../../../../../shared/model/utente.model';
+import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
+import { DettaglioTipologia } from '../../../../../shared/interface/dettaglio-tipologia.interface';
+import { Complessita } from '../../../../../shared/model/complessita.model';
+import { Fonogramma } from '../../../../../shared/model/fonogramma.model';
+import { Partenza } from '../../../../../shared/model/partenza.model';
+import { TurnoIntervento } from '../../../../../shared/model/turno-intervento';
+import { AttivitaUtente } from '../../../../../shared/model/attivita-utente.model';
+import { ObiettivoSensibile } from '../../../../../shared/model/obiettivo-sensibile';
+import { TipoTerreno } from '../../../../../shared/model/tipo-terreno';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
         model: {
-            selectedTipologie: string[],
+            id: string,
+            codice: string,
+            codiceRichiesta: string,
+            operatore: Utente,
+            istanteRicezioneRichiesta: Date,
+            stato: StatoRichiesta,
+            codTipologia: string,
+            dettaglioTipologia: DettaglioTipologia,
             nominativo: string,
             telefono: string,
+            competenze: Sede[],
+            complessita: Complessita,
+            istantePresaInCarico: Date,
+            istantePrimaAssegnazione: Date,
+            trnInsChiamata: string,
+            turnoIntervento: TurnoIntervento,
+            tipoTerreno: TipoTerreno[],
             indirizzo: string,
-            latitudine: string,
-            longitudine: string,
+            latitudine: number,
+            longitudine: number,
             piano: string,
-            etichette: string,
+            palazzo: string,
+            scala: string,
+            interno: string,
+            etichette: string[],
             noteIndirizzo: string,
+            obiettivoSensibile: ObiettivoSensibile,
             rilevanzaGrave: boolean,
             rilevanzaStArCu: boolean,
             notePrivate: string,
             notePubbliche: string,
             descrizione: string,
             zoneEmergenza: string,
-            prioritaRichiesta: number
+            prioritaRichiesta: number,
+            codSchedaContatto: string,
+            listaEntiPresaInCarico: Ente[],
+            urgenza: boolean,
+            codSOCompetente: string,
+            sediAllertate: Sede[],
+            codSOAllertate: string[],
+            fonogramma: Fonogramma,
+            partenzeRichiesta: Partenza[],
+            listaEnti: Ente[],
+            motivazione: string,
+            listaUtentiInLavorazione: AttivitaUtente[],
+            listaUtentiPresaInCarico: AttivitaUtente[],
+            codUOCompetenza: string[]
         },
         dirty: boolean,
         status: string,
@@ -113,6 +159,11 @@ export class ChiamataState {
     }
 
     @Selector()
+    static formValue(state: SchedaTelefonataStateModel): any {
+        return state.richiestaForm.model;
+    }
+
+    @Selector()
     static competenze(state: SchedaTelefonataStateModel): Sede[] {
         return state.competenze;
     }
@@ -144,9 +195,10 @@ export class ChiamataState {
 
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
+        const coordinate = getState().coordinate;
         switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
-                dispatch(new CopyToClipboard(getState().coordinate));
+                dispatch(new CopyToClipboard(coordinate));
                 break;
             case 'annullata':
                 dispatch(new AnnullaChiamata());
@@ -157,16 +209,16 @@ export class ChiamataState {
             case 'cerca':
                 dispatch([
                     new MarkerChiamata(action.schedaTelefonata.markerChiamata),
-                    new SetCompetenze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate),
-                    new SetCountInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate),
-                    new SetInterventiProssimita(action.schedaTelefonata.nuovaRichiesta.localita.coordinate)
+                    new SetCompetenze(action.schedaTelefonata.markerChiamata.localita.coordinate),
+                    new SetCountInterventiProssimita(action.schedaTelefonata.markerChiamata.localita.coordinate),
+                    new SetInterventiProssimita(action.schedaTelefonata.markerChiamata.localita.coordinate)
                 ]);
                 break;
             case 'inserita':
-                dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
+                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata));
                 break;
             case 'modificata':
-                dispatch(new SuccessRichiestaModifica());
+                dispatch(new PatchRichiesta());
                 break;
             default:
                 return;
@@ -230,32 +282,96 @@ export class ChiamataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
+    insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
-        patchState({
-            azioneChiamata: action.azioneChiamata
-        });
-        action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
-        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
-            if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
+        const state = getState();
+        const f = state.richiestaForm.model;
+        const azioneChiamata = action.azioneChiamata;
+        let chiamata: SintesiRichiesta;
+        let tipologia: Tipologia;
+        if (f) {
+            if (f.codTipologia) {
+                tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
+            }
+            const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
+            chiamata = new SintesiRichiesta(
+                f.id,
+                f.codice,
+                f.codiceRichiesta,
+                f.operatore,
+                f.istanteRicezioneRichiesta,
+                f.stato,
+                f.prioritaRichiesta,
+                [tipologia],
+                f.dettaglioTipologia ? f.dettaglioTipologia : null,
+                f.dettaglioTipologia ? f.dettaglioTipologia.descrizione : (f.codTipologia ? tipologia.descrizione : null),
+                new Richiedente(f.telefono, f.nominativo),
+                {
+                    indirizzo: f.indirizzo,
+                    piano: f.piano,
+                    palazzo: f.palazzo,
+                    scala: f.scala,
+                    interno: f.interno,
+                    contatto: f.codSchedaContatto,
+                    note: f.noteIndirizzo,
+                    coordinate: {
+                        longitudine: f.longitudine,
+                        latitudine: f.latitudine
+                    },
+                },
+                f.competenze,
+                f.complessita,
+                f.istantePresaInCarico,
+                f.istantePrimaAssegnazione,
+                f.rilevanzaGrave,
+                f.codSchedaContatto ? f.codSchedaContatto : null,
+                f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
+                f.fonogramma,
+                f.partenzeRichiesta,
+                (f.etichette && f.etichette.length) ? f.etichette : null,
+                f.notePubbliche,
+                f.notePrivate,
+                azioneChiamata,
+                f.trnInsChiamata,
+                f.turnoIntervento,
+                f.tipoTerreno,
+                (f.listaEnti?.length) ? f.listaEnti : null,
+                f.listaEntiPresaInCarico,
+                f.obiettivoSensibile,
+                f.rilevanzaStArCu,
+                f.motivazione,
+                f.listaUtentiInLavorazione,
+                f.listaUtentiPresaInCarico,
+                f.codUOCompetenza,
+                f.codSOAllertate,
+                f.sediAllertate,
+                f.codSOCompetente,
+                f.listaEnti,
+                f.urgenza,
+                triageSummary?.length ? triageSummary : null
+            );
+        }
+        patchState({ azioneChiamata });
+        this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
+            if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
                     new CestinaChiamata(),
-                    new SetIdChiamataInviaPartenza(richiesta),
+                    new SetIdChiamataInviaPartenza(chiamataResult),
                     new ShowToastr(
                         ToastrType.Success,
                         'Inserimento della chiamata effettuato',
-                        action.nuovaRichiesta.descrizione,
+                        chiamata.descrizione,
                         5,
                         null,
                         true
                     )
                 ]);
-            } else if (richiesta && (action.nuovaRichiesta.chiamataUrgente || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+            } else if (chiamataResult && (chiamata.chiamataUrgente || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
                     new ToggleChiamata(),
-                    new SetRichiestaModifica(richiesta),
+                    new SetRichiestaModifica(chiamataResult),
                     new ToggleModifica(),
-                    new SetMarkerRichiestaSelezionato(richiesta.id)
+                    new SetMarkerRichiestaSelezionato(chiamataResult.id)
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
@@ -267,7 +383,6 @@ export class ChiamataState {
                 azioneChiamata: null
             });
         });
-
     }
 
     @Action(InsertChiamataSuccess)
@@ -296,16 +411,8 @@ export class ChiamataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+    resetChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
-        dispatch(
-            new UpdateFormValue({
-                path: 'schedaTelefonata.nuovaRichiestaForm',
-                value: {
-                    prioritaRichiesta: 3
-                }
-            })
-        );
     }
 
     @Action(AnnullaChiamata)
