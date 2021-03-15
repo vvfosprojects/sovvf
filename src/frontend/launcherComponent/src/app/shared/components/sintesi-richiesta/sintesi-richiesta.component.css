@@ -156,3 +156,7 @@ text-cod {
 a {
     color: #000000
 }
+
+.border-top-richiesta {
+  border-top: solid thin #e0e0e0
+}
