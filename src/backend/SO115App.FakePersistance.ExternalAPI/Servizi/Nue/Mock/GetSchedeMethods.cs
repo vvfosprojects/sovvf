@@ -219,7 +219,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceFiscale">codice fiscale operatore</param>
         /// <param name="rangeOre">range di ore</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre)
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione)
         {
             var listaSchedeFiltrate = GetList();
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
@@ -229,6 +229,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             {
                 var dataCorrente = DateTime.UtcNow.AddHours(-(double)rangeOre);
                 listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.DataInserimento >= dataCorrente);
+            }
+
+            if (!classificazione.Equals("Tutte"))
+            {
+                listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Classificazione.Equals(classificazione));
             }
 
             return listaSchedeFiltrate;

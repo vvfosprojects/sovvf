@@ -34,5 +34,7 @@
         ///   Stringa per la ricerca a testo libero
         /// </summary>
         public string Search { get; set; }
+
+        public string Classificazione { get; set; }
     }
 }
