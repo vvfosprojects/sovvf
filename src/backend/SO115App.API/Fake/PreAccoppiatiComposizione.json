@@ -1,333 +1,19 @@
 [
-  //{
-  //  "Id": "3",
-  //  "CodiceSede": "RM.1000",
-  //  "MezzoComposizione": {
-  //    "id": "O.27536",
-  //    "mezzo": {
-  //      "codice": "O.27536",
-  //      "idRichiesta": null,
-  //      "descrizione": "29319",
-  //      "genere": "APS",
-  //      "stato": "In Sede",
-  //      "appartenenza": "CORP",
-  //      "distaccamento": {
-  //        "codice": "RM.1001",
-  //        "descrizione": "MONTE MARIO",
-  //        "coordinate": {
-  //          "latitudine": 41.9367,
-  //          "longitudine": 12.41927
-  //        },
-  //        "indirizzo": null,
-  //        "tipo": "",
-  //        "regione": "",
-  //        "provincia": "",
-  //        "label": "",
-  //        "icona": ""
-  //      },
-  //      "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
-  //      "descrizioneStato": null,
-  //      "statoEfficenza": 0,
-  //      "descrizioneStatoEfficenza": null,
-  //      "livelloCarburante": 0,
-  //      "descrizioneLivelloCarburante": null,
-  //      "livelloEstinguente": 0,
-  //      "descrizioneLivelloEstinguente": null,
-  //      "notifiche": null,
-  //      "coordinate": {
-  //        "latitudine": 41.9367,
-  //        "longitudine": 12.41927
-  //      },
-  //      "istanteAcquisizione": null,
-  //      "istantePrenotazione": null,
-  //      "istanteMovimentazione": null,
-  //      "coordinateFake": true
-  //    },
-  //    "km": "4.27",
-  //    "tempoPercorrenza": "2.44",
-  //    "istanteScadenzaSelezione": null,
-  //    "indiceOrdinamento": 199.95483522260312007167131888
-  //  },
-  //  "SquadreComposizione": [
-  //    {
-  //      "id": "45",
-  //      "squadra": {
-  //        "id": "45",
-  //        "codice": "45",
-  //        "nome": "RM45",
-  //        "stato": 0,
-  //        "componenti": [
-  //          {
-  //            "codiceFiscale": "BRTSFN65M30A323D",
-  //            "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "BARTOLI.STEFANO",
-  //            "orarioInizio": "2020-06-26T16:22:35.6176515Z",
-  //            "orarioFine": "2020-06-26T16:22:35.6176504Z",
-  //            "tooltip": "",
-  //            "capoPartenza": true,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "BRSFNC59H13E431P",
-  //            "descrizioneQualifica": "CAPO REPARTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "BRISCHETTO.FRANCESCO",
-  //            "orarioInizio": "2020-06-26T16:22:35.6176523Z",
-  //            "orarioFine": "2020-06-26T16:22:35.6176521Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": true,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CLCMRA70P10E958I",
-  //            "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE SCATTO CONVENZIONALE",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "COLACCHI.MAURO",
-  //            "orarioInizio": "2020-06-26T16:22:35.6176529Z",
-  //            "orarioFine": "2020-06-26T16:22:35.6176527Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": true,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CMLFNC64H24F880Y",
-  //            "descrizioneQualifica": "CAPO SQUADRA ESPERTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CAMILLI.FRANCO",
-  //            "orarioInizio": "2020-06-26T16:22:35.6176534Z",
-  //            "orarioFine": "2020-06-26T16:22:35.6176533Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": true,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CNFDNL83B27E958Z",
-  //            "descrizioneQualifica": "VIGILE DEL FUOCO ESPERTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CIANFANELLI.DANIELE",
-  //            "orarioInizio": "2020-06-26T16:22:35.617654Z",
-  //            "orarioFine": "2020-06-26T16:22:35.6176538Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          }
-  //        ],
-  //        "distaccamento": {
-  //          "codice": "RM.2000",
-  //          "descrizione": "ANZIO",
-  //          "coordinate": {
-  //            "latitudine": 41.462822,
-  //            "longitudine": 12.621627
-  //          },
-  //          "indirizzo": null,
-  //          "tipo": "",
-  //          "regione": "",
-  //          "provincia": "",
-  //          "label": "",
-  //          "icona": ""
-  //        },
-  //        "istanteTermineImpegno": null,
-  //        "listaCodiciFiscaliComponentiSquadra": [
-  //          "BRTSFN65M30A323D",
-  //          "BRSFNC59H13E431P",
-  //          "CLCMRA70P10E958I",
-  //          "CMLFNC64H24F880Y",
-  //          "CNFDNL83B27E958Z"
-  //        ],
-  //        "indiceOrdinamento": 0
-  //      },
-  //      "istanteScadenzaSelezione": "0001-01-01T00:00:00",
-  //      "idOperatore": null
-  //    },
-  //    {
-  //      "id": "31",
-  //      "squadra": {
-  //        "id": "31",
-  //        "codice": "31",
-  //        "nome": "RM31",
-  //        "stato": 0,
-  //        "componenti": [
-  //          {
-  //            "codiceFiscale": "CCCRRT65B17A271C",
-  //            "descrizioneQualifica": "CAPO SQUADRA ESPERTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CICCONI.ROBERTO",
-  //            "orarioInizio": "2020-06-26T16:22:35.5680575Z",
-  //            "orarioFine": "2020-06-26T16:22:35.5680568Z",
-  //            "tooltip": "",
-  //            "capoPartenza": true,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CLBJPR68H08Z110B",
-  //            "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE SCATTO CONVENZIONALE",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CALABRESE.JEAN PIERRE LOU",
-  //            "orarioInizio": "2020-06-26T16:22:35.5680579Z",
-  //            "orarioFine": "2020-06-26T16:22:35.5680578Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": true,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CLBNTN66C19I703G",
-  //            "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CALABRESE.ANTONIO",
-  //            "orarioInizio": "2020-06-26T16:22:35.5680583Z",
-  //            "orarioFine": "2020-06-26T16:22:35.5680582Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": true,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "CLNMSM63T04H501D",
-  //            "descrizioneQualifica": "CAPO REPARTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "CALENZO.MASSIMILIANO",
-  //            "orarioInizio": "2020-06-26T16:22:35.5680587Z",
-  //            "orarioFine": "2020-06-26T16:22:35.5680586Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": true,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          },
-  //          {
-  //            "codiceFiscale": "MRTPLA66R03H288N",
-  //            "descrizioneQualifica": "CAPO SQUADRA ESPERTO",
-  //            "descrizioneQualificaLunga": null,
-  //            "ruolo": null,
-  //            "codiceTurno": null,
-  //            "nominativo": "MORETTI.PAOLO",
-  //            "orarioInizio": "2020-06-26T16:22:35.5680592Z",
-  //            "orarioFine": "2020-06-26T16:22:35.5680591Z",
-  //            "tooltip": "",
-  //            "capoPartenza": false,
-  //            "autista": false,
-  //            "rimpiazzo": false,
-  //            "funGuardia": false,
-  //            "tecnicoGuardia1": false,
-  //            "tecnicoGuardia2": false,
-  //            "capoTurno": false,
-  //            "telefono": ""
-  //          }
-  //        ],
-  //        "distaccamento": {
-  //          "codice": "RM.1001",
-  //          "descrizione": "MONTE MARIO",
-  //          "coordinate": {
-  //            "latitudine": 41.9367,
-  //            "longitudine": 12.41927
-  //          },
-  //          "indirizzo": null,
-  //          "tipo": "",
-  //          "regione": "",
-  //          "provincia": "",
-  //          "label": "",
-  //          "icona": ""
-  //        },
-  //        "istanteTermineImpegno": null,
-  //        "listaCodiciFiscaliComponentiSquadra": [
-  //          "CCCRRT65B17A271C",
-  //          "CLBJPR68H08Z110B",
-  //          "CLBNTN66C19I703G",
-  //          "CLNMSM63T04H501D",
-  //          "MRTPLA66R03H288N"
-  //        ],
-  //        "indiceOrdinamento": 0
-  //      },
-  //      "istanteScadenzaSelezione": "0001-01-01T00:00:00",
-  //      "idOperatore": null
-  //    }
-  //  ]
-  //},
   {
-    "Id": "9",
-    "CodiceSede": "RM.1000",
+    "Id": "1",
+    "CodiceSede": "RM.1501",
     "MezzoComposizione": {
-      "id": "O.28320",
+      "id": "O.23061",
       "mezzo": {
-        "codice": "O.28320",
+        "codice": "O.23061",
         "idRichiesta": null,
-        "descrizione": "28320",
-        "genere": "APS",
+        "descrizione": "23061",
+        "genere": "AF/SC",
         "stato": "In Sede",
         "appartenenza": "CORP",
         "distaccamento": {
-          "codice": "RM.1000",
-          "descrizione": "COMANDO VV.F. ROMA",
+          "codice": "RM.1501",
+          "descrizione": "Aeroportuale di Fiumicino",
           "coordinate": {
             "latitudine": 41.89996,
             "longitudine": 12.49104
@@ -468,8 +154,8 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.2000",
-            "descrizione": "ANZIO",
+            "codice": "RM.1501",
+            "descrizione": "Aeroportuale di Fiumicino",
             "coordinate": {
               "latitudine": 41.462822,
               "longitudine": 12.621627
@@ -499,19 +185,19 @@
   },
   {
     "Id": "2",
-    "CodiceSede": "RM.1000",
+    "CodiceSede": "RM.1501",
     "MezzoComposizione": {
-      "id": "O.23045",
+      "id": "O.22653",
       "mezzo": {
-        "codice": "O.23045",
+        "codice": "O.22653",
         "idRichiesta": "RM8102000000",
-        "descrizione": "23045",
-        "genere": "APS",
+        "descrizione": "22653",
+        "genere": "AF/UCL",
         "stato": "In Sede",
         "appartenenza": "CORP",
         "distaccamento": {
-          "codice": "RM.1002",
-          "descrizione": "NOMENTANO",
+          "codice": "RM.1501",
+          "descrizione": "Aeroportuale di Fiumicino",
           "coordinate": {
             "latitudine": 41.94018,
             "longitudine": 12.54656
@@ -548,11 +234,11 @@
     },
     "SquadreComposizione": [
       {
-        "id": "62",
+        "id": "63",
         "squadra": {
-          "id": "62",
-          "codice": "62",
-          "nome": "RM62",
+          "id": "63",
+          "codice": "63",
+          "nome": "RM63",
           "stato": 0,
           "componenti": [
             {
@@ -652,8 +338,8 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.2000",
-            "descrizione": "ANZIO",
+            "codice": "RM.1501",
+            "descrizione": "Aeroportuale di Fiumicino",
             "coordinate": {
               "latitudine": 41.462822,
               "longitudine": 12.621627
@@ -783,7 +469,7 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.1001",
+            "codice": "RM.1000",
             "descrizione": "MONTE MARIO",
             "coordinate": {
               "latitudine": 41.9367,
@@ -812,15 +498,15 @@
     ]
   },
   {
-    "Id": "5",
-    "CodiceSede": "RM.1000",
+    "Id": "3",
+    "CodiceSede": "RM.1003",
     "MezzoComposizione": {
-      "id": "O.29903",
+      "id": "O.23820",
       "mezzo": {
-        "codice": "O.29903",
+        "codice": "O.23820",
         "idRichiesta": null,
-        "descrizione": "29903",
-        "genere": "APS",
+        "descrizione": "23820",
+        "genere": "AF/UCL",
         "stato": "In Sede",
         "appartenenza": "CORP",
         "distaccamento": {
@@ -966,8 +652,8 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.1001",
-            "descrizione": "MONTE MARIO",
+            "codice": "RM.1003",
+            "descrizione": "OSTIA",
             "coordinate": {
               "latitudine": 41.9367,
               "longitudine": 12.41927
@@ -995,20 +681,20 @@
     ]
   },
   {
-    "Id": "6",
-    "CodiceSede": "RM.1000",
+    "Id": "4",
+    "CodiceSede": "RM.2001",
     "MezzoComposizione": {
-      "id": "O.24602",
+      "id": "O.19745",
       "mezzo": {
-        "codice": "O.24602",
+        "codice": "O.19745",
         "idRichiesta": null,
-        "descrizione": "24602",
-        "genere": "APS",
+        "descrizione": "19745",
+        "genere": "CA",
         "stato": "In Sede",
         "appartenenza": "CORP",
         "distaccamento": {
-          "codice": "RM.1003",
-          "descrizione": "OSTIA",
+          "codice": "RM.2001",
+          "descrizione": "BRACCIANO",
           "coordinate": {
             "latitudine": 41.73002,
             "longitudine": 12.28027
@@ -1045,11 +731,11 @@
     },
     "SquadreComposizione": [
       {
-        "id": "31",
+        "id": "32",
         "squadra": {
-          "id": "31",
-          "codice": "31",
-          "nome": "RM31",
+          "id": "32",
+          "codice": "32",
+          "nome": "RM32",
           "stato": 0,
           "componenti": [
             {
@@ -1149,8 +835,8 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.1001",
-            "descrizione": "MONTE MARIO",
+            "codice": "RM.2001",
+            "descrizione": "BRACCIANO",
             "coordinate": {
               "latitudine": 41.9367,
               "longitudine": 12.41927
@@ -1309,20 +995,20 @@
     ]
   },
   {
-    "Id": "7",
-    "CodiceSede": "RM.1000",
+    "Id": "5",
+    "CodiceSede": "RM.2001",
     "MezzoComposizione": {
-      "id": "O.24754",
+      "id": "N.BP130",
       "mezzo": {
-        "codice": "O.24754",
+        "codice": "N.BP130",
         "idRichiesta": null,
-        "descrizione": "24754",
+        "descrizione": "BP130",
         "genere": "APS",
         "stato": "In Sede",
         "appartenenza": "CORP",
         "distaccamento": {
-          "codice": "RM.1501",
-          "descrizione": "Fiumicino (Aereoportuale)",
+          "codice": "RM.2001",
+          "descrizione": "BRACCIANO",
           "coordinate": {
             "latitudine": 41.79044,
             "longitudine": 12.24837
@@ -1463,8 +1149,8 @@
             }
           ],
           "distaccamento": {
-            "codice": "RM.1501",
-            "descrizione": "Fiumicino (Aereoportuale)",
+            "codice": "RM.2001",
+            "descrizione": "BRACCIANO",
             "coordinate": {
               "latitudine": 41.79044,
               "longitudine": 12.24837

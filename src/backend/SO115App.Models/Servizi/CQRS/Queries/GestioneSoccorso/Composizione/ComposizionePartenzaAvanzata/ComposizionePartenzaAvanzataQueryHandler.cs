@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
@@ -38,7 +39,9 @@ using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
@@ -67,6 +70,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetTurno _getTurno;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
         private readonly IGetSquadraByCodiceMezzo _getSquadraByCodiceMezzo;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
 
         #endregion Servizi
 
@@ -83,7 +88,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             IMemoryCache memoryCache,
             IGetTurno getTurno,
             IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza,
-            IGetSquadraByCodiceMezzo getSquadraByCodiceMezzo)
+            IGetSquadraByCodiceMezzo getSquadraByCodiceMezzo,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
@@ -98,13 +105,40 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getTurno = getTurno;
             _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
             _getSquadraByCodiceMezzo = getSquadraByCodiceMezzo;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getDistaccamenti = getDistaccamenti;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
         {
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
+            //Prendo tutte le sedi al disotto della sede indicata nel filtro
+
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
+
+            foreach (var sede in query.CodiceSede)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+                pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+            }
+
             var lstSedi = query.CodiceSede.ToList();
+
+            List<string> lstSediPreaccoppiati = new List<string>();
+            if (query.CodiceSede[0].Equals("CON"))
+                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList()).Select(x => x.Id.ToString()).ToList();
+            else
+                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti).Select(x => x.Id.ToString()).ToList();
+
+            //var lstSedi = query.CodiceSede.ToList();
             var tipologia90 = _getTipologieByCodice.Get(new List<string> { "90" }).First();
 
             var turnoCorrente = _getTurno.Get();
@@ -114,7 +148,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiceSede);
             var statiOperativiSquadre = _getStatoSquadre.Get(lstSedi);
 
-            var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = query.CodiceSede, Filtri = new FiltriPreaccoppiati() });
+            var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = lstSediPreaccoppiati.ToArray(), Filtri = new FiltriPreaccoppiati() });
             lstPreaccoppiati = lstPreaccoppiati.Select(p =>
             {
                 p.SquadreComposizione = p.SquadreComposizione.Select(comp =>
@@ -262,27 +296,35 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             if (query.Filtro.Mezzo != null)
             {
+                var CodiceMezzo = lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Codice;
                 if (lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Stato.Equals("In Rientro"))
                 {
-                    var CodiceMezzo = lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Codice;
-
                     ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(CodiceMezzo))
-                        .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                         .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
                     ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => y.Mezzo.Codice.Equals(CodiceMezzo)))
-                        .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
                 else
                 {
-                    ComposizioneSquareArray = lstSquadre.Result
-                           .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                           .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-
-                    ComposizioneMezziArray = lstMezzi.Result
-                            .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                    if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo)) != null)
+                    {
+                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(CodiceMezzo))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
+
+                        ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo))
+                            .Take(query.Filtro.SquadrePagination.PageSize).ToList();
+                    }
+                    else
+                    {
+                        ComposizioneSquareArray = lstSquadre.Result
+                               .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                               .Take(query.Filtro.SquadrePagination.PageSize).ToList();
+
+                        ComposizioneMezziArray = lstMezzi.Result
+                                .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                                .Take(query.Filtro.MezziPagination.PageSize).ToList();
+                    }
                 }
             }
             else
@@ -356,22 +398,26 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         private List<Classi.Composizione.ComposizioneMezzi> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
         {
-            return lstCompMezzi.Where(m =>
+            return lstCompMezzi
+                .Where(m =>
             {
                 if (query.Filtro.StatoMezzo != null)
                     return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
                 return true;
-            }).Where(m =>
+            })
+                .Where(m =>
             {
                 if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi))
                     return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
                 return true;
-            }).Where(m =>
+            })
+            .Where(m =>
             {
                 if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
                     return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
                 return true;
-            }).Where(m =>
+            })
+            .Where(m =>
             {
                 if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
                     return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
@@ -386,19 +432,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
                     return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
                 return true;
-            }).Where(m =>
-            {
-                if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                    return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                return true;
             })
+            //.Where(m =>
+            //{
+            //    if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+            //        return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+            //    return true;
+            //})
             .OrderByDescending(c =>
             {
                 if (query.Filtro.Squadre?.Any(s => s.PreAccoppiato) ?? false)
                     return c.Mezzo.PreAccoppiato;
                 return false;
             })
-            .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
+            .OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
             .ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
@@ -464,7 +511,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 return s;
             })
             .Where(s => s != null)
-#endif      
+#endif
             .OrderByDescending(c =>
             {
                 if (query.Filtro.Mezzo?.PreAccoppiato ?? false)
