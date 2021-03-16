@@ -21,7 +21,6 @@ export class ListaRichiesteComponent {
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
-    @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
 
@@ -141,11 +140,7 @@ export class ListaRichiesteComponent {
     }
 
     heightControl(): string {
-        if (this.richieste.length > 0) {
-            return this.listHeightClass;
-        } else {
-            return 'd-none';
-        }
+        return this.listHeightClass;
     }
 
     cardClasses(r: SintesiRichiesta): any {
