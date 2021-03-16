@@ -10,7 +10,7 @@ import { SchedaRichiestaComponent } from './scheda-richiesta.component';
 import { FormRichiestaComponent } from './form-richiesta/form-richiesta.component';
 import { ChiamataService } from '../../../core/service/chiamata-service/chiamata.service';
 import { NgxsModule } from '@ngxs/store';
-import { ChiamataState } from '../store/states/form-richiesta/chiamata.state';
+import { SchedaTelefonataState } from '../store/states/form-richiesta/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/form-richiesta/clipboard.state';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -30,7 +30,7 @@ import { TagInputModule } from 'ngx-chips';
         SharedModule,
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([
-            ChiamataState,
+            SchedaTelefonataState,
             ClipboardState
         ]),
         NgxsFormPluginModule

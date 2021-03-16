@@ -3,7 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
 import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
-import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/form-richiesta/chiamata.actions';
+import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
@@ -22,6 +22,7 @@ import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { ViewportState } from '../../store/states/viewport/viewport.state';
+import { CheckboxInterface } from '../../interface/checkbox.interface';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -225,13 +226,23 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         return null;
     }
 
+    getCheckboxEmergenzaState(): CheckboxInterface {
+        const id = 'check-chiamata-emergenza';
+        const status = this.checkedUrgenza;
+        const label = this.checkedUrgenza ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
+        const disabled = this.disableUrgenza;
+        return { id, status, label, disabled };
+    }
+
     setEmergenza(): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
             markerChiamata: this.chiamataMarker
         };
         schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
-        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
+        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, { urgente: true }));
+        this.checkedUrgenza = true;
+        this.disableUrgenza = true;
     }
 
     closeModal(type: string): void {

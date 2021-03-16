@@ -56,7 +56,7 @@
                                class="d-none">Indirizzo</label>
                         <input id="indirizzo"
                                class="form-control font-xlarge required-field"
-                               [class.is-invalid]="submitted && (f.indirizzo.errors || !coordinate)"
+                               [class.is-invalid]="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                                type="text"
                                formControlName="indirizzo"
                                placeholder="Ricerca indirizzo"
@@ -65,7 +65,8 @@
                                [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
                                (keyup)="modificaIndirizzo()">
-                        <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
+                        <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
+                             class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
                     </div>
@@ -105,12 +106,13 @@
                             <button type="button" class="btn btn-secondary btn-no-hover font-xlarge"
                                     [ngbTooltip]="coordsTooltip"
                                     placement="bottom"
-                                    (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
+                                    (click)="onCopiaIndirizzo()"
+                                    [disabled]="!(f.latitudine.value && f.longitudine.value)">
                                 <i class="fa fa-clipboard"></i>
                             </button>
                             <ng-template #coordsTooltip>
-                                Copia: {{coordinate.latitudine}}
-                                - {{coordinate.longitudine}}
+                                Copia: {{ f.latitudine.value }}
+                                - {{ f.longitudine.value }}
                             </ng-template>
                         </div>
                         <!-- COMPETENZE -->
@@ -313,16 +315,14 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <ng-template [ngIf]="!modifica">
-                        <div class="wrapper-grid my-2"
-                             ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-                             [disableTooltip]="!formIsInvalid()">
-                            <app-checkbox
-                                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: f.urgenza.value, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: f.urgenza.value || formIsInvalid() }"
-                                    (click)="setUrgenza()">
-                            </app-checkbox>
-                        </div>
-                    </ng-template>
+                    <div class="wrapper-grid my-2"
+                         ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                         [disableTooltip]="!formIsInvalid()">
+                        <app-checkbox
+                                [checkboxState]="getCheckboxEmergenzaState()"
+                                (click)="setUrgenza()">
+                        </app-checkbox>
+                    </div>
                     <div class="wrapper-grid">
                         <span class="mb-0 h5 font-xlarge">Priorità</span>
                         <span class="pl-2"

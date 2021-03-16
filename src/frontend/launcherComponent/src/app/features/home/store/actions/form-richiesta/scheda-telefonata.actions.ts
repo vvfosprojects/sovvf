@@ -7,7 +7,7 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
 
-    constructor(public schedaTelefonata: SchedaTelefonataInterface) {
+    constructor(public schedaTelefonata: SchedaTelefonataInterface, public options?: { urgente?: boolean }) {
     }
 }
 
@@ -50,7 +50,7 @@ export class ClearChiamata {
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
-    constructor(public azioneChiamata: AzioneChiamataEnum) {
+    constructor(public azioneChiamata: AzioneChiamataEnum, public options?: { urgente?: boolean }) {
     }
 }
 

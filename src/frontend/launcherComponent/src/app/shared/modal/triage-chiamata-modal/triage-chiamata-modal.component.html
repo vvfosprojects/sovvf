@@ -72,7 +72,7 @@
              ngbTooltip="Necessaria la compilazione dei campi obbligatori"
              [disableTooltip]="!disableUrgenza || checkedUrgenza">
             <app-checkbox
-                    [checkboxState]="{ id: 'check-chiamata-emergenza', status: checkedUrgenza, label: 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE', disabled: checkedUrgenza || disableUrgenza }"
+                    [checkboxState]="getCheckboxEmergenzaState()"
                     (click)="setEmergenza()">
             </app-checkbox>
         </div>

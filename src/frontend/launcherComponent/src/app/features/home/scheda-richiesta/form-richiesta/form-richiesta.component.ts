@@ -11,7 +11,7 @@ import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/form-richiesta/clipboard.actions';
-import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/form-richiesta/chiamata.actions';
+import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
@@ -44,6 +44,7 @@ import { TriageSummary } from '../../../../shared/interface/triage-summary.inter
 import { ClearTriageSummary, SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
 import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
+import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -74,7 +75,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     ngxGooglePlacesOptions: Options;
 
     chiamataMarker: ChiamataMarker;
-    coordinate: Coordinate;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
 
@@ -159,7 +159,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.submitted = false;
         this.richiestaForm.reset();
         this.clearTipologieSelezionate();
-        this.coordinate = null;
         this.store.dispatch(new ClearClipboard());
         this.reducerSchedaTelefonata('reset');
         this.store.dispatch(new DelChiamataMarker(this.idChiamata));
@@ -232,6 +231,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             urgenza: this.richiestaModifica.chiamataUrgente
         });
         this.f.codTipologia.disable();
+        this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
     }
 
     get f(): any {
@@ -271,9 +271,9 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     onSetIndirizzo(result: Address): void {
         const lat = roundToDecimal(result.geometry.location.lat(), 6);
         const lng = roundToDecimal(result.geometry.location.lng(), 6);
-        this.coordinate = new Coordinate(lat, lng);
+        const coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null
+            new Localita(coordinate ? coordinate : null, result.formatted_address), null
         );
         this.f.indirizzo.patchValue(result.formatted_address);
         this.f.latitudine.patchValue(lat);
@@ -283,7 +283,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     onModificaIndirizzo(result: Address): void {
         const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
-        this.coordinate = coordinate;
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(result.formatted_address);
@@ -295,18 +294,20 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         if (this.richiestaModifica) {
             const address = this.f.indirizzo;
             if (address.touched || address.dirty) {
-                this.coordinate = null;
+                this.f.latitudine.patchValue(null);
+                this.f.longitudine.patchValue(null);
             }
         }
     }
 
     onMsgIndirizzo(): string {
         let msg = '';
-        if (this.f.indirizzo.errors && !this.coordinate) {
+        const coordinate = new Coordinate(this.f.latitudine.value, this.f.longitudine.value);
+        if (this.f.indirizzo.errors && !coordinate) {
             msg = 'L\'indirizzo è richiesto';
         } else if (this.f.indirizzo.errors) {
             msg = 'L\'indirizzo è richiesto';
-        } else if (!this.coordinate) {
+        } else if (!coordinate) {
             msg = 'È necessario selezionare un indirizzo dall\'elenco';
         } else {
             return null;
@@ -442,9 +443,9 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
         const lat = scheda.localita.coordinate.latitudine;
         const lng = scheda.localita.coordinate.longitudine;
-        this.coordinate = new Coordinate(lat, lng);
+        const coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo), null
+            new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
         );
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
@@ -474,17 +475,17 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         }
     }
 
-    onCheckScorciatoiaNumero(key: string): void {
+    onCheckScorciatoiaNumero(scorciatoia: string): void {
         const f = this.f;
-        if (this.scorciatoieTelefono[key]) {
-            this.scorciatoieTelefono[key] = false;
+        if (this.scorciatoieTelefono[scorciatoia]) {
+            this.scorciatoieTelefono[scorciatoia] = false;
             f.telefono.patchValue('');
             f.nominativo.patchValue('');
         } else {
-            Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === key);
-            f.telefono.patchValue(key);
+            Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === scorciatoia);
+            f.telefono.patchValue(scorciatoia);
             let nominativo = null;
-            switch (key) {
+            switch (scorciatoia) {
                 case '112':
                     nominativo = 'Carabinieri';
                     break;
@@ -502,10 +503,22 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         }
     }
 
+    patchScorciatoiaNumero(scorciatoia: string): void {
+        this.scorciatoieTelefono[scorciatoia] = true;
+    }
+
+    getCheckboxEmergenzaState(): CheckboxInterface {
+        const id = 'check-chiamata-emergenza';
+        const status = this.f.urgenza.value;
+        const label = this.f.urgenza.value ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
+        const disabled = this.f.urgenza.value || this.formIsInvalid();
+        return { id, status, label, disabled };
+    }
+
     setUrgenza(): void {
         if (this.checkSubmit() && !this.f.urgenza.value) {
             this.f.urgenza.patchValue(true);
-            this.onSubmit(AzioneChiamataEnum.MettiInCoda);
+            this.onSubmit(AzioneChiamataEnum.MettiInCoda, { urgente: true });
         }
     }
 
@@ -551,7 +564,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                 switch (val) {
                     case 'ok':
                         this.submitted = false;
-                        this.coordinate = null;
                         this.richiestaForm.reset();
                         this.store.dispatch([
                             new ClearClipboard(),
@@ -583,21 +595,23 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     }
 
     checkSubmit(): boolean {
-        return (!this.formIsInvalid() && !!this.coordinate);
+        const coordinate = new Coordinate(this.f.latitudine.value, this.f.longitudine.value);
+        return (!this.formIsInvalid() && !!coordinate);
     }
 
-    onSubmit(azione?: AzioneChiamataEnum): void {
+    onSubmit(azione?: AzioneChiamataEnum, options?: { urgente?: boolean }): void {
         this.submitted = true;
         if (this.checkSubmit()) {
             if (!this.modifica) {
-                this.reducerSchedaTelefonata('inserita', azione);
+                const urgente = options?.urgente;
+                this.reducerSchedaTelefonata('inserita', azione, { urgente });
             } else if (this.modifica) {
                 this.reducerSchedaTelefonata('modificata', azione);
             }
         }
     }
 
-    reducerSchedaTelefonata(tipo: string, azione?: AzioneChiamataEnum): void {
+    reducerSchedaTelefonata(tipo: string, azione?: AzioneChiamataEnum, options?: { urgente?: boolean }): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo,
             markerChiamata: this.chiamataMarker
@@ -605,7 +619,8 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         if (azione) {
             schedaTelefonata.azioneChiamata = azione;
         }
-        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
+        const urgente = options?.urgente;
+        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, { urgente }));
     }
 }
 

@@ -17,7 +17,7 @@ import {
     StartChiamata,
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
-} from '../../actions/form-richiesta/chiamata.actions';
+} from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
@@ -58,6 +58,7 @@ import { TurnoIntervento } from '../../../../../shared/model/turno-intervento';
 import { AttivitaUtente } from '../../../../../shared/model/attivita-utente.model';
 import { ObiettivoSensibile } from '../../../../../shared/model/obiettivo-sensibile';
 import { TipoTerreno } from '../../../../../shared/model/tipo-terreno';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -150,7 +151,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     children: [ClipboardState]
 })
 
-export class ChiamataState {
+export class SchedaTelefonataState {
 
     constructor(private chiamataService: ChiamataService,
                 private store: Store,
@@ -215,7 +216,8 @@ export class ChiamataState {
                 ]);
                 break;
             case 'inserita':
-                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata));
+                const urgente = action.options?.urgente;
+                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata, { urgente }));
                 break;
             case 'modificata':
                 dispatch(new PatchRichiesta());
@@ -287,6 +289,7 @@ export class ChiamataState {
         const state = getState();
         const f = state.richiestaForm.model;
         const azioneChiamata = action.azioneChiamata;
+        const urgente = action.options?.urgente;
         let chiamata: SintesiRichiesta;
         let tipologia: Tipologia;
         if (f) {
@@ -347,11 +350,12 @@ export class ChiamataState {
                 f.sediAllertate,
                 f.codSOCompetente,
                 f.listaEnti,
-                f.urgenza,
+                f.urgenza || urgente,
                 triageSummary?.length ? triageSummary : null
             );
         }
         patchState({ azioneChiamata });
+        console.log('chiamata', chiamata);
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
@@ -370,6 +374,7 @@ export class ChiamataState {
                 this.store.dispatch([
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
+                    new SetTriageSummary(chiamataResult.triageSummary),
                     new ToggleModifica(),
                     new SetMarkerRichiestaSelezionato(chiamataResult.id)
                 ]);
@@ -477,7 +482,7 @@ export class ChiamataState {
     @Action(ClearIndirizzo)
     ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new UpdateFormValue({
-            path: 'schedaTelefonata.nuovaRichiestaForm',
+            path: 'schedaTelefonata.richiestaForm',
             value: {
                 indirizzo: '',
                 latitudine: '',

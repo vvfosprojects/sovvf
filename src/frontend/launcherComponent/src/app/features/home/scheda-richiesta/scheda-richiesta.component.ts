@@ -4,7 +4,7 @@ import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
-import { ChiamataState } from '../store/states/form-richiesta/chiamata.state';
+import { SchedaTelefonataState } from '../store/states/form-richiesta/scheda-telefonata.state';
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
 import { Ente } from 'src/app/shared/interface/ente.interface';
@@ -29,17 +29,17 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     @Input() doubleMonitor: boolean;
 
-    @Select(ChiamataState.competenze) competenze$: Observable<Sede[]>;
-    @Select(ChiamataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
-    @Select(ChiamataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
-    @Select(ChiamataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
+    @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
+    @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
+    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
 
     // Loading
-    @Select(ChiamataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
+    @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     loadingNuovaChiamata: boolean;
 
     // Modifica Richiesta

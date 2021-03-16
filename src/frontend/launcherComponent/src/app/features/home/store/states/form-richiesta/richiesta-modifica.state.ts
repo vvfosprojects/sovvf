@@ -28,7 +28,7 @@ import { TipologieState } from '../../../../../shared/store/states/tipologie/tip
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
-import { ChiamataState } from './chiamata.state';
+import { SchedaTelefonataState } from './scheda-telefonata.state';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -138,7 +138,7 @@ export class RichiestaModificaState {
         if (action.sintesiRichiesta) {
             sintesiRichiesta = action.sintesiRichiesta;
         } else {
-            const f = this.store.selectSnapshot(ChiamataState.formValue);
+            const f = this.store.selectSnapshot(SchedaTelefonataState.formValue);
             console.log('f', f);
             const azioneChiamata = AzioneChiamataEnum.Modifica;
             let tipologia: Tipologia;
