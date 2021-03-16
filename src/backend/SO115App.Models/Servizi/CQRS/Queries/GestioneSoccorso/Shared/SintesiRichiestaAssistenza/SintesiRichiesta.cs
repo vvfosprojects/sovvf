@@ -337,8 +337,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                List<ComposizionePartenze> eventoAssegnata = new List<ComposizionePartenze>();
+                List<ComposizionePartenze> PartenzeSelect = new List<ComposizionePartenze>();
+                if (this.Partenze != null)
+                {
+                    eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                    PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                }
 
                 foreach (var partenza in PartenzeSelect)
                 {
@@ -350,7 +355,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 {
                     return Costanti.RichiestaChiusa;
                 }
-                if (eventoAssegnata.Count > 0 || Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0)
+                if (eventoAssegnata.Count > 0 || (Partenze != null && Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0))
                 {
                     return Costanti.RichiestaAssegnata;
                 }
