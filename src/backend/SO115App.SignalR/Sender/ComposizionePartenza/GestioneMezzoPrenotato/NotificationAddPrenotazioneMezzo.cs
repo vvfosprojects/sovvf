@@ -55,8 +55,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato
 
             var mezzoPrenotato = _mezzoPrenotatoHandler.Handle(mezziPrenotatiQuery).MezziPrenotati.Find(x => x.CodiceMezzo.Equals(command.MezzoPrenotato.CodiceMezzo));
 
-            mezzoPrenotato.SbloccaMezzo = true;
-
             if (mezzoPrenotato == null)
             {
                 var mezzoLibero = new StatoOperativoMezzo
