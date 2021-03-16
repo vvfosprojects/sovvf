@@ -307,7 +307,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
                 else
                 {
-                    if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo)) != null)
+                    if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo)).Count > 0)
                     {
                         ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(CodiceMezzo))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
