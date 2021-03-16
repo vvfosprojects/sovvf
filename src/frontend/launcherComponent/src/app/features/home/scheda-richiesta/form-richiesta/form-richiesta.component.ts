@@ -227,7 +227,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             descrizione: this.richiestaModifica.descrizione,
             zoneEmergenza: this.richiestaModifica.zoneEmergenza,
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
-            stato: [StatoRichiesta.Chiamata],
+            stato: StatoRichiesta.Chiamata,
             urgenza: this.richiestaModifica.chiamataUrgente
         });
         this.f.codTipologia.disable();
