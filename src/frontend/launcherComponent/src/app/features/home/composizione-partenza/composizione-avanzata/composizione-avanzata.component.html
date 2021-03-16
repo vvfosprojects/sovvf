@@ -51,6 +51,7 @@
                             *ngFor="let sC of squadreComposizione"
                             [nightMode]="nightMode"
                             [squadraComp]="sC"
+                            [boxPartenzaList]="(boxPartenzaList$ | async)"
                             [itemSelezionato]="checkSquadraSelezione(sC.id)"
                             [itemHover]="checkSquadraHover(sC.id)"
                             [richiesta]="richiesta"
