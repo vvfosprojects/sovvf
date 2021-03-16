@@ -45,6 +45,7 @@ import { ClearTriageSummary, SetTriageSummary } from '../../../../shared/store/a
 import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
 import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
 import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -399,7 +400,15 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             switch (res.type) {
                 case 'success':
                     console.log('TriageModalResult', res);
-                    this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                    if (res?.dettaglio) {
+                        this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                        this.store.dispatch(new UpdateFormValue({
+                            path: 'schedaTelefonata.richiestaForm',
+                            value: {
+                                dettaglioTipologia: res.dettaglio
+                            }
+                        }));
+                    }
                     if (res?.triageSummary?.length) {
                         saveTriageSummary(this.store, res.triageSummary);
                     }
@@ -409,8 +418,20 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     console.log('TriageModalResult', res);
                     if (res?.dettaglio) {
                         this.f.dettaglioTipologia.patchValue(res.dettaglio);
+                        this.store.dispatch(new UpdateFormValue({
+                            path: 'schedaTelefonata.richiestaForm',
+                            value: {
+                                dettaglioTipologia: res.dettaglio
+                            }
+                        }));
                     } else {
                         this.f.dettaglioTipologia.patchValue(null);
+                        this.store.dispatch(new UpdateFormValue({
+                            path: 'schedaTelefonata.richiestaForm',
+                            value: {
+                                dettaglioTipologia: null
+                            }
+                        }));
                     }
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
@@ -507,7 +528,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.scorciatoieTelefono[scorciatoia] = true;
     }
 
-    getCheckboxEmergenzaState(): CheckboxInterface {
+    getCheckboxUrgenzaState(): CheckboxInterface {
         const id = 'check-chiamata-emergenza';
         const status = this.f.urgenza.value;
         const label = this.f.urgenza.value ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';

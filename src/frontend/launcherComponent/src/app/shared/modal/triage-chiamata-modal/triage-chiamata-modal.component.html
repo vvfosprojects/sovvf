@@ -72,8 +72,8 @@
              ngbTooltip="Necessaria la compilazione dei campi obbligatori"
              [disableTooltip]="!disableUrgenza || checkedUrgenza">
             <app-checkbox
-                    [checkboxState]="getCheckboxEmergenzaState()"
-                    (click)="setEmergenza()">
+                    [checkboxState]="getCheckboxUrgenzaState()"
+                    (click)="setUrgenza()">
             </app-checkbox>
         </div>
         <div class="float-right">

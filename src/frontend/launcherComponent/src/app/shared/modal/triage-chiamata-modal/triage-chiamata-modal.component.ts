@@ -226,7 +226,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    getCheckboxEmergenzaState(): CheckboxInterface {
+    getCheckboxUrgenzaState(): CheckboxInterface {
         const id = 'check-chiamata-emergenza';
         const status = this.checkedUrgenza;
         const label = this.checkedUrgenza ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
@@ -234,7 +234,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         return { id, status, label, disabled };
     }
 
-    setEmergenza(): void {
+    setUrgenza(): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo: 'inserita',
             markerChiamata: this.chiamataMarker
