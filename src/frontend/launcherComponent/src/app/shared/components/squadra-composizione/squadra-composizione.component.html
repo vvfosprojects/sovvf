@@ -68,7 +68,7 @@
                 </div>
             </ng-template>
             <!-- Mezzi su cui è presente la squadra per Intervento -->
-            <ng-template [ngIf]="squadraComp.listaMezzi?.length && !itemSelezionato && !itemBloccato && !itemPrenotato">
+            <ng-template [ngIf]="squadraComp.listaMezzi?.length && !itemSelezionato && !itemBloccato && !itemPrenotato && !disableBtnInRientro">
                 <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"

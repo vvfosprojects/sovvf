@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/composizione-functions';
@@ -7,13 +7,14 @@ import { ViewLayouts } from '../../interface/view.interface';
 import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
+import {BoxPartenza} from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 @Component({
     selector: 'app-squadra-composizione',
     templateUrl: './squadra-composizione.component.html',
     styleUrls: ['./squadra-composizione.component.css']
 })
-export class SquadraComposizioneComponent implements OnDestroy {
+export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     viewState: ViewLayouts;
@@ -25,6 +26,7 @@ export class SquadraComposizioneComponent implements OnDestroy {
     @Input() itemPrenotato: boolean;
     @Input() itemBloccato: boolean;
     @Input() nightMode: boolean;
+    @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
     @Output() selezionataInRientro = new EventEmitter<SquadraComposizione>();
@@ -36,10 +38,18 @@ export class SquadraComposizioneComponent implements OnDestroy {
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
+    disableBtnInRientro = false;
     private subscription = new Subscription();
 
     constructor() {
         this.getViewState();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+      const boxPartenzaList = changes?.boxPartenzaList;
+      if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi && this.squadraComp.listaMezzi[0]) {
+        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnInRientro = true : null);
+      }
     }
 
     ngOnDestroy(): void {
