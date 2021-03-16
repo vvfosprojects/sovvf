@@ -511,12 +511,12 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         const id = 'check-chiamata-emergenza';
         const status = this.f.urgenza.value;
         const label = this.f.urgenza.value ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
-        const disabled = this.f.urgenza.value || this.formIsInvalid();
+        const disabled = this.f.urgenza.value || this.formIsInvalid() || (this.richiestaModifica && !this.f.urgenza.value);
         return { id, status, label, disabled };
     }
 
     setUrgenza(): void {
-        if (this.checkSubmit() && !this.f.urgenza.value) {
+        if (this.checkSubmit() && !this.f.urgenza.value && !this.richiestaModifica) {
             this.f.urgenza.patchValue(true);
             this.onSubmit(AzioneChiamataEnum.MettiInCoda, { urgente: true });
         }
