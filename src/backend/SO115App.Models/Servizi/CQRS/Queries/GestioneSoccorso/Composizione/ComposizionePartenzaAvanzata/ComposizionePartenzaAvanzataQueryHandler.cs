@@ -284,11 +284,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
             var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
 
-            if (indexMezzo != 0)
-                query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
+            //if (indexMezzo != 0)
+            //    query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
 
-            if (indexSquadra != 0)
-                query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
+            //if (indexSquadra != 0)
+            //    query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
 
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
             List<Classi.Composizione.ComposizioneMezzi> ComposizioneMezziArray = new List<Classi.Composizione.ComposizioneMezzi>();
