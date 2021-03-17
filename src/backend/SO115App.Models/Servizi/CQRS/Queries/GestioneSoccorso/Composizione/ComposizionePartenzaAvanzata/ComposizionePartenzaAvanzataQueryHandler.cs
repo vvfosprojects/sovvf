@@ -276,7 +276,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         listaMezziAssociati.Add(mezzoAss);
                     }
 
-                    composizione.ListaMezzi = listaMezziAssociati;
+                    composizione.ListaMezzi = listaMezziAssociati
+                        .Where(c => c.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                        .ToList();
                 }
             }
 
