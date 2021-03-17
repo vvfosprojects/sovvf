@@ -63,7 +63,7 @@
             </ng-template>
             <!-- Squadre su Mezzo per Intervento -->
             <ng-template
-                    [ngIf]="mezzoComp.listaSquadre?.length && !itemSelezionato && !itemBloccato && !itemPrenotatoInBox && !itemPrenotato">
+                    [ngIf]="mezzoComp.listaSquadre?.length">
                 <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
@@ -73,15 +73,17 @@
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="onClick(true); $event.stopPropagation()">
+                                (click)="onClick(true); $event.stopPropagation()"
+                                [disabled]="disableBtnInRientro">
                             <i class="fa fa-users fa-fw"></i>
                             <i class="fa fa-arrow-right guida fa-fw mx-1"></i>
                             <i class="fa fa-truck fa-fw"></i>
                         </button>
                         <ng-template #popSquadreIntervento>
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s.squadra.nome }}</div>
-                                <div *ngIf="s.squadra.turno" class="d-inline-block">({{ s.squadra.turno }})</div>
+                                <div class="d-inline font-weight-bold">{{ s.squadra.nome }}</div>
+                                <div *ngIf="s.squadra.turno" class="d-inline">({{ s.squadra.turno }})</div>
+                                <div class="d-inline"> - {{_nomeStatiSquadra(s.squadra?.stato) }}</div>
                             </div>
                         </ng-template>
                     </ng-container>

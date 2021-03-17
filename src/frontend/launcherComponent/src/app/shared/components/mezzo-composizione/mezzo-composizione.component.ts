@@ -48,6 +48,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
 
     sganciamentoDisabilitato = false;
     itemPrenotatoInBox = false;
+    disableBtnInRientro = false;
 
     private subscription = new Subscription();
 
@@ -69,6 +70,9 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 return;
             }
             boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione?.id !== this.mezzoComp?.id) ? this.itemPrenotatoInBox = false : null);
+        }
+        if (boxPartenzaList?.currentValue && this.mezzoComp &&  this.mezzoComp.listaSquadre) {
+            boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp?.id) ? this.disableBtnInRientro = true : null);
         }
     }
 

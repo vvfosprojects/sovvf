@@ -68,25 +68,27 @@
                 </div>
             </ng-template>
             <!-- Mezzi su cui è presente la squadra per Intervento -->
-            <ng-template [ngIf]="squadraComp.listaMezzi?.length && !itemSelezionato && !itemBloccato && !itemPrenotato && !disableBtnInRientro">
+            <ng-template [ngIf]="squadraComp.listaMezzi?.length">
                 <div class="d-inline-block nowrap">
                     <ng-container>
-                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
+                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
                                 [ngbPopover]="popMezziIntervento"
                                 [popoverTitle]="'Mezzi su cui è ' + squadraComp.squadra?.nome + ' per Intervento'"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                (click)="onClick(true); $event.stopPropagation()">
+                                (click)="onClick(true); $event.stopPropagation()"
+                                [disabled]="disableBtnInRientro">
                             <i class="fa fa-users fa-fw"></i>
                             <i class="fa fa-arrow-right guida fa-fw mx-1"></i>
                             <i class="fa fa-truck fa-fw"></i>
                         </button>
                         <ng-template #popMezziIntervento>
                             <div *ngFor="let m of squadraComp.listaMezzi" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ m.mezzo.descrizione }}</div>
-                                <div class="d-inline-block">({{ m.mezzo.genere }})</div>
+                                  <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
+                                  <div class="d-inline">({{ m.mezzo.genere }})</div>
+                                  <div class="d-inline"> - {{ m.mezzo.stato }}</div>
                             </div>
                         </ng-template>
                     </ng-container>
