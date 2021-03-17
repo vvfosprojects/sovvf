@@ -23,120 +23,120 @@ namespace SO115App.Models.Classi.Utility
     {
         #region CondivisaAuthorization
 
-        public static string UtenteNonAutorizzato = "Utente non autorizzato";
-        public static string DatiMancanti = "Dati Mancanti";
+        public const string UtenteNonAutorizzato = "Utente non autorizzato";
+        public const string DatiMancanti = "Dati Mancanti";
 
         #endregion CondivisaAuthorization
 
         #region CondivisaValidator
 
-        public static string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
-        public static string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
+        public const string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
+        public const string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
 
-        public static string PartenzaGiaPresente = "Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
-        public static string CoordinateErrate = "Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
+        public const string PartenzaGiaPresente = "Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
+        public const string CoordinateErrate = "Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
 
-        public static string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
-        public static string NominativoNonPresente = "Il nominativo del richiedente non è presente";
+        public const string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
+        public const string NominativoNonPresente = "Il nominativo del richiedente non è presente";
 
-        public static string SelezionataPersonaFisica =
+        public const string SelezionataPersonaFisica =
             "Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";
 
-        public static string IdOperatoreNonValido = "Id Operatore non valido";
-        public static string IdRichiestaNonValida = "Codice Richiesta non valido";
-        public static string MezzoNonPresente = "Il mezzo non è presente";
-        public static string StatoNonValido = "Lo stato della richiesta non è valido";
+        public const string IdOperatoreNonValido = "Id Operatore non valido";
+        public const string IdRichiestaNonValida = "Codice Richiesta non valido";
+        public const string MezzoNonPresente = "Il mezzo non è presente";
+        public const string StatoNonValido = "Lo stato della richiesta non è valido";
 
-        public static string AggiuntoUnEventoPrecedenteAlPiuRecente =
+        public const string AggiuntoUnEventoPrecedenteAlPiuRecente =
             "Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
 
         #endregion CondivisaValidator
 
         #region StatiRichiesta
 
-        public static string Chiamata = "Chiamata";
-        public static string RichiestaAssegnata = "Assegnata";
-        public static string RichiestaPresidiata = "Presidiata";
-        public static string RichiestaChiusa = "Chiusa";
-        public static string RichiestaSospesa = "Sospesa";
-        public static string RichiestaRiaperta = "Riaperta";
+        public const string Chiamata = "Chiamata";
+        public const string RichiestaAssegnata = "Assegnata";
+        public const string RichiestaPresidiata = "Presidiata";
+        public const string RichiestaChiusa = "Chiusa";
+        public const string RichiestaSospesa = "Sospesa";
+        public const string RichiestaRiaperta = "Riaperta";
 
         #endregion StatiRichiesta
 
         #region StatiMezzi
 
-        public static string MezzoSulPosto = "Sul Posto";
-        public static string MezzoInRientro = "In Rientro";
-        public static string MezzoInSede = "In Sede";
-        public static string MezzoRientrato = "Rientrato";
-        public static string MezzoInViaggio = "In Viaggio";
-        public static string MezzoInUscita = "In Uscita";
-        public static string MezzoOccupato = "Occupato";
-        public static string MezzoIstituto = "Istituto";
-        public static string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
-        public static string MezzoFuoriServizio = "Fuori Servizio";
-        public static string MezzoStatoSconosciuto = "Stato Sconosciuto";
-        public static string MezzoNonDisponibile = "NON DISPONIBILE";
-        public static string MezzoDisponibile = "DISPONIBILE";
-        public static string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
-        public static string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
-        public static string MezzoErroreCambioStatoRichiestaChiusa = "Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
-        public static string MezzoErroreGiaOccupato = "Il mezzo risulta già occupato. Selezionarne un altro.";
+        public const string MezzoSulPosto = "Sul Posto";
+        public const string MezzoInRientro = "In Rientro";
+        public const string MezzoInSede = "In Sede";
+        public const string MezzoRientrato = "Rientrato";
+        public const string MezzoInViaggio = "In Viaggio";
+        public const string MezzoInUscita = "In Uscita";
+        public const string MezzoOccupato = "Occupato";
+        public const string MezzoIstituto = "Istituto";
+        public const string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
+        public const string MezzoFuoriServizio = "Fuori Servizio";
+        public const string MezzoStatoSconosciuto = "Stato Sconosciuto";
+        public const string MezzoNonDisponibile = "NON DISPONIBILE";
+        public const string MezzoDisponibile = "DISPONIBILE";
+        public const string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
+        public const string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
+        public const string MezzoErroreCambioStatoRichiestaChiusa = "Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
+        public const string MezzoErroreGiaOccupato = "Il mezzo risulta già occupato. Selezionarne un altro.";
 
         #endregion StatiMezzi
 
         #region Eventi
 
-        public static string EventoGenerico = "EventoGenerico";
-        public static string Telefonata = "Telefonata";
-        public static string InizioPresaInCarico = "InizioPresaInCarico";
-        public static string RiaperturaRichiesta = "RiaperturaRichiesta";
-        public static string ChiusuraRichiesta = "ChiusuraRichiesta";
-        public static string ComposizionePartenza = "ComposizionePartenza";
-        public static string Composizione = "Composizione";
-        public static string ChiusuraPartenza = "ChiusuraPartenza";
-        public static string ArrivoSulPosto = "ArrivoSulPosto";
-        public static string UscitaPartenza = "UscitaPartenza";
-        public static string AssegnataRichiesta = "AssegnataRichiesta";
-        public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
-        public static string EventoRichiestaSospesa = "RichiestaSospesa";
-        public static string AssegnataPriorita = "AssegnataPriorita";
-        public static string MarcaRilevante = "MarcaRilevante";
-        public static string EventoMezzoInRientro = "MezzoInRientro";
-        public static string EventoMezzoRientrato = "MezzoRientrato";
+        public const string EventoGenerico = "EventoGenerico";
+        public const string Telefonata = "Telefonata";
+        public const string InizioPresaInCarico = "InizioPresaInCarico";
+        public const string RiaperturaRichiesta = "RiaperturaRichiesta";
+        public const string ChiusuraRichiesta = "ChiusuraRichiesta";
+        public const string ComposizionePartenza = "ComposizionePartenza";
+        public const string Composizione = "Composizione";
+        public const string ChiusuraPartenza = "ChiusuraPartenza";
+        public const string ArrivoSulPosto = "ArrivoSulPosto";
+        public const string UscitaPartenza = "UscitaPartenza";
+        public const string AssegnataRichiesta = "AssegnataRichiesta";
+        public const string EventoRichiestaPresidiata = "RichiestaPresidiata";
+        public const string EventoRichiestaSospesa = "RichiestaSospesa";
+        public const string AssegnataPriorita = "AssegnataPriorita";
+        public const string MarcaRilevante = "MarcaRilevante";
+        public const string EventoMezzoInRientro = "MezzoInRientro";
+        public const string EventoMezzoRientrato = "MezzoRientrato";
 
-        public static string RevocaPerAltraMotivazione = "RevocaPerAltraMotivazione";
-        public static string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
-        public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
-        public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
-        public static string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
-        public static string SostituzionePartenza = "SostituzionePartenza";
-        public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
+        public const string RevocaPerAltraMotivazione = "RevocaPerAltraMotivazione";
+        public const string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
+        public const string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
+        public const string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
+        public const string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
+        public const string SostituzionePartenza = "SostituzionePartenza";
+        public const string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
-        public static string FonogrammaDaInviare = "FonogrammaDaInviare";
-        public static string FonogrammaInviato = "FonogrammaInviato";
+        public const string FonogrammaDaInviare = "FonogrammaDaInviare";
+        public const string FonogrammaInviato = "FonogrammaInviato";
 
-        public static string AllertaAltreSedi = "AllertaAltreSedi";
+        public const string AllertaAltreSedi = "AllertaAltreSedi";
 
-        public static string TrasferimentoChiamata = "TrasferimentoChiamata";
+        public const string TrasferimentoChiamata = "TrasferimentoChiamata";
 
-        public static string RichiestaSoccorsoAereo = "RichiestaSoccorsoAereo";
-        public static string AnnullamentoRichiestaSoccorsoAereo = "AnnullamentoRichiestaSoccorsoAereo";
+        public const string RichiestaSoccorsoAereo = "RichiestaSoccorsoAereo";
+        public const string AnnullamentoRichiestaSoccorsoAereo = "AnnullamentoRichiestaSoccorsoAereo";
         #endregion Eventi
 
         #region Ruoli Utenti
 
-        public static string GestoreChiamate = "Gestore Chiamate";
-        public static string GestoreRichieste = "Gestore Richieste";
-        public static string Amministratore = "Amministratore";
+        public const string GestoreChiamate = "Gestore Chiamate";
+        public const string GestoreRichieste = "Gestore Richieste";
+        public const string Amministratore = "Amministratore";
 
         #endregion Ruoli Utenti
 
         #region FAKE
 
-        public static string ListaMezzi = "Fake/ListaMezzi.json";
-        public static string ListaSquadre = "Fake/ListaSquadre.json";
-        public static string ListaPreAccoppiati = "Fake/ListaPreAccoppiati.json";
+        public const string ListaMezzi = "Fake/ListaMezzi.json";
+        public const string ListaSquadre = "Fake/ListaSquadre.json";
+        public const string ListaPreAccoppiati = "Fake/ListaPreAccoppiati.json";
 
         #endregion FAKE
     }

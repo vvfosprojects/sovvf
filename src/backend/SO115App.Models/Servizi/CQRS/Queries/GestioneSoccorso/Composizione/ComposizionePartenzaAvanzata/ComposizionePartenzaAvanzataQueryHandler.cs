@@ -221,13 +221,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             c.Id = c.Mezzo.Codice;
                             c.IstanteScadenzaSelezione = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).IstanteScadenzaSelezione;
 
-                            if (c.Mezzo.Stato.Equals("In Sede"))
+                            if (c.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                                 c.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
 
-                            if (c.Mezzo.Stato.Equals("Sul Posto"))
+                            if (c.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
                                 c.IndirizzoIntervento = _getSintesiRichiestaAssistenza.GetSintesi(c.Mezzo.IdRichiesta).Localita.Indirizzo;
 
-                            if (c.Mezzo.Stato.Equals("In Rientro"))
+                            if (c.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                             {
                                 var listaCodiciSquadre = statiOperativiSquadre.FindAll(x => x.CodMezzo.Equals(c.Mezzo.Codice)).Select(x => x.IdSquadra).ToArray();
                                 c.ListaSquadre = lstSquadre.Result.FindAll(x => listaCodiciSquadre.Any(s => s.Equals(x.Squadra.Codice)));

@@ -7,4 +7,9 @@ export interface MezzoActionEmit {
         minuti: number,
         secondi: number
     };
+    dataEvento?: {
+      giorno: number,
+      mese: number,
+      anno: number
+    };
 }
