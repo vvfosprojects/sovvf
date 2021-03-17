@@ -313,5 +313,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 }
             };
         }
+
+        /// <summary>
+        ///   Metodo che restituisce tutte le schede contatto indicate nell'array di codici schede
+        ///   in input
+        /// </summary>
+        /// <param name="codiciScheda">Array di codici scheda</param>
+        /// <returns>Una lista di SchedaContatto</returns>
+        public List<SchedaContatto> GetSchedeContattoByCodiciScheda(List<string> codiciScheda)
+        {
+            return GetList().FindAll(x => codiciScheda.Any(cod => cod.Equals(x.CodiceScheda)));
+        }
     }
 }

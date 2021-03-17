@@ -19,20 +19,29 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
 {
     public class MergeSchedeNueCommandHandler : ICommandHandler<MergeSchedeNueCommand>
     {
         private readonly IMergeSchedeContatto _mergeSchede;
+        private readonly IGetSchedeContattoByCodiciScheda _schedeContattoByCodiciScheda;
 
-        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede)
+        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede, IGetSchedeContattoByCodiciScheda schedeContattoByCodiciScheda)
         {
             _mergeSchede = mergeSchede;
+            _schedeContattoByCodiciScheda = schedeContattoByCodiciScheda;
         }
 
         public void Handle(MergeSchedeNueCommand command)
         {
+            var elencoCodiciSede = command.schedeSelezionateID.OfType<string>().ToList();
+            var elencoSchedeDaMergiare = _schedeContattoByCodiciScheda.SchedeContattoByCodiciScheda(elencoCodiciSede);
+
+            command.SchedaNue = elencoSchedeDaMergiare[0];
+            command.SchedaNue.Collegate = elencoSchedeDaMergiare.Skip(1).ToList();
+
             _mergeSchede.Merge(command.SchedaNue, command.CodiceSede);
         }
     }

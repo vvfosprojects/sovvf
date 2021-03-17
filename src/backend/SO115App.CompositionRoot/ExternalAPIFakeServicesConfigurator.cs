@@ -58,7 +58,6 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
-
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
             container.Register<IGetToken, GetToken>();
 
@@ -75,6 +74,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
             container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoByCodiciScheda, GetSchedeContattoByCodiciScheda>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
                 GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
@@ -109,7 +109,6 @@ namespace SO115App.CompositionRoot
             #endregion GeoFleet
 
             #region Gac
-
 
             container.Register<ISetRientroMezzo, SetRientroMezzo>();
             container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
@@ -273,7 +272,7 @@ namespace SO115App.CompositionRoot
             container.Register<IInserisciRichiestaSoccorsoAereo, InserisciRichiestaSoccorsoAereo>();
             container.Register<IGetHistoryRichiestaSoccorsoAereo, GetHistoryRichiestaSoccorsoAereo>();
 
-            #endregion
+            #endregion AFM
         }
     }
 }

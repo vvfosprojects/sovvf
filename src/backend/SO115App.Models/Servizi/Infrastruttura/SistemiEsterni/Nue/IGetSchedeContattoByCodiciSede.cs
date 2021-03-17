@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaGestitaCommand.cs" company="CNVVF">
+// <copyright file="IGetSchedeContattoByCodiciScheda.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,14 +18,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.NUE;
+using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
+namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
-    public class MergeSchedeNueCommand
+    /// <summary>
+    ///   Interfaccia del servizio che restituisce l'elenco delle schede contatto corrispondenti ai
+    ///   criteri di ricerca indicati
+    /// </summary>
+    public interface IGetSchedeContattoByCodiciScheda
     {
-        public string IdUtente { get; set; }
-        public string CodiceSede { get; set; }
-        public string[] schedeSelezionateID { get; set; }
-        public SchedaContatto SchedaNue { get; set; }
+        /// <summary>
+        ///   Restituisce l'elenco delle schede contatto corrispondenti ai criteri di ricerca indicati
+        /// </summary>
+        /// <returns>Lista schede contatto</returns>
+        List<SchedaContatto> SchedeContattoByCodiciScheda(List<string> codiciSchede);
     }
 }
