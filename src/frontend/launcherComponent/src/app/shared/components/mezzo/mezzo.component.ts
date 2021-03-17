@@ -55,6 +55,10 @@ export class MezzoComponent {
         if (action) {
             let data = new Date();
             const orario = action.oraEvento;
+            const dataEvento = action.dataEvento;
+            data.setDate(dataEvento.giorno);
+            data.setMonth(dataEvento.mese - 1);
+            data.setFullYear(dataEvento.anno);
             data.setHours(orario.ora);
             data.setMinutes(orario.minuti);
             data.setSeconds(orario.secondi);
@@ -64,7 +68,6 @@ export class MezzoComponent {
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }
-        const ora = action.oraEvento.ora + ':' + action.oraEvento.minuti + ':' + action.oraEvento.secondi;
         this.actionMezzo.emit(actionMezzo);
     }
 
