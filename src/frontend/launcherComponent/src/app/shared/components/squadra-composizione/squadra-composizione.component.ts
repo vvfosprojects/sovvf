@@ -38,7 +38,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
-    disableBtnInRientro = false;
+    disableBtnFeature = false;
     private subscription = new Subscription();
 
     constructor() {
@@ -47,8 +47,11 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
       const boxPartenzaList = changes?.boxPartenzaList;
-      if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi && this.squadraComp.listaMezzi[0]) {
-        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnInRientro = true : null);
+      if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi) {
+        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
+      }
+      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezzoPreaccoppiato) {
+        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezzoPreaccoppiato.id) ? this.disableBtnFeature = true : null);
       }
     }
 
