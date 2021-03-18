@@ -43,6 +43,6 @@ export const environment = {
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas-test/login?service=',
         linkLogout: 'https://sso.vigilfuoco.it/cas-test/logout?service=',
-        serviceName: 'https://sovvf-test.dipvvf.it/',
+        serviceName: 'https://sovvf-demo.dipvvf.it/',
     }
 };
