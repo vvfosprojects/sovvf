@@ -14,19 +14,31 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Client
 {
-    internal sealed class HttpRequestManager<ResponseObject> : BaseService, IHttpRequestManager<ResponseObject> where ResponseObject : class
+    internal sealed class HttpRequestManager<ResponseObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
+        private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
+        private readonly IWriteLog _writeLog;
+        private readonly IHttpContextAccessor _httpContext;
+
         private AsyncPolicyWrap<HttpResponseMessage> policies;
         private AsyncTimeoutPolicy<HttpResponseMessage> timeoutPolicy;
         private AsyncRetryPolicy<HttpResponseMessage> retryPolicy;
 
         public HttpRequestManager(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext)
         {
+            _client = client;
+            _configuration = configuration;
+            _memoryCache = memoryCache;
+            _writeLog = writeLog;
+            _httpContext = httpContext;
+
             Configure();
         }
 
@@ -117,7 +129,7 @@ namespace SO115App.ExternalAPI.Client
 
         AuthenticationHeaderValue getBasicAuthorization(string username, string password)
         {
-            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{username}:{password}")));
+            return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}")));
         }
 
         MediaTypeWithQualityHeaderValue getMediaType()
