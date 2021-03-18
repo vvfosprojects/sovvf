@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
@@ -31,5 +33,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public string TestoMotivazione { get; set; }
         public string CodRichiestaSubentrata { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
+
+        public RichiestaAssistenza Richiesta { get; set; }
+        public Utente Operatore { get; set; }
     }
 }

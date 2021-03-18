@@ -18,6 +18,7 @@ export const environment = {
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestioneFonogramma: '/api/GestioneFonogramma',
         gestionePartenza: '/api/GestionePartenza',
+        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
@@ -28,6 +29,7 @@ export const environment = {
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
         gestioneRuolo: '/api/GestioneRuolo',
@@ -37,7 +39,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
-        modificaPartenza: '/api/GestionePartenza/ModificaPartenza'
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',

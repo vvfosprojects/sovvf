@@ -18,9 +18,11 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
     switch (action.modalita) {
         case AppFeatures.Mappa:
             stateDefault.view.richieste.active = false;
+            stateDefault.view.mappa.active = true;
             break;
         case AppFeatures.Richieste:
             stateDefault.view.mappa.active = false;
+            stateDefault.view.richieste.active = true;
             break;
         default:
             break;

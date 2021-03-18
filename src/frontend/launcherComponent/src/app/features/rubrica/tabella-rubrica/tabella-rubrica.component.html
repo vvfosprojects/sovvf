@@ -1,5 +1,5 @@
-<div style="height: 760px; max-height: 760px; overflow-y: auto; overflow-x: hidden">
-    <table class="table table-striped app-shadow mt-2 bg-white">
+<div style="height: 720px; max-height: 720px; overflow-y: auto; overflow-x: hidden">
+    <table class="table table-striped app-shadow bg-white">
         <thead>
         <tr>
             <th scope="col" width="10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
@@ -87,7 +87,7 @@
         </tbody>
     </table>
 </div>
-<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between p-2">
+<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"

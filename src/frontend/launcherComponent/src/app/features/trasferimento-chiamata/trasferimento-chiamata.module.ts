@@ -21,21 +21,22 @@ import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasfe
       RicercaTrasferimentoChiamataComponent,
       TabellaTrasferimentoChiamataComponent
   ],
-  imports: [
-      CommonModule,
-      TrasferimentoChiamataRouting,
-      TreeviewModule.forRoot(),
-      SharedModule.forRoot(),
-      NgxsModule.forFeature([
-        TrasferimentoChiamataState,
-        RicercaTrasferimentoChiamataState
-      ]),
-      NgxsFormPluginModule.forRoot(),
-      FormsModule,
-      NgSelectModule,
-      NgxPaginationModule,
-      NgbModule
-  ],
+    imports: [
+        CommonModule,
+        TrasferimentoChiamataRouting,
+        TreeviewModule.forRoot(),
+        SharedModule.forRoot(),
+        NgxsModule.forFeature([
+            TrasferimentoChiamataState,
+            RicercaTrasferimentoChiamataState
+        ]),
+        NgxsFormPluginModule.forRoot(),
+        FormsModule,
+        NgSelectModule,
+        NgxPaginationModule,
+        NgbModule,
+        SharedModule
+    ],
   providers: []
 })
 

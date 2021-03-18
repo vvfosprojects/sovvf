@@ -6,12 +6,14 @@
                 Informazioni sugli Aggiornamenti
             </h2>
         </div>
-        <div *ngFor="let changelog of listaChangelog; let i = index"
-             class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4"
-             style="height: 850px; max-height: 850px; overflow-y: auto; overflow-x: hidden">
-            <app-changelog-item [changelog]="changelog"
-                                [changelogId]="''+i"
-                                [ultimoChangelog]="i === 0"></app-changelog-item>
+        <div style="height: 810px; max-height: 810px; overflow-y: auto; overflow-x: hidden">
+            <div *ngFor="let changelog of listaChangelog; let i = index"
+                 class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4">
+                <app-changelog-item [changelog]="changelog"
+                                    [changelogId]="''+i"
+                                    [ultimoChangelog]="i === 0"
+                                    [disableIndice]="changelog?.capitoli?.length <= 0"></app-changelog-item>
+            </div>
         </div>
         <div *ngIf="!listaChangelog?.length" class="col-12 col-md-8 mx-auto">
             <div class="alert alert-danger">

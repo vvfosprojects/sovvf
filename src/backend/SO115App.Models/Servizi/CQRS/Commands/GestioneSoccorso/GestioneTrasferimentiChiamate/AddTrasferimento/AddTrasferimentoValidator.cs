@@ -32,8 +32,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                 if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA == "")
                     yield return new ValidationResult("Nessun codice sede a");
 
-                if (command.TrasferimentoChiamata.CodSedeA == command.CodiceSede)
-                    yield return new ValidationResult("Non puoi trasferire la chiamata alla stassa sede di provenienza");
+                //if (command.TrasferimentoChiamata.CodSedeA == command.CodiciSede)
+                //    yield return new ValidationResult("Non puoi trasferire la chiamata alla stassa sede di provenienza");
             }
         }
     }

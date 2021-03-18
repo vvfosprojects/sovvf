@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
@@ -14,7 +14,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
+import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import {
     ClearMarkerRichiestaHover,
@@ -24,7 +24,7 @@ import {
 } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
-import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
+import { SetRichiestaModifica } from '../store/actions/scheda-telefonata/richiesta-modifica.actions';
 import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
@@ -34,6 +34,7 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AllertaSede,
+    ClearRichieste,
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma
@@ -48,6 +49,7 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-richieste',
@@ -93,8 +95,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
     loaderRichieste = true;
-    listHeightClass = 'm-h-695';
+    listHeightClass = 'm-h-690';
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
 
@@ -107,6 +112,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new GetListaRichieste());
         this.getRichiestaFissata();
         this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
@@ -114,17 +120,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
-        if (isDevMode()) {
-            console.log('Componente Richieste creato');
-        }
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+        console.log('Componente Richieste creato');
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        this.store.dispatch(new ResetFiltriSelezionatiRichieste({ preventGetList: true }));
-        if (isDevMode()) {
-            console.log('Componente Richieste distrutto');
-        }
+        this.store.dispatch([
+            new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
+            new ClearRichieste()
+        ]);
+        console.log('Componente Richieste distrutto');
     }
 
     getRichieste(): void {
@@ -151,17 +157,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
                     if (this.boxAttivi) {
-                        this.listHeightClass = 'm-h-590';
+                        this.listHeightClass = 'm-h-572';
                     } else {
-                        this.listHeightClass = 'm-h-695';
+                        this.listHeightClass = 'm-h-677';
                     }
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
                         if (this.boxAttivi) {
-                            this.listHeightClass = 'm-h-695';
+                            this.listHeightClass = 'm-h-690';
                         } else {
-                            this.listHeightClass = 'm-h-800';
+                            this.listHeightClass = 'm-h-795';
                         }
                     }, 300);
                 }
@@ -291,11 +297,20 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
-        const modal = this.modalService.open(EventiRichiestaComponent, {
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal modal-left',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        } else {
+          modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
@@ -304,7 +319,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
-        this.store.dispatch(new ToggleModifica());
+        this.store.dispatch(new ToggleChiamata());
     }
 
     onGestioneRichiesta(richiesta: SintesiRichiesta): void {

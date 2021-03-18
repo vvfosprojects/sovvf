@@ -1,64 +1,76 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { ReducerFilterListeComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ReducerFilterListeComposizione, RichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
 import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable } from 'rxjs';
-import { FiltriComposizione } from '../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { iconaStatiClass } from '../../helper/composizione-functions';
-import { AddFiltroSelezionatoComposizione, RemoveFiltriSelezionatiComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
-import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
+import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
+import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
+import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-filterbar-composizione',
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent {
+export class FilterbarComposizioneComponent implements OnDestroy {
 
-    @Input() filtri: any;
+    @Input() filtri: ListaTipologicheMezzi;
+    @Input() prenotato: any;
     @Input() disableComposizioneMode: boolean;
     @Input() nascondiTornaIndietro: boolean;
     @Input() nascondiCambiaComposizioneMode: boolean;
+    @Input() composizionePartenza: boolean;
+    @Input() sostituzionePartenza: boolean;
+
+    @Output() confirmPrenota = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
+    richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private dropdownConfig: NgbDropdownConfig) {
+        dropdownConfig.placement = 'right';
+        this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+    }
+
+    ngOnDestroy(): void {
+        this.store.dispatch(new ClearFiltriComposizione());
     }
 
     addFiltro(event: any, tipo: string): void {
+        this.store.dispatch(new StartListaComposizioneLoading());
         if (event) {
-            this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            if (event?.id || event?.descrizione) {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            } else {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+            }
+            this.nuovaPartenza(this.richiesta);
             this.update();
         }
     }
 
     clearFiltri(tipo: string): void {
-        this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
+        this.store.dispatch(new ResetFiltriComposizione(tipo));
         this.update();
     }
 
     update(): void {
-        const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
-        const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
-        const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        const filtri: FiltriComposizione = {
-            CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
-            TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
-            StatoMezzo: filtriSelezionati ? filtriSelezionati.StatoMezzo : [],
-            CodiceMezzo: codiceMezzo ? codiceMezzo : '',
-            CodiceSquadre: codiceSquadra ? codiceSquadra : [],
-            idRichiesta: richiestaComposizione ? richiestaComposizione.id : null
-        };
-
-        this.store.dispatch(new ReducerFilterListeComposizione(filtri));
+        if (this.composizionePartenza) {
+            this.store.dispatch(new ReducerFilterListeComposizione());
+        } else if (this.sostituzionePartenza) {
+            this.store.dispatch(new GetListaMezziSquadre());
+        }
     }
 
     turnOffComposizione(): void {
@@ -73,4 +85,24 @@ export class FilterbarComposizioneComponent {
         return iconaStatiClass(statoMezzo);
     }
 
+    _confirmPrenota(): void {
+        const value = !this.prenotato;
+        this.confirmPrenota.emit(value);
+    }
+
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
+        if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
+            const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
+            this.store.dispatch([
+                new SetMarkerRichiestaSelezionato(idRichiesta),
+                new RichiestaComposizione(richiesta)
+            ]);
+        } else {
+            this.store.dispatch([
+                new SetMarkerRichiestaSelezionato(richiesta.id),
+                new RichiestaComposizione(richiesta)
+            ]);
+        }
+
+    }
 }

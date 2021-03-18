@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
+﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
-using SO115App.Persistence.MongoDB.GestioneMezzi;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -23,21 +17,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-        private readonly IGetListaSquadre _getSquadre;
-        private readonly IGetFiltri _getFiltri;
         private readonly ISetMezzoPrenotato _setMezzoPrenotato;
 
         public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi,
             IGetMezziUtilizzabili getMezziUtilizzabili,
-            IGetListaSquadre getSquadre, IGetFiltri getFiltri,
             ISetMezzoPrenotato setMezzoPrenotato)
 
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
-            _getSquadre = getSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
-            _getFiltri = getFiltri;
             _setMezzoPrenotato = setMezzoPrenotato;
         }
 

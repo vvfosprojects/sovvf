@@ -5,7 +5,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
     public class AddTrasferimentoCommand
     {
         public string IdOperatore { get; set; }
-        public string CodiceSede { get; set; }
+        public string[] CodiciSede { get; set; }
 
         public TrasferimentoChiamata TrasferimentoChiamata { get; set; }
     }

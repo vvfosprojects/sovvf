@@ -39,7 +39,7 @@ namespace SO115App.API.Controllers
             var command = new AddTrasferimentoCommand()
             {
                 IdOperatore = Request.Headers["IdUtente"],
-                CodiceSede = Request.Headers["CodiceSede"],
+                CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
 
                 TrasferimentoChiamata = trasferimento
             };
@@ -63,7 +63,7 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Get(TrasferimentiChiamateQuery query)
         {
             query.IdOperatore = Request.Headers["IdUtente"];
-            query.CodiceSede = Request.Headers["CodiceSede"];
+            query.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
             try
             {

@@ -35,8 +35,8 @@ import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { RichiestaModificaState } from './richiesta-modifica.state';
-import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { RichiestaModificaState } from '../scheda-telefonata/richiesta-modifica.state';
+import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/scheda-telefonata/richiesta-modifica.actions';
 import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -63,6 +63,7 @@ import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissat
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
+import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -160,18 +161,17 @@ export class RichiesteState {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         if (utente) {
             dispatch(new StartLoadingRichieste());
+            const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
-                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
+                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: 7
+                pageSize: boxesVisibili ? 7 : 8
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                /* response.sintesiRichiesta.forEach( e => {
-                    e.listaEnti = e.listaEntiIntervenuti;
-                }) */
                 dispatch([
                     new AddRichieste(response.sintesiRichiesta),
                     new PatchPagination(response.pagination),
@@ -183,7 +183,6 @@ export class RichiesteState {
             }, () => {
                 dispatch(new StopLoadingRichieste());
             });
-
             // Clear dei dati presenti nella pagina che si sta lasciando
             dispatch([
                 new ClearRichiestaSelezionata(),
@@ -406,11 +405,23 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        const innerWidth = window.innerWidth;
+        let modal;
+        if (innerWidth && innerWidth > 3700) {
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
+        } else {
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
+        }
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));

@@ -21,15 +21,14 @@ import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import {
-    ClearFiltriSchedeContatto,
-    ReducerSetFiltroSchedeContatto,
-    SetFiltroKeySchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
+import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-filterbar',
@@ -50,15 +49,18 @@ export class FilterbarComponent {
     // Ricerca Richieste
     @Select(RicercaFilterbarState.ricerca) ricercaRichieste$: Observable<string>;
 
-    // Loading LIsta Richieste
+    // Loading Lista Richieste
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
 
     // Filtri Schede Contatto
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
 
-    // Ricerca Schede Contatto
-    @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
+    // Loading Schede Contatto
+    @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
+
+    // Loading Mezzi in Servizio
+    @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
 
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
@@ -72,15 +74,21 @@ export class FilterbarComponent {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
-    @Select(ViewComponentState.mezziInServizio) mezziInServizioStatus$: Observable<boolean>;
+    @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
+
+    // Modifica Richiesta
+    @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
      * @param:: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
-    @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
 
     constructor(private store: Store) {
     }
@@ -109,7 +117,7 @@ export class FilterbarComponent {
 
     getRicercaPlaceholder(): string {
         let placeholder = 'Cosa vuoi cercare?';
-        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         if (mezziInServizioActive) {
             placeholder = 'Che targa vuoi cercare?';
         }
@@ -126,14 +134,6 @@ export class FilterbarComponent {
     eliminaFiltriAttiviSchedeContatto(): void {
         this.store.dispatch(new ClearFiltriSchedeContatto());
     }
-
-    /**
-     * Ricerca Schede Contatto Events
-     */
-    onSearchSchedeContatto(ricerca: any): void {
-        this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
-    }
-
 
     /**
      * Filtri Schede Contatto Events

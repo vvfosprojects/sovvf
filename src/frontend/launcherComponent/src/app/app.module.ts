@@ -60,7 +60,11 @@ import { TrasferimentoChiamataModalState } from './shared/store/states/trasferim
 import { EntiState } from './shared/store/states/enti/enti.state';
 import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
+import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
+import { SchedeContattoState } from './features/home/store/states/schede-contatto/schede-contatto.state';
+import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
 
 @NgModule({
     declarations: [
@@ -104,7 +108,11 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
                 TrasferimentoChiamataModalState,
                 NotificheState,
                 AllertaSedeModalState,
-                ImpostazioniState
+                ImpostazioniState,
+                PaginationComposizionePartenzaState,
+                SostituzionePartenzeFineTurnoModalState,
+                SchedeContattoState,
+                MergeSchedeContattoState
             ],
             { developmentMode: !environment.production }
         ),

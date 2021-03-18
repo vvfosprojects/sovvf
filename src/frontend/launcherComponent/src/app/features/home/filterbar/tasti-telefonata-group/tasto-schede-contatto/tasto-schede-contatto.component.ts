@@ -1,9 +1,8 @@
-import { Component, HostBinding, Input } from '@angular/core';
-import { ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
-import { ContatoreSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -15,29 +14,31 @@ export class TastoSchedeContattoComponent {
     @Input() active: boolean;
     @Input() disabled: boolean;
 
+    @Output() toggle: EventEmitter<any> = new EventEmitter<any>();
+
     @HostBinding('class') classes = 'btn-group';
 
-    @Select(SchedeContattoState.contatoreSchedeContattoTotale) contatoreSchedeContattoTotale$: Observable<ContatoreSchedeContatto>;
-    contatoreSchedeContattoTotale: ContatoreSchedeContatto;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+    contatoreSchedeContatto: ContatoriSchedeContatto;
 
     subscription: Subscription = new Subscription();
 
-    constructor(private store: Store) {
+    constructor() {
+        this.getContatoriSchedeContatto();
+    }
+
+    getContatoriSchedeContatto(): void {
         this.subscription.add(
-            this.contatoreSchedeContattoTotale$.subscribe((contatoreTotale: ContatoreSchedeContatto) => {
-                this.contatoreSchedeContattoTotale = contatoreTotale;
+            this.contatoriSchedeContatto$.subscribe((contatori: ContatoriSchedeContatto) => {
+                this.contatoreSchedeContatto = contatori;
             })
         );
     }
 
-    toggleSchedeContatto(): void {
-        this.store.dispatch(new ToggleSchedeContatto());
-    }
-
     coloreTasto(): string {
-        let returnClass = 'btn-outline-success';
+        let returnClass = 'btn-outline-light';
         if (this.active) {
-            returnClass = 'btn-danger';
+            returnClass = 'btn-light text-danger';
         }
         if (this.disabled) {
             returnClass = 'btn-outline-secondary cursor-not-allowed';
@@ -48,8 +49,12 @@ export class TastoSchedeContattoComponent {
     coloreBadgeContatore(): string {
         let returnClass = 'badge-danger';
         if (this.active) {
-            returnClass = 'badge-light';
+            returnClass = 'badge-dark';
         }
         return returnClass;
+    }
+
+    toggleSchedeContatto(): void {
+        this.toggle.emit();
     }
 }

@@ -12,6 +12,7 @@ export class ChangelogItemComponent implements OnInit {
     @Input() changelog: ChangelogInterface;
     @Input() changelogId: string;
     @Input() ultimoChangelog: boolean;
+    @Input() disableIndice: boolean;
 
     indiceVisible = true;
 

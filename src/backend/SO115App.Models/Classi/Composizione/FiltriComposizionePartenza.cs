@@ -17,13 +17,39 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
+using SO115App.Models.Classi.Condivise;
+using System.Collections.Generic;
+using Mezzo = SO115App.API.Models.Classi.Condivise.Mezzo;
+using Squadra = SO115App.API.Models.Classi.Condivise.Squadra;
 
 namespace SO115App.Models.Classi.Composizione
 {
     public class FiltriComposizionePartenza
     {
-        [JsonRequired]
         public string IdRichiesta { get; set; }
+
+        public Paginazione MezziPagination { get; set; }
+        public Paginazione SquadrePagination { get; set; }
+
+        public string[] CodiceDistaccamento { get; set; }
+        public string[] TipoMezzo { get; set; }
+        public string[] StatoMezzo { get; set; }
+
+        public string RicercaMezzi { get; set; }
+        public string RicercaSquadre { get; set; }
+
+        public FiltroTurnoRelativo? Turno { get; set; }
+
+        public bool SquadreDiEmergenza { get; set; }
+        public bool SquadreColonnaMobile { get; set; }
+
+        public Mezzo Mezzo { get; set; }
+        public List<Squadra> Squadre { get; set; }
+    }
+
+    public enum FiltroTurnoRelativo
+    {
+        Precedente,
+        Successivo
     }
 }

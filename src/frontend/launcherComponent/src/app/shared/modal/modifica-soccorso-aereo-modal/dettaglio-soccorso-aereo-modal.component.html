@@ -1,0 +1,125 @@
+<div class="modal-header">
+  <h4 class="modal-title" style="font-weight: 700">
+    {{ 'DETTAGLIO RICHIESTA SOCCORSO AEREO' }}
+  </h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+          (click)="chiudiModalSoccorsoAereo('ko')">
+    <i class="fa fa-times text-danger"></i>
+  </button>
+</div>
+
+<div class="modal-body pb-0">
+  <div class="row pt-4" style="justify-content: center; font-size: x-large">
+    <div class="col-6" style="text-align: center">
+      <span class="badge h6 w-100 badge-primary mb-0" style="font-size: x-large">Richiesta Soccorso Aereo</span>
+      <span class="text-muted" style="font-size: medium">(dati ricevuti dal Sistema AFM)</span>
+    </div>
+  </div>
+  <div class="row mb-5 mt-3">
+    <div class="col">
+      <label for="richiesta" class="">Richiesta</label>
+      <input id="richiesta" type="text" placeholder="richiesta.id" class="form-control font-xlarge" disabled>
+    </div>
+    <div class="col">
+      <label for="trasmessa" class="">Trasmessa alle</label>
+      <input id="trasmessa" type="text" placeholder="richiesta.data" class="form-control font-xlarge" disabled>
+    </div>
+    <div class="col">
+      <label for="operatore" class="">Operatore SO115</label>
+      <input id="operatore" type="text" placeholder="richiesta.operatore" class="form-control font-xlarge" disabled>
+    </div>
+  </div>
+  <!-- DETTAGLIO -->
+  <div class="row"><div class="w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px">Dettaglio</div></div>
+  <div class="row my-3">
+    <div class="col-12">
+      <label for="localita" class="">Località</label>
+      <input id="localita" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
+    </div>
+    <div class="col-12 mt-2 d-inline-flex">
+      <div class="clearfix mr-2" style="width: 15%" >
+        <label for="aggiornamento" class="">Aggiornamento alle</label>
+        <input id="aggiornamento" type="text" placeholder="aggiornamento" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix mr-2" style="width: 30%" >
+        <label for="tipologia" class="">Tipologia Intervento</label>
+        <input id="tipologia" type="text" placeholder="tipologia" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix mr-2" style="width: 20%" >
+        <label for="contatti" class="">Contatti</label>
+        <input id="contatti" type="text" placeholder="contatti" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix mr-2" style="width: 15%" >
+        <label for="telefono" class="">Telefono</label>
+        <input id="telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix mr-2" style="width: 10%" >
+        <label for="longitudine" class="">Lng(X)</label>
+        <input id="longitudine" type="text" placeholder="000.00" class="form-control font-xlarge" style="width: 15%" disabled>
+      </div>
+      <div class="clearfix" style="width: 10%" >
+        <label for="latitudine" class="">Lat(Y)</label>
+        <input id="latitudine" type="text" placeholder="000.00" class="form-control font-xlarge" style="width: 15%" disabled>
+      </div>
+    </div>
+    <div class="col-12 mt-2 d-inline-flex">
+      <div class="clearfix w-50 mr-1" style="text-align: center">
+        <label class="" for="noteintervento">Note Intervento</label>
+        <textarea id="noteintervento" type="text"
+                  placeholder="Inserisci note intervento"
+                  class="form-control font-xlarge area-size"></textarea>
+      </div>
+      <div class="clearfix w-50" style="text-align: center">
+        <label class="" for="motivazioneRichiesta">Motivazione della richiesta</label>
+        <textarea id="motivazioneRichiesta" type="text"
+                  placeholder="Inserisci motivazione della richiesta"
+                  class="form-control font-xlarge area-size"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTIVITA' -->
+  <div class="row"><div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px">Attivtà</div></div>
+  <div class="row my-5">
+    <div class="col-12 d-inline-flex">
+      <div class="clearfix w-50 mr-2 align-self-center">
+          <ng-select class="border font-xlarge test-ng-select"
+                     bindLabel=""
+                     bindValue=""
+                     clearAllText="Clear"
+                     placeholder="Seleziona Attività"
+                     [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
+                     [items]=""
+                     [multiple]="false"
+                     [closeOnSelect]="true"
+                     [hideSelected]="true">
+          </ng-select>
+      </div>
+      <div class="clearfix w-50">
+        <input id="attivita" type="text" placeholder="info attività" class="form-control font-xlarge" style="height: 50px" disabled>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="row w-100">
+    <div class="col-12 text-right">
+      <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
+              (click)="chiudiModalSoccorsoAereo('ok')">
+        {{ 'Modifica Richiesta' | uppercase }}
+      </button>
+      <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"
+              (click)="chiudiModalSoccorsoAereo('ok')">
+        {{ 'Annulla Richiesta' | uppercase }}
+      </button>
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" ngbTooltip="Refresh" style="width: 10%">
+        <i class="fa fa-refresh"></i>
+      </button>
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
+              (click)="chiudiModalSoccorsoAereo('ko')">
+        {{ 'Chiudi' | uppercase }}
+      </button>
+    </div>
+  </div>
+</div>

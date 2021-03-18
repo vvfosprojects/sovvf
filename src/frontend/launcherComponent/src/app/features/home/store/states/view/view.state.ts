@@ -39,7 +39,7 @@ import {
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
-import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import { ResetChiamata } from '../../actions/scheda-telefonata/chiamata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
@@ -49,12 +49,11 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
         richieste: {
             active: true,
-            split: true,
+            split: false
         },
         mappa: {
-            active: true,
-            split: true,
-            options: [AppFeatures.Richieste]
+            active: false,
+            split: false
         },
         chiamata: {
             active: false
@@ -125,12 +124,17 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static modificaRichiestaStatus(state: ViewComponentStateModel): boolean {
+        return state.view.modifica.active;
+    }
+
+    @Selector()
     static schedeContattoStatus(state: ViewComponentStateModel): boolean {
         return state.view.schedeContatto.active;
     }
 
     @Selector()
-    static mezziInServizio(state: ViewComponentStateModel): boolean {
+    static mezziInServizioStatus(state: ViewComponentStateModel): boolean {
         return state.view.mezziInServizio.active;
     }
 
@@ -150,7 +154,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static richiesteIsActive(state: ViewComponentStateModel): boolean {
+    static richiesteStatus(state: ViewComponentStateModel): boolean {
         return state.view.richieste.active;
     }
 

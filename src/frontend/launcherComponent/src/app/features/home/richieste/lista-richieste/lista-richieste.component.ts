@@ -8,6 +8,7 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
 import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
+import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -25,21 +26,17 @@ export class ListaRichiesteComponent {
     @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
-
+    // Loading
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
-    @Input() loadingActionRichiesta: string;
+    @Input() loadingActionRichiesta: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
-
     // Paginazione
     @Input() page: number;
     @Input() pageSize: number;
     @Input() totalItems: number;
-
+    // FIltri Selezionati
     @Input() codiciFiltriSelezionati: string[];
-
-    // Permessi
-    permessiFeature = PermissionFeatures;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
@@ -60,12 +57,25 @@ export class ListaRichiesteComponent {
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
+    // Permessi
+    permessiFeature = PermissionFeatures;
+
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
     vociFiltroDefault = VociFiltroDefault;
+    actionRichiestaArray: any[] = [];
 
     constructor() {
+    }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+    ngOnChanges(): void {
+      if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
+        this.actionRichiestaArray.push(this.loadingActionRichiesta);
+      } else if (!this.loadingActionRichiesta) {
+        this.actionRichiestaArray.shift();
+      }
     }
 
     /* Gestisce il singolo click sulla richiesta */

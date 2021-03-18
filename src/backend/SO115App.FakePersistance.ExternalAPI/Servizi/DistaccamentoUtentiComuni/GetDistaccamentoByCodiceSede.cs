@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DistaccamentiUtenteComune;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
@@ -107,7 +107,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
                 return listaDistaccamenti;
             }
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)

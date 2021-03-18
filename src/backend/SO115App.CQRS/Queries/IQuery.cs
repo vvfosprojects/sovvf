@@ -21,5 +21,9 @@ namespace CQRS.Queries
 {
     public interface IQuery<TResult>
     {
+        //TODO AGGIUNGERE OPERATORE E CODICISEDEARRAY FACENDO COMPILARE POI TUTTO
+
+        //public string[] CodiciSede { get; set; }
+        //public Utente Operatore { get; set; }
     }
 }

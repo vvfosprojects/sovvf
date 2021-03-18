@@ -16,23 +16,23 @@
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
             </div>
         </div>
-        <div *ngIf="partenza.squadraComposizione?.length === 0" class="col text-danger">
+        <div *ngIf="partenza.squadreComposizione?.length === 0" class="col text-danger">
             <i class="fa fa-group mr-1"></i>
             <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
         </div>
-        <div *ngIf="partenza.squadraComposizione?.length === 1" class="col">
+        <div *ngIf="partenza.squadreComposizione?.length === 1" class="col">
             <div class="nowrap">
                 <i class="guida fa fa-group mr-1"
-                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
+                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i><span>{{partenza.squadreComposizione[0].squadra.nome}}</span>
             </div>
         </div>
-        <div *ngIf="partenza.squadraComposizione?.length > 1" class="col">
+        <div *ngIf="partenza.squadreComposizione?.length > 1" class="col">
       <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
         <i class="guida fa fa-group mr-1"
-           [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><small>{{partenza.squadraComposizione.length}}
+           [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadreComposizione)}"></i><small>{{partenza.squadreComposizione.length}}
           squadre</small></span>
             <ng-template #piusquadre>
-                <div *ngFor="let sC of partenza.squadraComposizione" class="text-center nowrap">
+                <div *ngFor="let sC of partenza.squadreComposizione" class="text-center nowrap">
                     <span class="d-inline-block mb-1">{{sC.squadra.nome}}</span>
                 </div>
             </ng-template>

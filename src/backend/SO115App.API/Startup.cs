@@ -25,24 +25,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using SO115App.CompositionRoot;
-using SO115App.ExternalAPI.Fake.GestioneMezzi;
-using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
-using System;
 using System.Net.Http;
-using System.Net.WebSockets;
+using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
 
@@ -86,13 +81,15 @@ namespace SO115App.API
                 });
             });
 
-            HttpClient httpClient = new HttpClient();
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
             services.AddSingleton(httpClient);
             services.AddControllers();
+
+            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
+
             services.AddMemoryCache();
-            services.AddSingleton<GetMezziUtilizzabili>();
-            services.AddSingleton<GetListaSquadre>();
             services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
@@ -109,7 +106,7 @@ namespace SO115App.API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
                 {
-                    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    option.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),

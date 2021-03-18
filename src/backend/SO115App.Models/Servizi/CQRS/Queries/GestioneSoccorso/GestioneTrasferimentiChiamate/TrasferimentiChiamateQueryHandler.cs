@@ -31,10 +31,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
         {
             //GESTIONE RICORSIVITA'
-            var lstPin = _getGerarchia.GetGerarchiaSede(query.CodiceSede).ToArray();
+            var lstPin = new List<string>();
+
+            foreach (var sede in query.CodiciSede)
+                lstPin.AddRange(_getGerarchia.GetGerarchiaSede(sede).ToList());
 
             //MAPPING
-            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin, query.Filters.Search)
+            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.ToArray(), query.Filters.Search)
                 .Select(c => new TrasferimentoChiamataFull()
                 {
                     Id = c.Id,

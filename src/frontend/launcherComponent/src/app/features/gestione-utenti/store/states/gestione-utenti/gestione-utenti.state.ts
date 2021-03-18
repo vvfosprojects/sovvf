@@ -35,7 +35,7 @@ import { _isAdministrator } from '../../../../../shared/helper/function';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 import { Injectable } from '@angular/core';
-import { Sede } from '../../../../../shared/model/sede.model';
+import {LSNAME} from '../../../../../core/settings/config';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -131,12 +131,16 @@ export class GestioneUtentiState {
     @Action(GetUtentiGestione)
     getUtentiGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione): void {
         const route = this.router.children[0].snapshot.url[0].path;
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
         if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
             const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
             const filters = {
                 search: ricerca,
-                codSede: this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate)
+                codSede: cS,
             };
             const pagination = {
                 page: action.page ? action.page : 1,

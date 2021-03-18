@@ -9,7 +9,6 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TagInputModule } from 'ngx-chips';
@@ -19,7 +18,6 @@ import { TagInputModule } from 'ngx-chips';
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
 import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
-import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 /**
  * Ngxs
  */
@@ -44,7 +42,6 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
         UiSwitchModule.forRoot(null),
         NgSelectModule,
         SharedModule.forRoot(),
-        SintesiRichiestaModule,
         GooglePlaceModule,
         TagInputModule,
         NgxsModule.forFeature([
@@ -56,17 +53,17 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
             RichiestaGestioneState,
             RichiestaAttivitaUtenteState
         ]),
-        NgxsFormPluginModule
+        NgxsFormPluginModule,
+        SharedModule
     ],
     declarations: [
         RichiesteComponent,
         ListaRichiesteComponent,
-        RichiestaFissataComponent,
-        ModificaRichiestaComponent,
+        RichiestaFissataComponent
     ],
     exports: [
         RichiesteComponent,
-        ModificaRichiestaComponent,
+        ListaRichiesteComponent
     ]
 })
 export class RichiesteModule {

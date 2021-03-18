@@ -26,11 +26,17 @@ html {
 }
 
 // Dropdown Google Places
+
 .pac-container {
   z-index: 99999 !important;
 }
 
 // End Dropdown Google Places
+
+.map-translate {
+  transform: translate(-10px, -110px);
+}
+
 
 .modal-holder {
   animation-name: jumpIn;
@@ -140,6 +146,38 @@ a:hover {
   border-top: 5px solid #007bff;
 }
 
+/* input custom */
+input {
+  font-weight: 600;
+  font-size: 1.2rem;
+  background-color: #f3f3f3;
+  border: 1px solid #888888;
+}
+
+input:focus {
+  font-weight: bolder;
+  background-color: #f3f3f3;
+  border: 1px solid #cacaca;
+}
+
+input:valid {
+  background-color: #f3f3f3;
+}
+
+input:invalid {
+  font-weight: bolder;
+  // background-color: #ffff52;
+  border: 1px solid #d61616 !important;
+}
+
+textarea:valid {
+  background-color: #f3f3f3;
+}
+
+tag-input {
+  background-color: #f3f3f3;
+}
+
 /* icone di guida */
 .guida {
   color: #bbbbbb;
@@ -159,19 +197,24 @@ a:hover {
   white-space: nowrap;
 }
 
-.m-h-695 {
-  height: 695px;
-  max-height: 695px;
+.m-h-690 {
+  height: 690px;
+  max-height: 690px;
 }
 
-.m-h-800 {
-  height: 800px;
-  max-height: 800px;
+.m-h-677 {
+  height: 677px;
+  max-height: 677px;
 }
 
-.m-h-590 {
-  height: 590px;
-  max-height: 590px;
+.m-h-795 {
+  height: 795px;
+  max-height: 795px;
+}
+
+.m-h-572 {
+  height: 572px;
+  max-height: 572px;
 }
 
 .m-h-400 {
@@ -280,7 +323,8 @@ a:hover {
 }
 
 .status_sospeso {
-  border-left: 10px solid #ff8800;
+  // border-left: 10px solid #ff8800;
+  border-left: 10px solid #ffc107;
 }
 
 .status_assegnato {
@@ -289,12 +333,6 @@ a:hover {
 
 .status_chiuso {
   border-left: 10px solid #868e96;
-}
-
-.status_in_lavorazione {
-  border-width: 0 0 0 10px;
-  border-style: solid;
-  border-image: linear-gradient(to bottom, rgb(220, 53, 69), rgb(255, 193, 7)) 1 100%;
 }
 
 /* Status Mezzo */
@@ -360,6 +398,16 @@ a:hover {
 .btn-verdemela {
   background-color: #92b565 !important;
   color: #fff !important;
+}
+
+.btn-no-style {
+  background: none !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  font: inherit !important;
+  outline: inherit !important;
+  cursor: not-allowed;
 }
 
 .btn-verdemela:hover {
@@ -591,3 +639,42 @@ a:hover {
   background: #555;
 }
 
+.modal-left { // Modale a sx
+  padding-right: 50%;
+}
+
+.loader-position-left {
+  padding-right: 50% !important;
+  width: fit-content;
+}
+
+.loader-position-img-left {
+  top: calc((45% - 60px) - 30px) !important;
+  left: calc((26% - 0px) - 30px) !important;
+}
+
+.loader-position-fgs-left {
+  top: calc((65% - 50px) - 30px) !important;
+  left: calc((26% - 0px) - 30px) !important;
+}
+
+.font-xlarge {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.required-field {
+  border: solid #dc3545;
+}
+
+.toast-postion-left { // Toast a sx
+  bottom: 0 !important;
+  left: 25% !important;
+  margin-left: -135px;
+}
+
+.toast-postion-center {
+  bottom: 0 !important;
+  left: 50% !important;
+  margin-left: -135px;
+}

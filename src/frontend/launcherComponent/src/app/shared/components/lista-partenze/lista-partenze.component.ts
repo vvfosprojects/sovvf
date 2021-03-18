@@ -19,12 +19,16 @@ export class ListaPartenzeComponent {
     @Input() partenze: Partenza[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
+    @Input() sostituzioneFineTurnoActive: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
+
+    loadingActionMezzoArray: any[] = [];
 
     constructor(private store: Store) {
     }
@@ -47,5 +51,10 @@ export class ListaPartenzeComponent {
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
+        if (mezzoAction.mezzo.codice && !this.loadingActionMezzoArray.includes(mezzoAction.mezzo.codice)) {
+            this.loadingActionMezzoArray.push(mezzoAction.mezzo.codice);
+        } else if (!mezzoAction.mezzo.codice) {
+            this.loadingActionMezzoArray.shift();
+        }
     }
 }

@@ -1,0 +1,30 @@
+.button-urgenza {
+  background-color: #339933;
+  color: #ffffff;
+  animation-name: color;
+  animation-duration: 3s;
+  animation-iteration-count: 5;
+}
+
+@keyframes color {
+  0% {
+    background-color: #339933;
+    box-shadow: 0px 0px 3px 0px #33cc33;
+  }
+  25% {
+    background-color: #00cc00;
+    box-shadow: 0px 0px 6px 0px #33cc33;
+  }
+  50% {
+    background-color: #00cc00;
+    box-shadow: 0px 0px 12px 0px #00cc00;
+  }
+  75% {
+    background-color: #33cc33;
+    box-shadow: 0px 0px 12px 0px #33cc33;
+  }
+  100% {
+    background-color: #339933;
+    box-shadow: 0px 0px 18px 0px #339933;
+  }
+}

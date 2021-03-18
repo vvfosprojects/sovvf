@@ -49,7 +49,7 @@ export class BoxNuovaPartenzaComponent {
             }
         } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
-        } else if (this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
+        } else if (this._checkSquadraOccupata(this.partenza.squadreComposizione)) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
         }
     }
@@ -81,7 +81,7 @@ export class BoxNuovaPartenzaComponent {
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
             if (this.itemSelezionato) {
-                const squadra = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+                const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
                 returnClass = 'bg-light ';
@@ -131,7 +131,7 @@ export class BoxNuovaPartenzaComponent {
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
-        const squadra2 = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+        const squadra2 = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
         const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {

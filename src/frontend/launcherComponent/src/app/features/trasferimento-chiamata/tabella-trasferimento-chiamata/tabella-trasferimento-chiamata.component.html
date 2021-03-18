@@ -1,4 +1,4 @@
-<div style="height: 760px; max-height: 760px; overflow-y: auto; overflow-x: hidden">
+<div style="height: 720px; max-height: 720px; overflow-y: auto; overflow-x: hidden">
     <table class="table table-striped app-shadow mt-2 bg-white">
         <thead>
         <tr>
@@ -97,7 +97,7 @@
         </tbody>
     </table>
 </div>
-<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between p-2">
+<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                     [placeholderElementi]="'trasferimenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>

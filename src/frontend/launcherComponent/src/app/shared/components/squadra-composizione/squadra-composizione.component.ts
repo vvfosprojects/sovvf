@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
@@ -30,7 +30,7 @@ export class SquadraComposizioneComponent {
         if (!this.itemSelezionato) {
             this.selezionata.emit(this.squadraComp);
         } else {
-            this.deselezionata.emit(this.squadraComp);
+          this.deselezionata.emit(this.squadraComp);
         }
     }
 

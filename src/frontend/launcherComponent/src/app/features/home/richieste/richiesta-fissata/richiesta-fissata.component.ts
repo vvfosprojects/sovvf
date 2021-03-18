@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, isDevMode } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
@@ -49,9 +49,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
             console.log('Componente RichiestaFissata creato');
-        }
         if (this.richiestaFissata) {
             this.animazioneIn();
             const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
@@ -60,9 +58,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
             console.log('Componente RichiestaFissata distrutto');
-        }
     }
 
     // Ritorna la richiesta nella lista, defissandola
@@ -91,8 +87,12 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
                 animate(350, style({ height: 'auto', opacity: '1' }))
             ]);
 
-        this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
-        this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        if (this.richiestaContainer) {
+            this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
+        }
+        if (this.richiesta) {
+            this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        }
     }
 
     createAnimazioneOut(): void {
@@ -120,14 +120,22 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     animazioneIn(): void {
         this.createAnimazioneIn();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
     animazioneOut(): void {
         this.createAnimazioneOut();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
     visualizzaEventiRichiesta(idRichiesta: string): void {

@@ -39,7 +39,6 @@ import { SintesiRichiestaActionsComponent } from './components/sintesi-richiesta
 import { ActionRichiestaModalComponent } from './modal/action-richiesta-modal/action-richiesta-modal.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { PartialLoaderComponent } from './components/partial-loader/partial-loader.component';
-import { BottoneNuovaVersioneComponent } from './components/bottone-nuova-versione/bottone-nuova-versione.component';
 import { EliminaPartenzaModalComponent } from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { RichiestaDuplicataModalComponent } from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { ModificaFonogrammaModalComponent } from './modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
@@ -48,8 +47,24 @@ import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-ac
 import { TastoCompPartenzaComponent } from './components/tasto-comp-partenza/tasto-comp-partenza.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
-import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
-import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
+import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
+import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
+import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
+import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
+import { InterventiProssimitaModalComponent } from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
+import { ListaSchedeContattoModalComponent } from './modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
+import { DettaglioSchedaContattoModalComponent } from './modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
+import { ListaSchedeContattoComponent } from './components/lista-schede-contatto/lista-schede-contatto.component';
+import { SchedeContattoComponent } from '../features/home/schede-contatto/schede-contatto.component';
+import { SchedaContattoComponent } from './components/scheda-contatto/scheda-contatto.component';
+import { SchedaContattoCollegataComponent } from './components/scheda-contatto-collegata/scheda-contatto-collegata.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { TriageModalComponent } from './modal/triage-modal/triage-modal.component';
+import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
+import { StepDomandeComponent } from './modal/triage-modal/step-domande/step-domande.component';
+import {SoccorsoAereoModalComponent} from './modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
+import {DettaglioSoccorsoAereoModalComponent} from './modal/modifica-soccorso-aereo-modal/dettaglio-soccorso-aereo-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -69,7 +84,6 @@ const COMPONENTS = [
     ActionRichiestaModalComponent,
     CheckboxComponent,
     PartialLoaderComponent,
-    BottoneNuovaVersioneComponent,
     EliminaPartenzaModalComponent,
     RichiestaDuplicataModalComponent,
     ModificaFonogrammaModalComponent,
@@ -93,8 +107,22 @@ const COMPONENTS = [
     TastoCompPartenzaComponent,
     BoxAnteprimaPartenzaComponent,
     AllertaSedeModalComponent,
-    AnnuncioNuovaVersioneModalComponent,
-    NuoveFeaturesInfoModalComponent
+    SganciamentoMezzoModalComponent,
+    SintesiRichiestaComponent,
+    SostituzionePartenzeFineTunoModalComponent,
+    ListaSchedeContattoModalComponent,
+    DettaglioSchedaContattoModalComponent,
+    ListaSchedeContattoComponent,
+    SchedeContattoComponent,
+    SchedaContattoComponent,
+    SchedaContattoCollegataComponent,
+    SostituzionePartenzeFineTunoModalComponent,
+    InterventiProssimitaModalComponent,
+    TriageModalComponent,
+    StepDettaglioTipologiaComponent,
+    StepDomandeComponent,
+    SoccorsoAereoModalComponent,
+    DettaglioSoccorsoAereoModalComponent
 ];
 
 @NgModule({
@@ -107,7 +135,12 @@ const COMPONENTS = [
         TreeviewModule.forRoot(),
         NgSelectModule,
         NgxsFormPluginModule.forRoot(),
-        FilterPipeModule
+        FilterPipeModule,
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
+        }),
+        NgxPaginationModule
     ],
     declarations: [
         ...COMPONENTS

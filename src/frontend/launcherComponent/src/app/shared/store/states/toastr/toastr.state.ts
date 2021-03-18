@@ -8,13 +8,15 @@ export interface ToastrStateModel {
     title?: string;
     message?: string;
     timeout?: number;
+    positionClass?: string;
 }
 
 export const toastrStateDefaults: ToastrStateModel = {
     type: null,
     title: null,
     message: null,
-    timeout: 5
+    timeout: 5,
+    positionClass: ''
 };
 
 @Injectable()
@@ -45,6 +47,13 @@ export class ToastrState {
             });
         } else {
             const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
+            const innerWidth = window.innerWidth;
+            let positionClass;
+            if (innerWidth && innerWidth > 3700) {
+              positionClass = 'toast-postion-left';
+            } else {
+              positionClass = 'toast-postion-center';
+            }
             let tapToDismiss = true;
             let extendedTimeOut = 1000;
             if (action.tapToDismiss === false) {
@@ -55,7 +64,8 @@ export class ToastrState {
                 this.toastrService[action.type.toString()](action.message, action.title, {
                         timeOut: timeout * 1000,
                         extendedTimeOut,
-                        tapToDismiss
+                        tapToDismiss,
+                        positionClass,
                     }
                 );
             });
@@ -63,7 +73,8 @@ export class ToastrState {
                 type: action.type,
                 title: action.title,
                 message: action.message,
-                timeout
+                timeout,
+                positionClass
             });
         }
     }

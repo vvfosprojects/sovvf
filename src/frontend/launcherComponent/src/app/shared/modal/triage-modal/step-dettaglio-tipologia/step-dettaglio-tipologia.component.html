@@ -1,0 +1,8 @@
+<h5 class="text-danger font-weight-bold mt-3">Seleziona un dettaglio tipologia</h5>
+<div class="font-weight-bold scroll-y mt-3" style="max-height: 200px">
+    <app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologie"
+                  [checkboxState]="{ id: dettaglioTipologia.codice, status: dettaglioTipologia.codice === codDettaglioTipologiaSelezionato, label: dettaglioTipologia.descrizione }"
+                  [bigText]="true"
+                  (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codice)">
+    </app-checkbox>
+</div>

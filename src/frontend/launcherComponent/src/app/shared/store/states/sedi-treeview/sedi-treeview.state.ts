@@ -89,9 +89,12 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar): void {
-        const cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
         if (action.selected && cS) {
-            action.selected = [cS];
+            action.selected = cS;
         }
         const state = getState();
         if (state.listeSedi) {

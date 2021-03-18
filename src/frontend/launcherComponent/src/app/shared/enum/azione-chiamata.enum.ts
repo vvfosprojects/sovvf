@@ -4,5 +4,6 @@ export enum AzioneChiamataEnum {
     InterventoDuplicato,
     ChiusuraForzata,
     MettiInCoda,
-    InviaPartenza
+    InviaPartenza,
+    Modifica
 }

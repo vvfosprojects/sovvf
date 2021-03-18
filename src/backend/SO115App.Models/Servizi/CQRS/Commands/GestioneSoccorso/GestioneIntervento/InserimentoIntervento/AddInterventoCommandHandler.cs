@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -26,7 +27,10 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
@@ -39,22 +43,33 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetTurno _getTurno;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamento;
+        private readonly ISetStatoGestioneSchedaContatto _setStatoGestioneSchedaContatto;
+        private readonly IGetUtenteById _getUtenteById;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
                                            IGeneraCodiceRichiesta generaCodiceRichiesta,
                                            IGetTurno getTurno,
-                                           IGetCompetenzeByCoordinateIntervento getCompetenze)
+                                           IGetCompetenzeByCoordinateIntervento getCompetenze,
+                                           IGetDistaccamentoByCodiceSedeUC getDistaccamento,
+                                           ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
+                                           IGetUtenteById getUtenteById)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
             _getCompetenze = getCompetenze;
+            _getDistaccamento = getDistaccamento;
+            _setStatoGestioneSchedaContatto = setStatoGestioneSchedaContatto;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(AddInterventoCommand command)
         {
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
+            var lstCompetenze = new List<Distaccamento>();
+            Competenze.ToList().ForEach(c => lstCompetenze.Add(_getDistaccamento.Get(c).Result));
 
             if (Competenze.ToList()[0] == null)
                 throw new Exception(Costanti.CoordinateErrate);
@@ -101,10 +116,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = Competenze.ToArray(),
+                Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodiceSede,
                 CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null
-                //,CodSOAllertate = Competenze.ToArray().ToHashSet()
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
@@ -144,7 +159,13 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
             }
 
-            this._saveRichiestaAssistenza.Save(richiesta);
+            if (command.Chiamata.CodiceSchedaNue != null)
+            {
+                var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.CodUtente).CodiceFiscale;
+                _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true);
+            }
+
+            _saveRichiestaAssistenza.Save(richiesta);
         }
     }
 }

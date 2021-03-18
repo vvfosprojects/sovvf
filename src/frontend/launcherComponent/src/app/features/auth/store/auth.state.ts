@@ -122,7 +122,10 @@ export class AuthState {
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser): void {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        const cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+            cS = JSON.parse(cS);
+        }
         let codice = currentUser.sede.codice;
         if (cS) {
             codice = cS;

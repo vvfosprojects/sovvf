@@ -76,7 +76,7 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
-            TrasferimentoChiamataMap.Map();
+            BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -91,6 +91,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<UscitaPartenza>();
             BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
             BsonClassMap.RegisterClassMap<RichiestaSospesa>();
+            BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
             BsonClassMap.RegisterClassMap<ChiusuraRichiesta>();
@@ -106,6 +107,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
             BsonClassMap.RegisterClassMap<AllertaSedi>();
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
+            BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
+            BsonClassMap.RegisterClassMap<ExternalApiLog>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
@@ -201,6 +204,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<StatoOperativoSquadra>("statoSquadra");
+            }
+        }
+
+        public IMongoCollection<ExternalApiLog> ExternalApiLog
+        {
+            get
+            {
+                return database.GetCollection<ExternalApiLog>("externalApiLog");
             }
         }
 

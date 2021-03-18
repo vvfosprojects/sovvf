@@ -44,7 +44,8 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,
-        NgbModule
+        NgbModule,
+        SharedModule
     ],
     providers: []
 })

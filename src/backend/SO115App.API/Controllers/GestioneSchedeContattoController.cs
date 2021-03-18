@@ -54,19 +54,14 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("GetSchede")]
-        public async Task<IActionResult> Get([FromBody] FiltriSchede filtri)
+        public async Task<IActionResult> Get([FromBody] GetSchedeFiltrateQuery query)
         {
-            filtri.IdUtente = Request.Headers["IdUtente"];
-
-            var query = new GetSchedeFiltrateQuery()
-            {
-                CodiceSede = Request.Headers["codiceSede"],
-                Filtro = filtri
-            };
+            query.IdUtente = Request.Headers["IdUtente"].ToString();
+            query.CodiciSede = Request.Headers["codiceSede"].ToArray();
 
             try
             {
-                return Ok(this._queryHandler.Handle(query).SchedeContatto);
+                return Ok(_queryHandler.Handle(query));
             }
             catch (Exception ex)
             {

@@ -24,5 +24,10 @@ namespace SO115App.FakePersistence.JSon.Utility
             string returnString = string.Format("{0}{1}{2}{3}{4:D5}", codiceProvincia.Split('.')[0], giorno, mese, ultimeDueCifreAnno, nuovoNumero);
             return returnString;
         }
+
+        public int GeneraCodicePartenza()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

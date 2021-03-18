@@ -55,6 +55,11 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
 export class ModificaPartenzaModalState {
 
     @Selector()
+    static codRichiesta(state: ModificaPartenzaModalStateModel): string {
+        return state.modificaPartenzaForm.model.codRichiesta;
+    }
+
+    @Selector()
     static formValue(state: ModificaPartenzaModalStateModel): any {
         return state.modificaPartenzaForm.model;
     }

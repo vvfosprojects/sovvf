@@ -22,19 +22,14 @@ export class HelperSintesiRichiesta {
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
-        interface SquadraPartenza {
-            id: string;
-            nome: string;
-        }
-
-        const nomiSquadre: string[] = [];
-        const squadre: SquadraPartenza[] = [];
+        // const nomiSquadre: string[] = [];
+        const squadre = [];
 
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
                 if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
                     partenza.squadre.forEach((squadra: Squadra) => {
-                        squadre.push({ id: squadra.id, nome: squadra.nome });
+                        squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
                     });
                 }
             });
@@ -46,10 +41,11 @@ export class HelperSintesiRichiesta {
             return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
         }
 
-        nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+        // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
 
-        return nomiSquadre;
+        return squadre;
     }
+
 
     /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
@@ -175,8 +171,7 @@ export class HelperSintesiRichiesta {
                 // 'card-shadow-info': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
                 'card-shadow-success': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-orange': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
-                'card-shadow-warning': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-warning': ((r.id === richiestaHover || r.id === richiestaSelezionata)) && (r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa),
                 'card-shadow-secondary': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
                 'bg-light': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
@@ -190,10 +185,9 @@ export class HelperSintesiRichiesta {
     cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {
             const classes = {
-                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa,
                 'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-orange': r.stato === StatoRichiesta.Sospesa,
                 'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
@@ -204,22 +198,13 @@ export class HelperSintesiRichiesta {
 
     cardBorder(r: SintesiRichiesta): any {
         if (r) {
-            let classes = null;
-            if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                classes = {
-                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
-                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
-                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
-                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
-                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
-                };
-                return classes;
-            } else {
-                classes = {
-                    status_in_lavorazione: true
-                };
-                return classes;
-            }
+            return {
+                status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                status_chiuso: r.stato === StatoRichiesta.Chiusa,
+            };
         }
     }
 

@@ -1,0 +1,714 @@
+<div class="card row_text py-2 px-3"
+     [class.double-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
+     (click)="richiestaClick(richiesta)"
+     (dblclick)="richiestaDoubleClick(richiesta)"
+     (mouseenter)="richiestaHoverIn(richiesta)"
+     (mouseleave)="richiestaHoverOut(richiesta)">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <span *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
+                          class="d-inline-block text-danger font-weight-bolder h4"
+                          style="position: absolute; left: 0px; top:22px">S</span>
+                    <!-- PRIMA RIGA -->
+                    <div class="row">
+                        <div class="clearfix mx-3">
+                            <!-- Priorità -->
+                            <i class="guida fa fa-thermometer-half fa-fw font-double-monitor d-none"
+                               [class.high-priority]="richiesta.prioritaRichiesta > 3"
+                               ngbTooltip="Priorità della richiesta" placement="right"></i>
+                            <ngb-rating [(rate)]="richiesta.prioritaRichiesta" [max]="4" [readonly]="true"
+                                        style="position: absolute; display: inline-grid !important; font: small-caption; transform: rotate(180deg)">
+                                <ng-template let-fill="fill" let-index="index">
+                                            <span class="circle font-double-monitor" [class.filled]="fill === 100"
+                                                  [class.bad]="index > 2 && fill === 100">
+                                                <i class="fa fa-circle mr-1"></i>
+                                            </span>
+                                </ng-template>
+                            </ngb-rating>
+                        </div>
+                        <div class="col-3"
+                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
+                            <ng-template #rilevante>
+                                <div *ngIf="richiesta?.rilevanteGrave">
+                                    Intervento Rilevante
+                                </div>
+                                <div *ngIf="richiesta?.rilevanteStArCu">
+                                    Intervento Rilevante Storico Artistico Culturale
+                                </div>
+                            </ng-template>
+                            <div class="h6 mb-1 nowrap font-double-monitor">
+                                <i class="guida fa fa-hashtag fa-fw mr-1"
+                                   ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
+                                <a class="h6 cod-int" (click)="toggleEspanso(richiesta.id)">
+                                    <span *ngIf="richiesta.codiceRichiesta"
+                                          class="font-double-monitor">{{ richiesta.codiceRichiesta }} </span>
+                                    <span *ngIf="!richiesta.codiceRichiesta"
+                                          class="font-double-monitor">{{ richiesta.codice }} </span>
+                                </a>
+                                <span *ngIf="richiesta?.rilevanteGrave || richiesta?.rilevanteStArCu"
+                                      class="d-inline-block mr-1 text-danger"
+                                      [ngbTooltip]="rilevante" placement="bottom">
+                                    <i *ngIf="richiesta?.rilevanteStArCu" class="fa fa-university mr-2"></i>
+                                    <i *ngIf="richiesta?.rilevanteGrave" class="fa fa-exclamation"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
+                             style="flex: 0 0 54.5% !important;">
+                            <!-- descrizione intervento -->
+                            <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
+                                <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
+                                <ng-template #thenBlock>
+                                    <span>
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
+                                           ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+                                    </span>
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
+                                          tabindex="0">
+                                        <span class="position-relative">
+                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
+                                               ngbTooltip="{{ getDescrizionePrimaTipologia(richiesta) }}"></i>
+                                            <span class="badge badge-notify text-light">
+                                                {{ richiesta?.tipologie?.length }}
+                                            </span>
+                                        </span>
+                                    </span>
+                                </ng-template>
+                                <!-- ngbPopover tipologie intervento -->
+                                <ng-template #popTipologie>
+                                    <div class="h6" *ngFor="let t of richiesta?.tipologie">
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t) }}"></i>&nbsp
+                                        {{ t?.descrizione }}
+                                    </div>
+                                </ng-template>
+                                <span>
+                                    <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
+                                       class="h6 font-double-monitor descrizione-int"
+                                       ngbTooltip="{{ richiesta?.descrizione }}"
+                                       [disableTooltip]="richiesta?.descrizione?.length <= 45">
+                                        {{ richiesta.descrizione | truncate:45 }}
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-6"
+                             style="flex: 0 0 48% !important;">
+                            <!-- descrizione intervento -->
+                            <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
+                                <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
+                                <ng-template #thenBlock>
+                                    <span>
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
+                                           ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
+                                    </span>
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
+                                          tabindex="0">
+                                        <span class="position-relative">
+                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
+                                               ngbTooltip="{{ getDescrizionePrimaTipologia(richiesta) }}"></i>
+                                            <span class="badge badge-notify text-light">
+                                                {{ richiesta?.tipologie?.length }}
+                                            </span>
+                                        </span>
+                                    </span>
+                                </ng-template>
+                                <!-- ngbPopover tipologie intervento -->
+                                <ng-template #popTipologie>
+                                    <div class="h6" *ngFor="let t of richiesta?.tipologie">
+                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t) }}"></i>&nbsp
+                                        {{ t?.descrizione }}
+                                    </div>
+                                </ng-template>
+                                <span>
+                                    <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
+                                       class="h6 font-double-monitor descrizione-int"
+                                       ngbTooltip="{{ richiesta?.descrizione }}"
+                                       [disableTooltip]="richiesta?.descrizione?.length <= 45">
+                                        {{ getDescrizionePrimaTipologia(richiesta) | truncate:45 }}
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-2">
+                            <!-- richiedente -->
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-address-book-o fa-fw mr-1 font-double-monitor"
+                                   ngbTooltip="Richiedente"
+                                   container="body"></i>
+                                <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor">
+                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right"
+                                       [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
+                                        {{ richiesta?.richiedente?.nominativo | truncate:20 }}
+                                    </a>
+                                </span>
+                                <span class="font-double-monitor ml-1">
+                                    (
+                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <a>{{ richiesta?.richiedente?.telefono }}</a>
+                                    )
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-2 pr-3 text-right">
+                            <div class="h6 mb-0">
+
+                                <!-- soccorso aereo -->
+                                <span *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="nowrap">
+                                          <button class="btn btn-light border pl-0 py-0 big_numbers mr-1 font-double-monitor"
+                                                  style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
+                                              <i class="guida fa fa-plane fa-fw ml-2 pl-1" ngbTooltip="Dettaglio Soccorso Aereo"></i>
+                                          </button>
+                                </span>
+
+                                <!-- squadre -->
+                                <span class="nowrap">
+                                    <ng-container *ngIf="methods.getSquadre(richiesta) as squadre">
+                                        <button class="btn btn-light border pl-0 py-0 big_numbers mr-1 font-double-monitor"
+                                                [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
+                                                triggers="click" tabindex="0" style="cursor:pointer"
+                                                (click)="$event.stopPropagation()">
+                                            <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
+                                            <span>{{ squadre?.length }}</span>
+                                        </button>
+                                        <ng-template #popSquadre>
+                                            <div class="h6" *ngFor="let s of squadre">
+                                                <span>{{ s['nome'] }}</span>
+                                                <span> ({{ s['turno'] }})</span>
+                                            </div>
+                                            <h6 class="mb-0" *ngIf="squadre?.length === 0">Nessuna Squadra</h6>
+                                        </ng-template>
+                                    </ng-container>
+                                </span>
+
+                                <!-- mezzi -->
+                                <span class="nowrap">
+                                    <button class="btn btn-light border pl-0 py-0 big_numbers font-double-monitor"
+                                            [ngbPopover]="popMezzi"
+                                            popoverTitle="Mezzi" triggers="click" tabindex="0" style="cursor:pointer"
+                                            (click)="$event.stopPropagation()">
+                                        <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
+                                        <span>{{ methods.numeroMezzi(richiesta) }}</span>
+                                    </button>
+
+                                    <ng-template #popMezzi>
+                                        <div class="h6 nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
+                                            <span>
+                                                <span class="badge badge-secondary">{{ m?.stato }}</span>
+                                                <span class="font-weight-bold mx-1">{{ m?.descrizione }}</span>
+                                                <small>{{ m?.genere }}</small>
+                                            </span>
+                                        </div>
+                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">
+                                            Nessun Mezzo
+                                        </h6>
+                                    </ng-template>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SECONDA RIGA -->
+                    <div class="row">
+                        <div class="clearfix mx-3">
+
+                        </div>
+                        <div class="col-3"
+                             [class.col-1-d-monitor]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)">
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
+                                <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
+                                   placement="right" container="body"></i>
+                                <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
+                                    <span timeago
+                                          [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"
+                                          [live]="live">
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-7"
+                             style="flex: 0 0 54.5% !important;">
+                            <!-- richiedente -->
+                            <div class="h6 mt-1 mb-2 nowrap default-cursor">
+                                <i class="guida fa fa-address-book-o fa-fw mr-1 font-double-monitor"
+                                   ngbTooltip="Richiedente"
+                                   container="body"></i>
+                                <span *ngIf="richiesta?.richiedente?.nominativo" class="font-double-monitor">
+                                    <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}" placement="right"
+                                       [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
+                                        {{ richiesta?.richiedente?.nominativo | truncate:20 }}
+                                    </a>
+                                </span>
+                                <span  class="font-double-monitor ml-1">
+                                    (
+                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <a>{{ richiesta?.richiedente?.telefono }}</a>
+                                    )
+                                </span>
+                            </div>
+                        </div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-6"
+                             style="flex: 0 0 48% !important;">
+                            <i class="guida fa fa-map-marker fa-fw mr-1 font-double-monitor" ngbTooltip="Località"></i>
+                            <span class="font-double-monitor">
+                                      <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
+                                            class="font-double-monitor"
+                                            [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
+                                          {{ richiesta?.localita?.indirizzo | truncate:30 }}
+                                      </span>
+                                </span>
+                            <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor">
+                                <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
+                                                [competenza]="c" [i]="i"></app-competenza>
+                        </span>
+                        </div>
+                        <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)"
+                             class="col-2 pr-3 text-right" [ngClass]="{'mb-1': isEspanso}">
+                            <div class="h6 m-0 nowrap mt-1">
+                                <button *ngIf="!fissata && fissabile"
+                                        class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Fissa in alto"
+                                        [disabled]="disableFissaInAlto"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-thumb-tack text-secondary"></i>
+                                </button>
+                                <button *ngIf="fissata && fissabile"
+                                        class="btn btn-primary py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Inserisci nella lista"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
+                                </button>
+                                <button *ngIf="listaEventi"
+                                        class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"
+                                        ngbTooltip="Elenco eventi"
+                                        (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-list text-secondary"></i>
+                                </button>
+                                <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Gestisci"
+                                        [disabled]="disabledGestisciRichiesta"
+                                        [ngClass]="{'btn-light': !inGestione, 'btn-secondary': inGestione, 'cursor-not-allowed': disabledGestisciRichiesta}"
+                                        (click)="onGestioneRichiesta(); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-gear"
+                                       [ngClass]="{'text-secondary': !inGestione, 'text-light': inGestione}"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-4 pr-3 text-right"
+                             [ngClass]="{'mb-1': isEspanso}">
+                            <div class="h6 m-0 nowrap mt-1">
+                                <button *ngIf="!fissata && fissabile"
+                                        class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Fissa in alto"
+                                        [disabled]="disableFissaInAlto"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-thumb-tack text-secondary"></i>
+                                </button>
+                                <button *ngIf="fissata && fissabile"
+                                        class="btn btn-primary py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Inserisci nella lista"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-thumb-tack fa-rotate-45"></i>
+                                </button>
+                                <button *ngIf="listaEventi"
+                                        class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"
+                                        ngbTooltip="Elenco eventi"
+                                        (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-list text-secondary"></i>
+                                </button>
+                                <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Gestisci"
+                                        [disabled]="disabledGestisciRichiesta"
+                                        [ngClass]="{'btn-light': !inGestione, 'btn-secondary': inGestione, 'cursor-not-allowed': disabledGestisciRichiesta}"
+                                        (click)="onGestioneRichiesta(); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-gear"
+                                       [ngClass]="{'text-secondary': !inGestione, 'text-light': inGestione}"></i>
+                                </button>
+                                <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Espandi"
+                                        [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"
+                                        (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">
+                                    <i class="fa fa-fw"
+                                       [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>
+                                </button>
+                                <button *ngIf="modificabile"
+                                        class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                        ngbTooltip="Modifica"
+                                        [disabled]="disabledModificaRichiesta"
+                                        [ngClass]="{'cursor-not-allowed': disabledModificaRichiesta}"
+                                        (click)="onModificaRichiesta(); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-pencil-square-o text-secondary"></i>
+                                </button>
+                                <button *ngIf="!partenza && composizionePartenza"
+                                        class="btn btn-light border py-0 px-2 font-double-monitor"
+                                        ngbTooltip="Invio partenza"
+                                        [disabled]="disabledComposizionePartenza"
+                                        [ngClass]="{'cursor-not-allowed': disabledComposizionePartenza}"
+                                        (click)="invioPartenza(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-arrow-right text-secondary"></i>
+                                </button>
+                                <!-- <button *ngIf="partenza && composizionePartenza"
+                                        class="btn btn-primary border py-0 px-2" ngbTooltip="Torna alla lista"
+                                        (click)="invioPartenza(richiesta); $event.stopPropagation()">
+                                    <i class="fa fa-fw fa-arrow-left"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TERZA RIGA IN SINGLE MONITOR -->
+                    <div [class.d-none]="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="row">
+                        <div class="clearfix mx-3">
+                        </div>
+                        <div class="col-3">
+                            <i class="guida fa fa-bolt fa-fw mr-1 font-double-monitor" ngbTooltip="Prima assegnazione"
+                               placement="right"></i>
+                            <span *ngIf="richiesta.stato !== StatoRichiesta.Chiamata" class="font-double-monitor">
+                                        <span *ngIf="richiesta.istantePrimaAssegnazione">
+                                            {{ richiesta?.istantePrimaAssegnazione | friendlyDateTooltip }}
+                                        </span>
+                                    </span>
+
+                            <!-- presidiato / non presidiato (1) -->
+                            <span *ngIf="richiesta?.stato === StatoRichiesta.Chiamata || !richiesta?.istantePrimaAssegnazione"
+                                  class="font-double-monitor">
+                                        <span class="badge badge-warning text-white">Non Presidiato</span>
+                            </span>
+                        </div>
+                        <div class="col-7" style="flex: 0 0 54.5% !important;">
+                            <i class="guida fa fa-map-marker fa-fw mr-1 font-double-monitor" ngbTooltip="Località"></i>
+                            <span class="font-double-monitor">
+                                        <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
+                                              class="font-double-monitor"
+                                              [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
+                                            {{ richiesta?.localita?.indirizzo | truncate:30 }}
+                                        </span>
+                                  </span>
+                            <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor">
+                                        <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
+                                                        [competenza]="c" [i]="i"></app-competenza>
+                        </span>
+                        </div>
+                        <div class="col-2" [ngClass]="{'mb-1': isEspanso}" style="text-align: right">
+                          <span class="h6 m-0 nowrap mt-1">
+                            <button *ngIf="espandibile" class="btn border py-0 px-0 mr-1 font-double-monitor"
+                                    ngbTooltip="Espandi"
+                                    [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"
+                                    (click)="toggleEspanso(richiesta.id); $event.stopPropagation()">
+                              <i class="fa fa-fw"
+                                 [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>
+                            </button>
+                            <button *ngIf="modificabile" class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
+                                    ngbTooltip="Modifica"
+                                    [disabled]="disabledModificaRichiesta"
+                                    [ngClass]="{'cursor-not-allowed': disabledModificaRichiesta}"
+                                    (click)="onModificaRichiesta(); $event.stopPropagation()">
+                              <i class="fa fa-fw fa-pencil-square-o text-secondary"></i>
+                            </button>
+                            <button *ngIf="!partenza && composizionePartenza"
+                                    class="btn btn-light border py-0 px-2 font-double-monitor"
+                                    ngbTooltip="Invio partenza"
+                                    [disabled]="disabledComposizionePartenza"
+                                    [ngClass]="{'cursor-not-allowed': disabledComposizionePartenza}"
+                                    (click)="invioPartenza(richiesta); $event.stopPropagation()">
+                              <i class="fa fa-fw fa-arrow-right text-secondary"></i>
+                            </button>
+                              <!-- <button *ngIf="partenza && composizionePartenza"
+                                      class="btn btn-primary border py-0 px-2" ngbTooltip="Torna alla lista"
+                                      (click)="invioPartenza(richiesta); $event.stopPropagation()">
+                                  <i class="fa fa-fw fa-arrow-left"></i>
+                              </button> -->
+                          </span>
+                        </div>
+                    </div>
+
+                    <!-- box note localita e zone emergenza -->
+                    <div *ngIf="isEspanso" class="col-md-12 default-cursor">
+                        <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza || richiesta?.tags"
+                             class="col-md-12">
+                            <div class="row card bt-0 note-localita mt-1">
+                                <div class="col-md-12 bg_diagonal_grey">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="h6 mb-0 pt-2 pb-1">
+                                                <span *ngIf="richiesta?.localita?.note">{{ richiesta?.localita?.note }}</span>
+                                                <span *ngIf="!richiesta?.localita?.note">Note località non presenti</span>
+                                            </div>
+                                            <div class="h5 mb-0 pull-right">
+                                            <span *ngFor="let ze of richiesta?.zoneEmergenza"
+                                                  class="badge badge-danger pull-right m-1">
+                                                {{ ze }}
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            <i class="guida fa fa-tags fa-fw text-left mr-1" title="Etichette"></i>
+                                            <span *ngFor="let tag of richiesta?.tags"
+                                                  class="badge badge-secondary text-right py-2 m-1"><i
+                                                    class="fa fa-hashtag fa-fw text-left"></i>{{tag}}</span>
+                                            <span *ngIf="!richiesta?.tags || (richiesta?.tags && richiesta?.tags?.length <= 0)">
+                                            Non ci sono Tags
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- II livello di dettaglio -->
+                        <div class="row mt-3">
+                            <!-- I colonna -->
+                            <div class="col-md-3">
+                                <!-- presa in carico -->
+                                <div class="h6">
+                                    <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
+                                       placement="right"></i>
+                                    <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
+                                         class="d-inline-block h6 m-0 mr-1" [ngbTooltip]="utentePresaInCarico">
+                                        {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
+                                        <ng-template #utentePresaInCarico>
+                                            <div>
+                                                {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.nominativo}}
+                                            </div>
+                                            <div>
+                                                {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyDate}}
+                                                {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyHour: true}}
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngIf="richiesta?.listaUtentiPresaInCarico && richiesta?.listaUtentiPresaInCarico?.length > 1"
+                                         ngbDropdown class="d-inline-block" placement="bottom">
+                                        <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                                (click)="$event.stopPropagation()">
+                                            +{{ richiesta?.listaUtentiPresaInCarico?.length - 1 }}
+                                        </button>
+                                        <div ngbDropdownMenu class="p-2 text-center">
+                                            <div *ngIf="methods._altriUtenti(richiesta?.listaUtentiPresaInCarico) as utentiTooltip">
+                                                <div *ngFor="let utente of utentiTooltip">
+                                                    {{utente?.nominativo}}
+                                                    - {{utente?.dataInizioAttivita | friendlyDate}}
+                                                    {{utente?.dataInizioAttivita | friendlyHour: true}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #nonPresaInCarico>
+                                        <a class="badge badge-secondary text-light">
+                                            Non Presa in Carico
+                                        </a>
+                                    </ng-template>
+                                </div>
+
+                                <!-- in lavorazione -->
+                                <div class="h6">
+                                    <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
+                                       placement="right"></i>
+                                    <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
+                                         class="d-inline-block m-0 mr-1"
+                                         [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
+                                         [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
+                                        {{ utentiInLavorazioneValue?.nominativo | truncate: 15 }}
+                                    </div>
+                                    <div *ngIf="richiesta?.listaUtentiInLavorazione && richiesta?.listaUtentiInLavorazione?.length > 1"
+                                         ngbDropdown class="d-inline-block" placement="bottom">
+                                        <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                                (click)="$event.stopPropagation()">
+                                            +{{ richiesta?.listaUtentiInLavorazione.length - 1 }}
+                                        </button>
+                                        <div ngbDropdownMenu class="p-2 text-center">
+                                            <div *ngIf="methods._altriUtenti(richiesta?.listaUtentiInLavorazione) as utentiTooltip">
+                                                <div *ngFor="let utente of utentiTooltip">
+                                                    {{utente?.nominativo}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #nonInLavorazione>
+                                        <a class="badge badge-secondary text-light">Non in lavorazione</a>
+                                    </ng-template>
+                                </div>
+
+                                <!-- scheda nue -->
+                                <div class="h6">
+                                    <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
+                                       placement="right"></i>
+                                    <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
+                                        {{ richiesta?.codiceSchedaNue }}
+                                    </a>
+                                    <ng-template #nessunCodiceNue>
+                                    <span class="badge badge-secondary text-light">
+                                        Nessuna scheda NUE
+                                    </span>
+                                    </ng-template>
+                                </div>
+
+                                <!-- fonogramma -->
+                                <div class="h6">
+                                    <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
+                                       placement="right"></i>
+                                    <span *ngIf="richiesta?.fonogramma"
+                                          class="h6 badge m-0 cursor-pointer font-double-monitor"
+                                          [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
+                                          (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
+                                          ngbTooltip="Visualizza Fonogramma">
+                                    {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
+                                </span>
+                                    <span *ngIf="!richiesta.fonogramma" class="badge badge-secondary text-white">
+                                    Nessun Fonogramma
+                                </span>
+                                    <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
+                                            ngbTooltip="Modifica Fonogramma"
+                                            (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Sedi allertate -->
+                                <div>
+                                    <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata"
+                                         class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
+                                         [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
+                                        <i class="guida fa fa-exclamation-triangle fa-fw mr-1 "
+                                           ngbTooltip="Sedi Allertate"
+                                           placement="right"></i>
+                                        {{ sediAllertate | truncate: 13 }}
+                                    </div>
+                                    <div *ngIf="richiesta?.codSOAllertate && richiesta?.codSOAllertate?.length > 1"
+                                         ngbDropdown class="d-inline-block" placement="bottom">
+                                        <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                                (click)="$event.stopPropagation()">
+                                            +{{ richiesta?.codSOAllertate?.length - 1 }}
+                                        </button>
+                                        <div ngbDropdownMenu class="p-2 text-center">
+                                            <div *ngIf="methods._altreSediAllertate(richiesta?.sediAllertate) as codSOAllertate">
+                                                <div *ngFor="let sede of codSOAllertate">
+                                                    {{ sede }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #nonAllertata class="badge badge-secondary text-white">
+                                        <!-- Nessuna Sede Allertata -->
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- II colonna -->
+                            <div class="col-md-6 bg-red border p-2"
+                                 [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
+                                <div class="scroll-y" [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
+                                    <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
+                                    <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
+                                                        [statoRichiesta]="richiesta?.stato"
+                                                        [inGestione]="inGestione"
+                                                        [idDaSganciare]="idDaSganciare"
+                                                        [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenzeRichiesta)"
+                                                        (actionMezzo)="onActionMezzo($event)"
+                                                        (eliminaPartenza)="onEliminaPartenza($event)"
+                                                        (modificaPartenza)="onModificaPartenza($event)"
+                                                        (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenzeRichiesta)">
+                                    </app-lista-partenze>
+                                </div>
+                            </div>
+
+                            <!-- III colonna-->
+                            <div class="col-md-3">
+                                <!-- turno intervento -->
+                                <div class="h6 text-right">
+                                <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
+                                    {{richiesta?.trnInsChiamata}}
+                                    <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
+                                </span>
+                                    <ng-template #nessunTurno>
+                                        <a>-</a>
+                                        <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente"
+                                           placement="right"></i>
+                                    </ng-template>
+                                </div>
+
+                                <!-- enti intervenuti -->
+                                <div class="h6 text-right">
+                                    <button *ngIf="inGestione"
+                                            class="btn btn-sm btn-info mr-2"
+                                            ngbTooltip="Modifica Enti Intervenuti"
+                                            (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
+                                            *ngIf="methods._entiCount(richiesta?.listaEntiIntervenuti?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
+                                            (click)="onListaEnti(); $event.stopPropagation()">
+                                        {{ totaleEnti }}
+                                    </button>
+                                    <ng-template #nessunEnte>
+                                    <span class="badge badge-secondary text-light"
+                                          ngbTooltip="Al momento nessun ente è intervenuto">
+                                        Nessun Ente
+                                    </span>
+                                    </ng-template>
+                                    <i class="guida fa fa-industry fa-fw ml-1"
+                                       ngbTooltip="Enti intervenuti o che hanno preso in carico la richiesta"
+                                       placement="right"></i>
+                                </div>
+
+                                <!-- tipo terreno -->
+                                <div class="h6 text-right">
+                                <span *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
+                                      class="h6 m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
+                                    {{ tipoTerrenoValue?.terrenoHa }}
+                                </span>
+                                    <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
+                                            class="btn btn-light border big_font py-0 px-1" [ngbPopover]="terreni"
+                                            (click)="$event.stopPropagation()">
+                                        +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
+                                    <ng-template #terreni>
+                                        <div *ngIf="methods._terreniMinori(richiesta?.tipoTerreno) as terreniTooltip">
+                                            <div *ngFor="let terreno of terreniTooltip">
+                                                {{ methods._tipoTerreno(terreno)}}
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #noterreni>
+                                        -
+                                    </ng-template>
+                                    <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
+                                       placement="right"></i>
+                                </div>
+
+                                <!-- complessità -->
+                                <div class="h6 text-right">
+                                    <a><b>{{ richiesta?.complessita?.indice }}</b></a>
+                                    <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
+                                        richiesta?.complessita?.descrizione }}</span>
+                                    <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
+                                       placement="right"></i>
+                                </div>
+
+                                <!-- Cambio Stato Richiesta (Gestione) -->
+                                <div *ngIf="inGestione" class="border p-2 mt-3"
+                                     style="display: inline-flex; float: right;"
+                                     [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
+                                    <div class="mr-2" style="display: inline-flex;">
+                                        <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
+                                                (click)="onAllertaSede(); $event.stopPropagation()">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                        </button>
+                                        <button *ngIf="!richiesta?.codiceRichiesta"
+                                                class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
+                                                (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
+                                            <i class="fa fa-send-o"></i>
+                                        </button>
+                                    </div>
+                                    <app-sintesi-richiesta-actions [richiesta]="richiesta"
+                                                                   (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

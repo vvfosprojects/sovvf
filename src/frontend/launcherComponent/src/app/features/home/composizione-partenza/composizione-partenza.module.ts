@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { ComposizioneAvanzataComponent } from './composizione-avanzata/composizione-avanzata.component';
 import { FasterComponent } from './composizione-veloce/composizione-veloce.component';
@@ -14,10 +13,11 @@ import { ComposizioneVeloceState } from '../store/states/composizione-partenza/c
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
-import { ComposizioneButtonsComponent } from './shared/composizione-buttons/composizione-buttons.component';
-import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { ComposizioneConfirmButtonComponent } from './shared/composizione-buttons/composizione-confirm-button.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import {ComposizioneSoccorsoAereoState} from '../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 @NgModule({
     declarations: [
@@ -25,13 +25,11 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
         FasterComponent,
         ComposizioneAvanzataComponent,
         BoxNuovaPartenzaComponent,
-        ComposizioneButtonsComponent,
-        SganciamentoMezzoModalComponent
+        ComposizioneConfirmButtonComponent
     ],
     imports: [
         CommonModule,
         NgbModule,
-        SintesiRichiestaModule,
         SharedModule.forRoot(),
         NgSelectModule,
         NgxsModule.forFeature(
@@ -41,11 +39,15 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
                 // Comp Rapida
                 ComposizioneVeloceState,
                 // Comp Avanzata
-                ComposizioneAvanzataState
+                ComposizioneAvanzataState,
+                // Comp Soccorso Aereo
+                ComposizioneSoccorsoAereoState
             ]
         ),
+        NgxPaginationModule,
         FormsModule,
         FilterPipeModule,
+        SharedModule,
     ],
     exports: [
         ComposizionePartenzaComponent

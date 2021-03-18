@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -17,73 +20,83 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     ///   classe che estende l'interfaccia e recupera la persona fisica partendo dal codice fiscale
     ///   su Utenti Comuni
     /// </summary>
-    public class GetPersonaleByCF : IGetPersonaleByCF
+    public class GetPersonaleByCF : BaseService, IGetPersonaleByCF
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
-        {
-            _client = client;
-            _configuration = configuration;
-            _memoryCache = memoryCache;
-        }
+        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
+            : base(client, configuration, memoryCache, writeLog, httpContext) { }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
             if (codSede != null)
             {
-                var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(codSede).Result;
+                var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(new string[] { codSede }).Result;
                 return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
             }
             else
             {
-                var Persona = GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
-                return Persona;
+                var Persona = GetPersonaleVVFExternalAPIByCF(new string[] { codiceFiscale }).Result;
+                return Persona.Find(x => x.CodFiscale.Equals(codiceFiscale));
             }
         }
 
-        private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPI(string codSede)
+        public async Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
         {
-            List<PersonaleVVF> listaPersonale = new List<PersonaleVVF>();
-
-            if (!_memoryCache.TryGetValue($"Personale_{codSede.Split('.')[0]}", out listaPersonale))
+            if (codSede != null)
             {
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={codSede.Split('.')[0]}").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-
-                listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                _memoryCache.Set($"Personale_{codSede.Split('.')[0]}", listaPersonale, cacheEntryOptions);
-
-                return listaPersonale;
+                var lstPersonale = GetPersonaleVVFExternalAPI(codSede).Result;
+                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.CodFiscale));
             }
             else
-            {
-                return listaPersonale;
-            }
+                return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
         }
 
-        private async Task<PersonaleVVF> GetPersonaleVVFExternalAPIByCF(string CodFiscale)
+        private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPI(string[] codSede)
         {
-            PersonaleVVF Persona = new PersonaleVVF();
+            var listaPersonale = new List<PersonaleVVF>();
 
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={CodFiscale}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+            //try
+            //{
+            Parallel.ForEach(codSede, sede =>
+            {
+                var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+                httpManager.Configure("Personale_" + sede);
 
-            Persona = MapPersonaleVVFsuPersonaleUC.Map(personaleUC).Find(x => x.CodFiscale.Equals(CodFiscale));
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                lock (listaPersonale)
+                    listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
+            });
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception("Elenco del personale non disponibile");
+            //}
 
-            return Persona;
+            return listaPersonale;
+        }
+
+        private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPIByCF(string[] CodFiscale)
+        {
+            var result = new List<PersonaleVVF>();
+
+            Parallel.ForEach(CodFiscale, codf =>
+            {
+                #region API ESTERNA
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                string data = content.ReadAsStringAsync().Result;
+                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+                var mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+
+                #endregion API ESTERNA
+
+                lock (new object()) { result.AddRange(mapped); }
+            });
+
+            return result.Where(s => s != null).ToList();
         }
     }
 }

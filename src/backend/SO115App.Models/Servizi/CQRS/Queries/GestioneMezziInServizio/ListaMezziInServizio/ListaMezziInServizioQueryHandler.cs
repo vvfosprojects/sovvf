@@ -30,19 +30,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 {
     public class ListaMezziInServizioQueryHandler : IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult>
     {
-        private readonly IGetListaMezzi _getListaMezzi;
-        private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetMezziInServizio _getListaMezzi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
-        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetUtenteById getUtenteById,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public ListaMezziInServizioQueryHandler(IGetMezziInServizio getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            this._getListaMezzi = getListaMezzi;
-            this._getUtenteById = getUtenteById;
-            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getListaMezzi = getListaMezzi;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -52,34 +46,52 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         /// <returns>Il DTO di uscita della query</returns>
         public ListaMezziInServizioResult Handle(ListaMezziInServizioQuery query)
         {
-            var Utente = _getUtenteById.GetUtenteByCodice(query.IdOperatore);
-            var listaSediUtenteAbilitate = Utente.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
+            var listaSediUtenteAbilitate = query.Operatore.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>();
 
             /// <summary>
             ///Faccio gestire esclusivamente i Mezzi in Servizio delle Sedi nel quale l'operatore ha il ruolo di Gestore Richieste
             /// </summary>
-            foreach (var sede in listaSediUtenteAbilitate)
-            {
-                pinNodi.Add(new PinNodo(sede.CodSede, true));
-            }
+            var pinNodi = listaSediUtenteAbilitate.Select(sede =>new PinNodo(sede.CodSede, true)).ToList();
 
             /// <summary>
             ///   Aggiungo alla Sede principale gli eventuali sotto Nodi
             /// </summary>
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            pinNodi.AddRange(listaSediAlberate.GetSottoAlbero(pinNodi).Select(figlio => new PinNodo(figlio.Codice, true)));
+            
+            var listaMezzi = _getListaMezzi.Get(query.CodiciSede) //FILTRI
+                .Where(c =>
+                {
+                    if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0)
+                        return query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
+                    else
+                        return true;
+                }).Where(c =>
+                { 
+                    if (query.Filters != null && !string.IsNullOrEmpty(query.Filters.Search))
+                        return c.Mezzo.Mezzo.Descrizione.Contains(query.Filters.Search)
+                            || (c.Mezzo.Mezzo.IdRichiesta != null && c.Mezzo.Mezzo.IdRichiesta.Contains(query.Filters.Search));
+                    else
+                        return true;
+                }).ToList();
+
+            //GESTISCO PAGINAZIONE
+            if (query.Pagination != null) return new ListaMezziInServizioResult()
             {
-                pinNodi.Add(new PinNodo(figlio.Codice, true));
-            }
+                DataArray = listaMezzi
+                     .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                     .Take(query.Pagination.PageSize).ToList(),
 
-            var listaCodiciSediGestite = pinNodi.Select(x => x.Codice).ToArray();
-
-            var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite);
-
-            return new ListaMezziInServizioResult()
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = listaMezzi.Count,
+                }
+            };
+            else return new ListaMezziInServizioResult()
             {
-                ListaMezzi = listaMezzi
+                DataArray = listaMezzi
             };
         }
     }

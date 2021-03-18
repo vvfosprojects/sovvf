@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
 using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -45,7 +46,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = _iGetComposizioneSquadre.Get(query);
+            List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = _iGetComposizioneSquadre.Get(query)
+                .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
+                .Take(query.Filtro.SquadrePagination.PageSize)
+                .ToList();
 
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 

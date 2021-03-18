@@ -12,7 +12,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/scheda-telefonata/chiamata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
@@ -24,9 +24,8 @@ import {
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     InsertSchedeContatto,
@@ -60,6 +59,7 @@ import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.acti
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -152,7 +152,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
-            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
             const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (mezziInServizioActive) {
                 this.store.dispatch(new UpdateMezzoInServizio(data));
@@ -161,6 +161,12 @@ export class SignalRService {
             }
             this.store.dispatch(new StopLoadingActionMezzo());
         });
+
+        /**
+         * Soccorso Aereo
+         */
+
+        // ToDo: notifica soccorso aereo
 
         /**
          * Markers Mappa
@@ -270,8 +276,8 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
+            this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 

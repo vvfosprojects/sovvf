@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { EnteModalComponent } from '../ente-modal/ente-modal.component';
 import { ClearFormEnte, RequestAddEnte } from '../../store/actions/enti/enti.actions';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-modifica-enti-modal',
@@ -17,6 +18,8 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     enti: Ente[];
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     listaEntiIntervenuti: Ente[];
 
@@ -40,6 +43,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
             listaEnti: [this.listaEntiIntervenuti ? this.listaEntiIntervenuti.map(e => e.codice) : null],
         });
         this.getEnti();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getEnti(): void {
@@ -51,12 +55,22 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
     }
 
     aggiungiNuovoEnte(): void {
-        const addEnteModal = this.modalService.open(EnteModalComponent, {
+        let addEnteModal;
+        if (this.doubleMonitor) {
+          addEnteModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder modal-left',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        } else {
+          addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
+          });
+        }
         addEnteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

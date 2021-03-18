@@ -1,3 +1,6 @@
+<ng-template [ngIf]="title">
+    <h3>{{ title }}</h3>
+</ng-template>
 <div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo"
      class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
     <div class="mb-3" style="display: contents;">
@@ -32,7 +35,7 @@
                 </button>
             </div>
             <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
-                <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }}</b>
+                <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }} ({{partenza?.squadre[0]?.turno}}) </b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
@@ -47,6 +50,7 @@
             </div>
             <div *ngFor="let squadre of partenza?.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
                 <b class="font-box-partenza">{{ squadre['nome'] }}</b>
+                <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
@@ -67,6 +71,7 @@
                 <div *ngIf="nuoveSquadre?.length === 1" class="t-color"><i class="fa fa-group mr-2 t-color"
                                                                            ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
+                    <b class="font-box-partenza ml-1">({{ nuoveSquadre[0]?.turno }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
             </div>
@@ -79,6 +84,7 @@
                     </button>
                 <div *ngFor="let squadre of nuoveSquadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
                     <b class="font-box-partenza">{{ squadre['nome'] }}</b>
+                    <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
             </div>
@@ -88,7 +94,8 @@
                 <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
                             font-size: 18px;" (click)="onModificaPartenza($event)">
-                    <i class="fa fa-pencil-square-o"></i>
+                    <i class="fa fa-pencil-square-o mr-1"></i>
+                    {{ testoModifica }}
                 </button>
             </div>
         </ng-template>

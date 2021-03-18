@@ -57,6 +57,10 @@ export class SintesiRichiesta {
          */
         public tipologie: Tipologia[],
         /**
+         * dettaglio della tipologia
+         */
+        public dettaglioTipologia: string,
+        /**
          * descrizione della richiesta
          */
         public descrizione: string,
@@ -168,7 +172,11 @@ export class SintesiRichiesta {
         /**
          * lista Enti intervenuti
          */
-        public listaEnti?: Ente[]
+        public listaEnti?: Ente[],
+        /**
+         * richiesta inviata in stato di emergenza
+         */
+        public emergenza?: boolean
     ) {
     }
 }

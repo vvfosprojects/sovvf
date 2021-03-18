@@ -12,3 +12,9 @@ export class SetContentHeight {
     }
 }
 
+export class SetInnerWidth {
+    static readonly type = '[Viewport] Set Inner Width';
+
+    constructor(public innerWidth: number) {
+    }
+}

@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4>Crea Dettaglio Tipologia</h4>
+</div>
+<div class="modal-body">
+    <div class="mb-3">
+        <label for="tipologia">Scegli una Tipologia</label>
+        <ng-select id="tipologia"
+                   placeholder="Seleziona una tipologia dall'elenco"
+                   [items]="['Incendio Normale (generico) (1)']">
+        </ng-select>
+    </div>
+    <div>
+        <label for="dettaglioTipologia">Descrivi un Dettaglio Tipologia</label>
+        <input id="dettaglioTipologia"
+               type="text"
+               placeholder="Dettaglio Tipologia"
+               class="form-control">
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-lg btn-success">Conferma</button>
+</div>

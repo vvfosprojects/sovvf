@@ -17,6 +17,7 @@ export const environment = {
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestioneFonogramma: '/api/GestioneFonogramma',
+        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo',
         gestionePartenza: '/api/GestionePartenza',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
@@ -28,6 +29,7 @@ export const environment = {
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
         gestioneRuolo: '/api/GestioneRuolo',
@@ -37,7 +39,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
-        modificaPartenza: '/api/GestionePartenza/ModificaPartenza'
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

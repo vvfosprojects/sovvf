@@ -19,13 +19,11 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione,
-    FilterListaPreAccoppiati
+    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
     ClearComposizioneAvanzata,
-    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
@@ -49,6 +47,7 @@ import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '..
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
+import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -121,7 +120,7 @@ export class ComposizionePartenzaState {
     @Action(UpdateListeComposizione)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
         console.warn('UpdateListeComposizione');
-        dispatch(new GetListeComposizioneAvanzata(action.filtri));
+        dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
@@ -129,9 +128,9 @@ export class ComposizionePartenzaState {
         const state = getState();
         const compMode = state.composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            dispatch(new FilterListeComposizioneAvanzata(action.filtri));
+            dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
-            dispatch(new FilterListaPreAccoppiati(action.filtri));
+            dispatch(new GetListaComposizioneVeloce());
         }
     }
 
@@ -203,6 +202,8 @@ export class ComposizionePartenzaState {
             const composizioneActive = !!(getState().richiesta);
             if (composizioneActive) {
                 dispatch(new GetListeComposizioneAvanzata());
+            } else {
+                dispatch(new GetListaMezziSquadre());
             }
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {

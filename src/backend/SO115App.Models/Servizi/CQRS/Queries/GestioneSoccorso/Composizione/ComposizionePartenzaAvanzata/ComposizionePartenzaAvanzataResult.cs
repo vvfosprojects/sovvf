@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -29,7 +28,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Json Navbar Richieste
         /// </summary>
-        public Classi.Composizione.ComposizionePartenzaAvanzata ComposizionePartenzaAvanzata
-        { get; set; }
+        public Classi.Composizione.ComposizionePartenzaAvanzata ComposizionePartenzaAvanzata { get; set; }
     }
 }

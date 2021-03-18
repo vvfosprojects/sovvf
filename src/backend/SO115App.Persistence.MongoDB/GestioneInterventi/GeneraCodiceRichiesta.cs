@@ -1,4 +1,5 @@
-﻿using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Persistence.MongoDB.GestioneInterventi.Utility;
 using System;
 using System.Collections.Generic;

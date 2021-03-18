@@ -14,10 +14,12 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
 import { makeCopy } from '../../helper/function';
-import { ModificaPartenza } from '../../interface/modifica-partenza.interface';
+import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 
 @Component({
@@ -31,10 +33,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     operatore: string;
     sede: string;
     partenza: Partenza;
+    richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
     public time = { hour: 13, minute: 30, second: 30 };
@@ -81,6 +86,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.f.mezzo.patchValue(this.partenza.mezzo);
         this.f.squadre.patchValue(this.partenza.squadre);
         this.checkStatoMezzoSequenza();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     initForm(): void {
@@ -217,21 +223,32 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     openSostituzioneModal(): void {
-        const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+        let sostituzioneModal;
+        if (this.doubleMonitor) {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+            windowClass: 'modal-holder modal-left',
+            size: 'lg',
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+          });
+        } else {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true,
             backdrop: 'static',
             keyboard: false,
-        });
+          });
+        }
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
         sostituzioneModal.componentInstance.partenza = this.partenza;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
                     const nuovaPartenza = res.result;
-                    const d = new Date();
                     this.valid = true;
                     this.inSostituzione = true;
                     this.hideBox = false;
@@ -332,7 +349,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
-        } as ModificaPartenza;
+        } as ModificaPartenzaDto;
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
             this.modal.close({ status: 'ok' });

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -9,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
 {
@@ -36,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
         {
             List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
 
-            string CodSede = query.CodiceSede.Substring(0, 2);
+            string CodSede = query.CodiceSede.FirstOrDefault().Substring(0, 2);
             if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
@@ -50,6 +52,21 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
                 _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
             }
             return ListaPreAccoppiati;
+        }
+
+        public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
+        {
+            var preAccoppiati = new List<PreAccoppiatiFakeJson>();
+            string filepath = "Fake/PreAccoppiatiComposizione.json";
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
+
+            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
         }
 
         private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)

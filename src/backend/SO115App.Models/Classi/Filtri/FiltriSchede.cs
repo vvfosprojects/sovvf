@@ -5,10 +5,20 @@
     /// </summary>
     public class FiltriSchede
     {
-        /// <summary>
-        ///   Stringa per la ricerca a testo libero
-        /// </summary>
-        public string TestoLibero { get; set; }
+        ///// <summary>
+        /////   Stringa per la ricerca a testo libero
+        ///// </summary>
+        //public string TestoLibero { get; set; }
+
+        ///// <summary>
+        /////   Abilita la ricerca per l'operatore che ha gestito determinate schede contatto
+        ///// </summary>
+        //public bool? CercaPerOperatore { get; set; }
+
+        ///// <summary>
+        /////   Viene valorizzato con l'id dell'utente che sta filtrando le schede
+        ///// </summary>
+        //public string IdUtente { get; set; }
 
         /// <summary>
         ///   Boolana gestita
@@ -16,18 +26,13 @@
         public bool? Gestita { get; set; }
 
         /// <summary>
-        ///   Abilita la ricerca per l'operatore che ha gestito determinate schede contatto
-        /// </summary>
-        public bool? CercaPerOperatore { get; set; }
-
-        /// <summary>
-        ///   Viene valorizzato con l'id dell'utente che sta filtrando le schede
-        /// </summary>
-        public string IdUtente { get; set; }
-
-        /// <summary>
         ///   Identifica il range di ore entro il quale viene effettuata la ricerca delle schede contatto
         /// </summary>
-        public double? RangeVisualizzazione { get; set; }
+        public int? RangeVisualizzazione { get; set; }
+
+        ///<summary>
+        ///   Stringa per la ricerca a testo libero
+        /// </summary>
+        public string Search { get; set; }
     }
 }

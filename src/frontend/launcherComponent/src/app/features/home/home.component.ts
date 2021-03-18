@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../shared/interface/view.interface';
 import { Select, Store } from '@ngxs/store';
@@ -8,6 +8,7 @@ import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -24,6 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    @Select(ViewportState.chiamataConMappa) chiamataConMappa$: Observable<boolean>;
+
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
 
@@ -34,16 +38,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Home creato');
-        }
+        console.log('Componente Home creato');
         this.store.dispatch(new GetDataHome());
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Home distrutto');
-        }
+        console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataHome());
     }

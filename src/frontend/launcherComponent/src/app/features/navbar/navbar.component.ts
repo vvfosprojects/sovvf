@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
@@ -15,8 +15,12 @@ import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-
 import { GetNewVersion, OpenModalNewFeaturesInfo, OpenModalNewVersionSoon } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
-import { RouterState } from '@ngxs/router-plugin';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
+import { ViewComponentState } from '../home/store/states/view/view.state';
+import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
+import { ToggleMezziInServizio, ToggleSchedeContatto } from '../home/store/actions/view/view.actions';
+import { ViewInterfaceButton } from '../../shared/interface/view.interface';
 
 @Component({
     selector: 'app-navbar',
@@ -28,7 +32,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
 
-    @Output() openedSidebar = new EventEmitter<any>();
+    @Input() disabledMezziInServizio: boolean;
+    @Input() colorButtonView: ViewInterfaceButton;
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
@@ -46,10 +51,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(RouterState.url) url$: Observable<string>;
     url: string;
 
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
+    @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
+    @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
+    @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+
     clock$: Observable<Date>;
     time: Date;
 
     colorButton = 'btn-dark';
+    permessiFeature = PermissionFeatures;
     RoutesPath = RoutesPath;
 
     private subscription = new Subscription();
@@ -68,21 +80,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Navbar creato');
-        }
+        console.log('Componente Navbar creato');
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Navbar distrutto');
-        }
+        console.log('Componente Navbar distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataNavbar());
-    }
-
-    setTime(): void {
-        this.time = new Date();
     }
 
     getClock(): void {
@@ -93,6 +97,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 this.checkTurno();
             })
         );
+    }
+
+    setTime(): void {
+        this.time = new Date();
     }
 
     getTurnoCalendario(): void {
@@ -142,7 +150,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.url$.subscribe((url: string) => {
                 this.url = url;
-                if (url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1 && url !== '/auth/utente-non-abilitato') {
+                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1 && url !== '/auth/utente-non-abilitato') && !this.url.includes('/changelog#')) {
                     this.store.dispatch(new GetDataNavbar());
                 }
             })
@@ -176,13 +184,39 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new OpenModalNewFeaturesInfo());
     }
 
+    setNotificheLette(): void {
+        this.store.dispatch(new SetNotificheLette());
+    }
+
+    onChiamateInterventi(): void {
+        const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
+        const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+        if (mezziInServizioStatus) {
+            this.toggleMezziInSerivizo();
+        } else if (schedeContattoStatus) {
+            this.toggleSchedeContatto();
+        }
+    }
+
+    toggleMezziInSerivizo(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleMezziInServizio());
+    }
+
+    toggleSchedeContatto(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    returnToHome(): void {
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home])
+        ]);
+    }
+
     logout(): void {
         const homeUrl = this.store.selectSnapshot(RouterState.url);
         this.store.dispatch(new Logout(homeUrl));
-    }
-
-    setNotificheLette(): void {
-        this.store.dispatch(new SetNotificheLette());
     }
 
 }

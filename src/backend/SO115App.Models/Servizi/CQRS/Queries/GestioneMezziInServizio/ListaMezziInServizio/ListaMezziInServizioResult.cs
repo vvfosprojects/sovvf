@@ -17,22 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
-using SO115App.Models.Servizi.CustomMapper;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio
 {
-    /// <summary>
-    ///   DTO di output
-    /// </summary>
     public class ListaMezziInServizioResult
     {
-        /// <summary>
-        ///   La sintesi delle richieste di assistenza
-        /// </summary>
-        public List<MezzoInServizio> ListaMezzi
-        { get; set; }
+        public List<MezzoInServizio> DataArray { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,12 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiati>>(json);
 
-            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
+            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
+        }
+
+        public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
+        {
+            throw new NotImplementedException();
         }
     }
 }

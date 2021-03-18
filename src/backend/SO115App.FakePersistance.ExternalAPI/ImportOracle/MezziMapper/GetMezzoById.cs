@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;

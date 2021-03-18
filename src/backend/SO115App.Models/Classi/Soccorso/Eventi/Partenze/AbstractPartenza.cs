@@ -53,7 +53,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceMezzo,
             DateTime istante,
             string codiceFonte,
-            string TipoEvento) : base(richiesta, istante, codiceFonte, TipoEvento)
+            string TipoEvento,
+            int CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
@@ -61,12 +62,15 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             }
 
             this.CodiceMezzo = codiceMezzo;
+            this.CodicePartenza = CodicePartenza;
         }
 
         /// <summary>
         ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; private set; }
+
+        public int CodicePartenza { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento

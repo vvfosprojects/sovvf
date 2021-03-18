@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -28,8 +28,10 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -42,11 +44,13 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;
@@ -71,12 +75,11 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 this.loadingListe = loading;
             })
         );
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Composizione creato');
-        }
+        console.log('Componente Composizione creato');
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
             this.store.dispatch([
@@ -92,13 +95,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati(),
-            new ClearFiltriAffini()
+            new ClearPreaccoppiati()
         ]);
         this.subscription.unsubscribe();
-        if (isDevMode()) {
-            console.log('Componente Composizione distrutto');
-        }
+        console.log('Componente Composizione distrutto');
     }
 
     cardClasses(r: SintesiRichiesta): void {
@@ -119,7 +119,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onVisualizzaEventiRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+        } else {
+          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
@@ -149,11 +154,17 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(ricerca: string): void {
-        this.store.dispatch(new SetRicercaSquadreComposizione(ricerca));
+        this.store.dispatch([
+            new SetRicercaSquadreComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 
     changeRicercaMezzi(ricerca: string): void {
-        this.store.dispatch(new SetRicercaMezziComposizione(ricerca));
+        this.store.dispatch([
+            new SetRicercaMezziComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 }
 
