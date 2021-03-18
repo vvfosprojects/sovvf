@@ -53,7 +53,7 @@ export class MezzoActionsComponent implements OnInit {
                   this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                   const orario = res.result.oraEvento;
                   const data = res.result.dataEvento;
-                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.minute }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
+                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
                 } else {
                   this.actionMezzo.emit();
                 }
@@ -74,7 +74,7 @@ export class MezzoActionsComponent implements OnInit {
                   this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                   const orario = res.result.oraEvento;
                   const data = res.result.dataEvento;
-                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.minute }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
+                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
                 } else {
                   this.actionMezzo.emit();
                 }
