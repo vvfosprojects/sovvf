@@ -181,7 +181,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     };
 
                     if (comp.MezzoPreaccoppiato != null && comp.MezzoPreaccoppiato.Mezzo != null && statiOperativiMezzi.Count > 0)
-                        comp.MezzoPreaccoppiato.Mezzo.Stato = statiOperativiMezzi.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo;
+                        comp.MezzoPreaccoppiato.Mezzo.Stato = statiOperativiMezzi.FirstOrDefault(m => m.CodiceMezzo == comp.MezzoPreaccoppiato.Mezzo.Codice)?.StatoOperativo ?? Costanti.MezzoInSede;
 
                     squadra.IndiceOrdinamento = GetIndiceOrdinamento(comp, query.Richiesta);
 
