@@ -45,16 +45,11 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
         public async Task SendNotification(ChiamataInCorsoMarkerCommand chiamata)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.AddChiamataInCorso.Localita.Coordinate);
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.AddChiamataInCorso.Localita.Coordinate);
 
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
+            var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(CodUOCompetenzaAppo[0]);
+            SediDaNotificare.Add(chiamata.AddChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerAdd", chiamata);

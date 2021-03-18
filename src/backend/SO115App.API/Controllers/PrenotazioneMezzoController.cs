@@ -26,7 +26,7 @@ namespace SO115App.API.Controllers
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = false;
-
+            mezzoPrenotato.IdOpPrenotazione = Request.Headers["IdUtente"];
             mezzoPrenotato.IstantePrenotazione = DateTime.UtcNow;
             mezzoPrenotato.IstanteScadenzaSelezione = DateTime.UtcNow.AddSeconds(15);
 

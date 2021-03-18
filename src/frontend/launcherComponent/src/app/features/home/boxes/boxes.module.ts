@@ -44,8 +44,7 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
     ],
     exports: [
         InfoAggregateComponent
-    ],
-    entryComponents: [ModalServiziComponent]
+    ]
 })
 export class BoxesModule {
 

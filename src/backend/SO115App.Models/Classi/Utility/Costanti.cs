@@ -24,12 +24,17 @@ namespace SO115App.Models.Classi.Utility
         #region CondivisaAuthorization
 
         public static string UtenteNonAutorizzato = "Utente non autorizzato";
-        public static string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
-        public static string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
+        public static string DatiMancanti = "Dati Mancanti";
 
         #endregion CondivisaAuthorization
 
         #region CondivisaValidator
+
+        public static string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
+        public static string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
+
+        public static string PartenzaGiaPresente = "Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
+        public static string CoordinateErrate = "Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
 
         public static string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
         public static string NominativoNonPresente = "Il nominativo del richiedente non è presente";
@@ -65,6 +70,7 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoInSede = "In Sede";
         public static string MezzoRientrato = "Rientrato";
         public static string MezzoInViaggio = "In Viaggio";
+        public static string MezzoInUscita = "In Uscita";
         public static string MezzoIstituto = "Istituto";
         public static string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
         public static string MezzoFuoriServizio = "Fuori Servizio";
@@ -74,6 +80,7 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
         public static string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
         public static string MezzoErroreCambioStatoRichiestaChiusa = "Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
+        public static string MezzoErroreGiaOccupato = "Il mezzo risulta già occupato. Selezionarne un altro.";
 
         #endregion StatiMezzi
 
@@ -88,6 +95,7 @@ namespace SO115App.Models.Classi.Utility
         public static string Composizione = "Composizione";
         public static string ChiusuraPartenza = "ChiusuraPartenza";
         public static string ArrivoSulPosto = "ArrivoSulPosto";
+        public static string UscitaPartenza = "UscitaPartenza";
         public static string AssegnataRichiesta = "AssegnataRichiesta";
         public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
         public static string EventoRichiestaSospesa = "RichiestaSospesa";
@@ -100,8 +108,16 @@ namespace SO115App.Models.Classi.Utility
         public static string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
         public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
         public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
+        public static string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
+        public static string SostituzionePartenza = "SostituzionePartenza";
         public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
+        public static string FonogrammaDaInviare = "FonogrammaDaInviare";
+        public static string FonogrammaInviato = "FonogrammaInviato";
+
+        public static string AllertaAltreSedi = "AllertaAltreSedi";
+
+        public static string TrasferimentoChiamata = "TrasferimentoChiamata";
         #endregion Eventi
 
         #region Ruoli Utenti

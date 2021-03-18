@@ -70,13 +70,13 @@
 <div class="modal-footer">
     <div class="row w-100">
         <div class="col-12 text-right">
-            <button type="button" class="btn btn-lg btn-secondary mr-2" aria-label="Close"
+            <button type="button" class="btn btn-lg btn-secondary font-weight-bolder mr-2" aria-label="Close"
                     (click)="chiudiModalFiltriTipologia('ko')">
-                Annulla
+                {{ 'Chiudi' | uppercase }}
             </button>
-            <button type="button" class="btn btn-lg btn-success" aria-label="Close"
+            <button type="button" class="btn btn-lg btn-success font-weight-bolder" aria-label="Close"
                     (click)="chiudiModalFiltriTipologia('ok')">
-                Applica Filtri
+                {{ 'Applica Filtri' | uppercase }}
             </button>
         </div>
     </div>

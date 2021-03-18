@@ -8,12 +8,12 @@ import { PermessiService } from '../../core/service/permessi-service/permessi.se
 })
 export class CheckPermissionRichiestaPipe implements PipeTransform {
 
-    constructor(private _permessiService: PermessiService) {
+    constructor(private permessiService: PermessiService) {
     }
 
-    transform(feature: PermissionFeatures, codUOCompetenza: string[]): any {
+    transform(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string, codSOAllertate: string[]): any {
         if (codUOCompetenza) {
-            return !this._permessiService.checkUserPermissionRichiesta(feature, codUOCompetenza);
+            return !this.permessiService.checkUserPermissionRichiesta(feature, codUOCompetenza, codSOCompetente, codSOAllertate);
         }
         return false;
     }

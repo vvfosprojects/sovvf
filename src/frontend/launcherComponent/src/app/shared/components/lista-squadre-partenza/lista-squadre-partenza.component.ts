@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
 
 @Component({
@@ -11,11 +11,11 @@ export class ListaSquadrePartenzaComponent implements OnInit, OnDestroy {
     listaSquadre: ListaSquadre;
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Lista Squadre Partenza creato');
+        console.log('Componente Lista Squadre Partenza creato');
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Lista Squadre Partenza distrutto');
+        console.log('Componente Lista Squadre Partenza distrutto');
     }
 
 }

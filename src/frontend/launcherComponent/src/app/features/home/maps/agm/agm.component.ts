@@ -8,7 +8,6 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { MapService } from '../service/map-service/map-service.service';
-import { ControlPosition, FullscreenControlOptions, GoogleMap, LatLngBounds, LatLngLiteral, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
@@ -28,7 +27,11 @@ import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
 import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
 import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
-declare var google: any;
+import ZoomControlOptions = google.maps.ZoomControlOptions;
+import ControlPosition = google.maps.ControlPosition;
+import FullscreenControlOptions = google.maps.FullscreenControlOptions;
+import LatLngBounds = google.maps.LatLngBounds;
+import LatLngLiteral = google.maps.LatLngLiteral;
 
 @Component({
     selector: 'app-agm',
@@ -37,6 +40,7 @@ declare var google: any;
 })
 
 export class AgmComponent implements OnDestroy {
+
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];
@@ -45,6 +49,8 @@ export class AgmComponent implements OnDestroy {
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
     @Input() schedeContattoMarkers: SchedaContattoMarker[];
+    @Input() boxAttivi: boolean;
+
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     AppFeatures = AppFeatures;
@@ -54,13 +60,14 @@ export class AgmComponent implements OnDestroy {
     meteoMarkers: MeteoMarker[] = [];
 
     mapsOptions: MapsOptionsInterface;
-    map_loaded = false;
+    mapLoaded = false;
     subscription = new Subscription();
     map: any;
-    mapWrapper: GoogleMap;
+    mapWrapper: any;
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
     schedaContattoMarkerIconUrl: string;
+    disabilitaIndicatoriMezzo = true;
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -69,6 +76,8 @@ export class AgmComponent implements OnDestroy {
     fullscreenControlOptions: FullscreenControlOptions = {
         position: ControlPosition.TOP_LEFT
     };
+
+    private mapZoom: Map<number, number>;
 
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
     direction: DirectionInterface = {
@@ -98,14 +107,14 @@ export class AgmComponent implements OnDestroy {
         });
         /**
          * marker di tipo meteo
-         * @type {Subscription}
+         * @returns: { Subscription }
          */
         this.subscription.add(this.meteoMarkers$.subscribe((marker: MeteoMarker[]) => {
             this.meteoMarkers = marker;
         }));
         /**
          * direzioni di tipo direction
-         * @type {Subscription}
+         * @returns: { Subscription }
          */
         this.subscription.add(
             this.direction$.subscribe((direzioni: DirectionInterface) => {
@@ -134,9 +143,14 @@ export class AgmComponent implements OnDestroy {
         this.subscription.add(
             this.bounceAnimationStatus$.subscribe((status: boolean) => this.bounceAnimationStatus = status)
         );
+        /**
+         * creo una mappa zoom corrente -> round exp da utilizzare per arrotondare le coordinate
+         * @returns: { Map<number, number> }
+         */
+        this.mapZoom = this.mapZoomToRound();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
@@ -145,11 +159,11 @@ export class AgmComponent implements OnDestroy {
          *  imposto una proprietà a true quando la mappa è caricata e inserisco nell'oggetto map il menù
          */
         const self = this;
-        this.map_loaded = true;
+        this.mapLoaded = true;
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
         this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CustomButtons'));
-        google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
+        google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => {
             self.cachedMarkers = [];
             self.mapFullyLoaded.emit(true);
         });
@@ -215,11 +229,10 @@ export class AgmComponent implements OnDestroy {
     }
 
     areaCambiata(bounds: LatLngBounds): void {
-        console.log(bounds.toJSON());
-        this.mapService.setArea(bounds);
+        this.mapService.setArea(bounds, this.mapZoom.get(this.mapWrapper.getZoom()));
     }
 
-    mapClick(event: any) {
+    mapClick(event: any): void {
         this.markerService.createMeteoMarker(event);
         this.markerService.clearSelfClick();
     }
@@ -292,11 +305,11 @@ export class AgmComponent implements OnDestroy {
         this.markerService.actionSchedaContattoMarker(id, event);
     }
 
-    findDatiMeteo(_id: string): Meteo {
+    findDatiMeteo(id: string): Meteo {
         /**
          * ritorno i dati meteo del marker selezionato
          */
-        return this.markerService.findDatiMeteo(_id);
+        return this.markerService.findDatiMeteo(id);
     }
 
     colorWindow(stato: string): string {
@@ -321,6 +334,19 @@ export class AgmComponent implements OnDestroy {
 
     onAddMezzoComposizione(idMezzo: string): void {
         this.markerService.onAddMezzoComposizione(idMezzo);
+    }
+
+    /**
+     * zoom agm - roundExp
+     * @returns: { Map<number, number> }
+     */
+    mapZoomToRound(): Map<number, number> {
+        return new Map([
+            [6, 0],
+            [7, 1], [8, 1], [9, 1],
+            [10, 2], [11, 2], [12, 2], [13, 2],
+            [14, 3], [15, 3], [16, 3], [17, 3], [18, 3]
+        ]);
     }
 
 }

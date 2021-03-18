@@ -36,11 +36,13 @@ namespace SO115App.ExternalAPI.Fake.Marker
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IGetMezziUtilizzabiliByAreaMappa _getMezziUtilizzabiliByAreaMappa;
 
-        public GetMezziMarkerExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili)
+        public GetMezziMarkerExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetMezziUtilizzabiliByAreaMappa getMezziUtilizzabiliByAreaMappa)
         {
             _getInfoRichiesta = getInfoRichiesta;
             _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getMezziUtilizzabiliByAreaMappa = getMezziUtilizzabiliByAreaMappa;
         }
 
         /// <summary>
@@ -51,20 +53,18 @@ namespace SO115App.ExternalAPI.Fake.Marker
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
             var listaMezziFilter = new List<MezzoMarker>();
+            var listaMezzi = new List<Mezzo>();
 
-            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
+            if (!filtroAreaMappa.FiltroMezzi.FiltraPerAreaMappa)
+                listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
+            else
+                listaMezzi = _getMezziUtilizzabiliByAreaMappa.Get(filtroAreaMappa).Result;
 
-            var listaMezziMarker = new List<MezzoMarker>();
-
-            foreach (var mezzo in listaMezzi)
+            var listaMezziMarker = listaMezzi.Where(m => m != null).Select(mezzo => new MezzoMarker()
             {
-                var mezzoMarker = new MezzoMarker()
-                {
-                    Mezzo = mezzo,
-                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
-                };
-                listaMezziMarker.Add(mezzoMarker);
-            }
+                Mezzo = mezzo,
+                InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
+            }).ToList();
 
             if (filtroAreaMappa.BottomLeft == null) return listaMezziMarker;
 

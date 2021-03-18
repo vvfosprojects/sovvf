@@ -1,142 +1,126 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    GetPreAccoppiati,
-    GetListaIdPreAccoppiati,
+    GetListaComposizioneVeloce,
     SelectPreAccoppiatoComposizione,
-    SetPreaccoppiati,
-    SetListaIdPreAccoppiati,
+    SetListaPreaccoppiati,
     UnselectPreAccoppiatoComposizione,
     UpdateMezzoPreAccoppiatoComposizione,
     ClearPreAccoppiatiSelezionatiComposizione,
     HoverInPreAccoppiatoComposizione,
     HoverOutPreAccoppiatoComposizione,
-    SetIdPreAccoppiatiOccupati,
-    FilterListaPreAccoppiati
+    SetIdPreAccoppiatiOccupati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ComposizioneAvanzataState } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
-import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
-import {
-    checkSquadraOccupata,
-    codDistaccamentoIsEqual,
-    mezzoComposizioneBusy
-} from '../../../composizione-partenza/shared/functions/composizione-functions';
-import produce from 'immer';
-import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { checkSquadraOccupata, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
+import { Injectable } from '@angular/core';
+import { PaginationComposizionePartenzaState } from '../../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ListaComposizioneVeloce } from '../../../../../shared/interface/lista-composizione-veloce-interface';
 
-export interface PreAccoppiatiStateModel {
+export interface ComposizioneVeloceStateModel {
     allPreAccoppiati: BoxPartenza[];
     preAccoppiati: BoxPartenza[];
-    idPreAccoppiati: IdPreaccoppiati[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
     idPreAccoppiatiOccupati: string[];
     idPreaccoppiatoHover: string;
 }
 
-export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
+export const ComposizioneVeloceStateDefaults: ComposizioneVeloceStateModel = {
     allPreAccoppiati: null,
     preAccoppiati: null,
-    idPreAccoppiati: null,
     idPreAccoppiatoSelezionato: null,
     idPreAccoppiatiSelezionati: [],
     idPreAccoppiatiOccupati: [],
     idPreaccoppiatoHover: null
 };
 
-@State<PreAccoppiatiStateModel>({
-    name: 'preAccoppiati',
-    defaults: PreAccoppiatiStateModelStateDefaults
+@Injectable()
+@State<ComposizioneVeloceStateModel>({
+    name: 'composizioneVeloce',
+    defaults: ComposizioneVeloceStateDefaults
 })
 export class ComposizioneVeloceState {
 
     @Selector()
-    static preAccoppiati(state: PreAccoppiatiStateModel) {
+    static preAccoppiati(state: ComposizioneVeloceStateModel): BoxPartenza[] {
         return state.preAccoppiati;
     }
 
     @Selector()
-    static idPreAccoppiatiSelezionati(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatiSelezionati(state: ComposizioneVeloceStateModel): string[] {
         return state.idPreAccoppiatiSelezionati;
     }
 
     @Selector()
-    static idPreAccoppiatiOccupati(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatiOccupati(state: ComposizioneVeloceStateModel): string[] {
         return state.idPreAccoppiatiOccupati;
     }
 
     @Selector()
-    static idPreAccoppiatoSelezionato(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatoSelezionato(state: ComposizioneVeloceStateModel): string {
         return state.idPreAccoppiatoSelezionato;
     }
 
     @Selector()
-    static idPreAccoppiatoHover(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatoHover(state: ComposizioneVeloceStateModel): string {
         return state.idPreaccoppiatoHover;
     }
 
-    constructor(private preAccoppiatiService: CompPartenzaService,
+    constructor(private compPartenzaService: CompPartenzaService,
                 private store: Store) {
     }
 
-    @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
-        const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
-        const state = getState();
-        const preaccoppiati: BoxPartenza[] = [];
-        if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0) {
-            state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
-                const preaccoppiato = {} as BoxPartenza;
-                preaccoppiato.id = idPreaccopiati.id;
-                const mezzoComposizione = listaMezziSquadre.composizioneMezzi.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
-                if (mezzoComposizione && mezzoComposizione.length > 0) {
-                    preaccoppiato.mezzoComposizione = mezzoComposizione[0];
-                }
-                const squadreComposizione = listaMezziSquadre.composizioneSquadre.filter(value => idPreaccopiati.squadre.includes(value.squadra.id));
-                if (squadreComposizione && squadreComposizione.length > 0) {
-                    preaccoppiato.squadraComposizione = squadreComposizione;
-                }
-                if (preaccoppiato.id && preaccoppiato.mezzoComposizione && preaccoppiato.squadraComposizione) {
-                    preaccoppiati.push(preaccoppiato);
+    @Action(GetListaComposizioneVeloce)
+    getListaPreAccoppiati({ dispatch }: StateContext<ComposizioneVeloceStateModel>, action: GetListaComposizioneVeloce): void {
+        const paginationPreaccoppiati = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
+        const obj = {
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : null,
+            pagination: {
+                page: action.options && action.options.page && action.options.page ? action.options.page : paginationPreaccoppiati.page,
+                pageSize: paginationPreaccoppiati.pageSize
+            },
+            turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno : null,
+            codiceDistaccamento: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
+            statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
+            tipoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
+        } as FiltriComposizione;
+        this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
+            const preaccoppiatiOccupati = [];
+            response.composizionePreaccoppiatiDataArray.forEach((preaccoppiato: BoxPartenza) => {
+                if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadreComposizione)) {
+                    preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
-        }
-        const preaccoppiatiOccupati = [];
-        preaccoppiati.forEach(preaccoppiato => {
-            if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadraComposizione)) {
-                preaccoppiatiOccupati.push(preaccoppiato.id);
-            }
+            dispatch([
+                new SetListaPreaccoppiati(response.composizionePreaccoppiatiDataArray),
+                new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
+            ]);
         });
-        dispatch([
-            new SetPreaccoppiati(preaccoppiati),
-            new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
-        ]);
     }
 
-    @Action(SetPreaccoppiati)
-    setPreaccoppiati({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
-        if (action.boxPartenza) {
+    @Action(SetListaPreaccoppiati)
+    setListaPreaccoppiati({ getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SetListaPreaccoppiati): void {
+        if (action.preAccoppiati) {
             patchState({
-                preAccoppiati: action.boxPartenza,
-                allPreAccoppiati: action.boxPartenza
+                preAccoppiati: action.preAccoppiati,
+                allPreAccoppiati: action.preAccoppiati
             });
         }
-        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
-        dispatch(new FilterListaPreAccoppiati(filtriSelezionati));
     }
 
     @Action(ClearPreaccoppiati)
-    clearPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    clearPreaccoppiati({ patchState }: StateContext<ComposizioneVeloceStateModel>): void {
         patchState({
             preAccoppiati: null,
             allPreAccoppiati: null
@@ -145,7 +129,7 @@ export class ComposizioneVeloceState {
 
 
     @Action(SelectPreAccoppiatoComposizione)
-    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione) {
+    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SelectPreAccoppiatoComposizione): void {
         // controllo se il mezzo che è all'interno del preAccoppiato non è prenotato
         if (!action.preAcc.mezzoComposizione.istanteScadenzaSelezione) {
             setState(
@@ -160,7 +144,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(UnselectPreAccoppiatoComposizione)
-    unselectPreAccoppiatoComposizione({ setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UnselectPreAccoppiatoComposizione) {
+    unselectPreAccoppiatoComposizione({ setState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UnselectPreAccoppiatoComposizione): void {
         setState(
             patch({
                 idPreAccoppiatiSelezionati: removeItem(x => x === action.preAcc.id),
@@ -170,16 +154,16 @@ export class ComposizioneVeloceState {
     }
 
     @Action(ClearPreAccoppiatiSelezionatiComposizione)
-    clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<ComposizioneVeloceStateModel>): void {
         patchState({
-                idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
-                idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
+                idPreAccoppiatiSelezionati: ComposizioneVeloceStateDefaults.idPreAccoppiatiSelezionati,
+                idPreAccoppiatoSelezionato: ComposizioneVeloceStateDefaults.idPreAccoppiatoSelezionato
             }
         );
     }
 
     @Action(UpdateMezzoPreAccoppiatoComposizione)
-    updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UpdateMezzoPreAccoppiatoComposizione) {
+    updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UpdateMezzoPreAccoppiatoComposizione): void {
         const state = getState();
         let preAccoppiato = null;
         state.preAccoppiati.forEach((preAcc: BoxPartenza) => {
@@ -196,29 +180,12 @@ export class ComposizioneVeloceState {
     }
 
     @Action(ClearComposizioneVeloce)
-    clearComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
-        patchState(PreAccoppiatiStateModelStateDefaults);
-    }
-
-    @Action(GetListaIdPreAccoppiati)
-    getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
-        this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
-        });
-    }
-
-    @Action(SetListaIdPreAccoppiati)
-    setListaIdPreAccoppiati({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetListaIdPreAccoppiati) {
-        if (action && action.idPreaccoppiati) {
-            patchState({
-                idPreAccoppiati: action.idPreaccoppiati
-            });
-            dispatch(new GetPreAccoppiati());
-        }
+    clearComposizioneVeloce({ patchState }: StateContext<ComposizioneVeloceStateModel>): void {
+        patchState(ComposizioneVeloceStateDefaults);
     }
 
     @Action(SetIdPreAccoppiatiOccupati)
-    setIdPreAccoppiatiOccupati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetIdPreAccoppiatiOccupati) {
+    setIdPreAccoppiatiOccupati({ patchState }: StateContext<ComposizioneVeloceStateModel>, action: SetIdPreAccoppiatiOccupati): void {
         if (action && action.idPreaccoppiatiOccupati) {
             patchState({
                 idPreAccoppiatiOccupati: action.idPreaccoppiatiOccupati
@@ -227,7 +194,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(HoverInPreAccoppiatoComposizione)
-    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: HoverInPreAccoppiatoComposizione) {
+    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: HoverInPreAccoppiatoComposizione): void {
         const state = getState();
         patchState({
             idPreaccoppiatoHover: action.idBoxPartenzaHover.idBoxPartenza
@@ -238,37 +205,10 @@ export class ComposizioneVeloceState {
     }
 
     @Action(HoverOutPreAccoppiatoComposizione)
-    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
+    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>): void {
         patchState({
             idPreaccoppiatoHover: null
         });
         dispatch(new ClearMarkerMezzoHover());
-    }
-
-    @Action(FilterListaPreAccoppiati)
-    filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati) {
-        let state = getState();
-        setState(
-            produce(state, (draft: PreAccoppiatiStateModel) => {
-                draft.preAccoppiati = draft.allPreAccoppiati;
-
-                if (action.filtri) {
-                    // CODICE DISTACCAMENTO
-                    if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
-                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => codDistaccamentoIsEqual(p.mezzoComposizione.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
-                    }
-                    // CODICE TIPO MEZZO
-                    if (action.filtri.TipoMezzo && action.filtri.TipoMezzo.length > 0) {
-                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => p.mezzoComposizione.mezzo.genere === action.filtri.TipoMezzo[0]);
-                    }
-                    // CODICE STATO MEZZO
-                    if (action.filtri.StatoMezzo && action.filtri.StatoMezzo.length > 0) {
-                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => p.mezzoComposizione.mezzo.stato === action.filtri.StatoMezzo[0]);
-                    }
-                }
-            })
-        );
-        state = getState();
-        dispatch(new SetListaFiltriAffini(state.preAccoppiati.map((p: BoxPartenza) => p.mezzoComposizione)));
     }
 }

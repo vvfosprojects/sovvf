@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
@@ -6,7 +6,8 @@ import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/vo
     templateUrl: './filtro.component.html',
     styleUrls: ['./filtro.component.css']
 })
-export class FiltroComponent implements OnInit {
+export class FiltroComponent {
+
     @Input() filtro: VoceFiltro;
     @Input() selezionato: boolean;
     @Input() useCheckbox: boolean;
@@ -18,10 +19,7 @@ export class FiltroComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
-    }
-
-    onSelezione(filtro: VoceFiltro) {
+    onSelezione(filtro: VoceFiltro): void {
         if (!this.selezionato) {
             if (!this.disabled) {
                 this.filtroSelezionato.emit(filtro);

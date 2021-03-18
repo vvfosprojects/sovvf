@@ -1,6 +1,9 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
-    AddSchedaId, CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto,
+    AddSchedaId,
+    CheckboxError,
+    ClearMergeSchedeContatto,
+    InitSaveMergeSchedeContatto,
     RemoveSchedaId,
     SetMergeClassificazione,
     SetMergeSchedaId,
@@ -11,6 +14,7 @@ import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { SaveMergeSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { Injectable } from '@angular/core';
 
 export interface MergeSchedeContattoStateModel {
     statoModalita: boolean;
@@ -24,6 +28,7 @@ export const MergeSchedeContattoStateDefaults: MergeSchedeContattoStateModel = {
     schedeSelezionateId: []
 };
 
+@Injectable()
 @State<MergeSchedeContattoStateModel>({
     name: 'mergeSchedeContatto',
     defaults: MergeSchedeContattoStateDefaults
@@ -31,22 +36,22 @@ export const MergeSchedeContattoStateDefaults: MergeSchedeContattoStateModel = {
 export class MergeSchedeContattoState {
 
     @Selector()
-    static statoModalita(state: MergeSchedeContattoStateModel) {
+    static statoModalita(state: MergeSchedeContattoStateModel): boolean {
         return state.statoModalita;
     }
 
     @Selector()
-    static classificazione(state: MergeSchedeContattoStateModel) {
+    static classificazione(state: MergeSchedeContattoStateModel): ClassificazioneSchedaContatto {
         return state.classificazione;
     }
 
     @Selector()
-    static schedeSelezionateId(state: MergeSchedeContattoStateModel) {
+    static schedeSelezionateId(state: MergeSchedeContattoStateModel): string[] {
         return state.schedeSelezionateId;
     }
 
     @Action(ToggleModalitaMerge)
-    toggleModalitaMerge({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>) {
+    toggleModalitaMerge({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
         if (getState().statoModalita) {
             dispatch(new ClearMergeSchedeContatto());
         } else {
@@ -57,7 +62,7 @@ export class MergeSchedeContattoState {
     }
 
     @Action(SetMergeSchedaId)
-    setMergeSchedaId({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>, action: SetMergeSchedaId) {
+    setMergeSchedaId({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>, action: SetMergeSchedaId): void {
         const codiceScheda = action.scheda.codiceScheda;
         if (getState().schedeSelezionateId.includes(codiceScheda)) {
             dispatch(new RemoveSchedaId(codiceScheda));
@@ -68,7 +73,7 @@ export class MergeSchedeContattoState {
     }
 
     @Action(SetMergeClassificazione)
-    setMergeClassificazione({ getState, patchState }: StateContext<MergeSchedeContattoStateModel>, action: SetMergeClassificazione) {
+    setMergeClassificazione({ getState, patchState }: StateContext<MergeSchedeContattoStateModel>, action: SetMergeClassificazione): void {
         if (getState().schedeSelezionateId.length === 0) {
             patchState({
                 classificazione: MergeSchedeContattoStateDefaults.classificazione
@@ -81,7 +86,7 @@ export class MergeSchedeContattoState {
     }
 
     @Action(RemoveSchedaId)
-    removeSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: RemoveSchedaId) {
+    removeSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: RemoveSchedaId): void {
         setState(
             patch({
                 schedeSelezionateId: removeItem<string>(id => id === payload)
@@ -90,7 +95,7 @@ export class MergeSchedeContattoState {
     }
 
     @Action(AddSchedaId)
-    addSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: AddSchedaId) {
+    addSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: AddSchedaId): void {
         setState(
             patch({
                 schedeSelezionateId: insertItem(payload)
@@ -99,19 +104,18 @@ export class MergeSchedeContattoState {
     }
 
     @Action(CheckboxError)
-    checkboxError({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>) {
+    checkboxError({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
         const plural = getState().schedeSelezionateId.length > 1 ? 'e' : 'a';
-        // tslint:disable-next-line:max-line-length
         dispatch(new ShowToastr(ToastrType.Warning, 'Selezione scheda contatto', `Impossibile unire una scheda con una classificazione differente da quell${plural} già selezionat${plural}`, null, null, true));
     }
 
     @Action(InitSaveMergeSchedeContatto)
-    initSaveMergeSchedeContatto({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>) {
+    initSaveMergeSchedeContatto({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
         dispatch(new SaveMergeSchedeContatto(getState().schedeSelezionateId));
     }
 
     @Action(ClearMergeSchedeContatto)
-    clearMergeSchedeContatto({ patchState }: StateContext<MergeSchedeContattoStateModel>) {
+    clearMergeSchedeContatto({ patchState }: StateContext<MergeSchedeContattoStateModel>): void {
         patchState(MergeSchedeContattoStateDefaults);
     }
 

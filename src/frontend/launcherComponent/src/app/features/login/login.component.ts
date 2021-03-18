@@ -7,6 +7,11 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
 import { CasLogin, RecoveryUrl } from '../auth/store/auth.actions';
 import { environment } from '../../../environments/environment';
+import { AuthState } from '../auth/store/auth.state';
+import { Utente } from '../../shared/model/utente.model';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -18,11 +23,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     loading: boolean;
+    @Select(AuthState.currentUser) currentUser$: Observable<Utente>;
 
     loginForm: FormGroup;
     submitted = false;
     error = '';
     onlyCas = environment.onlyCas;
+    loginVisible = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,25 +38,36 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.loading$.subscribe((loading: boolean) => this.loading = loading)
         );
+        this.subscription.add(
+            this.currentUser$.subscribe((currentUser: Utente) => {
+                if (currentUser) {
+                    this.store.dispatch(new Navigate([RoutesPath.Home]));
+                } else {
+                    this.loginVisible = true;
+                }
+            })
+        );
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.store.dispatch(new StopBigLoading());
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    get f() {
+    get f(): any {
         return this.loginForm.controls;
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
+        this.error = '';
 
         if (this.loginForm.invalid) {
             return;
@@ -62,11 +80,12 @@ export class LoginComponent implements OnInit, OnDestroy {
                     this.store.dispatch(new RecoveryUrl());
                 },
                 error => {
+                    this.submitted = false;
                     this.error = error;
                 });
     }
 
-    onCasLogin() {
+    onCasLogin(): void {
         this.store.dispatch(new CasLogin());
     }
 }

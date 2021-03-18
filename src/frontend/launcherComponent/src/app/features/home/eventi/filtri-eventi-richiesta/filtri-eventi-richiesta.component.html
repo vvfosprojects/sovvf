@@ -4,7 +4,7 @@
         <i class="fa fa-hashtag"></i>
           {{ codiceRichiesta }}
       </span>
-        <button class="btn btn-secondary ml-3" [disabled]="elencoEventi?.length <= 0"
+        <button class="btn btn-secondary btn-no-hover ml-3" [disabled]="elencoEventi?.length <= 0"
                 (click)="toggleIconeNomeClasseEvento.emit()">
             <i class="fa mr-2" [ngClass]="getIconaBottone()"></i>
             <span *ngIf="iconeNomeClasseEvento">Visualizza testo</span>
@@ -13,7 +13,7 @@
     </div>
     <div class="float-right">
         <form [formGroup]="form">
-            <ng-select [items]="listaTargaMezzo"
+            <ng-select [items]="targheSelezionateUnique"
                        bindLabel="targa"
                        bindValue="targa"
                        placeholder="{{mostraTesto()}}"

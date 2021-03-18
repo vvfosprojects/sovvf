@@ -1,5 +1,14 @@
 import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { ToggleModifica } from '../../actions/view/view.actions';
+import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
+import { RichiesteMarkersState } from '../maps/richieste-markers.state';
+import { UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
+import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { Observable } from 'rxjs';
+import { UpdateFormValue } from '@ngxs/form-plugin';
+import { makeCopy } from '../../../../../shared/helper/function';
+import produce from 'immer';
 import {
     ChiudiRichiestaModifica,
     ClearRichiestaModifica,
@@ -10,15 +19,7 @@ import {
     SuccessRichiestaModifica,
     ClearIndirizzo
 } from '../../actions/richieste/richiesta-modifica.actions';
-import produce from 'immer';
-import { makeCopy } from '../../../../../shared/helper/function';
-import { ToggleModifica } from '../../actions/view/view.actions';
-import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { RichiesteMarkersState } from '../maps/richieste-markers.state';
-import { UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
-import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { Observable } from 'rxjs';
-import { UpdateFormValue } from '@ngxs/form-plugin';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaModificaStateModel {
     modificaRichiestaForm: {
@@ -38,7 +39,8 @@ export interface RichiestaModificaStateModel {
             notePubbliche: string,
             descrizione: string,
             zoneEmergenza: string,
-            prioritaRichiesta: number
+            prioritaRichiesta: number,
+            listaEnti: string[]
         },
         dirty: boolean,
         status: string,
@@ -63,6 +65,7 @@ export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     modificaIndirizzo: false
 };
 
+@Injectable()
 @State<RichiestaModificaStateModel>({
     name: 'richiestaModifica',
     defaults: RichiestaModificaStateDefaults
@@ -75,17 +78,17 @@ export class RichiestaModificaState {
     }
 
     @Selector()
-    static richiestaModifica(state: RichiestaModificaStateModel) {
+    static richiestaModifica(state: RichiestaModificaStateModel): SintesiRichiesta {
         return state.richiestaModifica;
     }
 
     @Selector()
-    static successModifica(state: RichiestaModificaStateModel) {
+    static successModifica(state: RichiestaModificaStateModel): boolean {
         return state.successModifica;
     }
 
     @Action(SetRichiestaModifica)
-    setRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica) {
+    setRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica): void {
         patchState({
             richiestaModifica: action.richiesta
         });
@@ -101,7 +104,7 @@ export class RichiestaModificaState {
     }
 
     @Action(ModificaRilevanza)
-    modificaRilevanza({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
+    modificaRilevanza({ getState, setState }: StateContext<RichiestaModificaStateModel>): void {
         setState(
             produce(getState(), draft => {
                 const richiesta = makeCopy(draft.richiestaModifica);
@@ -117,10 +120,10 @@ export class RichiestaModificaState {
     }
 
     @Action(ModificaRilevanzaStArCu)
-    modificaRilevanzaStArCu({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
+    modificaRilevanzaStArCu({ getState, setState }: StateContext<RichiestaModificaStateModel>): void {
         setState(
             produce(getState(), draft => {
-                const richiesta = makeCopy(draft.richiestaModifica);
+                const richiesta = draft.richiestaModifica;
                 if (draft.richiestaModifica.rilevanteStArCu === true) {
                     richiesta.rilevanteStArCu = false;
                     draft.richiestaModifica = richiesta;
@@ -133,7 +136,7 @@ export class RichiestaModificaState {
     }
 
     @Action(ModificaIndirizzo)
-    modificaIndirizzo({ getState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo) {
+    modificaIndirizzo({ getState, setState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo): void {
         if (action.nuovoIndirizzo) {
             patchState({
                 modificaIndirizzo: true
@@ -147,17 +150,17 @@ export class RichiestaModificaState {
     }
 
     @Action(ChiudiRichiestaModifica)
-    chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica) {
+    chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica): void {
         const state = getState();
         if (state.modificaIndirizzo && !action.mantieniModificaIndirizzo) {
             dispatch(new UpdateRichiestaMarker(state.richiestaMarker));
         }
         dispatch(new ToggleModifica(true));
-        dispatch(new ClearRichiestaModifica);
+        dispatch(new ClearRichiestaModifica());
     }
 
     @Action(SuccessRichiestaModifica)
-    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>) {
+    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>): void {
         patchState({
             successModifica: true
         });
@@ -165,12 +168,12 @@ export class RichiestaModificaState {
     }
 
     @Action(ClearRichiestaModifica)
-    clearRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>) {
+    clearRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>): void {
         patchState(RichiestaModificaStateDefaults);
     }
 
     @Action(ClearIndirizzo)
-    ClearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>) {
+    ClearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
         dispatch(new UpdateFormValue({
             path: 'richiestaModifica.modificaRichiestaForm',
             value: {

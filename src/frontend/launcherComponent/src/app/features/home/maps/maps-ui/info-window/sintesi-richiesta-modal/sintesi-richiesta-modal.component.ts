@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../../../../../shared/interface/mezzo-action.interface';
 import { SintesiRichiesta } from '../../../../../../shared/model/sintesi-richiesta.model';
@@ -23,17 +23,17 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
         this.subscription.add(this.sintesiRichiesta$.subscribe(sintesi => this.sintesiRichiesta = sintesi));
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Sintesi Richiesta Modal creato');
+    ngOnInit(): void {
+        console.log('Componente Sintesi Richiesta Modal creato');
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearRichiestaById());
-        isDevMode() && console.log('Componente Sintesi Richiesta Modal distrutto');
+        console.log('Componente Sintesi Richiesta Modal distrutto');
     }
 
-    onActionMezzo(actionMezzo: MezzoActionInterface) {
+    onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 

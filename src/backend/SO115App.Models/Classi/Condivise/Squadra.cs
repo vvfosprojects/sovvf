@@ -52,15 +52,21 @@ namespace SO115App.API.Models.Classi.Condivise
             /// <summary>
             ///   Fuori per ragioni di istituto
             /// </summary>
-            Istituto
+            Istituto,
+
+            /// <summary>
+            ///   La partenza è stata creata ma il mezzo non è ancora uscito dalla sede
+            /// </summary>
+            InUscita,
         }
 
-        public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento)
+        public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento, string Turno = null)
         {
             this.Nome = Nome;
             this.Stato = Stato;
             this.Componenti = Componenti;
             this.Distaccamento = Distaccamento;
+            this.Turno = Turno;
         }
 
         public string Id { get; set; }
@@ -95,5 +101,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
 
         public int IndiceOrdinamento { get; set; }
+
+        public string Turno { get; set; }
     }
 }

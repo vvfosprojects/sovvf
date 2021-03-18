@@ -8,7 +8,7 @@ namespace SO115App.Models.Classi.MongoDTO
 {
     [BsonIgnoreExtraElements]
     public class ListaSedi
-    { 
+    {
         public string Id { get; set; }
 
         [BsonElement("IDSEDE")]
@@ -39,6 +39,9 @@ namespace SO115App.Models.Classi.MongoDTO
         [BsonElement("CODFIGLIO_TC")]
         public int codFiglio_TC { get; set; }
 
+        [BsonElement("CODSEDE_TC")]
+        public string codSede_TC { get; set; }
+
         [BsonElement("ATTIVA")]
         public int attiva { get; set; }
 
@@ -47,6 +50,5 @@ namespace SO115App.Models.Classi.MongoDTO
 
         [BsonElement("LOC")]
         public double[] loc { get; set; }
-   
     }
 }

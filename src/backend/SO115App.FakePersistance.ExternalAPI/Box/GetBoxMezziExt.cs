@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -62,7 +61,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
 
-            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
+            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
                 .Select(x => x.Stato)
                 .Count();
             mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio)

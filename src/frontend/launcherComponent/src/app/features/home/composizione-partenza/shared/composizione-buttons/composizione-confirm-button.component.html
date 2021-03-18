@@ -1,0 +1,11 @@
+<div class="btn-group w-100" ngbDropdown role="group" placement='top'>
+    <button class="btn btn-success btn-block card-shadow mt-2 btn-no-hover" [disabled]="disableConfirmPartenza"
+            ngbDropdownToggle>
+        <span class="d-inline-block mr-2">Conferma</span>
+        <span class="badge badge-light">{{boxPartenzaLenght}}</span>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+        <button ngbDropdownItem (click)="_confirmPartenzaInViaggio()">Conferma come In Viaggio</button>
+        <button ngbDropdownItem (click)="_confirmPartenzaInUscita()">Conferma come In Uscita</button>
+    </div>
+</div>

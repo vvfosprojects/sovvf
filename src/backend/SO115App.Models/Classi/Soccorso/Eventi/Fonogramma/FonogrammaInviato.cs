@@ -36,12 +36,19 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
+            string destinatari,
             string numeroFonogramma,
             string protocolloFonogramma) : base(richiesta, istante, codiceFonte, "FonogrammaInviato")
         {
+            this.Destinatari = destinatari;
             this.NumeroFonogramma = numeroFonogramma;
             this.ProtocolloFonogramma = protocolloFonogramma;
         }
+
+        /// <summary>
+        ///   Descrive i destinatari a cui deve essere inviato il fonogramma.
+        /// </summary>
+        public string Destinatari { get; private set; }
 
         /// <summary>
         ///   Descrive il numero del fonogramma inviato

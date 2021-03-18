@@ -1,7 +1,8 @@
-<div *ngIf="richiestaModifica" class="row mt-2 pl-3" style="height: 750px">
+<div *ngIf="richiestaModifica" class="row mt-2 pl-3"
+     [ngClass]="{'m-h-750-modificarichiesta': boxAttivi, 'm-h-850-modificarichiesta': !boxAttivi}">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
     <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
-        <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm">
+        <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm" autocomplete="off">
             <div class="row">
                 <div class="col-5">
                     <ng-template #rilevante>
@@ -15,10 +16,10 @@
                         <span *ngIf="!richiestaModifica.codiceRichiesta">{{ richiestaModifica.codice }} </span>
                         <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaGrave?.value"
-                                                                             class="fa fa-exclamation mr-2"></i><i
-                                *ngIf="f.rilevanzaStArCu?.value"
-                                class="fa fa-university"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom">
+                            <i *ngIf="f.rilevanzaGrave?.value" class="fa fa-exclamation mr-2"></i>
+                            <i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i>
+                        </span>
                     </h4>
                 </div>
                 <div class="col-4">
@@ -82,7 +83,8 @@
                     <div class="form-group mb-2">
                         <label for="nominativo">Nominativo</label>
                         <input id="nominativo" type="text" placeholder="Nominativo" formControlName="nominativo"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
+                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"
+                               role="presentation"/>
                         <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                             <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
                         </div>
@@ -92,10 +94,12 @@
                     <div class="form-group mb-2">
                         <label for="telefono">Telefono</label>
                         <input id="telefono" type="tel" placeholder="telefono" formControlName="telefono"
-                               class="form-control"
+                               class="form-control" (keypress)="checkInputPattern($event, 'PHONE')"
+                               (paste)="checkInputPattern($event, 'PHONE')"
                                [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                             <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
+                            <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
                         </div>
                     </div>
                 </div>
@@ -107,9 +111,10 @@
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
-                               placeholder="Ricerca indirizzo" [options]="options"
+                               placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
-                               (keyup)="modificaIndirizzo()" autocomplete="new-password">
+                               (keyup)="modificaIndirizzo()"
+                               role="presentation">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
@@ -118,24 +123,30 @@
                 <div class="col-3">
                     <div class="form-group d-inline-block mb-2" style="width:48%; margin-right: 2%">
                         <label for="latitudine">Latitudine</label>
-                        <input id="latitudine" type="number" placeholder="Latitudine" formControlName="latitudine"
+                        <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
+                               (keypress)="checkInputPattern($event, 'LAT_LON')"
+                               (paste)="checkInputPattern($event, 'LAT_LON')"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
                         <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
+                            <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
                         </div>
                     </div>
                     <div class="form-group d-inline-block mb-2" style="width:48%">
                         <label for="longitudine">Longitudine</label>
-                        <input id="longitudine" type="number" placeholder="Longitudine" formControlName="longitudine"
+                        <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
+                               (keypress)="checkInputPattern($event, 'LAT_LON')"
+                               (paste)="checkInputPattern($event, 'LAT_LON')"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
                         <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
+                            <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-1">
                     <label>Copia</label>
-                    <button type="button" class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom"
+                    <button type="button" class="btn btn-secondary btn-no-hover" [ngbTooltip]="coordsTooltip" placement="bottom"
                             (click)="onCopiaIndirizzo()" [disabled]="!f.longitudine.value || !f.latitudine.value">
                         <i class="fa fa-clipboard"></i>
                     </button>
@@ -169,7 +180,8 @@
                         <label for="noteIndirizzo">Note Indirizzo</label>
                         <textarea id="noteIndirizzo" placeholder="Note" formControlName="noteIndirizzo"
                                   class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"></textarea>
+                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }"
+                                  role="presentation"></textarea>
                     </div>
                 </div>
             </div>
@@ -192,15 +204,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3">
-                    <div class="form-group mb-2">
-                        <label for="etichette">Tag</label>
-                        <input id="etichette" type="text" placeholder="Tag" formControlName="etichette"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.etichette.errors }"/>
-                    </div>
-                </div>
-                <div class="col-3">
+                <div class="col-6">
                     <div class="form-group mb-2">
                         <label for="zoneEmergenza">Codice emergenza</label>
                         <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza"
@@ -228,6 +232,44 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="clearfix mb-2">
+                        <div class="float-left w-75">
+                            <div class="form-group m-0">
+                                <label for="listaEnti">Enti Intervenuti</label>
+                                <ng-select
+                                        id="listaEnti"
+                                        formControlName="listaEnti"
+                                        [items]="enti"
+                                        bindLabel="descrizione"
+                                        bindValue="codice"
+                                        [multiple]="true"
+                                        placeholder="Enti Intervenuti (opzionale)"
+                                        [closeOnSelect]="true"
+                                        [hideSelected]="true"
+                                        [notFoundText]="'Nessun ente trovato con i parametri di ricerca'">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="float-left w-25">
+                            <div class="px-2" style="padding-top:34px">
+                                <button class="btn btn-sm btn-block btn-primary btn-no-hover"
+                                        (click)="aggiungiNuovoEnte()">
+                                    <i class="fa fa-plus mr-1"></i>
+                                    Nuovo ente
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="etichette">Tag</label>
+                        <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
+                                   [placeholder]="'Inserisci tag (opzionale)'"
+                                   [secondaryPlaceholder]="'Inserisci tag (opzionale)'"></tag-input>
+                    </div>
+                </div>
+            </div>
             <div *ngIf="visualizzaBoschiSterpaglie(richiestaModifica.tipologie)" class="row">
                 <div class="col-12">
                     <div class="form-group mb-3">
@@ -238,10 +280,10 @@
             </div>
         </form>
         <div class="form-group mb-2">
-            <button type="button" class="btn btn-primary float-right" (click)="onConfermaModifica()">Conferma
+            <button type="button" class="btn btn-primary btn-no-hover float-right ml-1" (click)="onConfermaModifica()">Conferma
                 Modifica
             </button>
-            <button class="btn btn-danger float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
+            <button class="btn btn-danger btn-no-hover float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
         </div>
     </div>
 </div>

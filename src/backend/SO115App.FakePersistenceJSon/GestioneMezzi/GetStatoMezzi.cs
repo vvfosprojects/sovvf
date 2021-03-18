@@ -47,5 +47,10 @@ namespace SO115App.FakePersistence.JSon.GestioneMezzi
             }
             return JsonConvert.DeserializeObject<List<StatoOperativoMezzo>>(json).FindAll(x => x.CodiceSede.Equals(codiceSede));
         }
+
+        public List<StatoOperativoMezzo> Get(string[] codiciSede, string codiceMezzo = null)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

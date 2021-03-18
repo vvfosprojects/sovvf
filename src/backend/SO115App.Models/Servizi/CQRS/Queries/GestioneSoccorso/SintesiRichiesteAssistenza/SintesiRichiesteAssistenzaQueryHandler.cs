@@ -111,7 +111,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             }
 
             query.Filtro.UnitaOperative = pinNodi.ToHashSet();																											 
-			 if (query.Filtro.IncludiRichiesteAperte == false && query.Filtro.IncludiRichiesteChiuse == false)
+			if (query.Filtro.IncludiRichiesteAperte == false && query.Filtro.IncludiRichiesteChiuse == false)
             {
                 query.Filtro.IncludiRichiesteAperte = true;
                 query.Filtro.IncludiRichiesteChiuse = true;

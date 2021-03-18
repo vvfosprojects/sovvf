@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;
@@ -57,6 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             personale.SquadreAssegnate =
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InUscita) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
             personale.SquadreServizio =

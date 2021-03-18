@@ -65,18 +65,14 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.AddChiamataInCorso.Localita.Coordinate);
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3
-            };
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.AddChiamataInCorso.Localita.Coordinate).ToHashSet();
+
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
 
-                var listaPin = _getPinNodoByCodSede.GetListaPin(CodUOCompetenzaAppo);
+                var listaPin = _getPinNodoByCodSede.GetListaPin(Competenze.ToArray());
                 FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza()
                 {
                     IndirizzoIntervento = command.AddChiamataInCorso.Localita,

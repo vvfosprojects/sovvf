@@ -1,32 +1,83 @@
 <div class="row">
-    <div class="col-3 pr-0">
-        <div class="card card-shadow mx-auto" style="min-height:392px">
-            <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
-            <div class="card-header">
-                <i class="fa fa-group mr-2"></i>
-                <span class="h6">Squadre</span>
+    <div *ngIf="loadingInvioPartenza" class="col-12"
+         [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
+        <app-partial-loader></app-partial-loader>
+    </div>
+    <div *ngIf="!loadingInvioPartenza" class="col-3 pr-0">
+        <div class="card card-shadow mx-auto"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
+            <app-partial-loader
+                    *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
+            <div class="card-header clearfix px-2 py-1">
+                <div class="float-left pt-2">
+                    <i class="fa fa-users mr-2"></i>
+                    <span class="h6">Squadre</span>
+                </div>
+                <div class="float-right w-50">
+                    <label for="ricercaSquadre" class="d-none"></label>
+                    <input id="ricercaSquadre" type="text" name="ricercaSquadre" class="form-control"
+                           placeholder="Cerca..." [(ngModel)]="ricercaSquadre" appDebounceKeyUp
+                           (debounceKeyUp)="onSearchSquadre()" (search)="onClearSearchSquadre()"
+                           [debounceTime]="1000"
+                           [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}">
+                    <i *ngIf="ricercaSquadre" (click)="onClearSearchSquadre()"
+                       class="fa fa-times clear-search-squadre"></i>
+                </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+            <ul class="list-group list-group-flush border-bottom scroll-y"
+                [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
+                <li *ngIf="squadreComposizione && squadreComposizione.length <= 0"
+                    class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato...</span>
+                </li>
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
-                    <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC"
-                                              [itemSelezionato]="checkSquadraSelezione(sC.id)"
-                                              [itemHover]="sC.id === idSquadraHover"
-                                              [richiesta]="richiesta" (selezionata)="squadraSelezionata($event)"
-                                              (deselezionata)="squadraDeselezionata($event)"
-                                              (hoverIn)="squadraHoverIn($event)"
-                                              (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                    <app-squadra-composizione
+                            *ngFor="let sC of squadreComposizione"
+                            [squadraComp]="sC"
+                            [itemSelezionato]="checkSquadraSelezione(sC.id)"
+                            [itemHover]="sC.id === idSquadraHover"
+                            [richiesta]="richiesta" (selezionata)="squadraSelezionata($event)"
+                            (deselezionata)="squadraDeselezionata($event)"
+                            (hoverIn)="squadraHoverIn($event)"
+                            (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
                 </ng-template>
             </ul>
         </div>
-    </div>
-    <div class="col-5 pr-0">
-        <div class="card card-shadow mx-auto" style="min-height:392px">
-            <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
-            <div class="card-header">
-                <i class="fa fa-truck mr-2"></i>
-                <span class="h6">Mezzi</span>
+        <div class="row">
+            <div class="col" style="display: flex; place-content: center; margin-top: 10px;">
+                <ngb-pagination
+                        [(page)]="currentPageSquadre"
+                        [pageSize]="pageSizeSquadre"
+                        [collectionSize]="totalItemsSquadre"
+                        (pageChange)="squadrePageChange($event)"
+                        [maxSize]="2"
+                        [disabled]="loadingListe">
+                </ngb-pagination>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+        </div>
+    </div>
+    <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
+        <div class="card card-shadow mx-auto"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
+            <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
+            <div class="card-header clearfix px-2 py-1">
+                <div class="float-left pt-2">
+                    <i class="fa fa-truck mr-2"></i>
+                    <span class="h6">Mezzi</span>
+                </div>
+                <div class="float-right">
+                    <label for="ricercaMezzi" class="d-none"></label>
+                    <input id="ricercaMezzi" type="text" name="ricercaMezzi" class="form-control"
+                           placeholder="Cerca..." [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                           (debounceKeyUp)="onSearchMezzi()" [debounceTime]="1000"
+                           [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}">
+                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi"></i>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush border-bottom scroll-y"
+                [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
+                <li *ngIf="mezziComposizione && mezziComposizione.length <= 0"
+                    class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato...</span>
+                </li>
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
                     <div *ngFor="let mC of mezziComposizione">
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
@@ -48,9 +99,22 @@
                 </ng-template>
             </ul>
         </div>
+        <div class="row">
+            <div class="col" style="display: flex; place-content: center; margin-top: 10px;">
+                <ngb-pagination
+                        [(page)]="currentPageMezzi"
+                        [pageSize]="pageSizeMezzi"
+                        [collectionSize]="totalItemsMezzi"
+                        [maxSize]="5"
+                        [disabled]="loadingListe"
+                        (pageChange)="mezziPageChange($event)">
+                </ngb-pagination>
+            </div>
+        </div>
     </div>
-    <div *ngIf="mezziComposizione && squadreComposizione" class="col-4">
-        <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
+    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
+        <div class="w-100 py-2 px-1 scroll-y"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
             <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
                 <h6 class="font-weight-normal">Seleziona un mezzo o una squadra.</h6>
@@ -78,9 +142,10 @@
                 </div>
             </div>
         </div>
-        <app-composizione-buttons [boxPartenzaLenght]="boxPartenzaList.length" [disableConfirmPrenota]="disablePrenota"
-                                  [prenotato]="prenotato" [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                  (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"
-        ></app-composizione-buttons>
+        <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
+                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                         (confirmPartenzaInUscita)="confermaPartenzeInUscita()">
+        </app-composizione-confirm-button>
     </div>
 </div>

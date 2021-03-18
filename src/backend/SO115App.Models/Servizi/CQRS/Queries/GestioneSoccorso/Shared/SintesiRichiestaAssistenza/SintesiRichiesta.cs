@@ -35,6 +35,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
+using SO115App.Models.Classi.Fonogramma;
+using SO115App.Models.Classi.RubricaDTO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -84,6 +86,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   di preferenza.
         /// </summary>
         public virtual string[] CodUOCompetenza { get; set; }
+
+        /// <summary>
+        ///   E' il set dei codici delle unità operative che sono chiamate a supporto.
+        /// </summary>
+        /// <remarks>
+        ///   Le unità allertate possono partecipare alla gestione dell'intervento limitatamente a
+        ///   determinati specifici casi d'uso (per es. composizione partenza, apposizione nota
+        ///   intervento, ecc.)
+        /// </remarks>
+        public ISet<string> CodSOAllertate { get; set; }
 
         /// <summary>
         ///   Utente che ha generato la segnalazione
@@ -164,7 +176,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+        public List<EnteDTO> ListaEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -176,6 +188,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Competenze della richiesta
         /// </summary>
         public List<Sede> Competenze { get; set; }
+
+        /// <summary>
+        ///   Competenze della richiesta
+        /// </summary>
+        public List<Sede> SediAllertate { get; set; }
 
         /// <summary>
         ///   Complessità della richiesta
@@ -250,7 +267,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
         ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma Fonogramma
+        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma StatoInvioFonogramma
         {
             get
             {
@@ -321,7 +338,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata).ToList();
+                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+
+                foreach (var partenza in PartenzeSelect)
+                {
+                    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
+                        return Costanti.RichiestaPresidiata;
+                }
 
                 if (this.Chiusa)
                 {
@@ -335,7 +359,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 {
                     return Costanti.RichiestaSospesa;
                 }
-                return Presidiata ? Costanti.RichiestaPresidiata : Costanti.Chiamata;
+                return Costanti.Chiamata;
             }
         }
 
@@ -345,5 +369,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         }
 
         public string Motivazione { get; set; }
+
+        public Fonogramma Fonogramma { get; set; }
+        public List<int> listaEnti { get; set; }
     }
 }

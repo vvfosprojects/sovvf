@@ -1,14 +1,28 @@
 <div *ngIf="checkNumeroPartenze(partenze) <= 0">
     <h6 class="mt-1">Non ci sono mezzi su questa richiesta di intervento</h6>
 </div>
-<ul *ngIf="partenze" class="list-unstyled">
-    <div *ngFor="let p of partenze">
+<ul *ngIf="checkNumeroPartenze(partenze) > 0" class="list-unstyled">
+    <div *ngFor="let p of partenze; let index = index">
         <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
             <app-partial-loader
-                    *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
-            <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
-                          (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"
-                          (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
+                    *ngIf="loadingActionMezzoArray.includes(p.mezzo.codice)"></app-partial-loader>
+            <app-partenza [partenza]="p"
+                          [inGestione]="inGestione"
+                          [statoRichiesta]="statoRichiesta"
+                          [idDaSganciare]="idDaSganciare"
+                          [index]="index"
+                          (listaSquadre)="onListaSquadrePartenza($event)"
+                          (actionMezzo)="onActionMezzo($event)"
+                          (eliminaPartenza)="eliminaPartenza.emit($event)"
+                          (modificaPartenza)="modificaPartenza.emit($event)">
+            </app-partenza>
         </li>
     </div>
+    <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
+        <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
+                style="position:absolute; top:-14px; left:-14px"
+                (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+            <i class="fa fa-refresh"></i>
+        </button>
+    </ng-template>
 </ul>

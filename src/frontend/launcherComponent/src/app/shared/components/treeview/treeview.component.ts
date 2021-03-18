@@ -1,14 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    HostListener,
-    Input, isDevMode,
-    OnChanges, OnDestroy, OnInit,
-    Output,
-    SimpleChanges,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function';
@@ -17,6 +7,7 @@ import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.in
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
+import { LSNAME } from '../../../core/settings/config';
 
 
 @Component({
@@ -38,6 +29,8 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     @Input() placement: string;
     @Input() maxHeight: number;
     @Input() disabled: boolean;
+    @Input() cache = false;
+
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
@@ -60,7 +53,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
 
     @ViewChild('treeviewSedi') treeviewSedi: NgbDropdown;
 
-    @HostListener('document:keydown.escape') onKeydownHandler() {
+    @HostListener('document:keydown.escape') onKeydownHandler(): void {
         if (this.treeViewOpened) {
             this.annullaSelezione.emit();
             this.treeviewSedi.close();
@@ -68,11 +61,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Shared Treeview creato');
+            console.log('Componente Shared Treeview creato');
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Shared Treeview distrutto');
+            console.log('Componente Shared Treeview distrutto');
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -103,16 +96,16 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
          * controllo se ho selezionato tutta la lista
          */
         downlineItems.forEach(downlineItem => {
-            let _parent = downlineItem.parent;
-            while (!isNil(_parent)) {
-                if (_parent.item['internalChecked']) {
-                    if (!_parent.parent) {
-                        if (!firstParent.includes(_parent.item.value)) {
-                            firstParent.push(_parent.item.value);
+            let parent = downlineItem.parent;
+            while (!isNil(parent)) {
+                if (parent.item['internalChecked']) {
+                    if (!parent.parent) {
+                        if (!firstParent.includes(parent.item.value)) {
+                            firstParent.push(parent.item.value);
                         }
                     }
                 }
-                _parent = _parent.parent;
+                parent = parent.parent;
             }
         });
         /**
@@ -188,6 +181,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                     log: `nessuna sede selezionata`
                 };
             }
+        }
+        if (unique[0] && this.cache) {
+            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
+        } else {
+            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
         }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);

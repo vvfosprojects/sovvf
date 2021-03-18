@@ -144,6 +144,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 {
                     mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
                 }
+                else
+                {
+                    mezzo.Stato = Costanti.MezzoInSede;
+                }
             }
 
             return listaMezzi;

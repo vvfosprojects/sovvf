@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     constructor(private store: Store) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const logged = this.store.selectSnapshot(AuthState.logged);
         if (logged) {
             const ruoliUtenteLoggato = JSON.parse(sessionStorage.getItem(LSNAME.role));
@@ -33,8 +33,7 @@ export class AuthGuard implements CanActivate {
                      * utente loggato ma senza permesso
                      */
                     this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile'));
-                    // Todo verificare se l'utente ha il permesso per entrare su home
-                    this.store.dispatch(new Navigate([ '/' + RoutesPath.Home ]));
+                    this.store.dispatch(new Navigate(['/' + RoutesPath.Home]));
                     return false;
                 }
 
@@ -43,12 +42,12 @@ export class AuthGuard implements CanActivate {
         }
         console.log('Not logged user', state.url);
         localStorage.setItem(LSNAME.redirectUrl, JSON.stringify(state.url));
-        this.store.dispatch(new Navigate([ '/' + RoutesPath.Login ]));
+        this.store.dispatch(new Navigate(['/' + RoutesPath.Login]));
         return false;
     }
 }
 
-export function checkUserPermission(roles: Array<any>, ruoliUtente: Ruolo[]) {
+export function checkUserPermission(roles: Array<any>, ruoliUtente: Ruolo[]): boolean {
     let count = 0;
     if (roles && ruoliUtente.length > 0) {
         ruoliUtente.forEach((ruolo: Ruolo) => {

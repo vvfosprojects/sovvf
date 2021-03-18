@@ -74,7 +74,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
             intervento.Chiamata = SintesiRichiesta;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
             foreach (var sede in SediDaNotificare)
             {

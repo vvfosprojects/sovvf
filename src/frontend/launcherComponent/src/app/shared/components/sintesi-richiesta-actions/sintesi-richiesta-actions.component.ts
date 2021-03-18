@@ -14,9 +14,10 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
-    statoRichiestaString: Array<StatoRichiestaActions>;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
+
+    statoRichiestaString: Array<StatoRichiestaActions>;
 
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,
@@ -27,13 +28,17 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         tooltipConfig.placement = 'top';
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
         this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
     }
 
-    onClick(stato: StatoRichiestaActions) {
-        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+    onClick(stato: StatoRichiestaActions): void {
+        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
@@ -62,9 +67,9 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         ];
 
         const richiestaAction = {
-            'idRichiesta': null,
-            'stato': stato,
-            'note': null
+            idRichiesta: null,
+            stato,
+            note: null
         };
 
         modalConferma.result.then(
@@ -81,11 +86,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         );
     }
 
-    calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta) {
+    calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
         return calcolaActionSuggeritaRichiesta(richiesta);
     }
 
-    statoRichiestaColor(richiesta: SintesiRichiesta) {
+    statoRichiestaColor(richiesta: SintesiRichiesta): string {
         return statoRichiestaColor(richiesta.stato);
     }
 }

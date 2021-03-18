@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
@@ -62,7 +63,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.Tags = new HashSet<string>();
             this.UtInLavorazione = new List<string>();
             this.UtPresaInCarico = new List<string>();
-            //this.ListaPartenze = new List<Partenza>();
         }
 
         /// <summary>
@@ -101,27 +101,105 @@ namespace SO115App.API.Models.Classi.Soccorso
             Altissima
         }
 
-        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
+        /// <summary>
+        /// Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        /// </summary>
+        /// <param name="partenzaDaLavorare">La partenza la quale devo cambiarne lo stato</param>
+        /// <param name="stato">Lo stato che va attribuito alla partenza</param>
+        internal void CambiaStatoPartenza(ComposizionePartenze partenzaDaLavorare, CambioStatoMezzo stato)
+        {
+            #region SWITCH STATO MEZZI
+
+            if (stato.Stato == Costanti.MezzoInViaggio)
+            {
+                new UscitaPartenza(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoSulPosto)
+            {
+                new ArrivoSulPosto(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoInRientro)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+
+                new PartenzaInRientro(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+            }
+
+            else if (stato.Stato == Costanti.MezzoRientrato)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
+                partenzaDaLavorare.Partenza.Terminata = true;
+
+                new PartenzaRientrata(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+            }
+
+            else if (stato.Stato == Costanti.MezzoInViaggio)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoInUscita)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
+            }
+
+            #endregion SWITCH STATO MEZZI
+
+            foreach (var squadra in partenzaDaLavorare.Partenza.Squadre)
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
+        }
+
+        /// <summary>
+        /// Aggiorno lo stato della richiesta in base al vecchio stato
+        /// </summary>
+        /// <param name="stato">stato da attribuire alla richiesta</param>
+        /// <param name="statoRichiesta">stato attuale della richiesta</param>
+        /// <param name="id">id della fonte (operatore)</param>
+        /// <param name="motivazione">testo della motivazione</param>
+        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione, DateTime dataEvento)
         {
             if (stato == Costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
             {
-                new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
+                new ChiusuraRichiesta(motivazione, this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                new RiaperturaRichiesta(motivazione, this, DateTime.UtcNow, id);
+                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.PartenzaAnnullata))
+                    new RiaperturaRichiesta(motivazione, this, dataEvento, id);
+                else
+                    new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
             else if (stato.Equals(Costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {
-                new AssegnataRichiesta(this, DateTime.UtcNow, id);
+                new AssegnataRichiesta(this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaPresidiata) && !(statoRichiesta is Presidiata))
             {
-                new RichiestaPresidiata(this, DateTime.UtcNow, id);
+                new RichiestaPresidiata(this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaSospesa) && !(statoRichiesta is Sospesa))
             {
-                new RichiestaSospesa(motivazione, this, DateTime.UtcNow, id);
+                new RichiestaSospesa(motivazione, this, dataEvento, id);
             }
         }
 
@@ -326,8 +404,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             //set;
         }
 
-        //public List<Partenza> ListaPartenze { get; set; }
-
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
         /// </summary>
@@ -443,7 +519,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .OfType<RichiestaPresidiata>()
                     .ToList();
 
-                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto);
+                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata && !x.Partenza.Sganciata);
             }
         }
 
@@ -620,11 +696,15 @@ namespace SO115App.API.Models.Classi.Soccorso
                 if (eventoSospesa)
                     return new Sospesa();
 
-                if (!eventoRiaperta && !eventoRientrata && !eventoInRientro) return new InAttesa();
+                if (!eventoRientrata && !eventoInRientro) return new InAttesa();
                 if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
                     return new Assegnata();
-                if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
-                    return new Sospesa();
+
+                if (composizionePartenza.Count > 0)
+                {
+                    if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                        return new Sospesa();
+                }
 
                 return new InAttesa();
             }
@@ -742,7 +822,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Calcola lo stato di invio del fonogramma per la richiesta, in base all'ultimo evento
         ///   fonogramma presente nella richiesta.
         /// </summary>
-        public virtual Fonogramma.IStatoFonogramma StatoInvioFonogramma
+        public virtual IStatoFonogramma StatoInvioFonogramma
         {
             get
             {
@@ -761,6 +841,55 @@ namespace SO115App.API.Models.Classi.Soccorso
                         return new Fonogramma.NonNecessario();
                 }
             }
+        }
+
+        public SO115App.Models.Classi.Fonogramma.Fonogramma Fonogramma
+        {
+            get
+            {
+                var ultimoEventoFonogramma = this._eventi
+                    .LastOrDefault(e => e is IFonogramma);
+
+                switch (ultimoEventoFonogramma)
+                {
+                    case FonogrammaInviato _:
+                        return MappaFonogramma(ultimoEventoFonogramma, "I");
+
+                    case InviareFonogramma _:
+                        return MappaFonogramma(ultimoEventoFonogramma, "D");
+
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        private SO115App.Models.Classi.Fonogramma.Fonogramma MappaFonogramma(Evento infoFonogramma, string tipoFonogramma)
+        {
+            SO115App.Models.Classi.Fonogramma.Fonogramma InfoFonogramma = new SO115App.Models.Classi.Fonogramma.Fonogramma();
+
+            if (tipoFonogramma.Equals("I"))
+            {
+                var info = ((FonogrammaInviato)infoFonogramma);
+                InfoFonogramma.Destinatari = info.Destinatari;
+                InfoFonogramma.IdOperatore = info.CodiceFonte;
+                InfoFonogramma.IdRichiesta = info.CodiceRichiesta;
+                InfoFonogramma.NumeroFonogramma = info.NumeroFonogramma;
+                InfoFonogramma.ProtocolloFonogramma = info.ProtocolloFonogramma;
+                InfoFonogramma.Stato = SO115App.Models.Classi.Fonogramma.StatoFonogramma.Inviato;
+            }
+            else if (tipoFonogramma.Equals("D"))
+            {
+                var info = ((InviareFonogramma)infoFonogramma);
+                InfoFonogramma.Destinatari = info.Destinatari;
+                InfoFonogramma.IdOperatore = info.CodiceFonte;
+                InfoFonogramma.IdRichiesta = info.CodiceRichiesta;
+                InfoFonogramma.NumeroFonogramma = info.NumeroFonogramma;
+                InfoFonogramma.ProtocolloFonogramma = info.ProtocolloFonogramma;
+                InfoFonogramma.Stato = SO115App.Models.Classi.Fonogramma.StatoFonogramma.DaInviare;
+            }
+
+            return InfoFonogramma;
         }
 
         /// <summary>
@@ -797,12 +926,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            if (this._eventi.Any() && this._eventi.Last().Istante > evento.Istante)
-            {
+            if (_eventi.Count != 0 && !_eventi.Any() && evento.Istante >= _eventi.Max(c => c.Istante))
                 throw new InvalidOperationException("Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.");
-            }
-
-            this._eventi.Add(evento);
+            
+            _eventi.Add(evento);
         }
 
         /// <summary>
@@ -844,5 +971,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
             }
         }
+
+        public List<Partenza> lstPartenze => Partenze.Select(c => c.Partenza).ToList();
     }
 }

@@ -4,7 +4,8 @@ import {
     CasLogout,
     CasResponse,
     ClearAuth,
-    ClearCurrentUser, ClearDataUser,
+    ClearCurrentUser,
+    ClearDataUser,
     GetAuth,
     Logout,
     RecoveryUrl,
@@ -56,26 +57,26 @@ export const AuthStateDefaults: AuthStateModel = {
 export class AuthState {
 
     constructor(private authService: AuthService,
-                private _gestioneUtenti: GestioneUtentiService) {
+                private gestioneUtentiService: GestioneUtentiService) {
     }
 
     @Selector()
-    static currentJwt(state: AuthStateModel) {
+    static currentJwt(state: AuthStateModel): string {
         return state.currentJwt;
     }
 
     @Selector()
-    static currentUser(state: AuthStateModel) {
+    static currentUser(state: AuthStateModel): Utente {
         return state.currentUser;
     }
 
     @Selector()
-    static logged(state: AuthStateModel) {
+    static logged(state: AuthStateModel): boolean {
         return state.logged;
     }
 
     @Action(SetCurrentTicket)
-    setCurrentTicket({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentTicket) {
+    setCurrentTicket({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentTicket): void {
         if (action.currentTicket) {
             patchState({
                 currentTicket: action.currentTicket
@@ -85,7 +86,7 @@ export class AuthState {
     }
 
     @Action(GetAuth)
-    getAuth({ getState, dispatch }: StateContext<AuthStateModel>) {
+    getAuth({ getState, dispatch }: StateContext<AuthStateModel>): void {
         const state = getState();
         if (state.currentTicket) {
             console.log('getAuth');
@@ -106,26 +107,34 @@ export class AuthState {
     }
 
     @Action(SetCurrentJwt)
-    setCurrentJwt({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentJwt) {
+    setCurrentJwt({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentJwt): void {
         if (action.currentJwt) {
             sessionStorage.setItem(LSNAME.token, JSON.stringify(action.currentJwt));
             patchState({
                 currentJwt: action.currentJwt,
                 currentTicket: null
             });
-            dispatch([ new SetLogged() ]);
+            dispatch([new SetLogged()]);
         }
     }
 
     @Action(SetCurrentUser)
-    setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
+    setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser): void {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        dispatch(new SetVistaSedi([ currentUser.sede.codice ]));
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        let codice = currentUser.sede.codice;
+        if (cS) {
+            codice = cS;
+        }
+        dispatch(new SetVistaSedi([codice]));
     }
 
     @Action(UpdateCurrentUser)
-    updateCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, action: UpdateCurrentUser) {
+    updateCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, action: UpdateCurrentUser): void {
         patchState({
             currentUser: action.utente
         });
@@ -135,8 +144,8 @@ export class AuthState {
     }
 
     @Action(UpdateRuoliPersonali)
-    updateRuoliPersonali({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
-        this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
+    updateRuoliPersonali({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali): void {
+        this.gestioneUtentiService.getUtente(action.idUtente).subscribe(objUtente => {
                 const utente = objUtente.detUtente ? objUtente.detUtente : null;
                 if (utente && utente.ruoli) {
                     dispatch([
@@ -144,7 +153,7 @@ export class AuthState {
                         new UpdateRuoliUtenteLoggato(utente.ruoli)
                     ]);
                     if (!_isAdministrator(utente)) {
-                        dispatch(new Navigate([ '/home' ]));
+                        dispatch(new Navigate(['/home']));
                     }
                 }
             }
@@ -152,7 +161,7 @@ export class AuthState {
     }
 
     @Action(SetLogged)
-    setLogged({ patchState }: StateContext<AuthStateModel>) {
+    setLogged({ patchState }: StateContext<AuthStateModel>): void {
         sessionStorage.setItem(LSNAME.casLogin, JSON.stringify(true));
         patchState({
             logged: true
@@ -160,14 +169,14 @@ export class AuthState {
     }
 
     @Action(SetLoggedCas)
-    setLoggedCas({ patchState }: StateContext<AuthStateModel>) {
+    setLoggedCas({ patchState }: StateContext<AuthStateModel>): void {
         patchState({
             loggedCas: true
         });
     }
 
     @Action(Logout)
-    logout({ getState, dispatch }: StateContext<AuthStateModel>, { url }: Logout) {
+    logout({ getState, dispatch }: StateContext<AuthStateModel>, { url }: Logout): void {
         const state = getState();
         if (state.loggedCas) {
             dispatch(new CasLogout());
@@ -177,19 +186,19 @@ export class AuthState {
     }
 
     @Action(RecoveryUrl)
-    recoveryUrl({ dispatch }: StateContext<AuthStateModel>) {
+    recoveryUrl({ dispatch }: StateContext<AuthStateModel>): void {
         const currentUrl = JSON.parse(localStorage.getItem(LSNAME.redirectUrl));
         console.log('RecoveryUrl', currentUrl);
         if (currentUrl) {
             localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([ currentUrl ]));
+            dispatch(new Navigate([currentUrl]));
         } else {
-            dispatch(new Navigate([ '/' + RoutesPath.Home ]));
+            dispatch(new Navigate(['/' + RoutesPath.Home]));
         }
     }
 
     @Action(CasLogin)
-    casLogin({ getState, dispatch }: StateContext<AuthStateModel>) {
+    casLogin({ getState, dispatch }: StateContext<AuthStateModel>): void {
         const state = getState();
         if (!state.logged && !state.currentUser) {
             window.location.href = `${environment.casUrl.linkLogin}${environment.casUrl.serviceName}auth`;
@@ -199,29 +208,29 @@ export class AuthState {
     }
 
     @Action(CasResponse)
-    casResponse({ getState, dispatch }: StateContext<AuthStateModel>, action: CasResponse) {
+    casResponse({ getState, dispatch }: StateContext<AuthStateModel>, action: CasResponse): void {
         console.log('CasResponse', action.ticket);
         if (!action.ticket) {
             dispatch(new CasLogin());
         } else {
-            dispatch([ new SetCurrentTicket(action.ticket) ]);
+            dispatch([new SetCurrentTicket(action.ticket)]);
         }
     }
 
     @Action(CasLogout)
-    casLogout() {
+    casLogout(): void {
         window.location.href = `${environment.casUrl.linkLogout}${environment.casUrl.serviceName}caslogout`;
     }
 
     @Action(ClearAuth)
-    clearAuth({ dispatch, patchState }: StateContext<AuthStateModel>) {
+    clearAuth({ dispatch, patchState }: StateContext<AuthStateModel>): void {
         patchState(AuthStateDefaults);
         this.removeStorage();
-        dispatch(new Navigate([ '/login' ]));
+        dispatch(new Navigate(['/login']));
     }
 
     @Action(ClearDataUser)
-    clearDataUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>) {
+    clearDataUser({ getState, dispatch }: StateContext<AuthStateModel>): void {
         const state = getState();
         if (state.currentUser) {
             dispatch([
@@ -233,24 +242,23 @@ export class AuthState {
         dispatch([
             new ClearRuoliUtenteLoggato(),
             new ClearViewState(),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new ClearAuth()
         ]);
-        patchState({
-            currentUser: null
-        });
     }
 
     @Action(ClearCurrentUser)
-    clearCurrentUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>, action: ClearCurrentUser) {
+    clearCurrentUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>, action: ClearCurrentUser): void {
         const state = getState();
         if (state.logged) {
             if (action.skipDeleteAll) {
                 dispatch(new ClearDataUser());
             } else {
-                this.authService.clearUserData().subscribe(() => dispatch(new ClearDataUser()));
+                this.authService.clearUserData().subscribe(() => {
+                    dispatch(new ClearDataUser());
+                });
             }
         }
-        dispatch(new ClearAuth());
     }
 
     removeStorage(): void {
@@ -258,6 +266,7 @@ export class AuthState {
         sessionStorage.removeItem(LSNAME.currentUser);
         sessionStorage.removeItem(LSNAME.casLogin);
         localStorage.removeItem(LSNAME.redirectUrl);
+        sessionStorage.removeItem(LSNAME.cacheSedi);
     }
 
 }

@@ -21,6 +21,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
@@ -29,6 +30,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -39,8 +41,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IGetTurno _getTurno;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta,
-            IGetTurno getTurno, IGetCompetenzeByCoordinateIntervento getCompetenze)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
+                                           IGeneraCodiceRichiesta generaCodiceRichiesta,
+                                           IGetTurno getTurno,
+                                           IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
@@ -50,14 +54,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
 
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
+            if (Competenze.ToList()[0] == null)
+                throw new Exception(Costanti.CoordinateErrate);
 
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
@@ -100,9 +100,11 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                CodUOCompetenza = CodUOCompetenzaAppo,
+                CodUOCompetenza = Competenze.ToArray(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = CodUOCompetenzaAppo[0]
+                CodSOCompetente = command.CodiceSede,
+                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null
+                //,CodSOAllertate = Competenze.ToArray().ToHashSet()
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
@@ -134,6 +136,13 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
             command.Chiamata.RilevanteStArCu);
+
+            if (command.Chiamata.Azione.Equals(Azione.FalsoAllarme) || command.Chiamata.Azione.Equals(Azione.ChiusuraForzata) ||
+                command.Chiamata.Azione.Equals(Azione.InterventoDuplicato) || command.Chiamata.Azione.Equals(Azione.InterventoNonPiuNecessario))
+            {
+                command.Chiamata.Stato = Costanti.RichiestaChiusa;
+                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
+            }
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }

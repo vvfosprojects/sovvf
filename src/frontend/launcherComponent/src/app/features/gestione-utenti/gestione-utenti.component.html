@@ -1,15 +1,18 @@
-<div class="container pt-4 pb-2">
+<div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 mb-2">
+        <div class="col-12 col-md-8 mx-auto mb-2">
             <h2>
+                <i class="fa fa-users"></i>
                 Gestione Utenti
                 <!--<small *ngIf="utente?.sede.descrizione">({{utente?.sede.descrizione}})</small>-->
+                <a href="http://intranet.dipvvf.it/SOWEB/GestioneUtenti.pdf" target="_blank"><i
+                        class="fa fa-question-circle-o animation-questionmark" aria-hidden="true"></i></a>
             </h2>
         </div>
-        <div class="col-12">
+        <div class="col-12 col-md-8 mx-auto">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary ml-2 mb-2 font-weight-bold" (click)="onAddUtente()">
+                    <button class="btn btn-primary mb-2 font-weight-bold" (click)="onAddUtente()">
                         <i class="fa fa-plus mr-1"></i>
                         Aggiungi Utente
                     </button>
@@ -18,17 +21,15 @@
                     <app-ricerca-utenti [loading]="loading$ | async" [sediFiltro]="sediFiltro$ | async"
                                         [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
                                         (ricercaChange)="onRicercaUtenti($event)"
-                                        (filtroChange)="onFiltroSediChange($event)"></app-ricerca-utenti>
+                                        (filtroChange)="onFiltroSediChange($event)"
+                                        (filtriReset)="onFiltriReset()"></app-ricerca-utenti>
                 </div>
             </div>
         </div>
-        <div *ngIf="ricerca" class="col-12 pl-4">
-            <h6 class="d-inline-block mt-3">
-                <i class="fa fa-search mr-1"></i>
-                Risultati ricerca per: <span class="font-weight-bold">{{ricerca}}</span>
-            </h6>
+        <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
-        <div class="col-12 mx-auto">
+        <div class="col-12 col-md-8 mx-auto">
             <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
                                 [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
                                 [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"

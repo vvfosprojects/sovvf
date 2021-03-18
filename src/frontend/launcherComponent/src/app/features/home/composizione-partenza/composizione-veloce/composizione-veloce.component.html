@@ -1,29 +1,43 @@
-<div class="card card-shadow mx-auto" style="height:405px;">
-  <app-partial-loader *ngIf="!preAccoppiati"></app-partial-loader>
-  <div class="card-header">
-    <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
-  </div>
-  <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
-    <div class="col-3 px-1" *ngFor="let preAcc of preAccoppiati">
-      <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
-        [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
-        [itemHover]="preAcc.id === idPreaccoppiatoHover" [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
-        [compPartenzaMode]="Composizione.Veloce" (selezionato)="selezionaPreaccoppiato($event)"
-        (deselezionato)="deselezionaPreaccoppiato($event)" (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()">
-      </app-box-nuova-partenza>
+<div class="card card-shadow mx-auto" [ngClass]="{'m-h-boxes-veloce': boxAttivi, 'm-h-no-boxes-veloce': !boxAttivi}">
+    <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
+    <div class="card-header">
+        <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
     </div>
-    <div class="col-12 text-right">
-      <app-composizione-buttons (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"
-        [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length" [disableConfirmPrenota]="disablePrenota"
-        [prenotato]="prenotato" [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
-      </app-composizione-buttons>
+    <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
+        <div class="col-4 px-1" *ngFor="let preAcc of preAccoppiati">
+            <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
+                                    [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
+                                    [itemHover]="preAcc.id === idPreaccoppiatoHover"
+                                    [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
+                                    [compPartenzaMode]="Composizione.Veloce"
+                                    (selezionato)="selezionaPreaccoppiato($event)"
+                                    (deselezionato)="deselezionaPreaccoppiato($event)" (hoverIn)="onHoverIn($event)"
+                                    (hoverOut)="onHoverOut()">
+            </app-box-nuova-partenza>
+        </div>
+        <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
+             style="display: flex; place-content: center; margin-top: 10px;">
+            <ngb-pagination
+                    [(page)]="currentPagePreaccoppiati"
+                    [pageSize]="pageSizePreaccoppiati"
+                    [collectionSize]="totalItemsPreaccoppiati"
+                    (pageChange)="preAccoppiatiPageChange($event)"
+                    [maxSize]="2">
+            </ngb-pagination>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
-      <div class="text-center">
-        <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
-      </div>
+    <div class="row">
+        <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
+            <div class="text-center">
+                <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
+            </div>
+        </div>
     </div>
-  </div>
+    <div  *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="btn-stick-bottom">
+      <app-composizione-confirm-button (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                       (confirmPartenzaInUscita)="confermaPartenzeInUscita()"
+                                       [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
+                                       [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
+      </app-composizione-confirm-button>
+    </div>
 </div>

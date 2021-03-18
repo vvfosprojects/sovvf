@@ -16,6 +16,7 @@ export const environment = {
         eventiRichieste: '/api/ListaEventi',
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
+        gestioneFonogramma: '/api/GestioneFonogramma',
         gestionePartenza: '/api/GestionePartenza',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
@@ -33,11 +34,15 @@ export const environment = {
         personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
-        meteo: 'https://api.openweathermap.org/data/2.5/weather?'
+        meteo: 'https://api.openweathermap.org/data/2.5/weather?',
+        enti: '/api/GestioneEnti',
+        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas-test/login?service=',
         linkLogout: 'https://sso.vigilfuoco.it/cas-test/logout?service=',
-        serviceName: 'https://sovvf-test.dipvvf.it/',
+        serviceName: 'https://sovvf-demo.dipvvf.it/',
     }
 };

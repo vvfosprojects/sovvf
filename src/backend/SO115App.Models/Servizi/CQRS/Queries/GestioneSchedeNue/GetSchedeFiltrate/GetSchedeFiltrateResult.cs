@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.NUE;
 using System.Collections.Generic;
 
@@ -24,6 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 {
     public class GetSchedeFiltrateResult
     {
-        public List<SchedaContatto> SchedeContatto { get; set; }
+        public List<SchedaContatto> DataArray { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }

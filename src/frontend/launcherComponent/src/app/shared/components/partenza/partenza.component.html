@@ -1,31 +1,51 @@
-<div class="row">
-    <div class="col-8 my-1 pr-1">
-        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+<div class="row" [class.sganciare-mezzo-color]="idDaSganciare === partenza.mezzo.descrizione">
+    <div class="col-7 my-1 pr-1 align-self-center">
+        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="false" [mostraNotifiche]="false"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
         <span *ngIf="!partenza.mezzo" class="p-2"> Nessun mezzo</span>
     </div>
-    <div class="col-4 my-1">
-        <div class="clearfix">
+    <div class="col-5 my-1">
+        <div class="clearfix" style="float: right;">
             <div [ngClass]="{'float-left': inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa}">
                 <div *ngIf="partenza.squadre && partenza.squadre.length > 0"
-                     class="h6 text-right mb-0 font-weight-bold">
+                     class="h6 text-right mb-0 font-weight-bold" style="display: inline-flex; align-items: center;">
                     <i class="fa fa-group mr-2"></i>
                     <span ngbTooltip="{{partenza.squadre[0].nome}}"
                           [disableTooltip]="partenza.squadre[0].nome.length <= 6">{{partenza.squadre[0].nome | truncate: 6}}</span>
-                    <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
+                    <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                             (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                         <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>
                         <span *ngIf="partenza.squadre.length > 1">+{{partenza.squadre.length - 1}}</span>
                     </button>
+                    <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
+                        <div class="float-right" style="display:flex;" (click)="$event.stopPropagation()">
+                            <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
+                                 (click)="$event.stopPropagation()">
+                                <button class="btn btn-info btn-no-hover" id="dropdownActionsMezzo" ngbDropdownAnchor
+                                        ngbTooltip="Opzioni"
+                                        (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </button>
+                                <div ngbDropdownMenu>
+                                    <button ngbDropdownItem class="btn btn-block btn-no-hover"
+                                            (click)="modificaPartenza.emit(index); $event.stopPropagation()">
+                                        <i class="fa fa-cog mr-1"></i>
+                                        Gestisci Partenza
+                                    </button>
+                                    <button ngbDropdownItem
+                                            class="btn btn-block btn-no-hover text-danger font-weight-bold"
+                                            (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
+                                        <i class="fa fa-trash mr-1"></i>
+                                        Elimina
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
                 </div>
-                <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
-            </div>
-            <div *ngIf="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa" class="float-right">
-                <button class="btn btn-sm btn-block btn-danger"
-                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
-                    <i class="fa fa-trash"></i>
-                </button>
             </div>
         </div>
     </div>
+</div>

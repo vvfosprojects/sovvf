@@ -1,4 +1,4 @@
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Priorita, SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
@@ -8,6 +8,9 @@ import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
+import { Mezzo } from 'src/app/shared/model/mezzo.model';
+import { Sede } from '../../../../shared/model/sede.model';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class HelperSintesiRichiesta {
 
@@ -15,37 +18,46 @@ export class HelperSintesiRichiesta {
 
     /**
      * restituisce le squadre realmente impegnate in una partenza
-     * @param richiesta
+     * @param: richiesta
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
-        interface SquadraPartenza {
-            id: string;
-            nome: string;
-        }
+      // const nomiSquadre: string[] = [];
+      const squadre = [];
 
-        const nomiSquadre: string[] = [];
-        const squadre: SquadraPartenza[] = [];
+      if (richiesta.partenzeRichiesta) {
+        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+          if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+            partenza.squadre.forEach((squadra: Squadra) => {
+              squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+            });
+          }
+        });
+      } else {
+        return [];
+      }
 
+      function getUnique(arr, comp): any[] {
+        return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
+      }
+
+      // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+
+      return squadre;
+    }
+
+
+  /* Restituisce il mezzo */
+    mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
+        const mezzi = [];
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    partenza.squadre.forEach((squadra: Squadra) => {
-                        squadre.push({ id: squadra.id, nome: squadra.nome });
-                    });
+                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                    mezzi.push(partenza.mezzo);
                 }
             });
-        } else {
-            return [];
         }
-
-        function getUnique(arr, comp): any[] {
-            return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
-        }
-
-        nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
-
-        return nomiSquadre;
+        return mezzi;
     }
 
     /* Restituisce i nomi dei mezzi  */
@@ -88,7 +100,11 @@ export class HelperSintesiRichiesta {
     }
 
     /* Permette di colorare l'icona della tipologia */
-    coloraIcona(nome: any): any {
+    coloraIcona(tipologia: Tipologia): string {
+        if (!tipologia) {
+            return 'fa fa-exclamation-triangle text-warning';
+        }
+        const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {
@@ -119,7 +135,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
-    match(word1: string, word2: string, substr: number) {
+    match(word1: string, word2: string, substr: number): boolean {
         const word1San = word1.toLowerCase().substr(0, word1.length - substr);
         const word2San = word2.toLowerCase().substr(0, word2.length - substr);
         if (word1San === word2San) {
@@ -127,19 +143,17 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    toggleEspansoClass(espanso: boolean) {
+    toggleEspansoClass(espanso: boolean): string {
         let returnClass = '';
-
         if (!espanso) {
             returnClass = 'fa-long-arrow-down text-secondary';
         } else {
             returnClass = 'fa-long-arrow-up text-light';
         }
-
         return returnClass;
     }
 
-    complessitaClass(richiesta: any) {
+    complessitaClass(richiesta: any): any {
         if (richiesta.complessita) {
             return {
                 'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
@@ -150,7 +164,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Status */
-    cardClasses(r: SintesiRichiesta, richiestaSelezionata: string, richiestaHover: string) {
+    cardClasses(r: SintesiRichiesta, richiestaSelezionata: string, richiestaHover: string): any {
         if (r && r.id) {
             const classes = {
                 // Hover (stato)
@@ -169,7 +183,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Fissata Status */
-    cardFissataClasses(r: SintesiRichiesta) {
+    cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {
             const classes = {
                 'card-shadow-warning': r.stato === StatoRichiesta.Assegnata,
@@ -184,56 +198,60 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    cardBorder(r: SintesiRichiesta) {
+    cardBorder(r: SintesiRichiesta): any {
         if (r) {
+            let classes = null;
             if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                return {
-                    // Bordo sinistro (stato)
-                    'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-                    'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-                    'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-                    'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-                    'status_chiuso': r.stato === StatoRichiesta.Chiusa,
+                classes = {
+                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
                 };
+                return classes;
             } else {
-                return { 'status_in_lavorazione': true };
+                classes = {
+                    status_in_lavorazione: true
+                };
+                return classes;
             }
         }
     }
 
-    vettorePallini(richiesta) {
+    vettorePallini(richiesta): Priorita[] {
         return new Array(richiesta.priorita);
     }
 
-    vettoreBuchini(richiesta) {
+    vettoreBuchini(richiesta): string[] {
         const MAX_PRIORITA = 5;
         return new Array(MAX_PRIORITA - richiesta.priorita);
     }
 
-    dettagliMezzo(stato, tipostato, classe) {
+    dettagliMezzo(stato, tipostato, classe): string {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
 
-    _dateNumber(dateString: any) {
+    _dateNumber(dateString: any): number {
         return new Date(dateString).getTime();
     }
 
-    _dateTime(dateString: any) {
+    _dateTime(dateString: any): Date {
         return new Date(dateString);
     }
 
     _terrenoMaggiore(tipoTerreno: TipoTerreno[]): TipoTerrenoMqHa {
         if (tipoTerreno && tipoTerreno.length > 0) {
             let value = 0;
-            let string = '';
+            let terrenoString = '';
             tipoTerreno.forEach(result => {
                 if (result.mq > value) {
-                    string = TipoTerrenoEnum[result.descrizione];
+                    terrenoString = TipoTerrenoEnum[result.descrizione];
                     value = result.mq;
                 }
             });
-            return { terrenoHa: `${string} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${string} (${value} mq)` };
+            return { terrenoHa: `${terrenoString} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${terrenoString} (${value} mq)` };
         } else {
             return null;
         }
@@ -270,11 +288,11 @@ export class HelperSintesiRichiesta {
 
     _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const _attivita in attivita) {
+            for (const a in attivita) {
                 /**
                  * eventuale logica di controllo
                  */
-                if (_attivita) {
+                if (a) {
                     return true;
                 }
             }
@@ -284,11 +302,11 @@ export class HelperSintesiRichiesta {
 
     _isInLavorazione(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const _attivita in attivita) {
+            for (const a in attivita) {
                 /**
                  * eventuale logica di controllo
                  */
-                if (_attivita) {
+                if (a) {
                     return true;
                 }
             }
@@ -306,6 +324,20 @@ export class HelperSintesiRichiesta {
     _altriUtenti(attivita: AttivitaUtente[]): AttivitaUtente[] {
         if (attivita) {
             return attivita.slice(1);
+        }
+        return null;
+    }
+
+    _primaSedeAllertata(sediAllertate: Sede[]): string {
+        if (sediAllertate && sediAllertate[0]) {
+            return sediAllertate[0].descrizione;
+        }
+        return null;
+    }
+
+    _altreSediAllertate(sediAllertate: Sede[]): string[] {
+        if (sediAllertate) {
+            return sediAllertate.slice(1).map((s: Sede) => s.descrizione);
         }
         return null;
     }

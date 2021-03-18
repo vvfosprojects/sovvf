@@ -1,21 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 
 @Component({
     selector: 'app-mezzo',
     templateUrl: './mezzo.component.html',
     styleUrls: ['./mezzo.component.scss']
 })
-export class MezzoComponent implements OnInit {
+export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
-
     @Input() mostraIndicatori: boolean;
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
@@ -25,17 +24,14 @@ export class MezzoComponent implements OnInit {
     stato = new ColoriStatoMezzo();
 
     constructor(popoverConfig: NgbPopoverConfig,
-        tooltipConfig: NgbTooltipConfig) {
+                tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'top';
     }
 
-    ngOnInit() {
-    }
-
-    nessunIndMezzo(mezzo) {
+    nessunIndMezzo(mezzo): boolean {
         if (
             !mezzo.descrizioneStatoEfficienza &&
             !mezzo.descrizioneLivelloCarburante &&
@@ -46,22 +42,28 @@ export class MezzoComponent implements OnInit {
         }
     }
 
-    dettagliMezzo(stato, tipostato, classe) {
+    dettagliMezzo(stato: string | number, tipostato: string, classe: string): string {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
-    onActionMezzo(action?: StatoMezzoActions) {
-        let actionMezzo = {} as MezzoActionInterface;
+    onActionMezzo(action?: MezzoActionEmit): void {
+        let actionMezzo: MezzoActionInterface;
         if (action) {
-            actionMezzo = { 'mezzo': this.mezzo, 'action': action };
+            let data = new Date();
+            const orario = action.oraEvento;
+            data.setHours(orario.ora);
+            data.setMinutes(orario.minuti);
+            data.setSeconds(0);
+            data.setMilliseconds(0);
+            data = new Date(data.getTime());
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data };
         } else {
-            actionMezzo = { 'mezzo': this.mezzo, 'action': null };
+            actionMezzo = { mezzo: this.mezzo, action: null };
         }
         this.actionMezzo.emit(actionMezzo);
-        // console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
     }
 
-    statoMezzoColor(stato: StatoMezzo) {
+    statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
     }
 }

@@ -1,7 +1,9 @@
-<div class="pl-3">
+<div class="pl-3" [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-850-chiamata': !boxAttivi}">
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
                            [operatore]="(utente$ | async)"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
-                           [loading]="loadingNuovaChiamata$ | async">
+                           [loading]="loadingNuovaChiamata$ | async"
+                           [enti]="enti$ | async"
+                           (aggiungiNuovoEnte)="aggiungiNuovoEnte()">
     </app-scheda-telefonata>
 </div>

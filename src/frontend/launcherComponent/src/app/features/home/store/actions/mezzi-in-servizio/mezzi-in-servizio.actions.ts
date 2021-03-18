@@ -1,8 +1,11 @@
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 
-export class GetMezziInServizio {
-    static readonly type = '[MezziInServizio] Get Mezzi In Servizio';
+export class GetListaMezziInServizio {
+    static readonly type = '[MezziInServizio] Get Lista Mezzi In Servizio';
+
+    constructor(public page?: number) {
+    }
 }
 
 export class SetMezziInServizio {
@@ -12,8 +15,11 @@ export class SetMezziInServizio {
     }
 }
 
-export class FilterMezziInServizio {
-    static readonly type = '[MezziInServizio] Filter Mezzi In Servizio';
+export class UpdateMezzoInServizio {
+    static readonly type = '[MezziInServizio] Update Mezzo In Servizio';
+
+    constructor(public mezzo: MezzoInServizio) {
+    }
 }
 
 export class SetFiltroMezziInServizio {
@@ -25,6 +31,9 @@ export class SetFiltroMezziInServizio {
 
 export class ClearFiltriMezziInServizio {
     static readonly type = '[MezziInServizio] Clear Filtri Mezzi In Servizio';
+
+    constructor(public preventReloadLista?: boolean) {
+    }
 }
 
 export class SetMezzoInServizioHover {

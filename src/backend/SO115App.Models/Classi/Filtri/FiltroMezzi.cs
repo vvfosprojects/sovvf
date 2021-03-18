@@ -8,5 +8,6 @@ namespace SO115App.Models.Classi.Filtri
     {
         public List<string> Tipologia;
         public List<string> Stato;
+        public bool FiltraPerAreaMappa { get; set; } = false;
     }
 }

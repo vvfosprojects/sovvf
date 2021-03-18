@@ -25,12 +25,15 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
@@ -71,6 +74,9 @@ namespace Persistence.MongoDB
             SediMap.Map();
             FiltriMap.Map();
             SchedeNueMap.Map();
+            RubricaMap.Map();
+            CategorieEntiMap.Map();
+            BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -96,6 +102,27 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<GeneriMezzi>();
             BsonClassMap.RegisterClassMap<Stati>();
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
+            BsonClassMap.RegisterClassMap<InviareFonogramma>();
+            BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+            BsonClassMap.RegisterClassMap<AllertaSedi>();
+            BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
+            BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
+        }
+
+        public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
+        {
+            get
+            {
+                return database.GetCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata>("trasferimentiChiamate");
+            }
+        }
+
+        public IMongoCollection<CategoriaEnte> CategorieEntiCollection
+        {
+            get
+            {
+                return database.GetCollection<CategoriaEnte>("categorieEnti");
+            }
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -103,6 +130,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<RichiestaAssistenza>("richiesteAssistenza");
+            }
+        }
+
+        public IMongoCollection<EnteIntervenuto> RubricaCollection
+        {
+            get
+            {
+                return database.GetCollection<EnteIntervenuto>("rubrica");
             }
         }
 

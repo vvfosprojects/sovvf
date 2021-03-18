@@ -7,8 +7,7 @@ import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
-import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
-import { GestioneUtentiObjInterface } from '../../../shared/interface/gestione-utenti-obj.interface';
+import { FiltersInterface } from 'src/app/shared/interface/filters/filters.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL = BASE_URL + environment.apiUrl.gestioneUtenti;
@@ -29,17 +28,17 @@ export class GestioneUtentiService {
     }
 
     // Todo aggiungere un map e tornare Utente
-    getUtente(id: string): Observable<{detUtente: Utente}> {
-        return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id);
+    getUtente(id: string): Observable<{ detUtente: Utente }> {
+        return this.http.get<{ detUtente: Utente }>(API_URL + '/GetUtente?id=' + id);
     }
 
     getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
-        const obj: GestioneUtentiObjInterface = {
+        const obj = {
             filters: {
-                search: filters.search
+                search: filters.search,
+                codSede: filters.codSede && filters.codSede.length > 0 ? filters.codSede : null
             },
-            pagination,
-            codiciSede: filters.codiciSede.join()
+            pagination
         };
         return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj);
     }
@@ -49,7 +48,7 @@ export class GestioneUtentiService {
         return this.http.post<Utente>(API_URL + '/AddUtente', addUtente);
     }
 
-    removeUtente(codFiscale: string) {
+    removeUtente(codFiscale: string): Observable<any> {
         const obj = {
             codFiscale
         };
@@ -60,7 +59,7 @@ export class GestioneUtentiService {
         return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo);
     }
 
-    removeRuoloUtente(codFiscale: string, ruolo: Ruolo) {
+    removeRuoloUtente(codFiscale: string, ruolo: Ruolo): Observable<any> {
         const obj = {
             codFiscale,
             ruolo

@@ -2,6 +2,7 @@ import { Action, State, StateContext } from '@ngxs/store';
 import { ClipboardService } from 'ngx-clipboard';
 import { ClearClipboard, CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { Injectable } from '@angular/core';
 
 export interface ClipboardStateModel {
     clipboard: string;
@@ -11,6 +12,7 @@ export const ClipboardStateDefaults: ClipboardStateModel = {
     clipboard: null
 };
 
+@Injectable()
 @State<ClipboardStateModel>({
     name: 'clipboard',
     defaults: ClipboardStateDefaults
@@ -18,25 +20,25 @@ export const ClipboardStateDefaults: ClipboardStateModel = {
 
 export class ClipboardState {
 
-    constructor(private _clipboardService: ClipboardService) {
+    constructor(private clipboardService: ClipboardService) {
     }
 
 
     @Action(CopyToClipboard)
-    copyToClipboard({ patchState }: StateContext<ClipboardStateModel>, action: CopyToClipboard) {
+    copyToClipboard({ patchState }: StateContext<ClipboardStateModel>, action: CopyToClipboard): void {
         patchState({
             clipboard: this.toClipboard(action.coordinate)
         });
     }
 
     @Action(ClearClipboard)
-    clearClipboard({ patchState }: StateContext<ClipboardStateModel>) {
+    clearClipboard({ patchState }: StateContext<ClipboardStateModel>): void {
         patchState(ClipboardStateDefaults);
     }
 
     toClipboard(coordinate: Coordinate): string {
         const copiedText = coordinate.latitudine.toString() + ', ' + coordinate.longitudine.toString();
-        this._clipboardService.copyFromContent(copiedText);
+        this.clipboardService.copyFromContent(copiedText);
         return copiedText;
     }
 

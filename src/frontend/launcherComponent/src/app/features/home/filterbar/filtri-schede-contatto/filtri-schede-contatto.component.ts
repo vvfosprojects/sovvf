@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 
@@ -7,7 +7,7 @@ import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/
     templateUrl: './filtri-schede-contatto.component.html',
     styleUrls: ['./filtri-schede-contatto.component.css']
 })
-export class FiltriSchedeContattoComponent implements OnInit {
+export class FiltriSchedeContattoComponent {
 
     @HostBinding('class') classes = 'input-group-append';
 
@@ -22,10 +22,7 @@ export class FiltriSchedeContattoComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
-    }
-
-    onSelezioneFiltro(filtro: VoceFiltro) {
+    onSelezioneFiltro(filtro: VoceFiltro): void {
         console.log('filtriSelezionati', this.filtriSelezionati);
         this.filtriSelezionati.forEach((f: VoceFiltro) => {
             if (f !== filtro && f.categoria === filtro.categoria) {
@@ -35,8 +32,13 @@ export class FiltriSchedeContattoComponent implements OnInit {
         this.filtroSelezionato.emit(filtro);
     }
 
-    eliminaFiltriAttivi() {
+    eliminaFiltriAttivi(): void {
         this.filtriReset.emit();
+    }
+
+
+    _isSelezionato(filtro: VoceFiltro): boolean {
+        return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
     }
 
 }

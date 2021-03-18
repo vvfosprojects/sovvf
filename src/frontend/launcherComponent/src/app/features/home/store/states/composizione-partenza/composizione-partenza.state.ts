@@ -1,18 +1,10 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
-    AddFiltroSelezionatoComposizione,
-    ClearFiltriAffini,
     ClearPartenza,
     ConfirmPartenze,
-    GetFiltriComposizione,
     ReducerFilterListeComposizione,
-    RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione,
     RichiestaComposizione,
     SetComposizioneMode,
-    SetFiltriComposizione,
-    SetListaFiltriAffini,
     StartInvioPartenzaLoading,
     StartListaComposizioneLoading,
     StopInvioPartenzaLoading,
@@ -27,57 +19,54 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione,
-    FilterListaPreAccoppiati,
-    GetListaIdPreAccoppiati
+    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
     ClearComposizioneAvanzata,
-    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearListaMezziComposizione,
+    ClearMezzoComposizione,
+    ClearSelectedMezziComposizione
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import {
+    ClearListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
-import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
-import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
+import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from 'src/app/shared/enum/toastr';
+import { Injectable } from '@angular/core';
+import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 export interface ComposizionePartenzaStateModel {
-    filtriAffini: ListaTipologicheMezzi;
-    codiceDistaccamento: any[];
-    codiceTipoMezzo: any[];
-    codiceStatoMezzo: any[];
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
     loadingListe: boolean;
     loadingInvioPartenza: boolean;
+    loaded: boolean;
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
-    filtriAffini: {
-        distaccamenti: [],
-        generiMezzi: [],
-        stati: []
-    },
-    codiceDistaccamento: [],
-    codiceTipoMezzo: [],
-    codiceStatoMezzo: [],
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     loadingListe: false,
-    loadingInvioPartenza: false
+    loadingInvioPartenza: false,
+    loaded: null
 };
 
 
+@Injectable()
 @State<ComposizionePartenzaStateModel>({
     name: 'composizionePartenza',
     defaults: ComposizioneStateDefaults
@@ -86,17 +75,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
 export class ComposizionePartenzaState {
 
     @Selector()
-    static filtriAffini(state: ComposizionePartenzaStateModel) {
-        return state.filtriAffini;
-    }
-
-    @Selector()
-    static filtriSelezionati(state: ComposizionePartenzaStateModel): ComposizioneFilterbar {
-        return {
-            CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
-        };
+    static composizioneMode(state: ComposizionePartenzaStateModel): Composizione {
+        return state.composizioneMode;
     }
 
     @Selector()
@@ -119,221 +99,43 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static loadingListe(state: ComposizionePartenzaStateModel) {
+    static loadingListe(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingListe;
     }
 
     @Selector()
-    static loadingInvioPartenza(state: ComposizionePartenzaStateModel) {
+    static loadingInvioPartenza(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingInvioPartenza;
+    }
+
+    @Selector()
+    static loaded(state: ComposizionePartenzaStateModel): boolean {
+        return state.loaded;
     }
 
     constructor(private store: Store,
                 private compPartenzaService: CompPartenzaService) {
     }
 
-    @Action(GetFiltriComposizione)
-    getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        dispatch(new SetFiltriComposizione(filtri));
-    }
-
-    @Action(SetFiltriComposizione)
-    setFiltriComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        const state = getState();
-        const composizioneMode = state.composizioneMode;
-        const objFiltriSelezionati: ComposizioneFilterbar = {
-            CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
-        };
-        dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
-        if (composizioneMode === Composizione.Veloce) {
-            dispatch([
-                new GetListaIdPreAccoppiati()
-            ]);
-        }
-    }
-
-    @Action(SetListaFiltriAffini)
-    setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetListaFiltriAffini) {
-        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        let composizioneMezzi = null as MezzoComposizione[];
-        composizioneMezzi = action.composizioneMezzi ? action.composizioneMezzi : this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre.composizioneMezzi);
-        const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
-        const filtriStato = [] as DescrizioneTipologicaMezzo[];
-        const generiMezzi = [] as DescrizioneTipologicaMezzo[];
-        if (composizioneMezzi) {
-            if (filtri.distaccamenti) {
-                filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
-                    if (checkDistaccamento(distaccamento)) {
-                        filtriDistaccamento.push(distaccamento);
-                    }
-                });
-            }
-            if (filtri.stati) {
-                filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
-                    if (checkStato(stato)) {
-                        filtriStato.push(stato);
-                    }
-                });
-            }
-            if (filtri.generiMezzi) {
-                filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
-                    if (checkGenereMezzo(genereMezzi)) {
-                        generiMezzi.push(genereMezzi);
-                    }
-                });
-            }
-        }
-
-        function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        function checkStato(stato: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.stato === stato.descrizione) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        patchState({
-            filtriAffini: {
-                distaccamenti: filtriDistaccamento,
-                generiMezzi: generiMezzi,
-                stati: filtriStato
-            }
-        });
-    }
-
-    @Action(ClearFiltriAffini)
-    clearFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
-        patchState({
-            filtriAffini: ComposizioneStateDefaults.filtriAffini
-        });
-    }
-
     @Action(UpdateListeComposizione)
-    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
         console.warn('UpdateListeComposizione');
-        dispatch(new GetListeComposizioneAvanzata(action.filtri));
-    }
-
-    @Action(AddFiltroSelezionatoComposizione)
-    addFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: AddFiltroSelezionatoComposizione) {
-        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: insertItem(action.id)
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: insertItem(action.id)
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: insertItem(action.id)
-                    })
-                );
-                break;
-        }
-    }
-
-    @Action(RemoveFiltroSelezionatoComposizione)
-    removeFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltroSelezionatoComposizione) {
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-        }
-    }
-
-    @Action(RemoveFiltriSelezionatiComposizione)
-    removeFiltriSelezionatiComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltriSelezionatiComposizione) {
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: []
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: []
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: []
-                    })
-                );
-                break;
-        }
+        dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
-    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione) {
+    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione): void {
         const state = getState();
         const compMode = state.composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            dispatch(new FilterListeComposizioneAvanzata(action.filtri));
+            dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
-            dispatch(new FilterListaPreAccoppiati(action.filtri));
+            dispatch(new GetListaComposizioneVeloce());
         }
     }
 
     @Action(RichiestaComposizione)
-    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione) {
+    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
@@ -341,7 +143,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ToggleComposizioneMode)
-    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
+    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         if (state.composizioneMode === Composizione.Avanzata) {
             dispatch(new ClearListaMezziComposizione());
@@ -359,21 +161,21 @@ export class ComposizionePartenzaState {
     }
 
     @Action(SetComposizioneMode)
-    setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode) {
+    setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode): void {
         patchState({
             composizioneMode: action.compMode
         });
     }
 
     @Action(UpdateRichiestaComposizione)
-    updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione) {
+    updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
     }
 
     @Action(ConfirmPartenze)
-    confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+    confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze): void {
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
             const state = getState();
@@ -395,16 +197,22 @@ export class ComposizionePartenzaState {
             dispatch([
                 new StopInvioPartenzaLoading(),
                 new ClearMarkerMezzoSelezionato(),
-                new ClearDirection(),
-                new GetListeComposizioneAvanzata()
+                new ClearDirection()
             ]);
+            const composizioneActive = !!(getState().richiesta);
+            if (composizioneActive) {
+                dispatch(new GetListeComposizioneAvanzata());
+            } else {
+                dispatch(new GetListaMezziSquadre());
+            }
+            dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
             dispatch(new StopInvioPartenzaLoading());
         });
     }
 
     @Action(TerminaComposizione)
-    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
+    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         dispatch([
             new DeleteInLavorazione(state.richiesta),
@@ -420,33 +228,37 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ClearPartenza)
-    clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState(ComposizioneStateDefaults);
     }
 
     @Action(StartListaComposizioneLoading)
-    startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    startListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
-            loadingListe: true
+            loadingListe: true,
+            loaded: false
         });
+        dispatch(new StartLoadingAreaMappa());
     }
 
     @Action(StopListaComposizioneLoading)
-    stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
-            loadingListe: false
+            loadingListe: false,
+            loaded: true
         });
+        dispatch([new StopLoadingAreaMappa(), new GetMarkersMappa()]);
     }
 
     @Action(StartInvioPartenzaLoading)
-    startInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    startInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingInvioPartenza: true
         });
     }
 
     @Action(StopInvioPartenzaLoading)
-    stopInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    stopInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingInvioPartenza: false
         });

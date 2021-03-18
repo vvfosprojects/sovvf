@@ -5,7 +5,7 @@ export const environment = {
     toastr: true,
     onlyCas: false,
     signalRHub: '/NotificationHub',
-    baseUrl: 'http://localhost:5220',
+    baseUrl: 'http://localhost:31497',
     signalR: true,
     versionCheckURL: 'version.json',
     apiUrl: {
@@ -16,6 +16,7 @@ export const environment = {
         eventiRichieste: '/api/ListaEventi',
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
+        gestioneFonogramma: '/api/GestioneFonogramma',
         gestionePartenza: '/api/GestionePartenza',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
@@ -33,7 +34,11 @@ export const environment = {
         personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
-        meteo: 'https://api.openweathermap.org/data/2.5/weather?'
+        meteo: 'https://api.openweathermap.org/data/2.5/weather?',
+        enti: '/api/GestioneEnti',
+        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

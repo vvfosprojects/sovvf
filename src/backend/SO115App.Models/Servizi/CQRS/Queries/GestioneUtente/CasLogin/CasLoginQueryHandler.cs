@@ -63,16 +63,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
 
             if (Cas.serviceResponse.AuthenticationFailure != null)
             {
+                Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
                 return new CasLoginResult()
                 {
-                    User = null
+                    User = null,
+                    ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
                 };
             }
 
-            Log.Information($"Attributi = {Cas.serviceResponse.AuthenticationSuccess}");
-
             if (Cas.serviceResponse.AuthenticationSuccess != null)
             {
+                Log.Information($"sAMAccountName = {Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName}");
                 string CodFiscale;
 
                 if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
@@ -84,15 +85,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 if (utente == null)
                     return new CasLoginResult()
                     {
-                        User = null
+                        User = null,
+                        ErrorMessage = "Utente non abilitato. Contattare l'assistenza per l'abilitazione"
                     };
 
+                Log.Information($"Utente loggato = {utente.Username}");
                 var claim = new[]
                     {
                     new Claim(ClaimTypes.NameIdentifier, utente.CodiceFiscale.ToString()),
                     new Claim(ClaimTypes.Name,utente.Username)
                 };
-
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -121,7 +123,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 if (utente == null)
                     return new CasLoginResult()
                     {
-                        User = null
+                        User = null,
+                        ErrorMessage = "Utente non abilitato. Contattare l'assistenza per l'abilitazione"
                     };
 
                 var claim = new[]
@@ -161,6 +164,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
             var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+
+            Log.Information($"CasResponseData: '{data}'");
 
             var RispostaCas = JsonConvert.DeserializeObject<CasResponse>(data);
 

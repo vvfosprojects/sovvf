@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -18,16 +18,14 @@ import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione,
+    UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
-} from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+} from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
+import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     InsertSchedeContatto,
@@ -49,9 +47,19 @@ import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model'
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
+import { ViewComponentState } from '../../features/home/store/states/view/view.state';
+import { ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface, Ente } from '../../shared/interface/ente.interface';
+import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
+import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
+import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { NotificaInterface } from '../../shared/interface/notifica.interface';
+import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
+import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -72,17 +80,17 @@ export class SignalRService {
         this.startSubscriptionConnection();
     }
 
-    checkConnection() {
+    checkConnection(): any {
         return this.connectionEstablished.asObservable();
     }
 
-    private createSubscriptionConnection() {
+    private createSubscriptionConnection(): void {
         this.hubNotification = new HubConnectionBuilder()
             .withUrl(HUB_URL)
             .build();
     }
 
-    private startSubscriptionConnection() {
+    private startSubscriptionConnection(): void {
         this.hubNotification.start().then(() => {
             console.log('Hub Subscription Connesso');
             this.connectionEstablished.next(true);
@@ -111,6 +119,13 @@ export class SignalRService {
         });
 
         /**
+         * Notifiche Navbar
+         */
+        this.hubNotification.on('NotifyNavbar', (data: NotificaInterface) => {
+            this.store.dispatch(new AddNotifica(data));
+        });
+
+        /**
          * Modifica Richiesta
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
@@ -135,9 +150,20 @@ export class SignalRService {
             this.store.dispatch(new SetMezziInServizio(data));
             this.store.dispatch(new StopLoadingActionMezzo());
         });
+        this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
+            console.log('NotifyUpdateMezzoInServizio', data);
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
+            if (mezziInServizioActive) {
+                this.store.dispatch(new UpdateMezzoInServizio(data));
+            } else if (composizionePartenzaActive) {
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
+            }
+            this.store.dispatch(new StopLoadingActionMezzo());
+        });
 
         /**
-         * Markers Mappa --------------
+         * Markers Mappa
          */
         this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
             console.log('NotifyGetRichiestaMarker', data);
@@ -170,7 +196,6 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
-
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5));
         });
@@ -231,22 +256,22 @@ export class SignalRService {
         });
 
         /**
-         * Composizione Partenza
+         * Allerta Sedi
          */
-        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: MezzoComposizione[]) => {
-            console.log('NotifyGetComposizioneMezzi', data);
-            this.store.dispatch(new SetListaMezziComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
+        this.hubNotification.on('NotifyAllertaAltreSedi', () => {
+            console.log('NotifyAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
+        });
+        this.hubNotification.on('NotifyDeleteAllertaAltreSedi', () => {
+            console.log('NotifyDeleteAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
         });
 
-        // Todo: è ancora utilizzato?
-        this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
-            console.log('NotifyGetComposizioneSquadre', data);
-            // this.store.dispatch(new SetListaSquadreComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
+        /**
+         * Composizione Partenza
+         */
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
+            this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
@@ -261,29 +286,15 @@ export class SignalRService {
                 } else if (compMode === Composizione.Veloce) {
                     this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
                 }
-
-                // Todo: manca la data del server, da sistemare!!!
-                let dataScadenzaSelezione = new Date(data.istanteScadenzaSelezione).getHours() + ':';
-                dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getMinutes() + ':';
-                dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getSeconds();
-                const idRichiesta = data.codiceRichiesta;
-                this.store.dispatch(new ShowToastr(
-                    ToastrType.Info,
-                    'Mezzo Prenotato',
-                    'Mezzo ' + data.codiceMezzo + ' prenotato fino alle ' + dataScadenzaSelezione + ' sulla richiesta ' + idRichiesta,
-                    5)
-                );
                 console.log('Mezzo prenotato signalr', data);
             } else if (data.sbloccaMezzo) {
                 const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
                 if (compMode === Composizione.Avanzata) {
                     this.store.dispatch(new RemoveBookMezzoComposizione(data.codiceMezzo));
                     this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, null));
-                    this.store.dispatch(new RemoveBoxPartenzaByMezzoId(data.codiceMezzo));
                 } else if (compMode === Composizione.Veloce) {
                     this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
                 }
-                this.store.dispatch(new ShowToastr(ToastrType.Info, 'Prenotazione Scaduta', 'La prenotazione del mezzo ' + data.codiceMezzo + ' è scaduta.', 5));
                 console.log('Mezzo remove prenotato signalr', data);
             }
         });
@@ -295,7 +306,6 @@ export class SignalRService {
             console.log('NotifyAddUtente', codSede);
             this.store.dispatch(new SuccessAddUtenteGestione(codSede));
         });
-
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
@@ -307,15 +317,6 @@ export class SignalRService {
                 }
             }
         });
-
-        // Todo: è ancora utilizzato?
-        /*this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
-            console.log('NotifyRefreshUtenti', idUtente);
-            if (idUtente) {
-                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
-            }
-        });*/
-
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
@@ -327,12 +328,52 @@ export class SignalRService {
         });
 
         /**
+         * Rubrica
+         */
+        this.hubNotification.on('NotifyChangeEnti', (enti: Ente[]) => {
+            console.log('NotifyChangeEnti', enti);
+            this.store.dispatch(new SetEnti(enti));
+        });
+        this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
+            console.log('NotifyAddEnte', response);
+            this.store.dispatch(new AddVoceRubrica());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
+            console.log('NotifyUpdateEnte', response);
+            this.store.dispatch(new UpdateVoceRubrica(response.data));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
+            console.log('NotifyDeleteEnte', response);
+            this.store.dispatch(new DeleteVoceRubrica(response.data));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+
+        /**
+         * Trasferimenti
+         */
+        this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
+            console.log('NotifyAddTrasferimento', response);
+            this.store.dispatch(new AddTrasferimentoChiamata());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
+            console.log('NotifyDeleteChiamata', idRichiesta);
+            this.store.dispatch(new GetListaRichieste());
+        });
+
+        /**
          * Disconnessione SignalR
          */
         this.hubNotification.onclose(() => {
             console.log('Hub Subscription Disconnesso');
             this.connectionEstablished.next(false);
-            setTimeout( () => {
+            setTimeout(() => {
                 this.store.dispatch(new SignalRHubDisconnesso());
             }, 100);
             this.startSubscriptionConnection();
@@ -345,7 +386,7 @@ export class SignalRService {
         this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;'));
     }
 
-    getContextId() {
+    getContextId(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
                 this.store.dispatch(new SetConnectionId(connectionId));
@@ -353,7 +394,7 @@ export class SignalRService {
         }
     }
 
-    startGetTime() {
+    startGetTime(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
@@ -364,7 +405,7 @@ export class SignalRService {
     }
 
 
-    addToGroup(notification: SignalRNotification) {
+    addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
@@ -375,7 +416,7 @@ export class SignalRService {
         }
     }
 
-    removeToGroup(notification: SignalRNotification) {
+    removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(

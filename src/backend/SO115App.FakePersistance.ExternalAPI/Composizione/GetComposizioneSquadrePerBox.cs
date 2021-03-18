@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 query.CodiceSede
             };
             var listaSquadre = _getSquadre.Get(listaSedi).Result;
-            var statiOperativi = _getStatoSquadre.Get(listaSedi);
+            var statiOperativi = _getStatoSquadre.Get().Where(x => x.IdSquadra != null).ToList();
             var composizioneSquadre = new List<ComposizioneSquadre>();
 
             foreach (Squadra s in listaSquadre)
@@ -58,6 +58,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
                     s.IndiceOrdinamento = -200;
                 }
+                else
+                {
+                    s.Stato = Squadra.StatoSquadra.InSede;
+                }
+
                 var c = new ComposizioneSquadre
                 {
                     Squadra = s,

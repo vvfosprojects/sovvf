@@ -47,7 +47,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         /// <returns>L'utente</returns>
         public Utente GetUtenteByCodice(string id)
         {
-            return _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.Id, id)).Single();
+            return _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.Id, id)).SingleOrDefault();
         }
     }
 }

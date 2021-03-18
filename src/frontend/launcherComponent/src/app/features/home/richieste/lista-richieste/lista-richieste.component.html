@@ -1,20 +1,29 @@
 <div class="row mt-2">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
+    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0" [ngClass]="heightControl()"
+         style="overflow-x: hidden; overflow-y: auto">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
-             [ngClass]="{'col-double': !_split, 'col-12': _split}">
-            <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)" class="w-100 rounded card-shadow"
-                 [ngClass]="cardClasses(r)">
-                <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>
-                <app-sintesi-richiesta class="non-fissata" [richiesta]="r" [fissata]="false" [fissabile]="true"
-                                       [espanso]="isEspanso(r.id)"
-                                       [espandibile]="true" [listaEventi]="true"
+             [ngClass]="{'col-double': !split, 'col-12': split}" class=" test-hover">
+            <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
+                 class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
+                <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
+                <!-- TODO: inserire condizione corretta per "sostituzioneFineTurno" -->
+                <app-sintesi-richiesta class="non-fissata"
+                                       [richiesta]="r"
+                                       [fissata]="false"
+                                       [fissabile]="true"
+                                       [isEspanso]="isEspanso(r.id)"
+                                       [espandibile]="true"
+                                       [listaEventi]="true"
+                                       [sostituzioneFineTurno]="true"
                                        [inGestione]="richiestaGestione?.id === r.id"
-                                       [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza"
-                                       [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza"
-                                       [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza) || r.stato === statoRichiesta.Chiusa"
+                                       [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
+                                       [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
+                                       [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
+                                       [disableFissaInAlto]="richieste.length === 1"
+                                       [loadingEliminaPartenza]="loadingEliminaPartenza"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"
                                        (fissaInAlto)="onFissaInAlto($event)"
@@ -27,7 +36,9 @@
                                        (actionMezzo)="actionMezzo.emit($event)"
                                        (actionRichiesta)="actionRichiesta.emit($event)"
                                        (outEspansoId)="outEspansoId.emit($event)"
-                                       (eliminaPartenza)="eliminaPartenza.emit($event)">
+                                       (eliminaPartenza)="eliminaPartenza.emit($event)"
+                                       (modificaStatoFonogramma)="modificaStatoFonogramma.emit($event)"
+                                       (allertaSede)="allertaSede.emit($event)">
                 </app-sintesi-richiesta>
             </div>
         </div>
@@ -68,7 +79,7 @@
     <div *ngIf="richieste && richieste.length > 0" class="col-12 mt-3">
         <div class="row">
             <div class="col-4">
-                <button class="btn btn-block"
+                <button class="btn btn-block btn-no-hover"
                         [ngClass]="{'btn-outline-primary': !needRefresh, 'btn-primary': needRefresh}"
                         [disabled]="!needRefresh || loading" (click)="refresh.emit(true)">
                     <ng-template [ngIf]="needRefresh && !loading">
@@ -89,7 +100,7 @@
             </div>
             <div class="col-8 text-right pt-1">
                 <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                                     (pageChange)="pageChange.emit($event)">
+                                     [autoHide]="true" (pageChange)="pageChange.emit($event)">
                 </pagination-controls>
             </div>
         </div>

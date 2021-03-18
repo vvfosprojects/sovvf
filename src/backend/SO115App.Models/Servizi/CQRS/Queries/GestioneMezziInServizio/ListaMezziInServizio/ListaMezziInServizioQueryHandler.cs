@@ -31,18 +31,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     public class ListaMezziInServizioQueryHandler : IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult>
     {
         private readonly IGetListaMezzi _getListaMezzi;
-        private readonly IGetUtenteById _getUtenteById;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
-        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetUtenteById getUtenteById,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            this._getListaMezzi = getListaMezzi;
-            this._getUtenteById = getUtenteById;
-            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getListaMezzi = getListaMezzi;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -52,8 +46,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         /// <returns>Il DTO di uscita della query</returns>
         public ListaMezziInServizioResult Handle(ListaMezziInServizioQuery query)
         {
-            var Utente = _getUtenteById.GetUtenteByCodice(query.IdOperatore);
-            var listaSediUtenteAbilitate = Utente.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
+            var listaSediUtenteAbilitate = query.Operatore.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
 
@@ -75,11 +68,38 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
             var listaCodiciSediGestite = pinNodi.Select(x => x.Codice).ToArray();
 
-            var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite);
+            var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite) //FILTRI
+                .Where(c =>
+                {
+                    if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0)
+                        return query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
+                    else
+                        return true;
+                }).Where(c =>
+                { 
+                    if (query.Filters != null && !string.IsNullOrEmpty(query.Filters.Search))
+                        return c.Mezzo.Mezzo.Descrizione.Contains(query.Filters.Search)
+                            || (c.Mezzo.Mezzo.IdRichiesta != null && c.Mezzo.Mezzo.IdRichiesta.Contains(query.Filters.Search));
+                    else
+                        return true;
+                }).ToList();
 
-            return new ListaMezziInServizioResult()
+            if (query.Pagination != null) return new ListaMezziInServizioResult()
             {
-                ListaMezzi = listaMezzi
+                DataArray = listaMezzi
+                     .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                     .Take(query.Pagination.PageSize).ToList(),
+
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = listaMezzi.Count,
+                }
+            };
+            else return new ListaMezziInServizioResult()
+            {
+                DataArray = listaMezzi
             };
         }
     }

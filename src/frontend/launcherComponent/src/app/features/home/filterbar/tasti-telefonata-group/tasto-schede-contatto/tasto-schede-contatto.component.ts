@@ -30,26 +30,26 @@ export class TastoSchedeContattoComponent {
         );
     }
 
-    toggleSchedeContatto() {
+    toggleSchedeContatto(): void {
         this.store.dispatch(new ToggleSchedeContatto());
     }
 
-    coloreTasto() {
-        let _returnClass = 'btn-outline-success';
+    coloreTasto(): string {
+        let returnClass = 'btn-outline-success';
         if (this.active) {
-            _returnClass = 'btn-danger';
+            returnClass = 'btn-danger';
         }
         if (this.disabled) {
-            _returnClass = 'btn-outline-secondary cursor-not-allowed';
+            returnClass = 'btn-outline-secondary cursor-not-allowed';
         }
-        return _returnClass;
+        return returnClass;
     }
 
-    coloreBadgeContatore() {
-        let _returnClass = 'badge-danger';
+    coloreBadgeContatore(): string {
+        let returnClass = 'badge-danger';
         if (this.active) {
-            _returnClass = 'badge-light';
+            returnClass = 'badge-light';
         }
-        return _returnClass;
+        return returnClass;
     }
 }

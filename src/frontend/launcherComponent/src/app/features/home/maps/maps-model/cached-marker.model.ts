@@ -2,9 +2,9 @@ export class CachedMarker {
     /**
      * classe creata ad hoc per cachare tutte le icone utilizzate,
      * questo risolve un bug di agm che non tiene in memoria le nuove icone
-     * @param urlIcona
-     * @param latitudine
-     * @param longitudine
+     * @param: urlIcona
+     * @param: latitudine
+     * @param: longitudine
      */
     constructor(
         /**

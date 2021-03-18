@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-12 mt-1 pl-0 pr-2">
-        <div #richiestaContainer [ngClass]="{'mt-2 pb-2': richiestaFissata, 'col-6': !_split, 'col-12': _split}">
+        <div #richiestaContainer [ngClass]="{'mt-2 pb-2': richiestaFissata, 'col-6': !splitted, 'col-12': splitted}">
             <div #richiesta class="w-100 rounded bg-light" [ngClass]="cardFissataClasses(richiestaFissata)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === richiestaFissata.id"></app-partial-loader>
                 <app-sintesi-richiesta *ngIf="richiestaFissata" [richiesta]="richiestaFissata" [fissata]="true"
                                        [fissabile]="true" [espandibile]="true" [listaEventi]="true"
-                                       [espanso]="isEspanso(richiestaFissata.id)"
+                                       [isEspanso]="isEspanso(richiestaFissata.id)"
                                        [inGestione]="richiestaGestione?.id === richiestaFissata.id"
                                        [disabledModificaRichiesta]="disabledModificaRichiesta"
                                        [disabledGestisciRichiesta]="disabledGestisciRichiesta"
@@ -14,12 +14,13 @@
                                        (eventiRichiesta)="visualizzaEventiRichiesta($event)"
                                        (nuovaPartenza)="nuovaPartenza($event)"
                                        (modificaRichiesta)="onModificaRichiesta($event)"
-                                       (onEspanso)="setEspanso()"
+                                       (espanso)="setEspanso()"
                                        (outEspansoId)="outEspansoId.emit($event)"
                                        (gestioneRichiesta)="onGestioneRichiesta($event)"
                                        (actionMezzo)="actionMezzo.emit($event)"
                                        (actionRichiesta)="actionRichiesta.emit($event)"
-                                       (eliminaPartenza)="eliminaPartenza.emit($event)">
+                                       (eliminaPartenza)="eliminaPartenza.emit($event)"
+                                       (modificaStatoFonogramma)="modificaStatoFonogramma.emit($event)">
                 </app-sintesi-richiesta>
             </div>
         </div>

@@ -1,15 +1,19 @@
-import { Component, isDevMode, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { makeCopy, roundTodecimal, visualizzaBoschiSterpaglie } from '../../../../shared/helper/function';
+import { makeCopy, roundToDecimal, visualizzaBoschiSterpaglie } from '../../../../shared/helper/function';
 import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import { ChiudiRichiestaModifica, ModificaIndirizzo, ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
+import {
+    ChiudiRichiestaModifica,
+    ModificaIndirizzo,
+    ClearRichiestaModifica
+} from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Localita } from '../../../../shared/model/localita.model';
@@ -20,6 +24,14 @@ import { HomeState } from '../../store/states/home.state';
 import { LoadingState } from '../../../../shared/store/states/loading/loading.state';
 import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
+import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
+import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
+import { Ente } from 'src/app/shared/interface/ente.interface';
+import { EnteModalComponent } from '../../../../shared/modal/ente-modal/ente-modal.component';
+import { ClearFormEnte, RequestAddEnte } from '../../../../shared/store/actions/enti/enti.actions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -29,13 +41,18 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 })
 export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
+    @Input() boxAttivi: boolean;
+
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-    options = GOOGLEPLACESOPTIONS;
+    ngxGooglePlacesOptions: Options;
 
     tipologiaRichiedente: string;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     tipologie: Tipologia[];
+
+    @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    enti: Ente[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModificaIniziale: SintesiRichiesta;
@@ -43,7 +60,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
-    methods = new HelperSintesiRichiesta;
+    methods = new HelperSintesiRichiesta();
 
     modificaRichiestaForm: FormGroup;
     submitted = false;
@@ -52,30 +69,46 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     coordinate: Coordinate;
 
     constructor(private formBuilder: FormBuilder,
+                private modalService: NgbModal,
                 private store: Store) {
         this.initForm();
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
                 this.richiestaModifica = makeCopy(richiesta);
                 this.richiestaModificaIniziale = makeCopy(richiesta);
+                this.richiestaModifica.listaEnti = [];
+                this.richiestaModificaIniziale.listaEnti = [];
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
+                if (this.richiestaModificaIniziale.listaEntiIntervenuti && this.richiestaModificaIniziale.listaEntiIntervenuti.length > 0) {
+                    this.richiestaModificaIniziale.listaEntiIntervenuti.forEach(e => this.richiestaModificaIniziale.listaEnti.push(e));
+                }
+                if (this.richiestaModifica.listaEntiIntervenuti && this.richiestaModifica.listaEntiIntervenuti.length > 0) {
+                    this.richiestaModifica.listaEntiIntervenuti.forEach(e => this.richiestaModifica.listaEnti.push(e));
+                }
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
+        this.subscription.add(this.enti$.subscribe((enti: Ente[]) => {
+            this.enti = enti;
+        }));
+        this.ngxGooglePlacesOptions = new Options({
+            bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
+            componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
+        });
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Modifica Richiesta creato');
+    ngOnInit(): void {
+            console.log('Componente Modifica Richiesta creato');
         this.creaForm();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearRichiestaMarkerModifica());
-        isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
+            console.log('Componente Modifica Richiesta Distrutto');
     }
 
-    initForm() {
+    initForm(): void {
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: new FormControl(),
             nominativo: new FormControl(),
@@ -92,34 +125,37 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePubbliche: new FormControl(),
             motivazione: new FormControl(),
             zoneEmergenza: new FormControl(),
-            prioritaRichiesta: new FormControl()
+            prioritaRichiesta: new FormControl(),
+            listaEnti: new FormControl()
         });
     }
 
-    get f() {
+    get f(): any {
         return this.modificaRichiestaForm.controls;
     }
 
     creaForm(): void {
         const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
-        const etichette = this.richiestaModifica.tags ? this.richiestaModifica.tags.join(' ') : null;
+        const etichette = (this.richiestaModifica.tags && this.richiestaModifica.tags.length) ? this.richiestaModifica.tags : null;
+        const listaEnti = (this.richiestaModifica.listaEnti && this.richiestaModifica.listaEnti.length) ? this.richiestaModifica.listaEnti : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
             nominativo: [this.richiestaModifica.richiedente.nominativo, Validators.required],
-            telefono: [this.richiestaModifica.richiedente.telefono, Validators.required],
+            telefono: [this.richiestaModifica.richiedente.telefono, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
             indirizzo: [this.richiestaModifica.localita.indirizzo, Validators.required],
             etichette: [etichette],
             noteIndirizzo: [this.richiestaModifica.localita.note],
             rilevanzaGrave: [this.richiestaModifica.rilevanteGrave],
             rilevanzaStArCu: [this.richiestaModifica.rilevanteStArCu],
-            latitudine: [this.richiestaModifica.localita.coordinate.latitudine, Validators.required],
-            longitudine: [this.richiestaModifica.localita.coordinate.longitudine, Validators.required],
+            latitudine: [this.richiestaModifica.localita.coordinate.latitudine, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            longitudine: [this.richiestaModifica.localita.coordinate.longitudine, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             piano: [this.richiestaModifica.localita.piano],
             notePrivate: [this.richiestaModifica.notePrivate],
             notePubbliche: [this.richiestaModifica.notePubbliche],
             motivazione: [this.richiestaModifica.descrizione],
             zoneEmergenza: [zoneEmergenza],
-            prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta]
+            prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta],
+            listaEnti: [listaEnti ? listaEnti.map(e => e.codice) : null]
         });
         this.store.dispatch(new UpdateFormValue({
             path: 'richiestaModifica.modificaRichiestaForm',
@@ -127,11 +163,11 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }));
     }
 
-    cambiaTipologiaRichiedente(tipologia: string) {
+    cambiaTipologiaRichiedente(tipologia: string): void {
         this.tipologiaRichiedente = tipologia;
     }
 
-    setRilevanza() {
+    setRilevanza(): void {
         if (this.f.rilevanzaGrave.value === true) {
             this.f.rilevanzaGrave.setValue(false);
         } else {
@@ -139,7 +175,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
     }
 
-    setRilevanzaStArCu() {
+    setRilevanzaStArCu(): void {
         if (this.f.rilevanzaStArCu.value === true) {
             this.f.rilevanzaStArCu.setValue(false);
         } else {
@@ -148,7 +184,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     onCercaIndirizzo(result: Address): void {
-        const coordinate = new Coordinate(roundTodecimal(result.geometry.location.lat(), 6), roundTodecimal(result.geometry.location.lng(), 6));
+        const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
         this.coordinate = coordinate;
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
@@ -171,19 +207,18 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         return msg;
     }
 
-    onCopiaIndirizzo() {
+    onCopiaIndirizzo(): void {
         this.store.dispatch(new CopyToClipboard(new Coordinate(this.f.latitudine.value, this.f.longitudine.value)));
     }
 
-    getNuovaRichiesta() {
+    getNuovaRichiesta(): SintesiRichiesta {
         const nuovaRichiesta = this.richiestaModifica;
-
         const f = this.f;
         nuovaRichiesta.tipologie = f.tipoIntervento.value;
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
         nuovaRichiesta.richiedente.nominativo = f.nominativo.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
-        nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : [];
+        nuovaRichiesta.tags = (f.etichette.value && f.etichette.value.length) ? f.etichette.value : [];
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
         nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
@@ -195,16 +230,18 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.notePrivate = f.notePrivate.value;
         nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
+        nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : [];
+        // nuovaRichiesta.listaEnti = f.listaEnti.value;
         // console.log('Richiesta Modificata', nuovaRichiesta);
         this.setDescrizione();
         return nuovaRichiesta;
     }
 
-    onChiudiModifica() {
-        this.store.dispatch(new ChiudiRichiestaModifica);
+    onChiudiModifica(): void {
+        this.store.dispatch(new ChiudiRichiestaModifica());
     }
 
-    onConfermaModifica() {
+    onConfermaModifica(): void {
         this.submitted = true;
         if (!(this.modificaRichiestaForm.valid && !!this.coordinate)) {
             return;
@@ -214,6 +251,28 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.checkCampiModificati(nuovaRichiesta);
     }
 
+    aggiungiNuovoEnte(): void {
+        const addEnteModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addEnteModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.store.dispatch(new RequestAddEnte());
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearFormEnte());
+                    console.log('Modal "addEnteModal" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ClearFormEnte());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
 
     onTerreniSelezionati($event: TipoTerreno[]): void {
         this.richiestaModifica.tipoTerreno = $event;
@@ -223,7 +282,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         return !!!(this.f.tipoIntervento.value && (this.f.tipoIntervento.value.length > 0));
     }
 
-    modificaIndirizzo() {
+    modificaIndirizzo(): void {
         const address = this.f.indirizzo;
         if (address.touched || address.dirty) {
             this.coordinate = null;
@@ -242,18 +301,18 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
     }
 
-    visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]) {
+    visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boolean {
         return visualizzaBoschiSterpaglie(tipologieRichiesta);
     }
 
-    checkCampiModificati(richiesta: SintesiRichiesta) {
+    checkCampiModificati(richiesta: SintesiRichiesta): void {
         const stringRichiesta = JSON.stringify(richiesta);
         const stringRichiestaModifica = JSON.stringify(this.richiestaModificaIniziale);
 
         // se i dati non sono cambiati non chiamo il backend
         if (stringRichiesta === stringRichiestaModifica) {
             this.store.dispatch(new ToggleModifica(true));
-            this.store.dispatch(new ClearRichiestaModifica);
+            this.store.dispatch(new ClearRichiestaModifica());
         } else {
             this.setCampiModificati(richiesta);
             this.store.dispatch(new PatchRichiesta(richiesta));
@@ -262,7 +321,30 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         // console.log('stringRichiestaModifica', stringRichiestaModifica);
     }
 
-    setCampiModificati(richiesta: SintesiRichiesta) {
+    checkInputPattern(event: any, type: string): void {
+        let regexp;
+        switch (type) {
+            case 'PHONE':
+                regexp = /^[0-9\+]*$/;
+                break;
+            case 'LAT_LON':
+                regexp = /^[0-9\.\-]$/;
+                break;
+        }
+
+        let inputValue;
+        if (event instanceof ClipboardEvent) {
+            inputValue = event.clipboardData.getData('Text');
+        } else {
+            inputValue = event.key;
+        }
+
+        if (!regexp.test(inputValue)) {
+            event.preventDefault();
+        }
+    }
+
+    setCampiModificati(richiesta: SintesiRichiesta): void {
         if (richiesta.richiedente.telefono !== this.richiestaModificaIniziale.richiedente.telefono) {
             this.campiModificati.push('Telefono');
         }
@@ -296,10 +378,16 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         if (checkTipologieModificate(richiesta.tipologie, this.richiestaModificaIniziale.tipologie)) {
             this.campiModificati.push('Tipologie');
         }
+        if (richiesta.listaEnti !== this.richiestaModificaIniziale.listaEnti) {
+            this.campiModificati.push('ListaEnti');
+        }
+        // if (checkEntiModificati(richiesta.listaEnti, this.richiestaModificaIniziale.listaEnti)) {
+        // this.campiModificati.push('Enti');
+        // }
         console.log('campiModificati', this.campiModificati);
 
-        function checkArrayModificato(arr1: string[], arr2: string[]) {
-            let _return = false;
+        function checkArrayModificato(arr1: string[], arr2: string[]): boolean {
+            let arrayModificato = false;
             let count = 0;
             const length = arr1.length;
             const lengthIniziale = arr2.length;
@@ -314,16 +402,16 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
                 });
 
                 if (count !== length) {
-                    _return = true;
+                    arrayModificato = true;
                 }
             } else {
-                _return = true;
+                arrayModificato = true;
             }
-            return _return;
+            return arrayModificato;
         }
 
-        function checkTipologieModificate(arr1: Tipologia[], arr2: Tipologia[]) {
-            let _return = false;
+        function checkTipologieModificate(arr1: Tipologia[], arr2: Tipologia[]): boolean {
+            let tipologieModificate = false;
             let count = 0;
             const length = arr1.length;
             const lengthIniziale = arr2.length;
@@ -338,12 +426,36 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
                 });
 
                 if (count !== length) {
-                    _return = true;
+                    tipologieModificate = true;
                 }
             } else {
-                _return = true;
+                tipologieModificate = true;
             }
-            return _return;
+            return tipologieModificate;
         }
+
+        // function checkEntiModificati(arr1: Ente[], arr2: Ente[]) {
+        //    let _return = false;
+        //    let count = 0;
+        //    const length = arr1.length;
+        //    const lengthIniziale = arr2.length;
+        //
+        //    if (length === lengthIniziale) {
+        //        arr1.forEach((enti: Ente) => {
+        //            arr2.forEach((e: Ente) => {
+        //                if (enti.codice === e.codice) {
+        //                    count++;
+        //                }
+        //            });
+        //        });
+        //
+        //        if (count !== length) {
+        //            _return = true;
+        //        }
+        //    } else {
+        //        _return = true;
+        //    }
+        //    return _return;
+        // }
     }
 }

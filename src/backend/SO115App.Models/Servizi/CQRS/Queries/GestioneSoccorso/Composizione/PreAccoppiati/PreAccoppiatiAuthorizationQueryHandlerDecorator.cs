@@ -24,6 +24,7 @@ using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
@@ -33,12 +34,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
 
-        public PreAccoppiatiAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public PreAccoppiatiAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni, IGetRichiestaById getRichiestaAssistenzaById)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(PreAccoppiatiQuery query)
@@ -50,14 +54,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreRichieste))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
-                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

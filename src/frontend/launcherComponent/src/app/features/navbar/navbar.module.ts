@@ -17,6 +17,8 @@ import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.compo
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
+import { AnnuncioNuovaVersioneModalComponent } from '../../shared/modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
+import { NuoveFeaturesInfoModalComponent } from '../../shared/modal/nuove-features-info-modal/nuove-features-info-modal.component';
 /**
  * Module
  */

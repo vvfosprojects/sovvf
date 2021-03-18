@@ -1,11 +1,7 @@
 import { Action, State, StateContext } from '@ngxs/store';
-
-// Service
 import { ToastrService } from 'ngx-toastr';
-
-// Action
 import { SetToastr, ShowToastr } from '../../actions/toastr/toastr.actions';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 export interface ToastrStateModel {
     type: string;
@@ -21,28 +17,28 @@ export const toastrStateDefaults: ToastrStateModel = {
     timeout: 5
 };
 
+@Injectable()
 @State<ToastrStateModel>({
     name: 'toastr',
     defaults: toastrStateDefaults
 })
 export class ToastrState {
 
-    constructor(private _toastr: ToastrService,
+    constructor(private toastrService: ToastrService,
                 private ngZone: NgZone) {
     }
 
     @Action(ShowToastr)
-    showToastr({ getState, dispatch }: StateContext<ToastrStateModel>, action: ShowToastr) {
+    showToastr({ getState, dispatch }: StateContext<ToastrStateModel>, action: ShowToastr): void {
         if (action.alwaysVisible) {
             dispatch(new SetToastr(action.type, action.title, action.message, action.duration, action.tapToDismiss));
         }
     }
 
     @Action(SetToastr)
-    setToastr({ patchState }: StateContext<ToastrStateModel>, action: SetToastr) {
-
+    setToastr({ patchState }: StateContext<ToastrStateModel>, action: SetToastr): void {
         if (action.type === 'clear') {
-            this.ngZone.run(() => this._toastr[action.type.toString()]());
+            this.ngZone.run(() => this.toastrService[action.type.toString()]());
 
             patchState({
                 type: action.type
@@ -56,10 +52,10 @@ export class ToastrState {
                 extendedTimeOut = 0;
             }
             this.ngZone.run(() => {
-                this._toastr[action.type.toString()](action.message, action.title, {
+                this.toastrService[action.type.toString()](action.message, action.title, {
                         timeOut: timeout * 1000,
-                        extendedTimeOut: extendedTimeOut,
-                        tapToDismiss: tapToDismiss
+                        extendedTimeOut,
+                        tapToDismiss
                     }
                 );
             });
@@ -67,41 +63,8 @@ export class ToastrState {
                 type: action.type,
                 title: action.title,
                 message: action.message,
-                timeout: timeout
+                timeout
             });
         }
-
-        // switch (action.type) {
-        //     case 'clear':
-        //         this._toastr[action.type]();
-        //
-        //         patchState({
-        //             type: action.type
-        //         });
-        //         break;
-        //
-        //     default:
-        //         const timeout = action.timeout || action.timeout === 0 ? action.timeout : toastrStateDefaults.timeout;
-        //         let tapToDismiss = true;
-        //         let extendedTimeOut = 1000;
-        //         if (action.tapToDismiss === false) {
-        //             tapToDismiss = false;
-        //             extendedTimeOut = 0;
-        //         }
-        //         this._toastr[action.type](action.message, action.title, {
-        //                 timeOut: timeout * 1000,
-        //                 extendedTimeOut: extendedTimeOut,
-        //                 tapToDismiss: tapToDismiss
-        //             }
-        //         );
-        //         patchState({
-        //             type: action.type,
-        //             title: action.title,
-        //             message: action.message,
-        //             timeout: timeout
-        //         });
-        //         break;
-        // }
-
     }
 }

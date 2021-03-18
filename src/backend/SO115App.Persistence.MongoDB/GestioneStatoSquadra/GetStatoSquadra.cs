@@ -50,7 +50,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
         /// <returns>una lista di stati operativi</returns>
         public List<StatoOperativoSquadra> Get(List<string> codiciSede = null)
         {
-            if (codiciSede.Any())
+            if (codiciSede != null)
                 return _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.In(x => x.CodiceSede, codiciSede)).ToList();
             return _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
         }

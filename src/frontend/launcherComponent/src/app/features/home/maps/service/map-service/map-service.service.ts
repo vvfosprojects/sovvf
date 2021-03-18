@@ -9,7 +9,7 @@ import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/function';
-import { LatLngBounds } from '@agm/core/services/google-maps-types';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 
 @Injectable()
 export class MapService {
@@ -52,11 +52,11 @@ export class MapService {
         return this.centro$.asObservable().pipe(debounceTime(MAPSOPTIONS.panDelay));
     }
 
-    setArea(latLngBounds: LatLngBounds): void {
-        const area = makeAreaMappa(latLngBounds);
+    setArea(latLngBounds: LatLngBounds, expRound?: number): void {
+        const area = makeAreaMappa(latLngBounds, expRound);
         if (!this.wipeTopRight || (diffCoordinate(
-                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, 6),
-                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, 6))
+                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, expRound),
+                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, expRound))
         )) {
             this.area$.next(area);
         }

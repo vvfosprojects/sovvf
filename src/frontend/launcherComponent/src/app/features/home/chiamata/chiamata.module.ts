@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';  // Dependency
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,16 +12,17 @@ import { ChiamataService } from '../../../core/service/chiamata-service/chiamata
 import { NgxsModule } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
-import { ConfirmModalComponent, RichiestaDuplicataModalComponent } from '../../../shared';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { TagInputModule } from 'ngx-chips';
 
 @NgModule({
     imports: [
         CommonModule,
         NgSelectModule,
         FormsModule,
+        TagInputModule,
         GooglePlaceModule,
         NgbModule,
         ClipboardModule,
@@ -41,7 +42,6 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     exports: [
         ChiamataComponent
     ],
-    entryComponents: [ConfirmModalComponent, RichiestaDuplicataModalComponent],
     providers: [
         ChiamataService
     ]

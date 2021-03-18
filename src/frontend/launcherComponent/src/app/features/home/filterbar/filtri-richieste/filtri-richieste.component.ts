@@ -29,8 +29,14 @@ export class FiltriRichiesteComponent {
         dropdownOpts.placement = 'bottom';
     }
 
-    openFiltersModal() {
-        const modalOptions = { windowClass: 'xlModal', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true, keyboard: false } as NgbModalOptions;
+    openFiltersModal(): void {
+        const modalOptions = {
+            windowClass: 'xlModal',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false
+        } as NgbModalOptions;
         const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
         modal.result.then((res: string) => {
             switch (res) {
@@ -43,15 +49,15 @@ export class FiltriRichiesteComponent {
         });
     }
 
-    onSelezioneFiltro(filtro: VoceFiltro) {
+    onSelezioneFiltro(filtro: VoceFiltro): void {
         this.filtroSelezionato.emit(filtro);
     }
 
-    onDeselezioneFiltro(filtro: VoceFiltro) {
+    onDeselezioneFiltro(filtro: VoceFiltro): void {
         this.filtroDeselezionato.emit(filtro);
     }
 
-    resetFiltri() {
+    resetFiltri(): void {
         this.filtriReset.emit();
     }
 }

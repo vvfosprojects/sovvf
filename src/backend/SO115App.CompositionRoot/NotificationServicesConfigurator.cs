@@ -1,4 +1,12 @@
 ﻿using SimpleInjector;
+using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
+using SO115App.SignalR.Sender.GestioneEnti;
+using SO115App.SignalR.Sender.GestioneIntervento;
+using SO115App.SignalR.Sender.GestionePartenza;
+using SO115App.SignalR.Sender.GestioneTrasferimentiChiamate;
 
 namespace SO115App.CompositionRoot
 {
@@ -83,6 +91,21 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.Notification.CallMatrix.ICallMatrix,
                 SignalR.Utility.CallMatrix>();
+
+            container.Register<
+                Models.Servizi.Infrastruttura.Notification.GestioneFonogramma.INotifyAddFonogramma,
+                SignalR.Sender.GestioneFonogramma.NotificationAddFonogramma>();
+
+            container.Register<INotificationAddEnte, NotificationAddEnte>();
+            container.Register<INotificationUpdateEnte, NotificationUpdateEnte>();
+            container.Register<INotificationDeleteEnte, NotificationDeleteEnte>();
+
+            container.Register<INotificationAddTrasferimento, NotificationAddTrasferimento>();
+            container.Register<INotificationDeleteTrasferimento, NotificationDeleteTrasferimento>();
+
+            container.Register<INotificationAllertaAltreSedi, NotificationAllertaAltreSedi>();
+
+            container.Register<INotifyModificaPartenza, NotificationModificaPartenza>();
 
             #endregion Notifiche
         }

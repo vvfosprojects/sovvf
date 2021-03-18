@@ -36,7 +36,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                         .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
                         .ForMember(x => x.CodiceRichiesta, y => y.MapFrom(z => z.CodRichiesta))
                         .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
-                        .ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
+                        //.ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
                         .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
                         //.ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
@@ -73,7 +73,8 @@ namespace SO115App.Models.Servizi.CustomMapper
                         if (evento is AnnullamentoPresaInCarico)
                         {
                             var attivitaToDelete = ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo)).ToList();
-                            ListaAttivita.Remove(attivitaToDelete[0]);
+                            if (attivitaToDelete.Count > 0)
+                                ListaAttivita.Remove(attivitaToDelete[0]);
                         }
                         else if (ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList().Count > 0)
                         {

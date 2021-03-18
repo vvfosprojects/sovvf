@@ -4,8 +4,8 @@ export class TreeviewSelezione {
     idSede: string;
     ricorsivo: Ricorsivo;
 
-    constructor(_idSede: string, _ricorsivo: Ricorsivo) {
-        this.idSede = _idSede;
-        this.ricorsivo = _ricorsivo;
+    constructor(idSedeValue: string, ricorsivoValue: Ricorsivo) {
+        this.idSede = idSedeValue;
+        this.ricorsivo = ricorsivoValue;
     }
 }

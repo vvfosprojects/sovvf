@@ -1,5 +1,5 @@
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 export class AddBoxPartenza {
@@ -12,6 +12,13 @@ export class RequestAddBoxPartenza {
 
 export class RemoveBoxPartenza {
     static readonly type = '[BoxPartenza] Remove Box Partenza';
+
+    constructor(public boxPartenza: BoxPartenza) {
+    }
+}
+
+export class DeselectBoxPartenza {
+    static readonly type = '[BoxPartenza] Deselect Box Partenza';
 
     constructor(public boxPartenza: BoxPartenza, public refreshLista?: boolean) {
     }

@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
 import { PatchPagination, SetPageSize } from '../../actions/pagination/pagination.actions';
+import { Injectable } from '@angular/core';
 
 export interface PaginationStateModel {
     pagination: PaginationInterface;
@@ -12,9 +13,10 @@ export const PaginationStateModelDefaults: PaginationStateModel = {
         page: 1,
         pageSize: 10
     },
-    pageSizes: [ 10, 20, 30 ]
+    pageSizes: [10, 20, 30]
 };
 
+@Injectable()
 @State<PaginationStateModel>({
     name: 'pagination',
     defaults: PaginationStateModelDefaults
@@ -22,32 +24,32 @@ export const PaginationStateModelDefaults: PaginationStateModel = {
 export class PaginationState {
 
     @Selector()
-    static pagination(state: PaginationStateModel) {
+    static pagination(state: PaginationStateModel): PaginationInterface {
         return state.pagination;
     }
 
     @Selector()
-    static page(state: PaginationStateModel) {
+    static page(state: PaginationStateModel): number {
         return state.pagination.page;
     }
 
     @Selector()
-    static pageSize(state: PaginationStateModel) {
+    static pageSize(state: PaginationStateModel): number {
         return state.pagination.pageSize;
     }
 
     @Selector()
-    static totalItems(state: PaginationStateModel) {
+    static totalItems(state: PaginationStateModel): number {
         return state.pagination.totalItems;
     }
 
     @Selector()
-    static totalFilteredItems(state: PaginationStateModel) {
+    static totalFilteredItems(state: PaginationStateModel): number {
         return state.pagination.totalFilteredItems;
     }
 
     @Selector()
-    static pageSizes(state: PaginationStateModel) {
+    static pageSizes(state: PaginationStateModel): number[] {
         return state.pageSizes;
     }
 
@@ -55,14 +57,14 @@ export class PaginationState {
     }
 
     @Action(PatchPagination)
-    patchPagination({patchState}: StateContext<PatchPagination>, action: PatchPagination) {
+    patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination): void {
         patchState({
             pagination: action.pagination
         });
     }
 
     @Action(SetPageSize)
-    setPageSize({getState, patchState}: StateContext<PatchPagination>, action: SetPageSize) {
+    setPageSize({ getState, patchState }: StateContext<PatchPagination>, action: SetPageSize): void {
         const state = getState();
         patchState({
             pagination: {

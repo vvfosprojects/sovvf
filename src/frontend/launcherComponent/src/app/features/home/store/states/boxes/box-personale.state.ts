@@ -3,6 +3,7 @@ import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import { ClearBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
 import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
+import { Injectable } from '@angular/core';
 
 export interface BoxPersonaleStateModel {
     personale: BoxPersonale;
@@ -16,32 +17,30 @@ export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
     personaleQty: null
 };
 
+@Injectable()
 @State<BoxPersonaleStateModel>({
     name: 'boxPersonale',
     defaults: boxPersonaleStateDefaults
 })
 export class BoxPersonaleState {
 
-    constructor() {
-    }
-
     @Selector()
-    static personale(state: BoxPersonaleStateModel) {
+    static personale(state: BoxPersonaleStateModel): BoxPersonale {
         return state.personale;
     }
 
     @Selector()
-    static personaleQty(state: BoxPersonaleStateModel) {
+    static personaleQty(state: BoxPersonaleStateModel): BoxPersonaleQty {
         return state.personaleQty;
     }
 
     @Selector()
-    static presenze(state: BoxPersonaleStateModel) {
+    static presenze(state: BoxPersonaleStateModel): BoxPersonalePresenze {
         return state.presenze;
     }
 
     @Action(SetBoxPersonale)
-    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale) {
+    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale): void {
         patchState({
             personale: action.payload
         });
@@ -50,21 +49,21 @@ export class BoxPersonaleState {
     }
 
     @Action(SetBoxPersonaleQty)
-    setBoxPersonaleQty({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQty) {
+    setBoxPersonaleQty({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQty): void {
         patchState({
             personaleQty: action.personaleQty
         });
     }
 
     @Action(SetBoxPersonalePresenze)
-    setBoxPersonalePresenze({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenze) {
+    setBoxPersonalePresenze({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenze): void {
         patchState({
             presenze: action.personalePresenze
         });
     }
 
     @Action(ClearBoxPersonale)
-    clearBoxPersonale({ patchState }: StateContext<BoxPersonaleStateModel>) {
+    clearBoxPersonale({ patchState }: StateContext<BoxPersonaleStateModel>): void {
         patchState(boxPersonaleStateDefaults);
     }
 }

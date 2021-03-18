@@ -34,15 +34,17 @@
                 </app-filtri-mezzi-servizio>
             </div>
             <div class="col-7 pl-0">
-                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)"
-                             [ricerca]="ricercaRichieste$ | async" [placeholder]="getRicercaPlaceholder()"
-                             [debounce]="!(mezziInServizioStatus$ | async)" (search)="onSearch($event)">
+                <app-ricerca *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                             [ricerca]="ricercaRichieste$ | async"
+                             [debounce]="true"
+                             [placeholder]="getRicercaPlaceholder()"
+                             [disableSearch]="!!(richiesteStatus$ | async)"
+                             (search)="onSearch($event)">
                 </app-ricerca>
             </div>
         </div>
     </div>
-    <div *ngIf="!(composizioneStatus$ | async) && !(chiamataStatus$ | async)"
-         class="col-2">
+    <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false)" class="col-2">
         <div class="row">
             <div class="col-12">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"

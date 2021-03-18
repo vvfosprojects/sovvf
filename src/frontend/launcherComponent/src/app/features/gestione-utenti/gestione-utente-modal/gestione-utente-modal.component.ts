@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -18,7 +18,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
-    styleUrls: [ './gestione-utente-modal.component.css' ]
+    styleUrls: ['./gestione-utente-modal.component.css']
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
@@ -58,7 +58,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.getSearchUtentiVVF();
     }
 
-    initForm() {
+    initForm(): void {
         this.addUtenteRuoloForm = new FormGroup({
             utente: new FormControl(),
             sedi: new FormControl(),
@@ -66,10 +66,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             ruolo: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
-            utente: [ null, Validators.required ],
-            sedi: [ null, Validators.required ],
-            ricorsivo: [ true ],
-            ruolo: [ null, Validators.required ]
+            utente: [null, Validators.required],
+            sedi: [null, Validators.required],
+            ricorsivo: [true],
+            ruolo: [null, Validators.required]
         });
         // Init disabled input
         this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
@@ -78,17 +78,19 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.setRuoli();
         if (this.codFiscaleUtenteVVF) {
+            this.setRuoli({ removeVisualizzatore: true });
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
             this.f.utente.clearValidators();
             this.store.dispatch(new UpdateFormValue({
                 value: {
                     ...this.addUtenteRuoloForm.value,
-                    'utente': this.codFiscaleUtenteVVF
+                    utente: this.codFiscaleUtenteVVF
                 },
                 path: 'gestioneUtenti.addUtenteRuoloForm'
             }));
+        } else if (!this.codFiscaleUtenteVVF) {
+            this.setRuoli();
         }
     }
 
@@ -96,7 +98,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    getFormValid() {
+    getFormValid(): void {
         this.subscription.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
@@ -104,11 +106,11 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    get f() {
+    get f(): any {
         return this.addUtenteRuoloForm.controls;
     }
 
-    inizializzaSediTreeview() {
+    inizializzaSediTreeview(): void {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
@@ -117,11 +119,11 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]) {
+    onPatchSedi(event: TreeviewSelezione[]): void {
         this.f.sedi.patchValue(event);
     }
 
-    getSediSelezionate() {
+    getSediSelezionate(): void {
         this.subscription.add(
             this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
                 const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
@@ -144,7 +146,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    getUtentiVVF(search?: string) {
+    getUtentiVVF(search?: string): void {
         if (search && search.length >= 3) {
             this.store.dispatch(new GetUtentiVVF(search));
         } else {
@@ -152,7 +154,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    getSearchUtentiVVF() {
+    getSearchUtentiVVF(): void {
         this.typeahead.pipe(
             distinctUntilChanged(),
             debounceTime(500)
@@ -161,13 +163,16 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    setRuoli() {
+    setRuoli(opts?: { removeVisualizzatore?: boolean }): void {
         Object.values(Role).forEach((role: string) => {
+            if (opts && opts.removeVisualizzatore && role === Role.Visualizzatore) {
+                return;
+            }
             this.ruoli.push(role);
         });
     }
 
-    setRicorsivoValue(value: { id: string, status: boolean }) {
+    setRicorsivoValue(value: { id: string, status: boolean }): void {
         this.checkboxState.status = value.status;
         this.f[value.id].patchValue(value.status);
         this.store.dispatch(new UpdateFormValue({
@@ -179,7 +184,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         }));
     }
 
-    checkUtenteValueChanges() {
+    checkUtenteValueChanges(): void {
         this.f.utente.valueChanges.subscribe((value: any) => {
             if (value) {
                 this.checkboxState.disabled = false;
@@ -193,7 +198,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.formValid) {
@@ -207,7 +212,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss('cross');
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close(type);
     }
 }

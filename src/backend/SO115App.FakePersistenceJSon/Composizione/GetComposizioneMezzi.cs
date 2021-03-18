@@ -21,11 +21,10 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.ExternalAPI.Fake.Composizione;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -60,28 +59,28 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 json = r.ReadToEnd();
             }
 
-            listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            //listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
 
-            var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
+            var composizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
 
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
 
-            foreach (var composizione in composizioneMezzi)
-            {
-                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                composizione.Id = composizione.Mezzo.Codice;
+            //foreach (var composizione in composizioneMezzi)
+            //{
+            //    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+            //    composizione.Id = composizione.Mezzo.Codice;
 
-                if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                {
-                    composizione.IstanteScadenzaSelezione = null;
-                }
-            }
+            //    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+            //    {
+            //        composizione.IstanteScadenzaSelezione = null;
+            //    }
+            //}
 
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
-            return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+            return composizioneMezziPrenotati.Where(c => c.Mezzo.Distaccamento.Codice.Equals(query.CodiceSede)).OrderByDescending(x => x.IndiceOrdinamento).ToList();
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)

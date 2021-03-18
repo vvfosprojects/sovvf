@@ -1,5 +1,6 @@
 export enum StatoMezzo {
     InSede = 'In Sede',
+    InUscita = 'In Uscita',
     InViaggio = 'In Viaggio',
     SulPosto = 'Sul Posto',
     InRientro = 'In Rientro',
@@ -7,4 +8,13 @@ export enum StatoMezzo {
     Istituto = 'Istituto',
     FuoriServizio = 'Fuori Servizio',
     OperativoPreaccoppiato = 'Operativo Preaccoppiato'
+}
+
+
+export enum StatoMezzoSequenze {
+    InUscita = 'In Uscita',
+    InViaggio = 'In Viaggio',
+    SulPosto = 'Sul Posto',
+    InRientro = 'In Rientro',
+    Rientrato = 'Rientrato',
 }

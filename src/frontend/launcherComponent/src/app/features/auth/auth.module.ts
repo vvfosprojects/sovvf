@@ -23,7 +23,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ CasLoggedComponent, CasLogoutComponent, UtenteNonAbilitatoComponent ],
+    declarations: [
+        CasLoggedComponent,
+        CasLogoutComponent,
+        UtenteNonAbilitatoComponent
+    ],
     imports: [
         CommonModule,
         SharedModule,

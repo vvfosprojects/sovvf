@@ -11,8 +11,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { GestioneUtentiComponent } from './gestione-utenti.component';
 import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
-import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
-import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 /**
@@ -23,7 +21,6 @@ import { GestioneUtentiRouting } from './gestione-utenti.routing';
  * Module
  */
 import { SharedModule } from '../../shared/shared.module';
-import { UiSwitchModule } from 'ngx-ui-switch';
 /**
  * Ngxs
  */
@@ -32,10 +29,16 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
 
 
 @NgModule({
-    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent, GestioneUtenteModalComponent],
+    declarations: [
+        GestioneUtentiComponent,
+        RicercaUtentiComponent,
+        TabellaUtentiComponent,
+        GestioneUtenteModalComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,
@@ -47,19 +50,16 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
         SharedModule,
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
-        UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
             [
-                RicercaUtentiState,
-                GestioneUtentiState
+                GestioneUtentiState,
+                RicercaUtentiState
             ]
         ),
         NgxPaginationModule,
         NgxsFormPluginModule,
     ],
-    entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
-    providers: [
-    ]
+    providers: []
 })
 export class GestioneUtentiModule {
 }

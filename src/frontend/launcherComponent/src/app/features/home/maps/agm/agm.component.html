@@ -1,19 +1,15 @@
 <div class="row">
     <div class="col-12" [ngSwitch]="true">
         <div class="position-relative">
-            <div *ngIf="!map_loaded" class="tutto-schermo-mappa">
+            <div *ngIf="!mapLoaded" class="tutto-schermo-mappa">
                 <div class="loader-centrato-mappa">
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
                 </div>
             </div>
-            <agm-map [disableDefaultUI]="true"
-                     [zoomControl]="true"
-                     [zoomControlOptions]="zoomControlOptions"
+            <agm-map [ngClass]="{'agm-map-750': boxAttivi, 'agm-map-850': !boxAttivi}"
+                     [disableDefaultUI]="true"
                      [minZoom]="mapsOptions.minZoom"
-                     [fullscreenControl]="true"
-                     [fullscreenControlOptions]="fullscreenControlOptions"
-                     [mapTypeControl]="true"
-                     [streetViewControl]="true"
+                     [maxZoom]="mapsOptions.maxZoom"
                      [latitude]="centroMappa.coordinateCentro.latitudine"
                      [longitude]="centroMappa.coordinateCentro.longitudine"
                      [zoom]="centroMappa.zoom"
@@ -227,6 +223,7 @@
                                         wrapperClass="snazzy-margin-priorita-4">
                                     <ng-template>
                                         <app-info-window [mezzoMarker]="mezzoMarker"
+                                                         [disabilitaIndicatoriMezzo]="disabilitaIndicatoriMezzo"
                                                          [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
                                                          [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
                                                          (addMezzoComposizione)="onAddMezzoComposizione($event)">

@@ -1,6 +1,5 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GetMarkersMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMezziMarkers, GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ClearSediMarkers, GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
@@ -11,10 +10,21 @@ import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.inter
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
-import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SetBoundsIniziale } from '../../actions/home.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../../actions/maps/schede-contatto-markers.actions';
+import {
+    GetMarkersMappa,
+    SetAreaMappa,
+    StartLoadingAreaMappa,
+    StopLoadingAreaMappa
+} from '../../actions/maps/area-mappa.actions';
+import { Injectable } from '@angular/core';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -26,6 +36,7 @@ export const AreaMappaStateDefaults: AreaMappaStateModel = {
     areaMappaLoading: 0
 };
 
+@Injectable()
 @State<AreaMappaStateModel>({
     name: 'areaMappa',
     defaults: AreaMappaStateDefaults
@@ -39,13 +50,13 @@ export class AreaMappaState {
     @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
 
     @Selector()
-    static areaMappa(state: AreaMappaStateModel) {
+    static areaMappa(state: AreaMappaStateModel): AreaMappa {
         return state.areaMappa;
     }
 
     @Selector()
-    static areaMappaLoading(state: AreaMappaStateModel) {
-        return state.areaMappaLoading;
+    static areaMappaLoading(state: AreaMappaStateModel): boolean {
+        return state.areaMappaLoading !== 0;
     }
 
     constructor(private store: Store) {
@@ -79,18 +90,19 @@ export class AreaMappaState {
     }
 
     @Action(SetAreaMappa)
-    setAreaMappa({ patchState, dispatch }: StateContext<AreaMappaStateModel>, action: SetAreaMappa) {
+    setAreaMappa({ patchState, dispatch }: StateContext<AreaMappaStateModel>, action: SetAreaMappa): void {
+        console.log('@Action(SetAreaMappa)', JSON.stringify(action.areaMappa));
         patchState({
             areaMappa: action.areaMappa
         });
         dispatch([
-            new GetMarkersMappa,
+            new GetMarkersMappa(),
             new SetBoundsIniziale(action.areaMappa)
         ]);
     }
 
     @Action(GetMarkersMappa)
-    getMarkerMappa({ getState, dispatch }: StateContext<AreaMappaStateModel>) {
+    getMarkerMappa({ getState, dispatch }: StateContext<AreaMappaStateModel>): void {
         const state = getState();
         if (state.areaMappa) {
             const filtriAttivi = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivo);
@@ -98,7 +110,13 @@ export class AreaMappaState {
             const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
             const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
             const schedaContattoModeOn = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
-
+            const composizioneModeOn = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
+            if (composizioneModeOn) {
+                const composizioneLoaded = this.store.selectSnapshot(ComposizionePartenzaState.loaded);
+                if (!composizioneLoaded) {
+                    return;
+                }
+            }
             if (filtriAttivi.includes('richiesta')) {
                 dispatch([
                     new GetRichiesteMarkers(state.areaMappa, filtroRichieste)
@@ -131,7 +149,7 @@ export class AreaMappaState {
     }
 
     @Action(StartLoadingAreaMappa)
-    startLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>) {
+    startLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>): void {
         const valoreAttuale = makeCopy(getState().areaMappaLoading);
         const nuovoValore = valoreAttuale + 1;
         patchState({
@@ -140,7 +158,7 @@ export class AreaMappaState {
     }
 
     @Action(StopLoadingAreaMappa)
-    stopLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>) {
+    stopLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>): void {
         const valoreAttuale = makeCopy(getState().areaMappaLoading);
         const nuovoValore = valoreAttuale - 1;
         patchState({

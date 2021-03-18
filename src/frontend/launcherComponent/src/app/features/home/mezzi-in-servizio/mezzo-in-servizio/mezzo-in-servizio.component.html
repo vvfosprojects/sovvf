@@ -2,7 +2,7 @@
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
      (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
-    <ng-template [ngIf]="loading">
+    <ng-template [ngIf]="loadingArray.includes(mezzoInServizio.mezzo.mezzo.codice)">
         <app-partial-loader></app-partial-loader>
     </ng-template>
     <!-- Prima riga -->
@@ -10,7 +10,7 @@
         <div class="row">
             <!-- Prima Colonna (Prima riga) -->
             <div class="col-9">
-                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori" [mostraNotifiche]="true"
                            [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
                            (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                 </app-mezzo>
@@ -27,7 +27,7 @@
     <!-- Seconda riga -->
     <div class="col-12 pt-1 pb-2">
         <i class="fa fa-map-marker ml-1 mr-2 guida"></i>
-        <span *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">{{mezzoInServizio.mezzo.infoRichiesta.indirizzo | slice: 0:15}}</span>
+        <span *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">{{mezzoInServizio.mezzo.infoRichiesta.indirizzo | slice: 0:45}}</span>
         <!--  <span *ngIf="!mezzoInServizio.mezzo.infoRichiesta?.indirizzo">Indirizzzo non presente</span>  -->
     </div>
     <!-- Terza riga -->

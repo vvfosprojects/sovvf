@@ -46,5 +46,10 @@ namespace SO115App.Models.Classi.Condivise
         ///   il codice sede della squadra
         /// </summary>
         public string CodiceSede { get; set; }
+
+        /// <summary>
+        ///   il codice del mezzo nel quale si trova la squadra
+        /// </summary>
+        public string CodMezzo { get; set; }
     }
 }

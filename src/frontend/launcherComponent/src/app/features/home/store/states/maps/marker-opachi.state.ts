@@ -1,11 +1,13 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
     ClearMarkerOpachiMezzi,
-    ClearMarkerOpachiRichieste, ClearMarkerOpachiSC,
+    ClearMarkerOpachiRichieste,
+    ClearMarkerOpachiSC,
     SetMarkerOpachiMezzi,
     SetMarkerOpachiRichieste,
     SetMarkerOpachiSC
 } from '../../actions/maps/marker-opachi.actions';
+import { Injectable } from '@angular/core';
 
 export interface MarkerOpachiStateModel {
     markerOpachiId: {
@@ -37,6 +39,7 @@ export const MarkerOpachiStateDefaults: MarkerOpachiStateModel = {
     }
 };
 
+@Injectable()
 @State<MarkerOpachiStateModel>({
     name: 'markerOpachi',
     defaults: MarkerOpachiStateDefaults
@@ -44,12 +47,12 @@ export const MarkerOpachiStateDefaults: MarkerOpachiStateModel = {
 export class MarkerOpachiState {
 
     @Selector()
-    static markerOpachi(state: MarkerOpachiStateModel) {
+    static markerOpachi(state: MarkerOpachiStateModel): MarkerOpachiStateModel {
         return state;
     }
 
     @Action(SetMarkerOpachiRichieste)
-    setMarkerOpachiRichieste({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiRichieste) {
+    setMarkerOpachiRichieste({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiRichieste): void {
         const state = getState();
         setState({
             ...state,
@@ -65,7 +68,7 @@ export class MarkerOpachiState {
     }
 
     @Action(ClearMarkerOpachiRichieste)
-    clearMarkerOpachiRichieste({ getState, setState }: StateContext<MarkerOpachiStateModel>) {
+    clearMarkerOpachiRichieste({ getState, setState }: StateContext<MarkerOpachiStateModel>): void {
         const state = getState();
         setState({
             ...state,
@@ -81,7 +84,7 @@ export class MarkerOpachiState {
     }
 
     @Action(SetMarkerOpachiMezzi)
-    setMarkerOpachiMezzi({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiMezzi) {
+    setMarkerOpachiMezzi({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiMezzi): void {
         const state = getState();
         setState({
             ...state,
@@ -97,7 +100,7 @@ export class MarkerOpachiState {
     }
 
     @Action(ClearMarkerOpachiMezzi)
-    clearMarkerOpachiMezzi({ getState, setState }: StateContext<MarkerOpachiStateModel>) {
+    clearMarkerOpachiMezzi({ getState, setState }: StateContext<MarkerOpachiStateModel>): void {
         const state = getState();
         setState({
             ...state,
@@ -114,7 +117,7 @@ export class MarkerOpachiState {
     }
 
     @Action(SetMarkerOpachiSC)
-    setMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiSC) {
+    setMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiSC): void {
         const state = getState();
         setState({
             ...state,
@@ -130,7 +133,7 @@ export class MarkerOpachiState {
     }
 
     @Action(ClearMarkerOpachiSC)
-    clearMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>) {
+    clearMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>): void {
         const state = getState();
         setState({
             ...state,

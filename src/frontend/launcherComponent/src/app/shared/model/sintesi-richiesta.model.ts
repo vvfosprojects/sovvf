@@ -10,10 +10,10 @@ import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 import { TipoTerreno } from './tipo-terreno';
 import { EnteIntervenuto } from './ente-intervenuto';
-import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
+import { Ente } from '../interface/ente.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -124,7 +124,7 @@ export class SintesiRichiesta {
         /**
          * turno inserimento della chiamata
          */
-        public turnoInserimentoChiamata?: TurnoInserimentoChiamata,
+        public trnInsChiamata?: string,
         /**
          * turno dell'intervento
          */
@@ -136,11 +136,11 @@ export class SintesiRichiesta {
         /**
          * lista enti intervenuti
          */
-        public listaEntiIntervenuti?: EnteIntervenuto[],
+        public listaEntiIntervenuti?: Ente[],
         /**
          * lista enti presa in carico
          */
-        public listaEntiPresaInCarico?: EnteIntervenuto[],
+        public listaEntiPresaInCarico?: Ente[],
         /**
          * obiettivo sensibile
          */
@@ -161,7 +161,14 @@ export class SintesiRichiesta {
          * lista di prese in carico utente
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],
-        public codUOCompetenza?: string[]
+        public codUOCompetenza?: string[],
+        public codSOAllertate?: string[],
+        public sediAllertate?: Sede[],
+        public codSOCompetente?: string,
+        /**
+         * lista Enti intervenuti
+         */
+        public listaEnti?: Ente[],
     ) {
     }
 }

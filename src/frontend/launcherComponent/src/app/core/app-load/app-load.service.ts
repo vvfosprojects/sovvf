@@ -9,7 +9,7 @@ const SIGNALR_BYPASS = !environment.signalR;
 @Injectable()
 export class AppLoadService {
 
-    subscription = new Subscription;
+    subscription: Subscription = new Subscription();
     checkConnectionSignalR: boolean;
 
 

@@ -1,0 +1,68 @@
+<div class="bg-white border border-light px-4 pt-4 pb-2"
+     [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
+    <div class="clearfix">
+        <h5 class="float-left mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
+            {{ changelog?.nomeVersione | uppercase }}
+        </h5>
+        <h6 class="float-right mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
+            <i class="fa fa-calendar-check-o"></i>
+            {{ changelog?.dataRilascio }}
+        </h6>
+    </div>
+    <hr>
+    <!-- INDICE -->
+    <div class="bg-light p-3 shadow-sm">
+        <div class="clearfix">
+            <div class="float-left">
+                <h4>Indice</h4>
+            </div>
+            <div class="float-right">
+                <button class="btn btn-sm" (click)="toggleIndiceVisible()"
+                        [ngClass]="{'btn-primary': !indiceVisible, 'btn-danger': indiceVisible }">
+                    {{ indiceVisible ? 'Nascondi Indice' : 'Visualizza Indice' }}
+                </button>
+            </div>
+        </div>
+        <ng-template [ngIf]="indiceVisible">
+            <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="mb-2">
+                <a href="/changelog{{ '#' + changelogId + '-' + i }}">
+                    {{ i + 1 }}. {{ capitolo?.titolo | uppercase }}
+                </a>
+            </div>
+        </ng-template>
+    </div>
+    <!-- TESTO -->
+    <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="my-5" [id]="changelogId + '-' + (''+i)">
+        <h3 class="mb-4 font-weight-bolder">
+            {{ i + 1 }}. {{ capitolo?.titolo | uppercase }}
+        </h3>
+        <div *ngFor="let descrizione of capitolo?.descrizioni">
+            <div class="pl-3">
+                <h4>{{ descrizione?.testo }}</h4>
+            </div>
+            <div *ngIf="descrizione?.img" class="text-center my-4">
+                <img [src]="descrizione?.img" class="img-fluid shadow rounded">
+            </div>
+        </div>
+    </div>
+    <small *ngIf="changelog?.descrizione" class="d-inline-block text-muted mb-3">
+        {{ changelog?.descrizione }}
+    </small>
+    <hr  *ngIf="ultimoChangelog">
+    <div *ngIf="ultimoChangelog" class="clearfix">
+        <div class="float-left">
+            <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>
+        </div>
+        <div class="float-right">
+            <h5>
+                <span class="text-danger">
+                   Problemi con questo aggiornamento?
+                </span>
+                Scrivi a
+                <a href="{{'mailto://' + emailProblemi}}">
+                    {{ emailProblemi }}
+                </a>
+            </h5>
+        </div>
+    </div>
+</div>

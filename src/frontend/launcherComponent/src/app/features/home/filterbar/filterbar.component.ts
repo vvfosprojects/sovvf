@@ -21,11 +21,7 @@ import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import {
-    ClearFiltriSchedeContatto,
-    ReducerSetFiltroSchedeContatto,
-    SetFiltroKeySchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
+import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -57,9 +53,6 @@ export class FilterbarComponent {
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
 
-    // Ricerca Schede Contatto
-    @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
-
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
     @Select(MezziInServizioState.filtriSelezionati) filtriSelezionatiMezziInServizio$: Observable<VoceFiltro[]>;
@@ -72,12 +65,13 @@ export class FilterbarComponent {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
+    @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizio) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
-     * @param store
+     * @param:: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
@@ -88,26 +82,26 @@ export class FilterbarComponent {
     /**
      * Filtri Richieste Events
      */
-    onSelezioneFiltroRichieste(filtro: VoceFiltro) {
+    onSelezioneFiltroRichieste(filtro: VoceFiltro): void {
         this.store.dispatch(new SetFiltroSelezionatoRichieste(filtro));
     }
 
-    onDeselezioneFiltroRichieste(filtro: VoceFiltro) {
+    onDeselezioneFiltroRichieste(filtro: VoceFiltro): void {
         this.store.dispatch(new ClearFiltroSelezionatoRichieste(filtro));
     }
 
-    eliminaFiltriAttiviRichieste() {
+    eliminaFiltriAttiviRichieste(): void {
         this.store.dispatch(new ResetFiltriSelezionatiRichieste());
     }
 
     /**
      * Ricerca Richieste Events
      */
-    onSearch(ricerca: string) {
+    onSearch(ricerca: string): void {
         this.store.dispatch(new SetRicercaFilterbar(ricerca));
     }
 
-    getRicercaPlaceholder() {
+    getRicercaPlaceholder(): string {
         let placeholder = 'Cosa vuoi cercare?';
         const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
         if (mezziInServizioActive) {
@@ -119,49 +113,41 @@ export class FilterbarComponent {
     /**
      * Filtri Schede Contatto Events
      */
-    onSelezioneFiltroSchedeContatto(filtro: VoceFiltro) {
+    onSelezioneFiltroSchedeContatto(filtro: VoceFiltro): void {
         this.store.dispatch(new ReducerSetFiltroSchedeContatto(filtro));
     }
 
-    eliminaFiltriAttiviSchedeContatto() {
+    eliminaFiltriAttiviSchedeContatto(): void {
         this.store.dispatch(new ClearFiltriSchedeContatto());
     }
 
     /**
-     * Ricerca Schede Contatto Events
-     */
-    onSearchSchedeContatto(ricerca: any) {
-        this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
-    }
-
-
-    /**
      * Filtri Schede Contatto Events
      */
-    onSelezioneFiltroMezziInServizio(filtro: VoceFiltro) {
+    onSelezioneFiltroMezziInServizio(filtro: VoceFiltro): void {
         this.store.dispatch(new SetFiltroMezziInServizio(filtro));
     }
 
-    eliminaFiltriAttiviMezziInServizio() {
+    eliminaFiltriAttiviMezziInServizio(): void {
         this.store.dispatch(new ClearFiltriMezziInServizio());
     }
 
     /**
      * Marker Meteo Switch Events
      */
-    onMeteoSwitch(active: boolean) {
+    onMeteoSwitch(active: boolean): void {
         this.store.dispatch(new SetMarkerMeteoSwitch(active));
     }
 
-    toggleChiamata() {
+    toggleChiamata(): void {
         this.store.dispatch(new ToggleChiamata());
     }
 
-    switchView(event: AppFeatures) {
+    switchView(event: AppFeatures): void {
         this.store.dispatch(new ChangeView(event));
     }
 
-    onOptionsRichieste(event: OptionsRichieste) {
+    onOptionsRichieste(event: OptionsRichieste): void {
         switch (event) {
             case OptionsRichieste.Restringi:
                 this.store.dispatch(new ClearRichiesteEspanse());

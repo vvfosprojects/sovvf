@@ -13,6 +13,10 @@ import { CheckPermissionRichiestaPipe } from './check-permission-richiesta.pipe'
 import { CheckPermissionPipe } from './check-permission.pipe';
 import { CheckPermissionSchedaContattoPipe } from './check-permission-scheda-contatto.pipe';
 import { SelectedFilterTipologiaRichiestePipe } from './selected-filter-tipologia-richieste.pipe';
+import { ReplacePipe } from './replace.pipe';
+import { CompetenzaFormatPipe } from './competenza-format.pipe';
+import { TipoNotificaPipe } from './tipo-notifica.pipe';
+import { ReversePipe } from './reverse.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -28,7 +32,11 @@ const COMPONENTS = [
     CheckPermissionRichiestaPipe,
     CheckPermissionSchedaContattoPipe,
     SelectedFilterRichiestePipe,
-    SelectedFilterTipologiaRichiestePipe
+    SelectedFilterTipologiaRichiestePipe,
+    ReplacePipe,
+    CompetenzaFormatPipe,
+    TipoNotificaPipe,
+    ReversePipe
 ];
 
 @NgModule({
@@ -39,7 +47,7 @@ const COMPONENTS = [
 
 export class PipeModule {
 
-    static forRoot() {
+    static forRoot(): any {
         return {
             ngModule: PipeModule,
             providers: [],
