@@ -928,10 +928,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                 {
                     var eventiPartenza = _eventi.OfType<AbstractPartenza>()
                         .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
-                        .Where(e => this.Aperta)
+                        .Where(e => Aperta)
                         .ToList();
 
-                    if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) < eventiPartenza.Max(e => e.Istante))
+                    if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) <= eventiPartenza.Max(e => e.Istante))
                         throw new InvalidOperationException(messaggio);
                 }
             }
