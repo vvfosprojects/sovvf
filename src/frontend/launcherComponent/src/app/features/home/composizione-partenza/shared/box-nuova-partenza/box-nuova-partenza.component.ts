@@ -32,6 +32,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     @Input() itemHover: boolean;
     @Input() itemOccupato: boolean;
     @Input() nightMode: boolean;
+    @Input() disableDividi: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -46,7 +47,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     @Output() hoverOut = new EventEmitter();
 
     itemBloccato: boolean;
-
     StatoMezzo = StatoMezzo;
 
     private subscription = new Subscription();

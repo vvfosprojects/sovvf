@@ -308,6 +308,16 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         return squadraSelezionata;
     }
 
+    checkDoubleDividi(box: BoxPartenza): boolean {
+        if (box.squadreComposizione && box.squadreComposizione.length === 1) {
+            const id = box.squadreComposizione[0].id;
+            let inputVec = [];
+            inputVec = this.boxPartenzaList.slice().reverse();
+            const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
+            return vec && vec.length > 1 && vec.reverse().findIndex(x => x === box) === 0;
+        } else { return false; }
+    }
+
     checkSquadraHover(idSquadra: string): boolean {
         let squadraHover = false;
         if (this.idSquadraHover && this.idSquadraHover === idSquadra) {
