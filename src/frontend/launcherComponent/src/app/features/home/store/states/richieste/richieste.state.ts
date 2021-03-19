@@ -59,6 +59,8 @@ import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezion
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { SetListaSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -166,11 +168,14 @@ export class RichiesteState {
                 pageSize: boxesVisibili ? 7 : 8
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                dispatch([
-                    new AddRichieste(response.sintesiRichiesta),
-                    new PatchPagination(response.pagination),
-                    new StopLoadingRichieste()
-                ]);
+                const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
+                if (richiesteActive) {
+                    dispatch([
+                        new AddRichieste(response.sintesiRichiesta),
+                        new PatchPagination(response.pagination),
+                    ]);
+                }
+                dispatch(new StopLoadingRichieste());
                 if (state.needRefresh) {
                     dispatch(new SetNeedRefresh(false));
                 }

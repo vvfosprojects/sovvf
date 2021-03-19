@@ -178,7 +178,7 @@ export class RichiestaModificaState {
                     f.istantePrimaAssegnazione,
                     f.rilevanzaGrave,
                     f.codSchedaContatto ? f.codSchedaContatto : null,
-                    f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
+                    f.zoneEmergenza?.length > 1 ? f.zoneEmergenza.split(' ') : null,
                     f.fonogramma,
                     f.partenzeRichiesta,
                     (f.etichette && f.etichette.length) ? f.etichette : null,
