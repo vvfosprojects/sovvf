@@ -302,9 +302,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             if (query.Filtro.Mezzo != null)
             {
-                //var CodiceMezzo = query.Filtro.Mezzo.Codice;
-
-                if (lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Stato.Equals("In Rientro"))
+                if (lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                 {
                     ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(query.Filtro.Mezzo.Distaccamento.Codice))
                         .Take(query.Filtro.MezziPagination.PageSize).ToList();
@@ -316,7 +314,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Count > 0)
                     {
-                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice))
+                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(query.Filtro.Mezzo.Distaccamento.Codice))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
                         ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice))

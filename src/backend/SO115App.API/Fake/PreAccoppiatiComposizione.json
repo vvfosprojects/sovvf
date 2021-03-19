@@ -1176,5 +1176,188 @@
         "idOperatore": null
       }
     ]
+  },
+  {
+    "Id": "6",
+    "CodiceSede": "RM.1000",
+    "MezzoComposizione": {
+      "id": "O.21901",
+      "mezzo": {
+        "codice": "O.21901",
+        "idRichiesta": null,
+        "descrizione": "21901",
+        "genere": "APS",
+        "stato": "In Sede",
+        "appartenenza": "CORP",
+        "distaccamento": {
+          "codice": "RM.1502",
+          "descrizione": "CIAMPINO (AEROPORTUALE)",
+          "coordinate": {
+            "latitudine": 41.7979,
+            "longitudine": 12.59044
+          },
+          "indirizzo": null,
+          "tipo": "",
+          "regione": "",
+          "provincia": "",
+          "label": "",
+          "icona": ""
+        },
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "descrizioneStato": null,
+        "statoEfficenza": 0,
+        "descrizioneStatoEfficenza": null,
+        "livelloCarburante": 0,
+        "descrizioneLivelloCarburante": null,
+        "livelloEstinguente": 0,
+        "descrizioneLivelloEstinguente": null,
+        "notifiche": null,
+        "coordinate": {
+          "latitudine": 41.7979,
+          "longitudine": 12.59044
+        },
+        "istanteAcquisizione": null,
+        "istantePrenotazione": null,
+        "istanteMovimentazione": null,
+        "coordinateFake": true
+      },
+      "km": "7.79",
+      "tempoPercorrenza": "4.45",
+      "istanteScadenzaSelezione": null,
+      "indiceOrdinamento": 199.91766044648391603215868404
+    },
+    "SquadreComposizione": [
+      {
+        "id": "57",
+        "squadra": {
+          "id": "57",
+          "codice": "57",
+          "nome": "RM57",
+          "stato": 0,
+          "componenti": [
+            {
+              "codiceFiscale": "CCCRRT65B17A271C",
+              "descrizioneQualifica": "CAPO SQUADRA ESPERTO",
+              "descrizioneQualificaLunga": null,
+              "ruolo": null,
+              "codiceTurno": null,
+              "nominativo": "CICCONI.ROBERTO",
+              "orarioInizio": "2020-06-26T16:22:35.5680575Z",
+              "orarioFine": "2020-06-26T16:22:35.5680568Z",
+              "tooltip": "",
+              "capoPartenza": true,
+              "autista": false,
+              "rimpiazzo": false,
+              "funGuardia": false,
+              "tecnicoGuardia1": false,
+              "tecnicoGuardia2": false,
+              "capoTurno": false,
+              "telefono": ""
+            },
+            {
+              "codiceFiscale": "CLBJPR68H08Z110B",
+              "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE SCATTO CONVENZIONALE",
+              "descrizioneQualificaLunga": null,
+              "ruolo": null,
+              "codiceTurno": null,
+              "nominativo": "CALABRESE.JEAN PIERRE LOU",
+              "orarioInizio": "2020-06-26T16:22:35.5680579Z",
+              "orarioFine": "2020-06-26T16:22:35.5680578Z",
+              "tooltip": "",
+              "capoPartenza": false,
+              "autista": true,
+              "rimpiazzo": false,
+              "funGuardia": false,
+              "tecnicoGuardia1": false,
+              "tecnicoGuardia2": false,
+              "capoTurno": false,
+              "telefono": ""
+            },
+            {
+              "codiceFiscale": "CLBNTN66C19I703G",
+              "descrizioneQualifica": "VIGILE DEL FUOCO COORDINATORE",
+              "descrizioneQualificaLunga": null,
+              "ruolo": null,
+              "codiceTurno": null,
+              "nominativo": "CALABRESE.ANTONIO",
+              "orarioInizio": "2020-06-26T16:22:35.5680583Z",
+              "orarioFine": "2020-06-26T16:22:35.5680582Z",
+              "tooltip": "",
+              "capoPartenza": false,
+              "autista": false,
+              "rimpiazzo": false,
+              "funGuardia": false,
+              "tecnicoGuardia1": true,
+              "tecnicoGuardia2": false,
+              "capoTurno": false,
+              "telefono": ""
+            },
+            {
+              "codiceFiscale": "CLNMSM63T04H501D",
+              "descrizioneQualifica": "CAPO REPARTO",
+              "descrizioneQualificaLunga": null,
+              "ruolo": null,
+              "codiceTurno": null,
+              "nominativo": "CALENZO.MASSIMILIANO",
+              "orarioInizio": "2020-06-26T16:22:35.5680587Z",
+              "orarioFine": "2020-06-26T16:22:35.5680586Z",
+              "tooltip": "",
+              "capoPartenza": false,
+              "autista": false,
+              "rimpiazzo": false,
+              "funGuardia": false,
+              "tecnicoGuardia1": false,
+              "tecnicoGuardia2": true,
+              "capoTurno": false,
+              "telefono": ""
+            },
+            {
+              "codiceFiscale": "MRTPLA66R03H288N",
+              "descrizioneQualifica": "CAPO SQUADRA ESPERTO",
+              "descrizioneQualificaLunga": null,
+              "ruolo": null,
+              "codiceTurno": null,
+              "nominativo": "MORETTI.PAOLO",
+              "orarioInizio": "2020-06-26T16:22:35.5680592Z",
+              "orarioFine": "2020-06-26T16:22:35.5680591Z",
+              "tooltip": "",
+              "capoPartenza": false,
+              "autista": false,
+              "rimpiazzo": false,
+              "funGuardia": false,
+              "tecnicoGuardia1": false,
+              "tecnicoGuardia2": false,
+              "capoTurno": false,
+              "telefono": ""
+            }
+          ],
+          "distaccamento": {
+            "codice": "RM.1502",
+            "descrizione": "CIAMPINO (AEROPORTUALE)",
+            "coordinate": {
+              "latitudine": 41.7979,
+              "longitudine": 12.59044
+            },
+            "indirizzo": null,
+            "tipo": "",
+            "regione": "",
+            "provincia": "",
+            "label": "",
+            "icona": ""
+          },
+          "istanteTermineImpegno": null,
+          "listaCodiciFiscaliComponentiSquadra": [
+            "CCCRRT65B17A271C",
+            "CLBJPR68H08Z110B",
+            "CLBNTN66C19I703G",
+            "CLNMSM63T04H501D",
+            "MRTPLA66R03H288N"
+          ],
+          "indiceOrdinamento": 0
+        },
+        "istanteScadenzaSelezione": "0001-01-01T00:00:00",
+        "idOperatore": null
+      }
+    ]
   }
 ]
