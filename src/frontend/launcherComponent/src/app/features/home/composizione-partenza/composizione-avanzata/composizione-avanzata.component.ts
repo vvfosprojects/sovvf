@@ -1,16 +1,16 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {NgbPopoverConfig, NgbTooltipConfig} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, Subscription} from 'rxjs';
-import {MezzoComposizione} from '../../../../shared/interface/mezzo-composizione-interface';
-import {SquadraComposizione} from '../../../../shared/interface/squadra-composizione-interface';
-import {DirectionInterface} from '../../maps/maps-interface/direction-interface';
-import {SintesiRichiesta} from '../../../../shared/model/sintesi-richiesta.model';
-import {Composizione} from '../../../../shared/enum/composizione.enum';
-import {Select, Store} from '@ngxs/store';
-import {makeCopy} from '../../../../shared/helper/function';
-import {ComposizionePartenzaState} from '../../store/states/composizione-partenza/composizione-partenza.state';
-import {MezziComposizioneState} from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
-import {SquadreComposizioneState} from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
+import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Composizione } from '../../../../shared/enum/composizione.enum';
+import { Select, Store } from '@ngxs/store';
+import { makeCopy } from '../../../../shared/helper/function';
+import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
+import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -18,8 +18,8 @@ import {
     ReducerSelectMezzoComposizione,
     ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {BoxPartenzaState} from '../../store/states/composizione-partenza/box-partenza.state';
-import {BoxPartenza} from '../interface/box-partenza-interface';
+import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
+import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
     AddBoxPartenza,
     ClearBoxPartenze,
@@ -41,23 +41,23 @@ import {
     UnselectSquadraComposizioneInRientro,
     UnselectSquadraComposizionePreAccoppiati
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import {ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
-import {TurnoState} from '../../../navbar/store/states/turno.state';
-import {SganciamentoInterface} from 'src/app/shared/interface/sganciamento.interface';
-import {MezzoDirection} from '../../../../shared/interface/mezzo-direction';
-import {ConfermaPartenze} from '../interface/conferma-partenze-interface';
-import {StatoMezzo} from '../../../../shared/enum/stato-mezzo.enum';
-import {FiltriComposizioneState} from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import {GetFiltriComposizione} from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import {PaginationComposizionePartenzaState} from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import {GetListeComposizioneAvanzata} from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
-import {ResetPaginationComposizionePartenza} from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { TurnoState } from '../../../navbar/store/states/turno.state';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
+import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
+import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import {
     SetRicercaMezziComposizione,
     SetRicercaSquadreComposizione
 } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
-import {TriageSummary} from '../../../../shared/interface/triage-summary.interface';
-import {NecessitaSoccorsoAereoEnum} from '../../../../shared/enum/necessita-soccorso-aereo.enum';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -315,7 +315,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             inputVec = this.boxPartenzaList.slice().reverse();
             const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
             return vec && vec.length > 1 && vec.reverse().findIndex(x => x === box) === 0;
-        } else { return false; }
+        } else {
+            return false;
+        }
     }
 
     checkSquadraHover(idSquadra: string): boolean {
@@ -616,5 +618,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             this.onClearDirection();
             console.error('coordinate mezzo / coordinate richiesta non presenti');
         }
+    }
+
+    mezzoCoordinateClear(): void {
+        this.onClearDirection();
     }
 }
