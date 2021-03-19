@@ -1,13 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
@@ -20,6 +17,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     {
         private readonly Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> _clientPersonale;
         private readonly IConfiguration _configuration;
+
         public GetPersonaleByCF(Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> client, IConfiguration configuration)
         {
             _clientPersonale = client;
@@ -29,74 +27,91 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
             if (codSede != null)
-            {
-                var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(new string[] { codSede }).Result;
-                return ListaPersonaleVVF.Find(x => x.codiceFiscale.Equals(codiceFiscale));
-            }
+                return GetPersonaleVVFExternalAPI(new string[] { codSede }).Result.FirstOrDefault(x => x.codiceFiscale.Equals(codiceFiscale));
             else
-            {
-                var Persona = GetPersonaleVVFExternalAPIByCF(new string[] { codiceFiscale }).Result;
-                return Persona.Find(x => x.codiceFiscale.Equals(codiceFiscale));
-            }
+                return GetPersonaleVVFExternalAPIByCF(new string[] { codiceFiscale }).Result.FirstOrDefault(x => x.codiceFiscale.Equals(codiceFiscale));
         }
 
-        public async Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
+        public async Task<IEnumerable<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
         {
             if (codSede != null)
-            {
-                var lstPersonale = GetPersonaleVVFExternalAPI(codSede).Result;
-                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.codiceFiscale));
-            }
+                return GetPersonaleVVFExternalAPI(codSede).Result.Where(c => codiceFiscale.Contains(c.codiceFiscale));
             else
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
         }
 
-        private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPI(string[] codSede)
+        private async Task<IEnumerable<PersonaleVVF>> GetPersonaleVVFExternalAPI(string[] codSede)
         {
-            var listaPersonale = new List<PersonaleVVF>();
+            var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            try
+            Parallel.ForEach(codSede, sede =>
             {
-                Parallel.ForEach(codSede, sede =>
+                _clientPersonale.SetCache("Personale_" + sede);
+
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+
+                try
                 {
-                    _clientPersonale.SetCache("Personale_" + sede);
+                    var resultApi = _clientPersonale.GetAsync(url, "").Result;
 
-                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-                    lock (listaPersonale)
-                        listaPersonale.AddRange(_clientPersonale.GetAsync(url, "").Result);
-                });
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Elenco del personale non disponibile");
-            }
+                    Parallel.ForEach(resultApi, personale => listaPersonale.Enqueue(personale));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Elenco del personale non disponibile: {e.GetBaseException()}");
+                }
+            });
 
             return listaPersonale;
         }
 
-        private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPIByCF(string[] CodFiscale)
+        private async Task<IEnumerable<PersonaleVVF>> GetPersonaleVVFExternalAPIByCF(string[] CodFiscale)
         {
-            var result = new List<PersonaleVVF>();
+            var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(CodFiscale, codf =>
+            Parallel.ForEach(CodFiscale, codFiscale =>
             {
-                #region API ESTERNA
+                _clientPersonale.SetCache("Personale_" + codFiscale);
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                string data = content.ReadAsStringAsync().Result;
-                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-                var mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codFiscale}");
 
-                #endregion API ESTERNA
+                try
+                {
+                    var resultApi = _clientPersonale.GetAsync(url, "").Result;
 
-                lock (new object()) { result.AddRange(mapped); }
+                    Parallel.ForEach(resultApi, personale => listaPersonale.Enqueue(personale));
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Elenco del personale non disponibile: {e.GetBaseException()}");
+                }
             });
 
-            return result.Where(s => s != null).ToList();
+            return listaPersonale;
+
+
+
+            //var result = new List<PersonaleVVF>();
+
+            //Parallel.ForEach(CodFiscale, codf =>
+            //{
+            //    #region API ESTERNA
+
+            //    var client = new HttpClient();
+            //    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            //    var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
+            //    response.EnsureSuccessStatusCode();
+            //    using HttpContent content = response.Content;
+            //    string data = content.ReadAsStringAsync().Result;
+            //    var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+            //    var mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+
+            //    #endregion API ESTERNA
+
+            //    lock (new object()) { result.AddRange(mapped); }
+            //});
+
+            //return result.Where(s => s != null).ToList();
         }
     }
 }
