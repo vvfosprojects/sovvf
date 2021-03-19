@@ -1,7 +1,7 @@
-<div class="row mt-2">
+<div class="row mt-1">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div class="col-12 px-0"
+    <div class="col-12 px-0 py-1"
          [ngClass]="heightControl()"
          style="overflow-x: hidden; overflow-y: auto">
         <ng-container *ngIf="richieste?.length">
