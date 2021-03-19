@@ -83,12 +83,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
 
             if (command.Chiamata.Tags != null)
-            {
-                foreach (var t in command.Chiamata.Tags)
-                {
-                    richiesta.Tags.Add(t);
-                }
-            }
+                richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione, DateTime.UtcNow);
 

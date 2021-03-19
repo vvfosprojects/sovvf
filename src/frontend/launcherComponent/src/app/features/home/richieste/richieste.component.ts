@@ -98,7 +98,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     codiciFiltriSelezionati: string[] = [];
 
     loaderRichieste = true;
-    listHeightClass = 'm-h-690';
+    listHeightClass = 'm-h-710';
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
 
@@ -163,7 +163,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                     setTimeout(() => {
                         this.richiestaFissata = null;
                         if (this.boxAttivi) {
-                            this.listHeightClass = 'm-h-690';
+                            this.listHeightClass = 'm-h-710';
                         } else {
                             this.listHeightClass = 'm-h-795';
                         }

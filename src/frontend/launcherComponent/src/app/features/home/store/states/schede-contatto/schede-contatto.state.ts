@@ -53,6 +53,8 @@ import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { SetMezziInServizio } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -208,11 +210,15 @@ export class SchedeContattoState {
             pageSize: boxesVisibili ? 11 : 14
         } as PaginationInterface;
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch([
-                new SetListaSchedeContatto(response.dataArray),
-                new PatchPagination(response.pagination),
-                new StopLoadingSchedeContatto()
-            ]);
+            const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+            const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+            if (schedeContattoActive || chiamataActive) {
+                dispatch([
+                    new SetListaSchedeContatto(response.dataArray),
+                    new PatchPagination(response.pagination),
+                ]);
+            }
+            dispatch(new StopLoadingSchedeContatto());
         });
     }
 
@@ -407,27 +413,7 @@ export class SchedeContattoState {
 
     @Action(SaveMergeSchedeContatto)
     saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto): void {
-        console.log('Id Schede contatto selezionate', action.schedeSelezionateId);
-        // TODO: modificare logica e fare lato BE questa logica
-        const state = getState();
-        const schedeSelezionate = state.schedeContatto.filter((value) => {
-            if (action.schedeSelezionateId.includes(value.codiceScheda)) {
-                return value;
-            }
-        }).sort((a, b) =>
-            (a.priorita < b.priorita) ? 1 :
-                (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
-        const mergeSchedeContatto: SchedaContatto = {
-            ...schedeSelezionate[0],
-            collegate: [...schedeSelezionate.slice(1).map(value => {
-                return {
-                    ...value,
-                    collegata: true
-                };
-            })]
-        };
-        this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe(() => {
-            console.log('Unione schede completata', mergeSchedeContatto);
+        this.schedeContattoService.mergeSchedeContatto(action.schedeSelezionateId).subscribe(() => {
             dispatch([
                 new ClearMergeSchedeContatto(),
                 new RefreshSchedeContattoMarkers(),

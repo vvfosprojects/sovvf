@@ -125,17 +125,12 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 ChiamataUrgente = command.Chiamata.ChiamataUrgente
             };
 
+            if (command.Chiamata.Tags != null)
+                richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
+
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
             {
                 new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.CodUtente);
-            }
-
-            if (command.Chiamata.Tags != null)
-            {
-                foreach (var t in command.Chiamata.Tags)
-                {
-                    richiesta.Tags.Add(t);
-                }
             }
 
             new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.CodUtente)

@@ -1,3 +1,12 @@
 .item-treeview-custom:hover {
   font-weight: bold !important;
 }
+
+ngx-treeview .treeview-header {
+  input {
+    width: 500px !important;
+  }
+  label {
+    float: left !important;
+  }
+}

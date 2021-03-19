@@ -1,6 +1,6 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-5 mx-auto mt-2 mb-5">
+        <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
             <div class="card card-shadow px-4 py-3 no-padding-custom">
                 <div class="clearfix" style="background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);">
                     <div class="text-center float-left" style="width: 50%">
@@ -44,56 +44,60 @@
             </div>
         </div>
         <div class="col-12">
-            <ngb-accordion [closeOthers]="true" activeIds="interfaccia">
-                <ngb-panel id="interfaccia">
-                    <ng-template ngbPanelTitle>
-                        <i class="fa fa-window-maximize"></i>
-                        Impostazioni Interfaccia
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                        <div class="row pl-3">
-                            <div class="col-12 mb-3">
-                                <h3 class="d-inline-block mb-0">Impostazioni Interfaccia</h3>
-                            </div>
-                            <div *ngFor="let impostazione of listaImpostazioni"
-                                 class="card card-shadow col-md-5 mx-md-auto py-4 mb-4 px-3">
-                                <h4>
-                                    <i class="fa {{ impostazione?.icona }} mr-1"></i>
-                                    {{ impostazione?.tipo }}
-                                </h4>
-                                <hr class="mt-1">
-                                <div *ngFor="let opzione of impostazione?.opzioni" class="clearfix px-3">
-                                    <div class="float-left">
-                                        {{ opzione?.label }}
-                                    </div>
-                                    <div class="float-right">
-                                        <ng-template [ngIf]="opzione?.singleValue">
-                                            <label [for]="opzione?.label"
-                                                   class="d-none">{{ opzione?.label }}</label>
-                                            <input [id]="opzione?.label" type="checkbox"
-                                                   [checked]="opzione?.singleValue?.value"
-                                                   (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
-                                        </ng-template>
-                                        <ng-template [ngIf]="opzione?.select">
-                                            <label [for]="opzione?.label"
-                                                   class="d-none">{{ opzione?.label }}</label>
-                                            <ng-select [id]="opzione?.label"
-                                                       bindValue="id"
-                                                       bindLabel="desc"
-                                                       [ngModel]="opzione?.select?.selected"
-                                                       [items]="opzione?.select?.itemsSelect"
-                                                       [multiple]="false"
-                                                       [clearable]="false"
-                                                       (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
-                                            </ng-select>
-                                        </ng-template>
+            <div class="row">
+                <div class="col-12 col-md-6 mx-auto">
+                    <ngb-accordion [closeOthers]="true" activeIds="interfaccia">
+                        <ngb-panel id="interfaccia">
+                            <ng-template ngbPanelTitle>
+                                <div class="font-xlarge font-weight-bold text-white">
+                                    <i class="fa fa-window-maximize"></i>
+                                    Impostazioni Interfaccia
+                                </div>
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <div *ngFor="let impostazione of listaImpostazioni; let i = index"
+                                     class="card card-shadow p-3"
+                                     [class.mb-4]="i !== (listaImpostazioni.length - 1)">
+                                    <div class="clearfix">
+                                        <div class="float-left">
+                                            <h4 class="mb-0">
+                                                <i class="fa {{ impostazione?.icona }} mr-1"></i>
+                                                {{ impostazione?.tipo }}
+                                            </h4>
+                                        </div>
+                                        <div class="float-right">
+                                            <div *ngFor="let opzione of impostazione?.opzioni"
+                                                 class="clearfix px-3">
+                                                <ng-template [ngIf]="opzione?.singleValue">
+                                                    <label [for]="opzione?.label"
+                                                           class="d-none">{{ opzione?.label }}</label>
+                                                    <input [id]="opzione?.label"
+                                                           type="checkbox"
+                                                           [checked]="opzione?.singleValue?.value"
+                                                           (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
+                                                </ng-template>
+                                                <ng-template [ngIf]="opzione?.select">
+                                                    <label [for]="opzione?.label"
+                                                           class="d-none">{{ opzione?.label }}</label>
+                                                    <ng-select [id]="opzione?.label"
+                                                               bindValue="id"
+                                                               bindLabel="desc"
+                                                               [ngModel]="opzione?.select?.selected"
+                                                               [items]="opzione?.select?.itemsSelect"
+                                                               [multiple]="false"
+                                                               [clearable]="false"
+                                                               (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
+                                                    </ng-select>
+                                                </ng-template>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </ng-template>
-                </ngb-panel>
-            </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+            </div>
         </div>
     </div>
 </div>
