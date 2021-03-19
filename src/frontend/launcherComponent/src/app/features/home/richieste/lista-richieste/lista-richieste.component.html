@@ -1,10 +1,10 @@
 <div class="row mt-2">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <ng-container *ngIf="richieste?.length">
-        <div class="col-12 px-0"
-             [ngClass]="heightControl()"
-             style="overflow-x: hidden; overflow-y: auto">
+    <div class="col-12 px-0"
+         [ngClass]="heightControl()"
+         style="overflow-x: hidden; overflow-y: auto">
+        <ng-container *ngIf="richieste?.length">
             <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
                  class="col-12 scale-sintesi-richiesta">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
@@ -46,29 +46,29 @@
                     </app-sintesi-richiesta>
                 </div>
             </div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="!loading && richieste?.length === 0">
-        <div class="col-12 mt-3 text-center">
-            <div class="row">
-                <div class="col-6 mx-auto">
-                    <div class="px-3 pt-3">
-                        <img class="img-fluid rounded"
-                             src="assets/img/404-img.png"
-                             alt="Spiacente, nessun risultato con i parametri di ricerca selezionati">
+        </ng-container>
+        <ng-container *ngIf="!loading && richieste?.length === 0">
+            <div class="col-12 mt-3 text-center">
+                <div class="row">
+                    <div class="col-6 mx-auto">
+                        <div class="px-3 pt-3">
+                            <img class="img-fluid rounded"
+                                 src="assets/img/404-img.png"
+                                 alt="Spiacente, nessun risultato con i parametri di ricerca selezionati">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-6 mx-auto" style="background-color: #475773">
-                    <div class="p-3">
+                <div class="row">
+                    <div class="col-6 mx-auto" style="background-color: #475773">
+                        <div class="p-3">
                         <span class="font-weight-bolder text-white">
                             {{ 'Spiacente, nessun risultato con i parametri di ricerca selezionati' | uppercase }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </ng-container>
+        </ng-container>
+    </div>
     <div *ngIf="richieste?.length"
          class="col-12 mt-1">
         <div class="row">
