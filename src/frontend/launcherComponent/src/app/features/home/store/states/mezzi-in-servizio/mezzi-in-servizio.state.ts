@@ -120,16 +120,16 @@ export class MezziInServizioState {
         const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const statiMezzo = state.filtriMezziInServizio.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
         const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
-        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         const filters = {
             search: ricerca,
             statiMezzo: statiMezzo && statiMezzo.length > 0 ? statiMezzo : null
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: boxesVisibili ? 10 : 12
+            pageSize: boxesVisibili ? 12 : 15
         } as PaginationInterface;
         this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
+                const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
                 if (mezziInServizioActive) {
                     dispatch([
                         new SetMezziInServizio(response.dataArray),

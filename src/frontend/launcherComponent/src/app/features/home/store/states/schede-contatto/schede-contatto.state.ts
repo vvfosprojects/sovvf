@@ -53,6 +53,8 @@ import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { SetMezziInServizio } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -208,11 +210,15 @@ export class SchedeContattoState {
             pageSize: boxesVisibili ? 11 : 14
         } as PaginationInterface;
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch([
-                new SetListaSchedeContatto(response.dataArray),
-                new PatchPagination(response.pagination),
-                new StopLoadingSchedeContatto()
-            ]);
+            const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+            const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+            if (schedeContattoActive || chiamataActive) {
+                dispatch([
+                    new SetListaSchedeContatto(response.dataArray),
+                    new PatchPagination(response.pagination),
+                ]);
+            }
+            dispatch(new StopLoadingSchedeContatto());
         });
     }
 
