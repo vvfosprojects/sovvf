@@ -18,7 +18,6 @@ import {
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedMezziComposizione,
-    ReducerSelectMezzoComposizioneInRientro,
     SelectMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
@@ -39,7 +38,6 @@ import {ClearMarkerMezzoSelezionato} from '../../actions/maps/marker.actions';
 import {StatoMezzo} from '../../../../../shared/enum/stato-mezzo.enum';
 import {Injectable} from '@angular/core';
 import {GetListeComposizioneAvanzata} from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import {StatoSquadra} from '../../../../../shared/enum/stato-squadra.enum';
 
 export interface BoxPartenzaStateModel {
     boxPartenzaList: BoxPartenza[];
@@ -243,23 +241,15 @@ export class BoxPartenzaState {
             if (box.id === action.idBoxPartenza) {
                 console.log('boxPartenza', box);
                 if (box.mezzoComposizione) {
-                    if (box.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro) {
-                        dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
-                    } else {
-                        dispatch(new ReducerSelectMezzoComposizioneInRientro(box.mezzoComposizione, true));
-                        dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
-                    }
+                    dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
                 }
                 if (box.squadreComposizione.length > 0) {
                     box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                        if (squadra.squadra.stato !== StatoSquadra.InRientro) {
                             dispatch(new SelectSquadraComposizione(squadra));
-                        }
                     });
                 }
             }
         });
-        // dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(AddSquadreBoxPartenza)
@@ -413,6 +403,7 @@ export class BoxPartenzaState {
         );
 
         dispatch([
+            // new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, true),
             new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, true),
             new SelectSquadraComposizione(squadraComp),
             new SelectMezzoComposizione(newBoxes[newBoxes.length - 1].mezzoComposizione),

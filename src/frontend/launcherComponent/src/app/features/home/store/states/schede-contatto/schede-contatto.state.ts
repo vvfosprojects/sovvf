@@ -407,27 +407,7 @@ export class SchedeContattoState {
 
     @Action(SaveMergeSchedeContatto)
     saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto): void {
-        console.log('Id Schede contatto selezionate', action.schedeSelezionateId);
-        // TODO: modificare logica e fare lato BE questa logica
-        const state = getState();
-        const schedeSelezionate = state.schedeContatto.filter((value) => {
-            if (action.schedeSelezionateId.includes(value.codiceScheda)) {
-                return value;
-            }
-        }).sort((a, b) =>
-            (a.priorita < b.priorita) ? 1 :
-                (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
-        const mergeSchedeContatto: SchedaContatto = {
-            ...schedeSelezionate[0],
-            collegate: [...schedeSelezionate.slice(1).map(value => {
-                return {
-                    ...value,
-                    collegata: true
-                };
-            })]
-        };
-        this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe(() => {
-            console.log('Unione schede completata', mergeSchedeContatto);
+        this.schedeContattoService.mergeSchedeContatto(action.schedeSelezionateId).subscribe(() => {
             dispatch([
                 new ClearMergeSchedeContatto(),
                 new RefreshSchedeContattoMarkers(),
