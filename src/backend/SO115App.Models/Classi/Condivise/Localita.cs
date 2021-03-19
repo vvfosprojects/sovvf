@@ -38,6 +38,9 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Citta { get; set; }
 
         public string Provincia { get; set; }
+        public string Interno { get; set; }
+        public string Palazzo { get; set; }
+        public string Scala { get; set; }
 
         public string Note { get; set; }
 
