@@ -935,8 +935,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                         .Where(e => Aperta)
                         .ToList();
 
-                    if (eventiPartenza.Any() && evento.Istante.AddSeconds(1) <= eventiPartenza.Max(e => e.Istante))
-                        throw new InvalidOperationException(messaggio);
+                    if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
+                        throw new Exception(messaggio);
                 }
             }
 

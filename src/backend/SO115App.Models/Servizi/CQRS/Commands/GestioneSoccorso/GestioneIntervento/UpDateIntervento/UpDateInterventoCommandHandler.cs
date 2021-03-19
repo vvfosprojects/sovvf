@@ -67,6 +67,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
 
             richiesta.Tipologie = listaCodiciTipologie;
+            richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
             richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
