@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Identity.Mock
 {

@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Newtonsoft.Json;
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Coordinate

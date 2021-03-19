@@ -13,5 +13,6 @@ export enum RoutesPath {
     Rubrica = 'rubrica',
     TrasferimentoChiamata = 'trasferimento-chiamata',
     Changelog = 'changelog',
-    Impostazioni = 'impostazioni'
+    Impostazioni = 'impostazioni',
+    ImpostazioniSede = 'impostazioni-sede'
 }

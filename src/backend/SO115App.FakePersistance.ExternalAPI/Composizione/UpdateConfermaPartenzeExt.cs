@@ -101,7 +101,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                     {
-                        var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Codice)).Istante;
+                        var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Select(p => p.DataOraInserimento).Min();
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],

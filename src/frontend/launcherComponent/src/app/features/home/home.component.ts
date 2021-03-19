@@ -9,6 +9,9 @@ import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
+import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -26,12 +29,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    @Select(ViewportState.chiamataConMappa) chiamataConMappa$: Observable<boolean>;
 
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+
     constructor(private store: Store) {
+        this.getDettagliTipologie(true);
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
@@ -39,7 +44,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Home creato');
-        this.store.dispatch(new GetDataHome());
+        this.store.dispatch([
+            new GetDataHome(),
+            new GetTipologie()
+        ]);
     }
 
     ngOnDestroy(): void {
@@ -50,6 +58,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onMapFullLoaded(): void {
         this.store.dispatch(new SetMapLoaded(true));
+    }
+
+    getDettagliTipologie(pageAttuale: boolean): void {
+        let page = null;
+        if (pageAttuale) {
+            page = this.store.selectSnapshot(PaginationState.page);
+        }
+        this.store.dispatch(new GetDettagliTipologie(page));
     }
 
     getViewState(): void {

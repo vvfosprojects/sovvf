@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta

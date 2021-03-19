@@ -6,7 +6,6 @@ import {
   ApplyFiltriTipologiaSelezionatiRichieste, ClearFiltroSenzaEsecuzione
 } from '../../store/actions/filterbar/filtri-richieste.actions';
 import {Select, Store} from '@ngxs/store';
-import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
 import {ModalRichiesteChiuseComponent} from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import {ModalZonaEmergenzaComponent} from './modal-zona-emergenza/modal-zona-emergenza.component';
@@ -29,6 +28,8 @@ export class FiltriRichiesteComponent {
   @Input() filtri: VoceFiltro[];
   @Input() filtriSelezionati: VoceFiltro[];
   @Input() disableFilters: boolean;
+  @Input() nightMode: boolean;
+  @Input() doubleMonitor: boolean;
 
   @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
   @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
@@ -36,8 +37,6 @@ export class FiltriRichiesteComponent {
 
   specialSelected = [false, false, false];
 
-  @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-  doubleMonitor: boolean;
   @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
   filtriAttiviToolTip: VoceFiltro[];
 
@@ -99,7 +98,6 @@ export class FiltriRichiesteComponent {
               private modal: NgbActiveModal,
               dropdownOpts: NgbDropdownConfig) {
     dropdownOpts.placement = 'bottom';
-    this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     this.getFiltriAttiviTooltip();
   }
 
@@ -275,6 +273,16 @@ export class FiltriRichiesteComponent {
     this.store.dispatch(new ResetFiltriStatiZone());
     this.store.dispatch(new RemovePeriodoChiuse());
     this.filtriReset.emit();
+  }
+
+  nightModeStyle(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = 'cod-int';
+    } else if (this.nightMode) {
+      value = 'moon-cod';
+    }
+    return value;
   }
 
   checkIndex(index): boolean {

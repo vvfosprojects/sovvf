@@ -17,11 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 /// <summary>
 ///   Interfaccia del servizio che restituisce la lista dei componenti di una squadra

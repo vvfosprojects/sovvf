@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../../../features/home/store/states/filterbar/ricerca-filterbar.state';
 import { Observable, Subscription } from 'rxjs';
@@ -10,7 +10,6 @@ import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { MergeSchedeContattoState } from '../../../features/home/store/states/schede-contatto/merge-schede-contatto.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
-import { ViewportState } from '../../store/states/viewport/viewport.state';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
     ClearSchedaContattoHover,
@@ -24,7 +23,7 @@ import {
     ToggleCollapsed,
     UndoMergeSchedeContatto
 } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
-import { ToggleChiamata, ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
+import { ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
 import {
     CheckboxError,
     ClearMergeSchedeContatto,
@@ -38,18 +37,21 @@ import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component'
 import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../../features/home/store/actions/maps/schede-contatto-markers.actions';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
 import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
+import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-lista-schede-contatto-modal',
     templateUrl: './lista-schede-contatto-modal.component.html',
     styleUrls: ['./lista-schede-contatto-modal.component.scss']
 })
-export class ListaSchedeContattoModalComponent implements OnInit {
+export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
@@ -57,9 +59,6 @@ export class ListaSchedeContattoModalComponent implements OnInit {
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
@@ -80,7 +79,6 @@ export class ListaSchedeContattoModalComponent implements OnInit {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
 
     permessiFeature = PermissionFeatures;
@@ -94,12 +92,12 @@ export class ListaSchedeContattoModalComponent implements OnInit {
         this.getSchedeContatto();
         this.getSchedeContattoMarkers();
         this.getSchedeContattoHover();
+        this.getNightMode();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
         this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
         this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
 
     }
 
@@ -113,6 +111,7 @@ export class ListaSchedeContattoModalComponent implements OnInit {
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
+        this.subscriptions.unsubscribe();
         console.log('Componente Schede Contatto distrutto');
     }
 
@@ -125,6 +124,24 @@ export class ListaSchedeContattoModalComponent implements OnInit {
                 }
             })
         );
+    }
+
+    getNightMode(): void {
+        this.subscriptions.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+            })
+        );
+    }
+
+    onNightMode(): string {
+        let value = '';
+        if (!this.nightMode) {
+            value = '';
+        } else if (this.nightMode) {
+            value = 'moon-text moon-mode';
+        }
+        return value;
     }
 
     getSchedeContatto(): void {
@@ -215,10 +232,7 @@ export class ListaSchedeContattoModalComponent implements OnInit {
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {
-        let classificazione: ClassificazioneSchedaContatto = null;
-        if ($event.nextId !== 'Tutte') {
-            classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        }
+        const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 

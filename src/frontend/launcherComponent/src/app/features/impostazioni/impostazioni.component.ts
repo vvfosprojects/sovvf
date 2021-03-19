@@ -12,6 +12,8 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
+import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 
 @Component({
     selector: 'app-impostazioni',
@@ -27,6 +29,9 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
 
     @Select(ImpostazioniState.listaImpostazioni) listaImpostazioni$: Observable<Impostazione[]>;
     listaImpostazioni: Impostazione[];
+
+    @Select(ViewportState.sunMode) nightMode$: Observable<boolean>;
+    sunMode: boolean;
 
     private subscription: Subscription = new Subscription();
 
@@ -61,6 +66,14 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         );
     }
 
+    getNightMode(): void {
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.sunMode = !nightMode;
+            })
+        );
+    }
+
     getUtente(): void {
         this.subscription.add(
             this.user$.subscribe((user: Utente) => {
@@ -73,6 +86,9 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.listaImpostazioni$.subscribe((listaImpostazioni: Impostazione[]) => {
                 this.listaImpostazioni = listaImpostazioni;
+                if (this.listaImpostazioni.length) {
+                    this.store.dispatch(new SunMode(!this.listaImpostazioni[2].opzioni[0].singleValue.value));
+                }
             })
         );
     }
@@ -89,5 +105,8 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         }
         opzione.singleValue ? opzione.singleValue.value = value : opzione.select.selected = value;
         this.store.dispatch(new PatchImpostazioni(impostazione));
+        if (tipo === 'Modalità Notte') {
+            this.store.dispatch(new SunMode(!impostazione.opzioni[0].singleValue.value));
+        }
     }
 }

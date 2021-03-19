@@ -10,6 +10,8 @@
             </div>
             <div class="float-left mr-3">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
+                                      [doubleMonitor]="doubleMonitor"
+                                      [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [disableFilters]="loadingRichieste$ | async"
@@ -18,6 +20,7 @@
                                       (filtriReset)="eliminaFiltriAttiviRichieste()">
                 </app-filtri-richieste>
                 <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
+                                            [nightMode]="nightMode"
                                             [filtri]="filtriSchedeContatto$ | async"
                                             [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
                                             [disableFilters]="loadingSchedeContatto$ | async"
@@ -26,6 +29,7 @@
                 </app-filtri-schede-contatto>
                 <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
                                            [filtri]="filtriMezziInServizio$ | async"
+                                           [nightMode]="nightMode"
                                            [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
                                            [disableFilters]="loadingMezziInServizio$ | async"
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
@@ -34,7 +38,7 @@
             </div>
             <div class="float-left mr-4">
                 <app-ricerca
-                        *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                        *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
                         [ricerca]="ricercaRichieste$ | async"
                         [debounce]="true"
                         [placeholder]="getRicercaPlaceholder()"
@@ -46,12 +50,14 @@
     </div>
     <div class="float-right">
         <div class="clearfix">
-            <div *ngIf="(mapsStatus$ | async) || (doubleMonitor$ | async)" class="float-left mr-3">
-                <app-filtri-mappa></app-filtri-mappa>
+            <div *ngIf="((((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((mapsStatus$ | async) || doubleMonitor))"
+                 class="float-left mr-3">
+                <app-filtri-mappa [nightMode]="nightMode"></app-filtri-mappa>
             </div>
-            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
+            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && !doubleMonitor"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               [nightMode]="nightMode"
                                [stateSwitch]="(stateSwitch$ | async)"
                                [mapStatus]="(mapsStatus$ | async)"
                                (toggleMeteo)="onMeteoSwitch($event)"

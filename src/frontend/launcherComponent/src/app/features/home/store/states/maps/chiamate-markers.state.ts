@@ -4,8 +4,8 @@ import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ChiamataState } from '../scheda-telefonata/chiamata.state';
-import { ClearIndirizzo } from '../../actions/scheda-telefonata/chiamata.actions';
+import { SchedaTelefonataState } from '../form-richiesta/scheda-telefonata.state';
+import { ClearIndirizzo } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import {
     ClearChiamateMarkers,
@@ -100,7 +100,7 @@ export class ChiamateMarkersState {
 
     @Action(InsertChiamataMarker)
     insertChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: InsertChiamataMarker): void {
-        const mySelf = this.store.selectSnapshot(ChiamataState.myChiamataMarker);
+        const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
         if (mySelf) {
             chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }
@@ -113,7 +113,7 @@ export class ChiamateMarkersState {
 
     @Action(UpdateItemChiamataMarker)
     updateItemChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: UpdateItemChiamataMarker): void {
-        const mySelf = this.store.selectSnapshot(ChiamataState.myChiamataMarker);
+        const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
         if (mySelf) {
             chiamataMarker.mySelf = mySelf === chiamataMarker.id;
         }

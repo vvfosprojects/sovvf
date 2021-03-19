@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM
         /// E' una put, quindi agiorna/inserisce
         /// </summary>
         /// <param name="richiesta"></param>
-        void Aggiorna(NuovaRichiestaSoccorsoAereo richiesta);
+        InfoAFM Aggiorna(NuovaRichiestaAFM richiesta);
     }
 }

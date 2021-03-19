@@ -20,7 +20,6 @@
 using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.AFM;
@@ -30,6 +29,7 @@ using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -39,9 +39,11 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -56,10 +58,12 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
-            container.Register<IHttpRequestManager<object>, HttpRequestManager<object>>();
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+            container.Register<IGetToken, GetToken>();
 
             #region NUE
 
+            container.Register<IGetRubrica, RubricaExt>();
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
@@ -70,6 +74,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
             container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoByCodiciScheda, GetSchedeContattoByCodiciScheda>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
                 GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
@@ -104,7 +109,6 @@ namespace SO115App.CompositionRoot
             #endregion GeoFleet
 
             #region Gac
-
 
             container.Register<ISetRientroMezzo, SetRientroMezzo>();
             container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
@@ -261,12 +265,14 @@ namespace SO115App.CompositionRoot
             #region AFM
 
             container.Register<IGetCategorieSoccorsoAereo, GetCategorieSoccorsoAereo>();
+            container.Register<IGetInfoRichiestaSoccorsoAereo, GetInfoRichiestaSoccorsoAereo>();
             container.Register<IGetTipologieRichiestaSoccorsoAereo, GetTipologieSoccorsoAereo>();
             container.Register<IAggiornaRichiestaSoccorsoAereo, AggiornaRichiestaSoccorsoAereo>();
             container.Register<IAnnullaRichiestaSoccorsoAereo, AnnullaRichiestaSoccorsoAereo>();
             container.Register<IInserisciRichiestaSoccorsoAereo, InserisciRichiestaSoccorsoAereo>();
+            container.Register<IGetHistoryRichiestaSoccorsoAereo, GetHistoryRichiestaSoccorsoAereo>();
 
-            #endregion
+            #endregion AFM
         }
     }
 }

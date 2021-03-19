@@ -1,14 +1,11 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -16,28 +13,29 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
-using Microsoft.AspNetCore.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
-    public class GetMezziUtilizzabili : BaseService, IGetMezziUtilizzabili
+    public class GetMezziUtilizzabili : IGetMezziUtilizzabili
     {
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        private readonly IConfiguration _configuration;
 
-        public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        private readonly IGetToken _getToken;
+        private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
+
+        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta)
         {
             _getStatoMezzi = GetStatoMezzi;
+            _clientMezzi = clientMezzi;
+            _configuration = configuration;
+            _getToken = getToken;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
@@ -69,27 +67,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             else
                 ListaPosizioneFlotta = posizioneFlotta;
 
-            var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
+            //var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
 
             var ListaMezzi = new List<Mezzo>();
 
             #region LEGGO DA API ESTERNA
 
-            GetToken getToken = new GetToken(_client, _configuration, _memoryCache, _writeLog, _httpContext);
-            var token = getToken.GeneraToken();
+            var token = _getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
             try
             {
                 Parallel.ForEach(sedi, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                    httpManager.Configure("Mezzi_" + sede);
+                    _clientMezzi.SetCache("Mezzi_" + sede);
 
                     var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
                     lock (lstMezziDto)
-                        lstMezziDto.AddRange(httpManager.GetAsync(url, token).Result);
+                        lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
                 });
             }
             catch (Exception e)
@@ -104,8 +100,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 //if (!mezzoFake.Equals("CMOB"))
                 //{
-                var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(m.Descrizione));
-                var mezzo = MapMezzo(anagraficaMezzo, m);
+                //var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(m.Descrizione));
+                var mezzo = MapMezzo(m);
                 if (mezzo != null)
                 {
                     //listaMezziBySedeAppo.Add(mezzo);
@@ -158,7 +154,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             return listaMezzi;
         }
 
-        private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoDTO mezzoDto)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
             var coordinate = new Coordinate(0, 0);
             //bool CoordinateFake = false;
@@ -171,56 +167,38 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                 distaccamento != null ? distaccamento.Coordinate : null,
                                 "", "", "", "", "");
 
-            if (anagraficaMezzo != null)
-            {
-                Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
-                    anagraficaMezzo.Targa,
-                    anagraficaMezzo.GenereMezzo.Codice,
-                    GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoDto.Movimentazione.StatoOperativo),
-                   mezzoDto.CodiceDistaccamento, sede, coordinate)
-                {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                };
-                return mezzo;
-            }
-            else
-            {
-                var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere,
+            Mezzo mezzo = new Mezzo(mezzoDto.CodiceMezzo,
+                mezzoDto.Descrizione,
+                mezzoDto.Genere,
                 GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
-                mezzoDto.CodiceDistaccamento, sede, coordinate)
-                {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                };
-                return mezzo;
-            }
+               mezzoDto.CodiceDistaccamento, sede, coordinate)
+            {
+                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+            };
+            return mezzo;
         }
 
-        private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
-        {
-            var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
-            try
-            {
-                using var _client = new HttpClient();
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+        //private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
+        //{
+        //    var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
+        //    try
+        //    {
+        //        using var _client = new HttpClient();
+        //        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
 
-                var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",", ListCodComando)}").Result;
-                response.EnsureSuccessStatusCode();
+        // var response =
+        // _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",",
+        // ListCodComando)}").Result; response.EnsureSuccessStatusCode();
 
-                if (response == null)
-                    throw new HttpRequestException();
+        // if (response == null) throw new HttpRequestException();
 
-                using HttpContent contentMezzo = response.Content;
-                var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
+        // using HttpContent contentMezzo = response.Content; var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
 
-                listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Elenco dei mezzi non disponibile");
-            }
+        // listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data); }
+        // catch (Exception e) { throw new Exception("Elenco dei mezzi non disponibile"); }
 
-            return listaAnagraficaMezzo;
-        }
+        //    return listaAnagraficaMezzo;
+        //}
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
         {
@@ -238,6 +216,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     {
                         case "D": stato = Costanti.MezzoInSede; break;
                         case "R": stato = Costanti.MezzoInRientro; break;
+                        case "S": stato = Costanti.MezzoOccupato; break;
                         case "O": stato = Costanti.MezzoOperativoPreaccoppiato; break;
                         case "A": stato = Costanti.MezzoAssegnatoPreaccoppiato; break;
                         default: stato = Costanti.MezzoStatoSconosciuto; break;

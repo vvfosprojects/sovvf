@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { HomeState } from '../home.state';
 import { _isStatico } from '../../../../../shared/helper/function-filtro';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
@@ -20,6 +19,7 @@ import { Injectable } from '@angular/core';
 import produce from 'immer';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import {TipologiaRichiesta} from '../../../../../shared/enum/tipologiaRichiesta.enum';
+import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -85,7 +85,7 @@ export class FiltriRichiesteState {
 
     @Selector()
     static filtriTipologie(state: FiltriRichiesteStateModel): VoceFiltro[] {
-        return state.filtriRichieste;
+        return state.filtriStaticiRichieste;
     }
 
     @Selector()
@@ -113,7 +113,7 @@ export class FiltriRichiesteState {
         const state = getState();
 
         const filtriStatici: VoceFiltro[] = state.filtriStaticiRichieste;
-        const tipologie: Tipologia[] = this.store.selectSnapshot(HomeState.tipologie);
+        const tipologie: Tipologia[] = this.store.selectSnapshot(TipologieState.tipologie);
         const filtriRichieste: VoceFiltro[] = [...filtriStatici];
 
         if (tipologie && tipologie.length > 0) {

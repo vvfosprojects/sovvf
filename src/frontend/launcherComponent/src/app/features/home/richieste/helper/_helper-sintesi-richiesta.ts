@@ -91,12 +91,25 @@ export class HelperSintesiRichiesta {
         let numeroMezzi = 0;
         if (richiesta.partenzeRichiesta) {
             richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata && partenza.mezzo.stato !== 'In Rientro') {
                     numeroMezzi++;
                 }
             });
         }
         return numeroMezzi;
+    }
+
+    /* Restituisce il numero dei mezzi in rientro */
+    numeroMezziInRietro(richiesta: SintesiRichiesta): number {
+      let numeroMezzi = 0;
+      if (richiesta.partenzeRichiesta) {
+        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+          if (partenza.mezzo.stato === 'In Rientro' && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+            numeroMezzi++;
+          }
+        });
+      }
+      return numeroMezzi;
     }
 
     /* Permette di colorare l'icona della tipologia */
@@ -156,9 +169,9 @@ export class HelperSintesiRichiesta {
     complessitaClass(richiesta: any): any {
         if (richiesta.complessita) {
             return {
-                'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
-                'badge-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
-                'badge-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
+                'badge-mod-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
+                'badge-mod-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
+                'badge-mod-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
             };
         }
     }
@@ -173,7 +186,7 @@ export class HelperSintesiRichiesta {
                 'card-shadow-danger': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
                 'card-shadow-warning': ((r.id === richiestaHover || r.id === richiestaSelezionata)) && (r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa),
                 'card-shadow-secondary': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
-                'bg-light': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
+                '': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
             const cardBorder = this.cardBorder(r);

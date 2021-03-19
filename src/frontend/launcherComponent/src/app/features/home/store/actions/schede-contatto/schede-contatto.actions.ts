@@ -25,10 +25,6 @@ export class SetListaSchedeContatto {
     }
 }
 
-export class GeneraListaSchedeContatto {
-    static readonly type = '[SchedeContatto] Genera Lista Schede Contatto';
-}
-
 export class ClearListaSchedeContatto {
     static readonly type = '[SchedeContatto] Clear Lista Schede Contatto';
 }
@@ -138,10 +134,6 @@ export class SetTabAttivo {
 
     constructor(public tabAttivo: ClassificazioneSchedaContatto) {
     }
-}
-
-export class SetIdVisualizzati {
-    static readonly type = '[SchedeContatto] Set Id Visualizzati';
 }
 
 export class ToggleCollapsed {

@@ -32,11 +32,11 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
     public class UpDateInterventoCommandHandler : ICommandHandler<UpDateInterventoCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
@@ -53,14 +53,18 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             {
                 listaCodiciTipologie.Add(tipologia.Codice);
             }
-            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
-            {
-                utentiInLavorazione.Add(utente.Nominativo);
-            }
-            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
-            {
-                utentiPresaInCarico.Add(utente.Nominativo);
-            }
+
+            if (command.Chiamata.ListaUtentiInLavorazione != null)
+                foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+                {
+                    utentiInLavorazione.Add(utente.Nominativo);
+                }
+
+            if (command.Chiamata.ListaUtentiPresaInCarico != null)
+                foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+                {
+                    utentiPresaInCarico.Add(utente.Nominativo);
+                }
 
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
@@ -73,7 +77,9 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
-            richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti.Select(c => c.ToString()).ToList();
+            richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null;
+            richiesta.TriageSummary = command.Chiamata.TriageSummary;
+            richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
 
             if (command.Chiamata.Tags != null)
             {

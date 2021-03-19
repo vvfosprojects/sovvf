@@ -18,13 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Classi.Matrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
-using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using System;
 
 namespace DomainModel.CQRS.Commands.ConfermaPartenze

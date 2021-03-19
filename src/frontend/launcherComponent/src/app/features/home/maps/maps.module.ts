@@ -67,7 +67,7 @@ import { FormsModule } from '@angular/forms';
         AgmDirectionModule,
         AgmMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SharedModule.forRoot(),
+        SharedModule,
         NgSelectModule,
         NgxsModule.forFeature(
             [
@@ -88,8 +88,7 @@ import { FormsModule } from '@angular/forms';
                 SchedeContattoMarkersState
             ]
         ),
-        FormsModule,
-        SharedModule
+        FormsModule
     ],
     declarations: [
         MapsComponent,

@@ -32,13 +32,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class AnnullaPartenzaCommandHandler : ICommandHandler<AnnullaPartenzaCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGeneraCodiceRichiesta _generatoreCodici;
 
         public AnnullaPartenzaCommandHandler(
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpDateRichiestaAssistenza upDateRichiestaAssistenza,
             IUpdateStatoPartenze updateStatoPartenze,
             IGeneraCodiceRichiesta generatoreCodici

@@ -16,6 +16,8 @@ export class MezzoInServizioComponent {
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
     @Input() loading: string;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -27,6 +29,7 @@ export class MezzoInServizioComponent {
     StatoMezzo = StatoMezzo;
     mostraIndicatori = false;
     loadingArray: any[] = [];
+
 
     constructor(private store: Store) {
     }
@@ -49,10 +52,10 @@ export class MezzoInServizioComponent {
 
     cardClasses(stato: StatoMezzo, idMezzo: string): string {
         let returnClass = statoMezzoBorderClass(stato);
-        if (this.idMezzoInServizioHover === idMezzo) {
+        if (this.idMezzoInServizioHover === idMezzo && !this.nightMode) {
             returnClass += ' bg-light';
         }
-        if (this.idMezzoInServizioSelezionato === idMezzo) {
+        if (this.idMezzoInServizioSelezionato === idMezzo && !this.nightMode) {
             returnClass += ' bg-light';
         }
         return returnClass;

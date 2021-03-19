@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
-using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using static SO115App.API.Models.Classi.Condivise.Squadra;
-using SO115App.Models.Classi.ServiziEsterni.Oracle;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {

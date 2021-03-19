@@ -16,6 +16,7 @@ export class BoxInterventiComponent implements OnChanges {
     @Input() interventi: BoxInterventi;
     @Input() turno: TurnoCalendario;
     @Input() boxClick: BoxClickInterface;
+    @Input() nightMode: boolean;
 
     @Output() clickRichieste = new EventEmitter<string>();
 
@@ -51,6 +52,16 @@ export class BoxInterventiComponent implements OnChanges {
         if (this.interventiDiff) {
             return setBlinking(this.interventiDiff[key]);
         }
+    }
+
+    nightModeStyle(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'cod-int';
+      } else if (this.nightMode) {
+        value = 'moon-cod';
+      }
+      return value;
     }
 
     realDiff(key: string): string {

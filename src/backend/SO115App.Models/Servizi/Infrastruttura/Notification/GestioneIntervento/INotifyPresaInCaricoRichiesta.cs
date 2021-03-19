@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using DomainModel.CQRS.Commands.MessaInLavorazione;
 using DomainModel.CQRS.Commands.PresaInCarico;
 using System.Threading.Tasks;
 

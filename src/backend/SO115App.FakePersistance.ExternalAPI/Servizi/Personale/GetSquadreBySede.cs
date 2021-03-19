@@ -1,17 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Condivise;
+﻿using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
-using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Servizi.Identity;
-using SO115App.ExternalAPI.Fake.Servizi.Identity.Mock;
 using SO115App.ExternalAPI.Fake.Servizi.Personale.Mock;
-using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Personale
 {

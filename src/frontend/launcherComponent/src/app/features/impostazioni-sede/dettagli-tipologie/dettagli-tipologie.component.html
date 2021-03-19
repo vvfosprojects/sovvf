@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-5">
+        <h3 class="d-inline-block mb-0">
+            Dettagli Tipologie
+        </h3>
+    </div>
+    <div class="col">
+        <label for="filtriDettagliTipologie" class="d-none">Filtro Tipologia</label>
+        <ng-select id="filtriDettagliTipologie"
+                   placeholder="Filtra per tipologia"
+                   bindLabel="codiceDescrizione"
+                   bindValue="codice"
+                   [items]="tipologie$ | async"
+                   (change)="onFiltroTipologiaChange($event)">
+        </ng-select>
+    </div>
+    <div class="col text-right">
+        <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
+                                        (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
+    </div>
+    <div *ngIf="ricerca" class="col-12 pl-2">
+        <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+    </div>
+    <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
+        <table class="table mt-3 mb-2">
+            <thead class="font-xlarge">
+            <tr>
+                <th scope="col" style="width:15%">Codice Tipologia</th>
+                <th scope="col" style="width:15%">Sede</th>
+                <th scope="col" style="width:15%">Codice Dettaglio</th>
+                <th scope="col" style="width:30%">Descrizione</th>
+                <th scope="col" style="width:35%">Azioni</th>
+            </tr>
+            </thead>
+            <tbody class="font-xlarge">
+            <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+                <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
+                <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>
+                <td style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
+                <td style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
+                <td style="width:35%">
+                    <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
+                            (click)="onEditDettaglioTipologia(dettaglioTipologia)">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" ngbTooltip="Elimina Dettaglio Tipologia"
+                            (click)="onDeleteDettaglioTipologia({ codDettaglioTipologia: dettaglioTipologia.codiceDettaglioTipologia, descrizioneDettaglioTipologia: dettaglioTipologia.descrizione })">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!dettagliTipologie?.length" class="col-12 mt-2">
+        <div class="alert alert-danger mb-0">
+            <i class="fa fa-exclamation-triangle"></i>
+            Nessun Dettaglio Tipologia presente
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="clearfix">
+            <div class="float-left mt-2">
+                <button class="btn btn-lg btn-primary btn-no-hover" (click)="onAddDettaglioTipologia()">
+                    <i class="fa fa-plus"></i>
+                    Aggiungi Dettaglio
+                </button>
+            </div>
+            <div class="float-right text-right mt-3">
+                <pagination-controls [previousLabel]="'Precedente'"
+                                     [nextLabel]="'Successiva'"
+                                     (pageChange)="onPageChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

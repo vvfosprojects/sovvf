@@ -1,31 +1,51 @@
 ﻿using CQRS.Commands;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.AnnullaRichiestaSoccorsoAereo
 {
     public class AnnullaRichiestaSoccorsoAereoCommandHandler : ICommandHandler<AnnullaRichiestaSoccorsoAereoCommand>
     {
         private readonly IAnnullaRichiestaSoccorsoAereo _annullaRichiestaSoccorsoAereo;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
 
-        public AnnullaRichiestaSoccorsoAereoCommandHandler(IAnnullaRichiestaSoccorsoAereo annullaRichiestaSoccorsoAereo, IGetRichiestaById getRichiestaById)
+        public AnnullaRichiestaSoccorsoAereoCommandHandler(IAnnullaRichiestaSoccorsoAereo annullaRichiestaSoccorsoAereo, IUpDateRichiestaAssistenza updateRichiesta)
         {
             _annullaRichiestaSoccorsoAereo = annullaRichiestaSoccorsoAereo;
-            _getRichiestaById = getRichiestaById;
+            _updateRichiesta = updateRichiesta;
         }
 
         public void Handle(AnnullaRichiestaSoccorsoAereoCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodiceRichiesta(command.Codice);
+            var date = DateTime.Now;
 
-            new AnnullamentoRichiestaSoccorsoAereo(richiesta, DateTime.Now, command.IdOperatore);
+            #region AFM Servizio
 
-            _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, command.Codice);
+            command.Annullamento.datetime = date;
+
+            //Comunico al servizio esterno
+            var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, MapRequestKeyAFM.MapForAFM(command.CodiceRichiesta));
+
+            #endregion
+
+            command.ResponseAFM = result;
+
+            if (!result.IsError()) //OK ANNULLAMENTO
+            {
+                //command.Richiesta.RichiestaSoccorsoAereo = false;
+
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento());
+            }
+            else //ERRORE ANNULLAMENTO
+            {
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento());
+            }
+
+            //Salvo richiesta sul db
+            _updateRichiesta.UpDate(command.Richiesta);
         }
     }
 }

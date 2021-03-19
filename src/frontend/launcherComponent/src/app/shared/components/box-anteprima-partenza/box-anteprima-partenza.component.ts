@@ -21,6 +21,7 @@ export class BoxAnteprimaPartenzaComponent {
     @Input() boxSostitutivo: boolean;
     @Input() nuovoMezzo: Mezzo;
     @Input() nuoveSquadre: Squadra[];
+    @Input() nightMode: boolean;
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();

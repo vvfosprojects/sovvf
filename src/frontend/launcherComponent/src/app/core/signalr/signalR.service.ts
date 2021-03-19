@@ -4,7 +4,11 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import {
+  GetListaRichieste,
+  StopLoadingActionMezzo,
+  UpdateRichiesta
+} from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -12,19 +16,11 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/scheda-telefonata/chiamata.actions';
+import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
-import {
-    AddBookMezzoComposizione,
-    RemoveBookingMezzoComposizione,
-    RemoveBookMezzoComposizione,
-    UpdateMezzoComposizione,
-    UpdateMezzoComposizioneScadenzaByCodiceMezzo
-} from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
-import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
@@ -60,6 +56,7 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -135,6 +132,33 @@ export class SignalRService {
         });
 
         /**
+         * Soccorso Aereo
+         */
+        // Todo: tipicizzare
+
+        this.hubNotification.on('NotifySuccessAFM', (data: any) => {
+          console.log('NotifySuccessAFM', data);
+          this.store.dispatch(new UpdateRichiesta(data.richiesta));
+          this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
+        });
+
+        this.hubNotification.on('NotifyErrorAFM', (data: string) => {
+          console.log('NotifyErrorAFM:', data);
+          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+        });
+
+        this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
+          console.log('NotifySuccessAnnullamentoAFM:', data);
+          this.store.dispatch(new UpdateRichiesta(data.richiesta));
+          this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+        });
+
+        this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
+          console.log('NotifyErrorAnnullamentoAFM:', data);
+          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+        });
+
+        /**
          * Cambiamento Stato Squadra/Mezzi Richiesta
          */
         this.hubNotification.on('ChangeStateSuccess', (data: boolean) => {
@@ -161,12 +185,6 @@ export class SignalRService {
             }
             this.store.dispatch(new StopLoadingActionMezzo());
         });
-
-        /**
-         * Soccorso Aereo
-         */
-
-        // ToDo: notifica soccorso aereo
 
         /**
          * Markers Mappa
@@ -281,30 +299,6 @@ export class SignalRService {
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
-        // Todo: tipicizzare
-        this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
-            if (!data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new AddBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new RemoveBookingMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, data.istanteScadenzaSelezione));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo prenotato signalr', data);
-            } else if (data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new RemoveBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, null));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo remove prenotato signalr', data);
-            }
-        });
-
         /**
          * Gestione Utenti
          */
@@ -371,6 +365,28 @@ export class SignalRService {
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
             this.store.dispatch(new GetListaRichieste());
+        });
+
+        /**
+         * Dettagli Tipologie
+         */
+        this.hubNotification.on('NotifyAddDettaglioTipologia', (response: any) => {
+            console.log('NotifyAddDettaglioTipologia', response);
+            this.store.dispatch(new AddDettaglioTipologia());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyModifyDettaglioTipologia', (response: any) => {
+            console.log('NotifyModifyDettaglioTipologia', response);
+            this.store.dispatch(new UpdateDettaglioTipologia(response.data.dettaglioTipologia));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteDettaglioTipologia', (response: any) => {
+            console.log('NotifyDeleteDettaglioTipologia', response);
+            this.store.dispatch(new DeleteDettaglioTipologia(response.data));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
 
         /**

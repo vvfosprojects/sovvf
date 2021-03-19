@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -6,6 +6,7 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
+import {ListaEventiMezzo} from '../partenza/partenza.component';
 
 @Component({
     selector: 'app-mezzo',
@@ -15,10 +16,13 @@ import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
+    @Input() listaEventi: any;
     @Input() mostraIndicatori: boolean;
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
+    @Input() listaEventiMezzo: ListaEventiMezzo[];
+    @Input() doubleMonitor: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();
@@ -51,9 +55,13 @@ export class MezzoComponent {
         if (action) {
             let data = new Date();
             const orario = action.oraEvento;
+            const dataEvento = action.dataEvento;
+            data.setDate(dataEvento.giorno);
+            data.setMonth(dataEvento.mese - 1);
+            data.setFullYear(dataEvento.anno);
             data.setHours(orario.ora);
             data.setMinutes(orario.minuti);
-            data.setSeconds(0);
+            data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
             actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data };
@@ -66,4 +74,5 @@ export class MezzoComponent {
     statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
     }
+
 }

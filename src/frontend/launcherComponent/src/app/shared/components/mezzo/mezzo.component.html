@@ -1,11 +1,27 @@
 <span>
-  <span class="d-inline-block">
-    <i class="guida fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo.stato)}}"
-       ngbTooltip="Mezzo {{mezzo.stato}}"></i>
-    <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"
-          [disableTooltip]="mezzo.descrizione.length <= 13"><b>{{ mezzo.descrizione | slice: 0: 13 }}</b></span>
-    <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
-  </span>
+<!--  <span class="d-inline-block font-dettaglio">-->
+<!--    <span class=" text-{{statoMezzoColor(mezzo.stato)}} m-0" [class.text-verdemela]="mezzo.stato === 'In Rientro'"-->
+<!--          style="color: #fff; padding: 5px; vertical-align: baseline" ngbTooltip="Stato Mezzo: {{mezzo.stato}}">-->
+<!--      <i class="fa fa-stop-circle mr-1"></i>-->
+<!--      {{mezzo.stato}}: 12:00</span>-->
+<!--      <span style="vertical-align: text-top">-->
+<!--      <i class="guida fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo.stato)}}"></i>-->
+<!--      <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"-->
+<!--            [disableTooltip]="mezzo.descrizione.length <= 13"><b>{{ mezzo.descrizione | slice: 0: 13 }}</b></span>-->
+<!--      <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>-->
+<!--    </span>-->
+<!--  </span>-->
+    <span class="font-xlarge" style="vertical-align: middle">
+          <i class="guida font-xlarge text-secondary fa fa-truck fa-fw mr-1"></i>
+          <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"
+                [disableTooltip]="mezzo.descrizione.length <= 13"><b>{{ mezzo.descrizione | slice: 0: 13 }}</b></span>
+          <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
+        </span>
+    <span *ngFor="let s of listaEventiMezzo; let index = index" class="d-inline-block font-xlarge mx-2" style="vertical-align: bottom">
+      <app-icona-stato [stato]="s.stato"></app-icona-stato>
+      <span class=" text-{{statoMezzoColor(s.stato)}} m-0" style="color: #fff">
+        {{s.stato === 'In Viaggio' ? 'Uscita' : s.stato}}: {{s.ora | date : 'HH:mm'}}</span>
+    </span>
 
     <!-- indicatori -->
   <span *ngIf="mostraIndicatori" class="d-inline-block pl-2 mr-1">
@@ -18,7 +34,7 @@
       <div *ngIf="!nessunIndMezzo(mezzo)" class="h6 m-0 nowrap">
         <div *ngIf="mezzo.descrizioneStatoEfficienza">
           <i class='fa fa-cogs fa-fw' title='Stato di efficienza del mezzo'></i>
-          <span class='badge' [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
+          <span class="badge" [ngClass]="dettagliMezzo(mezzo.statoEfficienza, 'efficienza', 'badge')">
             {{ mezzo.descrizioneStatoEfficienza }}</span>
         </div>
         <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw'
@@ -60,7 +76,7 @@
     </ng-template>
   </span>
 
-  <app-mezzo-actions *ngIf="actionsAttive" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
+  <app-mezzo-actions *ngIf="actionsAttive" [doubleMonitor]="doubleMonitor" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 
   <span *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">Richiesta
       {{mezzo.idRichiesta}}</span>

@@ -37,7 +37,6 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -47,21 +46,19 @@ import { ViewportState } from '../../../shared/store/states/viewport/viewport.st
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
@@ -82,9 +79,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
-
     permessiFeature = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
@@ -100,8 +94,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
         this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
         this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
-
     }
 
     ngOnInit(): void {
@@ -216,10 +208,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {
-        let classificazione: ClassificazioneSchedaContatto = null;
-        if ($event.nextId !== 'Tutte') {
-            classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        }
+        const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 

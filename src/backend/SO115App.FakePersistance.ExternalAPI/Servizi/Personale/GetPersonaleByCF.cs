@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -20,22 +16,27 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     ///   classe che estende l'interfaccia e recupera la persona fisica partendo dal codice fiscale
     ///   su Utenti Comuni
     /// </summary>
-    public class GetPersonaleByCF : BaseService, IGetPersonaleByCF
+    public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
-            : base(client, configuration, memoryCache, writeLog, httpContext) { }
+        private readonly Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> _clientPersonale;
+        private readonly IConfiguration _configuration;
+        public GetPersonaleByCF(Client.IHttpRequestManager<IEnumerable<PersonaleVVF>> client, IConfiguration configuration)
+        {
+            _clientPersonale = client;
+            _configuration = configuration;
+        }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
             if (codSede != null)
             {
                 var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(new string[] { codSede }).Result;
-                return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
+                return ListaPersonaleVVF.Find(x => x.codiceFiscale.Equals(codiceFiscale));
             }
             else
             {
                 var Persona = GetPersonaleVVFExternalAPIByCF(new string[] { codiceFiscale }).Result;
-                return Persona.Find(x => x.CodFiscale.Equals(codiceFiscale));
+                return Persona.Find(x => x.codiceFiscale.Equals(codiceFiscale));
             }
         }
 
@@ -44,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             if (codSede != null)
             {
                 var lstPersonale = GetPersonaleVVFExternalAPI(codSede).Result;
-                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.CodFiscale));
+                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.codiceFiscale));
             }
             else
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
@@ -54,22 +55,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            //try
-            //{
-            Parallel.ForEach(codSede, sede =>
+            try
             {
-                var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
-                httpManager.Configure("Personale_" + sede);
+                Parallel.ForEach(codSede, sede =>
+                {
+                    _clientPersonale.SetCache("Personale_" + sede);
 
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-                lock (listaPersonale)
-                    listaPersonale.AddRange(httpManager.GetAsync(url, "").Result);
-            });
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception("Elenco del personale non disponibile");
-            //}
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                    lock (listaPersonale)
+                        listaPersonale.AddRange(_clientPersonale.GetAsync(url, "").Result);
+                });
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Elenco del personale non disponibile");
+            }
 
             return listaPersonale;
         }

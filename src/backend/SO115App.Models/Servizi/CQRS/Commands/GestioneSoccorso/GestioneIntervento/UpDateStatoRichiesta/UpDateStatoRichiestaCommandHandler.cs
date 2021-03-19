@@ -30,12 +30,12 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     public class UpDateStatoRichiestaCommandHandler : ICommandHandler<UpDateStatoRichiestaCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpdateStatoPartenze _upDatePartenza;
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpdateStatoPartenze upDatePartenza)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
@@ -75,7 +75,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             }
 
             richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note, DateTime.UtcNow);
-            
+
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;
 

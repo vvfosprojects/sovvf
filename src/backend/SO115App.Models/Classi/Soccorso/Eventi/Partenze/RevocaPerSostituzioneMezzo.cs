@@ -6,7 +6,7 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Partenze
 {
     public class RevocaPerSostituzioneMezzo : Revoca
     {
-        public RevocaPerSostituzioneMezzo(RichiestaAssistenza richiesta, string codiceMezzo, DateTime istante, string codiceFonte, string motivazione, int codicePartenza) 
+        public RevocaPerSostituzioneMezzo(RichiestaAssistenza richiesta, string codiceMezzo, DateTime istante, string codiceFonte, string motivazione, int codicePartenza)
             : base(richiesta, codiceMezzo, istante, codiceFonte, codicePartenza)
         {
             Motivazione = motivazione;

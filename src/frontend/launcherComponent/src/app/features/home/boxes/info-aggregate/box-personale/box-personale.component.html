@@ -1,7 +1,7 @@
 <div *ngIf="personaleQty" class="row px-2 pt-2 pb-0">
     <div class="col-12">
         <!-- Funzionario in Servizio -->
-        <div class="row" style="font-size: larger">
+        <div class="row font-xlarge">
             <div class="clearfix float-left ml-4">
                 <i class="fa fa-users mb-2 mr-1"></i>
                 <span class="font-weight-bold"
@@ -31,7 +31,7 @@
                         <div class="h6 font-weight-bold">Nessun Funzionario</div>
                     </div>
 
-                    <hr class="m-0 mb-2">
+                    <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
 
                     <!-- Capo Turno -->
                     <div *ngIf="personalePresenze.capoTurno">
@@ -94,7 +94,7 @@
                 </ng-template>
             </div>
         </div>
-        <hr class="m-0 mb-2">
+        <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
     </div>
     <!-- sinistra -->
     <div class="col-6">
@@ -103,16 +103,16 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Squadre attualmente in servizio">Squadre</span>
+                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Squadre attualmente in servizio" placement="top">Squadre</span>
                             </li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('squadreServizio')"><span
-                                    class="position-relative badge badge-secondary h6 w-75"><i *ngIf="personaleDiff"
-                                                                                               class="blink-i-aggregate fa"
-                                                                                               [ngClass]="realDiff('squadreServizio')"></i>{{personaleQty?.squadreServizio}}</span>
+                                    class="position-relative badge badge-mod-secondary h6 w-75">
+                              <i *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                                 [ngClass]="realDiff('squadreServizio')"></i>{{personaleQty?.squadreServizio}}</span>
                             </li>
                         </ul>
                     </div>
@@ -120,16 +120,16 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" ngbTooltip="Squadre impegnate sugli interventi">Impegnate</span>
+                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Squadre impegnate sugli interventi" placement="bottom">Impegnate</span>
                     </li>
                   </ul>
                 </div>
                 <div class="col px-0 text-secondary text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('squadreAssegnate')"><span
-                      class="position-relative badge badge-success h6 w-75"><i *ngIf="personaleDiff"
-                                                                               class="blink-i-aggregate fa"
-                                                                               [ngClass]="realDiff('squadreAssegnate')"></i>{{personaleQty?.squadreAssegnate}}</span>
+                      class="position-relative badge badge-mod-danger h6 w-75">
+                      <i *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                         [ngClass]="realDiff('squadreAssegnate')"></i>{{personaleQty?.squadreAssegnate}}</span>
                     </li>
                   </ul>
                 </div>
@@ -145,8 +145,8 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span
-                                    class="d-inline-block h6"
-                                    ngbTooltip="Funzionari di guardia">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
+                                    class="d-inline-block h6" [ngClass]="nightModeStyle()"
+                                    ngbTooltip="Funzionari di guardia" placement="top">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
                             </li>
                         </ul>
                     </div>
@@ -155,7 +155,7 @@
                             <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="position-relative badge badge-dark h6 w-75"><i
+                                    class="position-relative badge badge-mod-secondary h6 w-75"><i
                                     *ngIf="personaleDiff" class="blink-i-aggregate fa"
                                     [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
                         </ul>
@@ -164,8 +164,8 @@
                 <div class="row">
                 <div class="col pr-0 text-secondary">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6"
-                              ngbTooltip="Tecnici di guardia">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
+                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()"
+                              ngbTooltip="Tecnici di guardia" placement="bottom">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
                     </li>
                   </ul>
                 </div>
@@ -174,7 +174,7 @@
                     <li [ngClass]="checkDiff('tecnici')" [ngbPopover]="tecniciGuardia"
                         triggers="mouseenter:mouseleave" container="body"
                         placement="bottom"><span
-                      class="position-relative badge badge-secondary h6 w-75"><i
+                      class="position-relative badge badge-mod-secondary h6 w-75"><i
                       *ngIf="personaleDiff" class="blink-i-aggregate fa"
                       [ngClass]="realDiff('tecnici')"></i>{{personaleQty?.tecnici}}</span></li>
                   </ul>

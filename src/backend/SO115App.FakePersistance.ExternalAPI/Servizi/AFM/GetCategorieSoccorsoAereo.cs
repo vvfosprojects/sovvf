@@ -1,30 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+﻿using SO115App.ExternalAPI.Client;
 using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
-using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 {
-    public class GetCategorieSoccorsoAereo : BaseService, IGetCategorieSoccorsoAereo
+    public class GetCategorieSoccorsoAereo : IGetCategorieSoccorsoAereo
     {
-        public GetCategorieSoccorsoAereo(HttpClient client, IConfiguration configuration, IMemoryCache cache, IWriteLog log, IHttpContextAccessor httpContext)
-            : base(client, configuration, cache, log, httpContext) { }
+        private readonly IHttpRequestManager<List<CategoriaAFM>> _client;
+        public GetCategorieSoccorsoAereo(IHttpRequestManager<List<CategoriaAFM>> client) => _client = client;
 
-        public List<CategoriaSoccorsoAereo> Get()
+        public List<CategoriaAFM> Get()
         {
-            var APImanager = new HttpRequestManager<List<CategoriaSoccorsoAereo>>(_client, _memoryCache, _writeLog, _httpContext, _configuration);
+            //_client.SetCache();
 
-            APImanager.Configure();
-
-            var result = APImanager.GetAsync(new Uri(Costanti.AFM + "rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = _client.GetAsync(new Uri(Costanti.AFM + "rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
             return result;
         }

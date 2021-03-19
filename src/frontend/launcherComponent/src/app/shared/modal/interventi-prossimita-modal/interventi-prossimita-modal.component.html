@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" style="font-weight: 700">
+    <h4 class="modal-title font-weight-bold">
         {{ 'INTERVENTI IN PROSSIMITA\'' | uppercase }}
         <span class="badge badge-primary ml-2">
             {{ countInterventiVicinanze }}
@@ -542,7 +542,7 @@
                                                     <i class="fa fa-send-o"></i>
                                                 </button>
                                             </div>
-                                            <app-sintesi-richiesta-actions [richiesta]="r"
+                                            <app-sintesi-richiesta-actions [richiesta]="r" [doubleMonitor]="doubleMonitor"
                                                                            (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>
                                         </div>
                                     </div>

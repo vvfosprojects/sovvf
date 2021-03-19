@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Triage;
 using System;
 using System.Collections.Generic;
 
@@ -47,6 +48,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   L'id della richiesta
         /// </summary>
         public string Id { get; set; }
+
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
         ///   Identifica il codice della Chiamata
@@ -184,5 +187,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public string Motivazione { get; set; }
 
         public List<int> listaEnti { get; set; }
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }

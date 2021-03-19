@@ -26,7 +26,6 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -36,14 +35,18 @@ import {ViewportState} from '../../../shared/store/states/viewport/viewport.stat
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    totalItems: number;
     @Select(PaginationState.page) page$: Observable<number>;
+    page: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
@@ -53,8 +56,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioSelezionato: string;
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
+
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
@@ -64,6 +66,9 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modalService: NgbModal) {
         this.getRicerca();
+        this.getPageSize();
+        this.getTotalItems();
+        this.getPage();
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
@@ -71,7 +76,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new ClearRicercaFilterbar());
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Mezzo in Servizio creato');
     }
 
@@ -122,6 +126,30 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaMezziInServizio(page));
     }
 
+    getPageSize(): void {
+        this.subscriptions.add(
+            this.pageSize$.subscribe((pageSize: number) => {
+                this.pageSize = pageSize;
+            })
+        );
+    }
+
+    getTotalItems(): void {
+        this.subscriptions.add(
+            this.totalItems$.subscribe((totalItems: number) => {
+                this.totalItems = totalItems;
+            })
+        );
+    }
+
+    getPage(): void {
+        this.subscriptions.add(
+            this.page$.subscribe((page: number) => {
+                this.page = page;
+            })
+        );
+    }
+
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
@@ -142,17 +170,17 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
         if (this.doubleMonitor) {
-          this.modalService.open(SintesiRichiestaModalComponent, {
-            windowClass: 'xlModal modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            this.modalService.open(SintesiRichiestaModalComponent, {
+                windowClass: 'xlModal modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         } else {
-          this.modalService.open(SintesiRichiestaModalComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            this.modalService.open(SintesiRichiestaModalComponent, {
+                windowClass: 'xlModal',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         }
     }
 
@@ -162,17 +190,17 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         let modal;
         if (this.doubleMonitor) {
-          modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         } else {
-          modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         }
         modal.result.then(() => {
             },

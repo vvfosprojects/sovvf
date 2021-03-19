@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneSoccorso
 {
     public class GetTipologieSoccorsoAereoResult
     {
-        public List<TipologiaSoccorsoAereo> DataArray { get; set; }
+        public List<TipologiaAFM> DataArray { get; set; }
     }
 }

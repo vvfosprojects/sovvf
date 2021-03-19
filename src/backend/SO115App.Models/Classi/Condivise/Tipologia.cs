@@ -70,5 +70,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public AdeguatezzaMezzo AdeguatezzaMezzo { get; set; }
 
         public int OppSganc { get; set; }
+
+        public int UtilitaAFM { get; set; }
     }
 }

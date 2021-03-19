@@ -18,8 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
-using System.Collections.Generic;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {

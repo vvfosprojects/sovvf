@@ -27,12 +27,12 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
     public class RimozioneInLavorazioneCommandHandler : ICommandHandler<RimozioneInLavorazioneCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetUtenteById _getUtenteById;
 
         public RimozioneInLavorazioneCommandHandler(
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetUtenteById getUtenteById
             )

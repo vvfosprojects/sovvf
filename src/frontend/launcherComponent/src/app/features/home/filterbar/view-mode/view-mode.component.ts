@@ -12,6 +12,7 @@ export class ViewModeComponent {
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
     @Input() stateSwitch: boolean;
     @Input() mapStatus: boolean;
+    @Input() nightMode: boolean;
 
     @Output() buttonView = new EventEmitter<AppFeatures>();
     @Output() toggleMeteo: EventEmitter<boolean> = new EventEmitter();
@@ -31,6 +32,5 @@ export class ViewModeComponent {
     onChange(): void {
         this.toggleMeteo.emit(!this.stateSwitch);
     }
-
 
 }

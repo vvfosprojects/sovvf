@@ -47,7 +47,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzahandler;
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _listaMezziMarkerHandler;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationAnnullaPartenza(IHubContext<NotificationHub> notificationHubContext,
@@ -58,7 +58,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           IQueryHandler<MezziMarkerQuery, MezziMarkerResult> listaMezziMarkerHandler,
-                                          IGetRichiestaById getRichiestaById,
+                                          IGetRichiesta getRichiestaById,
                                           GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
@@ -164,7 +164,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
                 });
 
-                
+
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
             });
         }

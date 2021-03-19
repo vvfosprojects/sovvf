@@ -44,78 +44,6 @@
             </div>
         </div>
         <div class="col-12">
-            <!-- <div class="accordion" id="accordionImpostazioni">
-                <div class="card">
-                    <div class="card-header" id="headingInterfaccia">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                    aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa fa-window-maximize"></i>
-                                Impostazioni Interfaccia
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseInterfaccia" class="collapse show" data-parent="#accordionImpostazioni">
-                        <div class="card-body py-4">
-                            <div class="col-12 col-md-8 mx-auto mb-3">
-                                <div class="row">
-                                    <div *ngFor="let impostazione of listaImpostazioni"
-                                         class="card card-shadow col-12 col-md-4 mx-md-auto py-4 px-3">
-                                        <h4>
-                                            <i class="fa {{ impostazione?.icona }} mr-1"></i>
-                                            {{ impostazione?.tipo }}
-                                        </h4>
-                                        <hr class="mt-1">
-                                        <div *ngFor="let opzione of impostazione?.opzioni" class="clearfix px-3">
-                                            <div class="float-left">
-                                                {{ opzione?.label }}
-                                            </div>
-                                            <div class="float-right">
-                                                <ng-template [ngIf]="opzione?.singleValue">
-                                                    <label [for]="opzione?.label"
-                                                           class="d-none">{{ opzione?.label }}</label>
-                                                    <input [id]="opzione?.label" type="checkbox"
-                                                           [checked]="opzione?.singleValue?.value"
-                                                           (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
-                                                </ng-template>
-                                                <ng-template [ngIf]="opzione?.select">
-                                                    <label [for]="opzione?.label"
-                                                           class="d-none">{{ opzione?.label }}</label>
-                                                    <ng-select [id]="opzione?.label"
-                                                               bindValue="id"
-                                                               bindLabel="desc"
-                                                               [ngModel]="opzione?.select?.selected"
-                                                               [items]="opzione?.select?.itemsSelect"
-                                                               [multiple]="false"
-                                                               [clearable]="false"
-                                                               (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
-                                                    </ng-select>
-                                                </ng-template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingDettagliTipologie">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <i class="fa fa-list"></i>
-                                Dettagli Tipologie
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseDettagliTipologie" class="collapse" data-parent="#accordionImpostazioni">
-                        <div class="card-body">
-                            <app-dettagli-tipologie></app-dettagli-tipologie>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <ngb-accordion [closeOthers]="true" activeIds="interfaccia">
                 <ngb-panel id="interfaccia">
                     <ng-template ngbPanelTitle>
@@ -123,9 +51,12 @@
                         Impostazioni Interfaccia
                     </ng-template>
                     <ng-template ngbPanelContent>
-                        <div class="row">
+                        <div class="row pl-3">
+                            <div class="col-12 mb-3">
+                                <h3 class="d-inline-block mb-0">Impostazioni Interfaccia</h3>
+                            </div>
                             <div *ngFor="let impostazione of listaImpostazioni"
-                                 class="card card-shadow col-12 col-md-4 mx-md-auto py-4 px-3">
+                                 class="card card-shadow col-md-5 mx-md-auto py-4 mb-4 px-3">
                                 <h4>
                                     <i class="fa {{ impostazione?.icona }} mr-1"></i>
                                     {{ impostazione?.tipo }}
@@ -160,15 +91,6 @@
                                 </div>
                             </div>
                         </div>
-                    </ng-template>
-                </ngb-panel>
-                <ngb-panel id="tipologie">
-                    <ng-template ngbPanelTitle>
-                        <i class="fa fa-list"></i>
-                        Dettagli Tipologie
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                        <app-dettagli-tipologie></app-dettagli-tipologie>
                     </ng-template>
                 </ngb-panel>
             </ngb-accordion>

@@ -4,6 +4,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM
 {
     public interface IAnnullaRichiestaSoccorsoAereo
     {
-        void Annulla(AnnullaRichiestaSoccorsoAereo richiesta, string CodiceRichiesta);
+        InfoAFM Annulla(AnnullaRichiestaAFM richiesta, string CodiceRichiesta);
     }
 }

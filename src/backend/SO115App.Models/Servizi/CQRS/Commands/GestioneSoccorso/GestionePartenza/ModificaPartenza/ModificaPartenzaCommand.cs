@@ -1,6 +1,4 @@
 ﻿using SO115App.API.Models.Classi.Soccorso;
-using System;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza
 {

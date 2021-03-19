@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson.Serialization;
-
-namespace SO115App.Models.Classi.Condivise
+﻿namespace SO115App.Models.Classi.Condivise
 {
     public class AdeguatezzaMezzo
     {

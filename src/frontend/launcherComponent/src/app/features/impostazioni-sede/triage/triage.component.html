@@ -1,0 +1,244 @@
+<h3 class="d-inline-block mb-0">
+    Configurazione Triage
+</h3>
+<div class="mt-4">
+    <!-- SELECT DETTAGLIO TIPOLOGIA -->
+    <div class="card card-shadow bg-light py-3 px-4">
+        <div class="row">
+            <div class="col-6">
+                <label for="selectTipologia" class="font-xxlarge">
+                    Seleziona una Tipologia
+                </label>
+                <ng-select id="selectTipologia"
+                           [(ngModel)]="codTipologia"
+                           [items]="tipologie$ | async"
+                           bindValue="codice"
+                           bindLabel="descrizione"
+                           placeholder="Seleziona una Tipologia dalla lista"
+                           [clearable]="false"
+                           [disabled]="showTriage"
+                           (ngModelChange)="onSetCodTipologia($event)">
+                </ng-select>
+            </div>
+            <div *ngIf="codTipologia" class="col-6">
+                <label [for]="'dettaglioTipologiaTriage' + '-' + 'Incendio  normale (generico)'"
+                       class="font-xxlarge">
+                    Seleziona un Dettaglio Tipologia
+                </label>
+                <ng-select [id]="'dettaglioTipologiaTriage' + '-' + 'Incendio normale (generico)'"
+                           [(ngModel)]="codDettaglioTipologia"
+                           [items]="dettagliTipologie$ | async"
+                           bindValue="codiceDettaglioTipologia"
+                           bindLabel="descrizione"
+                           placeholder="Seleziona un Dettaglio Tipologia dalla lista"
+                           [clearable]="false"
+                           [disabled]="showTriage"
+                           (ngModelChange)="onSetDettaglioTipologia($event)">
+                </ng-select>
+            </div>
+        </div>
+        <div class="clearfix mt-3">
+            <div class="float-left">
+                <button class="btn btn-lg btn-no-hover font-weight-bolder mr-2"
+                        [class.btn-primary]="!showTriage"
+                        [class.btn-secondary]="showTriage"
+                        [disabled]="!codDettaglioTipologia || showTriage"
+                        (click)="onShowTriage()">
+                    <i class="fa fa-search mr-1"></i>
+                    <ng-template [ngIf]="!dettaglioTipologia">
+                        {{ 'Ricerca triage'  | uppercase }}
+                    </ng-template>
+                    <ng-template [ngIf]="dettaglioTipologia">
+                        {{ 'Ricerca triage di "' + dettaglioTipologia?.descrizione + '"'  | uppercase }}
+                    </ng-template>
+                </button>
+            </div>
+            <div class="float-right">
+                <button class="btn btn-lg btn-no-hover font-weight-bolder mr-2"
+                        [class.btn-primary]="codDettaglioTipologia || showTriage"
+                        [class.btn-secondary]="!codDettaglioTipologia || !showTriage"
+                        [disabled]="!codDettaglioTipologia || !showTriage"
+                        (click)="onResetRicerca()">
+                    <i class="fa fa-refresh mr-1"></i>
+                    {{ 'Nuova Ricerca' | uppercase }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- MODIFICA TRIAGE - TREEVIEW -->
+    <ng-template [ngIf]="showTriage">
+        <div class="py-3 px-2 mt-3">
+            <h3 class="mt-2">
+                <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
+                <i class="fa fa-arrow-circle-right mr-3"></i>
+                <ng-template [ngIf]="tItems">
+                    <span *ngIf="viewEditButtons">Modifica </span>Triage
+                </ng-template>
+                <ng-template [ngIf]="!tItems">
+                    <span class="text-danger font-weight-bolder">Triage non presente per il Dettaglio Tipologia selezionato</span>
+                </ng-template>
+            </h3>
+            <ng-template [ngIf]="!tItems">
+                <hr class="mt-3 mb-2">
+            </ng-template>
+            <ng-template [ngIf]="tItems">
+                <div class="card card-shadow bg-light mt-3 px-4 py-3">
+                    <ngx-treeview [items]="tItems"
+                                  [config]="tConfig"
+                                  [itemTemplate]="itemTemplate">
+                    </ngx-treeview>
+                </div>
+                <ng-template [ngIf]="tItems">
+                    <div class="mt-4 pl-2">
+                        <app-checkbox [bigText]="true"
+                                      [checkboxState]="{ id: 'editMode', status: viewEditButtons, label: !viewEditButtons ? 'Abilita Modifica' : 'Disabilita Modifica'}"
+                                      (checkbox)="toggleViewEditButtons()">
+                        </app-checkbox>
+                    </div>
+                </ng-template>
+                <div class="alert alert-danger font-weight-bolder mt-3">
+                    Si prega di salvare per non perdere eventuali modifiche.
+                </div>
+                <div class="clearfix">
+                    <div class="float-left">
+                        <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                                (click)="saveTriage()">
+                            {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                        </button>
+                        <ng-template [ngIf]="tItemsBackup">
+                            <button class="btn btn-lg btn-no-hover btn-danger font-weight-bolder"
+                                    (click)="removeTriage()">
+                                {{ 'Elimina Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                            </button>
+                        </ng-template>
+                    </div>
+                    <div class="float-right">
+                        <ng-template [ngIf]="tItemsBackup">
+                            <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
+                                    (click)="resetTriage()">
+                                {{ 'Reset Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                            </button>
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template [ngIf]="!tItems">
+                <div class="text-left mt-3">
+                    <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                            (click)="initTriage()">
+                        <i class="fa fa-plus-circle mr-1"></i>
+                        {{ 'Aggiungi la prima Domanda' | uppercase }}
+                    </button>
+                    <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
+                            [disabled]="true">
+                        <i class="fa fa-upload mr-1"></i>
+                        {{ 'Importa Triage da un altro Dettaglio Tipologia' | uppercase }}
+                    </button>
+                </div>
+            </ng-template>
+        </div>
+    </ng-template>
+</div>
+
+
+<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
+    <div class="form-inline row-item font-xlarge mt-3"
+         [class.item-treeview-custom]="!viewEditButtons">
+        <i *ngIf="item.children" class="mr-2 text-info cursor-pointer" (click)="onCollapseExpand()" aria-hidden="true"
+           [ngSwitch]="item.collapsed">
+            <i *ngSwitchCase="true" class="fa fa-chevron-circle-down"></i>
+            <i *ngSwitchCase="false" class="fa fa-chevron-circle-up"></i>
+        </i>
+        <div class="form-check">
+            <ng-template [ngIf]="item.value !== itemValueTitleEdit">
+                <label class="form-check-label cursor-pointer"
+                       [class.text-info]="item.collapsed"
+                       [class.text-dark]="!item.collapsed"
+                       [class.font-weight-bolder]="!item.collapsed"
+                       (click)="item.children ? onCollapseExpand() : addItem(item)">
+                    {{ item.text }}
+                </label>
+                <ng-template [ngIf]="viewEditButtons && item.children?.length > 1">
+                    <div class="d-inline-block ml-2">
+                        <button class="btn btn-info"
+                                ngbTooltip="Modifica Testo"
+                                (click)="setItemValueEditTitle(item)">
+                            <i class="fa fa-text-width mr-1"></i>
+                            Modifica
+                        </button>
+                    </div>
+                </ng-template>
+            </ng-template>
+            <ng-template [ngIf]="itemValueTitleEdit && item.value === itemValueTitleEdit">
+                <label for="editTitle" class="d-none">Modifica Titolo</label>
+                <input id="editTitle"
+                       type="text"
+                       placeholder="Inserisci il testo desiderato per la Domanda"
+                       class="form-control-lg"
+                       [(ngModel)]="itemTitleEdit">
+                <button class="btn btn-success mx-1"
+                        ngbTooltip="Conferma Modifica"
+                        [disabled]="!itemTitleEdit"
+                        (click)="updateItemTitle(item)">
+                    <i class="fa fa-check"></i>
+                </button>
+                <button class="btn btn-danger"
+                        ngbTooltip="Annulla Modifica"
+                        (click)="clearItemValueEditTitle()">
+                    <i class="fa fa-close"></i>
+                </button>
+            </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.soccorsoAereo">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-plane mr-1"></i>
+                    {{ getItemData(item)?.soccorsoAereo }}
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.generiMezzo">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-truck mr-1"></i>
+                    <span *ngFor="let genereMezzo of getItemData(item)?.generiMezzo, let i = index"
+                          class="d-inline-block">
+                        {{ genereMezzo }}<span
+                            *ngIf="getItemData(item)?.generiMezzo?.length > 1 && i !== getItemData(item)?.generiMezzo?.length - 1">, </span>
+                    </span>
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.prioritaConsigliata">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-thermometer mr-1"></i>
+                    {{ getItemData(item)?.prioritaConsigliata }}
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.noteOperatore">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    Note Operatore Inserite
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="viewEditButtons">
+                <ng-template [ngIf]="!item.children?.length && !getItemData(item)">
+                    <button class="btn btn-primary ml-3"
+                            ngbTooltip="Aggiungi"
+                            (click)="addItem(item)">
+                        <i class="fa fa-plus-circle"></i>
+                    </button>
+                </ng-template>
+                <ng-template [ngIf]="getItemData(item) && !item.children?.length">
+                    <button class="btn btn-info ml-3"
+                            ngbTooltip="Modifica"
+                            (click)="editItem(item)">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                </ng-template>
+                <ng-template [ngIf]="item.children?.length > 1 && item.value.length !== 1 && !itemTitleEdit">
+                    <button class="btn btn-danger ml-2"
+                            ngbTooltip="Rimuovi"
+                            (click)="removeItem(item)">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+                </ng-template>
+            </ng-template>
+        </div>
+    </div>
+</ng-template>

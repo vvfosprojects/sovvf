@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.API.Models.Classi.Geo;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
 {

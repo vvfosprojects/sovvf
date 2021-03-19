@@ -7,6 +7,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-changelog',
@@ -17,6 +18,7 @@ export class ChangelogComponent implements OnInit, OnDestroy {
 
     @Select(ChangelogState.listaChangelog) listaChangelog$: Observable<ChangelogInterface[]>;
     listaChangelog: ChangelogInterface[];
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     private subscriptions: Subscription = new Subscription();
 

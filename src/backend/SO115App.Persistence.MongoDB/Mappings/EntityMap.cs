@@ -22,9 +22,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using SO115App.API.Models.Classi.Persistenza;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.Mappings
 {

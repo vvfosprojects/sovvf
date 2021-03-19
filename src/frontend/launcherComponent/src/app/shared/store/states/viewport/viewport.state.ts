@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { SetContentHeight, SetAvailHeight, SetInnerWidth } from '../../actions/viewport/viewport.actions';
+import { SetContentHeight, SetAvailHeight, SetInnerWidth, SunMode } from '../../actions/viewport/viewport.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
@@ -14,6 +14,7 @@ export interface ViewportStateModel {
     innerWidth: number;
     maxInnerWidthDoubleMonitor: number;
     maxInnerWidthChiamataConMappa: number;
+    sunMode: boolean;
 }
 
 export const ViewportStateDefaults: ViewportStateModel = {
@@ -21,7 +22,8 @@ export const ViewportStateDefaults: ViewportStateModel = {
     contentHeight: null,
     innerWidth: null,
     maxInnerWidthDoubleMonitor: 3700,
-    maxInnerWidthChiamataConMappa: 2400
+    maxInnerWidthChiamataConMappa: 2400,
+    sunMode: true,
 };
 
 @Injectable()
@@ -42,6 +44,12 @@ export class ViewportState {
             }
         });
         return state.availHeight > state.contentHeight && granted && appReady;
+    }
+
+
+    @Selector()
+    static sunMode(state: ViewportStateModel): boolean {
+        return state.sunMode;
     }
 
     @Selector([RouterState, AuthState, AppState])
@@ -66,11 +74,6 @@ export class ViewportState {
         return state.innerWidth > state.maxInnerWidthDoubleMonitor;
     }
 
-    @Selector()
-    static chiamataConMappa(state: ViewportStateModel): boolean {
-        return state.innerWidth > state.maxInnerWidthChiamataConMappa;
-    }
-
     @Action(SetAvailHeight)
     setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight): void {
         patchState({ availHeight });
@@ -88,5 +91,12 @@ export class ViewportState {
             dispatch(new ChangeView(8));
         }
         patchState({ innerWidth });
+    }
+
+    @Action(SunMode)
+    sunMode({ patchState, getState }: StateContext<ViewportStateModel>, value: any): void {
+        patchState({
+            sunMode: value.sunMode,
+        });
     }
 }

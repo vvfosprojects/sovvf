@@ -20,23 +20,101 @@
   font-style: normal;
 }
 
+
 body,
 html {
   height: 100vh;
 }
 
-// Dropdown Google Places
+app-root {
+  height: 100%;
+}
 
+// Loader index.html
+.loader {
+  margin-top: calc(25% - 60px);
+  margin-left: calc(50% - 60px);
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #cb1111;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Dropdown Google Places
 .pac-container {
   z-index: 99999 !important;
 }
 
 // End Dropdown Google Places
 
-.map-translate {
-  transform: translate(-10px, -110px);
+.sun-mode {
+  background-color: #fdfdfd !important;
 }
 
+.moon-mode {
+  background-color: #343a40 !important;
+}
+
+.moon-mode-box {
+  background-color: #343a40 !important;
+  color: #fdfdfd !important;
+}
+
+.moon-text {
+  color: #fdfdfd !important;
+}
+
+.moon-card {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.moon-card-light {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #464e56 !important;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: 1px 1px 2px 1px #dee2e6;
+  -moz-box-shadow: 1px 1px 2px 1px #dee2e6;
+  box-shadow: 1px 1px 2px 1px #dee2e6;
+}
+
+.bg-moon-light {
+  background-color: #464e56 !important;
+}
+
+.moon-cod {
+  color: #fdfdfd !important;
+  font-weight: 500;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.moon-hr {
+  border-top: 1px solid #fdfdfd !important;
+}
+
+.text-moon {
+  color: #fdfdfd !important;
+}
 
 .modal-holder {
   animation-name: jumpIn;
@@ -46,6 +124,16 @@ html {
 .xlModal {
   animation-name: jumpIn;
   animation-duration: 0.3s;
+}
+
+.sganciamentoModal .modal-dialog {
+  max-width: 1800px !important;
+  min-width: 1800px !important;
+}
+
+.schedeContattoModal .modal-dialog {
+  max-width: 1800px !important;
+  min-width: 1800px !important;
 }
 
 .xlModal > .modal-dialog {
@@ -184,8 +272,9 @@ tag-input {
 }
 
 .cod-int {
-  color: rgb(99, 99, 99) !important;
-  font-weight: bold;
+  color: #000000 !important;
+  font-weight: 500;
+  font-size: 25px;
   cursor: pointer;
 }
 
@@ -488,6 +577,10 @@ tag-input {
   background-color: #ff8800 !important;
 }
 
+.bg-verdemela {
+  background-color: #92b565 !important;
+}
+
 .no-resize {
   resize: none;
 }
@@ -663,6 +756,74 @@ tag-input {
   font-weight: 500;
 }
 
+.font-xxlarge {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.badge-mod-primary {
+  color: #007bff !important;
+  border: solid thin #007bff !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-info {
+  color: #17a2b8 !important;
+  border: solid thin #17a2b8 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-secondary {
+  color: #6c757d !important;
+  border: solid thin #6c757d !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-danger {
+  color: #dc3545 !important;
+  border: solid thin #dc3545 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-warning {
+  color: #ffc107 !important;
+  border: solid thin #ffc107 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-success {
+  color: #28a745 !important;
+  border: solid thin #28a745 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-dark {
+  color: #343a40 !important;
+  border: solid thin #343a40 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-verdemela {
+  color: #92b565 !important;
+  border: solid thin #92b565 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.btn-nav-selected {
+  box-shadow: 0 0 10px 2px #dc3545 !important;
+  transform: scale(1.1) !important;
+  color: #dc3545 !important;
+  border: solid thin #dc3545;
+}
+
 .required-field {
   border: solid #dc3545;
 }
@@ -677,4 +838,11 @@ tag-input {
   bottom: 0 !important;
   left: 50% !important;
   margin-left: -135px;
+}
+
+.box-stato {
+  width: 25px;
+  height: 25px;
+  margin: 0;
+  border: 1px solid rgba(0, 0, 0, .2);
 }

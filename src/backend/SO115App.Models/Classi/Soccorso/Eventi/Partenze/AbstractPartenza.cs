@@ -17,10 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {
@@ -54,7 +53,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             DateTime istante,
             string codiceFonte,
             string TipoEvento,
-            int CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento)
+            int CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento, CodicePartenza)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
@@ -69,8 +68,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; private set; }
-
-        public int CodicePartenza { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento

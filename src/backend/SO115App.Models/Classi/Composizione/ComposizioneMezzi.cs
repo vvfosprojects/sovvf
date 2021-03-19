@@ -17,8 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Condivise;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
@@ -26,6 +27,12 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public string Id { get; set; }
         public Mezzo Mezzo { get; set; }
+
+        /// <summary>
+        ///   Squadre preaccoppiate
+        /// </summary>
+        public List<ComposizioneSquadre> SquadrePreaccoppiate { get; set; } = null;
+
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
         public DateTime? IstanteScadenzaSelezione { get; set; }
@@ -35,5 +42,15 @@ namespace SO115App.API.Models.Classi.Composizione
         ///   mezzi, dal più opportuno al meno opportuno nella composizione partenza
         /// </summary>
         public decimal IndiceOrdinamento { get; set; }
+
+        /// <summary>
+        ///   E' la lista delle squadre che si trovano su un mezzo in rientro
+        /// </summary>
+        public List<ComposizioneSquadre> ListaSquadre { get; set; }
+
+        /// <summary>
+        ///   Se un mezzo si trova sul posto indicare anche l'indirizzo dell'intervento
+        /// </summary>
+        public string IndirizzoIntervento { get; set; }
     }
 }

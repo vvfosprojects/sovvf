@@ -3,9 +3,12 @@ import {Observable, Subscription} from 'rxjs';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {Select, Store} from '@ngxs/store';
 import {ComposizioneSoccorsoAereoState} from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
-import {makeCopy} from '../../helper/function';
 import {AuthState} from '../../../features/auth/store/auth.state';
 import {Utente} from '../../model/utente.model';
+import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
+import {CompPartenzaService} from '../../../core/service/comp-partenza-service/comp-partenza.service';
+import {makeCopy} from '../../helper/function';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 
 @Component({
@@ -18,17 +21,25 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
 
   @Select(AuthState.currentUser) user$: Observable<Utente>;
   utente: Utente;
+  @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<boolean>;
+  azioniRichiesta: any[];
+  @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+  nightMode: boolean;
 
+  richiesta: SintesiRichiesta;
   subscription: Subscription = new Subscription();
   tipologiaChecked = false;
   motivazione: string;
-  azioniRichiesta: any[];
+  submitted: boolean;
+  inserimentoFallito: boolean;
 
-  constructor(private modal: NgbActiveModal, private store: Store) {
+
+  constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
     this.getUtente();
+    this.getAzioniRichiesta();
+    this.getNightMode();
     this.motivazione = null;
-    this.azioniRichiesta = makeCopy(store.selectSnapshot(ComposizioneSoccorsoAereoState.azioniRichieste));
-    this.azioniRichiesta.forEach(x => x.checked = false);
+    this.inserimentoFallito = false;
   }
 
   ngOnDestroy(): void {
@@ -40,20 +51,45 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     this.tipologiaChecked = !!this.azioniRichiesta.find(x => x.checked);
   }
 
+  getNightMode(): void {
+    this.subscription.add(
+      this.nightMode$.subscribe((nightMode: boolean) => {
+        this.nightMode = nightMode;
+      })
+    );
+  }
+
+  onNightMode(): string {
+    let value = '';
+    if (!this.nightMode) {
+      value = '';
+    } else if (this.nightMode) {
+      value = 'moon-text moon-mode';
+    }
+    return value;
+  }
+
   chiudiModalSoccorsoAereo(closeRes: string): void {
+    this.submitted = true;
+    const requestType = [];
+    const requestTypeCode = [];
+    this.azioniRichiesta.forEach(x => x.checked ?  requestType.push(x.descrizione) : null);
+    this.azioniRichiesta.forEach(x => x.checked ?  requestTypeCode.push(x.codice) : null);
     if (closeRes === 'ok') {
-      const obj = {
-        motivazione: this.motivazione ? this.motivazione : null,
-        tipologiaSelezionata: [],
-        nome: this.utente.nome,
-        cognome: this.utente.cognome,
-        codiceFiscale: this.utente.codiceFiscale,
+      const obj: any = {
+        description: this.motivazione ? this.motivazione : '',
+        requestKey: this.richiesta.codice,
+        requestType: requestType.join(', '),
+        requestTypeCode: '',
+        operatorName: this.utente.nome,
+        operatorSurname: this.utente.cognome,
+        operatorFiscalCode: this.utente.codiceFiscale,
+        lat: this.richiesta.localita.coordinate.latitudine,
+        lng: this.richiesta.localita.coordinate.longitudine,
       };
-      this.azioniRichiesta.forEach(x => x.checked ?  obj.tipologiaSelezionata.push(x.descrizione) : null);
-      this.modal.close({
-        status: 'ok',
-        result: obj,
-      });
+      this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+        this.modal.close({ status: 'ok' });
+      }, () => { this.submitted = false; this.inserimentoFallito = true; });
     } else {
       this.modal.close({ status: 'ko'});
     }
@@ -66,4 +102,14 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
       })
     );
   }
+
+  getAzioniRichiesta(): void {
+    this.subscription.add(
+      this.azioniRichiesta$.subscribe((azioniRichiesta: any) => {
+        this.azioniRichiesta = makeCopy(azioniRichiesta);
+        this.azioniRichiesta.forEach(x => x.checked = false);
+      })
+    );
+  }
+
 }

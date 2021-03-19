@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Fonogramma } from '../../model/fonogramma.model';
 import { getStatoFonogrammaStringByEnum } from '../../helper/function';
+import {Select} from '@ngxs/store';
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-modifica-fonogramma-modal',
     templateUrl: './modifica-fonogramma-modal.component.html',
     styleUrls: ['./modifica-fonogramma-modal.component.css']
 })
-export class ModificaFonogrammaModalComponent implements OnInit {
+export class ModificaFonogrammaModalComponent implements OnInit, OnDestroy {
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     codiceRichiesta: string;
     idRichiesta: string;
@@ -23,9 +29,12 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         'Da Inviare'
     ];
 
+    subscription: Subscription = new Subscription();
+
     constructor(public modal: NgbActiveModal,
                 private fb: FormBuilder) {
         this.initForm();
+        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -35,6 +44,10 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         this.fonogramma && this.fonogramma.protocolloFonogramma ? this.f.protocolloFonogramma.patchValue(this.fonogramma.protocolloFonogramma) : this.f.protocolloFonogramma.patchValue('');
         this.fonogramma && this.fonogramma.destinatari ? this.f.destinatari.patchValue(this.fonogramma.destinatari) : this.f.destinatari.patchValue('');
         this.fonogramma && this.fonogramma.stato ? this.f.stato.patchValue(getStatoFonogrammaStringByEnum(this.fonogramma.stato)) : this.f.stato.patchValue(null);
+    }
+
+    ngOnDestroy(): void {
+      this.subscription.unsubscribe();
     }
 
     initForm(): void {
@@ -51,6 +64,24 @@ export class ModificaFonogrammaModalComponent implements OnInit {
 
     get f(): any {
         return this.modificaStatoFonogrammaForm.controls;
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-mode';
+      }
+      return value;
     }
 
     onSubmit(): void {

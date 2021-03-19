@@ -25,6 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
     {
         public string IdUtente { get; set; }
         public string CodiceSede { get; set; }
+        public string[] schedeSelezionateID { get; set; }
         public SchedaContatto SchedaNue { get; set; }
     }
 }

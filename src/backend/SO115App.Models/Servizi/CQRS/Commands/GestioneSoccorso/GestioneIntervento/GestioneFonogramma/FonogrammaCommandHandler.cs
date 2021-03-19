@@ -30,9 +30,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class FonogrammaCommandHandler : ICommandHandler<FonogrammaCommand>
     {
         private readonly IUpDateRichiestaAssistenza _saveRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
-        public FonogrammaCommandHandler(IUpDateRichiestaAssistenza saveRichiestaAssistenza, IGetRichiestaById getRichiestaById)
+        public FonogrammaCommandHandler(IUpDateRichiestaAssistenza saveRichiestaAssistenza, IGetRichiesta getRichiestaById)
         {
             _saveRichiestaAssistenza = saveRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;

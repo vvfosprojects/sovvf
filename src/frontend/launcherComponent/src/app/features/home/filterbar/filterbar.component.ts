@@ -2,11 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import {
-    ClearFiltroSelezionatoRichieste,
-    ResetFiltriSelezionatiRichieste,
-    SetFiltroSelezionatoRichieste
-} from '../store/actions/filterbar/filtri-richieste.actions';
+import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
@@ -26,8 +22,7 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
-import { RichiestaModificaState } from '../store/states/scheda-telefonata/richiesta-modifica.state';
+import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({
@@ -39,8 +34,8 @@ export class FilterbarComponent {
 
     @Input() colorButton: ViewInterfaceButton;
     @Input() viewState: ViewLayouts;
-
-    permessiFeature = PermissionFeatures;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
@@ -81,14 +76,14 @@ export class FilterbarComponent {
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
      * @param:: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
+
+    permessiFeature = PermissionFeatures;
 
     constructor(private store: Store) {
     }

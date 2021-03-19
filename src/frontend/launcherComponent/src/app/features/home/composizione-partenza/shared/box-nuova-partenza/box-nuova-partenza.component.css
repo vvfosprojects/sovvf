@@ -11,3 +11,7 @@
 #elimina:hover {
   color: rgb(224, 14, 14);
 }
+
+.font-comp-xl {
+  font-size: 130% !important;
+}

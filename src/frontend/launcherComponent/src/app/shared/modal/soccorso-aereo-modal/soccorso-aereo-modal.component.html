@@ -1,5 +1,5 @@
-<div class="modal-header">
-  <h4 class="modal-title" style="font-weight: 700">
+<div class="modal-header" [ngClass]="onNightMode()">
+  <h4 class="modal-title font-weight-bold">
     {{ 'INVIO DELLA RICHIESTA AL SISTEMA AFM' }}
   </h4>
   <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
@@ -8,46 +8,65 @@
   </button>
 </div>
 
-<div class="modal-body pb-0">
+<div class="modal-body pb-0" [ngClass]="onNightMode()">
   <div class="row pt-4" style="justify-content: center; font-size: x-large">
     <div class="col-7" style="text-align: center">
-      <span class="badge h6 w-100 badge-primary" style="font-size: x-large">Seleziona le Azioni Richieste</span>
+      <span style="font-size: 130%" >Seleziona le Azioni Richieste</span>
       <div class="row"></div>
-      <div class="card card-shadow mx-auto p-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
+      <div *ngIf="azioniRichiesta.length <= 0" class="card card-shadow mx-auto px-3">
+        <div class="clearfix ml-2"><i class="fa fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
+      </div>
+      <div  *ngIf="azioniRichiesta.length > 0" class="card card-shadow mx-auto px-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
         <div *ngFor="let a of azioniRichiesta; let index = index" class="row my-1">
-          <div class="clearfix ml-2"><input type="text" class="pr-1" [class.input-checked]="azioniRichiesta[index].checked" style="text-align: center; height: 36px; width: 36px; vertical-align: bottom; outline: none" placeholder="{{a.codice}}" disabled></div>
-          <div class="clearfix mx-1"><input type="text" placeholder="{{a.descrizione}}" [class.input-checked]="azioniRichiesta[index].checked" [class.width-size]="azioniRichiesta.length >= 8" style="width: 270px; height: 36px; vertical-align: bottom; outline: none" disabled></div>
+          <div class="clearfix ml-2"><input type="text" class="pr-1" [class.input-checked]="azioniRichiesta[index].checked"
+                                            style="text-align: center; height: 36px; width: 55px; vertical-align: bottom; outline: none; font-size: 110%;" placeholder="{{a.codice}}" disabled></div>
+          <div class="clearfix mx-1"><input type="text" placeholder=" {{a.descrizione}}" [class.input-checked]="azioniRichiesta[index].checked" [class.width-size]="azioniRichiesta.length >= 8"
+                                            style="width: 470px; height: 36px; vertical-align: bottom; outline: none; font-size: 110%;" disabled></div>
           <div class="clearfix mr-1"><input type="checkbox" (click)="onCheck(index)"  style="width:36px; height: 36px; vertical-align: bottom; outline: none"></div>
         </div>
       </div>
     </div>
     <div class="col-5" style="text-align: center">
-      <label class="" for="motivazioneRichiesta">Motivazione della richiesta</label>
+      <span style="font-size: 130%">Motivazione della richiesta</span>
       <textarea [(ngModel)]="motivazione" id="motivazioneRichiesta" type="text"
-                placeholder="Inserisci motivazione della richiesta"
+                placeholder="Inserisci motivazione della richiesta" style="font-size: 110%"
                 class="form-control font-xlarge area-size"></textarea>
     </div>
   </div>
-  <div class="row py-5">
+  <div class="row pt-5 pb-4">
     <div class="col-12  d-inline-flex">
-      <button type="button" class="btn btn-lg btn-outline-secondary btn-no-hover font-weight-bolder mr-1 w-25">
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-1 w-25">
         Consulta
       </button>
       <input type="text" class="w-75" style="height: 48px; vertical-align: bottom; outline: none" disabled>
     </div>
   </div>
+  <div *ngIf="inserimentoFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di inserimento richiesta AFM non riuscita.
+      <span (click)="inserimentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" [ngClass]="onNightMode()">
   <div class="row w-100">
     <div class="col-12 text-right">
-      <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
-                (click)="chiudiModalSoccorsoAereo('ok')" [disabled]="!tipologiaChecked">
+      <button *ngIf="!submitted && (motivazione && tipologiaChecked)" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
+                (click)="chiudiModalSoccorsoAereo('ok')">
         {{ 'Richiedi' | uppercase }}
       </button>
+      <span *ngIf="!motivazione || !tipologiaChecked" class="float-left" tabindex="0" ngbTooltip="Inserisci Azione e Motivazione" placement="top">
+        <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
+                disabled>
+          {{ 'Richiedi' | uppercase }}
+        </button>
+      </span>
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
               (click)="chiudiModalSoccorsoAereo('ko')">
         {{ 'Chiudi' | uppercase }}
+      </button>
+      <button *ngIf="submitted" type="button" class="btn btn-lg btn-success btn-no-hover float-left" [disabled]="true">
+        <i class="fa fa-spin fa-spinner mr-1"></i>
+        {{ 'Invio Richiesta' | uppercase }}
       </button>
     </div>
   </div>

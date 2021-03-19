@@ -22,10 +22,13 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             {
                 listaPersonaleVVF.Add(new PersonaleVVF
                 {
-                    CodFiscale = personaUC.CodiceFiscale,
-                    CodSede = personaUC.Sede.Id,
-                    DescSede = personaUC.Sede.Descrizione,
-                    Nominativo = $"{personaUC.Cognome}.{personaUC.Nome}"
+                    codiceFiscale = personaUC.CodiceFiscale,
+                    sede = new DistaccamentoPersonale()
+                    {
+                        id = personaUC.Sede.Id,
+                        descrizione = personaUC.Sede.Descrizione
+                    },
+                    nome = $"{personaUC.Cognome}.{personaUC.Nome}"
                 });
             }
             return listaPersonaleVVF;

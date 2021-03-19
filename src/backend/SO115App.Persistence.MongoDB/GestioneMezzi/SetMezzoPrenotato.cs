@@ -4,8 +4,6 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
-using System.Collections.Generic;
 
 namespace SO115App.Persistence.MongoDB.GestioneMezzi
 {

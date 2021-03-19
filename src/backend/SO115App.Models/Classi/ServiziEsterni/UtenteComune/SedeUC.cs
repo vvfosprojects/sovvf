@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
+﻿namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 {
     /// <summary>
     ///   oggetto della sede associata ad una persona fisica del personale in arrivo dal servizio

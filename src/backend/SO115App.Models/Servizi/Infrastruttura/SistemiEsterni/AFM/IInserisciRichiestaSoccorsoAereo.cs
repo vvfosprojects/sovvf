@@ -4,6 +4,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM
 {
     public interface IInserisciRichiestaSoccorsoAereo
     {
-        void Inserisci(NuovaRichiestaSoccorsoAereo richiesta);
+        void Inserisci(NuovaRichiestaAFM richiesta);
     }
 }
