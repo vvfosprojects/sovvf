@@ -112,7 +112,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("MergeSchede")]
-        public async Task<IActionResult> MergeSchede([FromBody] SchedaContatto scheda)
+        public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
             string idUtente = Request.Headers["IdUtente"];
 
@@ -120,7 +120,7 @@ namespace SO115App.API.Controllers
             {
                 CodiceSede = Request.Headers["codiceSede"],
                 IdUtente = idUtente,
-                SchedaNue = scheda
+                schedeSelezionateID = scheda
             };
 
             try
