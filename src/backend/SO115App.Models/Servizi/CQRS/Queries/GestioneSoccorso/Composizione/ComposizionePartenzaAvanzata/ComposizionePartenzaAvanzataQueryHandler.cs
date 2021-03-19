@@ -283,8 +283,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
-            var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
-            var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
+            #region PER VISUALIZZARE LA PAGINA CON IL MEZZO/SQUADRA SELEZIONATI
+
+            //var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
+            //var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
 
             //if (indexMezzo != 0)
             //    query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
@@ -292,29 +294,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             //if (indexSquadra != 0)
             //    query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
 
+            #endregion
+
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
-            List<Classi.Composizione.ComposizioneMezzi> ComposizioneMezziArray = new List<Classi.Composizione.ComposizioneMezzi>();
-            List<Classi.Composizione.ComposizioneSquadre> ComposizioneSquareArray = new List<Classi.Composizione.ComposizioneSquadre>();
+            List<Classi.Composizione.ComposizioneMezzi> ComposizioneMezziArray;
+            List<Classi.Composizione.ComposizioneSquadre> ComposizioneSquareArray;
 
             if (query.Filtro.Mezzo != null)
             {
-                var CodiceMezzo = lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Codice;
+                //var CodiceMezzo = query.Filtro.Mezzo.Codice;
+
                 if (lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Stato.Equals("In Rientro"))
                 {
-                    ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(CodiceMezzo))
+                    ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(query.Filtro.Mezzo.Distaccamento.Codice))
                         .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
-                    ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => y.Mezzo.Codice.Equals(CodiceMezzo)))
+                    ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => y.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)))
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
                 else
                 {
-                    if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo)).Count > 0)
+                    if (lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Count > 0)
                     {
-                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(CodiceMezzo))
+                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => x.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
-                        ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(CodiceMezzo))
+                        ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice))
                             .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                     }
                     else
@@ -329,46 +334,42 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 }
             }
-            else
+            else if (query.Filtro.Squadre != null)
             {
-                if (query.Filtro.Squadre != null)
+                if (lstSquadre.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).Squadra.Stato == Squadra.StatoSquadra.InRientro)
                 {
-                    if (lstSquadre.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).Squadra.Stato == Squadra.StatoSquadra.InRientro)
-                    {
-                        var CodiciMezzo = lstSquadre.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).ListaMezzi;
+                    var CodiciMezzo = lstSquadre.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).ListaMezzi;
 
-                        //var CodiceMezzo = lstMezzi.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Codice;
+                    ComposizioneMezziArray = lstMezzi.Result.FindAll(x => CodiciMezzo.Any(y => y.Mezzo.Codice.Equals(x.Mezzo.Codice)))
+                        .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                        .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
-                        ComposizioneMezziArray = lstMezzi.Result.FindAll(x => CodiciMezzo.Any(y => y.Mezzo.Codice.Equals(x.Mezzo.Codice)))
-                            .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
-                            .Take(query.Filtro.MezziPagination.PageSize).ToList();
-
-                        ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => CodiciMezzo.Any(y => y.Mezzo.Codice.Equals(y.Mezzo.Codice))))
-                            .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                            .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-                    }
-                    else
-                    {
-                        ComposizioneSquareArray = lstSquadre.Result
-                               .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                               .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-
-                        ComposizioneMezziArray = lstMezzi.Result
-                                .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
-                                .Take(query.Filtro.MezziPagination.PageSize).ToList();
-                    }
+                    ComposizioneSquareArray = lstSquadre.Result.FindAll(x => x.ListaMezzi != null && x.ListaMezzi.Any(y => CodiciMezzo.Any(y => y.Mezzo.Codice.Equals(y.Mezzo.Codice))))
+                        .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                        .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
                 else
                 {
                     ComposizioneSquareArray = lstSquadre.Result
-                            .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                            .Take(query.Filtro.SquadrePagination.PageSize).ToList();
+                           .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                           .Take(query.Filtro.SquadrePagination.PageSize).ToList();
 
                     ComposizioneMezziArray = lstMezzi.Result
                             .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
                 }
             }
+            else
+            {
+                ComposizioneSquareArray = lstSquadre.Result
+                        .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                        .Take(query.Filtro.SquadrePagination.PageSize).ToList();
+
+                ComposizioneMezziArray = lstMezzi.Result
+                        .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                        .Take(query.Filtro.MezziPagination.PageSize).ToList();
+            }
+
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
