@@ -3,8 +3,7 @@
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="(doubleMonitor$ | async)">
             <div class="row"
-                 [class.mt-1]="!boxAttivi && !viewState.chiamata.active && !viewState.modifica.active"
-                 [class.mt-2]="viewState.chiamata.active || viewState.composizione.active || viewState.modifica.active">
+                 [class.mt-1]="viewState.composizione.active">
                 <!-- Info Aggregate -->
                 <div class="col-12"
                      [class.d-none]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active">
