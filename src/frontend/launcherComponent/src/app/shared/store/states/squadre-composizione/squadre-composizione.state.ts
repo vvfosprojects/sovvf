@@ -1,20 +1,22 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import {
-  AddSquadraComposizione,
-  ClearListaSquadreComposizione,
-  ClearSelectedSquadreComposizione,
-  ClearSquadraComposizione,
-  HoverInSquadraComposizione,
-  HoverOutSquadraComposizione,
-  RemoveSquadraComposizione,
-  SelectSquadraComposizione,
-  SelectSquadraComposizioneInRientro, SelectSquadraComposizionePreAccoppiati,
-  SelectSquadreComposizione,
-  SetListaSquadreComposizione,
-  UnselectSquadraComposizione,
-  UnselectSquadraComposizioneInRientro, UnselectSquadraComposizionePreAccoppiati,
-  UpdateSquadraComposizione
+    AddSquadraComposizione, ClearIdSquadreSelezionate,
+    ClearListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione,
+    HoverInSquadraComposizione,
+    HoverOutSquadraComposizione,
+    RemoveSquadraComposizione,
+    SelectSquadraComposizione,
+    SelectSquadraComposizioneInRientro,
+    SelectSquadraComposizionePreAccoppiati,
+    SelectSquadreComposizione,
+    SetListaSquadreComposizione,
+    UnselectSquadraComposizione,
+    UnselectSquadraComposizioneInRientro,
+    UnselectSquadraComposizionePreAccoppiati,
+    UpdateSquadraComposizione
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import {
@@ -108,6 +110,13 @@ export class SquadreComposizioneState {
         });
     }
 
+    @Action(ClearIdSquadreSelezionate)
+    clearIdSquadreSelezionate({ patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
+        patchState({
+            idSquadreSelezionate: []
+        });
+    }
+
     @Action(AddSquadraComposizione)
     addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione): void {
         console.log(action.squadraComp);
@@ -163,14 +172,12 @@ export class SquadreComposizioneState {
         const squadraComp = action.squadraComp;
         const squadra = action.squadraComp.squadra;
         const noAddBox = action.noAddBox;
-
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([squadraComp.id]),
+                idSquadreComposizioneSelezionate: [squadraComp.id],
                 idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.id) ? append([squadra.id]) : state.idSquadreSelezionate,
             })
         );
-
         if (!noAddBox) {
             dispatch(new AddBoxesPartenzaInRientro(squadraComp));
         }

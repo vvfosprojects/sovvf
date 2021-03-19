@@ -11,6 +11,10 @@ export class ClearListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Clear Lista Squadre Composizione';
 }
 
+export class ClearIdSquadreSelezionate {
+    static readonly type = '[SquadreComposizione] Clear Id Squadre Selezionate';
+}
+
 export class AddSquadraComposizione {
     static readonly type = '[SquadreComposizione] Add Squadra Composizione';
 

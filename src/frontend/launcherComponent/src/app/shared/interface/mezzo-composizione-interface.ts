@@ -8,7 +8,6 @@ export interface MezzoComposizione {
     km: string;
     coordinate?: Coordinate;
     tempoPercorrenza: string;
-    istanteScadenzaSelezione?: any;
     idRichiesta?: string;
     squadrePreaccoppiate?: SquadraComposizione[];
     listaSquadre?: SquadraComposizione[];

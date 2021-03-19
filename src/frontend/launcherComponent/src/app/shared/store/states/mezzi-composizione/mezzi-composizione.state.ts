@@ -1,8 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import {
-  AddBookingMezzoComposizione,
-  AddBookMezzoComposizione,
   AddMezzoComposizione,
   ClearListaMezziComposizione,
   ClearMezzoComposizione,
@@ -11,15 +9,9 @@ import {
   HoverOutMezzoComposizione,
   LockMezzoComposizione,
   ReducerSelectMezzoComposizione,
-  ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati,
-  RemoveBookingMezzoComposizione,
-  RemoveBookMezzoComposizione,
+  ReducerSelectMezzoComposizioneInRientro,
+  ReducerSelectMezzoComposizionePreAccoppiati,
   RemoveMezzoComposizione,
-  RequestBookMezzoComposizione,
-  RequestRemoveBookMezzoComposizione,
-  RequestResetBookMezzoComposizione,
-  RequestUnlockMezzoComposizione,
-  ResetBookMezzoComposizione,
   SelectMezzoComposizione,
   SelectMezzoComposizioneFromMappa,
   SetListaMezziComposizione,
@@ -33,7 +25,7 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, SelectBoxPartenza, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../../../features/home/store/actions/maps/marker.actions';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -146,18 +138,10 @@ export class MezziComposizioneState {
 
     @Action(SetListaMezziComposizione)
     setListaMezziComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SetListaMezziComposizione): void {
-        const state = getState();
         const allMezziComposione = action.mezziComp ? action.mezziComp : this.store.selectSnapshot(MezziComposizioneState.allMezziComposizione);
         patchState({
             mezziComposizione: allMezziComposione,
             allMezziComposizione: allMezziComposione
-        });
-        allMezziComposione.forEach((mezzoComp: MezzoComposizione) => {
-            if (mezzoComp.istanteScadenzaSelezione) {
-                dispatch(new AddBookMezzoComposizione(mezzoComp.mezzo.codice));
-            } else if (state.idMezziPrenotati.indexOf(mezzoComp.mezzo.codice) >= 0 && !mezzoComp.istanteScadenzaSelezione) {
-                dispatch(new RemoveBookMezzoComposizione(mezzoComp.mezzo.codice));
-            }
         });
     }
 
@@ -199,17 +183,15 @@ export class MezziComposizioneState {
     @Action(UpdateMezzoComposizioneScadenzaByCodiceMezzo)
     updateMezzoComposizioneScadenzaByCodiceMezzo({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizioneScadenzaByCodiceMezzo): void {
         const state = getState();
-        let mezzoComposizione = state.mezziComposizione.filter(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo)[0];
+        const mezzoComposizione = state.mezziComposizione.filter(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo)[0];
         if (mezzoComposizione) {
-            mezzoComposizione = makeCopy(mezzoComposizione);
-            mezzoComposizione.istanteScadenzaSelezione = action.istanteScadenzaSelezione;
-        }
-        setState(
+          setState(
             patch({
-                mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo, mezzoComposizione)
+              mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo, mezzoComposizione)
             })
-        );
-        dispatch(new UpdateMezzoBoxPartenza(mezzoComposizione));
+          );
+          dispatch(new UpdateMezzoBoxPartenza(mezzoComposizione));
+        }
     }
 
     @Action(ReducerSelectMezzoComposizione)
@@ -378,7 +360,7 @@ export class MezziComposizioneState {
             idMezzoSelezionato: null
         });
 
-        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0 && richiestaComposizione) {
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0 && richiestaComposizione && !action.preventGet) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());
@@ -413,98 +395,7 @@ export class MezziComposizioneState {
         dispatch(new ClearMarkerMezzoHover());
     }
 
-    @Action(RequestBookMezzoComposizione)
-    requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione): void {
-        const mezzoPrenotatoObj = {
-            codiceMezzo: action.mezzoComp.mezzo.codice,
-            codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
-        };
-
-        dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
-
-        this.compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-            if (action.addBoxPartenza) {
-                dispatch(new AddBoxPartenza());
-            } else if (action.selectBoxPartenza) {
-                dispatch(new SelectBoxPartenza(action.selectBoxPartenza));
-            }
-        });
-    }
-
-    @Action(AddBookMezzoComposizione)
-    addBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione): void {
-        const state = getState();
-        const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo)[0] : null;
-        const idMezzoComp = mezzoComp ? mezzoComp.id : null;
-
-        if (idMezzoComp) {
-            if (state.idMezziPrenotati.indexOf(idMezzoComp) === -1) {
-                setState(
-                    patch({
-                        idMezziPrenotati: insertItem(idMezzoComp)
-                    })
-                );
-            }
-        }
-    }
-
-    @Action(AddBookingMezzoComposizione)
-    addBookingMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione): void {
-        setState(
-            patch({
-                idMezziInPrenotazione: insertItem(action.mezzoComp.id)
-            })
-        );
-    }
-
-    @Action(RequestRemoveBookMezzoComposizione)
-    requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione): void {
-        const mezzoPrenotatoObj = {
-            codiceMezzo: action.mezzoComp.mezzo.codice,
-            codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id
-        };
-        this.compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-        });
-    }
-
-    @Action(RemoveBookMezzoComposizione)
-    removeBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookMezzoComposizione): void {
-        const state = getState();
-        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo);
-        const idMezzoComp = mezzoComp && mezzoComp.length > 0 ? mezzoComp[0].id : null;
-
-        if (idMezzoComp && state.idMezziPrenotati.indexOf(idMezzoComp) > -1) {
-            setState(
-                patch({
-                    idMezziPrenotati: removeItem(id => id === idMezzoComp)
-                })
-            );
-        }
-    }
-
-    @Action(RemoveBookingMezzoComposizione)
-    removeBookingMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookingMezzoComposizione): void {
-        setState(
-            patch({
-                idMezziInPrenotazione: removeItem(id => id === action.codiceMezzo)
-            })
-        );
-    }
-
-    @Action(RequestResetBookMezzoComposizione)
-    requestResetBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestResetBookMezzoComposizione): void {
-        const mezzoPrenotatoObj = {
-            mezzoComposizione: action.mezzoComp
-        };
-        this.compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-        });
-    }
-
-    @Action(ResetBookMezzoComposizione)
-    resetBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ResetBookMezzoComposizione): void {
-        console.log('Reset Mezzo prenotato Object', action.mezzoComp);
-    }
-
+    // todo: cotnrollare utilizzo
     @Action(LockMezzoComposizione)
     lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione): void {
         setState(
@@ -515,7 +406,8 @@ export class MezziComposizioneState {
         );
     }
 
-    @Action(UnlockMezzoComposizione)
+  // todo: cotnrollare utilizzo
+  @Action(UnlockMezzoComposizione)
     unlockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: UnlockMezzoComposizione): void {
         setState(
             patch({
@@ -523,11 +415,6 @@ export class MezziComposizioneState {
                 idMezziBloccati: removeItem(id => id === action.idMezzoComp)
             })
         );
-    }
-
-    @Action(RequestUnlockMezzoComposizione)
-    requestUnlockMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: RequestUnlockMezzoComposizione): void {
-        console.log(action.idMezzoComp);
     }
 
     @Action(ClearMezzoComposizione)

@@ -18,7 +18,6 @@ import { ModificaPartenzaModalComponent } from './modal/modifica-partenza-modal/
 import { SostituzionePartenzaModalComponent } from './modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { MezzoComposizioneComponent } from './components/mezzo-composizione/mezzo-composizione.component';
 import { SquadraComposizioneComponent } from './components/squadra-composizione/squadra-composizione.component';
-import { PrenotazioneProgressBarComponent } from './components/prenotazione-progress-bar/prenotazione-progress-bar.component';
 import { FilterbarComposizioneComponent } from './components/filterbar-composizione/filterbar-composizione.component';
 import { ModificaEntiModalComponent } from './modal/modifica-enti-modal/modifica-enti-modal.component';
 import { DebounceClickDirective } from './directive/debounce-click';
@@ -106,7 +105,6 @@ const COMPONENTS = [
     SostituzionePartenzaModalComponent,
     MezzoComposizioneComponent,
     SquadraComposizioneComponent,
-    PrenotazioneProgressBarComponent,
     FilterbarComposizioneComponent,
     TastoCompPartenzaComponent,
     BoxAnteprimaPartenzaComponent,

@@ -14,8 +14,6 @@ import {
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
@@ -130,17 +128,12 @@ export class ComposizioneVeloceState {
 
     @Action(SelectPreAccoppiatoComposizione)
     selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SelectPreAccoppiatoComposizione): void {
-        // controllo se il mezzo che è all'interno del preAccoppiato non è prenotato
-        if (!action.preAcc.mezzoComposizione.istanteScadenzaSelezione) {
             setState(
                 patch({
                     idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
                     idPreAccoppiatoSelezionato: action.preAcc.id
                 })
             );
-        } else {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il PreAccoppiato', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-        }
     }
 
     @Action(UnselectPreAccoppiatoComposizione)

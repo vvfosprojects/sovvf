@@ -104,16 +104,13 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        // if (this.itemBloccato) {
-        //     this.onSganciamento();
-        // }
         if (this.mezzoComp.mezzo.stato === 'In Viaggio' || this.mezzoComp.mezzo.stato === 'Sul Posto') {
           this.onSganciamento();
         } else {
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato) && !inRientro && !preAccoppiato) {
-                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.selezionato.emit(this.mezzoComp);
-                } else if (this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                } else if (this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.deselezionato.emit(this.mezzoComp);
                 }
                 // mappa
@@ -121,7 +118,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                     this.mezzoDirection(this.mezzoComp);
                 }
             } else if (inRientro) {
-                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.selezionatoInRientro.emit(this.mezzoComp);
                 } else {
                     this.deselezionatoInRientro.emit(this.mezzoComp);
@@ -134,7 +131,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
               let skip = false;
               this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.squadra.stato) !== 'In Sede' ? skip = true : null);
               if (!skip) {
-                if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemPrenotatoInBox) {
+                if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                   this.selezionatoPreAccoppiati.emit(this.mezzoComp);
                 } else {
                   this.deselezionatoPreAccoppiati.emit(this.mezzoComp);

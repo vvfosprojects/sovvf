@@ -18,17 +18,9 @@ import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
-import {
-    AddBookMezzoComposizione,
-    RemoveBookingMezzoComposizione,
-    RemoveBookMezzoComposizione,
-    UpdateMezzoComposizione,
-    UpdateMezzoComposizioneScadenzaByCodiceMezzo
-} from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
-import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
@@ -305,30 +297,6 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
             this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
-        });
-
-        // Todo: tipicizzare
-        this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
-            if (!data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new AddBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new RemoveBookingMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, data.istanteScadenzaSelezione));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo prenotato signalr', data);
-            } else if (data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new RemoveBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, null));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo remove prenotato signalr', data);
-            }
         });
 
         /**

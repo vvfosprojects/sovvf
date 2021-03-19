@@ -98,15 +98,4 @@
             <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>
         </div>
     </div>
-    <div class="row">
-        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="pt-2 col-10">
-            <app-prenotazione-progress-bar [mezzoComp]="partenza.mezzoComposizione"
-                                           [itemPrenotato]="!!partenza.mezzoComposizione?.istanteScadenzaSelezione"
-                                           [graphic]="true">
-            </app-prenotazione-progress-bar>
-        </div>
-        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="text-center col-2 pl-0">
-            <i class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer" (click)="onResetTimeout($event)"></i>
-        </div>
-    </div>
 </div>

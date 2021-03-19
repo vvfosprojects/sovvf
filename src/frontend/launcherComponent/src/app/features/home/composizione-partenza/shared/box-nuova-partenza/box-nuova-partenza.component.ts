@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
@@ -100,7 +99,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
 
         if (this.compPartenzaMode === Composizione.Veloce) {
             /* Se è attiva la modalità rapida */
-
             returnClass = this.itemSelezionato ? 'bg-light card-shadow-success' : 'card-shadow';
 
             if (this.itemOccupato) {
@@ -109,11 +107,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
             } else if (!this.itemSelezionato) {
                 returnClass += this.itemHover ? ' border-warning' : '';
             }
-
-            if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {
-                returnClass += ' diagonal-stripes bg-lightgrey';
-            }
-
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
             if (this.itemSelezionato) {
@@ -171,7 +164,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
-        const squadra2 = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+        const squadra2 = this.partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';
         const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
@@ -193,11 +186,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         }
 
         return { result: result + ' ' + prefix + icon, tooltip };
-    }
-
-    onResetTimeout(e: MouseEvent): void {
-        e.stopPropagation();
-        this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
     }
 
     _iconaStatiClass(statoMezzo: string): string {
