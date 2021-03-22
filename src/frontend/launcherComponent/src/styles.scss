@@ -824,6 +824,21 @@ tag-input {
   border: solid thin #dc3545;
 }
 
+.btn-nav-selected:hover {
+  transform: scale(1.1) !important;
+}
+
+.btn-impostazioni-selected {
+  box-shadow: 0 0 10px 2px #dc3545 !important;
+  transform: scale(1.02) !important;
+  color: #dc3545 !important;
+  border: solid thin #dc3545;
+}
+
+.btn-impostazioni-selected:hover {
+  transform: scale(1.02) !important;
+}
+
 .required-field {
   border: solid #dc3545;
 }

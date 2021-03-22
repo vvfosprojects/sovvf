@@ -25,11 +25,14 @@
                             {{ utente.codiceFiscale | uppercase }}
                         </h6>
                     </div>
-                    <div class="text-center float-right py-2" style="width: 50%">
-                        <h5 class="font-weight-bold allineamento-list">
+                    <div class="text-center float-right py-2 font-xlarge" style="width: 50%">
+                        <h5 class="font-weight-bold allineamento-list font-xxlarge">
                             <i class="fa fa-cogs mr-1"></i>
                             {{ 'ruoli assegnati' | uppercase }}
                         </h5>
+                        <div class="divider-custom">
+                            <div class="divider-custom-line" style="height: 0.15rem; margin-right: 25%;"></div>
+                        </div>
                         <div class="allineamento-list">
                             <div *ngFor="let ruolo of ruoliUtenteLoggato">
                                 <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
