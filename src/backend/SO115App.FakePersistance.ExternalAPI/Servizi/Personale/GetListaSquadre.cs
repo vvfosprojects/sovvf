@@ -54,6 +54,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
         public async Task<IEnumerable<Squadra>> Get(List<string> sedi)
         {
+            #region LEGGO DA JSON FAKE
+
+            var filepath = Costanti.ListaSquadre;
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
+
+            #endregion LEGGO DA JSON FAKE
+
+            var lstcodicifiscali = listaSquadreJson
+                .SelectMany(c => c.ComponentiSquadra)
+                .Select(c => c.CodiceFiscale)
+                .Distinct()
+                .ToArray();
+
+            var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
+
+
             var pinNodi = sedi.Select(s => new PinNodo(s, true));
             var ListaCodiciSedi = new List<string>();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -69,34 +91,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 }
             }
 
-            #region LEGGO DA JSON FAKE
-
-            var filepath = Costanti.ListaSquadre;
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            #endregion LEGGO DA JSON FAKE
-
-            var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
-
-            var lstcodicifiscali = listaSquadreJson
-                .SelectMany(c => c.ComponentiSquadra)
-                .Select(c => c.CodiceFiscale)
-                .Distinct()
-                .ToArray();
-
-            var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray());
-
             var result = new ConcurrentQueue<Squadra>();
 
-            Parallel.ForEach(ListaCodiciSedi, CodSede =>
+            Parallel.ForEach(ListaCodiciSedi, async CodSede =>
             {
-                var ListaSquadreSede = listaSquadreJson.Where(x => x.Sede.Equals(CodSede));
+                var ListaSquadreSede = listaSquadreJson.Where(x => x.Sede.Equals(CodSede)).Distinct();
 
-                Parallel.ForEach(ListaSquadreSede, squadraFake => result.Enqueue(MapSqaudra(squadraFake, lstVVF.Result)));
+                foreach (var squadraFake in ListaSquadreSede)
+                    result.Enqueue(MapSqaudra(squadraFake, lstVVF));
             });
 
             return result;

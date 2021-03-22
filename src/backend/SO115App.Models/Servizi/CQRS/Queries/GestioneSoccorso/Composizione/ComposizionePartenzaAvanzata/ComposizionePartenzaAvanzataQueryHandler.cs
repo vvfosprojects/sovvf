@@ -124,6 +124,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             else
                 lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti).Select(x => x.Id.ToString());
 
+            var lstPosizioneFlotta = _getPosizioneFlotta.Get(0);
+
             var tipologia90 = _getTipologieByCodice.Get(new List<string> { "90" }).First();
 
             var turnoCorrente = _getTurno.Get();
@@ -145,8 +147,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 return p;
             });
-
-            var lstPosizioneFlotta = _getPosizioneFlotta.Get(0);
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadreComposizione = _getListaSquadre.Get(query.CodiceSede.ToList())
@@ -237,6 +237,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .ToList();
                 }
             });
+
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             #region PER VISUALIZZARE LA PAGINA CON IL MEZZO/SQUADRA SELEZIONATI

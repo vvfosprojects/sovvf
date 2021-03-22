@@ -44,17 +44,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, sede =>
+            Parallel.ForEach(codSede, async sede =>
             {
-                _clientPersonale.SetCache("Personale_" + sede);
-
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-
                 try
                 {
-                    var resultApi = _clientPersonale.GetAsync(url, "").Result;
+                    _clientPersonale.SetCache("Personale_" + sede);
 
-                    Parallel.ForEach(resultApi, personale => listaPersonale.Enqueue(personale));
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+
+                    var resultApi = _clientPersonale.GetAsync(url, "");
+
+                    foreach (var personale in resultApi.Result)
+                        listaPersonale.Enqueue(personale);
                 }
                 catch (Exception e)
                 {
@@ -69,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(CodFiscale, codFiscale =>
+            Parallel.ForEach(CodFiscale, async codFiscale =>
             {
                 _clientPersonale.SetCache("Personale_" + codFiscale);
 
@@ -77,9 +78,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 try
                 {
-                    var resultApi = _clientPersonale.GetAsync(url, "").Result;
+                    var resultApi = _clientPersonale.GetAsync(url, "");
 
-                    Parallel.ForEach(resultApi, personale => listaPersonale.Enqueue(personale));
+                    foreach (var personale in resultApi.Result)
+                        listaPersonale.Enqueue(personale);
                 }
                 catch (Exception e)
                 {
