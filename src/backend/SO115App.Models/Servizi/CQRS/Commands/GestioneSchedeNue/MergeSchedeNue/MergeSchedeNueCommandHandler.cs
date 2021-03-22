@@ -40,6 +40,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
             var elencoSchedeDaMergiare = _schedeContattoByCodiciScheda.SchedeContattoByCodiciScheda(elencoCodiciSede);
 
             command.SchedaNue = elencoSchedeDaMergiare[0];
+
+            foreach (var scheda in elencoSchedeDaMergiare.Skip(1).ToList())
+            {
+                scheda.Collegata = true;
+            }
+
             command.SchedaNue.Collegate = elencoSchedeDaMergiare.Skip(1).ToList();
 
             _mergeSchede.Merge(command.SchedaNue, command.CodiceSede);
