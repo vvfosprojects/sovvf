@@ -42,7 +42,7 @@ export class FilterbarComponent {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
 
     // Ricerca Richieste
-    @Select(RicercaFilterbarState.ricerca) ricercaRichieste$: Observable<string>;
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
 
     // Loading Lista Richieste
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;

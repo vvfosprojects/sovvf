@@ -39,7 +39,7 @@
             <div class="float-left mr-4">
                 <app-ricerca
                         *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
-                        [ricerca]="ricercaRichieste$ | async"
+                        [ricerca]="ricerca$ | async"
                         [debounce]="true"
                         [placeholder]="getRicercaPlaceholder()"
                         [disableSearch]="!!(richiesteStatus$ | async)"
@@ -50,11 +50,11 @@
     </div>
     <div class="float-right">
         <div class="clearfix">
-            <div *ngIf="((((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((mapsStatus$ | async) || doubleMonitor))"
+            <div *ngIf="(((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && ((mapsStatus$ | async) || doubleMonitor)"
                  class="float-left mr-3">
                 <app-filtri-mappa [nightMode]="nightMode"></app-filtri-mappa>
             </div>
-            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && !doubleMonitor"
+            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && !doubleMonitor"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [nightMode]="nightMode"
