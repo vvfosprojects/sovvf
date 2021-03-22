@@ -162,6 +162,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
                     this.store.dispatch(new GetDataNavbar());
                 }
+                console.log('***current url ', this.url);
             })
         );
     }

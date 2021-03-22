@@ -7,11 +7,11 @@
                 <div class="clearfix">
                     <!-- Bottoni Sinistra -->
                     <div class="float-left mr-5">
-                        <button class="btn btn-outline-light font-xlarge btn-light mr-2"
+                        <button class="btn btn-light font-xlarge mr-2"
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
                                 placement="right"
                                 [routerLink]="['/' + RoutesPath.Home]"
-                                [class.btn-nav-selected]="(richiesteStatus$ | async) || (chiamataStatus$ | async) || (composizioneStatus$ | async)"
+                                [class.btn-nav-selected]="!(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && url === '/home'"
                                 (click)="onChiamateInterventi()">
                             <i class="fa fa-home"></i>
                         </button>
@@ -19,7 +19,7 @@
                                 ngbTooltip="Visualizza Mezzi in Servizio"
                                 placement="right"
                                 [class.cursor-not-allowed]="disabledMezziInServizio"
-                                [class.btn-nav-selected]="mezziInServizioStatus$ | async"
+                                [class.btn-nav-selected]="(mezziInServizioStatus$ | async) && url === '/home'"
                                 [disabled]="disabledMezziInServizio"
                                 (click)="toggleMezziInSerivizo()">
                             <i class="fa fa-truck"></i>
@@ -44,17 +44,6 @@
                     <div class="float-left mr-5">
                         <app-clock [time]="time"></app-clock>
                     </div>
-                  <!-- Sun / Moon mode -->
-<!--                  <div class="float-left font-xxlarge">-->
-<!--                    <button class="btn btn-no-hover btn-sun-border btn-view-mode-off" [class.btn-view-mode-on]="sunMode"-->
-<!--                            (click)="onSwitchSunMode()" style="outline: none">-->
-<!--                      <i class="fa fa-sun-o font-xlarge"></i>-->
-<!--                    </button>-->
-<!--                    <button class="btn btn-no-hover btn-moon-border btn-view-mode-off" [class.btn-view-mode-on]="!sunMode"-->
-<!--                            (click)="onSwitchSunMode()" style="outline: none">-->
-<!--                      <i class="fa fa-moon-o font-xlarge"></i>-->
-<!--                    </button>-->
-<!--                  </div>-->
                 </div>
             </div>
             <!-- Zona Destra -->
@@ -64,30 +53,35 @@
                     <div class="float-right">
                         <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
                                 [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
+                                [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-exchange"></i>
                         </button>
                         <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
+                                [class.btn-nav-selected]="url === '/rubrica'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-address-book"></i>
                         </button>
                         <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Gestione Utenti"
                                 [routerLink]="['/' + RoutesPath.GestioneUtenti]"
+                                [class.btn-nav-selected]="url === '/gestione-utenti'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-users"></i>
                         </button>
                         <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
                                 [routerLink]="['/' + RoutesPath.Changelog]"
+                                [class.btn-nav-selected]="url === '/changelog'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-newspaper-o"></i>
                         </button>
                         <button class="btn btn-light font-xlarge" ngbTooltip="Visualizza Impostazioni Sede"
                                 [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
+                                [class.btn-nav-selected]="url === '/impostazioni-sede'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-cogs"></i>
                         </button>
-                        <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
+                        <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato" [url]="url$ | async"
                                        (notificheLette)="setNotificheLette()" (logout)="logout()"></app-operatore>
                     </div>
                 </div>

@@ -49,7 +49,7 @@ export class TastoSchedeContattoComponent {
     coloreBadgeContatore(): string {
         let returnClass = 'badge-success';
         if (this.active) {
-            returnClass = 'badge-dark';
+            returnClass = 'badge-success';
         }
         return returnClass;
     }
