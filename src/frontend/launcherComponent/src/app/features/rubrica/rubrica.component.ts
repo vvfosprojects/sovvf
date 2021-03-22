@@ -18,6 +18,7 @@ import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } f
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import {ViewportState} from '../../shared/store/states/viewport/viewport.state';
+import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -37,6 +38,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     private subscriptions: Subscription = new Subscription();
 
