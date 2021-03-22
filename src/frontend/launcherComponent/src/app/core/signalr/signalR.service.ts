@@ -24,6 +24,7 @@ import { SetListaPreaccoppiati } from '../../features/home/store/actions/composi
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
+    GetListaSchedeContatto,
     InsertSchedeContatto,
     RemoveSchedeContatto,
     SetContatoriSchedeContatto,
@@ -267,8 +268,8 @@ export class SignalRService {
             this.store.dispatch(new SetListaSchedeContatto(data));
         });
         this.hubNotification.on('NotifyInsertSchedeContatto', (data: SchedaContatto[]) => {
-            console.log('NotifyGetListaSchedeContatto', data);
-            this.store.dispatch(new InsertSchedeContatto(data));
+            console.log('NotifyInsertSchedeContatto', data);
+            this.store.dispatch(new GetListaSchedeContatto());
         });
         this.hubNotification.on('NotifyUpdateSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyUpdateSchedaContatto', data);
@@ -276,7 +277,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyRemoveSchedeContatto', (data: string[]) => {
             console.log('NotifyRemoveSchedeContatto', data);
-            this.store.dispatch(new RemoveSchedeContatto(data));
+            this.store.dispatch(new GetListaSchedeContatto());
         });
 
         /**

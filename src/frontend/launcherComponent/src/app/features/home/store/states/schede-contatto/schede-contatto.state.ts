@@ -254,18 +254,20 @@ export class SchedeContattoState {
     }
 
     @Action(RemoveSchedeContatto)
-    removeSchedeContatto({ setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto): void {
+    removeSchedeContatto({ getState, setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto): void {
         console.log(idSchedeRimosse);
-        idSchedeRimosse.forEach(idScheda => {
-            setState(
-                patch({
-                    schedeContatto: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
-                    idSchedeContattoCompetenza: removeItem<string>(id => id === idScheda),
-                    idSchedeContattoConoscenza: removeItem<string>(id => id === idScheda),
-                    idSchedeContattoDifferibili: removeItem<string>(id => id === idScheda),
-                    idVisualizzati: removeItem<string>(id => id === idScheda)
-                })
-            );
+        const state = getState();
+        idSchedeRimosse.forEach((idScheda: string) => {
+            const idVisualizzati = state.idVisualizzati;
+            const idPresente = idVisualizzati.filter((id: string) => id === idScheda)[0];
+            if (idPresente) {
+                setState(
+                    patch({
+                        schedeContatto: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
+                        idVisualizzati: removeItem<string>(id => id === idScheda)
+                    })
+                );
+            }
         });
 
     }
