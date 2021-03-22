@@ -141,6 +141,7 @@
                                                     (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
                                                     (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
                                                     (mezzoCoordinate)="mezzoCoordinate($event)"
+                                                    (mezzoCoordinateClear)="mezzoCoordinateClear()"
                                                     (sganciamento)="sganciamento.emit($event)">
                             </app-mezzo-composizione>
                         </ng-template>
@@ -178,9 +179,10 @@
             </div>
             <!-- lista box partenze -->
             <div *ngIf="boxPartenzaList?.length">
-                <div *ngFor="let p of boxPartenzaList.slice().reverse()">
+                <div *ngFor="let p of boxPartenzaList.slice().reverse(); let index = index">
                     <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
                                             [nightMode]="nightMode"
+                                            [disableDividi]="checkDoubleDividi(p)"
                                             [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
                                             [compPartenzaMode]="Composizione.Avanzata"
                                             [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"

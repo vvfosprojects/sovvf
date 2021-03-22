@@ -44,6 +44,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Output() startTimeout = new EventEmitter<MezzoComposizione>();
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
+    @Output() mezzoCoordinateClear = new EventEmitter<MezzoDirection>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     sganciamentoDisabilitato = false;
@@ -72,7 +73,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione?.id !== this.mezzoComp?.id) ? this.itemPrenotatoInBox = false : null);
         }
         if (boxPartenzaList?.currentValue && this.mezzoComp && (this.mezzoComp.listaSquadre || this.mezzoComp.squadrePreaccoppiate)) {
-            boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp?.id) ? this.disableBtnFeature = true : null);
+            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.mezzoComp?.id) ? this.disableBtnFeature = true : null);
         }
     }
 
@@ -100,47 +101,53 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {
-      return nomeStatiSquadra(statoSquadra);
+        return nomeStatiSquadra(statoSquadra);
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
         if (this.mezzoComp.mezzo.stato === 'In Viaggio' || this.mezzoComp.mezzo.stato === 'Sul Posto') {
-          this.onSganciamento();
+            this.onSganciamento();
         } else {
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato) && !inRientro && !preAccoppiato) {
                 if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.selezionato.emit(this.mezzoComp);
+                    // mappa
+                    if (!this.mezzoComp.mezzo.coordinateFake) {
+                        this.mezzoDirection(this.mezzoComp);
+                    } else {
+                        this.mezzoDirectionClear(this.mezzoComp);
+                    }
                 } else if (this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.deselezionato.emit(this.mezzoComp);
-                }
-                // mappa
-                if (!this.mezzoComp.mezzo.coordinateFake) {
-                    this.mezzoDirection(this.mezzoComp);
                 }
             } else if (inRientro) {
                 if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                     this.selezionatoInRientro.emit(this.mezzoComp);
+                    // mappa
+                    if (!this.mezzoComp.mezzo.coordinateFake) {
+                        this.mezzoDirection(this.mezzoComp);
+                    } else {
+                        this.mezzoDirectionClear(this.mezzoComp);
+                    }
                 } else {
                     this.deselezionatoInRientro.emit(this.mezzoComp);
                 }
-                // mappa
-                if (!this.mezzoComp.mezzo.coordinateFake) {
-                    this.mezzoDirection(this.mezzoComp);
-                }
             } else if (preAccoppiato && !mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-              let skip = false;
-              this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.squadra.stato) !== 'In Sede' ? skip = true : null);
-              if (!skip) {
-                if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
-                  this.selezionatoPreAccoppiati.emit(this.mezzoComp);
-                } else {
-                  this.deselezionatoPreAccoppiati.emit(this.mezzoComp);
+                let skip = false;
+                this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.squadra.stato) !== 'In Sede' ? skip = true : null);
+                if (!skip) {
+                    if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
+                        this.selezionatoPreAccoppiati.emit(this.mezzoComp);
+                        // mappa
+                        if (!this.mezzoComp.mezzo.coordinateFake) {
+                            this.mezzoDirection(this.mezzoComp);
+                        } else {
+                            this.mezzoDirectionClear(this.mezzoComp);
+                        }
+                    } else {
+                        this.deselezionatoPreAccoppiati.emit(this.mezzoComp);
+                    }
                 }
-                // mappa
-                if (!this.mezzoComp.mezzo.coordinateFake) {
-                  this.mezzoDirection(this.mezzoComp);
-                }
-              }
             }
         }
     }
@@ -241,5 +248,13 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             coordinateMezzo: mezzoComp.mezzo.coordinate
         } as MezzoDirection;
         this.mezzoCoordinate.emit(mezzoDirection);
+    }
+
+    mezzoDirectionClear(mezzoComp: MezzoComposizione): void {
+        const mezzoDirection = {
+            idMezzo: mezzoComp.id,
+            coordinateMezzo: mezzoComp.mezzo.coordinate
+        } as MezzoDirection;
+        this.mezzoCoordinateClear.emit(mezzoDirection);
     }
 }
