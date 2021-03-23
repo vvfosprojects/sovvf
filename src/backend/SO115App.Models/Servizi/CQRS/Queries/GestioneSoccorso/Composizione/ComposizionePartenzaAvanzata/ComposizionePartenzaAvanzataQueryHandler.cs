@@ -61,7 +61,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly IGetTurno _getTurno;
-        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
 
@@ -77,7 +76,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             IGetTipologieByCodice getTipologieByCodice,
             IGetTurno getTurno,
-            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
@@ -87,10 +85,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getStatoSquadre = getStatoSquadre;
             _getPosizioneFlotta = getPosizioneFlotta;
             _getPreAccoppiati = getPreAccoppiati;
-
             _getTipologieByCodice = getTipologieByCodice;
             _getTurno = getTurno;
-            _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getDistaccamenti = getDistaccamenti;
         }
@@ -176,7 +172,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //FILTRI E ORDINAMENTI
                 .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
-
             var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
                 //MAPPING
                 .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
@@ -199,7 +194,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
 
                         if (mc.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                            mc.IndirizzoIntervento = _getSintesiRichiestaAssistenza.GetSintesi(mc.Mezzo.IdRichiesta).Localita.Indirizzo;
+                            mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
 
                         if (mc.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                         {
@@ -214,7 +209,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }))
                 //FILTRI E ORDINAMENTI
                 .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
-
 
             Parallel.ForEach(lstSquadreComposizione.Result, composizione =>
             {
@@ -240,13 +234,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             });
 
-
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
-            #region PER VISUALIZZARE LA PAGINA CON IL MEZZO/SQUADRA SELEZIONATI
-
-
-
-            #endregion
 
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
             var result = new ComposizionePartenzaAvanzataResult()
@@ -363,7 +351,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             return result;
         }
 
-        //private 
+        //private
 
         private List<Classi.Composizione.ComposizioneMezzi> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
         {
