@@ -17,10 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SO115App.API.Models.Classi.Utenti;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Turni
 {

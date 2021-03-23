@@ -24,6 +24,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using System;
 using System.Linq;
 
@@ -31,19 +32,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class AnnullaPartenzaCommandHandler : ICommandHandler<AnnullaPartenzaCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
+        private readonly IGeneraCodiceRichiesta _generatoreCodici;
 
         public AnnullaPartenzaCommandHandler(
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpDateRichiestaAssistenza upDateRichiestaAssistenza,
-            IUpdateStatoPartenze updateStatoPartenze
+            IUpdateStatoPartenze updateStatoPartenze,
+            IGeneraCodiceRichiesta generatoreCodici
         )
         {
             _getRichiestaById = getRichiestaById;
             _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _updateStatoPartenze = updateStatoPartenze;
+            _generatoreCodici = generatoreCodici;
         }
 
         public void Handle(AnnullaPartenzaCommand command)
@@ -53,7 +57,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             switch (command.CodMotivazione)
             {
                 case 1:
-                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 2:
@@ -61,15 +65,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (richiestaSubentrata == null)
                         richiestaSubentrata = _getRichiestaById.GetByCodiceRichiesta(command.CodRichiestaSubentrata);
 
-                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 3:
-                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 4:
-                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione);
+                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione, PartenzaToDelete.Partenza.Codice);
                     break;
             }
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);

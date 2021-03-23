@@ -28,7 +28,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
@@ -73,7 +72,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var personale = _personaleByCF.Get(command.CodFiscale).Result;
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.CodSede).Result;
+            var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.sede.id).Result;
 
             foreach (var ruolo in command.Ruoli)
             {
@@ -87,15 +86,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 }
             }
 
-            if (_checkOmonimia.FindUserByUs(personale.Nominativo.Replace(" ", "").ToLower()) != null)
+            if (_checkOmonimia.FindUserByUs(personale.nome.Replace(" ", "").ToLower()) != null)
             {
-                personale.Nominativo = personale.Nominativo.Replace(" ", "").ToLower() + "1";
+                personale.nome = personale.nome.Replace(" ", "").ToLower() + "1";
             }
             //Test di refresh chain
-            var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
+            var utenteVVF = new Utente(command.CodFiscale, personale.nome.Split(".")[0], personale.nome.Split(".")[1])
             {
                 Ruoli = command.Ruoli,
-                Username = personale.Nominativo.Replace(" ", "").ToLower(),
+                Username = personale.nome.Replace(" ", "").ToLower(),
                 Password = "test",
                 Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "")
             };

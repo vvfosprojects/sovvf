@@ -1,18 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using System;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {
@@ -94,8 +92,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
                         PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
 
-                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false);
-                        c.CodiceFiscale = pVVf.CodFiscale;
+                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.nome, pVVf.nome, capoPartenza, autista, false);
+                        c.CodiceFiscale = pVVf.codiceFiscale;
 
                         if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
                         if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;

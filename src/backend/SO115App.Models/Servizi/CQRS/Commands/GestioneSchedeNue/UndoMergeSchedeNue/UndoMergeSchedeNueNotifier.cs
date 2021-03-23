@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
-using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {

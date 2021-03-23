@@ -13,13 +13,6 @@ export class GetListaRichieste {
     }
 }
 
-export class PatchRichiesta {
-    static readonly type = '[Richieste] Modifica Richiesta API';
-
-    constructor(public richiesta: SintesiRichiesta) {
-    }
-}
-
 export class AddRichieste {
     static readonly type = '[Richieste] Add Richieste';
 

@@ -15,11 +15,13 @@ export class BoxMezziComponent implements OnChanges {
     mezziDiff: any;
     @Input() mezzi: BoxMezzi;
     @Input() boxClick: BoxClickInterface;
+    @Input() nightMode: boolean;
+
     @Output() clickMezzi = new EventEmitter<string>();
 
 
     ngOnChanges(changes: SimpleChanges): void {
-        const mezzi = changes['mezzi'];
+        const mezzi = changes.mezzi;
         if (mezzi && mezzi.currentValue && mezzi.previousValue) {
             this.mezziDiff = objectDiff(mezzi.currentValue, mezzi.previousValue);
             setTimeout( () => {
@@ -46,4 +48,13 @@ export class BoxMezziComponent implements OnChanges {
         }
     }
 
+    nightModeStyle(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'cod-int';
+      } else if (this.nightMode) {
+        value = 'moon-cod';
+      }
+      return value;
+    }
 }

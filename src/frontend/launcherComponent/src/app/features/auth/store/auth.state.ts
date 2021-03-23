@@ -124,7 +124,7 @@ export class AuthState {
         patchState({ currentUser });
         let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
         if (cS) {
-          cS = JSON.parse(cS);
+            cS = JSON.parse(cS);
         }
         let codice = currentUser.sede.codice;
         if (cS) {

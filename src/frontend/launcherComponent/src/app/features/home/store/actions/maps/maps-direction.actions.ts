@@ -1,4 +1,3 @@
-// Interface
 import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
 
 export class SetDirection {

@@ -11,13 +11,14 @@ import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
 import { TastiTelefonataGroupComponent } from './tasti-telefonata-group/tasti-telefonata-group.component';
 import { TastoChiamataComponent } from './tasti-telefonata-group/tasto-chiamata/tasto-chiamata.component';
-import { TastoSchedeContattoComponent } from './tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
 import { RicercaComponent } from './ricerca/ricerca.component';
 import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from '../../../shared/components/filtro/filtro.component';
 import { FiltriSchedeContattoComponent } from './filtri-schede-contatto/filtri-schede-contatto.component';
 import { FiltriMezziServizioComponent } from './filtri-mezzi-servizio/filtri-mezzi-servizio.component';
 import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
+import {ModalRichiesteChiuseComponent} from './filtri-richieste/modal-richieste-chiuse/modal-richieste-chiuse.component';
+import {ModalZonaEmergenzaComponent} from './filtri-richieste/modal-zona-emergenza/modal-zona-emergenza.component';
 
 @NgModule({
     imports: [
@@ -37,11 +38,12 @@ import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-t
         FiltriMappaComponent,
         TastoChiamataComponent,
         LoaderMarkerComponent,
-        TastoSchedeContattoComponent,
         TastiTelefonataGroupComponent,
         FiltriSchedeContattoComponent,
         FiltriMezziServizioComponent,
-        ModalFiltriTipologiaComponent
+        ModalFiltriTipologiaComponent,
+        ModalRichiesteChiuseComponent,
+        ModalZonaEmergenzaComponent
     ],
     exports: [
         FilterbarComponent

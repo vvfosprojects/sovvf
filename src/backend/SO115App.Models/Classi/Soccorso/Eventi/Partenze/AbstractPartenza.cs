@@ -17,10 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {
@@ -53,7 +52,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceMezzo,
             DateTime istante,
             string codiceFonte,
-            string TipoEvento) : base(richiesta, istante, codiceFonte, TipoEvento)
+            string TipoEvento,
+            int CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento, CodicePartenza)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
@@ -61,6 +61,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             }
 
             this.CodiceMezzo = codiceMezzo;
+            this.CodicePartenza = CodicePartenza;
         }
 
         /// <summary>

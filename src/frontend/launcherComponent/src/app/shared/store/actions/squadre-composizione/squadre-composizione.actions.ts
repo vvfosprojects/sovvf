@@ -11,6 +11,10 @@ export class ClearListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Clear Lista Squadre Composizione';
 }
 
+export class ClearIdSquadreSelezionate {
+    static readonly type = '[SquadreComposizione] Clear Id Squadre Selezionate';
+}
+
 export class AddSquadraComposizione {
     static readonly type = '[SquadreComposizione] Add Squadra Composizione';
 
@@ -35,28 +39,49 @@ export class UpdateSquadraComposizione {
 export class SelectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione';
 
-    constructor(public squadraComp: SquadraComposizione) {
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
+    }
+}
+
+export class SelectSquadraComposizioneInRientro {
+    static readonly type = '[SquadreComposizione] Select Squadra Composizione In Rientro';
+
+    constructor(public squadraComp: SquadraComposizione, public noAddBox?: boolean) {
+    }
+}
+
+export class SelectSquadraComposizionePreAccoppiati {
+    static readonly type = '[SquadreComposizione] Select Squadra Composizione Pre Accoppiati';
+
+    constructor(public squadraComp: SquadraComposizione, public noAddBox?: boolean) {
     }
 }
 
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
 
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
+    }
+}
+
+export class UnselectSquadraComposizioneInRientro {
+    static readonly type = '[SquadreComposizione] Unselect Squadra Composizione In Rientro';
+
     constructor(public squadraComp: SquadraComposizione) {
     }
 }
 
-export class SelectSquadra {
-    static readonly type = '[SquadreComposizione] Select Squadra';
+export class UnselectSquadraComposizionePreAccoppiati {
+    static readonly type = '[SquadreComposizione] Unselect Squadra Composizione Pre Accoppiati';
 
-    constructor(public idSquadra: string) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
 }
 
-export class UnselectSquadra {
-    static readonly type = '[SquadreComposizione] Unselect Squadra';
+export class SelectSquadreComposizione {
+    static readonly type = '[SquadreComposizione] Select Squadre Composizione';
 
-    constructor(public idSquadra: string) {
+    constructor(public squadreComp: SquadraComposizione[], public noSelect?: boolean, public preAccoppiato?: boolean) {
     }
 }
 

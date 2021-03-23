@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
-import { ClearIndirizzo, ClearMarkerChiamata } from '../../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { ClearIndirizzo, ClearMarkerChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { ToggleChiamata } from '../../../features/home/store/actions/view/view.actions';
 
 @Component({

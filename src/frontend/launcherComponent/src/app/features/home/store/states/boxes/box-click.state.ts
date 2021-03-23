@@ -15,6 +15,7 @@ import {
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { CheckBoxClick } from '../../actions/maps/maps-filtro.actions';
 import { Injectable } from '@angular/core';
+import { SetFiltroBoxRichieste } from '../../actions/filterbar/filtri-richieste.actions';
 
 export interface BoxClickStateModel {
     boxClick: BoxClickInterface;
@@ -70,6 +71,7 @@ export class BoxClickState implements NgxsOnChanges {
                     dispatch(new AllFalseBoxRichieste());
                 } else {
                     dispatch(new UpdateBoxRichieste(action.tipo));
+                    dispatch(new SetFiltroBoxRichieste(action.tipo));
                 }
                 break;
             case 'mezzi':
@@ -123,7 +125,6 @@ export class BoxClickState implements NgxsOnChanges {
     @Action(AllFalseBoxRichieste)
     resetBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>): void {
         const state = getState();
-
         patchState({
             ...state,
             boxClick: {
@@ -174,7 +175,6 @@ export class BoxClickState implements NgxsOnChanges {
     @Action(AllTrueBoxMezziPresenti)
     allTrueBoxMezziPresenti({ getState, patchState }: StateContext<BoxClickStateModel>, action: AllTrueBoxMezziPresenti): void {
         const state = getState();
-
         patchState({
             ...state,
             boxClick: {
@@ -204,7 +204,6 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     // TUTTI
-
     @Action(UndoAllBoxes)
     undoAllBoxes({ getState, patchState }: StateContext<BoxClickStateModel>, action: UndoAllBoxes): void {
         const state = getState();

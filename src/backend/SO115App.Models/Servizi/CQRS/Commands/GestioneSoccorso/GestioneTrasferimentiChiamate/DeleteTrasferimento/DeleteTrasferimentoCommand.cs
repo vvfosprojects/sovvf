@@ -1,9 +1,4 @@
-﻿using CQRS.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.DeleteTrasferimento
+﻿namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.DeleteTrasferimento
 {
     public class DeleteTrasferimentoCommand
     {

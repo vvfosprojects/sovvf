@@ -19,9 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza
 {

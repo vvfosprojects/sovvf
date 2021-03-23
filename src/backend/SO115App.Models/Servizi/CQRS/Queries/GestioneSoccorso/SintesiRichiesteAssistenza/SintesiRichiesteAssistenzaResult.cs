@@ -31,8 +31,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SintesiRichiesta> SintesiRichiesta
-        { get; set; }
+        public IEnumerable<SintesiRichiesta> SintesiRichiesta { get; set; }
 
         /// <summary>
         ///   Il modello della paginazione che restituisce i dati utili per la paginazione lato FE

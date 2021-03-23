@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CQRS.Validation
+﻿namespace CQRS.Validation
 {
-   public class CodeValidationResult
+    public class CodeValidationResult
     {
         private readonly int codice;
         public CodeValidationResult(int codice)

@@ -1,20 +1,16 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza
 {
     public class SostituzionePartenzaValidation : ICommandValidator<SostituzionePartenzaCommand>
     {
-        private IGetRichiestaById _getRichiesta;
+        private IGetRichiesta _getRichiesta;
 
-        public SostituzionePartenzaValidation(IGetRichiestaById getRichiesta) => _getRichiesta = getRichiesta;
+        public SostituzionePartenzaValidation(IGetRichiesta getRichiesta) => _getRichiesta = getRichiesta;
 
         public IEnumerable<ValidationResult> Validate(SostituzionePartenzaCommand command)
         {

@@ -7,6 +7,7 @@ export enum StatoMezzo {
     Rientrato = 'Rientrato',
     Istituto = 'Istituto',
     FuoriServizio = 'Fuori Servizio',
+    Occupato = 'Occupato',
     OperativoPreaccoppiato = 'Operativo Preaccoppiato'
 }
 

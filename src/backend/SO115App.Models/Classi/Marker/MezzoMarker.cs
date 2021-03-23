@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
 
 namespace SO115App.API.Models.Classi.Marker
 {

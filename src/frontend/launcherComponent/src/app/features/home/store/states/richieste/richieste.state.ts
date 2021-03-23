@@ -12,7 +12,6 @@ import {
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma,
-    PatchRichiesta,
     SetIdChiamataInviaPartenza,
     SetNeedRefresh,
     SetRichiestaById,
@@ -35,9 +34,7 @@ import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { RichiestaModificaState } from './richiesta-modifica.state';
-import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -56,14 +53,14 @@ import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-sel
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { SetListaSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -97,7 +94,6 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
         RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
-        RichiestaModificaState,
         RichiesteEspanseState,
         RichiestaGestioneState,
         RichiestaAttivitaUtenteState
@@ -164,28 +160,28 @@ export class RichiesteState {
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
-                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
+                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
                 pageSize: boxesVisibili ? 7 : 8
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                /* response.sintesiRichiesta.forEach( e => {
-                    e.listaEnti = e.listaEntiIntervenuti;
-                }) */
-                dispatch([
-                    new AddRichieste(response.sintesiRichiesta),
-                    new PatchPagination(response.pagination),
-                    new StopLoadingRichieste()
-                ]);
+                const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
+                if (richiesteActive) {
+                    dispatch([
+                        new AddRichieste(response.sintesiRichiesta),
+                        new PatchPagination(response.pagination),
+                    ]);
+                }
+                dispatch(new StopLoadingRichieste());
                 if (state.needRefresh) {
                     dispatch(new SetNeedRefresh(false));
                 }
             }, () => {
                 dispatch(new StopLoadingRichieste());
             });
-
             // Clear dei dati presenti nella pagina che si sta lasciando
             dispatch([
                 new ClearRichiestaSelezionata(),
@@ -197,20 +193,6 @@ export class RichiesteState {
                 dispatch(new ClearRichiestaGestione(richiestaGestione.id));
             }
         }
-    }
-
-    @Action(PatchRichiesta)
-    patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta): void {
-        action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
-        this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
-            dispatch(new SuccessRichiestaModifica());
-        }, () => {
-            dispatch([
-                new ClearIndirizzo(),
-                new ClearRichiestaMarkerModifica(),
-                new GetInitCentroMappa()
-            ]);
-        });
     }
 
     @Action(AddRichieste)
@@ -322,7 +304,7 @@ export class RichiesteState {
             new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
             new SetMarkerRichiestaSelezionato(action.richiesta.id),
-            new RichiestaComposizione(action.richiesta)
+            new SetRichiestaComposizione(action.richiesta)
         ]);
     }
 
@@ -336,6 +318,7 @@ export class RichiesteState {
             dataOraAggiornamento: action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+                dispatch(new StopLoadingActionMezzo());
             },
             error => dispatch(new StopLoadingActionMezzo())
         );
@@ -408,11 +391,23 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        const innerWidth = window.innerWidth;
+        let modal;
+        if (innerWidth && innerWidth > 3700) {
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
+        } else {
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
+        }
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));

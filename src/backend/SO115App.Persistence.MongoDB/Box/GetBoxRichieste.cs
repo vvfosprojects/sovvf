@@ -54,7 +54,7 @@ namespace SO115App.Persistence.MongoDB
                     (x.Partenze.Count == 0 || x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata))
                     && !x.Chiusa && !x.Sospesa);
                 interventi.Presidiati = listaSintesi.Count(x => x.Presidiata);
-                interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
+                interventi.Chiusi = listaSintesi.Count(x => x.Chiusa);
                 interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year && x.Chiusa);
                 interventi.TotTurnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year);
                 interventi.TotTurnoPrecedente = 0;

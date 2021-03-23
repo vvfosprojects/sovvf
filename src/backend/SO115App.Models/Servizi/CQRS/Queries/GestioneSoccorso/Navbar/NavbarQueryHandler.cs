@@ -19,10 +19,9 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Classi.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
-using SO115App.Models.Servizi.Infrastruttura.NavBar;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
@@ -35,11 +34,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
         private readonly IGetRuoliById _getRuoliById;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
-        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById, IGetUtenteById getUtenteById)
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById,
+                                  IGetConteggioSchede getConteggioSchedeHandler, IGetUtenteById getUtenteById)
         {
             this._alberaturaUO = alberaturaUO;
             _getRuoliById = getRuoliById;
+            _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
         }
 
@@ -55,7 +57,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
             {
                 ListaSedi = _alberaturaUO.ListaSediAlberata(),
-                Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente)
+                Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
+                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi)
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

@@ -17,14 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 {

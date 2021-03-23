@@ -1,28 +1,38 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { RequestResetBookMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { Observable, Subscription } from 'rxjs';
+import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 
 @Component({
     selector: 'app-box-nuova-partenza',
     templateUrl: './box-nuova-partenza.component.html',
     styleUrls: ['./box-nuova-partenza.component.css']
 })
-export class BoxNuovaPartenzaComponent {
+export class BoxNuovaPartenzaComponent implements OnDestroy {
+
+    // BoxPartenza Composizione
+    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
+    boxPartenzaList: BoxPartenza[];
+
+    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+
     @Input() partenza: BoxPartenza;
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
     @Input() itemSelezionato: boolean;
     @Input() itemHover: boolean;
     @Input() itemOccupato: boolean;
+    @Input() nightMode: boolean;
+    @Input() disableDividi: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -31,13 +41,28 @@ export class BoxNuovaPartenzaComponent {
     @Output() selezionato = new EventEmitter<BoxPartenza>();
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
+    @Output() squadraShortcut = new EventEmitter<SquadraComposizione>();
 
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
     @Output() hoverOut = new EventEmitter();
 
     itemBloccato: boolean;
+    StatoMezzo = StatoMezzo;
+
+    private subscription = new Subscription();
+
 
     constructor(private store: Store) {
+        // Prendo i box partenza
+        this.subscription.add(
+            this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
+                this.boxPartenzaList = boxPartenza;
+            })
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     onClick(): void {
@@ -59,12 +84,21 @@ export class BoxNuovaPartenzaComponent {
         this.eliminato.emit(this.partenza);
     }
 
+    nightModeBg(): string {
+        let value = '';
+        if (!this.nightMode) {
+            value = 'bg-light';
+        } else if (this.nightMode) {
+            value = 'bg-moon-light';
+        }
+        return value;
+    }
+
     ngClass(): string {
         let returnClass: string;
 
         if (this.compPartenzaMode === Composizione.Veloce) {
             /* Se è attiva la modalità rapida */
-
             returnClass = this.itemSelezionato ? 'bg-light card-shadow-success' : 'card-shadow';
 
             if (this.itemOccupato) {
@@ -73,18 +107,17 @@ export class BoxNuovaPartenzaComponent {
             } else if (!this.itemSelezionato) {
                 returnClass += this.itemHover ? ' border-warning' : '';
             }
-
-            if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {
-                returnClass += ' diagonal-stripes bg-lightgrey';
-            }
-
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
             if (this.itemSelezionato) {
                 const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
                 const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
 
-                returnClass = 'bg-light ';
+                if (!this.nightMode) {
+                    returnClass = 'bg-light ';
+                } else {
+                    returnClass = 'bg-dark ';
+                }
 
                 switch (mezzo + '|' + squadra) {
                     case 'mezzo-si|squadra-no':
@@ -109,16 +142,16 @@ export class BoxNuovaPartenzaComponent {
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-secondary';
+        let result = 'badge-mod-secondary';
 
         if (this.richiesta && this.partenza.mezzoComposizione) {
             const distaccamentoMezzo = this.partenza.mezzoComposizione.mezzo.distaccamento.descrizione;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                    result = 'badge-primary';
+                    result = 'badge-mod-primary';
                 } else if (this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                    result = 'badge-info';
+                    result = 'badge-mod-info';
                 }
             }
         }
@@ -131,7 +164,7 @@ export class BoxNuovaPartenzaComponent {
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
-        const squadra2 = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+        const squadra2 = this.partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';
         const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
@@ -155,11 +188,6 @@ export class BoxNuovaPartenzaComponent {
         return { result: result + ' ' + prefix + icon, tooltip };
     }
 
-    onResetTimeout(e: MouseEvent): void {
-        e.stopPropagation();
-        this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
-    }
-
     _iconaStatiClass(statoMezzo: string): string {
         return iconaStatiClass(statoMezzo);
     }
@@ -181,6 +209,10 @@ export class BoxNuovaPartenzaComponent {
         if (this.compPartenzaMode === Composizione.Veloce) {
             this.hoverOut.emit();
         }
+    }
+
+    squadraShortcutEvent(): void {
+        this.squadraShortcut.emit(this.partenza.squadreComposizione[0]);
     }
 
 }

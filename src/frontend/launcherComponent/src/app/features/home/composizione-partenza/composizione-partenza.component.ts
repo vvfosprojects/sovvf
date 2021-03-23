@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -13,8 +13,6 @@ import { ClearDirection, SetDirection } from '../store/actions/maps/maps-directi
 import { wipeStatoRichiesta } from '../../../shared/helper/function';
 import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
-import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
-import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
@@ -28,20 +26,32 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import {
+    ResetRicercaMezziComposizione,
+    ResetRicercaSquadreComposizione,
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione
+} from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
+import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
+import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
+import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
     templateUrl: './composizione-partenza.component.html',
-    styleUrls: ['./composizione-partenza.component.css']
+    styleUrls: ['./composizione-partenza.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
+    @Select(TriageSummaryState.summary) summary$: Observable<TriageSummary[]>;
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
@@ -91,13 +101,16 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati()
+            new ClearPreaccoppiati(),
+            new ResetRicercaMezziComposizione(),
+            new ResetRicercaSquadreComposizione(),
+            new ClearTriageSummary()
         ]);
         this.subscription.unsubscribe();
         console.log('Componente Composizione distrutto');
     }
 
-    cardClasses(r: SintesiRichiesta): void {
+    cardClasses(r: SintesiRichiesta): any {
         return this.methods.cardBorder(r);
     }
 
@@ -111,14 +124,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centraMappa(): void {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
-    }
-
-    onVisualizzaEventiRichiesta(idRichiesta: string): void {
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-        modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     _checkPrenotato(sintesi: SintesiRichiesta): boolean {
@@ -158,4 +163,3 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         ]);
     }
 }
-

@@ -17,25 +17,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.AFM;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -50,8 +58,12 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+            container.Register<IGetToken, GetToken>();
+
             #region NUE
 
+            container.Register<IGetRubrica, RubricaExt>();
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
@@ -62,6 +74,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
             container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoByCodiciScheda, GetSchedeContattoByCodiciScheda>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
                 GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
@@ -80,9 +93,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
-            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleVVF>();
-            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleByCF>();
-            container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
+            container.Register<IGetPersonaleVVF, GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, GetPersonaleByCF>();
+            container.Register<IGetPersonaleByCodSede, GetPersonaleByCodSede>();
 
             #endregion Personale
 
@@ -97,14 +110,16 @@ namespace SO115App.CompositionRoot
 
             #region Gac
 
+            container.Register<ISetRientroMezzo, SetRientroMezzo>();
+            container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
+                GetMezziInServizio>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
@@ -169,10 +184,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
+            container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac.IGetMezziUtilizzabiliByAreaMappa,
+                IGetMezziUtilizzabiliByAreaMappa,
                 ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliByAreaMappa>();
 
             #endregion Mezzi
@@ -246,6 +261,18 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie, ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
 
             #endregion Tipologie
+
+            #region AFM
+
+            container.Register<IGetCategorieSoccorsoAereo, GetCategorieSoccorsoAereo>();
+            container.Register<IGetInfoRichiestaSoccorsoAereo, GetInfoRichiestaSoccorsoAereo>();
+            container.Register<IGetTipologieRichiestaSoccorsoAereo, GetTipologieSoccorsoAereo>();
+            container.Register<IAggiornaRichiestaSoccorsoAereo, AggiornaRichiestaSoccorsoAereo>();
+            container.Register<IAnnullaRichiestaSoccorsoAereo, AnnullaRichiestaSoccorsoAereo>();
+            container.Register<IInserisciRichiestaSoccorsoAereo, InserisciRichiestaSoccorsoAereo>();
+            container.Register<IGetHistoryRichiestaSoccorsoAereo, GetHistoryRichiestaSoccorsoAereo>();
+
+            #endregion AFM
         }
     }
 }

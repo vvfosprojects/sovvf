@@ -1,0 +1,16 @@
+<div class="px-3 m-h-820-chiamata">
+    <app-partial-loader *ngIf="loadingNuovaChiamata"></app-partial-loader>
+    <app-form-richiesta [tipologie]="(tipologie$ | async)"
+                        [operatore]="(utente$ | async)"
+                        [enti]="enti$ | async"
+                        [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
+                        [doubleMonitor]="doubleMonitor"
+                        [competenze]="competenze$ | async"
+                        [countInterventiProssimita]="countInterventiProssimita$ | async"
+                        [interventiProssimita]="interventiProssimita$ | async"
+                        [schedaContatto]="schedaContattoTelefonata$ | async"
+                        [richiestaModifica]="richiestaModifica$ | async"
+                        [modifica]="!!(richiestaModifica$ | async)"
+                        [triageSummary]="triageSummary$ | async">
+    </app-form-richiesta>
+</div>

@@ -1,6 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -39,7 +38,7 @@ import {
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
-import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import { ResetChiamata } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
@@ -49,12 +48,11 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
         richieste: {
             active: true,
-            split: true,
+            split: false
         },
         mappa: {
-            active: true,
-            split: true,
-            options: [AppFeatures.Richieste]
+            active: false,
+            split: false
         },
         chiamata: {
             active: false
@@ -135,7 +133,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static mezziInServizio(state: ViewComponentStateModel): boolean {
+    static mezziInServizioStatus(state: ViewComponentStateModel): boolean {
         return state.view.mezziInServizio.active;
     }
 
@@ -155,7 +153,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static richiesteIsActive(state: ViewComponentStateModel): boolean {
+    static richiesteStatus(state: ViewComponentStateModel): boolean {
         return state.view.richieste.active;
     }
 
@@ -211,7 +209,6 @@ export class ViewComponentState {
          */
         if (!state.view.modifica.active && !action.toggle) {
             dispatch(new ClearDirection());
-
             dispatch(new SaveView(currentState));
             const newState = activeModifica(stateDefault);
             patchState({

@@ -25,6 +25,7 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -36,6 +37,9 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
+    @Input() triageSummary: TriageSummary[];
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
@@ -196,42 +200,6 @@ export class FasterComponent implements OnInit, OnDestroy {
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
         // console.log('mappedArray', partenzeMappedArray);
-        this.store.dispatch(new ConfirmPartenze(partenzeObj));
-    }
-
-    confermaPartenzeInUscita(): void {
-        const boxPartenzaList: BoxPartenza[] = [];
-        this.preAccoppiati.forEach(result => {
-            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
-                boxPartenzaList.push(result);
-            }
-        });
-        const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
-            const rObj = {
-                mezzo: null,
-                squadre: null
-            };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj.mezzo = null;
-            }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj.squadre = [];
-            }
-            return rObj;
-        });
-        const partenzeObj: ConfermaPartenze = {
-            partenze: partenzeMappedArray,
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 

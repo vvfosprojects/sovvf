@@ -33,5 +33,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipolo
         /// <param name="codiceTipologia">il codice della tipologia dell'intervento</param>
         /// <returns>Tipologia</returns>
         List<Tipologia> Get(List<string> codiceTipologia = null);
+
+        void Set(List<Tipologia> lst);
     }
 }

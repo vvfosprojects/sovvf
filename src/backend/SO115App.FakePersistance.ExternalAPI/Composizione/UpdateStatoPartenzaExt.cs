@@ -17,12 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using System;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -35,16 +40,22 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly IUpDateRichiestaAssistenza _upDateRichiesta;
+        private readonly ISetUscitaMezzo _setUscitaMezzo;
+        private readonly ISetRientroMezzo _setRientroMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
-            ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta)
+            ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta,
+            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _upDateRichiesta = upDateRichiesta;
+
+            _setRientroMezzo = setRientroMezzo;
+            _setUscitaMezzo = setUscitaMezzo;
         }
 
         /// <summary>
@@ -61,12 +72,63 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
+            var dataMovintazione = DateTime.Now;
+
+            var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
             foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
             {
                 foreach (var squadra in partenza.Partenza.Squadre)
                 {
                     _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
                 }
+
+                if (!partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                    {
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante;
+                        _setRientroMezzo.Set(new RientroGAC()
+                        {
+                            targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataRientro = dataRientro,
+                            autista = ""
+                        });
+                    }
+                    else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                    {
+                        var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Partenza.Codice)).Istante;
+                        _setUscitaMezzo.Set(new UscitaGAC()
+                        {
+                            targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataUscita = dataUscita,
+                            autista = "",
+                            tipoUscita = new TipoUscita()
+                            {
+                                codice = "",
+                                descrizione = "Servizio"
+                            },
+                            comune = new ComuneGAC()
+                            {
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Citta,
+                            },
+                            provincia = new Models.Classi.Gac.ProvinciaGAC()
+                            {
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Provincia
+                            },
+                            localita = command.Richiesta.Localita.Citta,
+                            latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                            longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString()
+                        });
+                    }
             }
         }
     }

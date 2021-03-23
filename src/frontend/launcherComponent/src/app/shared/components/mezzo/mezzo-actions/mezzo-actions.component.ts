@@ -15,6 +15,7 @@ import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface'
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
+    @Input() doubleMonitor: Mezzo;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
@@ -40,25 +41,49 @@ export class MezzoActionsComponent implements OnInit {
         if (event) {
             event.stopPropagation();
         }
-        this.modalService.open(MezzoActionsModalComponent, {
+        if (this.doubleMonitor) {
+          this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'modal-holder modal-left',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          }).result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+              case 'ok' :
+                if (action) {
+                  this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                  const orario = res.result.oraEvento;
+                  const data = res.result.dataEvento;
+                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
+                } else {
+                  this.actionMezzo.emit();
+                }
+                break;
+              case 'ko':
+                break;
+            }
+          });
+        } else {
+          this.modalService.open(MezzoActionsModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        }).result.then((res: { status: string, result: any }) => {
+          }).result.then((res: { status: string, result: any }) => {
             switch (res.status) {
-                case 'ok' :
-                    if (action) {
-                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                        const orario = res.result.oraEvento;
-                        this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute } });
-                    } else {
-                        this.actionMezzo.emit();
-                    }
-                    break;
-                case 'ko':
-                    break;
+              case 'ok' :
+                if (action) {
+                  this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                  const orario = res.result.oraEvento;
+                  const data = res.result.dataEvento;
+                  this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second }, dataEvento: { giorno: data.day, mese: data.month, anno: data.year } });
+                } else {
+                  this.actionMezzo.emit();
+                }
+                break;
+              case 'ko':
+                break;
             }
-        });
+          });
+        }
     }
 
     calcolaActionSuggeritaMezzo(stato: StatoMezzo, event?: MouseEvent): StatoMezzoActions {

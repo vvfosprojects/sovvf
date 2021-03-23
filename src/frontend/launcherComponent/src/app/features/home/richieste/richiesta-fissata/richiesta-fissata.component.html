@@ -1,11 +1,16 @@
 <div class="row">
     <div class="col-12 mt-1 pl-0 pr-2">
-        <div #richiestaContainer [ngClass]="{'mt-2 pb-2': richiestaFissata, 'col-6': !splitted, 'col-12': splitted}">
-            <div #richiesta class="w-100 rounded bg-light" [ngClass]="cardFissataClasses(richiestaFissata)">
+        <div #richiestaContainer
+             class="col-12"
+             [ngClass]="{'mt-2 pb-2': richiestaFissata}">
+            <div #richiesta
+                 class="w-100 rounded bg-light"
+                 [ngClass]="cardFissataClasses(richiestaFissata)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === richiestaFissata.id"></app-partial-loader>
                 <app-sintesi-richiesta *ngIf="richiestaFissata" [richiesta]="richiestaFissata" [fissata]="true"
-                                       [fissabile]="true" [espandibile]="true" [listaEventi]="true"
+                                       [fissabile]="true" [espandibile]="true" [boxAzioni]="true"
                                        [isEspanso]="isEspanso(richiestaFissata.id)"
+                                       [nightMode]="nightMode"
                                        [inGestione]="richiestaGestione?.id === richiestaFissata.id"
                                        [disabledModificaRichiesta]="disabledModificaRichiesta"
                                        [disabledGestisciRichiesta]="disabledGestisciRichiesta"

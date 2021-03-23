@@ -17,8 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Reflection;
 using SimpleInjector;
+using System.Reflection;
 
 namespace SO115App.CompositionRoot
 {

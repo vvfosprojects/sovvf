@@ -17,15 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Authorization;
 using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utenti.Autenticazione;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using System;
 using System.IdentityModel.Tokens.Jwt;

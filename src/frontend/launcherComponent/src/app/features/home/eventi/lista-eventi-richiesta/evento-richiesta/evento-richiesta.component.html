@@ -10,7 +10,7 @@
     </div>
 </td>
 <td>
-  <span *ngIf="eventoRichiesta.istanteEvento" class="h6 text-muted"
+  <span *ngIf="eventoRichiesta.istanteEvento" class="h6" [ngClass]="onNightMode()"
         ngbTooltip="Data Evento">{{eventoRichiesta.istanteEvento | friendlyDate}}
       {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
 </td>
@@ -22,7 +22,7 @@
     </small>
 </td>
 <td>
-  <span *ngIf="operatore" class="h6 text-muted"
+  <span *ngIf="operatore" class="h6" [ngClass]="onNightMode()"
         [ngbTooltip]="eventoRichiesta?.sedeOperatore ? eventoRichiesta?.sedeOperatore : 'Sede operatore non disponibile'">
       {{eventoRichiesta.operatore | uppercase}}
   </span>

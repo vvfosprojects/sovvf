@@ -17,75 +17,49 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using AutoMapper;
 using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SO115App.Persistence.MongoDB
 {
-    public class GetRichiesta : IGetRichiestaById, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
+    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
     {
         private readonly DbContext _dbContext;
-        private readonly IMapper _mapper;
-        private readonly IGetTipologieByCodice _getTipologiaByCodice;
-        private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
-        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
         private readonly IGetRubrica _getRubrica;
+        private readonly IGetTurno _getTurno;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
-            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetRubrica getRubrica)
+        public GetRichiesta(DbContext dbContext,
+            IMapperRichiestaSuSintesi mapperSintesi,
+            IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
+            IGetRubrica getRubrica, IGetTurno getTurno)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
-            _getTipologiaByCodice = getTipologiaByCodice;
-            _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
             _mapperSintesi = mapperSintesi;
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getCooDistaccamento = getCooDistaccamento;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getRubrica = getRubrica;
+            _getTurno = getTurno;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
-            try
-            {
-                var richiesta = _dbContext.RichiestaAssistenzaCollection
-                    .Find(s => s.Codice == codiceRichiesta)
-                    .Single();
-
-                //richiesta.ent
-
-                return richiesta;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Codice == codiceRichiesta).Single();
         }
 
         public RichiestaAssistenza GetById(string idRichiesta)
@@ -133,70 +107,56 @@ namespace SO115App.Persistence.MongoDB
 
             var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
 
-            //FilterDefinition <RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
-            //foreach (var f in filtriSediAllertate)
-            //    orFiltroSediAllertate |= f;
-
             List<RichiestaAssistenza> result = new List<RichiestaAssistenza>();
-            //Iniziamo col restituire le richieste aperte.
-            if (filtro.IncludiRichiesteAperte)
+
+            result = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti).ToList();
+
+            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
+            if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
             {
-                var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
-                var filtroComplessivo = filtroRichiesteAperte & filtroSediCompetenti | filtriSediAllertate;
+                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
+                    return r.TestoStatoRichiesta == "C";
 
-                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection
-                                        .Find(filtroComplessivo)
-                                        .ToList();
+                if (filtro.TipologiaRichiesta.Equals("Interventi"))
+                    return r.TestoStatoRichiesta != "C";
 
-                // qui l'ordinamento
-                var richiestePerStato = richiesteAperte.GroupBy(r => r.TestoStatoRichiesta == InAttesa.SelettoreDB)
-                    .ToDictionary(g => g.Key, g => g);
+                return true;
+            }).ToList();
 
-                /*
-                 * true -> c1, c2, c3
-                 * false -> r5, r8, r19, r34
-                 */
-
-                if (richiestePerStato.ContainsKey(false))
-                    result.AddRange(
-                        richiestePerStato[false]
-                        .OrderBy(r => r.PrioritaRichiesta)
-                        .ThenBy(r => r.IstanteRicezioneRichiesta));
-
-                if (richiestePerStato.ContainsKey(true))
-                    result.AddRange(
-                        richiestePerStato[true]
-                        .OrderBy(r => r.PrioritaRichiesta)
-                        .ThenBy(r => r.IstanteRicezioneRichiesta));
-
-                // qui la paginazione var resultPaginato = result.Skip().Take();
-
-                // se abbiamo già raggiunto il numero di richieste desiderate, restituiamo e finisce
-                // qua return resultPaginato;
-
-                result.ToList();
-            }
-
-            if (filtro.IncludiRichiesteChiuse)
+            //FILTRO STATI RICHIESTA
+            if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
-                var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
-                var filtroComplessivo = filtroSediCompetenti & filtroRichiesteChiuse;
+                if (filtro.StatiRichiesta.Contains("Assegnata"))
+                    filtro.StatiRichiesta.Add("InAttesa");
 
-                var numeroRichiesteDaRecuperare = 20; //filtro.PageSize - (result.Count - filtro.PageSize);
-
-                //if (numeroRichiesteDaRecuperare > 0)
-                //{
-                var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
-                if (closedToSkip < 0)
-                    closedToSkip = 0;
-                var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
-                    .Skip(closedToSkip)
-                    .Limit(numeroRichiesteDaRecuperare)
-                    .ToList();
-
-                result.AddRange(richiesteChiuse);
-                //}
+                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
+            else //CHIUSE NASCOSTE DI DEFAULT
+                result = result.Where(r => !r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
+
+            //FILTRO ZONE EMERGENZA
+            if (filtro.ZoneEmergenza != null)
+                result = result.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))).ToList();
+
+            //FILTRO PERIODO CHIAMATE CHIUSE
+            if (filtro.PeriodoChiuse != null) result = result.Where(r =>
+            {
+                if (filtro.PeriodoChiuse.Data != null)
+                    return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Value.Day);
+
+                else if (filtro.PeriodoChiuse.Turno != null)
+                {
+                    var turno = _getTurno.Get(r.IstanteChiusura);
+
+                    return r.Aperta == true || (r.Chiusa == true && turno.Codice.Contains(filtro.PeriodoChiuse.Turno));
+                }
+
+                else if (filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
+                    return r.Aperta == true || (r.IstanteChiusura >= filtro.PeriodoChiuse.Da && r.IstanteChiusura <= filtro.PeriodoChiuse.A);
+
+                return true;
+            }).ToList();
+
 
             if (filtro.FiltriTipologie != null)
             {
@@ -207,6 +167,9 @@ namespace SO115App.Persistence.MongoDB
             {
                 result = result.FindAll(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine));
             }
+
+            if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
+                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
 
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
@@ -240,7 +203,7 @@ namespace SO115App.Persistence.MongoDB
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaChiusa))
                     .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenBy(x => x.IstanteRicezioneRichiesta)
+                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .ToList();
         }
 

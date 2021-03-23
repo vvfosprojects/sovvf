@@ -23,15 +23,20 @@ export class SchedeContattoService {
             filters: {
                 search: filters.search,
                 gestita: filters.gestita,
-                rangeVisualizzazione: filters.rangeVisualizzazione
+                rangeVisualizzazione: filters.rangeVisualizzazione,
+                classificazione: filters.classificazione
             },
             pagination
         };
         return this.http.post<ResponseInterface>(`${API_SCHEDE_CONTATTO}/GetSchede`, obj);
     }
 
-    mergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita);
+    getSchedaContatto(codScheda: string): Observable<SchedaContatto> {
+        return this.http.get<SchedaContatto>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
+    }
+
+    mergeSchedeContatto(idSchedeContatto: string[]): Observable<any> {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, idSchedeContatto);
     }
 
     undoMergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {

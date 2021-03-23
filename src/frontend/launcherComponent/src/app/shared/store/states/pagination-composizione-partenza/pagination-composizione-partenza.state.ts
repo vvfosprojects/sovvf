@@ -12,11 +12,11 @@ export interface PaginationComposizionePartenzaStateModel {
 export const PaginationComposizionePartenzaStateDefaults: PaginationComposizionePartenzaStateModel = {
     paginationMezzi: {
         page: 1,
-        pageSize: 10
+        pageSize: 9
     },
     paginationSquadre: {
         page: 1,
-        pageSize: 10
+        pageSize: 9
     },
     paginationPreaccoppiati: {
         page: 1,

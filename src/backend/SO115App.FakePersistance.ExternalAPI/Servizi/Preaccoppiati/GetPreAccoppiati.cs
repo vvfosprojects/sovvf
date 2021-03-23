@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
-using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
-using Microsoft.Extensions.Caching.Memory;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
@@ -90,7 +90,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 .Where(x => query.CodiceSede.Contains(x.CodiceSede))
                 .Where(c =>
                 {
-                    if(c.MezzoComposizione.Mezzo.IdRichiesta != null)
+                    if (c.MezzoComposizione.Mezzo.IdRichiesta != null)
                         return c.MezzoComposizione.Mezzo.IdRichiesta == query.Filtri.IdRichiesta;
                     return true;
                 })

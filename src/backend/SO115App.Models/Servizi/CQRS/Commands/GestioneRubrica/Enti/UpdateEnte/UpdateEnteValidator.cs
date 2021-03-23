@@ -15,7 +15,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
 
             else
             {
-                if(command.Ente.Id == null || command.Ente.Id == "0" || command.Ente.Id == "")
+                if (command.Ente.Id == null || command.Ente.Id == "0" || command.Ente.Id == "")
                     yield return new ValidationResult(Costanti.IdRichiestaNonValida);
 
                 else

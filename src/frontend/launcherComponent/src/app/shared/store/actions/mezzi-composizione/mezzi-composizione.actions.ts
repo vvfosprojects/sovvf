@@ -1,5 +1,4 @@
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { BoxPartenza } from '../../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
@@ -51,6 +50,20 @@ export class ReducerSelectMezzoComposizione {
     }
 }
 
+export class ReducerSelectMezzoComposizioneInRientro {
+    static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione In Rientro';
+
+    constructor(public mezzoComp: MezzoComposizione, public noSelect?: boolean) {
+    }
+}
+
+export class ReducerSelectMezzoComposizionePreAccoppiati {
+  static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione Pre Accoppiati';
+
+  constructor(public mezzoComp: MezzoComposizione) {
+  }
+}
+
 export class SelectMezzoComposizioneFromMappa {
     static readonly type = '[MezziComposizione] Select Mezzo Composizione From Mappa';
 
@@ -67,6 +80,9 @@ export class SelectMezzoComposizione {
 
 export class UnselectMezzoComposizione {
     static readonly type = '[MezziComposizione] Unselect Mezzo Composizione';
+
+    constructor(public preventGet?: boolean) {
+    }
 }
 
 export class ClearSelectedMezziComposizione {
@@ -84,63 +100,6 @@ export class HoverOutMezzoComposizione {
     static readonly type = '[MezziComposizione] Hover Out Mezzo Composizione';
 }
 
-export class RequestBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Request Book Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione, public addBoxPartenza?: boolean, public selectBoxPartenza?: string) {
-    }
-}
-
-export class AddBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Book Mezzo Composizione';
-
-    constructor(public codiceMezzo: string) {
-    }
-}
-
-export class AddBookingMezzoComposizione {
-    static readonly type = '[MezziComposizione] Booking Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione) {
-    }
-}
-
-export class RequestRemoveBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Request Remove Book Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione, public boxPartenza?: BoxPartenza) {
-    }
-}
-
-export class RemoveBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Remove Book Mezzo Composizione';
-
-    constructor(public codiceMezzo: string) {
-    }
-}
-
-
-export class RemoveBookingMezzoComposizione {
-    static readonly type = '[MezziComposizione] Remove Booking Mezzo Composizione';
-
-    constructor(public codiceMezzo: string) {
-    }
-}
-
-export class RequestResetBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Request Reset Book Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione) {
-    }
-}
-
-export class ResetBookMezzoComposizione {
-    static readonly type = '[MezziComposizione] Reset Book Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione) {
-    }
-}
-
 export class LockMezzoComposizione {
     static readonly type = '[MezziComposizione] Lock Mezzo Composizione';
 
@@ -150,13 +109,6 @@ export class LockMezzoComposizione {
 
 export class UnlockMezzoComposizione {
     static readonly type = '[MezziComposizione] Unlock Mezzo Composizione';
-
-    constructor(public idMezzoComp: string) {
-    }
-}
-
-export class RequestUnlockMezzoComposizione {
-    static readonly type = '[MezziComposizione] Request Unlock Mezzo Composizione';
 
     constructor(public idMezzoComp: string) {
     }

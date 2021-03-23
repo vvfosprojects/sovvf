@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;

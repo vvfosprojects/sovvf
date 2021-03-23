@@ -23,7 +23,6 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
-using System;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneChiamateInCorso

@@ -1,0 +1,115 @@
+<div class="modal-header">
+    <h4 class="modal-title"
+        [class.font-weight-bolder]="domandaTitle">
+        {{ getTitle() | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="closeModal('ko')">
+        <i class="fa fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height bg-light py-4 px-5">
+    <form [formGroup]="addItemTriageForm">
+        <ng-template [ngIf]="rispostaTitle">
+            <h3 class="text-center">
+                Se la risposta è <b>{{ rispostaTitle | uppercase }}</b>
+            </h3>
+        </ng-template>
+        <!-- Generi Mezzo / Priorita / Intervento Aereo -->
+        <ng-template [ngIf]="!primaDomanda">
+            <div class="card card-shadow p-4" [class.mt-3]="rispostaTitle">
+                <div>
+                    <label for="mezzi" class="font-xlarge">
+                        <i class="fa fa-truck mr-1"></i>
+                        Generi Mezzo Appropriati
+                    </label>
+                    <ng-select id="mezzi"
+                               placeholder="Seleziona uno o più Generi Mezzo"
+                               formControlName="generiMezzo"
+                               [items]="generiMezzo"
+                               bindLabel="descrizione"
+                               bindValue="descrizione"
+                               [hideSelected]="true"
+                               [multiple]="true">
+                    </ng-select>
+                </div>
+                <div class="mt-3">
+                    <label for="soccorsoAereo" class="font-xlarge">
+                        <i class="fa fa-plane mr-1"></i>
+                        Richiesta Soccorso Aereo
+                    </label>
+                    <ng-select id="soccorsoAereo"
+                               placeholder="Seleziona la necessità di Soccorso Aereo"
+                               formControlName="soccorsoAereo"
+                               [items]="NecessitaSoccorsoAereoValues"
+                               [hideSelected]="true"
+                               [multiple]="false">
+                    </ng-select>
+                </div>
+                <div class="mt-3">
+                    <label for="prioritaConsigliata" class="font-xlarge">
+                        <i class="fa fa-thermometer mr-1"></i>
+                        Priorità Intervento
+                    </label>
+                    <ng-select id="prioritaConsigliata"
+                               placeholder="Seleziona un livello di Priorità"
+                               formControlName="prioritaConsigliata"
+                               [items]="['Molto Bassa', 'Bassa', 'Media', 'Alta']"
+                               [hideSelected]="true"
+                               [multiple]="false">
+                    </ng-select>
+                </div>
+                <div class="mt-3">
+                    <label for="noteOperatore" class="font-xlarge">
+                        <i class="fa fa-sticky-note-o mr-1"></i>
+                        Note Operatore
+                    </label>
+                    <textarea id="noteOperatore"
+                              class="form-control"
+                              placeholder="Scrivi qui le Note Operatore"
+                              formControlName="noteOperatore">
+                    </textarea>
+                </div>
+            </div>
+        </ng-template>
+        <!-- Domanda -->
+        <div class="card card-shadow pt-3 pb-4 px-4"
+             [class.mt-3]="!primaDomanda">
+            <ng-template [ngIf]="primaDomanda">
+                <label for="domandaSeguente" class="font-xlarge">Inserisci il testo della Prima Domanda</label>
+            </ng-template>
+            <ng-template [ngIf]="!primaDomanda">
+                <label for="domandaSeguente" class="font-xlarge">
+                    <i class="fa fa-forward mr-1"></i>
+                    Domanda Seguente
+                </label>
+            </ng-template>
+            <input id="domandaSeguente"
+                   [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
+                   formControlName="domandaSeguente"
+                   type="text"
+                   class="form-control form-control-lg">
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="clearfix w-100">
+        <div class="float-right">
+            <button type="button"
+                    class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
+                    (click)="closeModal('ko')">
+                {{ 'Annulla' | uppercase }}
+            </button>
+        </div>
+        <div class="float-left">
+            <button type="button"
+                    class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
+                    ngbTooltip="Riempi tutti i campi obbligatori"
+                    [disableTooltip]="!formIsInvalid() || !!editMode"
+                    [disabled]="formIsInvalid() && !editMode"
+                    (click)="onConferma()">
+                {{ 'Conferma' | uppercase }}
+            </button>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,8 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
+import { Store } from '@ngxs/store';
+import { ZoneEmergenzaState } from '../../../features/home/store/states/filterbar/zone-emergenza.state';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -19,17 +21,28 @@ const API_GESTIONE_FONOGRAMMA = BASE_URL + environment.apiUrl.gestioneFonogramma
 })
 export class SintesiRichiesteService {
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private store: Store) {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
+        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri');
+        let filtriTipologia;
+        if (filtriTipologieRichiesta?.length) {
+            filtriTipologia = filtriTipologieRichiesta[0]?.codice;
+        }
+        const filtroStato = this.store.selectSnapshot(ZoneEmergenzaState.fakeStatoRichiesta);
+        const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
+        const periodoChiuse = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiuse);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
+            filtriTipologie: null,
+            statiRichiesta: filtroStato && filtroStato.length ? filtroStato : null,
+            tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
+            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
+            periodoChiuse: periodoChiuse.da || periodoChiuse.data || periodoChiuse.turno ? periodoChiuse : null,
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }

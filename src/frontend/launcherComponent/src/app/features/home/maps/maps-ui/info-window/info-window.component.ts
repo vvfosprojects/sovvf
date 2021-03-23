@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../../maps-model/sede-marker.model';
@@ -9,12 +9,14 @@ import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
 import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SganciamentoMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
 import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.model';
+import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-info-window',
@@ -36,8 +38,13 @@ export class InfoWindowComponent {
     @Input() inComposizione: boolean;
     @Output() addMezzoComposizione = new EventEmitter<string>();
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
     clickedPopover: NgbPopover;
     methods = new HelperSintesiRichiesta();
+
+    subscription = new Subscription();
 
     constructor(private store: Store,
                 private modalService: NgbModal,
@@ -47,6 +54,7 @@ export class InfoWindowComponent {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     openModal(mode: string, idRichiesta?: string): void {
@@ -56,11 +64,19 @@ export class InfoWindowComponent {
                 break;
             case 'visualizzaRichiesta':
                 this.store.dispatch(new SetRichiestaById(idRichiesta));
-                this.modalService.open(SintesiRichiestaModalComponent, {
+                if (this.doubleMonitor) {
+                  this.modalService.open(SintesiRichiestaModalComponent, {
+                    windowClass: 'xlModal modal-left',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true
+                  });
+                } else {
+                  this.modalService.open(SintesiRichiestaModalComponent, {
                     windowClass: 'xlModal',
                     backdropClass: 'light-blue-backdrop',
                     centered: true
-                });
+                  });
+                }
                 break;
         }
     }

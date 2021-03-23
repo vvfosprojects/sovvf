@@ -61,21 +61,14 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
 
-            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
-                .Select(x => x.Stato)
+            mezzi.InSede = listaMezzi
+                .Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
                 .Count();
-            mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio)
-                .Select(x => x.Stato)
-                .Count();
-            mezzi.InRientro = listaMezzi.Where(x => x.Stato == Costanti.MezzoInRientro)
-                .Select(x => x.Stato)
-                .Count();
-            mezzi.SulPosto = listaMezzi.Where(x => x.Stato == Costanti.MezzoSulPosto)
-                .Select(x => x.Stato)
-                .Count();
-            mezzi.Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto)
-                .Select(x => x.Stato)
-                .Count();
+            mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio).Count();
+            mezzi.InRientro = listaMezzi.Where(x => x.Stato == Costanti.MezzoInRientro).Count();
+            mezzi.SulPosto = listaMezzi.Where(x => x.Stato == Costanti.MezzoSulPosto).Count();
+            mezzi.Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto).Count();
+
             mezzi.InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio;
 
             return mezzi;

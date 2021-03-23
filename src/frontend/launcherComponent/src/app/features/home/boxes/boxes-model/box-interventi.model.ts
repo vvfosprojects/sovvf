@@ -13,9 +13,9 @@ export class BoxInterventi {
          */
         public presidiati: number,
         /**
-         * Interventi con mezzi in attesa
+         * Interventi chiusi
          */
-        public sospesi: number,
+        public chiusi: number,
         /**
          * totale degli interventi in corso
          */

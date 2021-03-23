@@ -1,7 +1,5 @@
-﻿using System;
+﻿using SO115App.API.Models.Classi.Soccorso;
 using System.Collections.Generic;
-using System.Text;
-using SO115App.API.Models.Classi.Soccorso;
 
 namespace SO115App.Models.Classi.Filtri
 {

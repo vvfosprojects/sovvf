@@ -1,5 +1,5 @@
-<div class="row">
-    <div *ngIf="centroMappa" class="col-12">
+<div class="row h-100">
+    <div *ngIf="centroMappa" class="col-12 h-100">
         <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
         <app-agm [viewStateMappa]="viewStateMappa"
                  [centroMappa]="centroMappa"

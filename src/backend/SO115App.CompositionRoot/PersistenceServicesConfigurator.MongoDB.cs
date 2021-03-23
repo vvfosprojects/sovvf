@@ -1,15 +1,24 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Persistence.MongoDB;
 using SimpleInjector;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
+using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
+using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
+using SO115App.Persistence.MongoDB.GestioneTriage;
+using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
 
 namespace SO115App.CompositionRoot
 {
@@ -24,13 +33,17 @@ namespace SO115App.CompositionRoot
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
+            container.Register<ISetTipologie, SetTipologie>();
+
+            container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
+
 
             #region Gestione richiesta di assistenza
 
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
             container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
-            container.Register<IGetRichiestaById, GetRichiesta>();
+            container.Register<IGetRichiesta, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
 
             container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,
@@ -108,8 +121,9 @@ namespace SO115App.CompositionRoot
 
             #region StatoSquadra
 
-            container.Register<ISetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.SetStatoSquadra>();
-            container.Register<IGetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.GetStatoSquadra>();
+            container.Register<ISetStatoSquadra, SetStatoSquadra>();
+            container.Register<IGetStatoSquadra, GetStatoSquadra>();
+            container.Register<IGetSquadraByCodiceMezzo, GetSquadreByCodiceMezzo>();
 
             #endregion StatoSquadra
 
@@ -194,6 +208,10 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
                 SO115App.Persistence.MongoDB.GestioneInterventi.GeneraCodiceRichiesta>();
 
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneLog.IWriteLog,
+                SO115App.Persistence.MongoDB.GestioneLog.WriteLog>();
+
             #endregion Utility
 
             #region Rubrica
@@ -218,8 +236,13 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IDeleteEnte,
                 SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
 
-
             #endregion Rubrica
+
+            #region ZoneEmergenza
+
+            container.Register<IGetZoneEmergenza, GetZoneEmergenza>();
+
+            #endregion ZoneEmergenza
 
             #region TrasferimentoChiamata
 
@@ -239,7 +262,26 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate.IGetCodiciChiamate,
                 Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
 
-            #endregion
+            #endregion TrasferimentoChiamata
+
+            #region Dettaglio Tipologia
+
+            container.Register<IAddDettaglioTipologia, AddDettaglioTipologia>();
+            container.Register<IDeleteDettaglioTipologia, DeleteDettaglioTipologia>();
+            container.Register<IModifyDettaglioTipologia, UpDateDettaglioTipologia>();
+            container.Register<IGetListaDettaglioTipologia, GetListaDettagliTipologia>();
+            container.Register<IGetListaDettagliTipologieByIdTipologia, GetListaDettagliTipologiaByIdTipologia>();
+
+            #endregion Dettaglio Tipologia
+
+            #region Triage
+
+            container.Register<IAddTriage, AddTriage>();
+            container.Register<IUpDateTriage, UpDateTriage>();
+            container.Register<IGetTriage, GetTriage>();
+            container.Register<IGetTriageData, GetTriageData>();
+
+            #endregion Triage
         }
     }
 }

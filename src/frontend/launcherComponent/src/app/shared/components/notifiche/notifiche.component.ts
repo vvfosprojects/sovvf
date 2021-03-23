@@ -29,7 +29,7 @@ export class NotificheComponent implements OnInit {
     }
 
     getClasses(): string {
-        return this.nuoveNotifiche ? 'btn-primary' : 'btn-outline-light';
+        return this.nuoveNotifiche ? 'btn-primary' : 'btn-light';
     }
 
     onToggleDropdown(open: boolean): void {

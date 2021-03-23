@@ -1,40 +1,43 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-5 mx-auto mt-2 mb-5">
-            <div class="card card-shadow px-4 py-3 no-padding-custom" >
+        <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
+            <div class="card card-shadow px-4 py-3 no-padding-custom">
                 <div class="clearfix" style="background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);">
-                    <div class="text-center float-left" style="width: 50%">
+                    <div class="text-center float-left" style="width: 50%" [class.text-white]="(nightMode$ | async)" [class.bg-moon-light]="(nightMode$ | async)">
                         <div class="container mt-2">
-                          <div class="d-flex justify-content-center h-100">
-                            <div class="img-fuori-container">
-                              <div class="icona-verde"></div>
-                              <div class="img-dentro-container">
-                                <img src="../../../../assets/img/logo_vvf_200x.png">
-                              </div>
+                            <div class="d-flex justify-content-center h-100">
+                                <div class="img-fuori-container">
+                                    <div class="icona-verde"></div>
+                                    <div class="img-dentro-container">
+                                        <img src="../../../../assets/img/logo_vvf_200x.png">
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
                         <h3 class="mb-1">
                             {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
                         </h3>
                         <div class="divider-custom">
-                          <div class="divider-custom-line" style="height: 0.09rem;"></div>
+                            <div class="divider-custom-line" [class.bg-white]="(nightMode$ | async)" style="height: 0.09rem;"></div>
                         </div>
                         <h6 class="mt-1">
-                          <span class="font-weight-bold">CF:</span>
-                          {{ utente.codiceFiscale | uppercase }}
+                            <span class="font-weight-bold">CF:</span>
+                            {{ utente.codiceFiscale | uppercase }}
                         </h6>
-                        </div>
-                    <div class="text-center float-right py-2" style="width: 50%">
-                        <h5 class="font-weight-bold allineamento-list">
+                    </div>
+                    <div class="text-center float-right py-2 font-xlarge" style="width: 50%">
+                        <h5 class="font-weight-bold allineamento-list font-xxlarge">
                             <i class="fa fa-cogs mr-1"></i>
                             {{ 'ruoli assegnati' | uppercase }}
                         </h5>
+                        <div class="divider-custom">
+                            <div class="divider-custom-line" style="height: 0.15rem; margin-right: 25%;"></div>
+                        </div>
                         <div class="allineamento-list">
-                          <div *ngFor="let ruolo of ruoliUtenteLoggato">
-                              <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
-                              {{ ruolo.descrizione }}
-                          </div>
+                            <div *ngFor="let ruolo of ruoliUtenteLoggato">
+                                <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
+                                {{ ruolo.descrizione }}
+                            </div>
                         </div>
                         <div *ngIf="ruoliUtenteLoggato?.length === 0">
                             Solo Visualizzazione
@@ -43,53 +46,60 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-8 mx-auto mb-3">
-            <div class="clearfix mb-3">
-                <div class="float-left">
-                    <h2>
-                        <i class="fa fa-window-maximize"></i>
-                        Impostazioni Interfaccia
-                    </h2>
-                </div>
-                <div class="float-right">
-                    <!-- todo: abilitare ricerca se necessario -->
-                    <!-- <label for="ricercaImp" class="d-none">Ricerca</label>
-                    <input id="ricercaImp" class="form-control" type="text" placeholder="Cerca nelle impostazioni"
-                           [ngModel]="ricerca"> -->
-                </div>
-            </div>
-            <hr class="mt-1 mb-4">
+        <div class="col-12">
             <div class="row">
-                <div *ngFor="let impostazione of listaImpostazioni"
-                     class="card card-shadow col-12 col-md-4 mx-md-auto py-4 px-3">
-                    <h4>
-                        <i class="fa {{ impostazione?.icona }} mr-1"></i>
-                        {{ impostazione?.tipo }}
-                    </h4>
-                    <hr class="mt-1">
-                    <div *ngFor="let opzione of impostazione?.opzioni" class="clearfix px-3">
-                        <div class="float-left">
-                            {{ opzione?.label }}
-                        </div>
-                        <div class="float-right">
-                            <ng-template [ngIf]="opzione?.singleValue">
-                                <label [for]="opzione?.label" class="d-none">{{ opzione?.label }}</label>
-                                <input [id]="opzione?.label" type="checkbox" [checked]="opzione?.singleValue?.value"
-                                       (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
-                            </ng-template>
-                            <ng-template [ngIf]="opzione?.select">
-                                <label [for]="opzione?.label" class="d-none">{{ opzione?.label }}</label>
-                                <ng-select [id]="opzione?.label"
-                                           bindValue="id"
-                                           bindLabel="desc"
-                                           [ngModel]="opzione?.select?.selected"
-                                           [items]="opzione?.select?.itemsSelect"
-                                           [multiple]="false"
-                                           [clearable]="false"
-                                           (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
-                                </ng-select>
-                            </ng-template>
-                        </div>
+                <div class="col-12 col-md-6 mx-auto">
+                    <div [class.bg-dark]="(nightMode$ | async)">
+                        <ngb-accordion [closeOthers]="true" activeIds="interfaccia">
+                            <ngb-panel id="interfaccia">
+                                <ng-template ngbPanelTitle>
+                                    <div class="font-xlarge font-weight-bold text-white">
+                                        <i class="fa fa-window-maximize"></i>
+                                        Impostazioni Interfaccia
+                                    </div>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div *ngFor="let impostazione of listaImpostazioni; let i = index"
+                                         class="card card-shadow p-3" [class.text-white]="(nightMode$ | async)" [class.bg-moon-light]="(nightMode$ | async)"
+                                         [class.mb-4]="i !== (listaImpostazioni.length - 1)">
+                                        <div class="clearfix">
+                                            <div class="float-left">
+                                                <h4 class="mb-0">
+                                                    <i class="fa {{ impostazione?.icona }} mr-1"></i>
+                                                    {{ impostazione?.tipo }}
+                                                </h4>
+                                            </div>
+                                            <div class="float-right">
+                                                <div *ngFor="let opzione of impostazione?.opzioni"
+                                                     class="clearfix px-3">
+                                                    <ng-template [ngIf]="opzione?.singleValue">
+                                                        <label [for]="opzione?.label"
+                                                               class="d-none">{{ opzione?.label }}</label>
+                                                        <input [id]="opzione?.label"
+                                                               type="checkbox"
+                                                               [checked]="opzione?.singleValue?.value"
+                                                               (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
+                                                    </ng-template>
+                                                    <ng-template [ngIf]="opzione?.select">
+                                                        <label [for]="opzione?.label"
+                                                               class="d-none">{{ opzione?.label }}</label>
+                                                        <ng-select [id]="opzione?.label"
+                                                                   bindValue="id"
+                                                                   bindLabel="desc"
+                                                                   [ngModel]="opzione?.select?.selected"
+                                                                   [items]="opzione?.select?.itemsSelect"
+                                                                   [multiple]="false"
+                                                                   [clearable]="false"
+                                                                   (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
+                                                        </ng-select>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
                     </div>
                 </div>
             </div>

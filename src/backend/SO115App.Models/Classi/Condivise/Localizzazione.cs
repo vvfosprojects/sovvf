@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SO115App.API.Models.Classi.Condivise;
+﻿using SO115App.API.Models.Classi.Condivise;
+using System;
 
 namespace SO115App.Models.Classi.Condivise
 {
