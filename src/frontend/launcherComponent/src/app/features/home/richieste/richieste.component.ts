@@ -24,8 +24,8 @@ import {
 } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
-import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
-import { RichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
+import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -49,6 +49,7 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
+import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -59,6 +60,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -95,7 +98,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     codiciFiltriSelezionati: string[] = [];
 
     loaderRichieste = true;
-    listHeightClass = 'm-h-695';
+    listHeightClass = 'm-h-710';
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
 
@@ -152,17 +155,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
                     if (this.boxAttivi) {
-                        this.listHeightClass = 'm-h-590';
+                        this.listHeightClass = 'm-h-572';
                     } else {
-                        this.listHeightClass = 'm-h-695';
+                        this.listHeightClass = 'm-h-677';
                     }
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
                         if (this.boxAttivi) {
-                            this.listHeightClass = 'm-h-695';
+                            this.listHeightClass = 'm-h-710';
                         } else {
-                            this.listHeightClass = 'm-h-800';
+                            this.listHeightClass = 'm-h-795';
                         }
                     }, 300);
                 }
@@ -292,11 +295,20 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
-        const modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        let modal;
+        if (this.doubleMonitor) {
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        } else {
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
@@ -304,6 +316,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
+        this.store.dispatch(new SetTriageSummary(richiesta.triageSummary));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
     }
@@ -317,9 +330,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
     }
 
-    nuovaPartenza($event: SintesiRichiesta): void {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
-        this.store.dispatch(new RichiestaComposizione($event));
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
+        this.store.dispatch([
+            new SetMarkerRichiestaSelezionato(richiesta.id),
+            new SetRichiestaComposizione(richiesta)
+        ]);
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {

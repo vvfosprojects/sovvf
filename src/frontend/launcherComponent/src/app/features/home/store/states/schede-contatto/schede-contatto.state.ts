@@ -5,7 +5,6 @@ import {
     ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     ClearSchedaContattoTelefonata,
-    GeneraListaSchedeContatto,
     GetListaSchedeContatto,
     InsertSchedeContatto,
     OpenDetailSC,
@@ -16,7 +15,6 @@ import {
     SetContatoriSchedeContatto,
     SetFiltroGestitaSchedeContatto,
     SetFiltroSelezionatoSchedaContatto,
-    SetIdVisualizzati,
     SetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
@@ -31,13 +29,10 @@ import {
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
-import { FiltersSchedeContattoInterface } from '../../../../../shared/interface/filters/filters-schede-contatto.interface';
+import { FiltersSchedeContatto } from '../../../../../shared/interface/filters/filters-schede.contatto';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
-import {
-    resetFiltriSelezionati as _resetFiltriSelezionati,
-    setFiltroSelezionato as _setFiltroSelezionato
-} from '../../../../../shared/helper/function-filtro';
+import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
@@ -48,7 +43,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { RefreshSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
-import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
+import { DettaglioSchedaContattoModalComponent } from '../../../../../shared/modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable, NgZone } from '@angular/core';
 import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
@@ -58,17 +53,16 @@ import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { SetMezziInServizio } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
     schedeContatto: SchedaContatto[];
-    idSchedeContattoCompetenza: string[];
-    idSchedeContattoConoscenza: string[];
-    idSchedeContattoDifferibili: string[];
     schedaContattoTelefonata: SchedaContatto;
     codiceSchedaContattoHover: string;
     filtriSchedeContatto: VoceFiltro[];
-    filtriSelezionati: FiltersSchedeContattoInterface;
+    filtriSelezionati: FiltersSchedeContatto;
     tabAttivo: ClassificazioneSchedaContatto;
     idVisualizzati: string[];
     idCollapsed: string[];
@@ -77,10 +71,7 @@ export interface SchedeContattoStateModel {
 
 export const SchedeContattoEmpty = {
     schedeContatto: [],
-    idSchedeContattoCompetenza: [],
-    idSchedeContattoConoscenza: [],
-    idSchedeContattoDifferibili: [],
-    tabAttivo: null,
+    tabAttivo: ClassificazioneSchedaContatto.Competenza,
     idVisualizzati: [],
     idCollapsed: [],
     loadingSchedeContatto: false
@@ -130,21 +121,6 @@ export class SchedeContattoState {
     }
 
     @Selector()
-    static idSchedeCompetenza(state: SchedeContattoStateModel): string[] {
-        return state.idSchedeContattoCompetenza;
-    }
-
-    @Selector()
-    static idSchedeConoscenza(state: SchedeContattoStateModel): string[] {
-        return state.idSchedeContattoConoscenza;
-    }
-
-    @Selector()
-    static idSchedeDifferibili(state: SchedeContattoStateModel): string[] {
-        return state.idSchedeContattoDifferibili;
-    }
-
-    @Selector()
     static idVisualizzati(state: SchedeContattoStateModel): string[] {
         return state.idVisualizzati;
     }
@@ -157,11 +133,6 @@ export class SchedeContattoState {
     @Selector()
     static schedaContattoTelefonata(state: SchedeContattoStateModel): SchedaContatto {
         return state.schedaContattoTelefonata;
-    }
-
-    @Selector()
-    static numeroSchedeContattoCompetenza(state: SchedeContattoStateModel): number {
-        return state.idSchedeContattoCompetenza.length;
     }
 
     @Selector()
@@ -227,43 +198,36 @@ export class SchedeContattoState {
                     break;
             }
         }
+        const classificazione = state.tabAttivo;
         const filters = {
             search,
             gestita,
-            rangeVisualizzazione: rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre ? rangeVisualizzazione : null
+            rangeVisualizzazione: rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre ? rangeVisualizzazione : null,
+            classificazione
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: boxesVisibili ? 13 : 15
+            pageSize: boxesVisibili ? 11 : 14
         } as PaginationInterface;
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch([
-                new SetListaSchedeContatto(response.dataArray),
-                new PatchPagination(response.pagination),
-                new StopLoadingSchedeContatto()
-            ]);
+            const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+            const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+            if (schedeContattoActive || chiamataActive) {
+                dispatch([
+                    new SetListaSchedeContatto(response.dataArray),
+                    new PatchPagination(response.pagination),
+                ]);
+            }
+            dispatch(new StopLoadingSchedeContatto());
         });
     }
 
     @Action(SetListaSchedeContatto)
     setListaSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto): void {
         patchState({
-            schedeContatto: action.schedeContatto
+            schedeContatto: action.schedeContatto,
+            idVisualizzati: action.schedeContatto.map(value => value.codiceScheda)
         });
-        dispatch(new GeneraListaSchedeContatto());
-    }
-
-    @Action(GeneraListaSchedeContatto)
-    generaListaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>): void {
-        const state = getState();
-        if (state?.schedeContatto?.length > 0) {
-            patchState({
-                idSchedeContattoCompetenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Competenza).map(value => value.codiceScheda),
-                idSchedeContattoConoscenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Conoscenza).map(value => value.codiceScheda),
-                idSchedeContattoDifferibili: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Differibile).map(value => value.codiceScheda)
-            });
-            dispatch(new SetIdVisualizzati());
-        }
     }
 
     @Action(ClearListaSchedeContatto)
@@ -287,54 +251,38 @@ export class SchedeContattoState {
                 schedeContatto: append<SchedaContatto>((action.schedaContatto))
             })
         );
-        dispatch(new GeneraListaSchedeContatto());
     }
 
     @Action(RemoveSchedeContatto)
-    removeSchedeContatto({ setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto): void {
+    removeSchedeContatto({ getState, setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto): void {
         console.log(idSchedeRimosse);
-        idSchedeRimosse.forEach(idScheda => {
-            setState(
-                patch({
-                    schedeContatto: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
-                    idSchedeContattoCompetenza: removeItem<string>(id => id === idScheda),
-                    idSchedeContattoConoscenza: removeItem<string>(id => id === idScheda),
-                    idSchedeContattoDifferibili: removeItem<string>(id => id === idScheda),
-                    idVisualizzati: removeItem<string>(id => id === idScheda)
-                })
-            );
+        const state = getState();
+        idSchedeRimosse.forEach((idScheda: string) => {
+            const idVisualizzati = state.idVisualizzati;
+            const idPresente = idVisualizzati.filter((id: string) => id === idScheda)[0];
+            if (idPresente) {
+                setState(
+                    patch({
+                        schedeContatto: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
+                        idVisualizzati: removeItem<string>(id => id === idScheda)
+                    })
+                );
+            }
         });
 
     }
 
     @Action(SetTabAttivo)
     setTabAttivo({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetTabAttivo): void {
-        if (action.tabAttivo) {
-            patchState({
-                tabAttivo: action.tabAttivo,
-            });
+        patchState({
+            tabAttivo: action.tabAttivo,
+        });
+        if (action.tabAttivo !== ClassificazioneSchedaContatto.Tutte) {
             dispatch(new ToggleOpacitaSchedeContattoMarkers(true, action.tabAttivo));
         } else {
-            patchState({
-                tabAttivo: SchedeContattoStateDefaults.tabAttivo,
-            });
             dispatch(new ToggleOpacitaSchedeContattoMarkers(false));
         }
-        dispatch(new SetIdVisualizzati());
-    }
-
-    @Action(SetIdVisualizzati)
-    setIdVisualizzati({ getState, patchState }: StateContext<SchedeContattoStateModel>): void {
-        const state = getState();
-        if (state.tabAttivo) {
-            patchState({
-                idVisualizzati: state.schedeContatto.filter(scheda => scheda.classificazione === state.tabAttivo).map(value => value.codiceScheda)
-            });
-        } else {
-            patchState({
-                idVisualizzati: [...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili]
-            });
-        }
+        dispatch(new GetListaSchedeContatto());
     }
 
     @Action(ToggleCollapsed)
@@ -467,26 +415,7 @@ export class SchedeContattoState {
 
     @Action(SaveMergeSchedeContatto)
     saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto): void {
-        console.log('Id Schede contatto selezionate', action.schedeSelezionateId);
-        const state = getState();
-        const schedeSelezionate = state.schedeContatto.filter((value) => {
-            if (action.schedeSelezionateId.includes(value.codiceScheda)) {
-                return value;
-            }
-        }).sort((a, b) =>
-            (a.priorita < b.priorita) ? 1 :
-                (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
-        const mergeSchedeContatto: SchedaContatto = {
-            ...schedeSelezionate[0],
-            collegate: [...schedeSelezionate.slice(1).map(value => {
-                return {
-                    ...value,
-                    collegata: true
-                };
-            })]
-        };
-        this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe(() => {
-            console.log('Unione schede completata', mergeSchedeContatto);
+        this.schedeContattoService.mergeSchedeContatto(action.schedeSelezionateId).subscribe(() => {
             dispatch([
                 new ClearMergeSchedeContatto(),
                 new RefreshSchedeContattoMarkers(),
@@ -513,17 +442,40 @@ export class SchedeContattoState {
     openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC): void {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
-        this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaModalComponent,
-                { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
-            );
-            modal.componentInstance.schedaContatto = schedaContattoDetail;
-            modal.result.then(
-                () => {
-                },
-                () => dispatch(new ClearMarkerSCSelezionato())
-            );
-        });
+        const innerWidth = window.innerWidth;
+        if (innerWidth && innerWidth > 3700) {
+            this.ngZone.run(() => {
+                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                    {
+                        windowClass: 'xxlModal modal-holder modal-left',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    }
+                );
+                modal.componentInstance.schedaContatto = schedaContattoDetail;
+                modal.result.then(
+                    () => {
+                    },
+                    () => dispatch(new ClearMarkerSCSelezionato())
+                );
+            });
+        } else {
+            this.ngZone.run(() => {
+                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                    {
+                        windowClass: 'xxlModal modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    }
+                );
+                modal.componentInstance.schedaContatto = schedaContattoDetail;
+                modal.result.then(
+                    () => {
+                    },
+                    () => dispatch(new ClearMarkerSCSelezionato())
+                );
+            });
+        }
     }
 
     @Action(StartLoadingSchedeContatto)

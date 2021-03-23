@@ -4,8 +4,21 @@
     {{ filtro.descrizione | truncate:70 }}
 </button>
 
-<div *ngIf="useCheckbox">
+<div *ngIf="useCheckbox" class="d-inline-flex">
     <app-checkbox
             [checkboxState]="{id: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled}"
             [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
+  <button *ngIf="filtro.name === 'chiusi'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" ngbTooltip="Filtra in dettaglio" placement="right"
+          (click)="chiusiModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-calendar"></i></button>
+  <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" style="inline-size: max-content; height: max-content" ngbTooltip="Filtra in dettaglio" placement="right"
+          (click)="zonaEmergenzaModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-exclamation-triangle"></i></button>
+</div>
+<div *ngIf="filtro.name === 'chiusi' && periodoChiuse" class="mt-1 text-muted" style="cursor: none; font-size: 15px; display: grid">
+  <span *ngIf="periodoChiuse['data']"><b>Selezione:</b><br>Del {{periodoChiuse['data']}}</span>
+  <span *ngIf="periodoChiuse['daA']"><b>Selezione:</b><br>Periodo {{periodoChiuse['daA']}}</span>
+  <span *ngIf="periodoChiuse['turno']"><b>Selezione:</b><br>Turno {{periodoChiuse['turno']}}</span>
+</div>
+<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1 text-muted" style="cursor: none; font-size: 15px; display: grid">
+  <b>Selezione:</b>
+  <span *ngFor="let z of listaZoneEmergenzaSelezionate">{{ z }}</span>
 </div>

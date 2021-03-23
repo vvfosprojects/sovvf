@@ -14,9 +14,9 @@ import { SquadreComposizioneState } from '../../../../shared/store/states/squadr
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
-    RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione
+    ReducerSelectMezzoComposizione,
+    ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -30,13 +30,18 @@ import {
     DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
-  ClearSquadraComposizione,
-  HoverInSquadraComposizione,
-  HoverOutSquadraComposizione,
-  SelectSquadraComposizione,
-  UnselectSquadraComposizione
+    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione,
+    HoverInSquadraComposizione,
+    HoverOutSquadraComposizione,
+    SelectSquadraComposizione,
+    SelectSquadraComposizioneInRientro,
+    SelectSquadraComposizionePreAccoppiati,
+    UnselectSquadraComposizione,
+    UnselectSquadraComposizioneInRientro,
+    UnselectSquadraComposizionePreAccoppiati
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -47,6 +52,12 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import {
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione
+} from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -54,10 +65,6 @@ import { ResetPaginationComposizionePartenza } from '../../../../shared/store/ac
     styleUrls: ['./composizione-avanzata.component.css']
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
-
-    @Input() richiesta: SintesiRichiesta;
-    @Input() loadingInvioPartenza: boolean;
-    @Input() boxAttivi: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -114,8 +121,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
     pageSizeSquadre: number;
 
-    Composizione = Composizione;
-    subscription = new Subscription();
+
+    @Input() richiesta: SintesiRichiesta;
+    @Input() loadingInvioPartenza: boolean;
+    @Input() boxAttivi: boolean;
+    @Input() triageSummary: TriageSummary[];
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();
@@ -125,9 +137,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
+    Composizione = Composizione;
 
     ricercaSquadre: string;
     ricercaMezzi: string;
+
+    private subscription = new Subscription();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -179,7 +194,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                this.squadreComposizione = makeCopy(squadreComp);
+                if (squadreComp) {
+                    this.squadreComposizione = makeCopy(squadreComp);
+                }
             })
         );
         // Prendo la squadra selezionata
@@ -262,20 +279,148 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearBoxPartenze(),
-            new ResetPaginationComposizionePartenza()
+            new ResetPaginationComposizionePartenza(),
+            new SetRicercaMezziComposizione(undefined),
+            new SetRicercaSquadreComposizione(undefined),
         ]);
         this.subscription.unsubscribe();
     }
 
+    nightModeText(): string {
+        let value = '';
+        if (!this.nightMode) {
+            value = 'text-dark';
+        } else if (this.nightMode) {
+            value = 'text-white';
+        }
+        return value;
+    }
+
+    checkSquadraSelezione(idSquadra: string): boolean {
+        let squadraSelezionata = false;
+        if (this.idSquadreSelezionate) {
+            this.idSquadreSelezionate.forEach((id: string) => {
+                if (id === idSquadra) {
+                    squadraSelezionata = true;
+                }
+            });
+        }
+        return squadraSelezionata;
+    }
+
+    checkDoubleDividi(box: BoxPartenza): boolean {
+        if (box.squadreComposizione && box.squadreComposizione.length === 1) {
+            const id = box.squadreComposizione[0].id;
+            let inputVec = [];
+            inputVec = this.boxPartenzaList.slice().reverse();
+            const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
+            return vec && vec.length > 1 && vec.reverse().findIndex(x => x === box) === 0;
+        } else {
+            return false;
+        }
+    }
+
+    checkSquadraHover(idSquadra: string): boolean {
+        let squadraHover = false;
+        if (this.idSquadraHover && this.idSquadraHover === idSquadra) {
+            squadraHover = true;
+        }
+        return squadraHover;
+    }
+
+    checkMezzoSelezione(idMezzo: string): boolean {
+        let mezzoSelezionato = false;
+        if (this.idMezzoSelezionato && this.idMezzoSelezionato === idMezzo) {
+            mezzoSelezionato = true;
+        }
+        return mezzoSelezionato;
+    }
+
+    checkMezzoHover(idMezzo: string): boolean {
+        let mezzoHover = false;
+        if (this.idMezzoHover && this.idMezzoHover === idMezzo) {
+            mezzoHover = true;
+        }
+        return mezzoHover;
+    }
+
+    getSoccorsoAereoTriage(): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
+        if (!!this.triageSummary) {
+            let soccorsoAereoTriage: string;
+            for (const summary of this.triageSummary) {
+                const soccorsoAereo = summary.soccorsoAereo;
+                if (soccorsoAereo) {
+                    soccorsoAereoTriage = soccorsoAereo;
+                }
+            }
+            switch (soccorsoAereoTriage) {
+                case NecessitaSoccorsoAereoEnum.NonNecessario:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.NonNecessario,
+                        value: 1
+                    };
+                case NecessitaSoccorsoAereoEnum.Utile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.Utile,
+                        value: 2
+                    };
+                case NecessitaSoccorsoAereoEnum.MoltoUtile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.MoltoUtile,
+                        value: 3
+                    };
+                case NecessitaSoccorsoAereoEnum.Indispensabile:
+                    return {
+                        desc: NecessitaSoccorsoAereoEnum.Indispensabile,
+                        value: 4
+                    };
+            }
+        }
+        return {
+            desc: 'Non Impostata',
+            value: 0
+        };
+    }
+
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        this.store.dispatch([
-            new ReducerSelectMezzoComposizione(mezzoComposizione),
-        ]);
+        this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
+    }
+
+    mezzoSelezionatoInRientro(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch(new ReducerSelectMezzoComposizioneInRientro(mezzoComposizione));
+    }
+
+    mezzoSelezionatoPreAccoppiati(mezzoComposizione: MezzoComposizione): void {
+        this.store.dispatch(new ReducerSelectMezzoComposizionePreAccoppiati(mezzoComposizione));
     }
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
-        this.store.dispatch(new UnselectMezzoComposizione());
-        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato());
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new RemoveMezzoBoxPartenzaSelezionato()
+        ]);
+        this.onClearDirection();
+    }
+
+    mezzoDeselezionatoInRientro(mezzoComposizione: MezzoComposizione): void {
+        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new ClearSelectedSquadreComposizione(),
+            new RemoveBoxPartenza(boxPartenzaSelezionato),
+            new GetListeComposizioneAvanzata()
+        ]);
+        this.onClearDirection();
+    }
+
+    mezzoDeselezionatoPreAccoppiati(mezzoComposizione: MezzoComposizione): void {
+        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new ClearSelectedSquadreComposizione(),
+            new RemoveBoxPartenza(boxPartenzaSelezionato),
+            new GetListeComposizioneAvanzata()
+        ]);
         this.onClearDirection();
     }
 
@@ -302,8 +447,34 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
+    squadraSelezionataInRientro(squadraComposizione: SquadraComposizione): void {
+        if (squadraComposizione) {
+            this.store.dispatch([
+                new SelectSquadraComposizioneInRientro(squadraComposizione),
+            ]);
+        }
+    }
+
+    squadraSelezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
+        if (squadraComposizione) {
+            this.store.dispatch([
+                new SelectSquadraComposizionePreAccoppiati(squadraComposizione),
+            ]);
+        }
+    }
+
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+    }
+
+    squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+    }
+
+    squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
     }
 
@@ -333,16 +504,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
-    checkSquadraSelezione(idSquadra: string): boolean {
-        let squadraSelezionata = false;
-        this.idSquadreSelezionate.forEach((id: string) => {
-            if (id === idSquadra) {
-                squadraSelezionata = true;
-            }
-        });
-        return squadraSelezionata;
-    }
-
     boxPartenzaSelezionato(boxPartenza: BoxPartenza): void {
         // this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
     }
@@ -358,48 +519,25 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         }
     }
 
+    squadraShortcut(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new AddBoxPartenza());
+        this.dopoAggiungiBoxPartenza();
+        this.store.dispatch(new SelectSquadraComposizione(squadraComposizione, true));
+    }
+
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
-        if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
-            const mezzoComp = boxPartenza.mezzoComposizione;
-            this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
-        } else {
-            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
-        }
+        this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         this.onClearDirection();
+        this.store.dispatch(new GetListeComposizioneAvanzata());
     }
 
     dopoAggiungiBoxPartenza(): void {
         this.boxPartenzaList.forEach(boxPartenza => {
             if (boxPartenza.mezzoComposizione) {
-                // const mezzoComp = boxPartenza.mezzoComposizione;
                 this.store.dispatch(new DeselectBoxPartenza(boxPartenza));
             }
             this.onClearDirection();
         });
-    }
-
-    // Interazione con Mappa
-    mezzoCoordinate(obj: MezzoDirection): void {
-        if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
-            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
-                const direction: DirectionInterface = {
-                    origin: {
-                        lat: obj.coordinateMezzo.latitudine,
-                        lng: obj.coordinateMezzo.longitudine
-                    },
-                    destination: {
-                        lat: this.richiesta.localita.coordinate.latitudine,
-                        lng: this.richiesta.localita.coordinate.longitudine
-                    },
-                    isVisible: true
-                };
-
-                this.sendDirection.emit(direction);
-            }
-        } else {
-            this.onClearDirection();
-            console.error('coordinate mezzo / coordinate richiesta non presenti');
-        }
     }
 
     confermaPartenzeInViaggio(): void {
@@ -430,41 +568,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
         this.store.dispatch([
-          new ConfirmPartenze(partenzeObj),
-          new ClearSquadraComposizione()
-          ]);
-    }
-
-    confermaPartenzeInUscita(): void {
-        const partenze = makeCopy(this.boxPartenzaList);
-        const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {
-                mezzo: null,
-                squadre: null
-            };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj.mezzo = null;
-            }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj.squadre = [];
-            }
-            return rObj;
-        });
-        const partenzeObj: ConfermaPartenze = {
-            partenze: partenzeMappedArray,
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        this.store.dispatch([
-          new ConfirmPartenze(partenzeObj),
-          new ClearSquadraComposizione()]);
+            new ConfirmPartenze(partenzeObj),
+            new ClearSquadraComposizione()
+        ]);
     }
 
     onClearDirection(): void {
@@ -488,5 +594,33 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             }
         };
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
+    }
+
+    // Interazione con Mappa
+    mezzoCoordinate(obj: MezzoDirection): void {
+        if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
+            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
+                const direction: DirectionInterface = {
+                    origin: {
+                        lat: obj.coordinateMezzo.latitudine,
+                        lng: obj.coordinateMezzo.longitudine
+                    },
+                    destination: {
+                        lat: this.richiesta.localita.coordinate.latitudine,
+                        lng: this.richiesta.localita.coordinate.longitudine
+                    },
+                    isVisible: true
+                };
+
+                this.sendDirection.emit(direction);
+            }
+        } else {
+            this.onClearDirection();
+            console.error('coordinate mezzo / coordinate richiesta non presenti');
+        }
+    }
+
+    mezzoCoordinateClear(): void {
+        this.onClearDirection();
     }
 }

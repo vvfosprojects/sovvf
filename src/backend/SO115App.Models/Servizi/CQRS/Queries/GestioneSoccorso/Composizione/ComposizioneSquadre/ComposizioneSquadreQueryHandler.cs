@@ -17,11 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
 using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
 {

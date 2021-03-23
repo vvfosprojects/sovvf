@@ -10,11 +10,11 @@ namespace SO115App.SignalR.Sender.GestioneFonogramma
     public class NotificationAddFonogramma : INotifyAddFonogramma
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenzaByCodice;
 
         public NotificationAddFonogramma(IHubContext<NotificationHub> notificationHubContext,
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenzaByCodice)
         {
             _notificationHubContext = notificationHubContext;

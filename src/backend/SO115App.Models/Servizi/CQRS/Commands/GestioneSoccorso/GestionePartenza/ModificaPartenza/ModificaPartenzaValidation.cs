@@ -12,8 +12,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class ModificaPartenzaValidation : ICommandValidator<ModificaPartenzaCommand>
     {
-        IGetRichiestaById _getRichiesta;
-        public ModificaPartenzaValidation(IGetRichiestaById getRichiesta) => _getRichiesta = getRichiesta;
+        IGetRichiesta _getRichiesta;
+        public ModificaPartenzaValidation(IGetRichiesta getRichiesta) => _getRichiesta = getRichiesta;
 
         public IEnumerable<ValidationResult> Validate(ModificaPartenzaCommand command)
         {

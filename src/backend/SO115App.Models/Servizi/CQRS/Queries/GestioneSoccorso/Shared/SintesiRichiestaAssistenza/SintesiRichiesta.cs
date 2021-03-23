@@ -17,26 +17,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Fonogramma;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Triage;
+using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
-using SO115App.Models.Classi.Fonogramma;
-using SO115App.Models.Classi.RubricaDTO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -53,7 +51,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             this.ZoneEmergenza = new string[0];
             this.Tags = new HashSet<string>();
-            this.Eventi = new List<Evento>();
+            this.Eventi = new List<EventoSintesiRichiesta>();
             this.Competenze = new List<Sede>();
         }
 
@@ -140,6 +138,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public Priorita PrioritaRichiesta { get; set; }
 
         public List<Tipologia> Tipologie { get; set; }
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
@@ -271,18 +270,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
-                var ultimoEventoFonogramma = this.Eventi
-                    .LastOrDefault(e => e is IFonogramma);
+                //if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
+                //var ultimoEventoFonogramma = this.Eventi
+                //    .LastOrDefault(e => e is IFonogramma);
 
-                switch (ultimoEventoFonogramma)
-                {
-                    case FonogrammaInviato _:
-                        return new Classi.Soccorso.Fonogramma.Inviato();
+                //switch (ultimoEventoFonogramma)
+                //{
+                //    case FonogrammaInviato _:
+                //        return new Classi.Soccorso.Fonogramma.Inviato();
 
-                    case InviareFonogramma _:
-                        return new Classi.Soccorso.Fonogramma.DaInviare();
-                }
+                //    case InviareFonogramma _:
+                //        return new Classi.Soccorso.Fonogramma.DaInviare();
+                //}
 
                 return new Classi.Soccorso.Fonogramma.NonNecessario();
             }
@@ -320,7 +319,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista eventi associato alla richiesta
         /// </summary>
-        public List<Evento> Eventi { get; set; }
+        public List<EventoSintesiRichiesta> Eventi { get; set; }
 
         public virtual bool Presidiata
         {
@@ -338,8 +337,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                List<ComposizionePartenze> eventoAssegnata = new List<ComposizionePartenze>();
+                List<ComposizionePartenze> PartenzeSelect = new List<ComposizionePartenze>();
+                if (this.Partenze != null)
+                {
+                    eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                    PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                }
 
                 foreach (var partenza in PartenzeSelect)
                 {
@@ -351,7 +355,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 {
                     return Costanti.RichiestaChiusa;
                 }
-                if (eventoAssegnata.Count > 0)
+                if (eventoAssegnata.Count > 0 || (Partenze != null && Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0))
                 {
                     return Costanti.RichiestaAssegnata;
                 }
@@ -372,5 +376,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
 
         public Fonogramma Fonogramma { get; set; }
         public List<int> listaEnti { get; set; }
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
     }
 }

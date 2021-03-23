@@ -25,7 +25,6 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -220,7 +219,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceFiscale">codice fiscale operatore</param>
         /// <param name="rangeOre">range di ore</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre)
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione)
         {
             var listaSchedeFiltrate = GetList();
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
@@ -230,6 +229,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             {
                 var dataCorrente = DateTime.UtcNow.AddHours(-(double)rangeOre);
                 listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.DataInserimento >= dataCorrente);
+            }
+
+            if (!classificazione.Equals("Tutte"))
+            {
+                listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Classificazione.Equals(classificazione));
             }
 
             return listaSchedeFiltrate;
@@ -290,15 +294,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 TotaleSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchede.Count,
-                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeCompetenza.Count,
+                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
                 },
                 ConoscenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeConoscenza.Count,
+                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
                 },
                 DifferibileSchede = new ContatoreNue
                 {
@@ -306,6 +312,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                     ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
                 }
             };
+        }
+
+        /// <summary>
+        ///   Metodo che restituisce tutte le schede contatto indicate nell'array di codici schede
+        ///   in input
+        /// </summary>
+        /// <param name="codiciScheda">Array di codici scheda</param>
+        /// <returns>Una lista di SchedaContatto</returns>
+        public List<SchedaContatto> GetSchedeContattoByCodiciScheda(List<string> codiciScheda)
+        {
+            return GetList().FindAll(x => codiciScheda.Any(cod => cod.Equals(x.CodiceScheda)));
         }
     }
 }

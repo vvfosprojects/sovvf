@@ -28,7 +28,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         /// <summary>
         ///   Json Welcome Richieste
         /// </summary>
-        public SO115App.Models.Classi.Condivise.Welcome WelcomeRes
-        { get; set; }
+        public SO115App.Models.Classi.Condivise.Welcome WelcomeRes { get; set; }
     }
 }

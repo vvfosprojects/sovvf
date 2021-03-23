@@ -18,11 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
-using SO115App.FakePersistence.JSon.GestioneIntervento;
-using SO115App.FakePersistenceJSon.Box;
-using SO115App.FakePersistenceJSon.Composizione;
-using SO115App.FakePersistenceJSon.GestioneMezzi;
-using SO115App.FakePersistenceJSon.Marker;
 
 namespace SO115App.CompositionRoot
 {

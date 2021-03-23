@@ -1,0 +1,250 @@
+<div class="modal-header" [ngClass]="onNightMode()">
+  <h4 class="modal-title font-weight-bold">
+    {{ 'DETTAGLIO RICHIESTA SOCCORSO AEREO' }}
+  </h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
+          (click)="chiudiModalSoccorsoAereo('ko')">
+    <i class="fa fa-times text-danger"></i>
+  </button>
+</div>
+
+<div class="modal-body pb-3" [ngClass]="onNightMode()">
+  <div class="row" style="font-size: x-large">
+    <div class="col-4">
+      <span (click)="mostraAttivita = true" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="mostraAttivita" [class.badge-light]="!mostraAttivita"
+            style="padding: 10px; margin-left: 10px;margin-right: 2px; opacity: 0.8">Attività</span>
+      <span (click)="mostraAttivita = false" class="badge cursor-pointer h6 mb-0 badge-menu" [class.badge-success]="!mostraAttivita" [class.badge-light]="mostraAttivita"
+            style="padding: 10px; opacity: 0.8">Eventi</span>
+    </div>
+    <div class="clearfix d-inline-flex">
+      <span class="h6 w-100 mb-0" [ngClass]="iconNightMode()" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
+    </div>
+  </div>
+  <div class="row my-4 align-items-center">
+    <div class="col-4">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-hashtag fa-fw mr-1" [ngClass]="iconNightMode()"
+           ngbTooltip="Identificativo richiesta" placement="bottom"></i>
+        <a class="h6" [ngClass]="textNightMode()">
+          <span *ngIf="richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
+            <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codiceRichiesta.slice(richiesta?.codiceRichiesta.length - 5)}}</span>
+          </span>
+          <span *ngIf="!richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codice.slice(0, -5) }}
+            <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codice.slice(richiesta?.codice.length - 5)}}</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-rss fa-fw mr-1" [ngClass]="iconNightMode()"
+           ngbTooltip="Data Trasmissione" placement="bottom"></i>
+        <a class="h6" [ngClass]="textNightMode()">
+          <span class="font-xxlarge"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
+        <i class="fa fa-address-book fa-fw mr-1" [ngClass]="iconNightMode()"
+           ngbTooltip="Operatore SO115" placement="bottom"></i>
+        <a class="h6" [ngClass]="textNightMode()">
+          <span *ngIf="richiesta?.operatore" class="font-xxlarge">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETTAGLIO -->
+  <span *ngIf="mostraAttivita">
+      <div class="row">
+    <div class="w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Dettaglio
+      <i (click)="onShowDettaglio()" [class.fa-chevron-up]="!showDettaglio" [class.fa-chevron-down]="showDettaglio" class="fa pt-1"
+         style="cursor: pointer; float: right"></i>
+    </div>
+  </div>
+  <div *ngIf="showDettaglio" class="row my-3">
+    <div class="row w-100">
+      <div class="clearfix input-soccorso-format mr-3" style="width: 51%; margin-left: 2.5rem">
+        <label for="localita" class="d-none">Località</label>
+        <i class="fa fa-map-marker fa-fw mr-1" [ngClass]="iconNightMode()" ngbTooltip="Località" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <input id="localita" [(ngModel)]="richiesta.localita.indirizzo" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
+      </div>
+      <div class="clearfix input-soccorso-format mr-2" style="width: 20%">
+        <label for="latitudine" ngbTooltip="Latitudine" placement="bottom" style="font-size: 140%; font-weight: 400; padding-right: 5px">Lat.</label>
+        <input id="latitudine" [(ngModel)]="dettaglioAFM.lat" type="text" placeholder="000.00" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix input-soccorso-format mx-2" style="width: 20%">
+        <label for="longitudine" ngbTooltip="Longitudine" placement="bottom"  style="font-size: 140%; font-weight: 400; padding-right: 5px">Long.</label>
+        <input id="longitudine" [(ngModel)]="dettaglioAFM.lng" type="text" placeholder="000.00" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix input-soccorso-format">
+      </div>
+    </div>
+    <div class="row w-100 my-4 d-inline-flex">
+      <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
+        <label for="tipologia" class="d-none">Tipologia Intervento</label>
+        <i class="fa fa-exclamation-triangle fa-fw mx-1" [ngClass]="iconNightMode()" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
+        <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
+      </div>
+      <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
+        <label for="richiedente" class="d-none">Richiedente</label>
+        <i class="fa fa-address-book-o fa-fw mx-3" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" [ngClass]="iconNightMode()" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
+      </div>
+      <div class="clearfix input-soccorso-format" style="width: 20.5%" >
+        <label for="telefono" class="d-none">Telefono</label>
+        <i class="fa fa-phone fa-fw mx-1" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" [ngClass]="iconNightMode()" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
+      </div>
+    </div>
+    <div class="row d-inline-flex w-100">
+      <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
+        <label class="d-none" for="noteintervento">Note Intervento</label>
+        <i class="fa fa-sticky-note-o fa-fw mx-1" ngbTooltip="Note Intervento" [ngClass]="iconNightMode()" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
+        <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
+                  placeholder="Nessuna Nota Pubblica disponibile"
+                  class="form-control font-xlarge area-size" disabled></textarea>
+      </div>
+      <div class="clearfix" style="text-align: center; width: 44%">
+        <label class="d-none" for="motivazioneRichiesta">Motivazione della richiesta</label>
+        <textarea id="motivazioneRichiesta" type="text" [(ngModel)]="motivazione"
+                  placeholder="Inserisci motivazione della richiesta" [class.mod-success]="modificaMotivazione && motivazione.length > 0"
+                  [class.mod-error]="modificaMotivazione && motivazione.length <= 0"
+                  class="form-control font-xlarge area-size" [disabled]="!modificaMotivazione"></textarea>
+      </div>
+      <button *ngIf="!modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
+              (click)="onModificaMotivazione()" ngbTooltip="Modifica Motivazione richiesta" placement="bottom">
+        <i class="fa fa-pencil-square-o fa-fw mx-1" style="font-size: 150%; transform: translate(-18px, 0px);"></i>
+      </button>
+      <div *ngIf="modificaMotivazione" style="display: inline-grid">
+        <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="onAnnullaModificaMotivazione()" ngbTooltip="Annulla Modifiche" placement="top">
+          <i class="fa fa-times fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
+        <button *ngIf="!submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="motivazione.length <= 0">
+          <i class="fa fa-check fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
+        <button *ngIf="submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
+                (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="true">
+          <i class="fa fa-spin fa-spinner fa-spin-mod fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  </span>
+  <!-- ATTIVITA' -->
+  <span *ngIf="mostraAttivita">
+  <div class="row">
+    <div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Attività
+    <i (click)="onShowAttivita()" [class.fa-chevron-up]="!showAttivita" [class.fa-chevron-down]="showAttivita" class="fa pt-1"
+       style="cursor: pointer; float: right"></i>
+    </div>
+  </div>
+
+  <table *ngIf="showAttivita" class="table table-bordered table-hover mt-2">
+    <thead class="thead-light">
+    <tr>
+      <th scope="col">Stato</th>
+      <th scope="col">Aggiornata alle</th>
+      <th scope="col">Nucleo</th>
+      <th scope="col">Velivolo</th>
+      <th scope="col">Categorie</th>
+      <th scope="col">Tempo Stimato</th>
+      <th scope="col">Accettazione</th>
+      <th scope="col">Decollo</th>
+      <th scope="col">Arrivo</th>
+      <th scope="col">Rientro</th>
+      <th scope="col">Sede</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of dettaglioAFM?.activities; index as i">
+      <th scope="row">{{a.activityStatusType}}</th>
+      <td>{{a.statusDatetime.substring(0, 16).split('T')}}</td>
+      <td>{{a.department}}</td>
+      <td>{{a.aircraft.regMark}}</td>
+      <td>{{a.aircraft.rescueCategories ? a.aircraft.rescueCategories : ''}}</td>
+      <td>{{a.aircraft.estimatedFlightTime ? a.aircraft.estimatedFlightTime : ''}}</td>
+      <td>{{a.acceptanceDatetime ? a.acceptanceDatetime : ''}}</td>
+      <td>{{a.takeoffDatetime ? a.takeoffDatetime : ''}}</td>
+      <td>{{a.rescueArriveDatetime ? a.rescueArriveDatetime : ''}}</td>
+      <td>{{a.rescueLeaveDatetime ? a.rescueLeaveDatetime : ''}}</td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="annullamentoFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento non riuscita.
+      <span (click)="annullamentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  <div *ngIf="modificaFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica non riuscita.
+      <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  </span>
+  <!-- EVENTI -->
+  <span *ngIf="!mostraAttivita">
+  <div class="row">
+    <div class="mt-2 w-100 bg-secondary text-white font-xlarge font-weight-bold" style="padding-left: 15px; padding-right: 15px">Eventi</div>
+  </div>
+
+  <table class="table table-bordered table-hover mt-2">
+    <thead class="thead-light">
+    <tr>
+      <th scope="col">Orario</th>
+      <th scope="col">Evento</th>
+      <th scope="col">Stato Attività</th>
+      <th scope="col">ID Attività</th>
+      <th scope="col">Nucleo</th>
+      <th scope="col">Velivolo</th>
+      <th scope="col">Operatore</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of eventiAFM?.events; index as i">
+      <th scope="row">{{a.statusDatetime.substring(0, 16).split('T')}}</th>
+      <td>{{a.event}}</td>
+      <td>{{a.activityStatusType}}</td>
+      <td>{{a.activityID}}</td>
+      <td>{{a.department}}</td>
+      <td>{{a.aircraft}}</td>
+      <td>{{a.operatorName}} {{a.operatorSurname}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="annullamentoFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di annullamento richiesta AFM non riuscita.
+      <span (click)="annullamentoFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  <div *ngIf="modificaFallito" class="row pb-1">
+    <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">Richiesta di modifica della motivazione richiesta AFM non riuscita.
+      <span (click)="modificaFallito = false" style="float: right; cursor: pointer;">X</span></div>
+  </div>
+  </span>
+
+</div>
+
+<div class="modal-footer" [ngClass]="onNightMode()">
+  <div class="row w-100">
+    <div class="col-12 text-right">
+      <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2"
+              (click)="chiudiModalSoccorsoAereo('ok')">
+        {{ 'Annulla Richiesta'.toLocaleUpperCase() }}
+      </button>
+      <button *ngIf="submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2" [disabled]="true">
+        <i class="fa fa-spin fa-spinner mr-1"></i>
+        {{ 'Annulamento In Corso' | uppercase }}
+      </button>
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
+              (click)="chiudiModalSoccorsoAereo('ko')">
+        {{ 'Chiudi'.toLocaleUpperCase() }}
+      </button>
+    </div>
+  </div>
+</div>

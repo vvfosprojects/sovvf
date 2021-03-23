@@ -26,8 +26,6 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import { CleaRicercaTrasferimentoChiamata } from '../../trasferimento-chiamata/store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
-import { PatchPagination } from '../../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -37,14 +35,18 @@ import { PatchPagination } from '../../../shared/store/actions/pagination/pagina
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    totalItems: number;
     @Select(PaginationState.page) page$: Observable<number>;
+    page: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
@@ -55,6 +57,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
 
+
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
 
@@ -63,6 +66,9 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modalService: NgbModal) {
         this.getRicerca();
+        this.getPageSize();
+        this.getTotalItems();
+        this.getPage();
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
@@ -90,7 +96,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
-                if (this.mezziInServizio && this.mezziInServizio.length > 0) {
+                if (this.mezziInServizio?.length) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
                     this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
                 } else {
@@ -120,6 +126,30 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaMezziInServizio(page));
     }
 
+    getPageSize(): void {
+        this.subscriptions.add(
+            this.pageSize$.subscribe((pageSize: number) => {
+                this.pageSize = pageSize;
+            })
+        );
+    }
+
+    getTotalItems(): void {
+        this.subscriptions.add(
+            this.totalItems$.subscribe((totalItems: number) => {
+                this.totalItems = totalItems;
+            })
+        );
+    }
+
+    getPage(): void {
+        this.subscriptions.add(
+            this.page$.subscribe((page: number) => {
+                this.page = page;
+            })
+        );
+    }
+
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
@@ -137,24 +167,42 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ActionMezzo(mezzoAction));
     }
 
+    /* Apre il modal per visualizzare la richiesta */
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
-        this.modalService.open(SintesiRichiestaModalComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        if (this.doubleMonitor) {
+            this.modalService.open(SintesiRichiestaModalComponent, {
+                windowClass: 'xxlModal modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        } else {
+            this.modalService.open(SintesiRichiestaModalComponent, {
+                windowClass: 'xxlModal modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        }
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(mezzo: Mezzo): void {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        let modal;
+        if (this.doubleMonitor) {
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        } else {
+            modal = this.modalService.open(EventiRichiestaComponent, {
+                windowClass: 'xlModal modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
@@ -172,9 +220,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
     }
 
-    tornaIndietro(): void {
-        this.store.dispatch(new ToggleMezziInServizio());
-    }
+    // Todo: da eliminare
+    // tornaIndietro(): void {
+    //     this.store.dispatch(new ToggleMezziInServizio());
+    // }
 
 }
 

@@ -10,17 +10,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
     listaChangelog: [
         {
           nomeVersione: 'Versione del 5 novembre 2020',
-          dataRilascio: '05/11/2020 13:00',
-          capitoli: [
-            {
-              titolo: 'Descrizione aggiornamento in arrivo.',
-              descrizioni: [
-                {
-                  testo: 'Dettagli nuovo aggiornamento in arrivo, si prega di attendere.',
-                },
-              ]
-            },
-          ]
+          dataRilascio: '05/11/2020 13:00'
         },
         {
             nomeVersione: 'Versione del 29 settembre 2020',

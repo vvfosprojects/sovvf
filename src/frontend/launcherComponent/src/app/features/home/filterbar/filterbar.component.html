@@ -1,18 +1,17 @@
-<div class="row">
-    <div [ngClass]="(filterBarCol$ | async)">
-        <div class="row">
-            <div class="col-3 text-left">
-                <app-tasto-chiamata-group>
-                    <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
-                                        [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
-                                        (startChiamata)="toggleChiamata()">
-                    </app-tasto-chiamata>
-                    <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
-                                               [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
-                </app-tasto-chiamata-group>
+<div class="clearfix">
+    <div class="float-left">
+        <div class="clearfix">
+            <div class="float-left mr-4">
+                <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
+                                    [richiestaModifica]="richiestaModifica$ | async"
+                                    [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
+                                    (startChiamata)="toggleChiamata()">
+                </app-tasto-chiamata>
             </div>
-            <div class="col-2 pl-0 text-left">
+            <div class="float-left mr-3">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
+                                      [doubleMonitor]="doubleMonitor"
+                                      [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [disableFilters]="loadingRichieste$ | async"
@@ -21,49 +20,49 @@
                                       (filtriReset)="eliminaFiltriAttiviRichieste()">
                 </app-filtri-richieste>
                 <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
+                                            [nightMode]="nightMode"
                                             [filtri]="filtriSchedeContatto$ | async"
                                             [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
+                                            [disableFilters]="loadingSchedeContatto$ | async"
                                             (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
                                             (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
                 </app-filtri-schede-contatto>
                 <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
                                            [filtri]="filtriMezziInServizio$ | async"
+                                           [nightMode]="nightMode"
                                            [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
+                                           [disableFilters]="loadingMezziInServizio$ | async"
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
                                            (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
                 </app-filtri-mezzi-servizio>
             </div>
-            <div class="col-7 pl-0">
-                <app-ricerca *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
-                             [ricerca]="ricercaRichieste$ | async"
-                             [debounce]="true"
-                             [placeholder]="getRicercaPlaceholder()"
-                             [disableSearch]="!!(richiesteStatus$ | async)"
-                             (search)="onSearch($event)">
+            <div class="float-left mr-4">
+                <app-ricerca
+                        *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
+                        [ricerca]="ricerca$ | async"
+                        [debounce]="true"
+                        [placeholder]="getRicercaPlaceholder()"
+                        [disableSearch]="!!(richiesteStatus$ | async)"
+                        (search)="onSearch($event)">
                 </app-ricerca>
             </div>
         </div>
     </div>
-    <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false)" class="col-2">
-        <div class="row">
-            <div class="col-12">
+    <div class="float-right">
+        <div class="clearfix">
+            <div *ngIf="(((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && ((mapsStatus$ | async) || doubleMonitor)"
+                 class="float-left mr-3">
+                <app-filtri-mappa [nightMode]="nightMode"></app-filtri-mappa>
+            </div>
+            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && !doubleMonitor"
+                 class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
-                               [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
-                               [mezziInServizioActive]="viewState?.mezziInServizio.active"
-                               (buttonView)="switchView($event)"
-                               (optionRichieste)="onOptionsRichieste($event)"
+                               [nightMode]="nightMode"
                                [stateSwitch]="(stateSwitch$ | async)"
                                [mapStatus]="(mapsStatus$ | async)"
-                               (toggleMeteo)="onMeteoSwitch($event)">
+                               (toggleMeteo)="onMeteoSwitch($event)"
+                               (buttonView)="switchView($event)">
                 </app-view-mode>
-            </div>
-        </div>
-    </div>
-    <div [ngClass]="(filterBarCol$ | async)">
-        <div class="row">
-            <div class="offset-7"></div>
-            <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
-                <app-filtri-mappa></app-filtri-mappa>
             </div>
         </div>
     </div>

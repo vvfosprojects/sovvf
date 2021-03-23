@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
@@ -7,6 +7,7 @@ import { Select, Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { Observable } from 'rxjs';
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -17,9 +18,11 @@ export class ListaPartenzeComponent {
 
     @Input() idDaSganciare: string;
     @Input() partenze: Partenza[];
+    @Input() listaEventi: EventoMezzo[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
@@ -57,4 +60,5 @@ export class ListaPartenzeComponent {
             this.loadingActionMezzoArray.shift();
         }
     }
+
 }

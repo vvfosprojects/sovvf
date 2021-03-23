@@ -28,10 +28,10 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 })
 export class MapsComponent implements OnInit, OnDestroy {
 
-    centroMappa: CentroMappa;
-    subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() boxAttivi: boolean;
+
+    @Output() mapFullLoaded = new EventEmitter<boolean>();
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
@@ -43,7 +43,9 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
 
     mapsFullyLoaded = false;
-    @Output() mapFullLoaded = new EventEmitter<boolean>();
+    centroMappa: CentroMappa;
+
+    private subscription: Subscription = new Subscription();
 
     constructor() {
         this.subscription.add(this.centroMappa$.subscribe((r: CentroMappa) => {
@@ -52,12 +54,12 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-            console.log('Componente Maps creato');
+        console.log('Componente Maps creato');
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-            console.log('Componente Maps distrutto');
+        console.log('Componente Maps distrutto');
     }
 
     mapIsLoaded(event): void {

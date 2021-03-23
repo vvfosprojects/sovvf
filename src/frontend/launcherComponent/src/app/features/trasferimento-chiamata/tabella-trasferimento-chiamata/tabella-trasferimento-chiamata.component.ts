@@ -14,8 +14,21 @@ export class TabellaTrasferimentoChiamataComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() listaTrasferimentiChiamate: TrasferimentoChiamata[];
+    @Input() nightMode: boolean;
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
+    constructor() {
+    }
+
+    nightModeStyle(): string {
+        let value = '';
+        if (!this.nightMode) {
+            value = ' ';
+        } else if (this.nightMode) {
+            value = 'moon-text moon-card-light';
+        }
+        return value;
+    }
 }

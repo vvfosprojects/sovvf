@@ -18,7 +18,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte
                 if (command.Ente.CodCategoria == 0)
                     yield return new ValidationResult("Nessuna categoria selezionata");
 
-                if(command.Ente.Telefoni == null || command.Ente.Telefoni.Count == 0
+                if (command.Ente.Telefoni == null || command.Ente.Telefoni.Count == 0
                     || command.Ente.Telefoni.Any(c => c.Numero.ToList().Any(x => !new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', ' ' }.Contains(x))))
                     yield return new ValidationResult("Telefoni non validi");
 

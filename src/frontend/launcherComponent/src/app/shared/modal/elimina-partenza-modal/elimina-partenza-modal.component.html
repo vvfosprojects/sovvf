@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" style="font-weight: 700">
+    <h4 class="modal-title font-weight-bold">
         <!-- <i class="fa fa-fw fa-trash text-danger mr-1"></i> -->
         {{ 'Elimina Partenza' | uppercase }}
     </h4>
@@ -35,12 +35,12 @@
         </div>
     </form>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-lg btn-secondary text-right btn-no-hover" style="font-weight:600" (click)="onCancel()">
-        {{ 'Annulla' | uppercase }}
-    </button>
-    <button class="btn btn-lg btn-danger text-right btn-no-hover" style="font-weight:600" [disabled]="!eliminaPartenzaForm.valid"
+<div class="modal-footer" style="place-content: space-between">
+    <button class="btn btn-lg btn-danger btn-no-hover" style="font-weight:600" [disabled]="!eliminaPartenzaForm.valid"
             (click)="onSubmit()">
-        {{ 'Elimina Partenza' | uppercase }}
+      {{ 'Elimina Partenza' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary btn-no-hover" style="font-weight:600" (click)="onCancel()">
+        {{ 'Annulla' | uppercase }}
     </button>
 </div>

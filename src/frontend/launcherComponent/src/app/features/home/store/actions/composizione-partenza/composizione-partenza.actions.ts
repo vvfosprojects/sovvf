@@ -39,8 +39,8 @@ export class ConfirmPartenze {
     }
 }
 
-export class RichiestaComposizione {
-    static readonly type = '[ComposizionePartenza] Nuova Composizione Partenza';
+export class SetRichiestaComposizione {
+    static readonly type = '[ComposizionePartenza] Set Richiesta Composizione';
 
     constructor(public richiesta: SintesiRichiesta) {
     }

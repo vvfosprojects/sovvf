@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper

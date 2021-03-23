@@ -5,10 +5,8 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
-import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
-import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -16,27 +14,32 @@ import { Partenza } from '../../../../shared/model/partenza.model';
     styleUrls: ['./lista-richieste.component.scss']
 })
 export class ListaRichiesteComponent {
+
     @Input() ricerca: any;
-    @Input() split: boolean;
     @Input() richieste: SintesiRichiesta[] = [];
     @Input() richiestaHover: SintesiRichiesta;
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
-    @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
+
     // Loading
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
+
     // Paginazione
     @Input() page: number;
     @Input() pageSize: number;
     @Input() totalItems: number;
+
     // FIltri Selezionati
     @Input() codiciFiltriSelezionati: string[];
+
+    // Night Mode
+    @Input() nightMode: boolean;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
@@ -63,7 +66,7 @@ export class ListaRichiesteComponent {
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
-    vociFiltroDefault = VociFiltroDefault;
+
     actionRichiestaArray: any[] = [];
 
     constructor() {
@@ -71,11 +74,11 @@ export class ListaRichiesteComponent {
 
     // tslint:disable-next-line:use-lifecycle-interface
     ngOnChanges(): void {
-      if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
-        this.actionRichiestaArray.push(this.loadingActionRichiesta);
-      } else if (!this.loadingActionRichiesta) {
-        this.actionRichiestaArray.shift();
-      }
+        if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
+            this.actionRichiestaArray.push(this.loadingActionRichiesta);
+        } else if (!this.loadingActionRichiesta) {
+            this.actionRichiestaArray.shift();
+        }
     }
 
     /* Gestisce il singolo click sulla richiesta */
@@ -136,16 +139,10 @@ export class ListaRichiesteComponent {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    /* NgClass List Height */
     heightControl(): string {
-        if (this.richieste.length > 0) {
-            return this.listHeightClass;
-        } else {
-            return 'd-none';
-        }
+        return this.listHeightClass;
     }
 
-    /* NgClass Card Status */
     cardClasses(r: SintesiRichiesta): any {
         const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
         const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;

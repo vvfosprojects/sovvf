@@ -1,3 +1,31 @@
-<button type="button" class="btn" (click)="chiamata()" [ngClass]="getClasses()" [disabled]="disabled">
-    <i class="fa fa-whatsapp mr-1"></i>Chiamata
-</button>
+<ng-template [ngIf]="!richiestaModifica && !getActive()">
+    <button type="button" class="btn font-weight-bolder btn-success font-xlarge" style="color: #fff"
+            [ngClass]="getClasses()"
+            [class.btn-no-hover]="getActive()"
+            [disabled]="disabled"
+            (click)="chiamata()">
+        <i class="fa fa-phone mr-1"></i>
+        {{ 'Nuova Chiamata' | uppercase }}
+    </button>
+</ng-template>
+<ng-template [ngIf]="!richiestaModifica && getActive()">
+    <div class="pl-2 font-xlarge">
+        <span class="d-inline-block mr-2 mb-0">
+            <i class="fa fa-phone mr-1"></i>
+            Stai inserendo una nuova chiamata
+        </span>
+    </div>
+</ng-template>
+<ng-template [ngIf]="!!richiestaModifica">
+    <div class="pl-2 font-xlarge">
+        <span class="d-inline-block mr-2 mb-0">
+            <i class="fa fa-edit mr-1"></i>
+            Stai modificando la richiesta
+            <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>
+        </span>
+        <span class="d-inline-block mb-0">
+            del giorno <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'dd-MM-yyyy' }}</b>
+            alle <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'HH:mm:ss' }}</b>
+        </span>
+    </div>
+</ng-template>

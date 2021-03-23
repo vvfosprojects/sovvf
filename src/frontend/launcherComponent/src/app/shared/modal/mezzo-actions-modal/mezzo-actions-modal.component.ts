@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -9,12 +9,16 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class MezzoActionsModalComponent implements OnInit {
 
-    public time = { hour: 13, minute: 30 };
+    public time = { hour: 13, minute: 30, second: 0 };
 
     timeActionForm: FormGroup;
+    todayDate;
+    navigation: 'select';
+    outsideDays: 'visible';
     submitted: boolean;
 
-    constructor(public modal: NgbActiveModal, private fb: FormBuilder) {
+    constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
+      this.todayDate = calendar.getToday();
     }
 
     ngOnInit(): void {
@@ -32,6 +36,7 @@ export class MezzoActionsModalComponent implements OnInit {
         const d = new Date();
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
     }
 
     onCancel(): void {
@@ -49,7 +54,7 @@ export class MezzoActionsModalComponent implements OnInit {
     }
 
     formatTimeForCallBack(): any {
-        return { oraEvento: this.time };
+        return { oraEvento: this.time, dataEvento: this.todayDate };
     }
 
 }

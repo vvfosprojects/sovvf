@@ -18,12 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using CQRS.Queries;
 using DomainModel.CQRS.Commands.GestioneFonogramma;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Fonogramma;
 using SO115App.Models.Classi.Utility;
-using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

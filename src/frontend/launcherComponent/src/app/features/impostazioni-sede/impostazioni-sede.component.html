@@ -1,0 +1,36 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div class="col-12 col-md-9 mx-auto mb-3" [class.text-white]="(nightMode$ | async)">
+            <h1>
+                <i class="fa fa-cogs mr-1"></i>
+                Impostazioni Sede
+            </h1>
+        </div>
+        <div class="col-12 col-md-9 mx-auto">
+            <ngb-accordion [closeOthers]="true" activeIds="triage">
+                <ngb-panel id="dettagliTipologie">
+                    <ng-template ngbPanelTitle>
+                        <div class="font-xlarge font-weight-bold text-white">
+                            <i class="fa fa-list"></i>
+                            DETTAGLI TIPOLOGIE
+                        </div>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <app-dettagli-tipologie [nightMode]="nightMode$ | async" [doubleMonitor]="(doubleMonitor$ | async)"></app-dettagli-tipologie>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel id="triage">
+                    <ng-template ngbPanelTitle>
+                        <div class="font-xlarge font-weight-bold text-white">
+                            <i class="fa fa-question-circle"></i>
+                            TRIAGE
+                        </div>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <app-triage [nightMode]="nightMode$ | async"></app-triage>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+    </div>
+</div>

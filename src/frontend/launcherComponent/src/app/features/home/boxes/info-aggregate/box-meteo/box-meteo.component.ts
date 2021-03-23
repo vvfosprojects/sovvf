@@ -9,5 +9,19 @@ import { Meteo } from '../../../../../shared/model/meteo.model';
 export class BoxMeteoComponent {
 
     @Input() datimeteo: Meteo;
+    @Input() nightMode: boolean;
 
+
+    constructor() {
+    }
+
+    nightModeStyle(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'cod-int';
+      } else if (this.nightMode) {
+        value = 'moon-cod';
+      }
+      return value;
+    }
 }

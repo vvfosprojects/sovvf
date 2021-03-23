@@ -1,12 +1,18 @@
 ﻿using SimpleInjector;
 using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
+using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipologia;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
+using SO115App.SignalR.Sender.ComposizionePartenza;
+using SO115App.SignalR.Sender.GestioneDettaglioTipologia;
 using SO115App.SignalR.Sender.GestioneEnti;
 using SO115App.SignalR.Sender.GestioneIntervento;
 using SO115App.SignalR.Sender.GestionePartenza;
 using SO115App.SignalR.Sender.GestioneTrasferimentiChiamate;
+using SO115App.SignalR.Sender.GestioneTriage;
 
 namespace SO115App.CompositionRoot
 {
@@ -21,6 +27,8 @@ namespace SO115App.CompositionRoot
         {
             #region Notifiche
 
+            container.Register<INotificationAnnullaRichiestaSoccorsoAereo, NotificationAnnullaRichiestaSoccorsoAereo>();
+            container.Register<INotificationInserisciRichiestaSoccorsoAereo, NotificationInserisciRichiestaSoccorsoAereo>();
             container.Register<
                 Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
                 SignalR.Sender.GestioneSchedeContatto.NotificationMergeSchedeNue>();
@@ -108,6 +116,21 @@ namespace SO115App.CompositionRoot
             container.Register<INotifyModificaPartenza, NotificationModificaPartenza>();
 
             #endregion Notifiche
+
+            #region Dettaglio Tipologia
+
+            container.Register<INotificationAddDettaglioTipologia, NotificationAddDettaglioTipologia>();
+            container.Register<INotificationDeleteDettaglioTipologia, NotificationDeleteDettaglioTipologia>();
+            container.Register<INotificationModifyDettaglioTipologia, NotificationModifyDettaglioTipologia>();
+
+            #endregion Dettaglio Tipologia
+
+            #region Triage
+
+            container.Register<INotificationAddTriage, NotificationAddTriage>();
+            container.Register<INotificationUpDateTriage, NotificationUpDateTriage>();
+
+            #endregion Triage
         }
     }
 }

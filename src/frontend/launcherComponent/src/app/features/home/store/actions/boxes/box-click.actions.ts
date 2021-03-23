@@ -1,7 +1,7 @@
-// REDUCER
-import { BoxClickStateModel } from '../../../store/states/boxes/box-click.state';
+import { BoxClickStateModel } from '../../states/boxes/box-click.state';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
+// REDUCER
 export class ReducerBoxClick {
     static readonly type = '[BoxClick] Reduce completato';
 

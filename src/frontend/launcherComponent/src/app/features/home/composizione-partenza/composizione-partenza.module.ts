@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
@@ -17,6 +17,7 @@ import { ComposizioneConfirmButtonComponent } from './shared/composizione-button
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {ComposizioneSoccorsoAereoState} from '../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     imports: [
         CommonModule,
         NgbModule,
-        SharedModule.forRoot(),
+        SharedModule,
         NgSelectModule,
         NgxsModule.forFeature(
             [
@@ -38,13 +39,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
                 // Comp Rapida
                 ComposizioneVeloceState,
                 // Comp Avanzata
-                ComposizioneAvanzataState
+                ComposizioneAvanzataState,
+                // Comp Soccorso Aereo
+                ComposizioneSoccorsoAereoState
             ]
         ),
         NgxPaginationModule,
-        FormsModule,
-        FilterPipeModule,
-        SharedModule,
+        FormsModule
     ],
     exports: [
         ComposizionePartenzaComponent

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Composizione;
@@ -11,6 +8,8 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

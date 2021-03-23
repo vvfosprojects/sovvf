@@ -1,0 +1,24 @@
+.area-size {
+  max-height: 350px !important;
+  min-height: 350px !important;
+}
+
+.overflow-size {
+  overflow-y: overlay;
+}
+
+.width-size {
+  width: 505px !important;
+}
+
+.input-checked {
+  border: solid #28a745;
+}
+
+input {
+  font-size: 18px;
+}
+
+textarea {
+  font-size: 18px;
+}

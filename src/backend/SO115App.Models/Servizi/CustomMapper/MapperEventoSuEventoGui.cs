@@ -1,7 +1,4 @@
-﻿using SO115App.API.Models.Classi.Autenticazione;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {

@@ -83,7 +83,11 @@ export class Mezzo {
         /**
          * Richiesta sul quale è collocato il mezzo
          */
-        public idRichiesta?: string
-    ) {
+        public idRichiesta?: string,
+        /**
+         * Se il mezzo ha squadre pre accoppiate
+         */
+        public preAccoppiato?: boolean,
+) {
     }
 }

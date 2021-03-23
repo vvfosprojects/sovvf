@@ -24,5 +24,7 @@ namespace SO115App.API.Models.Classi.Marker
         public string CodiceRichiesta { get; set; }
 
         public string Indirizzo { get; set; }
+
+        public string SchedaContatto { get; set; }
     }
 }

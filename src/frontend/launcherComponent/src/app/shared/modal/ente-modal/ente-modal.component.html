@@ -1,11 +1,13 @@
-<div class="modal-header">
-    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+<div class="modal-header" [ngClass]="onNightMode()">
+    <h4 class="modal-title font-weight-bold">
+        {{ getTitle() | uppercase }}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height py-4 px-5" [ngClass]="onNightMode()">
     <form [formGroup]="enteForm" ngxsForm="enti.enteForm" autocomplete="off">
         <div class="form-group">
             <label for="descrizione">
@@ -38,7 +40,7 @@
             </label>
             <input id="telefono" type="tel" formControlName="telefono" class="form-control"
                    placeholder="Inserisci il Telefono" (keypress)="checkInputPattern($event, 'PHONE')"
-                   (paste)="checkInputPattern($event, 'PHONE')"> 
+                   (paste)="checkInputPattern($event, 'PHONE')">
         </div>
         <div class="form-group">
             <label for="fax">
@@ -87,9 +89,9 @@
     </form>
     <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" ngbTooltip="Riempi tutti i campi obbligatori"
+<div class="modal-footer" style="place-content: space-between;" [ngClass]="onNightMode()">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">Conferma
     </button>
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">Annulla</button>
 </div>

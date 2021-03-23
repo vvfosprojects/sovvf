@@ -7,3 +7,7 @@
 .dropdown-toggle::after {
     display: none;
 }
+
+.font-dettaglio {
+  font-size: 130% !important;
+}

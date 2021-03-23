@@ -18,12 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.DettaglioUtente
 {

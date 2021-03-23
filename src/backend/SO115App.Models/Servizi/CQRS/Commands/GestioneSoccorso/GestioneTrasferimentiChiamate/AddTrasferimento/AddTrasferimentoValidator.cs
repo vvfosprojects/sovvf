@@ -8,9 +8,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
 {
     public class AddTrasferimentoValidator : ICommandValidator<AddTrasferimentoCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
-        public AddTrasferimentoValidator(IGetRichiestaById getRichiestaById)
+        public AddTrasferimentoValidator(IGetRichiesta getRichiestaById)
         {
             _getRichiestaById = getRichiestaById;
         }

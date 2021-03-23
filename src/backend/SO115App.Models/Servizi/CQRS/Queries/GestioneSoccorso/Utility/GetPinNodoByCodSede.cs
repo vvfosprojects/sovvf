@@ -1,8 +1,6 @@
 ﻿using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility
 {

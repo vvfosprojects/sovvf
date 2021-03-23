@@ -21,7 +21,6 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.PresaInCarico;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;

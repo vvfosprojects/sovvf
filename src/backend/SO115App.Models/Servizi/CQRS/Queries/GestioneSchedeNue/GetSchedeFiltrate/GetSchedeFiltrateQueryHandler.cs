@@ -40,24 +40,28 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
             string codiceFiscale = null;
-            //if (query.Filters.CercaPerOperatore == true)
-            //{
-            //var utente = _getUtenteBy.GetUtenteByCodice(query.IdUtente);
-            //codiceFiscale = utente.CodiceFiscale;
-            //}
 
             var listaSchedeContatto = new List<SchedaContatto>();
 
-            query.CodiciSede.ToList().ForEach(codice => 
-                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice)));
+            query.CodiciSede.ToList().ForEach(codice =>
+                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione)));
 
             var result = listaSchedeContatto.OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
 
+            var lista = new List<SchedaContatto>();
+
+            if (query.Pagination.Page != 0)
+            {
+                lista = result
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList();
+            }
+            else
+                lista = result;
+
             return new GetSchedeFiltrateResult()
             {
-                DataArray = result
-                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                    .Take(query.Pagination.PageSize).ToList(),
+                DataArray = lista,
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {

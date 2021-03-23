@@ -203,13 +203,13 @@ export function statoMezzoColor(stato: StatoMezzo): string {
             mezzoColor = 'secondary';
             break;
         case StatoMezzo.InViaggio:
-            mezzoColor = 'warning';
+            mezzoColor = 'danger';
             break;
         case StatoMezzo.SulPosto:
             mezzoColor = 'danger';
             break;
         case StatoMezzo.InRientro:
-            mezzoColor = 'verdemela';
+            mezzoColor = 'success';
             break;
         case StatoMezzo.Istituto:
             mezzoColor = 'secondary';
@@ -370,5 +370,18 @@ export function getStatoFonogrammaStringByEnum(fonogrammaEnum: StatoFonogramma):
             return 'Inviato';
         case StatoFonogramma.DaInviare:
             return 'Da Inviare';
+    }
+}
+
+export function capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.substring(1);
+}
+
+export function addQuestionMark(value: string): string {
+    const questionMarked = value.indexOf('?') !== -1;
+    if (!questionMarked) {
+        return value + '?';
+    } else {
+        return value;
     }
 }

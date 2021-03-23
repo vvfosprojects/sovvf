@@ -15,6 +15,7 @@ export class OperatoreComponent {
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
+    @Input() url: string;
 
     @Output() notificheLette: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() logout = new EventEmitter();

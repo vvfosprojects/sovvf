@@ -11,12 +11,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
     public class AddTrasferimentoCommandHandler : ICommandHandler<AddTrasferimentoCommand>
     {
         private readonly IAddTrasferimento _addTrasferimento;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
         private readonly IGetUtenteById _getUtenteById;
 
         public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento,
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IGetDistaccamentoByCodiceSede getSede,
             IGetUtenteById getUtenteById)
         {

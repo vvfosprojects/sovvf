@@ -7,7 +7,7 @@ $(document).ready(function () {
     function redirectUrl(value) {
         const params = getAllUrlParams();
         const service = params.service || '/';
-        const redirectUrl = service + '?ticket=' + value;
+        const redirectUrl = service + '?ticket=ST-' + value;
         console.log(redirectUrl);
         window.location = redirectUrl;
     }

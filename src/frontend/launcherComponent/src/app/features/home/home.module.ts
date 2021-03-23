@@ -13,7 +13,7 @@ import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.
 import { RicercaFilterbarState } from './store/states/filterbar/ricerca-filterbar.state';
 import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { BoxesModule } from './boxes/boxes.module';
-import { ChiamataModule } from './chiamata/chiamata.module';
+import { SchedaRichiestaModule } from './scheda-richiesta/scheda-richiesta.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
 import { MapsModule } from './maps/maps.module';
@@ -22,7 +22,7 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { HomeState } from './store/states/home.state';
-import { RichiestaModificaState } from './store/states/richieste/richiesta-modifica.state';
+import { RichiestaModificaState } from './store/states/form-richiesta/richiesta-modifica.state';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { TipologicheMezziState } from './store/states/composizione-partenza/tipologiche-mezzi.state';
@@ -35,6 +35,7 @@ import { MezziComposizioneState } from '../../shared/store/states/mezzi-composiz
 import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
+import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state';
 
 @NgModule({
     declarations: [
@@ -44,7 +45,7 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
         CommonModule,
         HomeRouting,
         BoxesModule,
-        ChiamataModule,
+        SchedaRichiestaModule,
         EventiRichiestaModule,
         FilterbarModule,
         MapsModule,
@@ -58,8 +59,8 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
         FormsModule,
         ReactiveFormsModule,
         FilterPipeModule,
-        SharedModule,
         NgbModule,
+        SharedModule,
         NgxsModule.forFeature(
             [
                 HomeState,
@@ -77,7 +78,8 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
                 SostituzionePartenzaModalState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
-                FiltriComposizioneState
+                FiltriComposizioneState,
+                ZoneEmergenzaState
             ]
         ),
     ],

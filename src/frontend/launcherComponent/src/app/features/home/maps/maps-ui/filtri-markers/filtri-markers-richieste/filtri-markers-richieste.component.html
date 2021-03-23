@@ -1,9 +1,14 @@
 <h6>Richieste</h6>
 <label for="priorita" class="mr-2">Priorità</label>
-<ngb-rating id="priorita" [starTemplate]="t" [max]="5"
-            (rateChange)="changePriorita.emit($event)" [rate]="filtroRichieste.priorita"></ngb-rating> e più
+<ngb-rating id="priorita"
+            [starTemplate]="t"
+            [max]="5"
+            [rate]="filtroRichieste.priorita"
+            (rateChange)="changePriorita.emit($event)"></ngb-rating> e più
 <ng-template #t let-fill="fill" let-index="index">
-            <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+            <span class="circle"
+                  [class.filled]="fill === 100"
+                  [class.bad]="index > 2 && fill === 100">
               <i class="fa fa-circle mr-1"></i>
             </span>
 </ng-template>
@@ -13,7 +18,11 @@
 <div class="mt-1">
     <label>Stato</label>
     <div>
-        <ng-select [items]="statiRichiesta" [multiple]="true" placeholder="Nessuno stato selezionato"
-                   (change)="onChangeStati($event)" [(ngModel)]="statiSelezionati"></ng-select>
+        <ng-select [items]="statiRichiesta"
+                   [multiple]="true"
+                   [(ngModel)]="statiSelezionati"
+                   placeholder="Nessuno stato selezionato"
+                   (change)="onChangeStati($event)">
+        </ng-select>
     </div>
 </div>
