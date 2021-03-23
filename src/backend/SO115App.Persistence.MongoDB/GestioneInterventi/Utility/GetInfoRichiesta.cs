@@ -37,7 +37,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
             return new InfoRichiesta()
             {
                 CodiceRichiesta = richiesta.Codice,
-                Indirizzo = richiesta.Localita.Indirizzo
+                Indirizzo = richiesta.Localita.Indirizzo,
+                SchedaContatto = richiesta.CodNue
             };
         }
     }
