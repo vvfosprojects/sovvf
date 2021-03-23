@@ -41,8 +41,7 @@
                                      (centraMappa)="centraMappa()">
             </app-composizione-veloce>
         </div>
-        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata"
-             class="px-3">
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
             <app-composizione-avanzata [richiesta]="richiesta"
                                        [nightMode]="nightMode"
                                        [doubleMonitor]="doubleMonitor"

@@ -4,14 +4,7 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-
-
-export interface ListaEventiMezzo {
-    codiceMezzo: string;
-    note: string;
-    ora: string;
-    stato: any;
-}
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 
 @Component({
     selector: 'app-partenza',
@@ -23,7 +16,7 @@ export class PartenzaComponent implements OnInit {
 
     @Input() idDaSganciare: string;
     @Input() partenza: Partenza;
-    @Input() listaEventi: any;
+    @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
@@ -35,7 +28,7 @@ export class PartenzaComponent implements OnInit {
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
 
     statoRichiestaEnum = StatoRichiesta;
-    listaEventiMezzo: ListaEventiMezzo[] = [];
+    listaEventiMezzo: EventoMezzo[] = [];
 
     constructor(config: NgbDropdownConfig) {
         config.placement = 'bottom-left';
@@ -46,7 +39,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.listaEventi?.filter(x => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.listaEventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));

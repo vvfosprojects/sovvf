@@ -1,13 +1,3 @@
-.m-h-boxes-avanzata {
-    height: 634px;
-    max-height: 634px;
-}
-
-.m-h-no-boxes-avanzata {
-    height: 615px;
-    max-height: 615px;
-}
-
 .align-center-custom {
     display: flex;
     align-items: center;
@@ -46,4 +36,8 @@
 
 .bad {
     color: #c23535;
+}
+
+.min-h-comp {
+    min-height: 650px !important;
 }

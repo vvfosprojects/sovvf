@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -41,7 +41,8 @@ import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary
 @Component({
     selector: 'app-composizione-partenza',
     templateUrl: './composizione-partenza.component.html',
-    styleUrls: ['./composizione-partenza.component.css']
+    styleUrls: ['./composizione-partenza.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 

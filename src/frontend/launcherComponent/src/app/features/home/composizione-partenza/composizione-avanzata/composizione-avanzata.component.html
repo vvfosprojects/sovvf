@@ -1,17 +1,14 @@
-<div class="row">
-    <div *ngIf="loadingInvioPartenza" class="col-12"
-         [class.m-h-boxes-avanzata]="boxAttivi"
-         [class.m-h-no-boxes-avanzata]="!boxAttivi">
+<div class="row min-h-comp">
+    <div *ngIf="loadingInvioPartenza"
+         class="col-12 h-100">
         <app-partial-loader></app-partial-loader>
     </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-3 pr-0">
+    <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
         <div class="card card-shadow mx-auto"
              [class.bg-moon-light]="nightMode"
              [class.text-white]="nightMode"
-             [class.m-h-boxes-avanzata]="boxAttivi"
-             [class.m-h-no-boxes-avanzata]="!boxAttivi">
-            <app-partial-loader
-                    *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
+             style="height: 100%">
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-users mr-2 font-comp-xl"></i>
@@ -38,12 +35,9 @@
                        (click)="onClearSearchSquadre()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y"
-                [class.m-h-boxes-avanzata]="boxAttivi"
-                [class.m-h-no-boxes-avanzata]="!boxAttivi">
+            <ul class="list-group list-group-flush border-bottom h-100">
                 <li *ngIf="!squadreComposizione?.length"
-                    class="list-group-item cursor-pointer border font-comp-xl"
-                    style="cursor: default">
+                    class="list-group-item border font-comp-xl">
                     <span class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="squadreComposizione?.length">
@@ -82,12 +76,11 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
         <div class="card card-shadow mx-auto"
-             [class.m-h-boxes-avanzata]="boxAttivi"
-             [class.m-h-no-boxes-avanzata]="!boxAttivi">
+             [class.bg-moon-light]="nightMode"
+             [class.text-white]="nightMode"
+             style="height: 100%">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
-            <div class="card-header clearfix px-2 py-1"
-                 [class.bg-moon-light]="nightMode"
-                 [class.text-white]="nightMode">
+            <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-truck mr-2 font-comp-xl"></i>
                     <span class="h6 font-comp-xl">Mezzi</span>
@@ -112,13 +105,10 @@
                        (click)="onClearSearchMezzi()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y"
-                [class.bg-moon-light]="nightMode"
-                [class.m-h-boxes-avanzata]="boxAttivi"
-                [class.m-h-no-boxes-avanzata]="!boxAttivi">
+            <ul class="list-group list-group-flush border-bottom h-100"
+                [class.bg-moon-light]="nightMode">
                 <li *ngIf="!mezziComposizione?.length"
-                    class="list-group-item cursor-pointer border font-comp-xl"
-                    style="cursor: default">
+                    class="list-group-item border font-comp-xl">
                     <span class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="mezziComposizione?.length">
@@ -163,13 +153,24 @@
             </div>
         </div>
     </div>
-    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza"
-         class="col-4 pr-0">
-        <div class="w-100 py-2 px-1 scroll-y"
-             [class.m-h-boxes-avanzata]="boxAttivi"
-             [class.m-h-no-boxes-avanzata]="!boxAttivi">
+    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
+        <div style="height:30%">
+            <div class="card card-shadow h-100 scroll-y">
+                <div class="card-header font-xlarge">
+                    <span class="d-inline-block font-weight-bold">
+                        Partenze
+                        <span class="font-weight-bolder">{{ richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice }}</span>
+                    </span>
+                </div>
+                <div class="px-3 py-2">
+                    <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
+                    </app-lista-partenze>
+                </div>
+            </div>
+        </div>
+        <div class="w-100 py-2 px-1 scroll-y" style="height:70%">
             <!-- bottone nuova partenza -->
-            <div *ngIf="boxPartenzaList?.length" class="text-center mb-2">
+            <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
                 <button class="btn btn-primary font-xlarge btn-no-hover"
                         (click)="nuovaPartenza()"
                         [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i

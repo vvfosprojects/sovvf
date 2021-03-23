@@ -7,6 +7,7 @@ import { Select, Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { Observable } from 'rxjs';
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -17,7 +18,7 @@ export class ListaPartenzeComponent {
 
     @Input() idDaSganciare: string;
     @Input() partenze: Partenza[];
-    @Input() listaEventi: any;
+    @Input() listaEventi: EventoMezzo[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;

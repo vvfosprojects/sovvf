@@ -129,7 +129,7 @@ const COMPONENTS = [
     ItemTriageModalComponent,
     TriageSummaryComponent,
     TriageSummaryModalComponent,
-    IconaStatoComponent,
+    IconaStatoComponent
 ];
 const MODULES = [
     PipeModule

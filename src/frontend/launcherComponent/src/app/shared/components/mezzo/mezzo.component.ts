@@ -6,7 +6,7 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
-import {ListaEventiMezzo} from '../partenza/partenza.component';
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 
 @Component({
     selector: 'app-mezzo',
@@ -21,7 +21,7 @@ export class MezzoComponent {
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
-    @Input() listaEventiMezzo: ListaEventiMezzo[];
+    @Input() listaEventiMezzo: EventoMezzo[];
     @Input() doubleMonitor: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
