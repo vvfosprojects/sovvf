@@ -46,12 +46,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             Parallel.ForEach(codSede, async sede =>
             {
+                _clientPersonale.SetCache("Personale_" + sede);
+
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+
                 try
                 {
-                    _clientPersonale.SetCache("Personale_" + sede);
-
-                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
-
                     var resultApi = _clientPersonale.GetAsync(url, "");
 
                     foreach (var personale in resultApi.Result)

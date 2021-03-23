@@ -176,6 +176,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //FILTRI E ORDINAMENTI
                 .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
+
             var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
                 //MAPPING
                 .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
@@ -214,6 +215,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //FILTRI E ORDINAMENTI
                 .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
 
+
             Parallel.ForEach(lstSquadreComposizione.Result, composizione =>
             {
                 if (composizione.Squadra.Stato.Equals(Squadra.StatoSquadra.InRientro))
@@ -242,14 +244,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             #region PER VISUALIZZARE LA PAGINA CON IL MEZZO/SQUADRA SELEZIONATI
 
-            //var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
-            //var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
 
-            //if (indexMezzo != 0)
-            //    query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
-
-            //if (indexSquadra != 0)
-            //    query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
 
             #endregion
 
@@ -265,6 +260,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             if (query.Filtro.Mezzo != null)
             {
+                //var indexMezzo = query.Filtro.Mezzo != null ? lstMezziComposizione.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
+                //if (indexMezzo != 0)
+                //    query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
+
+                //se mezzo in rientro
                 if (lstMezziComposizione.Result.Find(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                 {
                     result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
@@ -276,7 +276,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
                 else
-                {
+                {// se mezzo non in rientro
                     if (lstSquadreComposizione.Result.FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)).Count > 0)
                     {
                         result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
@@ -289,6 +289,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                     else
                     {
+                        // PAGINAZIONE STANDARD
                         result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
                                 .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                                 .Take(query.Filtro.MezziPagination.PageSize).ToList();
@@ -301,6 +302,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
             else if (query.Filtro.Squadre != null)
             {
+                var indexSquadra = lstSquadreComposizione.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice));
+                if (indexSquadra != 0)
+                    query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
+
+                //SE SQUADRA E MEZZO IN RIENTRO
                 if (lstSquadreComposizione.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).Squadra.Stato == Squadra.StatoSquadra.InRientro)
                 {
                     var CodiciMezzo = lstSquadreComposizione.Result.Find(c => c.Squadra.Codice.Equals(query.Filtro.Squadre[0].Codice)).ListaMezzi;
@@ -317,6 +323,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
                 else
                 {
+                    //PAGINAZINE STANDARD
                     result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
                             .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                             .Take(query.Filtro.MezziPagination.PageSize).ToList();
@@ -328,6 +335,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
             else
             {
+                //PAGINAZIONE STANDARD
                 result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
                         .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                         .Take(query.Filtro.MezziPagination.PageSize).ToList();
@@ -337,13 +345,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
             }
 
-            result.ComposizionePartenzaAvanzata.SquadrePagination = new Paginazione()
+            result.ComposizionePartenzaAvanzata.MezziPagination = new Paginazione()
             {
                 Page = query.Filtro.MezziPagination.Page,
                 PageSize = query.Filtro.MezziPagination.PageSize,
                 TotalItems = lstMezziComposizione.Result.Count
             };
-            result.ComposizionePartenzaAvanzata.MezziPagination = new Paginazione()
+            result.ComposizionePartenzaAvanzata.SquadrePagination = new Paginazione()
             {
                 Page = query.Filtro.SquadrePagination.Page,
                 PageSize = query.Filtro.SquadrePagination.PageSize,
@@ -354,6 +362,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             return result;
         }
+
+        //private 
 
         private List<Classi.Composizione.ComposizioneMezzi> FiltraOrdina(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
         {
