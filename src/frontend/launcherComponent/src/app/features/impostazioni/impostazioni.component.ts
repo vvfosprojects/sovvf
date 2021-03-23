@@ -12,7 +12,6 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
-import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
@@ -31,7 +30,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.listaImpostazioni) listaImpostazioni$: Observable<Impostazione[]>;
     listaImpostazioni: Impostazione[];
 
-    @Select(ViewportState.sunMode) nightMode$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
 
     private subscription: Subscription = new Subscription();
