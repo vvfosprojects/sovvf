@@ -33,6 +33,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 export class DettagliTipologieComponent implements OnDestroy {
 
     @Input() doubleMonitor: boolean;
+    @Input() nightMode: boolean;
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;

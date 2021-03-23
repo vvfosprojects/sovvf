@@ -9,6 +9,7 @@ import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettag
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { Observable } from 'rxjs';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-impostazioni-sede',
@@ -18,6 +19,7 @@ import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     constructor(private ngbAccordionconfig: NgbAccordionConfig,
                 private store: Store) {
