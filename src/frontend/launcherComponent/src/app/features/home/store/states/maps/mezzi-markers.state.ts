@@ -185,7 +185,7 @@ export class MezziMarkersState {
     @Action(SetMezzoMarkerById)
     setMezzoMarkerById({ getState, patchState }: StateContext<MezziMarkersStateModel>, action: SetMezzoMarkerById): void {
         const state = getState();
-        if (action.id) {
+        if (action.id && state.mezziMarkers) {
             patchState({
                 mezzoMarker: state.mezziMarkers.filter(mezzi => mezzi.mezzo.codice === action.id)[0]
             });
