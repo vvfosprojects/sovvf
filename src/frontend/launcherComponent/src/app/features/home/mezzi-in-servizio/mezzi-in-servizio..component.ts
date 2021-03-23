@@ -96,7 +96,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
-                if (this.mezziInServizio && this.mezziInServizio.length > 0) {
+                if (this.mezziInServizio?.length) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
                     this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
                 } else {
@@ -167,17 +167,18 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ActionMezzo(mezzoAction));
     }
 
+    /* Apre il modal per visualizzare la richiesta */
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
         if (this.doubleMonitor) {
             this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xlModal modal-left',
+                windowClass: 'xxlModal modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
         } else {
             this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xlModal',
+                windowClass: 'xxlModal modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
@@ -191,13 +192,13 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         let modal;
         if (this.doubleMonitor) {
             modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-left',
+                windowClass: 'xlModal modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
         } else {
             modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal',
+                windowClass: 'xlModal modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
@@ -219,9 +220,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
     }
 
-    tornaIndietro(): void {
-        this.store.dispatch(new ToggleMezziInServizio());
-    }
+    // Todo: da eliminare
+    // tornaIndietro(): void {
+    //     this.store.dispatch(new ToggleMezziInServizio());
+    // }
 
 }
 

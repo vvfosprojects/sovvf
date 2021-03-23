@@ -446,7 +446,11 @@ export class SchedeContattoState {
         if (innerWidth && innerWidth > 3700) {
             this.ngZone.run(() => {
                 const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                    { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
+                    {
+                        windowClass: 'xxlModal modal-holder modal-left',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
                 modal.result.then(
@@ -458,7 +462,11 @@ export class SchedeContattoState {
         } else {
             this.ngZone.run(() => {
                 const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                    { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
+                    {
+                        windowClass: 'xxlModal modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
                 modal.result.then(

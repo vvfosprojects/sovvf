@@ -1,4 +1,4 @@
-<div class="row px-0">
+<div class="row">
     <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
     <div class="col-12 border-light shadown-sm scroll-y"
          [class.m-h-683-mezziinservizio]="boxAttivi"
@@ -7,26 +7,29 @@
         <ng-template [ngIf]="ricerca">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </ng-template>
-        <div *ngIf="mezziInServizio" class="row">
-            <div *ngFor="let m of mezziInServizio | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }" class="col-6 pl-4 mb-1">
-                <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
-                                       [doubleMonitor]="doubleMonitor"
-                                       [nightMode]="nightMode"
-                                       [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
-                                       [loading]="(loadingActionMezzo$ | async)"
-                                       (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
-                                       (selezionato)="selezionato($event)"
-                                       (dettaglioRichiesta)="onDettaglioRichiesta($event)"
-                                       (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                                       (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
+        <ng-template [ngIf]="mezziInServizio">
+            <div class="px-3">
+                <div *ngFor="let m of mezziInServizio | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+                    <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
+                                           [doubleMonitor]="doubleMonitor"
+                                           [nightMode]="nightMode"
+                                           [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
+                                           [loading]="(loadingActionMezzo$ | async)"
+                                           (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
+                                           (selezionato)="selezionato($event)"
+                                           (dettaglioRichiesta)="onDettaglioRichiesta($event)"
+                                           (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                                           (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
+                </div>
             </div>
-        </div>
+        </ng-template>
     </div>
     <div class="col-12">
         <div class="text-right">
             <pagination-controls class="mt-1 mb-0"
                                  [previousLabel]="'Precedente'"
                                  [nextLabel]="'Successiva'"
+                                 [autoHide]="true"
                                  (pageChange)="onPageChange($event)">
             </pagination-controls>
         </div>
