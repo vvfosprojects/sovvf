@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
@@ -10,7 +10,7 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
     templateUrl: './mezzo-in-servizio.component.html',
     styleUrls: ['./mezzo-in-servizio.component.css']
 })
-export class MezzoInServizioComponent {
+export class MezzoInServizioComponent implements OnChanges {
 
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
@@ -34,13 +34,12 @@ export class MezzoInServizioComponent {
     constructor(private store: Store) {
     }
 
-    // tslint:disable-next-line:use-lifecycle-interface
     ngOnChanges(): void {
-      if (this.loading && !this.loadingArray.includes(this.loading)) {
-        this.loadingArray.push(this.loading);
-      } else if (!this.loading) {
-        this.loadingArray.shift();
-      }
+        if (this.loading && !this.loadingArray.includes(this.loading)) {
+            this.loadingArray.push(this.loading);
+        } else if (!this.loading) {
+            this.loadingArray.shift();
+        }
     }
 
     onListaSquadrePartenza(): void {

@@ -1,72 +1,86 @@
-<div class="row border rounded shadow-sm p-2 h-100 font-xlarge" [class.moon-text]="nightMode" [class.bg-moon-light]="nightMode"
+<div class="row border rounded shadow-sm p-2 h-100 font-xlarge" [class.moon-text]="nightMode"
+     [class.bg-moon-light]="nightMode"
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
      (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
     <ng-template [ngIf]="loadingArray.includes(mezzoInServizio.mezzo.mezzo.codice)">
         <app-partial-loader></app-partial-loader>
     </ng-template>
-    <!-- Prima riga -->
-    <div class="col-12" style="height: 30px">
-        <div class="row">
-            <!-- Prima Colonna (Prima riga) -->
-            <div class="col-9">
-                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori" [mostraNotifiche]="true"
-                           [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede" [doubleMonitor]="doubleMonitor"
-                           (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
-                </app-mezzo>
-            </div>
-            <!-- Seconda Colonna (Prima riga) -->
-            <div class="col-3 pr-0 text-right">
-                <div class="badge badge-secondary" [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
-                     [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">
-                    {{mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15}}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Seconda riga -->
-    <div class="col-12 pt-1 pb-2">
-        <i class="fa fa-map-marker ml-1 mr-2 guida"></i>
-        <span *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">{{mezzoInServizio.mezzo.infoRichiesta.indirizzo | slice: 0:45}}</span>
-        <!--  <span *ngIf="!mezzoInServizio.mezzo.infoRichiesta?.indirizzo">Indirizzzo non presente</span>  -->
-    </div>
-    <!-- Terza riga -->
     <div class="col-12">
         <div class="row">
-            <!-- Prima Colonna (Seconda riga) -->
-            <div class="col-5 py-1">
-                <i class="fa fa-group mr-2 guida"></i>
-                <span *ngIf="mezzoInServizio.squadre && mezzoInServizio.squadre.length > 0"
-                      class="h6 text-right mb-0 font-weight-bold">
-                    <span ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
-                          [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">{{mezzoInServizio.squadre[0].nome | slice: 0:8}}</span>
-                    <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
-                            (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                        <span *ngIf="mezzoInServizio.squadre.length === 1"><i class="fa fa-search"></i></span>
-                        <span *ngIf="mezzoInServizio.squadre.length > 1">+{{mezzoInServizio.squadre.length - 1}}</span>
-                    </button>
-                </span>
-                <!--  <span *ngIf="!mezzoInServizio.squadre || mezzoInServizio.squadre.length === 0" class="p-2">Nessun squadra</span>  -->
-            </div>
-            <!-- Seconda Colonna (Seconda riga) -->
-            <div class="col-4 py-1">
-                <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
-                        class="btn btn-block btn-light btn-sm"
-                        (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
-                    <i class="fa fa-hashtag guida mr-1"></i>
-                    {{mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta}}
-                </button>
-                <div *ngIf="!mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta" class="text-center text-success">
-                    <i class="fa fa-check-circle mx-1"></i>
-                    <!--  <small>Non assegnato</small>  -->
+            <div class="col-5">
+                <div class="clearfix">
+                    <!-- Mezzo -->
+                    <div class="float-left" style="height:35px">
+                        <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori"
+                                   [mostraNotifiche]="true"
+                                   [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
+                                   [doubleMonitor]="doubleMonitor"
+                                   (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
+                        </app-mezzo>
+                    </div>
+                    <!-- Squadra/e sul Mezzo -->
+                    <div class="float-right pt-1">
+                        <div *ngIf="mezzoInServizio?.squadre?.length"
+                             class="d-inline-block text-right mb-0 font-weight-bold">
+                            <i class="fa fa-group guida mr-1"></i>
+                            <div class="d-inline-block"
+                                 ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
+                                 [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">
+                                {{ mezzoInServizio.squadre[0].nome | slice: 0:8 }}
+                            </div>
+                            <button class="btn btn-sm btn-light border ml-1" ngbTooltip="Elenco squadre"
+                                    (click)="onListaSquadrePartenza(); $event.stopPropagation()">
+                                <div *ngIf="mezzoInServizio.squadre?.length"
+                                     class="d-inline-block">
+                                    <i class="fa fa-search"
+                                       [class.mr-1]="mezzoInServizio.squadre.length > 1"></i>
+                                    <div *ngIf="mezzoInServizio.squadre.length > 1"
+                                         class="d-inline-block">
+                                        +{{ mezzoInServizio.squadre.length - 1 }}
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-3 py-1">
-                <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta" class="btn btn-block btn-light btn-sm"
-                        (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
-                    <i class="fa fa-list mr-1"></i>
-                    Eventi
-                </button>
+            <!-- Indirizzo -->
+            <div class="col-3 pt-1">
+                <div *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
+                    <i class="fa fa-map-marker guida"></i>
+                    {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | slice: 0:45 }}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="clearfix">
+                    <!-- Codice Richiesta -->
+                    <div class="float-left">
+                        <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
+                                class="btn btn-block btn-light font-weight-bold"
+                                (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
+                            <i class="fa fa-hashtag"></i>
+                            {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
+                        </button>
+                    </div>
+                    <!-- Eventi -->
+                    <div class="float-left">
+                        <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta"
+                                class="btn btn-block btn-light ml-1"
+                                (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
+                            <i class="fa fa-list"></i>
+                            Eventi
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Distaccamento -->
+            <div class="col-1 px-0 text-right">
+                <div class="badge badge-secondary"
+                     [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
+                     [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">
+                    {{ mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15 }}
+                </div>
             </div>
         </div>
     </div>

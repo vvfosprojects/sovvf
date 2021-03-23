@@ -356,13 +356,13 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         let modalOptions: any;
         if (this.doubleMonitor) {
             modalOptions = {
-                windowClass: 'modal-holder modal-left schedeContattoModal',
+                windowClass: 'xxlModal modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             };
         } else {
             modalOptions = {
-                windowClass: 'modal-holder schedeContattoModal',
+                windowClass: 'xxlModal modal-holder',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             };

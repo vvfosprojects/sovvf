@@ -121,19 +121,15 @@ app-root {
   animation-duration: 0.3s;
 }
 
+.xxlModal .modal-dialog {
+  max-width: 1800px !important;
+  min-width: 1800px !important;
+}
+
+// TODO: controllare
 .xlModal {
   animation-name: jumpIn;
   animation-duration: 0.3s;
-}
-
-.sganciamentoModal .modal-dialog {
-  max-width: 1800px !important;
-  min-width: 1800px !important;
-}
-
-.schedeContattoModal .modal-dialog {
-  max-width: 1800px !important;
-  min-width: 1800px !important;
 }
 
 .xlModal > .modal-dialog {
