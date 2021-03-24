@@ -14,7 +14,7 @@ import {
     SelectPreAccoppiatoComposizione,
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
-import { makeCopy } from '../../../../shared/helper/function';
+import { getSoccorsoAereoTriage, makeCopy } from '../../../../shared/helper/function';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
@@ -26,6 +26,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -129,6 +130,10 @@ export class FasterComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch(new ResetPaginationPreaccoppiati());
         this.subscription.unsubscribe();
+    }
+
+    getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
+        return getSoccorsoAereoTriage(triageSummary);
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenza): void {
