@@ -1,7 +1,7 @@
 <div class="clearfix d-inline-flex" style="vertical-align: sub"
      [ngbTooltip]="stato" placement="top">
   <div [ngClass]="_boxStatiClass(stato)"></div>
-  <span *ngIf="stato === 'In Viaggio'" style="transform: translate(6px, -3px); position: absolute">V</span>
-  <span *ngIf="stato === 'Sul Posto'" style="transform: translate(6px, -3px); position: absolute">P</span>
-  <span *ngIf="stato === 'In Rientro'" style="transform: translate(6px, -3px); position: absolute">R</span>
+  <span *ngIf="stato === 'In Viaggio'" class="font-xlarge" style="transform: translate(-19px, -3px);">V</span>
+  <span *ngIf="stato === 'Sul Posto'" class="font-xlarge"  style="transform: translate(-19px, -3px);">P</span>
+  <span *ngIf="stato === 'In Rientro'" class="font-xlarge"  style="transform: translate(-19px, -3px);">R</span>
 </div>
