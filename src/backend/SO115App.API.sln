@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{C6D125
 		shared\SO115.licenseheader = shared\SO115.licenseheader
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRichieste", "SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj", "{59432123-3536-4860-8823-0914618C7FA3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.API.SOVVF.FakeImplementations.Test", "SO115App.API.SOVVF.FakeImplementations.Test\SO115App.API.SOVVF.FakeImplementations.Test.csproj", "{2CCEA532-DCD3-4EB9-BA09-248976D7E702}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Models.Test", "SO115App.Models.Test\SO115App.Models.Test.csproj", "{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}"
