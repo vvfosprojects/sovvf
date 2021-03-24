@@ -125,7 +125,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ComposizionePartenze(richiesta, now, "fonte", false);
+            new ComposizionePartenze(richiesta, now, "fonte", false, null);
 
             var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
 
@@ -137,8 +137,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ComposizionePartenze(richiesta, now, "fonte", false);
-            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false);
+            new ComposizionePartenze(richiesta, now, "fonte", false, null);
+            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false, null);
 
             var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
 

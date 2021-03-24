@@ -37,7 +37,7 @@ namespace Modello.Test.Classi.Soccorso
         public void CreaComposizionePartenzaStandard()
         {
             var richiesta = new RichiestaAssistenza();
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false)
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false, null)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -122,7 +122,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
             var richiesta = new RichiestaAssistenza();
-            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false);
+            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false, null);
 
             var componenti = cp.Componenti;
 
