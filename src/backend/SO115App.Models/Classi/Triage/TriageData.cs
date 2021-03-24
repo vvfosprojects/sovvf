@@ -12,5 +12,7 @@
         public string PrioritaConsigliata { get; set; }
 
         public string NoteOperatore { get; set; }
+
+        public string NoteUtente { get; set; }
     }
 }
