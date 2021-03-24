@@ -22,7 +22,6 @@
     <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
     <ProjectReference Include="..\SO115App.ExternalApi.Client\SO115App.ExternalAPI.Client.csproj" />
     <ProjectReference Include="..\SO115App.FakePersistance.ExternalAPI\SO115App.ExternalAPI.Fake.csproj" />
-    <ProjectReference Include="..\SO115App.FakePersistenceJSon\SO115App.FakePersistence.JSon.csproj" />
     <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
     <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />

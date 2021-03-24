@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 
@@ -37,7 +38,8 @@ namespace Modello.Test.Classi.Soccorso
         public void CreaComposizionePartenzaStandard()
         {
             var richiesta = new RichiestaAssistenza();
-            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false)
+            var partenza = new Partenza();
+            this.partenzaDiCinquePersoneConUnicoCapopartenzaEUnicoAutista = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false, partenza)
             {
                 Componenti = new HashSet<ComponentePartenza>()
                 {
@@ -122,7 +124,8 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
             var richiesta = new RichiestaAssistenza();
-            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false);
+            var partenza = new Partenza();
+            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false, partenza);
 
             var componenti = cp.Componenti;
 

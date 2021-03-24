@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using NUnit.Framework;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
@@ -125,7 +126,8 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ComposizionePartenze(richiesta, now, "fonte", false);
+            var partenza = new Partenza();
+            new ComposizionePartenze(richiesta, now, "fonte", false, partenza);
 
             var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
 
@@ -137,8 +139,9 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ComposizionePartenze(richiesta, now, "fonte", false);
-            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false);
+            var partenza = new Partenza();
+            new ComposizionePartenze(richiesta, now, "fonte", false, partenza);
+            new ComposizionePartenze(richiesta, now.AddSeconds(5), "fonte", false, partenza);
 
             var istantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione;
 
