@@ -124,8 +124,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaComposizionePartenzaAppenaCreataHaLAttributoComponentiNonNull()
         {
             var richiesta = new RichiestaAssistenza();
-            var partenza = new Partenza();
-            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false, partenza);
+            var cp = new ComposizionePartenze(richiesta, DateTime.Now, "Fonte", false);
 
             var componenti = cp.Componenti;
 
