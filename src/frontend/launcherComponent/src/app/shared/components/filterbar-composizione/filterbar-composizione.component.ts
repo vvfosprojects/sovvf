@@ -74,12 +74,18 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue) {
             this.setGenereMezzoDefault();
         }
+
         if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
+            // Check distaccamenti quando Chiamata
+            this.checkDistaccamenti();
+        } else if (changes?.disableComposizioneMode && this.richiesta) {
+            // Check distaccamenti quando Intervento
             this.checkDistaccamenti();
         }
+
         if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
-            this.checkDistaccamenti();
             this.setDistaccamentiDefault();
+            this.checkDistaccamenti();
         }
     }
 
@@ -100,10 +106,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         const distaccamentiDefault = [];
         this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
         this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
-    }
-
-    _boxStatiClass(statoMezzo: string): string {
-        return boxStatiClass(statoMezzo);
     }
 
     setGenereMezzoDefault(): void {
