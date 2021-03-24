@@ -4,7 +4,7 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card card-shadow h-100"
+        <div class="card card-shadow min-h-comp"
              [class.bg-moon-light]="nightMode"
              [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
@@ -34,7 +34,7 @@
                        (click)="onClearSearchSquadre()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom h-100">
+            <ul class="list-group list-group-flush border-bottom min-h-comp">
                 <li *ngIf="!squadreComposizione?.length"
                     class="list-group-item border">
                     <span class="text-muted">Nessun risultato...</span>
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card card-shadow mx-auto h-100"
+        <div class="card card-shadow mx-auto min-h-comp"
              [class.bg-moon-light]="nightMode"
              [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
@@ -103,7 +103,7 @@
                        (click)="onClearSearchMezzi()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom h-100"
+            <ul class="list-group list-group-flush border-bottom min-h-comp"
                 [class.bg-moon-light]="nightMode">
                 <li *ngIf="!mezziComposizione?.length"
                     class="list-group-item border">
@@ -153,7 +153,7 @@
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
         <!-- Lista Partenze Richiesta -->
-        <div style="height:37%">
+        <div style="height:33%">
             <div class="card card-shadow h-100"
                  [class.bg-moon-light]="nightMode"
                  [class.text-white]="nightMode">
@@ -171,14 +171,14 @@
                         </span>
                     </span>
                 </div>
-                <div class="px-3 pt-1 pb-2" [class.scroll-y]="richiesta?.partenzeRichiesta?.length > 5">
+                <div class="px-3 pt-1 pb-2" style="overflow: auto">
                     <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
                     </app-lista-partenze>
                 </div>
             </div>
         </div>
         <!-- Box Partenza -->
-        <div class="w-100 py-2 px-1" style="height:53%">
+        <div class="w-100 py-2 px-1" style="height:56%">
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
                 <button class="btn btn-primary font-xlarge btn-no-hover"

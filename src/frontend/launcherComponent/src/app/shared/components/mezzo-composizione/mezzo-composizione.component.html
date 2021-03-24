@@ -1,5 +1,4 @@
-<li class="list-group-item border cursor-pointer px-1"
-    [class.font-xlarge]="viewState.composizione.active"
+<li class="list-group-item border cursor-pointer font-xxlarge px-1"
     [ngClass]="liClass()"
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
@@ -12,7 +11,9 @@
                  [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7">
                 {{ mezzoComp.mezzo.descrizione | slice: 0:7 }}
             </div>
-            <span class="d-inline-block mr-2">{{ mezzoComp.mezzo.genere }}</span>
+            <div class="d-inline-block mr-2">
+                {{ mezzoComp.mezzo.genere }}
+            </div>
             <!-- Squadre Preaccoppiate -->
             <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
                 <div class="d-inline-block nowrap">
@@ -35,7 +36,7 @@
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
                                 <div class="d-inline-block font-weight-bold">{{ s.squadra?.nome}}</div>
-                                <div *ngIf="s.squadra.turno" class="d-inline-block"> ({{ s.squadra?.turno }}) </div>
+                                <div *ngIf="s.squadra.turno" class="d-inline-block"> ({{ s.squadra?.turno }})</div>
                                 <div class="d-inline"> - {{ _nomeStatiSquadra(s.squadra?.stato) }}</div>
                             </div>
                         </ng-template>

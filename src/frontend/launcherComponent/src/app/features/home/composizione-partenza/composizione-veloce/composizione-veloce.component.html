@@ -9,8 +9,8 @@
                 <i class="fa fa-truck mr-2"></i>
                 Pre-Accoppiati
             </div>
-            <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row">
-                <div class="col-6 px-1" *ngFor="let preAcc of preAccoppiati">
+            <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
+                <div class="col-6" *ngFor="let preAcc of preAccoppiati">
                     <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
                                             [nightMode]="nightMode"
                                             [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
