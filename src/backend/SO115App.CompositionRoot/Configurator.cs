@@ -35,7 +35,9 @@ namespace SO115App.CompositionRoot
             NotificationServicesConfigurator.Configure(container);
 
             if (Convert.ToBoolean(configuration.GetSection("GenericSettings").GetSection("Fake").Value))
-                PersistanceServicesConfigurator_Json.Configure(container);
+            {
+                //PersistanceServicesConfigurator_Json.Configure(container);
+            }
             else
             {
                 ExternalAPIFakeServicesConfigurator.Configure(container);
