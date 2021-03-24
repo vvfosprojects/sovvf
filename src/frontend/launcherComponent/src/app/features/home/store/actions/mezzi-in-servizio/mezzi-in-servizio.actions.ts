@@ -58,15 +58,8 @@ export class ClearMezzoInServizioSelezionato {
     static readonly type = '[MezziInServizio] Clear Mezzo In Servizio Selezionato';
 }
 
-export class SetRicercaMezziInServizio {
-    static readonly type = '[MezziInServizio] Set Ricerca Mezzo In Servizio';
-
-    constructor(public ricerca: string) {
-    }
-}
-
-export class ClearRicercaMezziInServizio {
-    static readonly type = '[MezziInServizio] Clear Ricerca Mezzo In Servizio';
+export class ClearListaMezziInServizio {
+    static readonly type = '[MezziInServizio] Clear Lista Mezzi In Servizio';
 }
 
 export class StartLoadingMezziInServizio {

@@ -1,17 +1,17 @@
-<div class="row min-h-comp">
+<div class="row min-h-comp font-xlarge">
     <div *ngIf="loadingInvioPartenza"
          class="col-12 h-100">
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card card-shadow mx-auto h-comp"
+        <div class="card card-shadow h-100"
              [class.bg-moon-light]="nightMode"
              [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
-                    <i class="fa fa-users mr-2 font-comp-xl"></i>
-                    <span class="h6 font-comp-xl">Squadre</span>
+                    <i class="fa fa-users mr-2"></i>
+                    Squadre
                 </div>
                 <div class="float-right w-50">
                     <label for="ricercaSquadre"
@@ -36,7 +36,7 @@
             </div>
             <ul class="list-group list-group-flush border-bottom h-100">
                 <li *ngIf="!squadreComposizione?.length"
-                    class="list-group-item border font-comp-xl">
+                    class="list-group-item border">
                     <span class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="squadreComposizione?.length">
@@ -59,7 +59,7 @@
                 </ng-template>
             </ul>
         </div>
-        <div class="row font-comp-xl">
+        <div class="row">
             <div class="col"
                  style="display: flex; place-content: center; margin-top: 10px;">
                 <ngb-pagination
@@ -74,14 +74,14 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card card-shadow mx-auto h-comp"
+        <div class="card card-shadow mx-auto h-100"
              [class.bg-moon-light]="nightMode"
              [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
-                    <i class="fa fa-truck mr-2 font-comp-xl"></i>
-                    <span class="h6 font-comp-xl">Mezzi</span>
+                    <i class="fa fa-truck mr-2"></i>
+                    Mezzi
                 </div>
                 <div class="float-right"
                      style="width: 35%">
@@ -106,7 +106,7 @@
             <ul class="list-group list-group-flush border-bottom h-100"
                 [class.bg-moon-light]="nightMode">
                 <li *ngIf="!mezziComposizione?.length"
-                    class="list-group-item border font-comp-xl">
+                    class="list-group-item border">
                     <span class="text-muted">Nessun risultato...</span>
                 </li>
                 <ng-template [ngIf]="mezziComposizione?.length">
@@ -137,7 +137,7 @@
                 </ng-template>
             </ul>
         </div>
-        <div class="row font-comp-xl">
+        <div class="row">
             <div class="col"
                  style="display: flex; place-content: center; margin-top: 10px;">
                 <ngb-pagination
@@ -152,13 +152,15 @@
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
+        <!-- Lista Partenze Richiesta -->
         <div style="height:37%">
-            <div class="card card-shadow h-100">
+            <div class="card card-shadow h-100"
+                 [class.bg-moon-light]="nightMode"
+                 [class.text-white]="nightMode">
                 <div class="card-header py-2">
                     <i class="fa fa-list-ul mr-2 font-comp-xl"></i>
                     <span class="font-xlarge">
                         Partenze
-<!--                        <span class="font-weight-bolder">{{ richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice }}</span>-->
                         <span *ngIf="richiesta.codiceRichiesta"
                               class="font-xlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                             <span style="font-size: 25px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
@@ -175,6 +177,7 @@
                 </div>
             </div>
         </div>
+        <!-- Box Partenza -->
         <div class="w-100 py-2 px-1" style="height:53%">
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
@@ -200,11 +203,12 @@
                 </div>
             </div>
         </div>
+        <!-- Soccorso aereo triage-->
         <div class="clearfix">
             <div class="float-left w-100 pl-2" style="width: 2%">
                 <div class="clearfix">
                     <div class="float-left">
-                        <ngb-rating [rate]="getSoccorsoAereoTriage()?.value"
+                        <ngb-rating [rate]="getSoccorsoAereoTriage(triageSummary)?.value"
                                     [max]="4"
                                     [readonly]="true">
                             <ng-template let-fill="fill" let-index="index">
@@ -219,13 +223,12 @@
                 </div>
             </div>
         </div>
-        <div>
-            <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
-                                             [richiesta]="richiesta"
-                                             [doubleMonitor]="doubleMonitor"
-                                             [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                             (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
-            </app-composizione-confirm-button>
-        </div>
+        <!-- Bottoni Composizione -->
+        <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
+                                         [richiesta]="richiesta"
+                                         [doubleMonitor]="doubleMonitor"
+                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
+        </app-composizione-confirm-button>
     </div>
 </div>
