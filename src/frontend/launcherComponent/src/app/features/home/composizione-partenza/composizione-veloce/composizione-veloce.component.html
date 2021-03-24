@@ -49,11 +49,19 @@
              [class.moon-text]="nightMode"
              [class.moon-card-light]="nightMode"
              style="height: 85%">
-            <div class="card-header">
-                <span class="d-inline-block font-weight-bold">
-                    Partenze
-                    <span class="font-weight-bolder">{{ richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice }}</span>
-                </span>
+            <div class="card-header py-2">
+                <i class="fa fa-list-ul mr-2 font-xlarge" style="vertical-align:sub"></i>
+                <span class="font-xlarge" style="vertical-align:sub">
+                        Partenze
+                        <span *ngIf="richiesta.codiceRichiesta"
+                              class="font-xlarge" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                            <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                        </span>
+                        <span *ngIf="!richiesta.codiceRichiesta"
+                              class="font-xlarge" style="float: right">{{ richiesta.codice.slice(0, -5) }}
+                            <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                        </span>
+                    </span>
             </div>
             <div class="px-3 py-2">
                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
