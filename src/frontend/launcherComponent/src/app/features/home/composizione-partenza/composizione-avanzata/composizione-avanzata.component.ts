@@ -7,7 +7,7 @@ import { DirectionInterface } from '../../maps/maps-interface/direction-interfac
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { makeCopy } from '../../../../shared/helper/function';
+import { getSoccorsoAereoTriage, makeCopy } from '../../../../shared/helper/function';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
@@ -16,7 +16,8 @@ import {
     HoverOutMezzoComposizione,
     UnselectMezzoComposizione,
     ReducerSelectMezzoComposizione,
-    ReducerSelectMezzoComposizioneInRientro, ReducerSelectMezzoComposizionePreAccoppiati
+    ReducerSelectMezzoComposizioneInRientro,
+    ReducerSelectMezzoComposizionePreAccoppiati
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -344,42 +345,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         return mezzoHover;
     }
 
-    getSoccorsoAereoTriage(): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
-        if (!!this.triageSummary) {
-            let soccorsoAereoTriage: string;
-            for (const summary of this.triageSummary) {
-                const soccorsoAereo = summary.soccorsoAereo;
-                if (soccorsoAereo) {
-                    soccorsoAereoTriage = soccorsoAereo;
-                }
-            }
-            switch (soccorsoAereoTriage) {
-                case NecessitaSoccorsoAereoEnum.NonNecessario:
-                    return {
-                        desc: NecessitaSoccorsoAereoEnum.NonNecessario,
-                        value: 1
-                    };
-                case NecessitaSoccorsoAereoEnum.Utile:
-                    return {
-                        desc: NecessitaSoccorsoAereoEnum.Utile,
-                        value: 2
-                    };
-                case NecessitaSoccorsoAereoEnum.MoltoUtile:
-                    return {
-                        desc: NecessitaSoccorsoAereoEnum.MoltoUtile,
-                        value: 3
-                    };
-                case NecessitaSoccorsoAereoEnum.Indispensabile:
-                    return {
-                        desc: NecessitaSoccorsoAereoEnum.Indispensabile,
-                        value: 4
-                    };
-            }
-        }
-        return {
-            desc: 'Non Impostata',
-            value: 0
-        };
+    getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
+        return getSoccorsoAereoTriage(triageSummary);
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
