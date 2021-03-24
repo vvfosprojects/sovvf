@@ -6,7 +6,6 @@ import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable, Subscription } from 'rxjs';
-import { boxStatiClass } from '../../helper/composizione-functions';
 import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
@@ -74,12 +73,18 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue) {
             this.setGenereMezzoDefault();
         }
+
         if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
+            // Check distaccamenti quando Chiamata
+            this.checkDistaccamenti();
+        } else if (changes?.disableComposizioneMode && this.richiesta) {
+            // Check distaccamenti quando Intervento
             this.checkDistaccamenti();
         }
+
         if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
-            this.checkDistaccamenti();
             this.setDistaccamentiDefault();
+            this.checkDistaccamenti();
         }
     }
 
@@ -100,10 +105,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         const distaccamentiDefault = [];
         this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
         this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
-    }
-
-    _boxStatiClass(statoMezzo: string): string {
-        return boxStatiClass(statoMezzo);
     }
 
     setGenereMezzoDefault(): void {

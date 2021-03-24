@@ -157,9 +157,11 @@
             </div>
         </div>
         <div class="float-right">
-            <div class="text-right">
-                <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                                     [autoHide]="true" (pageChange)="onPageChange($event)">
+            <div class="text-right mt-2">
+                <pagination-controls [previousLabel]="'Precedente'"
+                                     [nextLabel]="'Successiva'"
+                                     [autoHide]="true"
+                                     (pageChange)="onPageChange($event)">
                 </pagination-controls>
             </div>
         </div>

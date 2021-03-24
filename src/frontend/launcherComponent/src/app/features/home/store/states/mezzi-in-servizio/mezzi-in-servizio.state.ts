@@ -17,7 +17,7 @@ import {
 import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
 import {
-    ClearFiltriMezziInServizio,
+    ClearFiltriMezziInServizio, ClearListaMezziInServizio,
     ClearMezzoInServizioHover,
     ClearMezzoInServizioSelezionato,
     GetListaMezziInServizio,
@@ -229,6 +229,14 @@ export class MezziInServizioState {
             idMezzoInServizioSelezionato: null
         });
         dispatch(new ClearMarkerMezzoSelezionato());
+    }
+
+    @Action(ClearListaMezziInServizio)
+    clearListaMezziInServizio({ patchState, dispatch }: StateContext<MezziInServizioStateModel>): void {
+        patchState({
+            mezziInServizio: MezziInServizioStateDefaults.mezziInServizio,
+            mezziInServizioFiltered: MezziInServizioStateDefaults.mezziInServizioFiltered,
+        });
     }
 
     @Action(StartLoadingMezziInServizio)
