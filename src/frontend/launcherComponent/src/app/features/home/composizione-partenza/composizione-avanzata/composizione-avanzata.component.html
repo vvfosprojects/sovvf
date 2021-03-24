@@ -4,10 +4,9 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card card-shadow mx-auto"
+        <div class="card card-shadow mx-auto h-comp"
              [class.bg-moon-light]="nightMode"
-             [class.text-white]="nightMode"
-             style="height: 100%">
+             [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -75,10 +74,9 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card card-shadow mx-auto"
+        <div class="card card-shadow mx-auto h-comp"
              [class.bg-moon-light]="nightMode"
-             [class.text-white]="nightMode"
-             style="height: 100%">
+             [class.text-white]="nightMode">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -154,21 +152,30 @@
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
-        <div style="height:30%">
-            <div class="card card-shadow h-100 scroll-y">
-                <div class="card-header font-xlarge">
-                    <span class="d-inline-block font-weight-bold">
+        <div style="height:37%">
+            <div class="card card-shadow h-100">
+                <div class="card-header py-2">
+                    <i class="fa fa-list-ul mr-2 font-comp-xl"></i>
+                    <span class="font-xlarge">
                         Partenze
-                        <span class="font-weight-bolder">{{ richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice }}</span>
+<!--                        <span class="font-weight-bolder">{{ richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice }}</span>-->
+                        <span *ngIf="richiesta.codiceRichiesta"
+                              class="font-xlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                            <span style="font-size: 25px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                        </span>
+                        <span *ngIf="!richiesta.codiceRichiesta"
+                              class="font-xlarge">{{ richiesta.codice.slice(0, -5) }}
+                            <span style="font-size: 25px; font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                        </span>
                     </span>
                 </div>
-                <div class="px-3 py-2">
+                <div class="px-3 pt-1 pb-2" [class.scroll-y]="richiesta?.partenzeRichiesta?.length > 5">
                     <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
                     </app-lista-partenze>
                 </div>
             </div>
         </div>
-        <div class="w-100 py-2 px-1 scroll-y" style="height:70%">
+        <div class="w-100 py-2 px-1" style="height:53%">
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
                 <button class="btn btn-primary font-xlarge btn-no-hover"

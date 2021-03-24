@@ -41,3 +41,8 @@
 .min-h-comp {
     min-height: 650px !important;
 }
+
+.h-comp {
+    min-height: 632px !important;
+    max-height: 632px !important;
+}
