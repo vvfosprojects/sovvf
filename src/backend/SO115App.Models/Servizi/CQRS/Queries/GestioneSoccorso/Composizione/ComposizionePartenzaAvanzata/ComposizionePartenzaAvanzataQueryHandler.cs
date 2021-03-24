@@ -420,9 +420,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             .Where(s =>
             {
                 if (turnoPrecedente != null)
-                    return turnoPrecedente.Contains(s.Squadra.Turno);
+                    return turnoPrecedente.Codice.Contains(s.Squadra.Turno);
                 else if (turnoPrecedente != null)
-                    return turnoSuccessivo.Contains(s.Squadra.Turno);
+                    return turnoSuccessivo.Codice.Contains(s.Squadra.Turno);
                 return turnoCorrente.Codice.Contains(s.Squadra.Turno);
             })
 #endif
