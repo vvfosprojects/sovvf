@@ -1,6 +1,5 @@
-<li class="list-group-item border cursor-pointer px-1"
+<li class="list-group-item border cursor-pointer font-xxlarge px-1"
     [class.bg-moon-light]="nightMode"
-    [class.font-xlarge]="viewState.composizione.active"
     [ngClass]="liClass()"
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
@@ -97,7 +96,7 @@
             </ng-template>
         </div>
         <div *ngIf="viewState?.composizione?.active"
-             class="clearfix font-xlarge text-right pr-1"
+             class="clearfix text-right pr-1"
              style="width: 20%;">
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"

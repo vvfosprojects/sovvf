@@ -17,7 +17,7 @@ import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import {
-    ClearFiltriMezziInServizio,
+    ClearFiltriMezziInServizio, ClearListaMezziInServizio,
     ClearMezzoInServizioHover,
     GetListaMezziInServizio,
     SetMezzoInServizioHover,
@@ -82,7 +82,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
         this.store.dispatch([
-            new GetListaRichieste(),
+            // new GetListaRichieste(),
+            new ClearListaMezziInServizio(),
             new ClearFiltriMezziInServizio(true),
             new ClearRicercaFilterbar(),
             new UndoAllBoxes(this.prevStateBoxClick)

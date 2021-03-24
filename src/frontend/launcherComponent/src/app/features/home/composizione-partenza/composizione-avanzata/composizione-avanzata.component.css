@@ -1,14 +1,3 @@
-.align-center-custom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    min-height: 100%;
-    align-items: center;
-}
-
 .clear-search-mezzi {
     transform: translate(230px, -28px);
     position: fixed;
@@ -23,21 +12,4 @@
 
 .font-comp-xl {
     font-size: 130% !important;
-}
-
-.circle {
-    font-size: 1rem;
-    color: #e2e2e2;
-}
-
-.filled {
-    color: #9b9b9b;
-}
-
-.bad {
-    color: #c23535;
-}
-
-.min-h-comp {
-    min-height: 650px !important;
 }

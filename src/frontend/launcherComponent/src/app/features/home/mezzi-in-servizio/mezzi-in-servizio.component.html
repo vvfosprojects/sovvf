@@ -1,8 +1,6 @@
 <div class="row">
     <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
-    <div class="col-12 border-light shadown-sm scroll-y"
-         [class.m-h-683-mezziinservizio]="boxAttivi"
-         [class.m-h-788-mezziinservizio]="!boxAttivi"
+    <div class="col-12"
          [class.mt-2]="!ricerca">
         <ng-template [ngIf]="ricerca">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
@@ -25,9 +23,8 @@
         </ng-template>
     </div>
     <div class="col-12">
-        <div class="text-right">
-            <pagination-controls class="mt-1 mb-0"
-                                 [previousLabel]="'Precedente'"
+        <div class="text-right mt-2">
+            <pagination-controls [previousLabel]="'Precedente'"
                                  [nextLabel]="'Successiva'"
                                  [autoHide]="true"
                                  (pageChange)="onPageChange($event)">

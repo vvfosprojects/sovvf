@@ -1,20 +1,3 @@
-.m-h-boxes-veloce {
-    height: 405px;
-    max-height: 405px;
-}
-
-.m-h-no-boxes-veloce {
-     height: 495px;
-     max-height: 495px;
-}
-
-.btn-stick-bottom {
-      width: 20%;
-      position: absolute;
-      right: 5px;
-      bottom: 5px;
-}
-
 .moon-border-bottom {
   border-bottom: 1px solid #fdfdfd !important;
 }

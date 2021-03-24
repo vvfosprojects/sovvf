@@ -1,6 +1,7 @@
-<div class="row"
+<div class="clearfix"
      [class.sganciare-mezzo-color]="idDaSganciare === partenza.mezzo.descrizione">
-    <div class="col-9 my-1 pr-1 align-self-center">
+    <div class="float-left font-xxlarge"
+         style="display: inline-flex; align-items: center;">
         <app-mezzo [mezzo]="partenza.mezzo"
                    [mostraIndicatori]="false"
                    [mostraNotifiche]="false"
@@ -8,74 +9,75 @@
                    [listaEventiMezzo]="listaEventiMezzo"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
-        <div *ngIf="!partenza.mezzo" class="d-inline-block p-2"> Nessun mezzo</div>
+        <div *ngIf="!partenza.mezzo" class="d-inline-block p-2">
+            Nessun mezzo
+        </div>
     </div>
-    <div class="col-3 my-1">
-        <div class="clearfix" style="float: right;">
-            <div [class.float-left]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                <div *ngIf="partenza.squadre?.length"
-                     class="h6 text-right mb-0 font-weight-bold font-dettaglio"
-                     style="display: inline-flex; align-items: center;">
-                    <i class="fa text-secondary fa-group mr-2"></i>
-                    <div class="d-inline-block"
-                         [ngbTooltip]="partenza.squadre[0].nome"
-                         [disableTooltip]="partenza.squadre[0].nome.length <= 6">
-                        {{ partenza.squadre[0].nome | truncate: 6 }}
+    <div class="float-right my-1">
+        <div class="clearfix">
+            <div *ngIf="partenza.squadre?.length"
+                 class="text-right font-weight-bold font-xxlarge"
+                 style="display: inline-flex; align-items: center;">
+                <i class="fa text-secondary fa-group mr-2"></i>
+                <div class="d-inline-block"
+                     [ngbTooltip]="partenza.squadre[0].nome"
+                     [disableTooltip]="partenza.squadre[0].nome.length <= 6">
+                    {{ partenza.squadre[0].nome | truncate: 6 }}
+                </div>
+                <div *ngIf="partenza.squadre[0].turno"
+                     class="d-inline-block ml-1">
+                    ({{ partenza.squadre[0].turno }})
+                </div>
+                <button class="btn btn-sm btn-light p-1 mx-2"
+                        ngbTooltip="Elenco squadre"
+                        placement="left"
+                        (click)="onListaSquadrePartenza(); $event.stopPropagation()">
+                    <div *ngIf="partenza.squadre?.length === 1"
+                         class="d-inline-block">
+                        <i class="fa fa-search"></i>
                     </div>
-                    <div *ngIf="partenza.squadre[0].turno"
-                         class="d-inline-block ml-1">
-                        ({{ partenza.squadre[0].turno }})
+                    <div *ngIf="partenza.squadre?.length > 1"
+                         class="d-inline-block">
+                        +{{ partenza.squadre.length - 1 }}
                     </div>
-                    <button class="btn btn-sm btn-light border ml-2 p-1 mr-2"
-                            ngbTooltip="Elenco squadre"
-                            (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                        <div *ngIf="partenza.squadre.length === 1"
-                             class="d-inline-block">
-                            <i class="fa fa-search"></i>
-                        </div>
-                        <div *ngIf="partenza.squadre?.length > 1"
-                             class="d-inline-block">
-                            +{{ partenza.squadre.length - 1 }}
-                        </div>
-                    </button>
-                    <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                        <div class="float-right"
-                             style="display:flex;"
+                </button>
+                <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
+                    <div class="float-right"
+                         style="display:flex;"
+                         (click)="$event.stopPropagation()">
+                        <div class="d-inline-block"
+                             ngbDropdown
+                             #dropdownActionsMezzo="ngbDropdown"
+                             container="body"
                              (click)="$event.stopPropagation()">
-                            <div class="d-inline-block"
-                                 ngbDropdown
-                                 #dropdownActionsMezzo="ngbDropdown"
-                                 container="body"
-                                 (click)="$event.stopPropagation()">
-                                <button id="dropdownActionsMezzo"
-                                        class="btn btn-info btn-no-hover"
-                                        ngbDropdownAnchor
-                                        ngbTooltip="Opzioni"
-                                        (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
-                                    <i class="fa fa-ellipsis-v"></i>
+                            <button id="dropdownActionsMezzo"
+                                    class="btn btn-info btn-no-hover"
+                                    ngbDropdownAnchor
+                                    ngbTooltip="Opzioni"
+                                    (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
+                                <i class="fa fa-ellipsis-v"></i>
+                            </button>
+                            <div ngbDropdownMenu
+                                 aria-labelledby="dropdownConfig">
+                                <button class="btn btn-block btn-no-hover"
+                                        ngbDropdownItem
+                                        (click)="modificaPartenza.emit(index); $event.stopPropagation()">
+                                    <i class="fa fa-cog mr-1"></i>
+                                    Gestisci Partenza
                                 </button>
-                                <div ngbDropdownMenu
-                                     aria-labelledby="dropdownConfig">
-                                    <button class="btn btn-block btn-no-hover"
-                                            ngbDropdownItem
-                                            (click)="modificaPartenza.emit(index); $event.stopPropagation()">
-                                        <i class="fa fa-cog mr-1"></i>
-                                        Gestisci Partenza
-                                    </button>
-                                    <button class="btn btn-block btn-no-hover text-danger font-weight-bold"
-                                            ngbDropdownItem
-                                            (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
-                                        <i class="fa fa-trash mr-1"></i>
-                                        Elimina
-                                    </button>
-                                </div>
+                                <button class="btn btn-block btn-no-hover text-danger font-weight-bold"
+                                        ngbDropdownItem
+                                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
+                                    <i class="fa fa-trash mr-1"></i>
+                                    Elimina
+                                </button>
                             </div>
                         </div>
-                    </ng-template>
-                    <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
-                         class="d-inline-block p-2">
-                        Nessun squadra
                     </div>
+                </ng-template>
+                <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
+                     class="d-inline-block p-2">
+                    Nessun squadra
                 </div>
             </div>
         </div>
