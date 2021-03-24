@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Classi\ServiziEsterni\Rubrica\" />
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
   </ItemGroup>
 </Project>

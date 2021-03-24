@@ -44,7 +44,19 @@ export const impostazioniStateDefaults: ImpostazioniStateModel = {
                     }
                 }
             ]
-        }
+        },
+      {
+        tipo: TipoImpostazione.ModalitaNotte,
+        icona: 'fa-moon-o',
+        opzioni: [
+          {
+            label: 'Attiva modalità notte',
+            singleValue: {
+              value: false
+            }
+          }
+        ]
+      },
     ]
 };
 
@@ -59,6 +71,11 @@ export class ImpostazioniState {
     @Selector()
     static listaImpostazioni(state: ImpostazioniStateModel): Impostazione[] {
         return state.listaImpostazioni;
+    }
+
+    @Selector()
+    static ModalitaNotte(state: ImpostazioniStateModel): boolean {
+      return state.listaImpostazioni[2].opzioni[0].singleValue.value;
     }
 
     @Selector()

@@ -25,6 +25,6 @@ namespace SO115App.Models.Classi.Condivise
         /// <summary>
         ///   conteggio delle pagine
         /// </summary>
-        public int  TotalPages => (int)Math.Ceiling(decimal.Divide(TotalItems, PageSize));
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(TotalItems, PageSize));
     }
 }

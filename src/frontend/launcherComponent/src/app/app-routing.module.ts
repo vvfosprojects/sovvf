@@ -61,6 +61,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.ImpostazioniSede,
+        loadChildren: () => import('./features/impostazioni-sede/impostazioni-sede.module').then(m => m.ImpostazioniSedeModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.Impostazioni,
         loadChildren: () => import('./features/impostazioni/impostazioni.module').then(m => m.ImpostazioniModule),
         canActivate: [AuthGuard]

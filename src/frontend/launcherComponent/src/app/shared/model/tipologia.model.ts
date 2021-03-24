@@ -36,7 +36,11 @@ export class Tipologia {
         /**
          * flag per i campi campi / boschi / strepaglie
          */
-        public boschivo?: boolean
+        public boschivo?: boolean,
+        /**
+         * domande per triage
+         */
+        public domandeTriage?: any[]
     ) {
     }
 }

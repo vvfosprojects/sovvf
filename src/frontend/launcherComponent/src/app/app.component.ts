@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -13,12 +13,15 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthService } from './core/auth/auth.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
-import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
+import { SetAvailHeight, SetContentHeight, SetInnerWidth } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
 import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
+import { ViewComponentState } from './features/home/store/states/view/view.state';
+import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
+import {ImpostazioniState} from './shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-root',
@@ -31,10 +34,18 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private imgs = [];
     private height;
     private availHeight;
+    private width;
     private currentUrl: string;
+
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    viewState: ViewLayouts;
+    @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -47,33 +58,25 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
 
-    ngxLoaderConfiguration = {
-        hasProgressBar: false,
-        overlayColor: 'rgba(206,43,55,0.85)',
-        logoUrl: '../assets/img/logo_vvf_200x.png',
-        logoSize: 300,
-        logoPosition: 'center-center',
-        fgsColor: '#FFFFFF',
-        fgsSize: 50,
-        gap: 60,
-        text: 'ATTENDI, STO CARICANDO I DATI...',
-        textColor: '#FFFFFF',
-        textPosition: 'top-center'
-    };
+    ngxLoaderConfiguration: any = {};
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 
     @HostListener('window:resize')
     onResize(): void {
         this.getHeight();
+        this.getWidth();
     }
 
     constructor(private router: Router,
                 private authService: AuthService,
                 private store: Store,
                 private permessiService: PermessiService,
-                private versionCheckService: VersionCheckService) {
+                private versionCheckService: VersionCheckService,
+                private render: Renderer2) {
+        this.getNightMode();
         this.getRouterEvents();
+        this.getViewState();
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
@@ -83,10 +86,12 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     ngOnInit(): void {
         this.versionCheckService.initVersionCheck(3);
         this.preloadImage(Images.Disconnected);
+        this.setLoaderPosition();
     }
 
     ngAfterViewChecked(): void {
         this.getHeight();
+        this.getWidth();
     }
 
     ngOnDestroy(): void {
@@ -101,6 +106,26 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 }
             })
         );
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+          const body = document.querySelectorAll('body')[0];
+          if (!this.nightMode) {
+            this.render.addClass(body, 'sun-mode');
+            this.render.removeClass(body, 'moon-mode');
+          } else {
+            this.render.addClass(body, 'moon-mode');
+            this.render.removeClass(body, 'sun-mode');
+          }
+        })
+      );
+    }
+
+    getViewState(): void {
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     getImpostazioniLocalStorage(): void {
@@ -170,6 +195,27 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
     }
 
+    private getWidth(): void {
+        if (_isActive(this.currentUrl)) {
+            const innerWidth = window.innerWidth;
+            if (innerWidth) {
+                if (this.width !== innerWidth) {
+                    this.width = innerWidth;
+                    this.store.dispatch(new SetInnerWidth(innerWidth));
+                }
+            }
+        }
+
+        function _isActive(currentUrl): boolean {
+            switch (currentUrl) {
+                case RoutesPath.Home:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
     private preloadImage(...args: string[]): void {
         for (let i = 0; i < args.length; i++) {
             this.imgs[i] = new Image();
@@ -190,6 +236,43 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (casLogin) {
             this.store.dispatch(new SetLoggedCas());
         }
+    }
+
+    private setLoaderPosition(): void {
+        const innerWidth = window.innerWidth;
+        let config: any;
+        if (innerWidth && innerWidth > 3700) {
+            config = {
+                hasProgressBar: false,
+                overlayColor: 'rgba(206,43,55,0.85)',
+                logoUrl: '../assets/img/logo_vvf_200x.png',
+                logoSize: 300,
+                logoPosition: 'center-center loader-position-img-left',
+                fgsColor: '#FFFFFF',
+                fgsPosition: 'center-center loader-position-fgs-left',
+                fgsSize: 50,
+                gap: 60,
+                text: 'ATTENDI, STO CARICANDO I DATI...',
+                textColor: '#FFFFFF',
+                textPosition: 'top-center loader-position-left'
+            };
+        } else {
+            config = {
+                hasProgressBar: false,
+                overlayColor: 'rgba(206,43,55,0.85)',
+                logoUrl: '../assets/img/logo_vvf_200x.png',
+                logoSize: 300,
+                logoPosition: 'center-center',
+                fgsColor: '#FFFFFF',
+                fgsPosition: 'center-center',
+                fgsSize: 50,
+                gap: 60,
+                text: 'ATTENDI, STO CARICANDO I DATI...',
+                textColor: '#FFFFFF',
+                textPosition: 'top-center'
+            };
+        }
+        this.ngxLoaderConfiguration = config;
     }
 
 }

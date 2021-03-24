@@ -288,7 +288,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
-        this.markerService.actionMezzoMarker(id, event, this.viewStateMappa.active === AppFeatures.ComposizionePartenza, this.viewStateMappa.active === AppFeatures.MezziInServizio);
+        this.markerService.actionMezzoMarker(id, event, this.viewStateMappa?.active === AppFeatures.ComposizionePartenza, this.viewStateMappa?.active === AppFeatures.MezziInServizio);
     }
 
     actionSedeMarker(id: string, event: MouseE): void {

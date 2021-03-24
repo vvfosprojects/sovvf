@@ -1,12 +1,7 @@
-﻿using Bogus;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+﻿using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace SO115App.SignalR.Utility
 {

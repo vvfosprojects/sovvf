@@ -19,14 +19,10 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AllertaAltreSedi
@@ -34,11 +30,11 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
     public class AllertaAltreSediCommandHandler : ICommandHandler<AllertaAltreSediCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
         public AllertaAltreSediCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;

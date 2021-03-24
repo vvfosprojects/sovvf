@@ -19,13 +19,13 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using System.Collections.Generic;
 using System.Linq;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
-using SO115App.API.Models.Classi.Composizione;
 
 namespace SO115App.ExternalAPI.Fake.Box
 {

@@ -12,6 +12,8 @@ import { Sede } from '../model/sede.model';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { StatoFonogramma } from '../enum/stato-fonogramma.enum';
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
+import { TriageSummary } from '../interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../enum/necessita-soccorso-aereo.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -203,13 +205,13 @@ export function statoMezzoColor(stato: StatoMezzo): string {
             mezzoColor = 'secondary';
             break;
         case StatoMezzo.InViaggio:
-            mezzoColor = 'warning';
+            mezzoColor = 'danger';
             break;
         case StatoMezzo.SulPosto:
             mezzoColor = 'danger';
             break;
         case StatoMezzo.InRientro:
-            mezzoColor = 'verdemela';
+            mezzoColor = 'success';
             break;
         case StatoMezzo.Istituto:
             mezzoColor = 'secondary';
@@ -371,4 +373,55 @@ export function getStatoFonogrammaStringByEnum(fonogrammaEnum: StatoFonogramma):
         case StatoFonogramma.DaInviare:
             return 'Da Inviare';
     }
+}
+
+export function capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.substring(1);
+}
+
+export function addQuestionMark(value: string): string {
+    const questionMarked = value.indexOf('?') !== -1;
+    if (!questionMarked) {
+        return value + '?';
+    } else {
+        return value;
+    }
+}
+
+export function getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
+    if (!!triageSummary) {
+        let soccorsoAereoTriage: string;
+        for (const summary of triageSummary) {
+            const soccorsoAereo = summary.soccorsoAereo;
+            if (soccorsoAereo) {
+                soccorsoAereoTriage = soccorsoAereo;
+            }
+        }
+        switch (soccorsoAereoTriage) {
+            case NecessitaSoccorsoAereoEnum.NonNecessario:
+                return {
+                    desc: NecessitaSoccorsoAereoEnum.NonNecessario,
+                    value: 1
+                };
+            case NecessitaSoccorsoAereoEnum.Utile:
+                return {
+                    desc: NecessitaSoccorsoAereoEnum.Utile,
+                    value: 2
+                };
+            case NecessitaSoccorsoAereoEnum.MoltoUtile:
+                return {
+                    desc: NecessitaSoccorsoAereoEnum.MoltoUtile,
+                    value: 3
+                };
+            case NecessitaSoccorsoAereoEnum.Indispensabile:
+                return {
+                    desc: NecessitaSoccorsoAereoEnum.Indispensabile,
+                    value: 4
+                };
+        }
+    }
+    return {
+        desc: 'Non Impostata',
+        value: 0
+    };
 }

@@ -20,9 +20,6 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie;
-using System;
-using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {

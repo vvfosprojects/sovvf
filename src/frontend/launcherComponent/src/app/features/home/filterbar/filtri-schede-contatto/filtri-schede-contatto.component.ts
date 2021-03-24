@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-filtri-schede-contatto',
@@ -13,13 +14,16 @@ export class FiltriSchedeContattoComponent {
 
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
+    @Input() disableFilters: boolean;
+    @Input() nightMode: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
     Categoria = Categoria;
 
-    constructor() {
+    constructor(private dropdownConfig: NgbDropdownConfig) {
+        dropdownConfig.placement = 'bottom-right';
     }
 
     onSelezioneFiltro(filtro: VoceFiltro): void {

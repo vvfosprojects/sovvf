@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
@@ -58,7 +57,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             });
 
             //Applico i filtri sui dati
-            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC
+            return SO115App.Models.Classi.ServiziEsterni.Utility.MapPersonaleVVFsuPersonaleUC.Map(personaleUC
                 .FindAll(x => lstSegmenti.Contains(x.Cognome.ToLower()) || lstSegmenti.Contains(x.Nome.ToLower()))
                 .Distinct()
                 .OrderByDescending(x => lstSegmenti.Contains(x.Cognome.ToLower()) && lstSegmenti.Contains(x.Nome.ToLower()))

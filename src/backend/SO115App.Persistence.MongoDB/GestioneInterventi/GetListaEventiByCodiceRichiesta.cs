@@ -4,9 +4,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneInterventi
 {

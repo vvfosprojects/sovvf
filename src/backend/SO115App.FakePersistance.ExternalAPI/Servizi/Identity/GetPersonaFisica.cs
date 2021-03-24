@@ -21,7 +21,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;

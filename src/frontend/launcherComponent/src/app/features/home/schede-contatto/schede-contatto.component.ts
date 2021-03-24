@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
+    ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
     OpenDetailSC,
@@ -46,21 +47,19 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
-    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
-    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
@@ -81,12 +80,9 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
-    RangeVisualizzazione = RangeSchedeContattoEnum;
-    private subscriptions: Subscription = new Subscription();
-
-    ClassificazioneEnum = ClassificazioneSchedaContatto;
     permessiFeature = PermissionFeatures;
+
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbModal) {
@@ -102,16 +98,17 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-            console.log('Componente Schede Contatto creato');
+        console.log('Componente Schede Contatto creato');
     }
 
     ngOnDestroy(): void {
         this.store.dispatch([
+            new ClearListaSchedeContatto(),
             new ClearSchedeContattoMarkers(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
-            console.log('Componente Schede Contatto distrutto');
+        console.log('Componente Schede Contatto distrutto');
     }
 
     getRicerca(): void {
@@ -176,19 +173,19 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
     }
 
-    dettaglioScheda(idSchedaContatto: string): void {
+    onDettaglioScheda(idSchedaContatto: string): void {
         this.store.dispatch(new OpenDetailSC(idSchedaContatto));
     }
 
-    hoverIn(idSchedaContatto: string): void {
+    onHoverIn(idSchedaContatto: string): void {
         this.store.dispatch(new SetSchedaContattoHover(idSchedaContatto));
     }
 
-    hoverOut(): void {
+    onHoverOut(): void {
         this.store.dispatch(new ClearSchedaContattoHover());
     }
 
-    tornaIndietro(): void {
+    onTornaIndietro(): void {
         this.store.dispatch(new ToggleSchedeContatto());
     }
 
@@ -213,10 +210,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {
-        let classificazione: ClassificazioneSchedaContatto = null;
-        if ($event.nextId !== 'Tutte') {
-            classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        }
+        const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 
@@ -225,11 +219,20 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onUndoMergeSchedaContatto($event: string): void {
-        const modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        let modalConfermaAnnulla;
+        if (this.doubleMonitor) {
+            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        } else {
+            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        }
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';

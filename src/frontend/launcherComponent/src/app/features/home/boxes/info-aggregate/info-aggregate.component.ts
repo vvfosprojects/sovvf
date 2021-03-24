@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../box-interface/box-click-interface';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
@@ -24,6 +24,7 @@ import { AuthState } from '../../../auth/store/auth.state';
     styleUrls: ['./info-aggregate.component.css']
 })
 export class InfoAggregateComponent implements OnInit, OnDestroy {
+
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
@@ -34,7 +35,8 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
 
-    subscription = new Subscription();
+    @Input() nightMode: boolean;
+
 
     timerMeteo: NodeJS.Timer;
 
@@ -49,13 +51,22 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
         clearInterval(this.timerMeteo);
         console.log('Componente Info Aggregate Distrutto');
     }
 
     clickBox(cat: string, tipo: string): void {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
+    }
+
+    nightModeBox(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'card app-shadow';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-card-light';
+      }
+      return value;
     }
 
     clickServizi(tipo: string): void {

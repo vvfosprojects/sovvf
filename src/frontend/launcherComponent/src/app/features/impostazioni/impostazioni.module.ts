@@ -23,7 +23,8 @@ import { ImpostazioniComponent } from './impostazioni.component';
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,
-        NgbModule
+        NgbModule,
+        SharedModule
     ]
 })
 

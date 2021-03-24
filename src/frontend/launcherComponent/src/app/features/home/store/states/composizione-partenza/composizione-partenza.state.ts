@@ -3,7 +3,7 @@ import {
     ClearPartenza,
     ConfirmPartenze,
     ReducerFilterListeComposizione,
-    RichiestaComposizione,
+    SetRichiestaComposizione,
     SetComposizioneMode,
     StartInvioPartenzaLoading,
     StartListaComposizioneLoading,
@@ -16,27 +16,11 @@ import {
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import {
-    ClearComposizioneVeloce,
-    ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
-} from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { ClearComposizioneVeloce, ClearPreaccoppiati, ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import {
-    ClearComposizioneAvanzata,
-    GetListeComposizioneAvanzata,
-    UnselectMezziAndSquadreComposizioneAvanzata
-} from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import {
-    ClearListaMezziComposizione,
-    ClearMezzoComposizione,
-    ClearSelectedMezziComposizione
-} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {
-    ClearListaSquadreComposizione,
-    ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione
-} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -48,6 +32,7 @@ import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
 import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -118,15 +103,15 @@ export class ComposizionePartenzaState {
     }
 
     @Action(UpdateListeComposizione)
-    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
-        console.warn('UpdateListeComposizione');
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
-    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione): void {
+    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         const compMode = state.composizioneMode;
+
         if (compMode === Composizione.Avanzata) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
@@ -134,18 +119,24 @@ export class ComposizionePartenzaState {
         }
     }
 
-    @Action(RichiestaComposizione)
-    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione): void {
+    @Action(SetRichiestaComposizione)
+    setRichiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetRichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
-        dispatch(new AddInLavorazione(action.richiesta));
+
+        dispatch([
+            new AddInLavorazione(action.richiesta),
+            new SetTriageSummary(action.richiesta.triageSummary)
+        ]);
     }
 
     @Action(ToggleComposizioneMode)
     toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
-        if (state.composizioneMode === Composizione.Avanzata) {
+        const composizioneMode = state.composizioneMode as Composizione;
+
+        if (composizioneMode === Composizione.Avanzata) {
             dispatch(new ClearListaMezziComposizione());
             dispatch(new ClearListaSquadreComposizione());
             dispatch(new UnselectMezziAndSquadreComposizioneAvanzata());
@@ -176,9 +167,9 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze): void {
+        const state = getState();
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
-            const state = getState();
             if (state.composizioneMode === Composizione.Avanzata) {
                 dispatch([
                     new ClearBoxPartenze(),
@@ -207,7 +198,26 @@ export class ComposizionePartenzaState {
             }
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
-            dispatch(new StopInvioPartenzaLoading());
+            dispatch([
+                new StopInvioPartenzaLoading(),
+            ]);
+            if (state.composizioneMode === Composizione.Avanzata) {
+                dispatch([
+                    new ClearBoxPartenze(),
+                    new ClearSelectedMezziComposizione(),
+                    new ClearSelectedSquadreComposizione(),
+                    new UnselectMezziAndSquadreComposizioneAvanzata(),
+                    new ClearListaMezziComposizione(),
+                    new ClearListaSquadreComposizione(),
+                    new GetListeComposizioneAvanzata()
+                ]);
+            } else if (state.composizioneMode === Composizione.Veloce) {
+                dispatch([
+                    new ClearPreAccoppiatiSelezionatiComposizione(),
+                    new ClearPreaccoppiati(),
+                    new GetListaComposizioneVeloce()
+                ]);
+            }
         });
     }
 
@@ -238,6 +248,7 @@ export class ComposizionePartenzaState {
             loadingListe: true,
             loaded: false
         });
+
         dispatch(new StartLoadingAreaMappa());
     }
 
@@ -247,7 +258,11 @@ export class ComposizionePartenzaState {
             loadingListe: false,
             loaded: true
         });
-        dispatch([new StopLoadingAreaMappa(), new GetMarkersMappa()]);
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
     }
 
     @Action(StartInvioPartenzaLoading)

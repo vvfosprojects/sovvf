@@ -1,3 +1,7 @@
+.min-h-comp {
+    min-height: 650px !important;
+}
+
 .align-center-custom {
     display: flex;
     align-items: center;
@@ -7,4 +11,17 @@
     text-align: center;
     min-height: 100%;
     align-items: center;
+}
+
+.circle {
+    font-size: 1rem;
+    color: #e2e2e2;
+}
+
+.filled {
+    color: #9b9b9b;
+}
+
+.bad {
+    color: #c23535;
 }

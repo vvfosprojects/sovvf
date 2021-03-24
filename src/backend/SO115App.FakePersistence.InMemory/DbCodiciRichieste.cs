@@ -67,5 +67,10 @@ namespace SO115App.FakePersistence.InMemory
             int mese = DateTime.UtcNow.Month;
             return string.Format("{0}-{1}-{2}-{3}_{2:D5}", codiceProvincia, giorno, mese, ultimeDueCifreAnno, nuovoNumero);
         }
+
+        public int GeneraCodicePartenza()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

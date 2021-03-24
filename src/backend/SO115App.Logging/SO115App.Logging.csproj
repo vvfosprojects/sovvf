@@ -18,5 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
+    <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste.Test\SO115App.GeneratoreFakeRichieste.Test.csproj" />
   </ItemGroup>
 </Project>

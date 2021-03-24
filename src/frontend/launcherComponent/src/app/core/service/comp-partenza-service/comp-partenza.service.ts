@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
-import { DatiPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { FiltriComposizione } from 'src/app/features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
-import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { ListaComposizioneVeloce } from '../../../shared/interface/lista-composizione-veloce-interface';
 
 
 const BASE_URL = environment.baseUrl;
+const API_URL_SOCCORSO_AEREO = BASE_URL + environment.apiUrl.gestioneSoccorsoAereo;
 const API_URL_PREACCOPPIATI = BASE_URL + environment.apiUrl.composizione.preaccoppiati;
 const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
 const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
@@ -22,6 +21,30 @@ const API_URL_CONFERMA_PARTENZA = BASE_URL + environment.apiUrl.composizione.con
 export class CompPartenzaService {
 
     constructor(private http: HttpClient) {
+    }
+
+    getCategorieSoccorso(): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorie`);
+    }
+    /*
+    getTipologieSoccorso(): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologie`);
+    }
+    */
+    getDettaglioSoccorsoAereo(codRichiesta: any): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetInfo?requestKey=${codRichiesta.codRichiesta}`);
+    }
+
+    getEventiSoccorsoAereo(codRichiesta: any): Observable<any[]> {
+      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStorico?requestKey=${codRichiesta.codRichiesta}`);
+    }
+
+    addSoccorsoAereo(obj: any): Observable<any> {
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Inserisci`, obj);
+    }
+
+    removeSoccorsoAereo(obj: any): Observable<any> {
+      return this.http.post(`${API_URL_SOCCORSO_AEREO}/Annulla`, obj );
     }
 
     getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {

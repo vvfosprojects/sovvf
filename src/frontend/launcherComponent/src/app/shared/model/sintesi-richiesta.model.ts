@@ -9,11 +9,12 @@ import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 import { TipoTerreno } from './tipo-terreno';
-import { EnteIntervenuto } from './ente-intervenuto';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
 import { Ente } from '../interface/ente.interface';
+import { TriageSummary } from '../interface/triage-summary.interface';
+import { DettaglioTipologia } from '../interface/dettaglio-tipologia.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -56,6 +57,10 @@ export class SintesiRichiesta {
          * descrizione delle tipologie
          */
         public tipologie: Tipologia[],
+        /**
+         * dettaglio della tipologia
+         */
+        public dettaglioTipologia: DettaglioTipologia,
         /**
          * descrizione della richiesta
          */
@@ -161,14 +166,38 @@ export class SintesiRichiesta {
          * lista di prese in carico utente
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],
+        /**
+         * codici UO di competenza
+         */
         public codUOCompetenza?: string[],
+        /**
+         * codici SO allertate
+         */
         public codSOAllertate?: string[],
+        /**
+         * codici Sedi Allertate
+         */
         public sediAllertate?: Sede[],
+        /**
+         * codice SO competente
+         */
         public codSOCompetente?: string,
         /**
          * lista Enti intervenuti
          */
         public listaEnti?: Ente[],
+        /**
+         * richiesta inviata in stato di emergenza
+         */
+        public chiamataUrgente?: boolean,
+        /**
+         * resoconto triage
+         */
+        public triageSummary?: TriageSummary[],
+        /**
+         * eventi relativi a mezzi e velivoli
+         */
+        public eventi?: any
     ) {
     }
 }

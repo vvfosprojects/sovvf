@@ -7,7 +7,7 @@ import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import { Partenza } from './../../model/partenza.model';
+import { Partenza } from '../../model/partenza.model';
 import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
@@ -19,7 +19,7 @@ import { ModificaPartenzaService } from '../../../core/service/modifica-partenza
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-
+import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -32,9 +32,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
 
     operatore: string;
     sede: string;
+    doubleMonitor: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
@@ -42,7 +45,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     public time = { hour: 13, minute: 30, second: 30 };
     public timeAnnullamento = { hour: 13, minute: 30 };
     listaStatoMezzo: string[];
-    statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
     hideBox = true;
@@ -72,6 +74,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modificaPartenzaService: ModificaPartenzaService) {
         this.initForm();
         this.getFormValid();
+        this.getNightMode();
         this.inizializzaUser();
         this.formatTime();
     }
@@ -120,6 +123,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    getNightMode(): void {
+      this.subscription.add(
+        this.nightMode$.subscribe((nightMode: boolean) => {
+          this.nightMode = nightMode;
+        })
+      );
     }
 
     getFormValid(): void {
@@ -187,6 +198,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = '';
+      } else if (this.nightMode) {
+        value = 'moon-text moon-mode';
+      }
+      return value;
+    }
+
     onRemoveSequenza(): void {
         this.sequenze.pop();
         this.sequenzeValid = true;
@@ -219,13 +240,24 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     openSostituzioneModal(): void {
-        const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+        let sostituzioneModal;
+        if (this.doubleMonitor) {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+            windowClass: 'modal-holder modal-left',
+            size: 'lg',
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+          });
+        } else {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true,
             backdrop: 'static',
             keyboard: false,
-        });
+          });
+        }
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;

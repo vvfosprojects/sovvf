@@ -14,6 +14,7 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
+    @Input() doubleMonitor: boolean;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
 
@@ -34,11 +35,20 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        let modalConferma;
+        if (this.doubleMonitor) {
+          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+            windowClass: 'modal-holder modal-left',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        } else {
+          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        }
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:

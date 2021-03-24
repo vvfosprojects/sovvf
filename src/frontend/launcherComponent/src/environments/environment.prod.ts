@@ -18,6 +18,7 @@ export const environment = {
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestioneFonogramma: '/api/GestioneFonogramma',
         gestionePartenza: '/api/GestionePartenza',
+        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
@@ -28,6 +29,7 @@ export const environment = {
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
         gestioneRuolo: '/api/GestioneRuolo',
@@ -38,7 +40,10 @@ export const environment = {
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
-        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        tipologie: '/api/GestioneTipologie',
+        dettagliTipologie: '/api/GestioneDettaglioTipologia',
+        triage: '/api/GestioneTriage'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas/login?service=',

@@ -5,7 +5,6 @@ using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {

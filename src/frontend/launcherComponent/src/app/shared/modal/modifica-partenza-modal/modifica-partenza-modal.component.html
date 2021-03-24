@@ -1,22 +1,24 @@
-<div class="modal-header">
-    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+<div class="modal-header" [ngClass]="onNightMode()">
+    <h4 class="modal-title font-weight-bold">
+        {{ getTitle() | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close font-xxlarge" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
 
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height py-4 px-5" [ngClass]="onNightMode()">
     <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
           autocomplete="off">
         <!-- operatore e sede -->
         <div class="d-inline-flex mb-3">
-            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
-                    style="margin-left: 0px !important;"
+            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user font-xlarge"
+                    style="margin-left: 0 !important;"
                     ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
                 <i class="fa fa-user"></i>
             </button>
-            <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user"
+            <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user font-xlarge"
                     ngbTooltip="Visualizza Sede" [ngbPopover]="sede">
                 <i class="fa fa-building-o"></i>
             </button>
@@ -41,6 +43,7 @@
         </ng-template>
         <!-- anteprima mezzo e squadra/e -->
         <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
+                                    [nightMode]="nightMode"
                                     (modificaPartenza)="openSostituzioneModal()"
                                     [testoModifica]="'Sostitusci Mezzo/Squadra'" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
@@ -51,6 +54,7 @@
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>
         <!-- anteprima mezzo e squadra/e sostitutive-->
         <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo"
+                                    [nightMode]="nightMode"
                                     [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
                                     [nonModificabile]="true" (annullaPartenza)="annullaPartenza()"
                                     (listaSquadrePartenza)="onListaSquadrePartenzaSostitutiva()"></app-box-anteprima-partenza>
@@ -59,33 +63,33 @@
             alle {{timeAnnullamento?.hour <= 9 ? '0' + timeAnnullamento?.hour : timeAnnullamento?.hour}}
             :{{timeAnnullamento?.minute <= 9 ? '0' + timeAnnullamento?.minute : timeAnnullamento?.minute}}</div>
         <!-- sequenza eventi -->
-        <div class="my-4" style="display: flex; justify-content: center;">
-            <label id="sequenzaEventi">Crea sequenza Eventi
-            </label>
-            <button class="btn btn-sm btn-info btn-no-hover ml-2" (click)="onAddSequenza()"
+        <div class="my-4 font-xlarge" style="display: flex; justify-content: center;">
+            <span id="sequenzaEventi" class="pt-1">Crea sequenza Eventi
+            </span>
+            <button class="btn btn-sm btn-info btn-no-hover ml-2 font-xlarge" (click)="onAddSequenza()"
                     [disabled]="!sequenzeValid"
                     ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
                 <i class="fa fa-plus"></i>
             </button>
-            <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
+            <button class="btn btn-sm btn-danger btn-no-hover ml-2 font-xlarge" (click)="onRemoveSequenza()"
                     [disabled]="sequenze?.length === 0"
                     ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 33.5rem; margin-left: 100px;">
-            <ul class="list-group list-group-flush">
-                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
+        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 35.5rem; margin-left: 250px;">
+            <ul class="list-group list-group-flush font-xlarge">
+                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item" [class.text-moon]="nightMode" [class.moon-card-light]="nightMode"
                     style="display: inline-flex; place-content: space-between;">
-                    <input class="form-control" [(ngModel)]="sequenze[index].select[index].name"
+                    <input class="form-control font-xlarge" [(ngModel)]="sequenze[index].select[index].name"
                            [ngModelOptions]="{standalone: true}" style="min-width: 220px; align-self: center;" readonly>
                     <div class="md-form md-outline" id="default-picker" style="display: flex;">
                         <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
                                         style="margin-left: 25px;"></ngb-timepicker>
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
-                        <small class="text-muted"
-                               style="display: flex; position: absolute; transform: translate(-309px, 108px); min-width: fit-content; display: ruby">
+                        <small class="text-muted" [class.text-moon]="nightMode"
+                               style="display: flex; position: absolute; transform: translate(-305px, 100px); min-width: fit-content; display: ruby">
                             * Il cambio di stato "{{sequenze[index]?.select[index]?.name}}" risulterà
                             alle {{sequenza?.time?.hour <= 9 ? '0' + sequenza?.time?.hour : sequenza?.time?.hour}}
                             :{{sequenza?.time?.minute <= 9 ? '0' + sequenza?.time?.minute : sequenza?.time?.minute}}.
@@ -100,16 +104,16 @@
     </div>
 </div>
 
-<div class="modal-footer">
-    <button *ngIf="!submitted" type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
-    <button *ngIf="!submitted" type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!valid"
+<div class="modal-footer" [ngClass]="onNightMode()" style="place-content: space-between;">
+    <button *ngIf="!submitted" type="button" class="btn btn-danger btn-no-hover font-xxlarge" [disabled]="!valid"
             (click)="onConferma()">
-        {{ 'Salva Modifiche' | uppercase }}
+      {{ 'Salva Modifiche' | uppercase }}
     </button>
-    <button *ngIf="submitted" type="button" class="btn btn-lg btn-success btn-no-hover" [disabled]="true">
-        <i class="fa fa-spin fa-spinner mr-1"></i>
-        {{ 'Salvataggio Modifiche' | uppercase }}
+    <button *ngIf="submitted" type="button" class="btn btn-success btn-no-hover font-xxlarge" [disabled]="true">
+      <i class="fa fa-spin fa-spinner mr-1"></i>
+      {{ 'Salvataggio Modifiche' | uppercase }}
+    </button>
+    <button *ngIf="!submitted" type="button" class="btn btn-secondary btn-no-hover font-xxlarge" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
     </button>
 </div>

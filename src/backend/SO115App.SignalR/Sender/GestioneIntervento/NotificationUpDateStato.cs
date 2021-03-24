@@ -44,7 +44,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
+        private readonly IGetRichiesta _getRichiestaAssistenzaById;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
 
@@ -56,7 +56,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
                                           GetGerarchiaToSend getGerarchiaToSend,
-                                          IGetRichiestaById getRichiestaAssistenzaById)
+                                          IGetRichiesta getRichiestaAssistenzaById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;

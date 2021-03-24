@@ -22,10 +22,10 @@ using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.SignalR.Utility;
@@ -38,22 +38,24 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
     public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
-        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetListaMezzi _getListaMezzi;
+        private readonly IGetMezziInServizio _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
-            MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
+            IMapperRichiestaSuSintesi mapperSintesi,
+            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;

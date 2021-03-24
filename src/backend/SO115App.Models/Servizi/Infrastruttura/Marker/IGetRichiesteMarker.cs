@@ -17,10 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {

@@ -17,12 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {

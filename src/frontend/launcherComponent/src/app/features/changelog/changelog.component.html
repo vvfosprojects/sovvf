@@ -1,20 +1,20 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-8 mx-auto mb-3">
+        <div class="col-12 col-md-9 mx-auto mb-3" [class.text-moon]="nightMode$">
             <h2>
                 <i class="fa fa-newspaper-o"></i>
                 Informazioni sugli Aggiornamenti
             </h2>
         </div>
-        <div style="height: 850px; max-height: 850px; overflow-y: auto; overflow-x: hidden">
-            <div *ngFor="let changelog of listaChangelog; let i = index"
-                 class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4">
-                <app-changelog-item [changelog]="changelog"
-                                    [changelogId]="''+i"
-                                    [ultimoChangelog]="i === 0"></app-changelog-item>
-            </div>
+        <div *ngFor="let changelog of listaChangelog; let i = index"
+             class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4">
+            <app-changelog-item [changelog]="changelog"
+                                [nightMode]="(nightMode$ |  async)"
+                                [changelogId]="''+i"
+                                [ultimoChangelog]="i === 0"
+                                [disableIndice]="changelog?.capitoli?.length <= 0"></app-changelog-item>
         </div>
-        <div *ngIf="!listaChangelog?.length" class="col-12 col-md-8 mx-auto">
+        <div *ngIf="!listaChangelog?.length" class="col-12 col-md-9 mx-auto">
             <div class="alert alert-danger">
                 Informazioni sugli aggiornamenti non disponibili
             </div>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using DomainModel.CQRS.Commands.MessaInLavorazione;
 using DomainModel.CQRS.Commands.PresaInCarico;
 using DomainModel.CQRS.Commands.RimozioneInLavorazione;
@@ -10,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

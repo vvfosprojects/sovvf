@@ -13,6 +13,7 @@ export class BoxPersonaleComponent implements OnChanges {
 
     @Input() personaleQty: BoxPersonaleQty;
     @Input() personalePresenze: BoxPersonalePresenze;
+    @Input() nightMode: boolean;
 
     @Output() clickServizi = new EventEmitter<string>();
 
@@ -47,4 +48,13 @@ export class BoxPersonaleComponent implements OnChanges {
         }
     }
 
+    nightModeStyle(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'cod-int';
+      } else if (this.nightMode) {
+        value = 'moon-cod';
+      }
+      return value;
+    }
 }

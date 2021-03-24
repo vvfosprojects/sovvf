@@ -67,7 +67,7 @@ import { FormsModule } from '@angular/forms';
         AgmDirectionModule,
         AgmMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SharedModule.forRoot(),
+        SharedModule,
         NgSelectModule,
         NgxsModule.forFeature(
             [

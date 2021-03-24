@@ -20,7 +20,6 @@
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.GeneratoreFakeRichieste;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.CompositionRoot
@@ -61,14 +60,6 @@ namespace SO115App.CompositionRoot
                 var quickGenerator = new QuickGenerator(codiciUnitaOperativeInterventiFake, giorniIndietroInterventiFake);
                 richieste.AddRange(quickGenerator.Genera());
             }
-
-            container.Register<SO115App.FakePersistence.InMemory.DbRichieste>(() =>
-            {
-                return new SO115App.FakePersistence.InMemory.DbRichieste(richieste);
-            },
-            Lifestyle.Singleton);
-
-            container.Register<SO115App.FakePersistence.InMemory.DbCodiciRichieste>(Lifestyle.Singleton);
 
             //container.Register<
             //    Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,

@@ -12,16 +12,22 @@ export class FiltroComponent {
     @Input() selezionato: boolean;
     @Input() useCheckbox: boolean;
     @Input() disabled: boolean;
+    @Input() onlyOneCheck: boolean;
+    @Input() listaZoneEmergenzaSelezionate: string[];
+    @Input() periodoChiuse: any;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+    @Output() chiusiModal: EventEmitter<boolean> = new EventEmitter();
+    @Output() zonaEmergenzaModal: EventEmitter<boolean> = new EventEmitter();
 
     constructor() {
     }
 
     onSelezione(filtro: VoceFiltro): void {
-        if (!this.selezionato) {
+      if (!this.selezionato) {
             if (!this.disabled) {
+                this.zonaEmergenzaModal.emit(true);
                 this.filtroSelezionato.emit(filtro);
             }
         } else {

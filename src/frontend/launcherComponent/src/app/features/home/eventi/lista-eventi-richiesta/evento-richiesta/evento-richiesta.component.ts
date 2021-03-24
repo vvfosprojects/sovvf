@@ -17,6 +17,7 @@ export class EventoRichiestaComponent implements OnInit {
     @Input() operatore: string;
     @Input() nomeClasseEvento: string;
     @Input() visualizzaIconeNomeClasseEvento: boolean;
+    @Input() nightMode: boolean;
 
     @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
     @Output() filtroTarga: EventEmitter<string> = new EventEmitter();
@@ -57,8 +58,10 @@ export class EventoRichiestaComponent implements OnInit {
             ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
             ['RevocaPerSostituzioneMezzo', ['fa-refresh']],
             ['AllertaAltreSedi', ['fa-exclamation-triangle']],
+            ['RichiestaSoccorsoAereo', ['fa-plane']],
+            ['AnnullamentoRichiestaSoccorsoAereo', ['fa-plane', 'fa-times']],
 
-            // Default per gli eventi non gestiti
+          // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
 
             // Per adesso non utilizzqti
@@ -76,6 +79,16 @@ export class EventoRichiestaComponent implements OnInit {
         this.mostraDettaglio.emit(this.eventoRichiesta);
         // alert("cliccato");
         event.preventDefault();
+    }
+
+    onNightMode(): string {
+      let value = '';
+      if (!this.nightMode) {
+        value = 'text-muted';
+      } else if (this.nightMode) {
+        value = 'moon-text';
+      }
+      return value;
     }
 
     formatNomeClasseEvento(nomeClasseEvento: string): string {

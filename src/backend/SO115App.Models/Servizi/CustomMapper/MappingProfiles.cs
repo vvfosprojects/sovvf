@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using SimpleInjector;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;

@@ -17,8 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
 using SO115App.API.Models.Classi.Condivise;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
@@ -28,5 +29,8 @@ namespace SO115App.API.Models.Classi.Composizione
         public Squadra Squadra { get; set; }
         public DateTime IstanteScadenzaSelezione { get; set; }
         public string IdOperatore { get; set; }
+        public ComposizioneMezzi MezzoPreaccoppiato { get; set; }
+
+        public List<ComposizioneMezziAssociatiSquadre> ListaMezzi { get; set; }
     }
 }

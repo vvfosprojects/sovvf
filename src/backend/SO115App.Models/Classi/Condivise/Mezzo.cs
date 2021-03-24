@@ -19,13 +19,13 @@
 //-----------------------------------------------------------------------
 
 using System;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
+        public Mezzo() { }
+
         public Mezzo(string codice, string descrizione, string genere, string stato,
                      string appartenenza, Sede distaccamento, Coordinate coordinate)
         {
@@ -143,5 +143,10 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   questa proprietà
         /// </summary>
         public bool CoordinateFake { get; set; }
+
+        /// <summary>
+        /// Definisce se il mezzo è preaccoppiato con le squadre
+        /// </summary>
+        public bool PreAccoppiato { get; set; } = false;
     }
 }

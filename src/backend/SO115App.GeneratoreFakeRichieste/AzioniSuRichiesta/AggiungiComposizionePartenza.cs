@@ -102,7 +102,7 @@ namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
 
             mezzoSelezionato.ContestoMezzo.Composizione();
             this.parametriMezzo.MezzoUtilizzato = mezzoSelezionato; // questa assegnazione alimenta l'esecuzione di tutti gli altri eventi successivi
-            var composizione = new ComposizionePartenze(this.richiesta.Richiesta, istanteEffettivo, "Fonte", false)
+            var composizione = new ComposizionePartenze(this.richiesta.Richiesta, istanteEffettivo, "Fonte", false, null)
             {
                 Componenti = new HashSet<ComponentePartenza>(mezzoSelezionato.Membri
                     .Select((m, i) =>

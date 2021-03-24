@@ -12,9 +12,25 @@ export class Localita {
          */
         public note?: string,
         /**
-         * piano del condominio / palazzo
+         * piano del condominio
          */
-        public piano?: string
+        public piano?: string,
+        /**
+         * palazzo
+         */
+        public palazzo?: string,
+        /**
+         * scala del condominio / palazzo
+         */
+        public scala?: string,
+        /**
+         * interno del condominio / palazzo
+         */
+        public interno?: string,
+        /**
+         * contatto del condominio / palazzo
+         */
+        public contatto?: string,
     ) {
     }
 }

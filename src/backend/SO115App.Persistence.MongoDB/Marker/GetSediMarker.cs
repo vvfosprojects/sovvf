@@ -4,9 +4,7 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB.Marker
@@ -22,7 +20,7 @@ namespace SO115App.Persistence.MongoDB.Marker
             List<SedeMarker> listaSediMarker = new List<SedeMarker>();
 
             var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-           
+
             var listaSedi = _context.SediCollection.Find(filterAttive).ToList();
 
             Parallel.ForEach(listaSedi, sede =>
@@ -33,16 +31,16 @@ namespace SO115App.Persistence.MongoDB.Marker
                 {
                     listaSediMarker.Add(sedeMarker);
                 }
-                else if ((sede.latitudine >= filtroAreaMappa.BottomLeft.Latitudine) 
+                else if ((sede.latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
                         && (sede.latitudine <= filtroAreaMappa.TopRight.Latitudine)
-                        && (sede.longitudine >= filtroAreaMappa.BottomLeft.Longitudine) 
+                        && (sede.longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
                         && (sede.longitudine <= filtroAreaMappa.TopRight.Longitudine))
                 {
                     sedeMarker.Codice = sede.codProv + "." + sede.codFiglio_TC;
                     sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
                     sedeMarker.Descrizione = sede.sede;
                     sedeMarker.Provincia = sede.codProv;
-                    sedeMarker.Tipo = GetTipoSede(sede); 
+                    sedeMarker.Tipo = GetTipoSede(sede);
 
                     listaSediMarker.Add(sedeMarker);
                 }

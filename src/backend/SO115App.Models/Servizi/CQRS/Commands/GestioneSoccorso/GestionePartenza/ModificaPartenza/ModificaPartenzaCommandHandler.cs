@@ -25,7 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //ANNULLAMENTO ---
                 var partenzaDaAnnullare = command.Richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
 
-                new RevocaPerSostituzioneMezzo(Richiesta, command.ModificaPartenza.CodMezzoDaAnnullare, command.ModificaPartenza.DataAnnullamento.Value, command.IdOperatore, command.ModificaPartenza.MotivazioneAnnullamento);
+                new RevocaPerSostituzioneMezzo(Richiesta, command.ModificaPartenza.CodMezzoDaAnnullare, command.ModificaPartenza.DataAnnullamento.Value, command.IdOperatore, command.ModificaPartenza.MotivazioneAnnullamento, partenzaDaAnnullare.Partenza.Codice);
 
                 partenzaDaAnnullare.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
@@ -45,15 +45,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //COMPOSIZIONE ---
                 var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
 
-                var nuovaPartenza = new ComposizionePartenze(Richiesta, dataComposizione, command.IdOperatore, false)
+                var nuovaPartenza = new ComposizionePartenze(Richiesta, dataComposizione, command.IdOperatore, false, new Partenza()
                 {
-                    Partenza = new Partenza()
-                    {
-                        Mezzo = command.ModificaPartenza.Mezzo,
-                        Squadre = command.ModificaPartenza.Squadre,
-                        Sganciata = false
-                    }
-                };
+                    Mezzo = command.ModificaPartenza.Mezzo,
+                    Squadre = command.ModificaPartenza.Squadre,
+                    Sganciata = false
+                });
 
                 nuovaPartenza.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 foreach (var squadra in nuovaPartenza.Partenza.Squadre)
@@ -80,7 +77,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.DataOraAggiornamento))
                 {
-                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare, stato);
+                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato);
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {

@@ -1,6 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
@@ -18,16 +19,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly ISetMezzoPrenotato _setMezzoPrenotato;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
 
         public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi,
             IGetMezziUtilizzabili getMezziUtilizzabili,
-            ISetMezzoPrenotato setMezzoPrenotato)
+            ISetMezzoPrenotato setMezzoPrenotato,
+            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza)
 
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
             _setMezzoPrenotato = setMezzoPrenotato;
+            _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -114,9 +118,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
                     }
                     composizione.Mezzo.IdRichiesta = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).CodiceRichiesta;
+
+                    if (composizione.Mezzo.Stato.Equals("Sul Posto"))
+                    {
+                        composizione.IndirizzoIntervento = GetIndirizzoIntervento(composizione.Mezzo.IdRichiesta);
+                    }
                 }
             }
             return composizioneMezzi;
+        }
+
+        private string GetIndirizzoIntervento(string idRichiesta)
+        {
+            var sintesi = _getSintesiRichiestaAssistenza.GetSintesi(idRichiesta);
+
+            return sintesi.Localita.Indirizzo;
         }
 
         private static List<ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)

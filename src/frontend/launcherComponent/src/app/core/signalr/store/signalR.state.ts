@@ -224,15 +224,28 @@ export class SignalRState implements NgxsOnChanges {
         if (this.modalService.hasOpenModals()) {
             this.modalService.dismissAll();
         }
-        this.modalInstance = this.modalService.open(SignalROfflineComponent, {
+        const innerWidth = window.innerWidth;
+        if (innerWidth && innerWidth > 3700) {
+          this.modalInstance = this.modalService.open(SignalROfflineComponent, {
+            windowClass: 'modal-holder modal-left',
+            centered: true,
+            size: 'lg',
+            backdropClass: 'backdrop-custom-black',
+            backdrop: 'static',
+            keyboard: false
+          });
+          this.modalInstance.result.then();
+        } else {
+          this.modalInstance = this.modalService.open(SignalROfflineComponent, {
             windowClass: 'modal-holder',
             centered: true,
             size: 'lg',
             backdropClass: 'backdrop-custom-black',
             backdrop: 'static',
             keyboard: false
-        });
-        this.modalInstance.result.then();
+          });
+          this.modalInstance.result.then();
+        }
     }
 
 }
