@@ -1,0 +1,7 @@
+<div class="d-inline-block">
+    <a (click)="goToListaChangelog()">vers. {{ version?.number }}</a>
+    <div class="d-inline-block ml-1" style="opacity: .75">
+        - {{ version?.date | date :'dd/MM/yyyy' }} alle
+        {{ version?.date | date :'HH:mm' }}
+    </div>
+</div>
