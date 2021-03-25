@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using SimpleInjector;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.GeneratoreFakeRichieste;
+//using SO115App.GeneratoreFakeRichieste;
 using System.Collections.Generic;
 
 namespace SO115App.CompositionRoot
@@ -57,8 +57,8 @@ namespace SO115App.CompositionRoot
 
             if (generazioneInterventiFake)
             {
-                var quickGenerator = new QuickGenerator(codiciUnitaOperativeInterventiFake, giorniIndietroInterventiFake);
-                richieste.AddRange(quickGenerator.Genera());
+                //var quickGenerator = new QuickGenerator(codiciUnitaOperativeInterventiFake, giorniIndietroInterventiFake);
+                //richieste.AddRange(quickGenerator.Genera());
             }
 
             //container.Register<

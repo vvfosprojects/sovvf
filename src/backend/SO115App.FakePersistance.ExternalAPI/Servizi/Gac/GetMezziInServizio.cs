@@ -77,7 +77,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 if (mezzo.IdRichiesta != null)
                 {
-                    var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
+                    var richiesta = _getRichiestaById.GetById(mezzo.IdRichiesta);
                     if (richiesta != null)
                     {
                         foreach (var partenza in richiesta.Partenze)
