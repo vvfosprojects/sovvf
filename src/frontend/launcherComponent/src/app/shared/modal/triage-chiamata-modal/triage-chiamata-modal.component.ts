@@ -192,6 +192,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             generiMezzo: itemData?.generiMezzo?.length ? itemData?.generiMezzo : null,
             prioritaConsigliata: itemData?.prioritaConsigliata,
             noteOperatore: itemData?.noteOperatore,
+            noteUtente: itemData?.noteUtente,
             domanda: rispostaTriage.domanda,
             rispostaValue: rispostaTriage.rispostaValue,
             risposta: rispostaTriage.risposta
@@ -221,7 +222,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     getSuggerimentoByRispostaValue(rispostaValue: string): string {
         const triageData = this.triageData.filter((data: ItemTriageData) => data.itemValue === rispostaValue)[0];
         if (triageData) {
-            return triageData?.noteOperatore;
+            return triageData?.noteUtente;
         }
         return null;
     }

@@ -213,7 +213,13 @@
             <ng-template [ngIf]="getItemData(item)?.noteOperatore">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
                     <i class="fa fa-sticky-note-o mr-1"></i>
-                    Note Operatore Inserite
+                    Indicazioni Operatore Inserite
+                </label>
+            </ng-template>
+            <ng-template [ngIf]="getItemData(item)?.noteUtente">
+                <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
+                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    Indicazioni Utente Inserite
                 </label>
             </ng-template>
             <ng-template [ngIf]="viewEditButtons">

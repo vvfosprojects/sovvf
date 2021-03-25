@@ -43,20 +43,22 @@
         <hr class="my-3">
     </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
-        <div *ngFor="let summary of triageSummary; let i = index"
-             class="alert"
-             [class.alert-info]="!getSuggerimentoByRispostaValue(summary.rispostaValue)"
-             [class.alert-danger]="getSuggerimentoByRispostaValue(summary.rispostaValue)"
-             [class.mb-0]="i === triageSummary?.length - 1">
-            <h5>
-                {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
-                <span class="font-weight-bolder">{{ summary.risposta }}</span>
-            </h5>
-            <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                <h5 class="mb-0 font-weight-bolder">
-                    <i class="fa fa-exclamation-triangle mr-1"></i>
-                    {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
+        <div *ngFor="let summary of triageSummary; let i = index">
+            <div class="alert alert-info"
+                 [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
+                <h5>
+                    {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
+                    <span class="font-weight-bolder">{{ summary.risposta }}</span>
                 </h5>
+            </div>
+            <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
+                <div class="alert alert-primary"
+                     [class.mb-0]="i === triageSummary?.length - 1">
+                    <h5 class="mb-0 font-weight-bolder">
+                        <i class="fa fa-user mr-1"></i>
+                        {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
+                    </h5>
+                </div>
             </ng-template>
         </div>
         <div class="mt-2">

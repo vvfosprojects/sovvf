@@ -376,7 +376,8 @@ export class TriageComponent implements OnDestroy {
             soccorsoAereo: null,
             generiMezzo: null,
             prioritaConsigliata: null,
-            noteOperatore: null
+            noteOperatore: null,
+            noteUtente: null
         } as ItemTriageData;
         if (res.data.soccorsoAereo) {
             itemData.soccorsoAereo = res.data.soccorsoAereo;
@@ -390,12 +391,15 @@ export class TriageComponent implements OnDestroy {
         if (res.data.noteOperatore) {
             itemData.noteOperatore = res.data.noteOperatore;
         }
+        if (res.data.noteUtente) {
+            itemData.noteUtente = res.data.noteUtente;
+        }
         if (otherDataValues(itemData)) {
             this.store.dispatch(new AddTriageData(itemData));
         }
 
         function otherDataValues(data: any): boolean {
-            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata || data?.noteOperatore;
+            return data?.soccorsoAereo || data?.generiMezzo || data?.prioritaConsigliata || data?.noteOperatore || data?.noteUtente;
         }
     }
 
@@ -447,7 +451,8 @@ export class TriageComponent implements OnDestroy {
                         soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
                         generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
                         prioritaConsigliata: itemDataFound.prioritaConsigliata ? itemDataFound.prioritaConsigliata : null,
-                        noteOperatore: itemDataFound.noteOperatore ? itemDataFound.noteOperatore : null
+                        noteOperatore: itemDataFound.noteOperatore ? itemDataFound.noteOperatore : null,
+                        noteUtente: itemDataFound.noteUtente ? itemDataFound.noteUtente : null,
                     };
                 } else {
                     newItemData = {
@@ -455,7 +460,8 @@ export class TriageComponent implements OnDestroy {
                         soccorsoAereo: null,
                         generiMezzo: null,
                         prioritaConsigliata: null,
-                        noteOperatore: null
+                        noteOperatore: null,
+                        noteUtente: null
                     };
                 }
 
@@ -479,12 +485,17 @@ export class TriageComponent implements OnDestroy {
                 } else {
                     newItemData.noteOperatore = null;
                 }
+                if (res.data.noteUtente) {
+                    newItemData.noteUtente = res.data.noteUtente;
+                } else {
+                    newItemData.noteUtente = null;
+                }
 
                 if (itemDataFound) {
                     this.store.dispatch(new DeleteTriageData(item.value));
                 }
 
-                if (newItemData?.soccorsoAereo || newItemData.generiMezzo?.length || newItemData?.prioritaConsigliata || newItemData?.noteOperatore) {
+                if (newItemData?.soccorsoAereo || newItemData.generiMezzo?.length || newItemData?.prioritaConsigliata || newItemData?.noteOperatore || newItemData?.noteUtente) {
                     this.store.dispatch(new AddTriageData(newItemData));
                 }
                 this.updateTriage(this.tItems[0]);

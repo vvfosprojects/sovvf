@@ -77,13 +77,15 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             generiMezzo: new FormControl(),
             prioritaConsigliata: new FormControl(),
             noteOperatore: new FormControl(),
-            domandaSeguente: new FormControl()
+            noteUtente: new FormControl(),
+            domandaSeguente: new FormControl(),
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
             generiMezzo: [null],
             prioritaConsigliata: [null],
             noteOperatore: [null],
+            noteUtente: [null],
             domandaSeguente: [null]
         });
     }
@@ -93,11 +95,13 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         const generiMezzo = this.itemDataEdit?.generiMezzo ? this.itemDataEdit?.generiMezzo : this.parentItemData?.generiMezzo;
         const prioritaConsigliata = this.itemDataEdit?.prioritaConsigliata ? this.itemDataEdit?.prioritaConsigliata : this.parentItemData?.prioritaConsigliata;
         const noteOperatore = this.itemDataEdit?.noteOperatore ? this.itemDataEdit?.noteOperatore : this.parentItemData?.noteOperatore;
+        const noteUtente = this.itemDataEdit?.noteUtente ? this.itemDataEdit?.noteUtente : this.parentItemData?.noteUtente;
         this.addItemTriageForm.patchValue({
             soccorsoAereo,
             generiMezzo,
             prioritaConsigliata,
             noteOperatore,
+            noteUtente,
             domandaSeguente: this.domandaSeguente
         });
     }
@@ -107,7 +111,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value;
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value && !this.f.noteUtente.value;
     }
 
     onConferma(): void {
@@ -117,6 +121,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
                 soccorsoAereo: this.f.soccorsoAereo.value,
                 generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
                 noteOperatore: this.f.noteOperatore.value,
+                noteUtente: this.f.noteUtente.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value,
                 domandaSeguente: this.f.domandaSeguente.value
             };
@@ -127,6 +132,7 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
                 soccorsoAereo: null,
                 generiMezzo: null,
                 noteOperatore: null,
+                noteUtente: null,
                 prioritaConsigliata: null,
                 domandaSeguente: this.f.domandaSeguente.value
             };
@@ -159,6 +165,10 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         }
 
         if (this.parentItemData?.noteOperatore !== this.f.noteOperatore.value) {
+            diffs = true;
+        }
+
+        if (this.parentItemData?.noteUtente !== this.f.noteUtente.value) {
             diffs = true;
         }
 
