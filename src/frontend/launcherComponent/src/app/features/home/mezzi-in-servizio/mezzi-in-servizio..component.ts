@@ -13,11 +13,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
-import { onlyUnique } from '../../../shared/helper/function';
+import { onlyUnique } from '../../../shared/helper/function-generiche';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import {
-    ClearFiltriMezziInServizio, ClearListaMezziInServizio,
+    ClearFiltriMezziInServizio,
+    ClearListaMezziInServizio,
     ClearMezzoInServizioHover,
     GetListaMezziInServizio,
     SetMezzoInServizioHover,

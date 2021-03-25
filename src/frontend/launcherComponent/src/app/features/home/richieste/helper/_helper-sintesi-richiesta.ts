@@ -7,7 +7,7 @@ import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
-import { round1decimal } from '../../../../shared/helper/function';
+import { round1decimal } from '../../../../shared/helper/function-generiche';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';

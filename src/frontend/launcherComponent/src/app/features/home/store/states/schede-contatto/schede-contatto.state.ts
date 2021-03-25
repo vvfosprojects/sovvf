@@ -31,7 +31,7 @@ import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classi
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
 import { FiltersSchedeContatto } from '../../../../../shared/interface/filters/filters-schede.contatto';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';

@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
@@ -23,6 +22,7 @@ import {
     UpdateRichiestaMarkerModifica
 } from '../../actions/maps/richieste-markers.actions';
 import { Injectable } from '@angular/core';
+import { wipeStatoRichiesta } from '../../../../../shared/helper/function-richieste';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];

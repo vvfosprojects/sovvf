@@ -10,7 +10,6 @@ import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
-import { wipeStatoRichiesta } from '../../../shared/helper/function';
 import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +36,7 @@ import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizi
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { wipeStatoRichiesta } from '../../../shared/helper/function-richieste';
 
 @Component({
     selector: 'app-composizione-partenza',

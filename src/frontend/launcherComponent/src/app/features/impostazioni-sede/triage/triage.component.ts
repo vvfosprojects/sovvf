@@ -25,7 +25,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage-crud.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
-import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function';
+import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function-generiche';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';

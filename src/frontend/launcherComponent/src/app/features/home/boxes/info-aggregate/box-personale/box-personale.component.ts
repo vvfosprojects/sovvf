@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { objectDiff } from '../../../../../shared/helper/function';
+import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +20,7 @@ export class BoxPersonaleComponent implements OnChanges {
     personaleDiff: any;
 
     ngOnChanges(changes: SimpleChanges): void {
-        const personaleQty = changes['personaleQty'];
+        const personaleQty = changes.personaleQty;
         if (personaleQty && personaleQty.currentValue && personaleQty.previousValue) {
             this.personaleDiff = objectDiff(personaleQty.currentValue, personaleQty.previousValue);
             setTimeout(() => {

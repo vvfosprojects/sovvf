@@ -13,7 +13,7 @@ import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-mod
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
@@ -363,7 +363,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             sequenzaStati: form.sequenzaStati.map(x => ({
                 dataOraAggiornamento: x.dataOraAggiornamento,
                 stato: x.stato ? x.stato : undefined,
-                codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
+                codMezzo: x.codMezzo ? x.codMezzo.codice : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
         } as ModificaPartenzaDto;

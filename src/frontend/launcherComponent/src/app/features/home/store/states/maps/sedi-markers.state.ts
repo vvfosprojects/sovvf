@@ -115,7 +115,7 @@ export class SediMarkersState {
     patchSediMarkers({ patchState }: StateContext<SediMarkersStateModel>, { payload }: PatchSediMarkers): void {
         patchState({
             sediMarkers: payload.map(item => item),
-            sediMarkersId: payload.map(item => item.codice)
+            sediMarkersId: payload.map(item => item?.codice)
         });
     }
 
@@ -124,7 +124,7 @@ export class SediMarkersState {
         setState(
             patch({
                 sediMarkers: append(payload.map(item => item)),
-                sediMarkersId: append(payload.map(item => item.codice))
+                sediMarkersId: append(payload.map(item => item?.codice))
             })
         );
     }

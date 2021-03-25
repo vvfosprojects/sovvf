@@ -7,7 +7,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { Impostazione, OpzioneImpostazione, TipoImpostazione } from '../../shared/interface/impostazioni.interface';
 import { PatchImpostazioni } from '../../shared/store/actions/impostazioni/impostazioni.actions';
-import { makeCopy } from '../../shared/helper/function';
+import { makeCopy } from '../../shared/helper/function-generiche';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';

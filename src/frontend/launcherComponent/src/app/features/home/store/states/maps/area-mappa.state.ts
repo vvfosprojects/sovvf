@@ -11,13 +11,10 @@ import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { SetBoundsIniziale } from '../../actions/home.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import {
-    ClearSchedeContattoMarkers,
-    GetSchedeContattoMarkers
-} from '../../actions/maps/schede-contatto-markers.actions';
+import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import {
     GetMarkersMappa,
     SetAreaMappa,

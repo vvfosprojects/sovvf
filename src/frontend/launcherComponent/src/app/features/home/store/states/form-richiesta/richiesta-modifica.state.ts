@@ -7,7 +7,7 @@ import { ClearRichiestaMarkerModifica, UpdateRichiestaMarker, UpdateRichiestaMar
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,

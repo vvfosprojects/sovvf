@@ -16,7 +16,7 @@ import {
     SetTipologiaTriageChiamata
 } from '../../store/actions/triage-modal/triage-modal.actions';
 import { TreeviewItem } from 'ngx-treeview';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';

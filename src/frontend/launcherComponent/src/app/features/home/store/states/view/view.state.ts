@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {

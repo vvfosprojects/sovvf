@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { NotificaInterface } from '../../../interface/notifica.interface';
 import { AddNotifica, GetListaNotifiche, SetListaNotifiche, SetNotificheLette } from '../../actions/notifiche/notifiche.actions';
 import { insertItem, patch } from '@ngxs/store/operators';
-import { makeCopy } from '../../../helper/function';
+import { makeCopy } from '../../../helper/function-generiche';
 import { Injectable } from '@angular/core';
 
 export interface NotificheStateModel {

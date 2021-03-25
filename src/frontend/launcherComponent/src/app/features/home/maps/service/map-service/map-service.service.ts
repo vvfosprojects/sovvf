@@ -8,8 +8,8 @@ import { SetCentroMappa } from '../../../store/actions/maps/centro-mappa.actions
 import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
-import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/function';
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
+import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/mappa/function-mappa';
 
 @Injectable()
 export class MapService {

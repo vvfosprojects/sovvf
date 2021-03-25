@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
+import { AreaMappaFiltrata } from '../../../../shared/helper/mappa/query-helper';
 import { FiltroSchedeContatto } from '../../../../features/home/maps/maps-model/filtro-schede-contatto';
 
 const BASE_URL = environment.baseUrl;

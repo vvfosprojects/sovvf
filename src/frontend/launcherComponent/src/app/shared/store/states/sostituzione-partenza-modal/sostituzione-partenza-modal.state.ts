@@ -19,7 +19,7 @@ import { FiltriComposizioneState } from '../filtri-composizione/filtri-composizi
 import { RicercaComposizioneState } from '../ricerca-composizione/ricerca-composizione.state';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { PatchPaginationComposizionePartenza } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import { mezzoComposizioneBusy } from '../../../helper/composizione-functions';
+import { mezzoComposizioneBusy } from '../../../helper/function-composizione';
 import { RemoveBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { SetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';

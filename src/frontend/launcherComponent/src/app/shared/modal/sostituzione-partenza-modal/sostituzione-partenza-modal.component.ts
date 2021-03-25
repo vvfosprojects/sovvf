@@ -13,7 +13,7 @@ import { MezziComposizioneState } from '../../store/states/mezzi-composizione/me
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {
     ClearListaMezziComposizione,

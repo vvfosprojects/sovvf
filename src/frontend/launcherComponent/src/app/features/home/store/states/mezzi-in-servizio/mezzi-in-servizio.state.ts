@@ -9,7 +9,7 @@ import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.enum';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import {
     resetFiltriSelezionati as _resetFiltriSelezionati,
     setFiltroSelezionato as _setFiltroSelezionato

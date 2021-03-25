@@ -41,7 +41,6 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -60,6 +59,8 @@ import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewComponentState } from '../view/view.state';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function-mezzo';
+import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];

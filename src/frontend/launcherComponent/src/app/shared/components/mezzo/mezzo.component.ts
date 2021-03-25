@@ -3,10 +3,10 @@ import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
+import { statoMezzoColor } from '../../helper/function-mezzo';
 
 @Component({
     selector: 'app-mezzo',

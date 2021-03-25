@@ -29,7 +29,7 @@ import { ClearIdUtente, LogoffUtenteSignalR } from '../../../core/signalr/store/
 import { ClearRuoliUtenteLoggato, UpdateRuoliUtenteLoggato } from '../../../shared/store/actions/ruoli/ruoli.actions';
 import { ClearViewState } from '../../home/store/actions/view/view.actions';
 import { ClearRichieste } from '../../home/store/actions/richieste/richieste.actions';
-import { _isAdministrator } from '../../../shared/helper/function';
+import { _isAdministrator } from '../../../shared/helper/function-generiche';
 import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
 

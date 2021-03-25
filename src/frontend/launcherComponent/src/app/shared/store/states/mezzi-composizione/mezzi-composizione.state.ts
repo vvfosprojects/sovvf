@@ -26,7 +26,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/composizione-functions';
+import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/function-composizione';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../../../features/home/store/actions/maps/marker.actions';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
@@ -35,7 +35,7 @@ import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mez
 import { ConfermaPartenze } from '../../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
 import { ConfirmPartenze } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
-import { makeCopy } from '../../../helper/function';
+import { makeCopy } from '../../../helper/function-generiche';
 import { SintesiRichiesteService } from '../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
 import { Injectable } from '@angular/core';

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 import { FiltroMezzi } from '../../../../features/home/maps/maps-model/filtro-mezzi.interface';
-import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
+import { AreaMappaFiltrata } from '../../../../shared/helper/mappa/query-helper';
 
 const BASE_URL = environment.baseUrl;
 const API_MARKER = BASE_URL + environment.apiUrl.markers;

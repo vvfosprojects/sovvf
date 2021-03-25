@@ -23,7 +23,7 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
-import { wipeStringUppercase } from '../../shared/helper/function';
+import { wipeStringUppercase } from '../../shared/helper/function-generiche';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';

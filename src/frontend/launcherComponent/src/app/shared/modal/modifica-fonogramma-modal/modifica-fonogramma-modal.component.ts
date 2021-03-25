@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Fonogramma } from '../../model/fonogramma.model';
-import { getStatoFonogrammaStringByEnum } from '../../helper/function';
-import {Select} from '@ngxs/store';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
-import {Observable, Subscription} from 'rxjs';
+import { Select } from '@ngxs/store';
+import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
+import { Observable, Subscription } from 'rxjs';
+import { getStatoFonogrammaStringByEnum } from '../../helper/function-fonogramma';
 
 @Component({
     selector: 'app-modifica-fonogramma-modal',
@@ -47,7 +47,7 @@ export class ModificaFonogrammaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-      this.subscription.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     initForm(): void {
@@ -67,21 +67,21 @@ export class ModificaFonogrammaModalComponent implements OnInit, OnDestroy {
     }
 
     getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+            })
+        );
     }
 
     onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
+        let value = '';
+        if (!this.nightMode) {
+            value = '';
+        } else if (this.nightMode) {
+            value = 'moon-text moon-mode';
+        }
+        return value;
     }
 
     onSubmit(): void {

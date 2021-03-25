@@ -14,7 +14,7 @@ import {
     SelectPreAccoppiatoComposizione,
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
-import { getSoccorsoAereoTriage, makeCopy } from '../../../../shared/helper/function';
+import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
@@ -27,6 +27,7 @@ import { PaginationComposizionePartenzaState } from '../../../../shared/store/st
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
+import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 
 @Component({
     selector: 'app-composizione-veloce',

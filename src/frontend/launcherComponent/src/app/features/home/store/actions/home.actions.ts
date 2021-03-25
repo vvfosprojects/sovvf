@@ -1,6 +1,6 @@
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { AreaMappa } from '../../maps/maps-model/area-mappa-model';
-import { makeLatLngBounds } from '../../../../shared/helper/function';
+import { makeLatLngBounds } from '../../../../shared/helper/mappa/function-mappa';
 
 export class GetDataHome {
     static readonly type = '[Home] Get Data from API';
