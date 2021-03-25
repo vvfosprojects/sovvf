@@ -60,7 +60,6 @@ import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewComponentState } from '../view/view.state';
-import { SetListaSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];

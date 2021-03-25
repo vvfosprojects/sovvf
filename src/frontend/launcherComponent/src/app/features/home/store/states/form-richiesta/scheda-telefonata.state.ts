@@ -23,7 +23,6 @@ import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions'
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
-import { ClipboardState } from './clipboard.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -47,74 +46,10 @@ import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
-import { Ente } from '../../../../../shared/interface/ente.interface';
-import { Utente } from '../../../../../shared/model/utente.model';
-import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
-import { DettaglioTipologia } from '../../../../../shared/interface/dettaglio-tipologia.interface';
-import { Complessita } from '../../../../../shared/model/complessita.model';
-import { Fonogramma } from '../../../../../shared/model/fonogramma.model';
-import { Partenza } from '../../../../../shared/model/partenza.model';
-import { TurnoIntervento } from '../../../../../shared/model/turno-intervento';
-import { AttivitaUtente } from '../../../../../shared/model/attivita-utente.model';
-import { ObiettivoSensibile } from '../../../../../shared/model/obiettivo-sensibile';
-import { TipoTerreno } from '../../../../../shared/model/tipo-terreno';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { FormRichiestaState } from './form-richiesta.state';
 
 export interface SchedaTelefonataStateModel {
-    richiestaForm: {
-        model: {
-            id: string,
-            codice: string,
-            codiceRichiesta: string,
-            operatore: Utente,
-            istanteRicezioneRichiesta: Date,
-            stato: StatoRichiesta,
-            codTipologia: string,
-            dettaglioTipologia: DettaglioTipologia,
-            nominativo: string,
-            telefono: string,
-            competenze: Sede[],
-            complessita: Complessita,
-            istantePresaInCarico: Date,
-            istantePrimaAssegnazione: Date,
-            trnInsChiamata: string,
-            turnoIntervento: TurnoIntervento,
-            tipoTerreno: TipoTerreno[],
-            indirizzo: string,
-            latitudine: number,
-            longitudine: number,
-            piano: string,
-            palazzo: string,
-            scala: string,
-            interno: string,
-            etichette: string[],
-            noteIndirizzo: string,
-            obiettivoSensibile: ObiettivoSensibile,
-            rilevanzaGrave: boolean,
-            rilevanzaStArCu: boolean,
-            notePrivate: string,
-            notePubbliche: string,
-            descrizione: string,
-            zoneEmergenza: string,
-            prioritaRichiesta: number,
-            codSchedaContatto: string,
-            listaEntiPresaInCarico: Ente[],
-            urgenza: boolean,
-            codSOCompetente: string,
-            sediAllertate: Sede[],
-            codSOAllertate: string[],
-            fonogramma: Fonogramma,
-            partenzeRichiesta: Partenza[],
-            listaEnti: Ente[],
-            motivazione: string,
-            listaUtentiInLavorazione: AttivitaUtente[],
-            listaUtentiPresaInCarico: AttivitaUtente[],
-            codUOCompetenza: string[]
-        },
-        dirty: boolean,
-        status: string,
-        errors: any
-    };
     coordinate: Coordinate;
     competenze: Sede[];
     countInterventiProssimita: number;
@@ -127,12 +62,6 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
-    richiestaForm: {
-        model: undefined,
-        dirty: false,
-        status: '',
-        errors: {}
-    },
     coordinate: null,
     competenze: null,
     countInterventiProssimita: undefined,
@@ -147,8 +76,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 @Injectable()
 @State<SchedaTelefonataStateModel>({
     name: 'schedaTelefonata',
-    defaults: SchedaTelefonataStateDefaults,
-    children: [ClipboardState]
+    defaults: SchedaTelefonataStateDefaults
 })
 
 export class SchedaTelefonataState {
@@ -157,11 +85,6 @@ export class SchedaTelefonataState {
                 private store: Store,
                 private ngZone: NgZone,
                 private modalService: NgbModal) {
-    }
-
-    @Selector()
-    static formValue(state: SchedaTelefonataStateModel): any {
-        return state.richiestaForm.model;
     }
 
     @Selector()
@@ -286,8 +209,7 @@ export class SchedaTelefonataState {
     @Action(InsertChiamata)
     insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
-        const state = getState();
-        const f = state.richiestaForm.model;
+        const f = this.store.selectSnapshot(FormRichiestaState.formValue);
         const azioneChiamata = action.azioneChiamata;
         const urgente = action.options?.urgente;
         let chiamata: SintesiRichiesta;
@@ -482,7 +404,7 @@ export class SchedaTelefonataState {
     @Action(ClearIndirizzo)
     ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new UpdateFormValue({
-            path: 'schedaTelefonata.richiestaForm',
+            path: 'formRichiesta.richiestaForm',
             value: {
                 indirizzo: '',
                 latitudine: '',

@@ -403,7 +403,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     if (res?.dettaglio) {
                         this.f.dettaglioTipologia.patchValue(res.dettaglio);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
+                            path: 'formRichiesta.richiestaForm',
                             value: {
                                 dettaglioTipologia: res.dettaglio
                             }
@@ -419,7 +419,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     if (res?.dettaglio) {
                         this.f.dettaglioTipologia.patchValue(res.dettaglio);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
+                            path: 'formRichiesta.richiestaForm',
                             value: {
                                 dettaglioTipologia: res.dettaglio
                             }
@@ -427,7 +427,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     } else {
                         this.f.dettaglioTipologia.patchValue(null);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
+                            path: 'formRichiesta.richiestaForm',
                             value: {
                                 dettaglioTipologia: null
                             }
