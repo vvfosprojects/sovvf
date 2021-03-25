@@ -53,16 +53,6 @@ export class BoxInterventiComponent implements OnChanges {
         }
     }
 
-    nightModeStyle(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'cod-int';
-        } else if (this.nightMode) {
-            value = 'moon-cod';
-        }
-        return value;
-    }
-
     realDiff(key: string): string {
         if (this.interventiDiff) {
             return setArrow(this.interventiDiff[key]);
