@@ -55,19 +55,56 @@ app-root {
 .pac-container {
   z-index: 99999 !important;
 }
-
 // End Dropdown Google Places
 
-.sun-mode {
-  background-color: #fdfdfd !important;
-}
+// SCSS Styles Sheet
+$n-white: #ffffff !important;
+$n-black: #000000 !important;
+$n-dark: #343a40 !important;
+$n-weight: 500 !important;
+$n-font-large: 20px !important;
+$n-hr: 1px solid #fdfdfd !important;
+// END SCSS Styles Sheet
 
-.moon-mode {
-  background-color: #343a40 !important;
-  .card-body {
-    background-color: #343a40 !important;
+// Sun Mode Styles
+.sun-mode {
+  background-color: $n-white;
+  .n-li-box {
+    color: $n-black;
+    font-weight: $n-weight;
+    font-size: $n-font-large;
   }
 }
+// END Sun Mode Styles
+
+// Moon Mode Styles
+.moon-mode {
+  background-color: $n-dark;
+  .modal-header {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  .modal-body {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  .modal-footer {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  .card-body {
+    background-color: $n-dark;
+  }
+  .n-li-box {
+    color: $n-white;
+    font-weight: $n-weight;
+    font-size: $n-font-large;
+  }
+  hr {
+    border-top: $n-hr;
+  }
+}
+// END Moon Mode Styles
 
 .moon-mode-box {
   background-color: #343a40 !important;

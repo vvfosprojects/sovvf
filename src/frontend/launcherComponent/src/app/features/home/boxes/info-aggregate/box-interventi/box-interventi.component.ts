@@ -16,7 +16,6 @@ export class BoxInterventiComponent implements OnChanges {
     @Input() interventi: BoxInterventi;
     @Input() turno: TurnoCalendario;
     @Input() boxClick: BoxClickInterface;
-    @Input() nightMode: boolean;
 
     @Output() clickRichieste = new EventEmitter<string>();
 
