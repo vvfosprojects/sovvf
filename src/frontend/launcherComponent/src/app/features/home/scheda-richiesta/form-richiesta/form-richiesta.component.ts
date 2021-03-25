@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -46,6 +45,7 @@ import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
 import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
 import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -403,7 +403,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     if (res?.dettaglio) {
                         this.f.dettaglioTipologia.patchValue(res.dettaglio);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'formRichiesta.richiestaForm',
+                            path: 'schedaTelefonata.richiestaForm',
                             value: {
                                 dettaglioTipologia: res.dettaglio
                             }
@@ -419,7 +419,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     if (res?.dettaglio) {
                         this.f.dettaglioTipologia.patchValue(res.dettaglio);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'formRichiesta.richiestaForm',
+                            path: 'schedaTelefonata.richiestaForm',
                             value: {
                                 dettaglioTipologia: res.dettaglio
                             }
@@ -427,7 +427,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     } else {
                         this.f.dettaglioTipologia.patchValue(null);
                         this.store.dispatch(new UpdateFormValue({
-                            path: 'formRichiesta.richiestaForm',
+                            path: 'schedaTelefonata.richiestaForm',
                             value: {
                                 dettaglioTipologia: null
                             }
