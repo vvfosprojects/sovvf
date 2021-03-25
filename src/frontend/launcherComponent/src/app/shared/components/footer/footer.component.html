@@ -11,15 +11,7 @@
                 </div>
             </div>
             <div class="float-left px-4" style="padding-top:10px">
-                <span class="font-weight-bolder">Sala Operativa VV.F. Web</span>
-                - Direzione Centrale per le Risorse Logistiche e Strumentali
-                <small *ngIf="version && version?.number && version?.date" class="d-block">
-                    <a (click)="goToListaChangelog()">vers. {{ version?.number }}</a>
-                    <span class="d-inline-block ml-1" style="opacity: .75">
-                        - {{ version?.date | date :'dd/MM/yyyy' }} alle
-                        {{ version?.date | date :'HH:mm' }}
-                    </span>
-                </small>
+                <app-versione></app-versione>
             </div>
             <div class="float-right pr-4 footer-problemi" style="padding-top:18px">
                 <span class="font-weight-bolder pr-2 animation-test">Problemi?</span>
