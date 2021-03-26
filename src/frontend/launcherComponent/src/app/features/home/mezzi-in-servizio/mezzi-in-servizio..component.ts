@@ -36,7 +36,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -171,19 +170,11 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare la richiesta */
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
-        if (this.doubleMonitor) {
-            this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xxlModal modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xxlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        this.modalService.open(SintesiRichiestaModalComponent, {
+            windowClass: 'xxlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
@@ -191,19 +182,11 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         let modal;
-        if (this.doubleMonitor) {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

@@ -40,7 +40,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
     @Input() triageSummary: TriageSummary[];
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;

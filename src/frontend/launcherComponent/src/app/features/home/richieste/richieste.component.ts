@@ -61,7 +61,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Input() split: boolean;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -296,19 +295,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
         let modal;
-        if (this.doubleMonitor) {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

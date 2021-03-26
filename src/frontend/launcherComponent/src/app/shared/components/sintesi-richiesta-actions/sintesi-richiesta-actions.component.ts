@@ -14,7 +14,6 @@ import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() doubleMonitor: boolean;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
 

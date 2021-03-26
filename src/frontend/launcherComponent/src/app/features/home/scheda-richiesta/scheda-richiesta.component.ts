@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
@@ -26,8 +26,6 @@ import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./scheda-richiesta.component.css']
 })
 export class SchedaRichiestaComponent implements OnInit, OnDestroy {
-
-    @Input() doubleMonitor: boolean;
 
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;

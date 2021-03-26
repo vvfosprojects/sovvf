@@ -12,7 +12,6 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 })
 export class ComposizioneConfirmButtonComponent implements OnInit {
 
-    @Input() doubleMonitor: boolean;
     @Input() boxPartenzaLenght: number;
     @Input() disableConfirmPartenza = true;
     @Input() richiesta: SintesiRichiesta;
@@ -45,25 +44,14 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
     openSoccorsoAereoModal(open: any): void {
         let modalOptions;
         if (open) {
-            if (this.doubleMonitor) {
-                modalOptions = {
-                    windowClass: 'modal-left',
-                    backdrop: 'static',
-                    backdropClass: 'light-blue-backdrop',
-                    centered: true,
-                    keyboard: false,
-                    size: 'xl',
-                } as NgbModalOptions;
-            } else {
-                modalOptions = {
-                    windowClass: '',
-                    backdrop: 'static',
-                    backdropClass: 'light-blue-backdrop',
-                    centered: true,
-                    keyboard: false,
-                    size: 'xl',
-                } as NgbModalOptions;
-            }
+            modalOptions = {
+                windowClass: '',
+                backdrop: 'static',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                keyboard: false,
+                size: 'xl',
+            } as NgbModalOptions;
         }
         const modal = this.modalService.open(SoccorsoAereoModalComponent, modalOptions);
         modal.componentInstance.richiesta = this.richiesta;

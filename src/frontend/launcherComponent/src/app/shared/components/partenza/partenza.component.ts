@@ -20,7 +20,6 @@ export class PartenzaComponent implements OnInit {
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
-    @Input() doubleMonitor: boolean;
 
     @Output() listaSquadre = new EventEmitter<ListaSquadre>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();

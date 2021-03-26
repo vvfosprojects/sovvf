@@ -22,7 +22,6 @@ export class ListaPartenzeComponent {
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();

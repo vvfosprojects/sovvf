@@ -129,7 +129,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
     @Input() triageSummary: TriageSummary[];
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();

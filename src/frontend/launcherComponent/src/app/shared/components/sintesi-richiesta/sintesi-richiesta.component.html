@@ -623,7 +623,6 @@
                                      [class.m-h-100]="!inGestione">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
-                                                        [doubleMonitor]="doubleMonitor"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"

@@ -24,8 +24,6 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
     @Select(ImpostazioniState.visualizzazioneTestualeEventi) visualizzazioneTestualeEventi$: Observable<boolean>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-
     private subscription: Subscription = new Subscription();
 
     constructor(private store: Store) {
