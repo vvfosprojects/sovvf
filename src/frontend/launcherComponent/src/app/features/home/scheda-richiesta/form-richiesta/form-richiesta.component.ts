@@ -62,7 +62,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     @Input() interventiProssimita: SintesiRichiesta[];
     @Input() enti: Ente[];
     @Input() disabledInviaPartenza = false;
-    @Input() doubleMonitor: boolean;
     @Input() resetChiamata: boolean;
     @Input() schedaContatto: SchedaContatto;
 
@@ -318,24 +317,14 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     onShowInterventiProssimita(): void {
         let modalInterventiProssimita;
-        if (this.doubleMonitor) {
-            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl',
-            });
-        } else {
-            modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'xl',
-            });
-        }
+        modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'xl',
+        });
         modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
         modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
-        modalInterventiProssimita.componentInstance.doubleMonitor = this.doubleMonitor;
         modalInterventiProssimita.result.then(
             (val) => {
                 switch (val) {
@@ -354,42 +343,24 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     openModalSchedeContatto(): void {
         let modalOptions: any;
-        if (this.doubleMonitor) {
-            modalOptions = {
-                windowClass: 'xxlModal modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            };
-        } else {
-            modalOptions = {
-                windowClass: 'xxlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            };
-        }
+        modalOptions = {
+            windowClass: 'xxlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        };
         const schedeContatto = this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
-        schedeContatto.componentInstance.doubleMonitor = this.doubleMonitor;
     }
 
     openTriage(): void {
         const codTipologia = this.f.codTipologia.value;
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         let modalOptions: any;
-        if (this.doubleMonitor) {
-            modalOptions = {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            };
-        } else {
-            modalOptions = {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            };
-        }
+        modalOptions = {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        };
         const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         triageModal.componentInstance.dettaglioTipologiaSelezionato = this.f.dettaglioTipologia.value;
@@ -558,19 +529,11 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     onResetChiamata(): void {
         let modalConfermaReset;
-        if (this.doubleMonitor) {
-            modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';

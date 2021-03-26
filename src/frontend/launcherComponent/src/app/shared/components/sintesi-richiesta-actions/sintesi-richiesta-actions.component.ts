@@ -36,19 +36,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
 
     onClick(stato: StatoRichiestaActions): void {
         let modalConferma;
-        if (this.doubleMonitor) {
-          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-        } else {
-          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-          });
-        }
+        });
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:

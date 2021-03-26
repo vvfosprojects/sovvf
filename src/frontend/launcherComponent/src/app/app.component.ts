@@ -22,6 +22,7 @@ import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import {ImpostazioniState} from './shared/store/states/impostazioni/impostazioni.state';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-root',
@@ -46,6 +47,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     nightMode: boolean;
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -75,6 +79,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2) {
         this.getNightMode();
+        this.getDoubleMonitorMode();
         this.getRouterEvents();
         this.getViewState();
         this.getImpostazioniLocalStorage();
@@ -119,6 +124,22 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
           } else {
             this.render.addClass(body, 'moon-mode');
             this.render.removeClass(body, 'sun-mode');
+          }
+        })
+      );
+    }
+
+    getDoubleMonitorMode(): void {
+      this.subscription.add(
+        this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+          this.doubleMonitor = doubleMonitor;
+          const body = document.querySelectorAll('body')[0];
+          if (!this.doubleMonitor) {
+            this.render.addClass(body, 'single-monitor');
+            this.render.removeClass(body, 'double-monitor');
+          } else {
+            this.render.addClass(body, 'double-monitor');
+            this.render.removeClass(body, 'single-monitor');
           }
         })
       );

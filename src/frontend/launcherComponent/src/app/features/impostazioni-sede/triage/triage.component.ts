@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, ViewEncapsulation} from '@angular/core';
+import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
@@ -26,7 +26,6 @@ import { TriageCrudState } from '../../../shared/store/states/triage-crud/triage
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-modal/item-triage-modal.component';
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function-generiche';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
@@ -45,9 +44,6 @@ export class TriageComponent implements OnDestroy {
         decoupleChildFromParent: false,
         maxHeight: 500
     } as TreeviewConfig;
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
@@ -88,17 +84,12 @@ export class TriageComponent implements OnDestroy {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
         this.getDettaglioTipologia();
-        this.getDoubleMonitor();
         this.getEditMode();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearStateTriageCrud());
-    }
-
-    getDoubleMonitor(): void {
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getDettaglioTipologia(): void {
@@ -559,21 +550,12 @@ export class TriageComponent implements OnDestroy {
 
     removeItem(item: TreeviewItem): void {
         let removeTriageItemModal;
-        if (this.doubleMonitor) {
-            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'md'
-            });
-        } else {
-            removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'md'
-            });
-        }
+        removeTriageItemModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'md'
+        });
         removeTriageItemModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageItemModal.componentInstance.titolo = 'Eliminazione "' + item.text + '"';
         removeTriageItemModal.componentInstance.messaggio = 'Sei sicuro di voler rimuovere "' + item.text + '" ?';
@@ -671,21 +653,12 @@ export class TriageComponent implements OnDestroy {
 
     removeTriage(): void {
         let removeTriageModal;
-        if (this.doubleMonitor) {
-            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            removeTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        removeTriageModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
@@ -717,21 +690,12 @@ export class TriageComponent implements OnDestroy {
 
     resetTriage(): void {
         let resetTriageModal;
-        if (this.doubleMonitor) {
-            resetTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            resetTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        resetTriageModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         resetTriageModal.componentInstance.icona = { descrizione: 'refresh', colore: 'secondary' };
         resetTriageModal.componentInstance.titolo = 'Reset Triage di "' + this.dettaglioTipologia.descrizione + '"';
         resetTriageModal.componentInstance.messaggio = 'Stai effettuando il reset delle modifiche al Triage di "' + this.dettaglioTipologia.descrizione + '"';

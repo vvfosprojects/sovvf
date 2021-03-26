@@ -19,7 +19,6 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
     enti: Ente[];
 
     listaEntiIntervenuti: Ente[];
-    doubleMonitor: boolean;
 
     modificaEntiIntervenutiForm: FormGroup;
     submitted: boolean;
@@ -53,21 +52,12 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     aggiungiNuovoEnte(): void {
         let addEnteModal;
-        if (this.doubleMonitor) {
-            addEnteModal = this.modalService.open(EnteModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            addEnteModal = this.modalService.open(EnteModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        addEnteModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         addEnteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

@@ -48,7 +48,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -220,19 +219,11 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onUndoMergeSchedaContatto($event: string): void {
         let modalConfermaAnnulla;
-        if (this.doubleMonitor) {
-            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';

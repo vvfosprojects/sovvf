@@ -34,7 +34,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     operatore: string;
     sede: string;
-    doubleMonitor: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
@@ -219,23 +218,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     openSostituzioneModal(): void {
         let sostituzioneModal;
-        if (this.doubleMonitor) {
-            sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                size: 'lg',
-                centered: true,
-                backdrop: 'static',
-                keyboard: false,
-            });
-        } else {
-            sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
-                windowClass: 'modal-holder',
-                size: 'lg',
-                centered: true,
-                backdrop: 'static',
-                keyboard: false,
-            });
-        }
+        sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg',
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+        });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;

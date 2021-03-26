@@ -32,7 +32,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     subscription: Subscription = new Subscription();
 
-    doubleMonitor: boolean;
     richiesta: SintesiRichiesta;
     statoRichiestaString: Array<StatoRichiestaActions>;
 
@@ -60,19 +59,11 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onClick(stato: StatoRichiestaActions): void {
         let modalConferma;
-        if (this.doubleMonitor) {
-            modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
@@ -124,21 +115,12 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
         let addTrasferimentoChiamataModal;
-        if (this.doubleMonitor) {
-            addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
         addTrasferimentoChiamataModal.result.then(
             (result: { success: boolean }) => {
@@ -158,19 +140,11 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onAllertaSede(): void {
         let modalAllertaSede;
-        if (this.doubleMonitor) {
-            modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
         modalAllertaSede.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -185,21 +159,12 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onModificaEntiIntervenuti(): void {
         let modalModificaEntiIntervenuti;
-        if (this.doubleMonitor) {
-            modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-        modalModificaEntiIntervenuti.componentInstance.doubleMonitor = this.doubleMonitor;
         modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -216,19 +181,11 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onModificaStatoFonogramma(): void {
         let modalModificaStatoFonogramma;
-        if (this.doubleMonitor) {
-            modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
@@ -250,19 +207,11 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     visualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
         let modal;
-        if (this.doubleMonitor) {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
