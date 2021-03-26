@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
         {{ 'Schede Contatto' | uppercase }}
     </h4>
@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5" [ngClass]="onNightMode()">
+<div class="modal-body height py-4 px-5">
     <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
     <app-lista-schede-contatto [ricerca]="ricerca"
                                [page]="page$ | async"
@@ -43,6 +43,6 @@
                                (pageChange)="onPageChange($event)">
     </app-lista-schede-contatto>
 </div>
-<div class="modal-footer" [ngClass]="onNightMode()">
+<div class="modal-footer">
     <button type="button" class="btn btn-lg btn-danger" (click)="closeModal('ko')">Chiudi</button>
 </div>

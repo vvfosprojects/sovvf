@@ -16,7 +16,6 @@ import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
-import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
 import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 
@@ -30,8 +29,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     subscription: Subscription = new Subscription();
 
@@ -42,7 +39,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     constructor(private modal: NgbActiveModal, private store: Store, private modalService: NgbModal) {
         this.getUtente();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -52,24 +48,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-    }
-
-    getNightMode(): void {
-        this.subscription.add(
-            this.nightMode$.subscribe((nightMode: boolean) => {
-                this.nightMode = nightMode;
-            })
-        );
-    }
-
-    onNightMode(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = '';
-        } else if (this.nightMode) {
-            value = 'moon-text moon-mode';
-        }
-        return value;
     }
 
     getUtente(): void {

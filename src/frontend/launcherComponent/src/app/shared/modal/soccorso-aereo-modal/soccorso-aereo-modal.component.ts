@@ -8,8 +8,6 @@ import { Utente } from '../../model/utente.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { makeCopy } from '../../helper/function-generiche';
-import { ImpostazioniState } from '../../store/states/impostazioni/impostazioni.state';
-
 
 @Component({
     selector: 'app-soccorso-aereo-modal',
@@ -23,8 +21,6 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     utente: Utente;
     @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<boolean>;
     azioniRichiesta: any[];
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     richiesta: SintesiRichiesta;
     subscription: Subscription = new Subscription();
@@ -37,7 +33,6 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
         this.getUtente();
         this.getAzioniRichiesta();
-        this.getNightMode();
         this.motivazione = null;
         this.inserimentoFallito = false;
     }
@@ -49,24 +44,6 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     onCheck(i: number): void {
         this.azioniRichiesta[i].checked = !this.azioniRichiesta[i].checked;
         this.tipologiaChecked = !!this.azioniRichiesta.find(x => x.checked);
-    }
-
-    getNightMode(): void {
-        this.subscription.add(
-            this.nightMode$.subscribe((nightMode: boolean) => {
-                this.nightMode = nightMode;
-            })
-        );
-    }
-
-    onNightMode(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = '';
-        } else if (this.nightMode) {
-            value = 'moon-text moon-mode';
-        }
-        return value;
     }
 
     chiudiModalSoccorsoAereo(closeRes: string): void {

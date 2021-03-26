@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
   <h4 class="modal-title font-weight-bold">
     {{ 'INVIO DELLA RICHIESTA AL SISTEMA AFM' }}
   </h4>
@@ -8,7 +8,7 @@
   </button>
 </div>
 
-<div class="modal-body pb-0" [ngClass]="onNightMode()">
+<div class="modal-body pb-0">
   <div class="row pt-4" style="justify-content: center; font-size: x-large">
     <div class="col-7" style="text-align: center">
       <span style="font-size: 130%" >Seleziona le Azioni Richieste</span>
@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<div class="modal-footer" [ngClass]="onNightMode()">
+<div class="modal-footer">
   <div class="row w-100">
     <div class="col-12 text-right">
       <button *ngIf="!submitted && (motivazione && tipologiaChecked)" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"

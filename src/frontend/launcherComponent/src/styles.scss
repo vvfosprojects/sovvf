@@ -61,18 +61,32 @@ app-root {
 $n-white: #ffffff !important;
 $n-black: #000000 !important;
 $n-dark: #343a40 !important;
+$n-muted: #6c757d !important;
+$n-dark-light: #464e56 !important;
+$n-light: #f8f9fa!important;
+$n-guida: #bbbbbb !important;
 $n-weight: 500 !important;
 $n-font-large: 20px !important;
 $n-hr: 1px solid #fdfdfd !important;
+$n-box-shadow: 1px 1px 2px 1px #dee2e6 !important;
 // END SCSS Styles Sheet
 
 // Sun Mode Styles
 .sun-mode {
   background-color: $n-white;
-  .n-li-box {
+  .n-li-box a {
     color: $n-black;
     font-weight: $n-weight;
     font-size: $n-font-large;
+  }
+  .n-icon-afm {
+    color: $n-guida;
+  }
+  .n-text-muted {
+    color: $n-muted;
+  }
+  .n-color {
+    color: $n-black;
   }
 }
 // END Sun Mode Styles
@@ -92,16 +106,51 @@ $n-hr: 1px solid #fdfdfd !important;
     background-color: $n-dark;
     color: $n-white;
   }
+  td {
+    background-color: $n-dark-light;
+    color: $n-white;
+  }
+  thead {
+    font-size: 25px !important;
+    font-weight: 500 !important;
+  }
   .card-body {
     background-color: $n-dark;
   }
-  .n-li-box {
+  .n-li-box a {
     color: $n-white;
     font-weight: $n-weight;
     font-size: $n-font-large;
   }
   hr {
     border-top: $n-hr;
+  }
+  .n-icon-afm {
+    color: $n-white;
+  }
+  .n-color {
+    color: $n-white;
+  }
+  .n-dark-light {
+    background-color: $n-dark-light;
+  }
+  .n-card {
+    position: relative;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: $n-dark-light;
+    border-radius: 0.25rem;
+    -webkit-box-shadow: $n-box-shadow;
+    -moz-box-shadow: $n-box-shadow;
+    box-shadow: $n-box-shadow;
+  }
+  .n-bg-light {
+    background-color: $n-light;
+  }
+  .n-text-muted {
+    color: $n-white;
   }
 }
 // END Moon Mode Styles

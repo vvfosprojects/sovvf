@@ -84,16 +84,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         this.eliminato.emit(this.partenza);
     }
 
-    nightModeBg(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'bg-light';
-        } else if (this.nightMode) {
-            value = 'bg-moon-light';
-        }
-        return value;
-    }
-
     ngClass(): string {
         let returnClass: string;
 
