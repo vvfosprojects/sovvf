@@ -4,7 +4,8 @@ import {
     AnnullaChiamata,
     ApriModaleRichiestaDuplicata,
     CestinaChiamata,
-    ClearChiamata, ClearIndirizzo,
+    ClearChiamata,
+    ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
@@ -32,7 +33,6 @@ import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '.
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
@@ -47,9 +47,16 @@ import { TriageSummaryState } from '../../../../../shared/store/states/triage-su
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
-import { FormRichiestaState } from './form-richiesta.state';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface SchedaTelefonataStateModel {
+    richiestaForm: {
+        model: RichiestaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
     coordinate: Coordinate;
     competenze: Sede[];
     countInterventiProssimita: number;
@@ -62,6 +69,12 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
+    richiestaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
     coordinate: null,
     competenze: null,
     countInterventiProssimita: undefined,
@@ -85,6 +98,11 @@ export class SchedaTelefonataState {
                 private store: Store,
                 private ngZone: NgZone,
                 private modalService: NgbModal) {
+    }
+
+    @Selector()
+    static formValue(state: SchedaTelefonataStateModel): RichiestaForm {
+        return state.richiestaForm.model;
     }
 
     @Selector()
@@ -209,7 +227,8 @@ export class SchedaTelefonataState {
     @Action(InsertChiamata)
     insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
-        const f = this.store.selectSnapshot(FormRichiestaState.formValue);
+        const state = getState();
+        const f = state.richiestaForm.model;
         const azioneChiamata = action.azioneChiamata;
         const urgente = action.options?.urgente;
         let chiamata: SintesiRichiesta;
@@ -277,7 +296,6 @@ export class SchedaTelefonataState {
             );
         }
         patchState({ azioneChiamata });
-        console.log('chiamata', chiamata);
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
@@ -404,7 +422,7 @@ export class SchedaTelefonataState {
     @Action(ClearIndirizzo)
     ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new UpdateFormValue({
-            path: 'formRichiesta.richiestaForm',
+            path: 'schedaTelefonata.richiestaForm',
             value: {
                 indirizzo: '',
                 latitudine: '',

@@ -9,7 +9,6 @@ import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -25,8 +24,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     sediSelezionate: string;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
@@ -42,7 +39,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.getFormValid();
         this.inizializzaSediTreeview();
         this.getSediSelezionate();
-        this.getNightMode();
     }
 
     initForm(): void {
@@ -74,24 +70,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     get f(): any {
         return this.allertaSedeForm.controls;
-    }
-
-    getNightMode(): void {
-      this.subscriptions.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
-    }
-
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
     }
 
     inizializzaSediTreeview(): void {

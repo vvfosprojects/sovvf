@@ -17,7 +17,7 @@
                       (click)="clickMezzi.emit('istituto')">{{mezzi.istituto}}</span>
             </div>
         </div>
-        <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
+        <hr class="m-0 mb-2">
     </div>
     <!-- sinistra -->
     <div class="col-6">
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Mezzi in sede" placement="top">In sede</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -45,7 +45,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Mezzi in rientro" placement="bottom">In rientro</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -71,7 +71,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Mezzi in viaggio" placement="top">In viaggio</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -90,7 +90,7 @@
                 <div class="row">
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Mezzi sul posto" placement="bottom">Sul posto</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">

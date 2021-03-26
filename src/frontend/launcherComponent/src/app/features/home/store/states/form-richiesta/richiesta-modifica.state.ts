@@ -6,8 +6,6 @@ import { RichiesteMarkersState } from '../maps/richieste-markers.state';
 import { ClearRichiestaMarkerModifica, UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Observable } from 'rxjs';
-import { UpdateFormValue } from '@ngxs/form-plugin';
-import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,
@@ -28,7 +26,9 @@ import { TipologieState } from '../../../../../shared/store/states/tipologie/tip
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
-import { FormRichiestaState } from './form-richiesta.state';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { SchedaTelefonataState } from './scheda-telefonata.state';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -138,7 +138,7 @@ export class RichiestaModificaState {
         if (action.sintesiRichiesta) {
             sintesiRichiesta = action.sintesiRichiesta;
         } else {
-            const f = this.store.selectSnapshot(FormRichiestaState.formValue);
+            const f = this.store.selectSnapshot(SchedaTelefonataState.formValue);
             const azioneChiamata = AzioneChiamataEnum.Modifica;
             let tipologia: Tipologia;
             if (f) {
@@ -241,7 +241,7 @@ export class RichiestaModificaState {
     @Action(ClearIndirizzo)
     ClearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
         dispatch(new UpdateFormValue({
-            path: 'formRichiesta.richiestaForm',
+            path: 'schedaTelefonata.richiestaForm',
             value: {
                 indirizzo: '',
                 latitudine: '',

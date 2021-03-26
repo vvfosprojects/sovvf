@@ -1,6 +1,5 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        <!-- <i class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> -->
         {{ titolo | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
@@ -8,7 +7,7 @@
         <span class="text-danger"><i class="fa fa-times"></i></span>
     </button>
 </div>
-<div class="modal-body" [ngClass]="onNightMode()">
+<div class="modal-body">
     <h5>{{ messaggio }}</h5>
     <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold">{{ messaggioAttenzione }}</label>
     <div>
@@ -20,7 +19,7 @@
         </form>
     </div>
 </div>
-<div class="modal-footer" [ngClass]="onNightMode()">
+<div class="modal-footer">
     <button *ngFor="let bottone of bottoni" type="button" class="btn btn-no-hover btn-lg btn-{{ bottone.colore }}"
             style="font-weight:600" (click)="close(bottone.type)">
         {{ bottone.descrizione | uppercase }}
