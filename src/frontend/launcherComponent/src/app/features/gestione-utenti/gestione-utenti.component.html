@@ -1,10 +1,9 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-9 mx-auto mb-2" [class.text-moon]="nightMode">
+        <div class="col-12 col-md-9 mx-auto mb-2 n-color">
             <h2>
                 <i class="fa fa-users"></i>
                 Gestione Utenti
-                <!--<small *ngIf="utente?.sede.descrizione">({{utente?.sede.descrizione}})</small>-->
                 <a href="http://intranet.dipvvf.it/SOWEB/GestioneUtenti.pdf" target="_blank"><i
                         class="fa fa-question-circle-o animation-questionmark" aria-hidden="true"></i></a>
             </h2>
@@ -30,7 +29,7 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
         <div class="col-12 col-md-9 mx-auto">
-            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id" [nightMode]="(nightMode$ | async)"
+            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
                                 [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
                                 [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
                                 (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
