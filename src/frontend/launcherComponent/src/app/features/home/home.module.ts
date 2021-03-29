@@ -69,7 +69,6 @@ import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state'
                 FiltriRichiesteState,
                 RicercaFilterbarState,
                 MarkerMeteoState,
-                RichiestaModificaState,
                 TipologicheMezziState,
                 BoxClickState,
                 MapsFiltroState,
