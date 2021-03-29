@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
-import { statoMezzoColor } from '../../helper/function';
+import { statoMezzoColor } from '../../helper/function-mezzo';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 
@@ -21,7 +21,6 @@ export class BoxAnteprimaPartenzaComponent {
     @Input() boxSostitutivo: boolean;
     @Input() nuovoMezzo: Mezzo;
     @Input() nuoveSquadre: Squadra[];
-    @Input() nightMode: boolean;
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();

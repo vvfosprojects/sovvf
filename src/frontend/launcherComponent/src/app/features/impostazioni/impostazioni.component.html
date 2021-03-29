@@ -3,7 +3,10 @@
         <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
             <div class="card card-shadow px-4 py-3 no-padding-custom">
                 <div class="clearfix" style="background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);">
-                    <div class="text-center float-left" style="width: 50%" [class.text-white]="(nightMode$ | async)" [class.bg-moon-light]="(nightMode$ | async)">
+                    <div class="text-center float-left"
+                         [class.text-white]="(nightMode$ | async)"
+                         [class.bg-moon-light]="(nightMode$ | async)"
+                         style="width: 50%">
                         <div class="container mt-2">
                             <div class="d-flex justify-content-center h-100">
                                 <div class="img-fuori-container">
@@ -18,7 +21,8 @@
                             {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
                         </h3>
                         <div class="divider-custom">
-                            <div class="divider-custom-line" [class.bg-white]="(nightMode$ | async)" style="height: 0.09rem;"></div>
+                            <div class="divider-custom-line" [class.bg-white]="(nightMode$ | async)"
+                                 style="height: 0.09rem;"></div>
                         </div>
                         <h6 class="mt-1">
                             <span class="font-weight-bold">CF:</span>
@@ -44,6 +48,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="pl-3 py-2 bg-dark text-white">
+                    <app-versione></app-versione>
+                </div>
             </div>
         </div>
         <div class="col-12">
@@ -60,7 +67,8 @@
                                 </ng-template>
                                 <ng-template ngbPanelContent>
                                     <div *ngFor="let impostazione of listaImpostazioni; let i = index"
-                                         class="card card-shadow p-3" [class.text-white]="(nightMode$ | async)" [class.bg-moon-light]="(nightMode$ | async)"
+                                         class="card card-shadow p-3" [class.text-white]="(nightMode$ | async)"
+                                         [class.bg-moon-light]="(nightMode$ | async)"
                                          [class.mb-4]="i !== (listaImpostazioni.length - 1)">
                                         <div class="clearfix">
                                             <div class="float-left">

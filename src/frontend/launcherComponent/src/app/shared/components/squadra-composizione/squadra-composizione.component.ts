@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/composizione-functions';
+import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/function-composizione';
 import { Sede } from '../../model/sede.model';
 import { ViewLayouts } from '../../interface/view.interface';
 import { Observable, Subscription } from 'rxjs';

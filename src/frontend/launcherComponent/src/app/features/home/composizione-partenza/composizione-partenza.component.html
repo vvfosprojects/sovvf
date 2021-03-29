@@ -20,7 +20,6 @@
         <div class="py-1">
             <app-filterbar-composizione [filtri]="filtri$ | async"
                                         [nightMode]="nightMode"
-                                        [doubleMonitor]="doubleMonitor"
                                         [competenze]="richiesta?.competenze"
                                         [disableComposizioneMode]="loadingListe"
                                         [composizionePartenza]="true"
@@ -31,7 +30,6 @@
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
             <app-composizione-veloce [richiesta]="richiesta"
-                                     [doubleMonitor]="doubleMonitor"
                                      [nightMode]="nightMode"
                                      [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                      [boxAttivi]="boxAttivi"
@@ -44,7 +42,6 @@
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
             <app-composizione-avanzata [richiesta]="richiesta"
                                        [nightMode]="nightMode"
-                                       [doubleMonitor]="doubleMonitor"
                                        [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                        [boxAttivi]="boxAttivi"
                                        [triageSummary]="summary$ | async"

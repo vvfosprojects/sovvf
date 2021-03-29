@@ -4,4 +4,5 @@ export interface ItemTriageData {
     generiMezzo: string[];
     prioritaConsigliata: string;
     noteOperatore: string;
+    noteUtente: string;
 }

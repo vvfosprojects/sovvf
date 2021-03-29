@@ -17,8 +17,7 @@ import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
-import {ViewportState} from '../../shared/store/states/viewport/viewport.state';
-import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
+import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -36,8 +35,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     private subscriptions: Subscription = new Subscription();
@@ -48,7 +45,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
-        this.getMonitorSize();
         this.getRicerca();
         this.getPageSize();
         this.getRubrica(true);
@@ -81,21 +77,12 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onAddVoceRubrica(): void {
         let addVoceRubricaModal;
-        if (this.doubleMonitor) {
-          addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-          });
-        } else {
-          addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+        addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-          });
-        }
+        });
         addVoceRubricaModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
@@ -119,21 +106,12 @@ export class RubricaComponent implements OnInit, OnDestroy {
     onEditVoceRubrica(voceRubrica: Ente): void {
         console.log('onEditVoceRubrica', voceRubrica);
         let editVoceRubricaModal;
-        if (this.doubleMonitor) {
-          editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-          });
-        } else {
-          editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+        editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder ',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-          });
-        }
+        });
         editVoceRubricaModal.componentInstance.editEnte = voceRubrica;
         editVoceRubricaModal.result.then(
             (result: { success: boolean }) => {
@@ -157,19 +135,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }): void {
         let modalConfermaAnnulla;
-        if (this.doubleMonitor) {
-          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-        } else {
-          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-          });
-        }
+        });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
@@ -231,9 +201,5 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 }
             })
         );
-    }
-
-    getMonitorSize(): void {
-      this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 }

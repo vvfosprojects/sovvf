@@ -1,7 +1,8 @@
-import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {BoxPartenza} from '../../../composizione-partenza/interface/box-partenza-interface';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
-    AddBoxesPartenzaInRientro, AddBoxesPartenzaPreAccoppiato,
+    AddBoxesPartenzaInRientro,
+    AddBoxesPartenzaPreAccoppiato,
     AddBoxPartenza,
     AddMezzoBoxPartenzaSelezionato,
     AddSquadreBoxPartenza,
@@ -16,28 +17,24 @@ import {
     SelectBoxPartenza,
     UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
-import {
-    ClearSelectedMezziComposizione,
-    SelectMezzoComposizione,
-    UnselectMezzoComposizione
-} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearSelectedMezziComposizione, SelectMezzoComposizione, UnselectMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import {
     ClearIdSquadreSelezionate,
     ClearSelectedSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import {append, patch, removeItem} from '@ngxs/store/operators';
-import {makeID} from '../../../../../shared/helper/function';
+import { append, patch, removeItem } from '@ngxs/store/operators';
+import { makeID } from '../../../../../shared/helper/function-generiche';
 import produce from 'immer';
-import {SquadraComposizione} from '../../../../../shared/interface/squadra-composizione-interface';
-import {ShowToastr} from '../../../../../shared/store/actions/toastr/toastr.actions';
-import {ToastrType} from '../../../../../shared/enum/toastr';
-import {ClearDirection} from '../../actions/maps/maps-direction.actions';
-import {ClearMarkerMezzoSelezionato} from '../../actions/maps/marker.actions';
-import {StatoMezzo} from '../../../../../shared/enum/stato-mezzo.enum';
-import {Injectable} from '@angular/core';
-import {GetListeComposizioneAvanzata} from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { Injectable } from '@angular/core';
+import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface BoxPartenzaStateModel {
     boxPartenzaList: BoxPartenza[];
@@ -85,7 +82,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RequestAddBoxPartenza)
-    requestAddBoxPartenza({getState, dispatch}: StateContext<BoxPartenzaStateModel>): void {
+    requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         if (validateBoxesPartenza(state.boxPartenzaList)) {
             dispatch(new AddBoxPartenza());
@@ -96,7 +93,7 @@ export class BoxPartenzaState {
     }
 
     @Action(AddBoxPartenza)
-    addBoxPartenza({getState, setState, dispatch}: StateContext<BoxPartenzaStateModel>): void {
+    addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         // credo un ID logico random da asseganre al box-partenza
         const id = makeID();
@@ -129,7 +126,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveBoxPartenza)
-    removeBoxPartenza({getState, setState, dispatch}: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
+    removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
         // controllo se il boxPartenza che sto eliminando è quello selezionato
         if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
@@ -171,7 +168,7 @@ export class BoxPartenzaState {
     }
 
     @Action(DeselectBoxPartenza)
-    deselectBoxPartenza({getState, setState, dispatch}: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
+    deselectBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
         // controllo se il boxPartenza che sto eliminando è quello selezionato
         if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
@@ -189,7 +186,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveBoxPartenzaByMezzoId)
-    removeBoxPartenzaByMezzoId({getState, dispatch}: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenzaByMezzoId): void {
+    removeBoxPartenzaByMezzoId({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenzaByMezzoId): void {
         const state = getState();
         let boxPartenza: BoxPartenza;
         state.boxPartenzaList.forEach((box: BoxPartenza) => {
@@ -215,7 +212,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RequestSelectBoxPartenza)
-    requestSelectBoxPartenza({getState, dispatch}: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza): void {
+    requestSelectBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza): void {
         const state = getState();
         if (validateBoxesPartenza(state.boxPartenzaList)) {
             // prendo il box partenza selezionato tramite l'id
@@ -230,7 +227,7 @@ export class BoxPartenzaState {
     }
 
     @Action(SelectBoxPartenza)
-    selectBoxPartenza({getState, patchState, dispatch, setState}: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza): void {
+    selectBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza): void {
         const state = getState();
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
@@ -245,7 +242,7 @@ export class BoxPartenzaState {
                 }
                 if (box.squadreComposizione.length > 0) {
                     box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                            dispatch(new SelectSquadraComposizione(squadra));
+                        dispatch(new SelectSquadraComposizione(squadra));
                     });
                 }
             }
@@ -253,7 +250,7 @@ export class BoxPartenzaState {
     }
 
     @Action(AddSquadreBoxPartenza)
-    addSquadraBoxPartenza({getState, setState}: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
+    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
         if (action.preAccoppiato) {
             setState(
@@ -284,7 +281,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveSquadraBoxPartenza)
-    removeSquadraBoxPartenza({getState, setState}: StateContext<BoxPartenzaStateModel>, action: RemoveSquadraBoxPartenza): void {
+    removeSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveSquadraBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -330,7 +327,7 @@ export class BoxPartenzaState {
     }
 
     @Action(UpdateMezzoBoxPartenza)
-    updateMezzoBoxPartenza({getState, setState}: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza): void {
+    updateMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -348,7 +345,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveMezzoBoxPartenzaSelezionato)
-    removeMezzoBoxPartenzaSelezionato({getState, setState}: StateContext<BoxPartenzaStateModel>): void {
+    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -362,7 +359,7 @@ export class BoxPartenzaState {
     }
 
     @Action(ClearBoxPartenze)
-    clearBoxPartenze({patchState, dispatch}: StateContext<BoxPartenzaStateModel>): void {
+    clearBoxPartenze({ patchState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         dispatch(new ClearDirection());
         patchState({
             boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList

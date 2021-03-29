@@ -13,13 +13,12 @@ import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-mod
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -32,12 +31,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     operatore: string;
     sede: string;
-    doubleMonitor: boolean;
     partenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
@@ -74,7 +70,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modificaPartenzaService: ModificaPartenzaService) {
         this.initForm();
         this.getFormValid();
-        this.getNightMode();
         this.inizializzaUser();
         this.formatTime();
     }
@@ -123,14 +118,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
     }
 
     getFormValid(): void {
@@ -198,16 +185,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
-    }
-
     onRemoveSequenza(): void {
         this.sequenze.pop();
         this.sequenzeValid = true;
@@ -241,23 +218,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     openSostituzioneModal(): void {
         let sostituzioneModal;
-        if (this.doubleMonitor) {
-          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            size: 'lg',
-            centered: true,
-            backdrop: 'static',
-            keyboard: false,
-          });
-        } else {
-          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+        sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true,
             backdrop: 'static',
             keyboard: false,
-          });
-        }
+        });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
@@ -363,7 +330,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             sequenzaStati: form.sequenzaStati.map(x => ({
                 dataOraAggiornamento: x.dataOraAggiornamento,
                 stato: x.stato ? x.stato : undefined,
-                codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
+                codMezzo: x.codMezzo ? x.codMezzo.codice : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
         } as ModificaPartenzaDto;

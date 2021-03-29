@@ -14,7 +14,6 @@ import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chia
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { oneElementLengthArray } from '../../helper/validators-custom';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -33,8 +32,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     sediSelezionate: string;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     operatore: string;
     codRichiesta: string;
@@ -52,7 +49,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.inizializzaSediTreeview();
         this.getSediSelezionate();
         this.inizializzaUser();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -93,24 +89,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                 this.formValid = valid;
             })
         );
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
-    }
-
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
     }
 
     getTitle(): string {

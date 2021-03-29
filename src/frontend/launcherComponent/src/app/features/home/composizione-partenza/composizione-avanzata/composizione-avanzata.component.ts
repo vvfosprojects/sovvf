@@ -7,7 +7,7 @@ import { DirectionInterface } from '../../maps/maps-interface/direction-interfac
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { getSoccorsoAereoTriage, makeCopy } from '../../../../shared/helper/function';
+import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
@@ -59,6 +59,7 @@ import {
 } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
+import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -128,7 +129,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
     @Input() triageSummary: TriageSummary[];
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();

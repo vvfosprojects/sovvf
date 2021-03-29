@@ -1,6 +1,6 @@
 {
   "name": "sala-operativa-so115",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

@@ -1,23 +1,23 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
 import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
-import { ActionMezzo, GetListaRichieste, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
-import { onlyUnique } from '../../../shared/helper/function';
+import { onlyUnique } from '../../../shared/helper/function-generiche';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import {
-    ClearFiltriMezziInServizio, ClearListaMezziInServizio,
+    ClearFiltriMezziInServizio,
+    ClearListaMezziInServizio,
     ClearMezzoInServizioHover,
     GetListaMezziInServizio,
     SetMezzoInServizioHover,
@@ -36,7 +36,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -171,19 +170,11 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare la richiesta */
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
-        if (this.doubleMonitor) {
-            this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xxlModal modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            this.modalService.open(SintesiRichiestaModalComponent, {
-                windowClass: 'xxlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        this.modalService.open(SintesiRichiestaModalComponent, {
+            windowClass: 'xxlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
@@ -191,19 +182,11 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         let modal;
-        if (this.doubleMonitor) {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modal = this.modalService.open(EventiRichiestaComponent, {
-                windowClass: 'xlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

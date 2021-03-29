@@ -1,5 +1,5 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
 import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';

@@ -45,7 +45,7 @@ import { MapsFiltroState } from '../../../store/states/maps/maps-filtro.state';
  * Helper Functions
  */
 import { IconMappe } from './_icone';
-import { coord2String, makeID } from '../../../../../shared/helper/function';
+import { makeID } from '../../../../../shared/helper/function-generiche';
 import { GetMarkerDatiMeteo } from '../../../store/actions/maps/marker-info-window.actions';
 import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-window.state';
 import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
@@ -71,6 +71,7 @@ import {
     OpenDetailSC,
     SetSchedaContattoHover
 } from '../../../store/actions/schede-contatto/schede-contatto.actions';
+import { coord2String } from '../../../../../shared/helper/mappa/function-mappa';
 
 
 @Injectable()

@@ -9,7 +9,6 @@
             <div class="px-3">
                 <div *ngFor="let m of mezziInServizio | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
                     <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
-                                           [doubleMonitor]="doubleMonitor"
                                            [nightMode]="nightMode"
                                            [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
                                            [loading]="(loadingActionMezzo$ | async)"

@@ -22,7 +22,6 @@
                 <div class="col-12">
                     <!-- Richieste -->
                     <app-richieste *ngIf="viewState.richieste.active"
-                                   [doubleMonitor]="(doubleMonitor$ | async)"
                                    [nightMode]="(nightMode$ | async)"
                                    [split]="viewState.richieste.split"
                                    [boxAttivi]="boxAttivi">
@@ -38,9 +37,7 @@
                         </div>
                     </div>
                     <!-- Scheda Richiesta -->
-                    <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active"
-                                          [doubleMonitor]="(doubleMonitor$ | async)">
-                    </app-scheda-richiesta>
+                    <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
                     <!-- Composizione Partenza -->
                     <app-composizione-partenza *ngIf="viewState.composizione.active"
                                                [doubleMonitor]="(doubleMonitor$ | async)"
@@ -50,13 +47,11 @@
                     </app-composizione-partenza>
                     <!-- Mezzi in Servizio -->
                     <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"
-                                           [doubleMonitor]="(doubleMonitor$ | async)"
                                            [nightMode]="(nightMode$ | async)"
                                            [boxAttivi]="boxAttivi">
                     </app-mezzi-in-servizio>
                     <!-- Schede Contatto -->
                     <app-schede-contatto *ngIf="viewState.schedeContatto.active"
-                                         [doubleMonitor]="(doubleMonitor$ | async)"
                                          [nightMode]="(nightMode$ | async)"
                                          [boxAttivi]="boxAttivi">
                     </app-schede-contatto>

@@ -1,5 +1,5 @@
-import { StatoRichiesta } from '../enum/stato-richiesta.enum';
-import { ClassificazioneSchedaContatto } from '../enum/classificazione-scheda-contatto.enum';
+import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
+import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 
 export function markerColor(stato: string): string {
     const mapColorStato = new Map([

@@ -4,7 +4,8 @@ import {
     AnnullaChiamata,
     ApriModaleRichiestaDuplicata,
     CestinaChiamata,
-    ClearChiamata, ClearIndirizzo,
+    ClearChiamata,
+    ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
@@ -23,7 +24,6 @@ import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions'
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
-import { ClipboardState } from './clipboard.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -33,7 +33,6 @@ import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '.
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
@@ -47,70 +46,13 @@ import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
-import { Ente } from '../../../../../shared/interface/ente.interface';
-import { Utente } from '../../../../../shared/model/utente.model';
-import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
-import { DettaglioTipologia } from '../../../../../shared/interface/dettaglio-tipologia.interface';
-import { Complessita } from '../../../../../shared/model/complessita.model';
-import { Fonogramma } from '../../../../../shared/model/fonogramma.model';
-import { Partenza } from '../../../../../shared/model/partenza.model';
-import { TurnoIntervento } from '../../../../../shared/model/turno-intervento';
-import { AttivitaUtente } from '../../../../../shared/model/attivita-utente.model';
-import { ObiettivoSensibile } from '../../../../../shared/model/obiettivo-sensibile';
-import { TipoTerreno } from '../../../../../shared/model/tipo-terreno';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
-        model: {
-            id: string,
-            codice: string,
-            codiceRichiesta: string,
-            operatore: Utente,
-            istanteRicezioneRichiesta: Date,
-            stato: StatoRichiesta,
-            codTipologia: string,
-            dettaglioTipologia: DettaglioTipologia,
-            nominativo: string,
-            telefono: string,
-            competenze: Sede[],
-            complessita: Complessita,
-            istantePresaInCarico: Date,
-            istantePrimaAssegnazione: Date,
-            trnInsChiamata: string,
-            turnoIntervento: TurnoIntervento,
-            tipoTerreno: TipoTerreno[],
-            indirizzo: string,
-            latitudine: number,
-            longitudine: number,
-            piano: string,
-            palazzo: string,
-            scala: string,
-            interno: string,
-            etichette: string[],
-            noteIndirizzo: string,
-            obiettivoSensibile: ObiettivoSensibile,
-            rilevanzaGrave: boolean,
-            rilevanzaStArCu: boolean,
-            notePrivate: string,
-            notePubbliche: string,
-            descrizione: string,
-            zoneEmergenza: string,
-            prioritaRichiesta: number,
-            codSchedaContatto: string,
-            listaEntiPresaInCarico: Ente[],
-            urgenza: boolean,
-            codSOCompetente: string,
-            sediAllertate: Sede[],
-            codSOAllertate: string[],
-            fonogramma: Fonogramma,
-            partenzeRichiesta: Partenza[],
-            listaEnti: Ente[],
-            motivazione: string,
-            listaUtentiInLavorazione: AttivitaUtente[],
-            listaUtentiPresaInCarico: AttivitaUtente[],
-            codUOCompetenza: string[]
-        },
+        model: RichiestaForm,
         dirty: boolean,
         status: string,
         errors: any
@@ -147,8 +89,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 @Injectable()
 @State<SchedaTelefonataStateModel>({
     name: 'schedaTelefonata',
-    defaults: SchedaTelefonataStateDefaults,
-    children: [ClipboardState]
+    defaults: SchedaTelefonataStateDefaults
 })
 
 export class SchedaTelefonataState {
@@ -160,7 +101,7 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
-    static formValue(state: SchedaTelefonataStateModel): any {
+    static formValue(state: SchedaTelefonataStateModel): RichiestaForm {
         return state.richiestaForm.model;
     }
 
@@ -355,7 +296,6 @@ export class SchedaTelefonataState {
             );
         }
         patchState({ azioneChiamata });
-        console.log('chiamata', chiamata);
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([

@@ -1,21 +1,21 @@
-import {Component, Input} from '@angular/core';
-import {boxStatiClass} from '../../helper/composizione-functions';
+import { Component, Input } from '@angular/core';
+import { boxStatiClass } from '../../helper/function-composizione';
 
 @Component({
-  selector: 'app-icona-stato',
-  templateUrl: './icona-stato.component.html',
-  styleUrls: ['./icona-stato.component.css']
+    selector: 'app-icona-stato',
+    templateUrl: './icona-stato.component.html',
+    styleUrls: ['./icona-stato.component.css']
 })
 
 export class IconaStatoComponent {
 
-  @Input() stato: any;
+    @Input() stato: any;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  _boxStatiClass(stato: string): string {
-    return boxStatiClass(stato);
-  }
+    _boxStatiClass(stato: string): string {
+        return boxStatiClass(stato);
+    }
 
 }

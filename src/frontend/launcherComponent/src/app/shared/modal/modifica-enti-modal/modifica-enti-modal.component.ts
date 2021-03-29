@@ -7,7 +7,6 @@ import { Observable, Subscription } from 'rxjs';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { EnteModalComponent } from '../ente-modal/ente-modal.component';
 import { ClearFormEnte, RequestAddEnte } from '../../store/actions/enti/enti.actions';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-modifica-enti-modal',
@@ -18,11 +17,8 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     enti: Ente[];
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     listaEntiIntervenuti: Ente[];
-    doubleMonitor: boolean;
 
     modificaEntiIntervenutiForm: FormGroup;
     submitted: boolean;
@@ -33,7 +29,6 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder,
                 private modalService: NgbModal,
                 private store: Store) {
-      this.getNightMode();
     }
 
     ngOnDestroy(): void {
@@ -55,41 +50,14 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
-    }
-
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
-    }
-
     aggiungiNuovoEnte(): void {
         let addEnteModal;
-        if (this.doubleMonitor) {
-          addEnteModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-          });
-        } else {
-          addEnteModal = this.modalService.open(EnteModalComponent, {
+        addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-          });
-        }
+        });
         addEnteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

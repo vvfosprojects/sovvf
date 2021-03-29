@@ -9,14 +9,14 @@ import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
 import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import {Select, Store} from '@ngxs/store';
-import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
+import { Select, Store } from '@ngxs/store';
+import { mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { SganciamentoMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
 import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.model';
-import {ViewportState} from '../../../../../shared/store/states/viewport/viewport.state';
-import {Observable, Subscription} from 'rxjs';
+import { ViewportState } from '../../../../../shared/store/states/viewport/viewport.state';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-info-window',
@@ -65,17 +65,17 @@ export class InfoWindowComponent {
             case 'visualizzaRichiesta':
                 this.store.dispatch(new SetRichiestaById(idRichiesta));
                 if (this.doubleMonitor) {
-                  this.modalService.open(SintesiRichiestaModalComponent, {
-                    windowClass: 'xlModal modal-left',
-                    backdropClass: 'light-blue-backdrop',
-                    centered: true
-                  });
+                    this.modalService.open(SintesiRichiestaModalComponent, {
+                        windowClass: 'xlModal modal-left',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    });
                 } else {
-                  this.modalService.open(SintesiRichiestaModalComponent, {
-                    windowClass: 'xlModal',
-                    backdropClass: 'light-blue-backdrop',
-                    centered: true
-                  });
+                    this.modalService.open(SintesiRichiestaModalComponent, {
+                        windowClass: 'xlModal',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    });
                 }
                 break;
         }

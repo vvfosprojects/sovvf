@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
         {{ 'Modifica Enti Intervenuti' | uppercase }}
     </h4>
@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body font-xlarge" *ngIf="enti && enti?.length > 0" [ngClass]="onNightMode()">
+<div class="modal-body font-xlarge" *ngIf="enti && enti?.length > 0">
     <form [formGroup]="modificaEntiIntervenutiForm">
         <div class="form-group">
             <label for="listaEnti">
@@ -35,7 +35,7 @@
         </button>
     </div>
 </div>
-<div class="modal-footer" style="place-content: space-between;" [ngClass]="onNightMode()">
+<div class="modal-footer" style="place-content: space-between;">
   <button class="btn btn-lg btn-danger text-right btn-no-hover" style="font-weight:600" (click)="onSubmit()">
     {{ 'Salva Enti' | uppercase }}
   </button>

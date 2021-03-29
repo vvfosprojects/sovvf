@@ -31,7 +31,7 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
-import { _isAdministrator } from '../../../../../shared/helper/function';
+import { _isAdministrator } from '../../../../../shared/helper/function-generiche';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 import { Injectable } from '@angular/core';

@@ -15,9 +15,9 @@ import {
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
-import { checkSquadraOccupata, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
+import { checkSquadraOccupata, mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { Injectable } from '@angular/core';
 import { PaginationComposizionePartenzaState } from '../../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';

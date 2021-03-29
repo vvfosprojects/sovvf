@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
 import { Store } from '@ngxs/store';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { statoMezzoBorderClass } from '../../../../shared/helper/function-mezzo';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -17,7 +17,6 @@ export class MezzoInServizioComponent implements OnChanges {
     @Input() idMezzoInServizioSelezionato: string;
     @Input() loading: string;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Fonogramma } from '../../model/fonogramma.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { getStatoFonogrammaStringByEnum } from '../../helper/function';
+import { getStatoFonogrammaStringByEnum } from '../../helper/function-fonogramma';
 
 @Component({
     selector: 'app-dettaglio-fonogramma-modal',

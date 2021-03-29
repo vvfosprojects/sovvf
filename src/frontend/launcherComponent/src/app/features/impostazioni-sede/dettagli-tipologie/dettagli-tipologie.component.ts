@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -32,7 +32,6 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 })
 export class DettagliTipologieComponent implements OnDestroy {
 
-    @Input() doubleMonitor: boolean;
     @Input() nightMode: boolean;
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
@@ -80,21 +79,12 @@ export class DettagliTipologieComponent implements OnDestroy {
 
     onAddDettaglioTipologia(): void {
         let addDettaglioTipologia: any;
-        if (this.doubleMonitor) {
-            addDettaglioTipologia = this.modalService.open(DettaglioTipologiaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            addDettaglioTipologia = this.modalService.open(DettaglioTipologiaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        addDettaglioTipologia = this.modalService.open(DettaglioTipologiaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         addDettaglioTipologia.result.then(
             (result: { success: boolean, openAgain: boolean }) => {
                 if (result.success) {
@@ -121,21 +111,12 @@ export class DettagliTipologieComponent implements OnDestroy {
     onEditDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
         console.log('onEditDettaglioTipologia', dettaglioTipologia);
         let editVoceRubricaModal;
-        if (this.doubleMonitor) {
-            editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
-                windowClass: 'modal-holder ',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
+            windowClass: 'modal-holder ',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         editVoceRubricaModal.componentInstance.editDettaglioTipologia = dettaglioTipologia;
         editVoceRubricaModal.result.then(
             (result: { success: boolean }) => {
@@ -159,19 +140,11 @@ export class DettagliTipologieComponent implements OnDestroy {
 
     onDeleteDettaglioTipologia(payload: { codDettaglioTipologia: number, descrizioneDettaglioTipologia: string }): void {
         let modalConfermaEliminazione: any;
-        if (this.doubleMonitor) {
-            modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaEliminazione.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';

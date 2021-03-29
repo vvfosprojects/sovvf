@@ -27,19 +27,19 @@
                 </span>
             </div>
         </div>
-        <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
+        <hr class="m-0 mb-2">
     </div>
     <!-- sinistra -->
     <div class="col-6">
         <div class="row">
             <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col pr-0 text-secondary">
+                    <div class="col pr-0 n-color">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
+                            <li><span class="d-inline-block h6 n-li-box" ngbTooltip="Chiamate in corso" placement="top">Chiamate</span></li>
                         </ul>
                     </div>
-                    <div class="col px-0 text-secondary text-center">
+                    <div class="col px-0 n-color text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('chiamate')"><span
                                 class="position-relative badge h6 w-75 badge-mod-danger "
@@ -51,12 +51,12 @@
                     </div>
                 </div>
                 <div class="row">
-                <div class="col pr-0 text-secondary">
+                <div class="col pr-0 n-color">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
+                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
                   </ul>
                 </div>
-                <div class="col px-0 text-secondary text-center">
+                <div class="col px-0 n-color text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('assegnati')"><span
                       class="position-relative badge badge-mod-warning h6 w-75 "
@@ -75,12 +75,12 @@
         <div class="row">
             <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col pr-0 text-secondary">
+                    <div class="col pr-0 n-color">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
                         </ul>
                     </div>
-                    <div class="col px-0 text-secondary text-center">
+                    <div class="col px-0 n-color text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('presidiati')"><span
                                 class="position-relative badge badge-mod-success h6 w-75 "
@@ -92,12 +92,12 @@
                     </div>
                 </div>
                 <div class="row">
-                <div class="col pr-0 text-secondary">
+                <div class="col pr-0 n-color">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
+                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
                   </ul>
                 </div>
-                <div class="col px-0 text-secondary text-center">
+                <div class="col px-0 n-color text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('chiusi')"><span
                       class="position-relative badge badge-mod-secondary text-light h6 w-75 "

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
-import { objectDiff } from '../../../../../shared/helper/function';
+import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -15,7 +15,6 @@ export class BoxMezziComponent implements OnChanges {
     mezziDiff: any;
     @Input() mezzi: BoxMezzi;
     @Input() boxClick: BoxClickInterface;
-    @Input() nightMode: boolean;
 
     @Output() clickMezzi = new EventEmitter<string>();
 
@@ -46,15 +45,5 @@ export class BoxMezziComponent implements OnChanges {
         if (this.mezziDiff) {
             return setArrow(this.mezziDiff[key]);
         }
-    }
-
-    nightModeStyle(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'cod-int';
-      } else if (this.nightMode) {
-        value = 'moon-cod';
-      }
-      return value;
     }
 }

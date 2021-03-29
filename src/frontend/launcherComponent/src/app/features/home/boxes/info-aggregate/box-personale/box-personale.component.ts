@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { objectDiff } from '../../../../../shared/helper/function';
+import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -13,14 +13,13 @@ export class BoxPersonaleComponent implements OnChanges {
 
     @Input() personaleQty: BoxPersonaleQty;
     @Input() personalePresenze: BoxPersonalePresenze;
-    @Input() nightMode: boolean;
 
     @Output() clickServizi = new EventEmitter<string>();
 
     personaleDiff: any;
 
     ngOnChanges(changes: SimpleChanges): void {
-        const personaleQty = changes['personaleQty'];
+        const personaleQty = changes.personaleQty;
         if (personaleQty && personaleQty.currentValue && personaleQty.previousValue) {
             this.personaleDiff = objectDiff(personaleQty.currentValue, personaleQty.previousValue);
             setTimeout(() => {
@@ -46,15 +45,5 @@ export class BoxPersonaleComponent implements OnChanges {
         if (this.personaleDiff) {
             return setArrow(this.personaleDiff[key]);
         }
-    }
-
-    nightModeStyle(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'cod-int';
-      } else if (this.nightMode) {
-        value = 'moon-cod';
-      }
-      return value;
     }
 }

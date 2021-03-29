@@ -1,10 +1,9 @@
-import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetNewVersion, SetCurrentVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { VersionInterface } from '../../../interface/version.interface';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { VersionSoonInterface } from '../../../interface/version-soon.interface';
 
 export interface NewVersionStateModel {
@@ -27,10 +26,6 @@ export const NewVersionStateModelDefaults: NewVersionStateModel = {
     defaults: NewVersionStateModelDefaults
 })
 export class NewVersionState {
-
-    constructor(private modalService: NgbModal,
-                private ngZone: NgZone, private store: Store) {
-    }
 
     @Selector()
     static newVersion(state: NewVersionStateModel): boolean {

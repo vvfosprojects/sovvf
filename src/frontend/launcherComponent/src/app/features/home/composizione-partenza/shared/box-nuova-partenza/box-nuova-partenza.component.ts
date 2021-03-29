@@ -5,7 +5,7 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
-import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
+import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
@@ -82,16 +82,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     onElimina(e: MouseEvent): void {
         e.stopPropagation();
         this.eliminato.emit(this.partenza);
-    }
-
-    nightModeBg(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'bg-light';
-        } else if (this.nightMode) {
-            value = 'bg-moon-light';
-        }
-        return value;
     }
 
     ngClass(): string {

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../../modal/action-richiesta-modal/action-richiesta-modal.component';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
+import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 
 @Component({
     selector: 'app-sintesi-richiesta-actions',
@@ -14,7 +14,6 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() doubleMonitor: boolean;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
 
@@ -36,19 +35,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
 
     onClick(stato: StatoRichiestaActions): void {
         let modalConferma;
-        if (this.doubleMonitor) {
-          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
-        } else {
-          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-          });
-        }
+        });
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:

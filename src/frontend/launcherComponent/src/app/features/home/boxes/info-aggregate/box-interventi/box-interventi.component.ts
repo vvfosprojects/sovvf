@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
-import { objectDiff } from '../../../../../shared/helper/function';
+import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TurnoCalendario } from '../../../../navbar/turno/turno-calendario.model';
@@ -16,14 +16,13 @@ export class BoxInterventiComponent implements OnChanges {
     @Input() interventi: BoxInterventi;
     @Input() turno: TurnoCalendario;
     @Input() boxClick: BoxClickInterface;
-    @Input() nightMode: boolean;
 
     @Output() clickRichieste = new EventEmitter<string>();
 
     interventiDiff: any;
 
     ngOnChanges(changes: SimpleChanges): void {
-        const interventi = changes['interventi'];
+        const interventi = changes.interventi;
         if (interventi && interventi.currentValue && interventi.previousValue) {
             this.interventiDiff = objectDiff({
                 chiamate: interventi.currentValue.chiamate,
@@ -52,16 +51,6 @@ export class BoxInterventiComponent implements OnChanges {
         if (this.interventiDiff) {
             return setBlinking(this.interventiDiff[key]);
         }
-    }
-
-    nightModeStyle(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = 'cod-int';
-      } else if (this.nightMode) {
-        value = 'moon-cod';
-      }
-      return value;
     }
 
     realDiff(key: string): string {

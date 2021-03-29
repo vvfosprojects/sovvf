@@ -9,7 +9,7 @@ import {
     SetSediNavbarSelezionate,
     SetSediNavbarVisible
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
-import { arraysEqual, makeCopy } from '../../../helper/function';
+import { arraysEqual, makeCopy } from '../../../helper/function-generiche';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';

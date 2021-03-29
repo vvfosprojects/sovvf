@@ -16,6 +16,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { TagInputModule } from 'ngx-chips';
+import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { TagInputModule } from 'ngx-chips';
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature([
             SchedaTelefonataState,
+            RichiestaModificaState,
             ClipboardState
         ]),
         NgxsFormPluginModule

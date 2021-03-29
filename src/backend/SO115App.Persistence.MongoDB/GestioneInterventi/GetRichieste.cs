@@ -59,17 +59,17 @@ namespace SO115App.Persistence.MongoDB
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
-            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Codice == codiceRichiesta).Single();
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Codice == codiceRichiesta).FirstOrDefault();
         }
 
         public RichiestaAssistenza GetById(string idRichiesta)
         {
-            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Id == idRichiesta).Single();
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Id == idRichiesta).FirstOrDefault();
         }
 
         public RichiestaAssistenza GetByCodiceRichiesta(string CodRichiesta)
         {
-            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.CodRichiesta == CodRichiesta).Single();
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.CodRichiesta == CodRichiesta).FirstOrDefault();
         }
 
         public List<string> GetListaCodiciSintesiRichiesta(string[] CodSoCompetente)

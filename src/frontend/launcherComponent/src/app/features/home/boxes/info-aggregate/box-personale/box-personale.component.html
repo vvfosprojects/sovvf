@@ -9,7 +9,7 @@
                 <span class="font-weight-bold"
                    (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</span>
             </div>
-            <div class="clearfix float-right ml-4 ml-auto text-right text-secondary">
+            <div class="clearfix float-right ml-4 ml-auto text-right n-color">
                 <ng-template #funzionariGuardia>
                     <!-- Funzionario Guardia -->
                     <div *ngIf="personalePresenze.funGuardia">
@@ -18,11 +18,11 @@
                             <i class="fa fa-user mr-1"></i>
                             {{personalePresenze.funGuardia?.descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.funGuardia.qualifica" title="Qualifica" class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                        <div *ngIf="personalePresenze.funGuardia.qualifica" title="Qualifica" class="h6 n-color">
+                            <i class="fa fa-cog mr-1 n-color"></i>
                             {{personalePresenze.funGuardia?.qualifica}}
                         </div>
-                        <div *ngIf="personalePresenze.funGuardia.telefono" title="Telefono" class="h6 text-secondary">
+                        <div *ngIf="personalePresenze.funGuardia.telefono" title="Telefono" class="h6 n-color">
                             <i class="fa fa-mobile mr-1"></i>
                             {{personalePresenze.funGuardia?.telefono}}
                         </div>
@@ -31,7 +31,7 @@
                         <div class="h6 font-weight-bold">Nessun Funzionario</div>
                     </div>
 
-                    <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
+                    <hr class="m-0 mb-2">
 
                     <!-- Capo Turno -->
                     <div *ngIf="personalePresenze.capoTurno">
@@ -40,11 +40,11 @@
                             <i class="fa fa-user mr-1"></i>
                             {{personalePresenze.capoTurno?.descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.capoTurno.qualifica" title="Qualifica" class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                        <div *ngIf="personalePresenze.capoTurno.qualifica" title="Qualifica" class="h6 n-color">
+                            <i class="fa fa-cog mr-1 n-color"></i>
                             {{personalePresenze.capoTurno?.qualifica}}
                         </div>
-                        <div *ngIf="personalePresenze.capoTurno.telefono" title="Telefono" class="h6 text-secondary">
+                        <div *ngIf="personalePresenze.capoTurno.telefono" title="Telefono" class="h6 n-color">
                             <i class="fa fa-mobile mr-1"></i>
                             {{personalePresenze.capoTurno?.telefono}}
                         </div>
@@ -62,12 +62,12 @@
                             {{personalePresenze.tecnicoGuardia1?.descrizione}}
                         </div>
                         <div *ngIf="personalePresenze.tecnicoGuardia1.qualifica" title="Qualifica"
-                             class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                             class="h6 n-color">
+                            <i class="fa fa-cog mr-1 n-color"></i>
                             {{personalePresenze.tecnicoGuardia1?.qualifica}}
                         </div>
                         <div *ngIf="personalePresenze.tecnicoGuardia1.telefono" title="Telefono"
-                             class="h6 text-secondary">
+                             class="h6 n-color">
                             <i class="fa fa-mobile mr-1"></i>
                             {{personalePresenze.tecnicoGuardia1?.telefono}}
                         </div>
@@ -78,12 +78,12 @@
                             {{personalePresenze.tecnicoGuardia2?.descrizione}}
                         </div>
                         <div *ngIf="personalePresenze.tecnicoGuardia2.qualifica" title="Qualifica"
-                             class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                             class="h6 n-color">
+                            <i class="fa fa-cog mr-1 n-color"></i>
                             {{personalePresenze.tecnicoGuardia2?.qualifica}}
                         </div>
                         <div *ngIf="personalePresenze.tecnicoGuardia2.telefono" title="Telefono"
-                             class="h6 text-secondary">
+                             class="h6 n-color">
                             <i class="fa fa-mobile mr-1"></i>
                             {{personalePresenze.tecnicoGuardia2?.telefono}}
                         </div>
@@ -94,20 +94,20 @@
                 </ng-template>
             </div>
         </div>
-        <hr class="m-0 mb-2" [class.moon-hr]="nightMode">
+        <hr class="m-0 mb-2">
     </div>
     <!-- sinistra -->
     <div class="col-6">
         <div class="row">
             <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col pr-0 text-secondary">
+                    <div class="col pr-0 n-color">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Squadre attualmente in servizio" placement="top">Squadre</span>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Squadre attualmente in servizio" placement="top">Squadre</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col px-0 text-secondary text-center">
+                    <div class="col px-0 n-color text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('squadreServizio')"><span
                                     class="position-relative badge badge-mod-secondary h6 w-75">
@@ -118,13 +118,13 @@
                     </div>
                 </div>
                 <div class="row">
-                <div class="col pr-0 text-secondary">
+                <div class="col pr-0 n-color">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()" ngbTooltip="Squadre impegnate sugli interventi" placement="bottom">Impegnate</span>
+                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Squadre impegnate sugli interventi" placement="bottom">Impegnate</span>
                     </li>
                   </ul>
                 </div>
-                <div class="col px-0 text-secondary text-center">
+                <div class="col px-0 n-color text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('squadreAssegnate')"><span
                       class="position-relative badge badge-mod-danger h6 w-75">
@@ -142,15 +142,15 @@
         <div class="row">
             <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col pr-0 text-secondary">
+                    <div class="col pr-0 n-color">
                         <ul class="list-unstyled m-0">
                             <li><span
-                                    class="d-inline-block h6" [ngClass]="nightModeStyle()"
+                                    class="d-inline-block n-li-box h6"
                                     ngbTooltip="Funzionari di guardia" placement="top">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col px-0 text-secondary text-center">
+                    <div class="col px-0 n-color text-center">
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
                                 triggers="mouseenter:mouseleave" container="body"
@@ -162,14 +162,14 @@
                     </div>
                 </div>
                 <div class="row">
-                <div class="col pr-0 text-secondary">
+                <div class="col pr-0 n-color">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block h6" [ngClass]="nightModeStyle()"
+                    <li><span class="d-inline-block n-li-box h6"
                               ngbTooltip="Tecnici di guardia" placement="bottom">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
                     </li>
                   </ul>
                 </div>
-                <div class="col px-0 text-secondary text-center">
+                <div class="col px-0 n-color text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('tecnici')" [ngbPopover]="tecniciGuardia"
                         triggers="mouseenter:mouseleave" container="body"

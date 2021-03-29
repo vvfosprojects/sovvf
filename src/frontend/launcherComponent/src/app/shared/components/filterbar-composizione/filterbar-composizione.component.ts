@@ -35,7 +35,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
     @Input() triageSummary: TriageSummary[];
 
     @Output() confirmPrenota: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -171,21 +170,12 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     openDettaglioTriage(): void {
         let dettaglioTriageModal: any;
-        if (this.doubleMonitor) {
-            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        } else {
-            dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-        }
+        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
         dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;

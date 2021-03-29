@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { arrayUnique } from '../../helper/function';
+import { arrayUnique } from '../../helper/function-generiche';
 import { isNil, reverse } from 'lodash';
 import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.interface';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';

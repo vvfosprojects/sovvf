@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <div class="w-100">
         <app-filtri-eventi-richiesta [codiceRichiesta]="codiceRichiesta$ | async"
                                      [listaTargaMezzo]="listaTargaMezzo$ | async"
@@ -9,9 +9,8 @@
                                      (targheSelezionate)="onSelezioneTarga($event)"></app-filtri-eventi-richiesta>
     </div>
 </div>
-<div class="modal-body" [ngClass]="onNightMode()">
+<div class="modal-body">
     <app-lista-eventi-richiesta [elencoEventi]="eventiRichiesta$ | async"
-                                [nightMode]="nightMode$ | async"
                                 [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
                                 [loading]="loading$ | async"
                                 (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>

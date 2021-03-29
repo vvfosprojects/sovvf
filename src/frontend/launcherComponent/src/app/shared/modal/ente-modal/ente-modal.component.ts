@@ -8,7 +8,6 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CategoriaEnte, Ente } from '../../interface/ente.interface';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { GetCategorieEnti } from '../../store/actions/enti/enti.actions';
-import {ImpostazioniState} from '../../store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-ente-rubrica-modal',
@@ -21,8 +20,6 @@ export class EnteModalComponent implements OnInit, OnDestroy {
     @Select(EntiState.categorieEnti) categorieEnti$: Observable<CategoriaEnte[]>;
     @Select(EntiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     editEnte: Ente;
 
@@ -38,7 +35,6 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         this.getCategorieEnte();
         this.initForm();
         this.getFormValid();
-        this.getNightMode();
     }
 
     initForm(): void {
@@ -92,24 +88,6 @@ export class EnteModalComponent implements OnInit, OnDestroy {
 
     get f(): any {
         return this.enteForm.controls;
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
-    }
-
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
     }
 
     updateEnteForm(editEnte: Ente): void {

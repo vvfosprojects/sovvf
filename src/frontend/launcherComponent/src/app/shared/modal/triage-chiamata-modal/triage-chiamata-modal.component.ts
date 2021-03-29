@@ -16,12 +16,11 @@ import {
     SetTipologiaTriageChiamata
 } from '../../store/actions/triage-modal/triage-modal.actions';
 import { TreeviewItem } from 'ngx-treeview';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
-import { ViewportState } from '../../store/states/viewport/viewport.state';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 
 @Component({
@@ -30,9 +29,6 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
     styleUrls: ['./triage-chiamata-modal.component.scss']
 })
 export class TriageChiamataModalComponent implements OnInit, OnDestroy {
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
@@ -57,7 +53,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     constructor(private modal: NgbActiveModal,
                 private store: Store,
                 private modalService: NgbModal) {
-        this.getDoubleMonitor();
         this.getTriage();
         this.getTriageData();
     }
@@ -72,10 +67,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
-    }
-
-    getDoubleMonitor(): void {
-        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     getDettagliTipologia(): void {
@@ -192,6 +183,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             generiMezzo: itemData?.generiMezzo?.length ? itemData?.generiMezzo : null,
             prioritaConsigliata: itemData?.prioritaConsigliata,
             noteOperatore: itemData?.noteOperatore,
+            noteUtente: itemData?.noteUtente,
             domanda: rispostaTriage.domanda,
             rispostaValue: rispostaTriage.rispostaValue,
             risposta: rispostaTriage.risposta
@@ -221,7 +213,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     getSuggerimentoByRispostaValue(rispostaValue: string): string {
         const triageData = this.triageData.filter((data: ItemTriageData) => data.itemValue === rispostaValue)[0];
         if (triageData) {
-            return triageData?.noteOperatore;
+            return triageData?.noteUtente;
         }
         return null;
     }
@@ -255,21 +247,12 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     dismissModal(type: string): void {
         let dismissTriageModal: any;
-        if (this.doubleMonitor) {
-            dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'md'
-            });
-        } else {
-            dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'md'
-            });
-        }
+        dismissTriageModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'md'
+        });
         dismissTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         dismissTriageModal.componentInstance.titolo = 'Chiusura Triage';
         dismissTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Le eventuali risposte del triage non verrano salvate.';

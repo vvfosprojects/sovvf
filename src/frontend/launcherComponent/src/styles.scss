@@ -30,13 +30,126 @@ app-root {
   height: 100%;
 }
 
+// SCSS Styles Sheet
+$n-white: #ffffff !important;
+$n-black: #000000 !important;
+$n-dark: #343a40 !important;
+$n-muted: #6c757d !important;
+$n-dark-light: #464e56 !important;
+$n-light: #f8f9fa!important;
+$n-guida: #bbbbbb !important;
+$n-weight: 500 !important;
+$n-font-large: 20px !important;
+$n-hr: 1px solid #fdfdfd !important;
+$n-box-shadow: 1px 1px 2px 1px #dee2e6 !important;
+$n-middle: 50% !important;
+// END SCSS Styles Sheet
+
+// Single Monitor Styles
+.single-monitor {
+}
+// END Single Monitor Styles
+
+// Double Monitor Styles
+.double-monitor {
+  ngb-modal-window {
+    padding-right: $n-middle;
+  }
+}
+// END Double Monitor Styles
+
+
+// Sun Mode Styles
+.sun-mode {
+  background-color: $n-white;
+  .n-li-box a {
+    color: $n-black;
+    font-weight: $n-weight;
+    font-size: $n-font-large;
+  }
+  .n-icon-afm {
+    color: $n-guida;
+  }
+  .n-text-muted {
+    color: $n-muted;
+  }
+  .n-color {
+    color: $n-black;
+  }
+}
+// END Sun Mode Styles
+
+// Moon Mode Styles
+.moon-mode {
+  background-color: $n-dark;
+  .modal-header {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  .modal-body {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  .modal-footer {
+    background-color: $n-dark;
+    color: $n-white;
+  }
+  td {
+    background-color: $n-dark-light;
+    color: $n-white;
+  }
+  thead {
+    font-size: 25px !important;
+    font-weight: $n-weight;
+  }
+  .card-body {
+    background-color: $n-dark;
+  }
+  .n-li-box a {
+    color: $n-white;
+    font-weight: $n-weight;
+    font-size: $n-font-large;
+  }
+  hr {
+    border-top: $n-hr;
+  }
+  .n-icon-afm {
+    color: $n-white;
+  }
+  .n-color {
+    color: $n-white;
+  }
+  .n-dark-light {
+    background-color: $n-dark-light;
+  }
+  .n-card {
+    position: relative;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: $n-dark-light;
+    border-radius: 0.25rem;
+    -webkit-box-shadow: $n-box-shadow;
+    -moz-box-shadow: $n-box-shadow;
+    box-shadow: $n-box-shadow;
+  }
+  .n-bg-light {
+    background-color: $n-light;
+  }
+  .n-text-muted {
+    color: $n-white;
+  }
+}
+// END Moon Mode Styles
+
 // Loader index.html
 .loader {
   margin-top: calc(25%);
   margin-left: calc(50% - 60px);
   border: 16px solid #f3f3f3;
   border-top: 16px solid #cb1111;
-  border-radius: 50%;
+  border-radius: $n-middle;
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
@@ -55,22 +168,11 @@ app-root {
 .pac-container {
   z-index: 99999 !important;
 }
-
 // End Dropdown Google Places
 
-.sun-mode {
-  background-color: #fdfdfd !important;
-}
-
-.moon-mode {
-  background-color: #343a40 !important;
-  .card-body {
-    background-color: #343a40 !important;
-  }
-}
 
 .moon-mode-box {
-  background-color: #343a40 !important;
+  background-color:$n-dark;
   color: #fdfdfd !important;
 }
 
@@ -93,26 +195,26 @@ app-root {
   word-wrap: break-word;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  background-color: #464e56 !important;
+  background-color: $n-dark-light;
   border-radius: 0.25rem;
-  -webkit-box-shadow: 1px 1px 2px 1px #dee2e6;
-  -moz-box-shadow: 1px 1px 2px 1px #dee2e6;
-  box-shadow: 1px 1px 2px 1px #dee2e6;
+  -webkit-box-shadow: $n-box-shadow;
+  -moz-box-shadow: $n-box-shadow;
+  box-shadow: $n-box-shadow;
 }
 
 .bg-moon-light {
-  background-color: #464e56 !important;
+  background-color: $n-dark-light;
 }
 
 .moon-cod {
   color: #fdfdfd !important;
-  font-weight: 500;
+  font-weight: $n-weight;
   font-size: 25px;
   cursor: pointer;
 }
 
 .moon-hr {
-  border-top: 1px solid #fdfdfd !important;
+  border-top: $n-hr;
 }
 
 .text-moon {
@@ -175,7 +277,7 @@ app-root {
 .modalModificaRichiesta > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
-  width: 50% !important;
+  width: $n-middle;
   animation-name: jumpIn;
   animation-duration: 0.3s;
 }
@@ -267,12 +369,12 @@ tag-input {
 
 /* icone di guida */
 .guida {
-  color: #bbbbbb;
+  color: $n-guida;
 }
 
 .cod-int {
-  color: #000000 !important;
-  font-weight: 500;
+  color: $n-black;
+  font-weight: $n-weight;
   font-size: 25px;
   cursor: pointer;
 }
@@ -454,7 +556,7 @@ tag-input {
 }
 
 .status_border_inUscita {
-  border-left: 10px solid #6c757d !important;
+  border-left: 10px solid $n-muted;
 }
 
 .status_border_inViaggio {
@@ -512,8 +614,8 @@ tag-input {
 
 .btn-light-nav {
   color: #212529;
-  background-color: #f8f9fa;
-  border-color: #f8f9fa;
+  background-color: $n-light;
+  border-color: $n-light;
 }
 
 .btn-light-nav:hover {
@@ -642,8 +744,8 @@ tag-input {
 
 .loader-centrato {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: $n-middle;
+  left: $n-middle;
   margin-left: -125px;
   margin-top: -70px;
 }
@@ -732,11 +834,11 @@ tag-input {
 }
 
 .modal-left { // Modale a sx
-  padding-right: 50%;
+  padding-right: $n-middle;
 }
 
 .loader-position-left {
-  padding-right: 50% !important;
+  padding-right: $n-middle;
   width: fit-content;
 }
 
@@ -751,13 +853,13 @@ tag-input {
 }
 
 .font-xlarge {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: $n-font-large;
+  font-weight: $n-weight;
 }
 
 .font-xxlarge {
   font-size: 25px;
-  font-weight: 500;
+  font-weight: $n-weight;
 }
 
 .badge-mod-primary {
@@ -775,8 +877,8 @@ tag-input {
 }
 
 .badge-mod-secondary {
-  color: #6c757d !important;
-  border: solid thin #6c757d !important;
+  color: $n-muted;
+  border: solid thin $n-muted;
   border-radius: 0.25rem !important;
   padding: 0.15em 0.2em;
 }
@@ -803,8 +905,8 @@ tag-input {
 }
 
 .badge-mod-dark {
-  color: #343a40 !important;
-  border: solid thin #343a40 !important;
+  color: $n-dark;
+  border: solid thin $n-dark;
   border-radius: 0.25rem !important;
   padding: 0.15em 0.2em;
 }
@@ -850,7 +952,7 @@ tag-input {
 
 .toast-postion-center {
   bottom: 0 !important;
-  left: 50% !important;
+  left: $n-middle;
   margin-left: -135px;
 }
 

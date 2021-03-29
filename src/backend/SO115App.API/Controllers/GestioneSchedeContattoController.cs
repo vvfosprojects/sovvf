@@ -75,7 +75,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetSchedaByCodice")]
+        [HttpGet("GetByCodiceScheda")]
         public async Task<IActionResult> Get(string codice)
         {
             var query = new GetSchedeContattoQuery() { CodiceSede = Request.Headers["codiceSede"].ToArray()[0] };

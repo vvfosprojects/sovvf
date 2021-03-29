@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
-import { makeCopy } from '../../../helper/function';
+import { makeCopy } from '../../../helper/function-generiche';
 import { FiltroTurnoSquadre } from '../../../enum/filtro-turno-composizione-partenza.enum';
 
 export interface FiltriComposizioneStateStateModel {

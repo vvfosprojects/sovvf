@@ -45,7 +45,7 @@ namespace SO115App.ExternalAPI.Client
         public void SetCache(string cacheString)
         {
             var memoryCacheProvider = new MemoryCacheProvider(_memoryCache);
-            var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(1), c => cacheString);
+            var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(0.5), c => cacheString);
 
             policies = Policy.WrapAsync(cachePolicy, retryPolicy, timeoutPolicy);
         }

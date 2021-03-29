@@ -15,7 +15,6 @@
                         <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori"
                                    [mostraNotifiche]="true"
                                    [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
-                                   [doubleMonitor]="doubleMonitor"
                                    (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                         </app-mezzo>
                     </div>

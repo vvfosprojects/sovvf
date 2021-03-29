@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
         {{ getTitle() | uppercase }}
     </h4>
@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5" [ngClass]="onNightMode()">
+<div class="modal-body height py-4 px-5">
     <form [formGroup]="enteForm" ngxsForm="enti.enteForm" autocomplete="off">
         <div class="form-group">
             <label for="descrizione">
@@ -89,7 +89,7 @@
     </form>
     <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
-<div class="modal-footer" style="place-content: space-between;" [ngClass]="onNightMode()">
+<div class="modal-footer" style="place-content: space-between;">
     <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">Conferma
     </button>

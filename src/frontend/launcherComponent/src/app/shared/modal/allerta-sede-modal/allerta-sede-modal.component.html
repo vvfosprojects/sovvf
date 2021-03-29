@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
         {{ 'Allerta Sede' | uppercase }}
     </h4>
@@ -7,11 +7,11 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5 font-xlarge" [ngClass]="onNightMode()">
+<div class="modal-body height py-4 px-5 font-xlarge">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
             <label for="sede">Quale sede vuoi allertare?</label>
-            <div class="border rounded" [class.bg-light]="nightMode">
+            <div class="border rounded bg-white">
                 <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
                                      [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
                                      [visualizzaTasti]="false" [disabled]="false"
@@ -24,7 +24,7 @@
         </div>
     </form>
 </div>
-<div class="modal-footer" style="place-content: space-between;" [ngClass]="onNightMode()">
+<div class="modal-footer" style="place-content: space-between;">
     <button type="button" class="btn btn-lg btn-danger btn-no-hover font-xlarge" [disabled]="!formValid" (click)="onConferma()">
       {{ 'Conferma Allerta' | uppercase }}
     </button>

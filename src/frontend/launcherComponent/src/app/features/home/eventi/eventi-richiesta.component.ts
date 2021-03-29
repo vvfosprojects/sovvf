@@ -24,14 +24,10 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
     @Select(ImpostazioniState.visualizzazioneTestualeEventi) visualizzazioneTestualeEventi$: Observable<boolean>;
 
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
-
     private subscription: Subscription = new Subscription();
 
     constructor(private store: Store) {
         this.getVisualizzazioneTestualeEventi();
-        this.getNightMode();
     }
 
     ngOnInit(): void {
@@ -41,24 +37,6 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         console.log('Componente Eventi Richiesta Distrutto');
         this.subscription.unsubscribe();
-    }
-
-    getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-        })
-      );
-    }
-
-    onNightMode(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = '';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-mode';
-      }
-      return value;
     }
 
     onSelezioneTarga($event): void {

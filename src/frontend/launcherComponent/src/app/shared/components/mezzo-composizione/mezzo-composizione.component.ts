@@ -4,7 +4,7 @@ import { BoxPartenza } from '../../../features/home/composizione-partenza/interf
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { mezzoComposizioneBusy, nomeStatiSquadra } from '../../helper/composizione-functions';
+import { mezzoComposizioneBusy, nomeStatiSquadra } from '../../helper/function-composizione';
 import { Sede } from '../../model/sede.model';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';

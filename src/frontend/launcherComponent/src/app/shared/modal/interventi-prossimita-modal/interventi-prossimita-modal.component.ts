@@ -31,7 +31,6 @@ export class InterventiProssimitaModalComponent {
     disabledComposizionePartenza: boolean;
     loadingEliminaPartenza = false;
     idDaSganciare = '';
-    doubleMonitor: boolean;
 
     submitted: boolean;
     methods = new HelperSintesiRichiesta();
@@ -222,19 +221,11 @@ export class InterventiProssimitaModalComponent {
 
     onDettaglioStatoFonogramma(r: SintesiRichiesta): void {
         let modalDettaglioFonogramma;
-        if (this.doubleMonitor) {
-            modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        } else {
-            modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-        }
+        modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = r.codiceRichiesta ? r.codiceRichiesta : r.codice;
         modalDettaglioFonogramma.componentInstance.fonogramma = r.fonogramma;
     }
