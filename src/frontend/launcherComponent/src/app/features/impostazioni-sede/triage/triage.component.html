@@ -1,9 +1,9 @@
-<h3 class="d-inline-block mb-0" [class.text-white]="nightMode">
+<h3 class="d-inline-block mb-0 n-color">
     Configurazione Triage
 </h3>
 <div class="mt-4">
     <!-- SELECT DETTAGLIO TIPOLOGIA -->
-    <div class="card card-shadow bg-light py-3 px-4" [class.text-white]="nightMode" [class.bg-moon-light]="nightMode">
+    <div class="card card-shadow bg-light py-3 px-4 n-color n-dark-light">
         <div class="row">
             <div class="col-6">
                 <label for="selectTipologia" class="font-xxlarge">
@@ -67,7 +67,7 @@
     </div>
     <!-- MODIFICA TRIAGE - TREEVIEW -->
     <ng-template [ngIf]="showTriage">
-        <div class="py-3 px-2 mt-3" [class.text-white]="nightMode">
+        <div class="py-3 px-2 mt-3 n-color">
             <h3 class="mt-2">
                 <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
                 <i class="fa fa-arrow-circle-right mr-3"></i>

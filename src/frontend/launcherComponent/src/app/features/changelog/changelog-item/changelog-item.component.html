@@ -1,4 +1,4 @@
-<div class="bg-white border border-light px-4 pt-4 pb-2" [class.bg-moon-light]="nightMode" [class.text-moon]="nightMode"
+<div class="bg-white border border-light px-4 pt-4 pb-2 n-color n-dark-light"
      [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
     <div class="clearfix">
         <h5 class="float-left mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
@@ -10,11 +10,11 @@
         </h6>
     </div>
     <ng-template [ngIf]="!disableIndice">
-        <hr [class.moon-hr]="nightMode">
+        <hr>
     </ng-template>
     <!-- INDICE -->
     <ng-template [ngIf]="!disableIndice">
-        <div class="bg-light p-3 shadow-sm">
+        <div class="bg-light p-3 shadow-sm card-body">
             <div class="clearfix">
                 <div class="float-left">
                     <h4>Indice</h4>
@@ -52,7 +52,7 @@
     <small *ngIf="changelog?.descrizione" class="d-inline-block text-muted mb-3">
         {{ changelog?.descrizione }}
     </small>
-    <hr *ngIf="ultimoChangelog" [class.moon-hr]="nightMode">
+    <hr *ngIf="ultimoChangelog">
     <div *ngIf="ultimoChangelog" class="clearfix">
         <div class="float-left">
             <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>

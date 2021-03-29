@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
-import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
-import { Observable } from 'rxjs';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
-import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-impostazioni-sede',
@@ -17,9 +14,6 @@ import {ImpostazioniState} from '../../shared/store/states/impostazioni/impostaz
     styleUrls: ['./impostazioni-sede.component.scss']
 })
 export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
-
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     constructor(private ngbAccordionconfig: NgbAccordionConfig,
                 private store: Store) {
