@@ -15,6 +15,19 @@
                         Rubrica
                     </button>
                 </div>
+                <div class="col">
+                    <ng-select class="align-self-center font-xlarge custom w-100 float-right"
+                               [items]="filtriPersonale"
+                               [multiple]="true"
+                               [closeOnSelect]="true"
+                               [hideSelected]="true"
+                               [searchable]="false"
+                               [loading]="!filtriPersonale"
+                               (change)="addFiltro($event)"
+                               (clear)="clearFiltro()"
+                               placeholder="Stato: Tutti">
+                    </ng-select>
+                </div>
                 <div class="col text-right">
                     <app-ricerca-rubrica-personale [loading]="loading$ | async"
                                          (ricercaChange)="onRicercaRubricaPersonale($event)"></app-ricerca-rubrica-personale>

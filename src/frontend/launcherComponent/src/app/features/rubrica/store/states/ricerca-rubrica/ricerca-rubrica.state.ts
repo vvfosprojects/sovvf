@@ -7,7 +7,7 @@ export interface RicercaRubricaStateModel {
 }
 
 export const RicercaRubricaStateDefaults: RicercaRubricaStateModel = {
-    ricerca: null
+    ricerca: undefined
 };
 
 @Injectable()
@@ -35,7 +35,7 @@ export class RicercaRubricaState {
     @Action(ClearRicercaRubrica)
     clearRicercaRubrica({ patchState }: StateContext<RicercaRubricaStateModel>): void {
         patchState({
-            ricerca: null
+            ricerca: RicercaRubricaStateDefaults.ricerca
         });
     }
 }

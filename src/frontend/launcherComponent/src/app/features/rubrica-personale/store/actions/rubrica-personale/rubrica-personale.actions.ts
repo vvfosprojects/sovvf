@@ -3,7 +3,7 @@ import { RubricaPersonale } from '../../../../../shared/interface/rubrica-person
 export class GetRubricaPersonale {
     static readonly type = '[RubricaPersonale] Get Rubrica Personale';
 
-    constructor(public page?: number) {
+    constructor(public page?: number, public filtro?: string) {
     }
 }
 

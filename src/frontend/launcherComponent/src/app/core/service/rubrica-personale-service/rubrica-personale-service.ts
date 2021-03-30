@@ -20,7 +20,8 @@ export class RubricaPersonaleService {
     getRubricaPersonale(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const obj = {
             filters: {
-                search: filters.search
+                search: filters.search,
+                stato: filters.stato
             },
             pagination
         };

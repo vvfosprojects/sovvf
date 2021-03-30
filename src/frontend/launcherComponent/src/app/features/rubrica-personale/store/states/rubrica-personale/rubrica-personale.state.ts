@@ -41,8 +41,10 @@ export class RubricaPersonaleState {
     getRubricaPersonale({ dispatch }: StateContext<RubricaPersonaleStateModel>, action: GetRubricaPersonale): void {
         dispatch(new StartLoading());
         const ricerca = this.store.selectSnapshot(RicercaRubricaPersonaleState.ricerca);
+        const stato = this.store.selectSnapshot(RicercaRubricaPersonaleState.stato);
         const filters = {
-            search: ricerca
+            search: ricerca && ricerca.length > 0 ? ricerca : null,
+            stato: stato && stato.length > 0 ? stato : null,
         };
         const pagination = {
             page: action.page ? action.page : 1,
