@@ -1,8 +1,9 @@
 <div class="row">
     <div class="col-12">
-        <div class="py-3">
-            <app-grafico-distaccamenti [data]="data"
-                                       [view]="[1500, (data?.length * 100)]"
+        <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
+        <div *ngIf="(loading$ | async) === false" class="py-3">
+            <app-grafico-distaccamenti [data]="dataGrafico$ | async"
+                                       [view]="[1500, ((dataGrafico$ | async)?.length * 70)]"
                                        [showXAxis]="true"
                                        [showYAxis]="true"
                                        [gradient]="false"
@@ -17,7 +18,8 @@
                                        [schemeType]="'ordinal'"
                                        (select)="onSelect($event)"
                                        (activate)="onActivate($event)"
-                                       (deactivate)="onDeactivate($event)"></app-grafico-distaccamenti>
+                                       (deactivate)="onDeactivate($event)">
+            </app-grafico-distaccamenti>
         </div>
     </div>
 </div>

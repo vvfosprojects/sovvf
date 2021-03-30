@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ItemChart } from '../../../../shared/interface/item-chart.interface';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ItemChart, ItemChartEmit } from '../../../../shared/interface/item-chart.interface';
 
 @Component({
     selector: 'app-grafico-distaccamenti',
     templateUrl: './grafico-distaccamenti.component.html',
     styleUrls: ['./grafico-distaccamenti.component.scss']
 })
-export class GraficoDistaccamentiComponent implements OnInit {
+export class GraficoDistaccamentiComponent {
 
     @Input() data: ItemChart[];
 
@@ -24,28 +24,22 @@ export class GraficoDistaccamentiComponent implements OnInit {
     @Input() showYAxisLabel: boolean;
     @Input() xAxisLabel: string;
 
-    @Input() colorScheme: any; // TODO: tipizzare
+    @Input() colorScheme: any;
     @Input() schemeType: string;
 
-    @Output() select: EventEmitter<ItemChart> = new EventEmitter<ItemChart>();
-    @Output() activate: EventEmitter<ItemChart> = new EventEmitter<ItemChart>();
-    @Output() deactivate: EventEmitter<ItemChart> = new EventEmitter<ItemChart>();
+    @Output() select: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
+    @Output() activate: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
+    @Output() deactivate: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
 
-    constructor() {
-    }
-
-    ngOnInit(): void {
-    }
-
-    onSelect(data: ItemChart): void {
+    onSelect(data: ItemChartEmit): void {
         this.select.emit(data);
     }
 
-    onActivate(data: ItemChart): void {
+    onActivate(data: ItemChartEmit): void {
         this.activate.emit(data);
     }
 
-    onDeactivate(data: ItemChart): void {
+    onDeactivate(data: ItemChartEmit): void {
         this.deactivate.emit(data);
     }
 

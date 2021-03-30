@@ -20,6 +20,7 @@ import { LSNAME } from '../../../core/settings/config';
     ]
 })
 export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
+
     @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
     @Input() testoSedeSelezionata$: Observable<string>;
@@ -48,6 +49,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     });
 
     constructor(config: NgbDropdownConfig) {
+        config.container = 'body';
         config.autoClose = 'outside';
     }
 
@@ -61,11 +63,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-            console.log('Componente Shared Treeview creato');
+        console.log('Componente Shared Treeview creato');
     }
 
     ngOnDestroy(): void {
-            console.log('Componente Shared Treeview distrutto');
+        console.log('Componente Shared Treeview distrutto');
     }
 
     ngOnChanges(changes: SimpleChanges): void {

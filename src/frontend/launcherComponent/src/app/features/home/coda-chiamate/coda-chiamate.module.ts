@@ -7,6 +7,9 @@ import { CodaChiamateState } from '../store/states/coda-chiamate/coda-chiamate.s
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { DettaglioDistaccamentoModalComponent } from './dettaglio-distaccamento-modal/dettaglio-distaccamento-modal.component';
 import { CodaChiamateService } from '../../../core/service/coda-chiamate-service/coda-chiamate.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { TimeagoModule } from 'ngx-timeago';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -21,7 +24,10 @@ import { CodaChiamateService } from '../../../core/service/coda-chiamate-service
                 CodaChiamateState
             ]
         ),
-        BarChartModule
+        BarChartModule,
+        SharedModule,
+        TimeagoModule,
+        NgbTooltipModule
     ],
     exports: [
         CodaChiamateComponent
