@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
+namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
 {
     public class ComponenteSquadraFake
     {

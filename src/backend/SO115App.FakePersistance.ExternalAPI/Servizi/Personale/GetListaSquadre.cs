@@ -21,7 +21,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.ExternalAPI.Fake.Classi.DTOFake;
+using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
