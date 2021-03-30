@@ -26,14 +26,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             ConcurrentQueue<PersonaleRubrica> result = new ConcurrentQueue<PersonaleRubrica>();
 
             string json;
-            using (var r = new StreamReader(Costanti.ListaSquadre))
-            {
-                json = r.ReadToEnd();
-            }
+            using (var r = new StreamReader(Costanti.ListaSquadre)) json = r.ReadToEnd();
 
             var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
 
             var lstcodicifiscali = listaSquadreJson
+                .Where(c => query.IdSede.Any(s => c.Sede.Contains(s.Substring(0,2))))
                 .SelectMany(c => c.ComponentiSquadra)
                 .Select(c => c.CodiceFiscale)
                 .Distinct()
@@ -45,22 +43,29 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             {
                 var rubricaPersonale = new PersonaleRubrica()
                 {
-                    Nominativo = $"{personale?.cognome} {personale?.nome}",
-                    Qualifica = personale?.qualifica?.descrizione,
-                    Sede = personale?.sede?.descrizione,
-                    Specializzazione = string.Concat(personale?.specializzazioni?.Select(s => s?.descrizione + ", ")),
-                    Turno = personale?.turno
+                    Nominativo = $"{personale.cognome} {personale.nome}",
+                    Qualifica = personale.qualifica?.descrizione,
+                    Sede = personale.sede?.id,
+                    Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
+                    Turno = personale.turno
                 };
 
                 result.Enqueue(rubricaPersonale);
             });
                 
-
             //MAPPING
             return new RubricaPersonaleResult()
             {
-                DataArray = result.ToList(),
-                Pagination = query.Pagination
+                DataArray = result.OrderBy(p => p.Nominativo)
+                    .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                    .Take(query.Pagination.PageSize).ToList(),
+
+                Pagination = new Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = result.Count
+                }
             };
         }
     }
