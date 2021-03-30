@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using SO115App.Models.Classi.CodaChiamate;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 {
@@ -30,6 +31,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
         /// <summary>
         ///   Json Welcome Richieste
         /// </summary>
-        public InfoIstogramma infoIstogramma { get; set; }
+        public List<Istogramma> infoIstogramma { get; set; }
     }
 }
