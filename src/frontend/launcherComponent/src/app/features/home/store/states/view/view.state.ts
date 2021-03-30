@@ -12,7 +12,7 @@ import {
     TurnOffComposizione,
     ToggleMezziInServizio,
     ToggleSchedeContatto,
-    ClearViewState
+    ClearViewState, ToggleCodaChiamate
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -33,7 +33,7 @@ import {
     updateView,
     viewStateMaps,
     activeMezziInServizio,
-    activeSchedeContatto
+    activeSchedeContatto, activeCodaChiamate
 } from '../../helper/view-state-function';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -48,6 +48,10 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
         richieste: {
             active: true,
+            split: false
+        },
+        codaChiamate: {
+            active: false,
             split: false
         },
         mappa: {
@@ -113,6 +117,11 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static codaChiamateStatus(state: ViewComponentStateModel): boolean {
+        return state.view.codaChiamate.active;
+    }
+
+    @Selector()
     static composizioneStatus(state: ViewComponentStateModel): boolean {
         return state.view.composizione.active;
     }
@@ -167,6 +176,23 @@ export class ViewComponentState {
             view: newState.view,
             column: newState.column
         });
+    }
+
+    @Action(ToggleCodaChiamate)
+    toggleCodaChiamate({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        if (!state.view.codaChiamate.active) {
+            dispatch(new SaveView(makeCopy(state)));
+            const newState = activeCodaChiamate(stateDefault);
+            patchState({
+                ...state,
+                view: newState.view,
+                column: newState.column
+            });
+        } else {
+            patchState(ViewComponentStateDefault);
+        }
     }
 
     @Action(ToggleChiamata)

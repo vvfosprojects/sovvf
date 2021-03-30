@@ -14,7 +14,6 @@ export class TabellaRubricaComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() vociRubrica: Ente[];
-    @Input() nightMode: boolean;
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
@@ -30,15 +29,5 @@ export class TabellaRubricaComponent {
 
     onDeleteVoceRubrica(idVoceRubrica: string, descrizioneVoceRubrica: string): void {
         this.deleteVoceRubrica.emit({ idVoceRubrica, descrizioneVoceRubrica });
-    }
-
-    nightModeStyle(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = ' ';
-        } else if (this.nightMode) {
-            value = 'moon-text moon-card-light';
-        }
-        return value;
     }
 }

@@ -10,7 +10,6 @@ import { wipeStringUppercase } from '../../../shared/helper/function-generiche';
 })
 export class TabellaUtentiComponent {
 
-    @Input() nightMode: boolean;
     @Input() listaUtenti: Utente[];
     @Input() page: number;
     @Input() pageSize: number;
@@ -36,16 +35,6 @@ export class TabellaUtentiComponent {
     onRemoveRuoloUtente(codFiscale: string, ruolo: Ruolo, nominativoUtente: string): void {
         const obj = { codFiscale, ruolo, nominativoUtente };
         this.removeRoleUser.emit(obj);
-    }
-
-    nightModeStyle(): string {
-      let value = '';
-      if (!this.nightMode) {
-        value = ' ';
-      } else if (this.nightMode) {
-        value = 'moon-text moon-card-light';
-      }
-      return value;
     }
 
     onAddRuoloUtente(codFiscale: string, fullName: string, ruoliAttuali: Ruolo[]): void {

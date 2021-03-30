@@ -11,7 +11,7 @@
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
                                 placement="right"
                                 [routerLink]="['/' + RoutesPath.Home]"
-                                [class.btn-nav-selected]="!(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && url === '/home'"
+                                [class.btn-nav-selected]="!(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && !(codaChiamateStatus$ | async) && url === '/home'"
                                 (click)="onChiamateInterventi()">
                             <i class="fa fa-home"></i>
                         </button>
@@ -27,6 +27,13 @@
                         <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
                                                    (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
+                        <button class="btn btn-light font-xlarge mr-2"
+                                ngbTooltip="Visualizza Coda Chiamate"
+                                placement="right"
+                                [class.btn-nav-selected]="(codaChiamateStatus$ | async) && url === '/home'"
+                                (click)="toggleCodaChiamate()">
+                            <i class="fa fa-list"></i>
+                        </button>
                     </div>
                     <!-- Treeview -->
                     <ng-template [ngIf]="listeSediNavbarLoaded$ | async">
@@ -59,7 +66,7 @@
                         </button>
                         <button class="btn btn-light font-xlarge mr-2" ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
-                                [class.btn-nav-selected]="url === '/rubrica'"
+                                [class.btn-nav-selected]="url === '/rubrica' || url === '/rubrica-personale'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-address-book"></i>
                         </button>

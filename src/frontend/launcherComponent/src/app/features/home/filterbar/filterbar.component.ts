@@ -65,6 +65,7 @@ export class FilterbarComponent {
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
 
     // View State
+    @Select(ViewComponentState.codaChiamateStatus) codaChiamateStatus$: Observable<boolean>;
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;

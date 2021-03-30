@@ -29,6 +29,7 @@ export const environment = {
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        codaChiamate: '/api/GestioneCodaChiamate',
         competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
@@ -38,6 +39,7 @@ export const environment = {
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
+        rubricaPersonale: '/api/GestioneRubricaPersonale',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',

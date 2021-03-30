@@ -17,7 +17,6 @@ import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
-import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -35,8 +34,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
+    RoutesPath = RoutesPath;
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,

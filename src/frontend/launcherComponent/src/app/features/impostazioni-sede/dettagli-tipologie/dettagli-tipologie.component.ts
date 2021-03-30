@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -31,8 +31,6 @@ import { NgSelectConfig } from '@ng-select/ng-select';
     styleUrls: ['./dettagli-tipologie.component.scss']
 })
 export class DettagliTipologieComponent implements OnDestroy {
-
-    @Input() nightMode: boolean;
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;

@@ -56,7 +56,8 @@ export class RichiestaGestioneState {
     }
 
     @Action(ClearRichiestaGestione)
-    clearRichiestaGestione({ patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: ClearRichiestaGestione): void {
+    clearRichiestaGestione({ patchState, dispatch, getState }: StateContext<RichiestaGestioneStateModel>, action: ClearRichiestaGestione): void {
+        const state = getState();
         const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
 
         // se la richiesta non è fissata deseleziono il marker della richiesta in gestione e centro la mappa
@@ -64,7 +65,7 @@ export class RichiestaGestioneState {
             dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
         }
-
+        dispatch(new RemoveRichiestaEspansa(state.richiestaGestione.id));
         patchState(RichiestaGestioneStateDefaults);
     }
 }

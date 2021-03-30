@@ -76,6 +76,15 @@ $n-middle: 50% !important;
   .n-color {
     color: $n-black;
   }
+  .n-box-azione {
+    position: relative;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid $n-muted;
+    background-color: $n-white;
+    border-radius: 0.25rem;
+  }
 }
 // END Sun Mode Styles
 
@@ -133,6 +142,15 @@ $n-middle: 50% !important;
     -webkit-box-shadow: $n-box-shadow;
     -moz-box-shadow: $n-box-shadow;
     box-shadow: $n-box-shadow;
+  }
+  .n-box-azione {
+    position: relative;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid $n-muted;
+    background-color: $n-dark-light;
+    border-radius: 0.25rem;
   }
   .n-bg-light {
     background-color: $n-light;
@@ -552,7 +570,7 @@ tag-input {
 }
 
 .status_border_inRientro {
-  border-left: 10px solid #92b565 !important;
+  border-left: 10px solid #28a745 !important;
 }
 
 .status_border_inUscita {
@@ -560,7 +578,7 @@ tag-input {
 }
 
 .status_border_inViaggio {
-  border-left: 10px solid #ffc107 !important;
+  border-left: 10px solid #dc3545 !important;
 }
 
 .status_border_sulPosto {

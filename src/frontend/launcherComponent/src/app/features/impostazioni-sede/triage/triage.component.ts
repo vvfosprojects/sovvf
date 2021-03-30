@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TreeItem, TreeviewConfig, TreeviewItem } from 'ngx-treeview';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
@@ -63,8 +63,6 @@ export class TriageComponent implements OnDestroy {
     tItemsBackup: TreeItem[];
     @Select(TriageCrudState._backupTriageDataByDettaglioTipologia) backupTriageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsDataBackup: ItemTriageData[];
-
-    @Input() nightMode: boolean;
 
     codTipologia: string;
     codDettaglioTipologia: number;

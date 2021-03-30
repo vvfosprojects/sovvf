@@ -19,9 +19,9 @@ import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
-import { ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
+import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
-import {SunMode} from '../../shared/store/actions/viewport/viewport.actions';
+import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
@@ -57,6 +57,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     url: string;
 
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
+    @Select(ViewComponentState.codaChiamateStatus) codaChiamateStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
@@ -109,7 +110,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     onSwitchSunMode(): void {
-      this.store.dispatch(new SunMode());
+        this.store.dispatch(new SunMode());
     }
 
     getTurnoCalendario(): void {
@@ -198,12 +199,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     onChiamateInterventi(): void {
+        const codaChiamateStatus = this.store.selectSnapshot(ViewComponentState.codaChiamateStatus);
         const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
         const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         const modificaRichiestaStatus = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
         const composizioneStatus = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
-        if (mezziInServizioStatus) {
+        if (codaChiamateStatus) {
+            this.toggleCodaChiamate();
+        } else if (mezziInServizioStatus) {
             this.toggleMezziInSerivizo();
         } else if (schedeContattoStatus) {
             this.toggleSchedeContatto();
@@ -224,6 +228,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     toggleSchedeContatto(): void {
         this.returnToHome();
         this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    toggleCodaChiamate(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleCodaChiamate());
     }
 
     toggleChiamataStatus(): void {

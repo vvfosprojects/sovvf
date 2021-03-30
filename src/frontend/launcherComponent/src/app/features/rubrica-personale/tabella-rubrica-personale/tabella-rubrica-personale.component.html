@@ -1,0 +1,100 @@
+<table class="table table-striped app-shadow bg-white font-xlarge n-card n-color">
+    <thead>
+    <tr>
+        <th scope="col" width="15%"><i class="fa fa-user mr-2"></i>Nominativo</th>
+        <th scope="col" width="15%"><i class="fa fa-map-marker mr-2"></i>Sedi di Servizio</th>
+        <th scope="col" width="10%"><i class="fa fa-calendar mr-2"></i>Turno</th>
+        <th scope="col" width="10%"><i class="fa fa-bolt mr-2"></i>Qualifica</th>
+        <th scope="col" width="20%"><i class="fa fa-cogs mr-2"></i>Specializzazione</th>
+        <th scope="col" width="10%"><i class="fa fa-phone mr-2"></i>Telefono 1</th>
+        <th scope="col" width="10%"><i class="fa fa-phone mr-2"></i>Telefono 2</th>
+        <th scope="col" width="10%"><i class="fa fa-phone mr-2"></i>Telefono 3</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let voce of vociRubricaPersonale | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+        <td width="15%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.nominativo" >{{voce?.nominativo}}</span>
+                <small *ngIf="!voce?.nominativo" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+        <td width="15%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.sede" >{{voce?.sede}}</span>
+                <small *ngIf="!voce?.sede" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+        <td width="10%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.turno" >{{voce?.turno}}</span>
+                <small *ngIf="!voce?.turno" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+        <td width="10%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.qualifica" >{{voce?.qualifica}}</span>
+                <small *ngIf="!voce?.qualifica" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+        <td width="20%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.specializzazione" >{{voce?.specializzazione}}</span>
+                <small *ngIf="!voce?.specializzazione" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+        <td width="10%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.telefono1" >{{voce?.telefono1}}</span>
+                <small *ngIf="!voce?.telefono1" class="ml-1 n-text-muted">
+                    Non presente
+                </small>            </div>
+        </td>
+        <td width="10%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.telefono2" >{{voce?.telefono2}}</span>
+                <small *ngIf="!voce?.telefono2" class="ml-1 n-text-muted">
+                    Non presente
+                </small>            </div>
+        </td>
+        <td width="10%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.telefono3" >{{voce?.telefono3}}</span>
+                <small *ngIf="!voce?.telefono3" class="ml-1 n-text-muted">
+                    Non presente
+                </small>
+            </div>
+        </td>
+    </tr>
+    <tr *ngIf="vociRubricaPersonale?.length <= 0">
+        <td>
+            <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="vociRubricaPersonale?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
+    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                         (pageChange)="pageChange.emit($event)">
+    </pagination-controls>
+</div>

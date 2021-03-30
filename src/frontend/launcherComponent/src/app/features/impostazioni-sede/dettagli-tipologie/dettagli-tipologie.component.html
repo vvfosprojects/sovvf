@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-5">
-        <h3 class="d-inline-block mb-0" [class.text-white]="nightMode">
+        <h3 class="d-inline-block mb-0 n-color">
             Dettagli Tipologie
         </h3>
     </div>
@@ -23,7 +23,7 @@
     </div>
     <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
         <table class="table mt-3 mb-2">
-            <thead class="font-xlarge" [class.text-white]="nightMode">
+            <thead class="font-xlarge n-color">
             <tr>
                 <th scope="col" style="width:15%">Codice Tipologia</th>
                 <th scope="col" style="width:15%">Sede</th>
@@ -32,7 +32,7 @@
                 <th scope="col" style="width:35%">Azioni</th>
             </tr>
             </thead>
-            <tbody class="font-xlarge" [class.text-white]="nightMode">
+            <tbody class="font-xlarge n-dark-light n-color">
             <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
                 <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
                 <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>

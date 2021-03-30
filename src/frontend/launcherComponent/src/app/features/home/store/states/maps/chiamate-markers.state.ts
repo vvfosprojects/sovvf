@@ -125,14 +125,17 @@ export class ChiamateMarkersState {
     }
 
     @Action(RemoveChiamataMarker)
-    removeChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker): void {
+    removeChiamataMarker({ getState, setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker): void {
         console.log(id);
-
-        setState(
-            patch({
-                chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
-            })
-        );
+        const state = getState();
+        const chiamateMarkers = state.chiamateMarkers;
+        if (chiamateMarkers) {
+            setState(
+                patch({
+                    chiamateMarkers: removeItem<ChiamataMarker>(chiamata => chiamata.id === id)
+                })
+            );
+        }
     }
 
     @Action(ClearChiamateMarkers)

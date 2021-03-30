@@ -46,6 +46,7 @@ import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste
 import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
+import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contatto/schede-contatto.actions';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -146,22 +147,24 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
+    }
+
+    clearFormDisconnection(): void {
+        this.submitted = false;
         if (this.richiestaModifica) {
             this.store.dispatch([
                 new ClearRichiestaMarkerModifica(),
                 new ChiudiRichiestaModifica()
             ]);
+        } else {
+            this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
+        this.store.dispatch([
+            new ClearClipboard(),
+            new DelChiamataMarker(this.idChiamata)
+        ]);
         clearSummaryData(this.store);
-    }
-
-    clearFormDisconnection(): void {
-        this.submitted = false;
-        this.richiestaForm.reset();
-        this.clearTipologieSelezionate();
-        this.store.dispatch(new ClearClipboard());
         this.reducerSchedaTelefonata('reset');
-        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
     }
 
     createAndGetForm(): FormGroup {
