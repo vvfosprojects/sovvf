@@ -19,17 +19,14 @@ namespace SO115App.API.Controllers
             _queryHandler = queryHandler;
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> GetAll()
+        [HttpPost("")]
+        public async Task<IActionResult> GetAll(RubricaPersonaleQuery query)
         {
             try
             {
-                var query = new RubricaPersonaleQuery()
-                {
-                    IdSede = Request.Headers["codicesede"].ToString().Split(','),
-                    IdOperatore = Request.Headers["IdUtente"]
-                };
-
+                query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
+                query.IdOperatore = Request.Headers["IdUtente"];
+                
                 var result = _queryHandler.Handle(query);
 
                 return Ok(result);
