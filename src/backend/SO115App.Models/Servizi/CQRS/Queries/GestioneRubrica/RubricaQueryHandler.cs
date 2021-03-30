@@ -9,21 +9,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
     public class RubricaQueryHandler : IQueryHandler<RubricaQuery, RubricaResult>
     {
         private readonly IGetRubrica _getRurbica;
-        private readonly Infrastruttura.SistemiEsterni.Rubrica.IGetRubrica _getRubricaExt;
 
-        public RubricaQueryHandler(IGetRubrica getRurbica, Infrastruttura.SistemiEsterni.Rubrica.IGetRubrica getRubricaExt)
+        public RubricaQueryHandler(IGetRubrica getRurbica)
         {
             _getRurbica = getRurbica;
-            _getRubricaExt = getRubricaExt;
         }
 
         public RubricaResult Handle(RubricaQuery query)
         {
             var listaRubrica = _getRurbica.Get(query.IdSede, query.Filters.Search);
-
-            var lstRubricaExt = _getRubricaExt.Get();
-
-            //TODO mapping rubrica ext
 
             //PAGINAZIONE
             List<EnteDTO> rubricaPaginata = null;

@@ -35,7 +35,7 @@ export class ViewportState {
 
     @Selector([RouterState, AppState])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel, appState: AppStateModel): boolean {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.RubricaPersonale}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         const appReady = appState.appIsLoaded;
         grantUrl.forEach((url: string) => {

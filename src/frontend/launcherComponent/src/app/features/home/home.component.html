@@ -29,7 +29,7 @@
                     <div *ngIf="(doubleMonitor$ | async) === false">
                         <div class="mt-2"
                              style="height:740px; max-height:740px"
-                             [class.d-none]="(viewState.richieste.active ||viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
+                             [class.d-none]="(viewState.richieste.active || viewState.codaChiamate.active || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
                             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                                       [boxAttivi]="boxAttivi"
                                       (mapFullLoaded)="onMapFullLoaded()">
@@ -38,6 +38,8 @@
                     </div>
                     <!-- Scheda Richiesta -->
                     <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
+                    <!-- Coda Chiamate -->
+                    <app-coda-chiamate *ngIf="viewState.codaChiamate.active"></app-coda-chiamate>
                     <!-- Composizione Partenza -->
                     <app-composizione-partenza *ngIf="viewState.composizione.active"
                                                [doubleMonitor]="(doubleMonitor$ | async)"

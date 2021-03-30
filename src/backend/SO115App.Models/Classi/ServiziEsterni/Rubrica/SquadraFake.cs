@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
+namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
 {
     /// <summary> La classe che mappa i dati in arrivo dal file fake ListaSqaudre </summary> </summary>
     public class SquadraFake

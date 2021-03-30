@@ -1,0 +1,35 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div class="col-12 col-md-9 mx-auto mb-2 n-color">
+            <h2>
+                <i class="fa fa-id-card"></i>
+                Rubrica Personale
+            </h2>
+        </div>
+        <div class="col-12 col-md-9 mx-auto mb-2">
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-outline-secondary btn-no-hover mb-2 font-weight-bold font-xlarge" placement="right"
+                            [routerLink]="['/' + RoutesPath.Rubrica]" ngbTooltip="Visualizza Rubrica">
+                        <i class="fa fa-address-book mr-1"></i>
+                        Rubrica
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <app-ricerca-rubrica-personale [loading]="loading$ | async"
+                                         (ricercaChange)="onRicercaRubricaPersonale($event)"></app-ricerca-rubrica-personale>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+        </div>
+        <div class="col-12 col-md-9 mx-auto">
+            <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async" [totalItems]="totalItems$ | async"
+                                 [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
+                                 [pageSizes]="pageSizes$ | async"
+                                 (pageChange)="onPageChange($event)"
+                                 (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica-personale>
+        </div>
+    </div>
+</div>

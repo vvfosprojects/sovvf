@@ -13,6 +13,11 @@
                         <i class="fa fa-plus mr-1"></i>
                         Aggiungi Voce
                     </button>
+                    <button class="btn btn-outline-secondary btn-no-hover mx-3 mb-2 font-weight-bold font-xlarge" placement="right"
+                            [routerLink]="['/' + RoutesPath.RubricaPersonale]" ngbTooltip="Visualizza Rubrica Personale VV.F.">
+                        <i class="fa fa-id-card mr-1"></i>
+                        Personale VV.F.
+                    </button>
                 </div>
                 <div class="col text-right">
                     <app-ricerca-rubrica [loading]="loading$ | async"

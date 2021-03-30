@@ -51,6 +51,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.RubricaPersonale,
+        loadChildren: () => import('./features/rubrica-personale/rubrica-personale.module').then(m => m.RubricaPersonaleModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.TrasferimentoChiamata,
         loadChildren: () => import('./features/trasferimento-chiamata/trasferimento-chiamata.module').then(m => m.TrasferimentoChiamataModule),
         canActivate: [AuthGuard]
