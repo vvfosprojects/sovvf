@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -21,7 +21,7 @@ import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/sto
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
-import {ImpostazioniState} from './shared/store/states/impostazioni/impostazioni.state';
+import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 
 @Component({
@@ -114,35 +114,35 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     getNightMode(): void {
-      this.subscription.add(
-        this.nightMode$.subscribe((nightMode: boolean) => {
-          this.nightMode = nightMode;
-          const body = document.querySelectorAll('body')[0];
-          if (!this.nightMode) {
-            this.render.addClass(body, 'sun-mode');
-            this.render.removeClass(body, 'moon-mode');
-          } else {
-            this.render.addClass(body, 'moon-mode');
-            this.render.removeClass(body, 'sun-mode');
-          }
-        })
-      );
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+                const body = document.querySelectorAll('body')[0];
+                if (!this.nightMode) {
+                    this.render.addClass(body, 'sun-mode');
+                    this.render.removeClass(body, 'moon-mode');
+                } else {
+                    this.render.addClass(body, 'moon-mode');
+                    this.render.removeClass(body, 'sun-mode');
+                }
+            })
+        );
     }
 
     getDoubleMonitorMode(): void {
-      this.subscription.add(
-        this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
-          this.doubleMonitor = doubleMonitor;
-          const body = document.querySelectorAll('body')[0];
-          if (!this.doubleMonitor) {
-            this.render.addClass(body, 'single-monitor');
-            this.render.removeClass(body, 'double-monitor');
-          } else {
-            this.render.addClass(body, 'double-monitor');
-            this.render.removeClass(body, 'single-monitor');
-          }
-        })
-      );
+        this.subscription.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+                const body = document.querySelectorAll('body')[0];
+                if (!this.doubleMonitor) {
+                    this.render.addClass(body, 'single-monitor');
+                    this.render.removeClass(body, 'double-monitor');
+                } else {
+                    this.render.addClass(body, 'double-monitor');
+                    this.render.removeClass(body, 'single-monitor');
+                }
+            })
+        );
     }
 
     getViewState(): void {
@@ -205,6 +205,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 case RoutesPath.TrasferimentoChiamata:
                     return true;
                 case RoutesPath.Rubrica:
+                    return true;
+                case RoutesPath.RubricaPersonale:
                     return true;
                 case RoutesPath.Changelog:
                     return true;
