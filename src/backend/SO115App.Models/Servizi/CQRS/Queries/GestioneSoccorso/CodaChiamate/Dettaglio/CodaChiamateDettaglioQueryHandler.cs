@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CodaChiamateQueryHandler.cs" company="CNVVF">
+// <copyright file="CodaChiamateDettaglioQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -21,39 +21,28 @@ using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
-using SO115App.Models.Classi.Filtri;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
-using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
-using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static SO115App.API.Models.Classi.Condivise.Squadra;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate.Dettaglio
 {
     /// <summary>
     ///   Servizio che restituisce tutti i valori della Navbar.
     /// </summary>
-    public class CodaChiamateQueryHandler : IQueryHandler<CodaChiamateQuery, CodaChiamateResult>
+    public class CodaChiamateDettaglioQueryHandler : IQueryHandler<CodaChiamateDettaglioQuery, CodaChiamateDettaglioResult>
     {
         private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetComposizioneSquadre _iGetComposizioneSquadre;
 
-        public CodaChiamateQueryHandler(IGetListaSintesi iGetListaSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+        public CodaChiamateDettaglioQueryHandler(IGetListaSintesi iGetListaSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
                                         IGetComposizioneSquadre iGetComposizioneSquadre)
         {
             _iGetListaSintesi = iGetListaSintesi;
@@ -66,19 +55,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
         /// </summary>
         /// <param name="query">Filtri utilizzati per l'estrazione</param>
         /// <returns>Tutti i parametri iniziali della Home Page</returns>
-        public CodaChiamateResult Handle(CodaChiamateQuery query)
+        public CodaChiamateDettaglioResult Handle(CodaChiamateDettaglioQuery query)
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
 
-            foreach (var sede in query.CodiciSede)
-            {
-                pinNodi.Add(new PinNodo(sede, true));
-            }
+            pinNodi.Add(new PinNodo(query.CodiceSede, false));
+
             var listaSedi = listaSediAlberate.GetSottoAlbero(pinNodi);
             foreach (var figlio in listaSedi)
             {
-                pinNodi.Add(new PinNodo(figlio.Codice, true));
+                pinNodi.Add(new PinNodo(figlio.Codice, false));
             }
 
             query.Filtro = new FiltroRicercaRichiesteAssistenza();
@@ -90,30 +77,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             InfoIstogramma info = new InfoIstogramma();
             info.ListaCodaChiamate = new List<Istogramma>();
-            Parallel.ForEach(listaSedi, unita =>
-             {
-                 ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
-                 {
-                     CodiceSede = unita.Codice
-                 };
 
-                 var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
-
-                 var infoDistaccamento = new Istogramma()
-                 {
-                     codDistaccamento = unita.Codice,
-                     descDistaccamento = unita.Nome,
-                     numRichieste = listaSintesi != null ? listaSintesi.FindAll(x => x.CodSOCompetente.Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))).Count() : 0,
-                     squadreLibere = listaSquadre != null ? listaSquadre.FindAll(x => x.Squadra.Stato.Equals(StatoSquadra.InSede)).Count() : 0,
-                     squadreOccupate = listaSquadre != null ? listaSquadre.FindAll(x => !x.Squadra.Stato.Equals(StatoSquadra.InSede)).Count() : 0
-                 };
-
-                 info.ListaCodaChiamate.Add(infoDistaccamento);
-             });
-
-            return new CodaChiamateResult()
+            ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
             {
-                infoIstogramma = info.ListaCodaChiamate.OrderByDescending(x => x.numRichieste).OrderBy(x => x.codDistaccamento).ToList()
+                CodiceSede = query.CodiceSede
+            };
+
+            var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
+
+            DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
+            {
+                codDistaccamento = listaSedi.First().Codice,
+                descDistaccamento = listaSedi.First().Nome,
+                listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodSOCompetente.Equals(listaSedi.First().Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))) : null,
+                listaSquadre = listaSquadre.Select(x => x.Squadra).ToList()
+            };
+
+            return new CodaChiamateDettaglioResult()
+            {
+                infoDistaccamento = dettaglio
             };
         }
     }
