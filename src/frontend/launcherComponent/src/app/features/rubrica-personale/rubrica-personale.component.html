@@ -27,7 +27,9 @@
         <div class="col-12 col-md-9 mx-auto">
             <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async" [totalItems]="totalItems$ | async"
                                  [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
-                                 [pageSizes]="pageSizes$ | async"></app-tabella-rubrica-personale>
+                                 [pageSizes]="pageSizes$ | async"
+                                 (pageChange)="onPageChange($event)"
+                                 (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica-personale>
         </div>
     </div>
 </div>
