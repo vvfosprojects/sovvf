@@ -29,6 +29,7 @@ export const environment = {
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        codaChiamate: '/api/GestioneCodaChiamate',
         competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',

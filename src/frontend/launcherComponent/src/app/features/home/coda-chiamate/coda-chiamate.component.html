@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12">
+        <div class="py-3">
+            <app-grafico-distaccamenti [data]="data"
+                                       [view]="[1500, (data?.length * 100)]"
+                                       [showXAxis]="true"
+                                       [showYAxis]="true"
+                                       [gradient]="false"
+                                       [showLegend]="true"
+                                       [legendTitle]="'Legenda'"
+                                       [legendPosition]="'right'"
+                                       [showXAxisLabel]="false"
+                                       [xAxisLabel]="''"
+                                       [showYAxisLabel]="true"
+                                       [yAxisLabel]="'Distaccamenti'"
+                                       [colorScheme]="{ domain: ['#5AA454', '#C7B42C', '#AAAAAA'] }"
+                                       [schemeType]="'ordinal'"
+                                       (select)="onSelect($event)"
+                                       (activate)="onActivate($event)"
+                                       (deactivate)="onDeactivate($event)"></app-grafico-distaccamenti>
+        </div>
+    </div>
+</div>

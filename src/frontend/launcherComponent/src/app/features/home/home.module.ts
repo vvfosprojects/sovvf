@@ -36,10 +36,13 @@ import { SquadreComposizioneState } from '../../shared/store/states/squadre-comp
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state';
+import { CodaChiamateComponent } from './coda-chiamate/coda-chiamate.component';
+import { BarChartModule } from '@swimlane/ngx-charts';
+import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
 
 @NgModule({
     declarations: [
-        HomeComponent
+        HomeComponent,
     ],
     imports: [
         CommonModule,
@@ -50,6 +53,7 @@ import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state'
         FilterbarModule,
         MapsModule,
         RichiesteModule,
+        CodaChiamateModule,
         ComposizionePartenzaModule,
         MezziInServizioModule,
         SchedeContattoModule,
@@ -81,6 +85,7 @@ import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state'
                 ZoneEmergenzaState
             ]
         ),
+        BarChartModule,
     ],
     exports: [],
     providers: [

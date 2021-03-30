@@ -31,6 +31,18 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
 }
 
 /**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di coda chiamate
+ * @param: stateDefault
+ */
+export function activeCodaChiamate(stateDefault: any): ViewComponentStateModel {
+    stateDefault.view.richieste.active = false;
+    stateDefault.view.codaChiamate.active = true;
+    stateDefault.view.mappa.options = [AppFeatures.CodaChiamate];
+    stateDefault.view.filterbar.options = [Grid.Col6];
+    return stateDefault;
+}
+
+/**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di chiamata
  * @param: stateDefault
  */
