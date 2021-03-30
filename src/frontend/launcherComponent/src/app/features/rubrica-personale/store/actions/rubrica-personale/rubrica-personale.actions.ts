@@ -1,3 +1,4 @@
+import { RubricaPersonale } from '../../../../../shared/interface/rubrica-personale.interface';
 
 export class GetRubricaPersonale {
     static readonly type = '[RubricaPersonale] Get Rubrica Personale';
@@ -9,6 +10,6 @@ export class GetRubricaPersonale {
 export class SetRubricaPersonale {
     static readonly type = '[RubricaPersonale] Set Voci Rubrica Personale';
 
-    constructor(public vociRubricaPersonale: any) {
+    constructor(public vociRubricaPersonale: RubricaPersonale[]) {
     }
 }

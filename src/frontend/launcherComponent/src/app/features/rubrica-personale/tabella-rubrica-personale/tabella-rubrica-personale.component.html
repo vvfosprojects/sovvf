@@ -22,7 +22,7 @@
             </div>
         </td>
         <td width="15%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.sede" >{{voce?.sede}}</span>
                 <small *ngIf="!voce?.sede" class="ml-1 n-text-muted">
                     Non presente
@@ -30,7 +30,7 @@
             </div>
         </td>
         <td width="10%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.turno" >{{voce?.turno}}</span>
                 <small *ngIf="!voce?.turno" class="ml-1 n-text-muted">
                     Non presente
@@ -38,37 +38,39 @@
             </div>
         </td>
         <td width="10%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span *ngIf="voce?.qualifica" >{{voce?.qualifica}}</span>
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.qualifica" [ngbTooltip]="voce?.qualifica?.length > 12 ? voce?.qualifica : null">
+                    {{voce?.qualifica | truncate: 12}}</span>
                 <small *ngIf="!voce?.qualifica" class="ml-1 n-text-muted">
                     Non presente
                 </small>
             </div>
         </td>
         <td width="20%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span *ngIf="voce?.specializzazione" >{{voce?.specializzazione}}</span>
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
+                <span *ngIf="voce?.specializzazione" [ngbTooltip]="voce?.specializzazione?.length > 14 ? voce?.specializzazione : null">
+                    {{voce?.specializzazione | truncate: 14}}</span>
                 <small *ngIf="!voce?.specializzazione" class="ml-1 n-text-muted">
                     Non presente
                 </small>
             </div>
         </td>
         <td width="10%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono1" >{{voce?.telefono1}}</span>
                 <small *ngIf="!voce?.telefono1" class="ml-1 n-text-muted">
                     Non presente
                 </small>            </div>
         </td>
         <td width="10%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono2" >{{voce?.telefono2}}</span>
                 <small *ngIf="!voce?.telefono2" class="ml-1 n-text-muted">
                     Non presente
                 </small>            </div>
         </td>
         <td width="10%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono3" >{{voce?.telefono3}}</span>
                 <small *ngIf="!voce?.telefono3" class="ml-1 n-text-muted">
                     Non presente
