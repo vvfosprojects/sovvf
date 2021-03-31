@@ -8,7 +8,7 @@ export interface RicercaFilterbarStateModel {
 }
 
 export const RicercaFilterbarStateDefaults: RicercaFilterbarStateModel = {
-    ricerca: ''
+    ricerca: undefined
 };
 
 @Injectable()
@@ -43,7 +43,7 @@ export class RicercaFilterbarState {
     @Action(ClearRicercaFilterbar)
     clearRicercaRichieste({ patchState }: StateContext<RicercaFilterbarStateModel>): void {
         patchState({
-            ricerca: ''
+            ricerca: RicercaFilterbarStateDefaults.ricerca
         });
     }
 }

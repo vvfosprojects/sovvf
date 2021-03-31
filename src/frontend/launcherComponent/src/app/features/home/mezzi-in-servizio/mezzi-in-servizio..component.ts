@@ -26,6 +26,7 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -46,6 +47,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     page: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
@@ -81,7 +83,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
         this.store.dispatch([
-            // new GetListaRichieste(),
             new ClearListaMezziInServizio(),
             new ClearFiltriMezziInServizio(true),
             new ClearRicercaFilterbar(),
@@ -153,7 +154,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca !== null) {
+                if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetListaMezziInServizio());
                 }

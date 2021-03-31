@@ -22,12 +22,15 @@
         </ng-template>
     </div>
     <div class="col-12">
-        <div class="text-right mt-2">
-            <pagination-controls [previousLabel]="'Precedente'"
-                                 [nextLabel]="'Successiva'"
-                                 [autoHide]="true"
-                                 (pageChange)="onPageChange($event)">
-            </pagination-controls>
+        <div class="float-right mt-3 font-xlarge">
+            <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="totalItems"
+                    [maxSize]="5"
+                    [disabled]="loading$ | async"
+                    (pageChange)="onPageChange($event)">
+            </ngb-pagination>
         </div>
     </div>
 </div>
