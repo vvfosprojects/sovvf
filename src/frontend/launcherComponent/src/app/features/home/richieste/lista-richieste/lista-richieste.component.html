@@ -94,13 +94,16 @@
                     </ng-template>
                 </button>
             </div>
-            <div class="col-8 text-right pt-1">
-                <pagination-controls class="mb-0"
-                                     [previousLabel]="'Precedente'"
-                                     [nextLabel]="'Successiva'"
-                                     [autoHide]="true"
-                                     (pageChange)="pageChange.emit($event)">
-                </pagination-controls>
+            <div class="col-8 pt-1 font-xlarge">
+                <ngb-pagination
+                        class="float-right"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="totalItems"
+                        [maxSize]="5"
+                        [disabled]="loading"
+                        (pageChange)="pageChange.emit($event)">
+                </ngb-pagination>
             </div>
         </div>
     </div>
