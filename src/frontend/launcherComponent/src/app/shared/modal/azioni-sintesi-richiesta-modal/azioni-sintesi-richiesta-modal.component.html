@@ -1,104 +1,137 @@
 <div class="modal-header">
-  <h4 class="modal-title font-weight-bold">
-    {{ 'AZIONI RICHIESTA '}} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
-  </h4>
-  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
-          (click)="chiudiModalAzioniSintesi('ko')">
-    <i class="fa fa-times text-danger"></i>
-  </button>
+    <h4 class="modal-title font-weight-bold">
+        {{ 'AZIONI RICHIESTA '}} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
+            (click)="chiudiModalAzioniSintesi('ko')">
+        <i class="fa fa-times text-danger"></i>
+    </button>
 </div>
 
 <div class="modal-body pb-3">
 
-  <div class="row justify-content-center">
-    <!-- LISTA EVENTI -->
-    <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
-      <button class="btn btn-light border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa-list text-secondary"></i></button>
-      <div class="m-1" style="height: 30px">Dettaglio Eventi Richiesta</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Lista degli eventi relativi alla richiesta.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">Esegui</button>
+    <div class="row justify-content-center">
+        <!-- LISTA EVENTI -->
+        <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
+            <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-list text-secondary"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Dettaglio Eventi Richiesta</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Lista degli eventi relativi alla
+                richiesta.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">Esegui
+            </button>
+        </div>
+        <!-- TRASFERIMENTO CHIAMATA -->
+        <div class="clearfix n-box-azione w-25 font-xlarge mx-3" style="height: fit-content">
+            <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-send-o"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Trasferimento Chiamata</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci la chiamata ad un altro
+                Distaccamento.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
+            </button>
+        </div>
+        <!-- ALLERTA SEDE -->
+        <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
+            <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-exclamation-triangle"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Allerta Sede</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Notifica la richiesta ad un altro
+                distaccamento.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onAllertaSede(); $event.stopPropagation()">Esegui
+            </button>
+        </div>
     </div>
-    <!-- TRASFERIMENTO CHIAMATA -->
-    <div class="clearfix n-box-azione w-25 font-xlarge mx-3" style="height: fit-content">
-      <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa-send-o"></i></button>
-      <div class="m-1" style="height: 30px">Trasferimento Chiamata</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Trasferisci la chiamata ad un altro Distaccamento.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui</button>
-    </div>
-    <!-- ALLERTA SEDE -->
-    <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
-      <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa-exclamation-triangle"></i></button>
-      <div class="m-1" style="height: 30px">Allerta Sede</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Notifica la richiesta ad un altro distaccamento.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onAllertaSede(); $event.stopPropagation()">Esegui</button>
-    </div>
-  </div>
 
-  <div class="row justify-content-center mt-3">
-    <!-- MODIFICA ENTI INTERVENUTI -->
-    <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
-      <button class="btn btn-info border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa-edit"></i></button>
-      <div class="m-1" style="height: 30px">Modifica Enti Intervenuti</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Modifica gli Enti intervenuti nella richiesta.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">Esegui</button>
+    <div class="row justify-content-center mt-3">
+        <!-- MODIFICA ENTI INTERVENUTI -->
+        <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
+            <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-edit"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Modifica Enti Intervenuti</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica gli Enti intervenuti nella
+                richiesta.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">Esegui
+            </button>
+        </div>
+        <!-- MODIFICA FONOGRAMMA -->
+        <div class="clearfix n-box-azione w-25 font-xlarge mx-3" style="height: fit-content">
+            <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-edit"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Modifica Fonogramma</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica Fonogramma relativo alla
+                richiesta.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onModificaStatoFonogramma(); $event.stopPropagation()">Esegui
+            </button>
+        </div>
+        <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
+        <div class="clearfix w-25 font-xlarge" style="height: fit-content">
+        </div>
     </div>
-    <!-- MODIFICA FONOGRAMMA -->
-    <div class="clearfix n-box-azione w-25 font-xlarge mx-3" style="height: fit-content">
-      <button class="btn btn-info border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa-edit"></i></button>
-      <div class="m-1" style="height: 30px">Modifica Fonogramma</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Modifica Fonogramma relativo alla richiesta.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onModificaStatoFonogramma(); $event.stopPropagation()">Esegui</button>
-    </div>
-    <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-    <div class="clearfix w-25 font-xlarge" style="height: fit-content">
-    </div>
-  </div>
 
-  <div class="row justify-content-center mt-3">
-    <!-- CHIUDI CHIAMATA -->
-    <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
-      <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2" style="height: 50px; font-size: 25px; width: 50px;">
-        <i class="fa fa-fw fa fa-forward"></i></button>
-      <div class="m-1" style="height: 30px">Stato {{calcolaActionSuggeritaRichiesta(richiesta)}}</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta a {{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}.</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato</button>
-    </div>
-    <!-- SOSPENDI CHIAMATA -->
-    <div class="clearfix w-25 font-xlarge mx-3" [class.n-box-azione]="statoRichiestaString?.length" style="height: fit-content">
+    <div class="row justify-content-center mt-3">
+        <!-- CHIUDI CHIAMATA -->
+        <div class="clearfix n-box-azione w-25 font-xlarge" style="height: fit-content">
+            <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa fa-forward"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Stato {{calcolaActionSuggeritaRichiesta(richiesta)}}</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta
+                a {{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato
+            </button>
+        </div>
+        <!-- SOSPENDI CHIAMATA -->
+        <div class="clearfix w-25 font-xlarge mx-3" [class.n-box-azione]="statoRichiestaString?.length"
+             style="height: fit-content">
       <span *ngFor="let stato of statoRichiestaString">
        <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
                style="height: 50px; font-size: 25px; width: 50px;">
          <i class="fa fa-fw fa fa-pause"></i></button>
-      <div class="m-1" style="height: 30px">Stato {{stato}}</div>
-      <div class="m-1" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta a {{stato.toUpperCase()}}.</div>
+      <div class="my-1 px-3" style="height: 30px">Stato {{stato}}</div>
+      <div class="my-1 px-3"
+           style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta a {{stato.toUpperCase()}}
+          .</div>
       <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
               (click)="onClick(stato)">Cambia Stato</button>
       </span>
+        </div>
+        <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
+        <div class="clearfix w-25 font-xlarge" style="height: fit-content">
+        </div>
     </div>
-    <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-    <div class="clearfix w-25 font-xlarge" style="height: fit-content">
-    </div>
-  </div>
 </div>
 
 <div class="modal-footer">
-  <div class="row w-100">
-    <div class="col-12 text-right">
-      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
-              (click)="chiudiModalAzioniSintesi('ko')">
-        {{ 'Chiudi'.toLocaleUpperCase() }}
-      </button>
+    <div class="row w-100">
+        <div class="col-12 text-right">
+            <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
+                    (click)="chiudiModalAzioniSintesi('ko')">
+                {{ 'Chiudi'.toLocaleUpperCase() }}
+            </button>
+        </div>
     </div>
-  </div>
 </div>
