@@ -1,4 +1,4 @@
-<div ngbDropdown #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
+<div ngbDropdown display="dynamic" #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
     <button class="btn btn-block btn-no-hover font-xlarge" [ngClass]="colorButton" ngbDropdownToggle
             [disabled]="disabled">{{testoSedeSelezionata}}</button>
     <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
