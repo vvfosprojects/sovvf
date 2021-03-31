@@ -23,6 +23,7 @@ import { ViewComponentState } from './features/home/store/states/view/view.state
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-root',
@@ -59,6 +60,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     user: Utente;
 
+    @Select(RouterState.url) url$: Observable<string>;
+    url: string;
+
+
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
 
@@ -79,6 +84,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2) {
         this.getNightMode();
+        this.getUrl();
         this.getDoubleMonitorMode();
         this.getRouterEvents();
         this.getViewState();
@@ -108,6 +114,20 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.router.events.subscribe((val) => {
                 if (val instanceof NavigationEnd) {
                     this.currentUrl = val.urlAfterRedirects.slice(1);
+                }
+            })
+        );
+    }
+
+    getUrl(): void {
+        this.subscription.add(
+            this.url$.subscribe((url: string) => {
+                this.url = url;
+                const body = document.querySelectorAll('body')[0];
+                if (this.url === '/home') {
+                    this.render.addClass(body, 'no-overflow');
+                } else {
+                    this.render.removeClass(body, 'no-overflow');
                 }
             })
         );

@@ -47,7 +47,7 @@ $n-middle: 50% !important;
 
 // Single Monitor Styles
 .single-monitor {
-}
+  }
 // END Single Monitor Styles
 
 // Double Monitor Styles
@@ -979,4 +979,8 @@ tag-input {
   height: 25px;
   margin: 0;
   border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.no-overflow {
+  overflow: hidden !important;
 }
