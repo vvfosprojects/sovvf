@@ -1,13 +1,9 @@
 ﻿using CQRS.Queries;
-using Newtonsoft.Json;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.ServiziEsterni.Rubrica;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,20 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
 
         public RubricaPersonaleResult Handle(RubricaPersonaleQuery query)
         {
-
-            //string json;
-            //using (var r = new StreamReader(Costanti.ListaSquadre)) json = r.ReadToEnd();
-
-            //var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
-
-            //var lstcodicifiscali = listaSquadreJson
-            //    .Where(c => query.IdSede.Any(s => c.Sede.Contains(s.Substring(0, 2))))
-            //    .SelectMany(c => c.ComponentiSquadra)
-            //    .Select(c => c.CodiceFiscale)
-            //    .Distinct()
-            //    .ToArray();
-
-
+            //OTTENGO I DATI DAI SERVIZI ESTERNI IN PARALLELO
             var lstDettaglio = new ConcurrentQueue<DettaglioDipententeResult>();
 
             Parallel.ForEach(query.IdSede, sede =>
@@ -69,10 +52,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 var rubricaPersonale = new PersonaleRubrica()
                 {
                     Nominativo = $"{personale.cognome} {personale.nome}",
-                    Qualifica = personale.qualifica?.descrizione,
-                    Sede = personale.sede?.id,
+                    Qualifica = personale.qualifica?.nome,
+                    Sede = personale.sede?.descrizione,
                     Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
-                    Turno = personale.turno,
+                    Turno = /*dettaglio?.codTurno ?? */personale.turno,
                     Telefono1 = dettaglio?.telCellulare,
                     Telefono2 = dettaglio?.telefonoFisso,
                     Telefono3 = dettaglio?.fax,
@@ -83,12 +66,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             });
 
             //FILTRI
-             
+            var filteredResult = result.Where(p => true).ToList();
 
-            //PAGINAZIONE
+            //ORDINAMENTO E PAGINAZIONE
             return new RubricaPersonaleResult()
             {
-                DataArray = result.OrderBy(p => p.Nominativo)
+                DataArray = filteredResult.OrderBy(p => p.Nominativo)
                     .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
                     .Take(query.Pagination.PageSize).ToList(),
 

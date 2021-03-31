@@ -16,5 +16,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
 
         public DateTime? oraIngresso { get; set; }
         public string codFiscale { get; set; }
+
+        public string codTurno { get; set; }
     }
 }
