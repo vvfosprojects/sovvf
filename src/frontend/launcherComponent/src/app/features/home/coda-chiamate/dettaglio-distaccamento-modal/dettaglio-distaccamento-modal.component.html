@@ -9,7 +9,7 @@
 </div>
 
 <div class="modal-body px-1">
-    <div class="clearfix font-xxlarge mb-4 px-2">
+    <div *ngIf="squadre?.length" class="clearfix font-xxlarge mb-4 px-2">
         <div class="float-right card card-shadow w-25 py-2">
             <div class="border-bottom px-3 pb-3">
                 <span class="font-weight-bold">{{ squadre?.length }}</span> squadre
@@ -28,14 +28,19 @@
             </div>
         </div>
     </div>
-    <div *ngFor="let r of richieste"
-         class="border-bottom">
-        <app-sintesi-richiesta [richiesta]="r"
-                               [espandibile]="false"
-                               [modificabile]="false"
-                               [gestibile]="false"
-                               (nuovaPartenza)="onNuovaPartenza()">
-        </app-sintesi-richiesta>
+    <div *ngIf="richieste?.length">
+        <div class="border-bottom font-xxlarge pl-4">
+            <span class="font-weight-bold">{{ richieste?.length }}</span> Richieste
+        </div>
+        <div *ngFor="let r of richieste"
+             class="border-bottom">
+            <app-sintesi-richiesta [richiesta]="r"
+                                   [espandibile]="false"
+                                   [modificabile]="false"
+                                   [gestibile]="false"
+                                   (nuovaPartenza)="onNuovaPartenza()">
+            </app-sintesi-richiesta>
+        </div>
     </div>
 </div>
 
