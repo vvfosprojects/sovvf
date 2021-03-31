@@ -66,7 +66,20 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             });
 
             //FILTRI
-            var filteredResult = result.Where(p => true).ToList();
+            var filteredResult = result.Distinct()
+                .Where(p => 
+                {
+                    if (query.Filters?.Search != null)
+                        return p.Nominativo.ToLower().Contains(query.Filters.Search.ToLower()) ||
+                            p.Qualifica.ToLower().Contains(query.Filters.Search.ToLower()) ||
+                            (p.Sede?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                            (p.Specializzazione?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                            (p.Telefono1?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                            (p.Telefono2?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                            (p.Telefono3?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                            (p.Turno?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false);
+                    return true;
+                });
 
             //ORDINAMENTO E PAGINAZIONE
             return new RubricaPersonaleResult()
@@ -79,7 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = result.Count
+                    TotalItems = filteredResult.Count()
                 }
             };
         }

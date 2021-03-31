@@ -25,6 +25,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
         ///   Search è un testo libero che l'utente digita per ricercare un determinato record in
         ///   rubrica Ricerca Full-Text sul campo DESCRIZIONE della basedati
         /// </summary>
-        //public FiltriRubrica Filters { get; set; }
+        public FiltriRubricaPersonale Filters { get; set; }
     }
 }

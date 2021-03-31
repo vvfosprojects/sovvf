@@ -156,14 +156,16 @@
                 </ng-template>
             </div>
         </div>
-        <div class="float-right">
-            <div class="text-right mt-2">
-                <pagination-controls [previousLabel]="'Precedente'"
-                                     [nextLabel]="'Successiva'"
-                                     [autoHide]="true"
-                                     (pageChange)="onPageChange($event)">
-                </pagination-controls>
-            </div>
+        <div class="float-right font-xlarge">
+                <ngb-pagination
+                        class="float-right"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="totalItems"
+                        [maxSize]="5"
+                        [disabled]="loading"
+                        (pageChange)="pageChange.emit($event)">
+                </ngb-pagination>
         </div>
     </div>
 </div>
