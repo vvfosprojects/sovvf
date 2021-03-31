@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { ItemChart, ItemChartEmit } from '../../../../shared/interface/item-chart.interface';
 
 @Component({
     selector: 'app-grafico-distaccamenti',
     templateUrl: './grafico-distaccamenti.component.html',
-    styleUrls: ['./grafico-distaccamenti.component.scss']
+    styleUrls: ['./grafico-distaccamenti.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class GraficoDistaccamentiComponent {
 

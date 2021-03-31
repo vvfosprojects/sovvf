@@ -1,7 +1,7 @@
-<div class="row">
-    <div class="col-12">
-        <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
-        <div *ngIf="(loading$ | async) === false" class="py-3">
+<div class="row" style="max-height:720px; overflow: scroll">
+    <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
+    <div class="col-11 mx-auto">
+        <div *ngIf="(loading$ | async) === false" class="mt-3">
             <app-grafico-distaccamenti [data]="dataGrafico$ | async"
                                        [view]="[1500, ((dataGrafico$ | async)?.length * 70)]"
                                        [showXAxis]="true"
@@ -12,8 +12,8 @@
                                        [legendPosition]="'right'"
                                        [showXAxisLabel]="false"
                                        [xAxisLabel]="''"
-                                       [showYAxisLabel]="true"
-                                       [yAxisLabel]="'Distaccamenti'"
+                                       [showYAxisLabel]="false"
+                                       [yAxisLabel]="''"
                                        [colorScheme]="{ domain: ['#5AA454', '#C7B42C', '#AAAAAA'] }"
                                        [schemeType]="'ordinal'"
                                        (select)="onSelect($event)"
