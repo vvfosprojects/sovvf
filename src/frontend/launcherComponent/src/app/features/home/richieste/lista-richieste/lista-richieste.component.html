@@ -1,9 +1,7 @@
 <div class="row mt-1">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div class="col-12 px-0 py-1"
-         [ngClass]="heightControl()"
-         style="overflow-x: hidden; overflow-y: auto">
+    <div class="col-12 px-0 py-1">
         <ng-container *ngIf="richieste?.length">
             <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
                  class="col-12 scale-sintesi-richiesta">
