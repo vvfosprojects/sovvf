@@ -95,11 +95,16 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                     [placeholderElementi]="'trasferimenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)">
-    </pagination-controls>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
 </div>
