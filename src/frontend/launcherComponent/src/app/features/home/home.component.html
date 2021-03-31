@@ -1,4 +1,4 @@
-<div *ngIf="(navbarLoaded | async)" style="overflow: hidden">
+<div *ngIf="(navbarLoaded | async)">
     <div class="clearfix">
         <div class="float-left"
              style="max-height: 900px; overflow-x: hidden; overflow-y: auto"
@@ -21,7 +21,7 @@
                                    [nightMode]="(nightMode$ | async)">
                     </app-filterbar>
                 </div>
-                <div class="float-left w-100 h-100 pl-2 pr-3">
+                <div class="float-left w-100 pl-2 pr-3">
                     <!-- Richieste -->
                     <app-richieste *ngIf="viewState.richieste.active"
                                    [nightMode]="(nightMode$ | async)"
