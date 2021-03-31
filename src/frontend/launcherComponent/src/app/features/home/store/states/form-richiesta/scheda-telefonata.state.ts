@@ -310,13 +310,18 @@ export class SchedaTelefonataState {
                         true
                     )
                 ]);
-            } else if (chiamataResult && (chiamata.chiamataUrgente || action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+            } else if (chiamataResult && chiamata.chiamataUrgente) {
                 this.store.dispatch([
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new SetTriageSummary(chiamataResult.triageSummary),
                     new ToggleModifica(),
                     new SetMarkerRichiestaSelezionato(chiamataResult.id)
+                ]);
+            } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
+                this.store.dispatch([
+                    new CestinaChiamata(),
+                    new ToggleChiamata()
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
