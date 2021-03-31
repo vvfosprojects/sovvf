@@ -5,8 +5,7 @@ import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-fi
 import {
     ApplyFiltriTipologiaSelezionatiRichieste, ClearFiltroSenzaEsecuzione
 } from '../../store/actions/filterbar/filtri-richieste.actions';
-import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngxs/store';
 import { ModalRichiesteChiuseComponent } from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import { ModalZonaEmergenzaComponent } from './modal-zona-emergenza/modal-zona-emergenza.component';
 import {
@@ -14,7 +13,6 @@ import {
     SetFakeStatoRichiesta, SetPeriodoChiuse,
     SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
-import { FiltriRichiesteState } from '../../store/states/filterbar/filtri-richieste.state';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -29,15 +27,13 @@ export class FiltriRichiesteComponent {
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() disableFilters: boolean;
     @Input() nightMode: boolean;
+    @Input() filtriAttiviToolTip: VoceFiltro[];
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
     specialSelected = [false, false, false];
-
-    @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro>;
-    filtriAttiviToolTip: VoceFiltro[];
 
     listaZoneEmergenzaSelezionate: string[] = [];
     periodoChiuse: any = {
@@ -90,22 +86,11 @@ export class FiltriRichiesteComponent {
         statico: true,
     }];
 
-    subscription = new Subscription();
-
     constructor(private store: Store,
                 private modalService: NgbModal,
                 private modal: NgbActiveModal,
                 dropdownOpts: NgbDropdownConfig) {
         dropdownOpts.placement = 'bottom';
-        this.getFiltriAttiviTooltip();
-    }
-
-    getFiltriAttiviTooltip(): void {
-        this.subscription.add(
-            this.filtriAttiviToolTip$.subscribe((filtri: any) => {
-                this.filtriAttiviToolTip = filtri;
-            })
-        );
     }
 
     openFiltersModal(): void {
