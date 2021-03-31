@@ -1,11 +1,11 @@
 <table class="table table-striped app-shadow bg-white font-xlarge n-card n-color">
     <thead>
     <tr>
-        <th scope="col" width="10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" width="20%"><i class="fa fa-university mr-2"></i>Nome</th>
-        <th scope="col" width="15%"><i class="fa fa-microphone mr-2"></i>Telefono</th>
-        <th scope="col" width="20%"><i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
-        <th scope="col" width="15%"><i class="fa fa-envelope mr-2"></i>Email</th>
+        <th scope="col" style="width:10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:20%"><i class="fa fa-university mr-2"></i>Nome</th>
+        <th scope="col" style="width:15%"><i class="fa fa-microphone mr-2"></i>Telefono</th>
+        <th scope="col" style="width:20%"><i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
+        <th scope="col" style="width:15%"><i class="fa fa-envelope mr-2"></i>Email</th>
     </tr>
     </thead>
     <tbody>
@@ -20,12 +20,12 @@
                 <i class="fa fa-pencil-square-o"></i>
             </button>
         </td>
-        <td width="25%" class="align-middle">
+        <td style="width:25%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span>{{voce?.descrizione}}</span>
             </div>
         </td>
-        <td width="20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
+        <td style="width:20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
             <div class="row">
                 <div class="col-11">
                     <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0"
@@ -36,13 +36,14 @@
                 </div>
             </div>
         </td>
-        <td width="20%" class="align-middle">
+        <td style="width:20%" class="align-middle">
             <div class="row">
                 <div class="col-11">
                     <ul class=" mb-0"
                         style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
                         <li>
-                            <span class="ml-1">{{voce?.indirizzo}}</span>
+                            <span class="ml-1" [ngbTooltip]="voce?.indirizzo?.length > 14 ? voce?.indirizzo : null">
+                                {{voce?.indirizzo | truncate: 14}}</span>
                             <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span>
                             <span class="ml-1">{{voce?.cap}}</span>
                             <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 n-text-muted">
@@ -53,7 +54,7 @@
                 </div>
             </div>
         </td>
-        <td width="15%" class="align-middle">
+        <td style="width:15%" class="align-middle">
             <div class="row">
                 <div class="col-11">
                     <ul class=" mb-0"
@@ -85,10 +86,15 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)">
-    </pagination-controls>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
 </div>
