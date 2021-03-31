@@ -92,7 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = filteredResult.Count
+                    TotalItems = filteredResult.Count()
                 }
             };
         }
