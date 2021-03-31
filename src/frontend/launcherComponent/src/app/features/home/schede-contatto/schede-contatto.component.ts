@@ -145,8 +145,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     getContatoriSchedeContatto(): void {
         this.subscriptions.add(
-            this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
-                this.contatoriSchedeContatto = contaotoriSchede;
+            this.contatoriSchedeContatto$.subscribe((contatoriSchede: ContatoriSchedeContatto) => {
+                this.contatoriSchedeContatto = contatoriSchede;
             })
         );
     }
