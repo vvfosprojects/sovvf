@@ -24,6 +24,8 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
+import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
 
 @Component({
     selector: 'app-filterbar',
@@ -76,6 +78,9 @@ export class FilterbarComponent {
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
+
+    @Select(MapsFiltroState.filtroMarker) filtroMarker$: Observable<MarkerFiltro[]>;
+    @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro[]>;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa

@@ -12,6 +12,7 @@
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
+                                      [filtriAttiviToolTip]="filtriAttiviToolTip$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [disableFilters]="loadingRichieste$ | async"
                                       (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
@@ -51,7 +52,7 @@
         <div class="clearfix">
             <div *ngIf="(((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && ((mapsStatus$ | async) || doubleMonitor)"
                  class="float-left mr-3">
-                <app-filtri-mappa [nightMode]="nightMode"></app-filtri-mappa>
+                <app-filtri-mappa [filtroMarker]="filtroMarker$ | async"></app-filtri-mappa>
             </div>
             <div *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && !doubleMonitor"
                  class="float-left">
