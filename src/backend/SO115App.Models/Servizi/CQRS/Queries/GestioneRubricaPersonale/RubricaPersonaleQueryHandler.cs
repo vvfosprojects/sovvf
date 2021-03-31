@@ -33,9 +33,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
 
         public RubricaPersonaleResult Handle(RubricaPersonaleQuery query)
         {
-            var result = new ConcurrentQueue<PersonaleRubrica>();
-
-            #region vecchia implementazione
 
             //string json;
             //using (var r = new StreamReader(Costanti.ListaSquadre)) json = r.ReadToEnd();
@@ -43,48 +40,50 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             //var listaSquadreJson = JsonConvert.DeserializeObject<IEnumerable<SquadraFake>>(json);
 
             //var lstcodicifiscali = listaSquadreJson
-            //    .Where(c => query.IdSede.Any(s => c.Sede.Contains(s.Substring(0,2))))
+            //    .Where(c => query.IdSede.Any(s => c.Sede.Contains(s.Substring(0, 2))))
             //    .SelectMany(c => c.ComponentiSquadra)
             //    .Select(c => c.CodiceFiscale)
             //    .Distinct()
             //    .ToArray();
 
-            //var lstPersonale = _getPersonaleByCF.Get(lstcodicifiscali, query.IdSede).Result;
 
-            //Parallel.ForEach(lstPersonale, personale =>
-            //{
-            //    var rubricaPersonale = new PersonaleRubrica()
-            //    {
-            //        Nominativo = $"{personale.cognome} {personale.nome}",
-            //        Qualifica = personale.qualifica?.descrizione,
-            //        Sede = personale.sede?.id,
-            //        Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
-            //        Turno = personale.turno
-            //    };
-
-            //    result.Enqueue(rubricaPersonale);
-            //});
-
-            #endregion
-
-
-
+            var lstDettaglio = new ConcurrentQueue<DettaglioDipententeResult>();
 
             Parallel.ForEach(query.IdSede, sede =>
             {
                 var lstIdDipendenti = _getAssociazioniByCodSede.GetCodUnitaOrganizzativaByCodSede(sede)
-                .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result.Result;
+                .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result;
 
+                Parallel.ForEach(lstIdDipendenti.Result, idDipendente =>
+                    lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result));
             });
 
+            var lstPersonale = _getPersonaleByCF.Get(lstDettaglio.Select(d => d?.dati?.codFiscale).ToArray(), query.IdSede);
 
+            var result = new ConcurrentQueue<PersonaleRubrica>();
 
+            Parallel.ForEach(lstPersonale.Result, personale =>
+            {
+                var dettaglio = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale == personale.codiceFiscale)?.dati;
 
+                var rubricaPersonale = new PersonaleRubrica()
+                {
+                    Nominativo = $"{personale.cognome} {personale.nome}",
+                    Qualifica = personale.qualifica?.descrizione,
+                    Sede = personale.sede?.id,
+                    Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
+                    Turno = personale.turno,
+                    Telefono1 = dettaglio?.telCellulare,
+                    Telefono2 = dettaglio?.telefonoFisso,
+                    Telefono3 = dettaglio?.fax,
+                    Stato = dettaglio?.oraIngresso == null ? "Non in servizio" : "In Servizio",
+                };
 
-
+                result.Enqueue(rubricaPersonale);
+            });
 
             //FILTRI
-
+             
 
             //PAGINAZIONE
             return new RubricaPersonaleResult()

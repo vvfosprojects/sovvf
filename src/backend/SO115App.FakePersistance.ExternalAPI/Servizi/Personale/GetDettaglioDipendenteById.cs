@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SO115App.ExternalAPI.Client;
+using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
@@ -19,7 +18,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             _config = config;
         }
 
-        public async Task<string> GetTelefonoDipendenteByIdDipendente(string IdDipendente)
+        public async Task<DettaglioDipententeResult> GetTelefonoDipendenteByIdDipendente(string IdDipendente)
         {
             string url = _config.GetSection("UrlExternalApi").GetSection("GestionePersonale").Value;
             var uri = new Uri($"{url}VisualizzaDettaglioDipendente?IdDipendente={IdDipendente}");
@@ -28,18 +27,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             var result = _client.GetAsync(uri, null).Result;
 
-            return result.telCellulare;
-        }
-
-        public class DettaglioDipententeResult
-        {
-            public string telefonoFisso {get; set;}
-            public string telCellulare {get; set;}
-            public string fax { get; set; }
-
-            public string oraIngresso { get; set; }
-
-            public string codFiscale { get; set; }
+            return result;
         }
     }
 }
