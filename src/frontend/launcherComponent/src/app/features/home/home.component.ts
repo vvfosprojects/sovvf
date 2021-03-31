@@ -13,7 +13,10 @@ import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.act
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
-@Component({ templateUrl: 'home.component.html' })
+@Component({
+    templateUrl: 'home.component.html',
+    styleUrls: ['./home.component.scss']
+})
 export class HomeComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();

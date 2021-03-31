@@ -1,10 +1,9 @@
 <div *ngIf="(navbarLoaded | async)">
     <div class="clearfix">
-        <div class="float-left"
-             style="max-height: 900px; overflow-x: hidden; overflow-y: auto"
+        <div class="float-left home-content"
              [class.w-100]="((doubleMonitor$ | async) === false)"
              [class.w-50]="(doubleMonitor$ | async)">
-            <div class="clearfix"
+            <div class="clearfix h-100"
                  [class.mt-1]="viewState.composizione.active">
                 <!-- Info Aggregate -->
                 <div class="float-left w-100"

@@ -1,25 +1,10 @@
 <ng-progress [spinner]="false"></ng-progress>
-<div ngxUiLoaderBlurred>
-    <div #contentElement>
-        <app-navbar [user]="user"
-                    [nightMode]="(nightMode$ | async)"
-                    [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
-                    [colorButtonView]="colorButton$ | async"
-                    [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"></app-navbar>
-        <router-outlet></router-outlet>
-        <app-footer></app-footer>
-    </div>
+<div #contentElement>
+    <app-navbar [user]="user"
+                [nightMode]="(nightMode$ | async)"
+                [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
+                [colorButtonView]="colorButton$ | async"
+                [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"></app-navbar>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
 </div>
-<ngx-ui-loader [hasProgressBar]="ngxLoaderConfiguration.hasProgressBar"
-               [overlayColor]="ngxLoaderConfiguration.overlayColor"
-               [logoUrl]="ngxLoaderConfiguration.logoUrl"
-               [logoSize]="ngxLoaderConfiguration.logoSize"
-               [logoPosition]="ngxLoaderConfiguration.logoPosition"
-               [fgsColor]="ngxLoaderConfiguration.fgsColor"
-               [fgsSize]="ngxLoaderConfiguration.fgsSize"
-               [fgsPosition]="ngxLoaderConfiguration.fgsPosition"
-               [gap]="ngxLoaderConfiguration.gap"
-               [text]="ngxLoaderConfiguration.text"
-               [textColor]="ngxLoaderConfiguration.textColor"
-               [textPosition]="ngxLoaderConfiguration.textPosition">
-</ngx-ui-loader>
