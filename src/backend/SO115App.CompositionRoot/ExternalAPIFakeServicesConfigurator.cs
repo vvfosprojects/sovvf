@@ -26,6 +26,7 @@ using SO115App.ExternalAPI.Fake.Servizi.AFM;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
+using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
@@ -90,6 +91,8 @@ namespace SO115App.CompositionRoot
 
             #region Personale
 
+            container.Register<IGetIdDipendentiByCodUnitaOrg, GetIdDipendentiByCodUnitaOrg>();
+            container.Register<IGetDettaglioDipendenteById, GetDettaglioDipendenteById>();
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
@@ -143,6 +146,7 @@ namespace SO115App.CompositionRoot
 
             #region Sedi
 
+            container.Register<IGetSedeAssociazioniByCodSede, GetSedeAssociazioniByCodSede>();
             container.Register<IGetAlberaturaUnitaOperative, GetListaSediAlberata>();
 
             #endregion Sedi
