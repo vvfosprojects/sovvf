@@ -1,13 +1,13 @@
 <table class="table table-striped app-shadow bg-white font-xlarge n-card n-color">
     <thead>
     <tr>
-        <th scope="col" width="25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
-        <th scope="col" width="40%"><i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
+        <th scope="col" style="width: 25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
+        <th scope="col" style="width: 40%"><i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td width="40%" class="pb-1">
+        <td style="width: 40%" class="pb-1">
             <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
                     placement="bottom" [disabled]="utente.id === idUtenteLoggato"
                     [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
@@ -18,7 +18,7 @@
                 <span [ngbTooltip]="utente?.codiceFiscale">{{utente.cognome | uppercase}} {{utente.nome | uppercase}}</span>
             </div>
         </td>
-        <td width="60%">
+        <td style="width: 60%">
             <div class="row">
                 <div class="col-1" style="display: flex; align-items: center;">
                     <button class="btn btn-primary btn-sm font-weight-bold"
@@ -40,7 +40,7 @@
                                     <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
                                 </div>
                                 <div class="float-right">
-                                    <button class="btn btn-danger btn-sm float-right ml-3" placement="bottom"
+                                    <button class="btn btn-danger btn-sm float-right ml-3"
                                             (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
                                         <i class="fa fa-sm fa-sm fa-trash"></i>
                                     </button>
@@ -67,10 +67,15 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)">
-    </pagination-controls>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
 </div>

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemChart } from '../../../shared/interface/item-chart.interface';
+import { ItemChart, ItemChartEmit } from '../../../shared/interface/item-chart.interface';
+import { Select, Store } from '@ngxs/store';
+import { GetDataGrafico, OpenModalDettaglioDistaccamento } from '../store/actions/coda-chiamate/coda-chiamate.actions';
+import { CodaChiamateState } from '../store/states/coda-chiamate/coda-chiamate.state';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-coda-chiamate',
@@ -8,102 +12,26 @@ import { ItemChart } from '../../../shared/interface/item-chart.interface';
 })
 export class CodaChiamateComponent implements OnInit {
 
-    data = [
-        {
-            name: 'Comando di Roma',
-            series: [
-                {
-                    name: 'Richieste',
-                    value: 20,
-                    extra: {
-                        code: 'RM.1000'
-                    }
-                },
-                {
-                    name: 'Squadre Libere',
-                    value: 3,
-                    extra: {
-                        code: 'RM.1000'
-                    }
-                },
-                {
-                    name: 'Squadre Occupate',
-                    value: 1,
-                    extra: {
-                        code: 'RM.1000'
-                    }
-                },
-            ]
-        },
-        {
-            name: 'Monte Mario',
-            series: [
-                {
-                    name: 'Richieste',
-                    value: 5,
-                    extra: {
-                        code: 'RM.1001'
-                    }
-                },
-                {
-                    name: 'Squadre Libere',
-                    value: 1,
-                    extra: {
-                        code: 'RM.1001'
-                    }
-                },
-                {
-                    name: 'Squadre Occupate',
-                    value: 2,
-                    extra: {
-                        code: 'RM.1001'
-                    }
-                },
-            ]
-        },
-        {
-            name: 'Tuscolana II',
-            series: [
-                {
-                    name: 'Richieste',
-                    value: 5,
-                    extra: {
-                        code: 'RM.1002'
-                    }
-                },
-                {
-                    name: 'Squadre Libere',
-                    value: 1,
-                    extra: {
-                        code: 'RM.1002'
-                    }
-                },
-                {
-                    name: 'Squadre Occupate',
-                    value: 3,
-                    extra: {
-                        code: 'RM.1002'
-                    }
-                },
-            ]
-        }
-    ] as ItemChart[];
+    @Select(CodaChiamateState.dataGrafico) dataGrafico$: Observable<ItemChart[]>;
+    @Select(CodaChiamateState.loading) loading$: Observable<boolean>;
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new GetDataGrafico());
     }
 
-    onSelect(data: ItemChart): void {
-        console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    onSelect(data: ItemChartEmit): void {
+        this.store.dispatch(new OpenModalDettaglioDistaccamento(data));
+        // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
     }
 
-    onActivate(data: ItemChart): void {
-        console.log('Activate', JSON.parse(JSON.stringify(data)));
+    onActivate(data: ItemChartEmit): void {
+        // console.log('Activate', JSON.parse(JSON.stringify(data)));
     }
 
-    onDeactivate(data: ItemChart): void {
-        console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    onDeactivate(data: ItemChartEmit): void {
+        // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
     }
 }

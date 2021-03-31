@@ -79,8 +79,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
 
-    nuovaRichiesta: SintesiRichiesta;
-
     listaEnti: Ente[];
     scorciatoieTelefono = {
         112: false,
@@ -177,7 +175,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             dettaglioTipologia: [null],
             istanteRicezioneRichiesta: [new Date(new Date().getTime() + OFFSET_SYNC_TIME[0])],
             nominativo: [null, Validators.required],
-            telefono: [null, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
+            telefono: [null, Validators.required], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
             indirizzo: [null, Validators.required],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],

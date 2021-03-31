@@ -9,12 +9,16 @@ import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { RubricaPersonaleState } from './store/states/rubrica-personale/rubrica-personale.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
-import { SetRicercaRubricaPersonale } from './store/actions/ricerca-rubrica-personale/ricerca-rubrica-personale.actions';
+import {
+    ClearRicercaRubricaPersonale,
+    ClearStatoRubricaPersonale,
+    SetRicercaRubricaPersonale,
+    SetStatoRubricaPersonale
+} from './store/actions/ricerca-rubrica-personale/ricerca-rubrica-personale.actions';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { GetRubricaPersonale } from './store/actions/rubrica-personale/rubrica-personale.actions';
 import { RicercaRubricaPersonaleState } from './store/states/ricerca-rubrica-personale/ricerca-rubrica-personale.state';
 import { RubricaPersonale } from '../../shared/interface/rubrica-personale.interface';
-
 
 @Component({
     selector: 'app-rubrica-personale',
@@ -35,6 +39,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription = new Subscription();
     RoutesPath = RoutesPath;
+    filtriPersonale = ['Solo Operativi', 'In servizio', 'Altro personale', 'Non in servizio'];
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -58,8 +63,10 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
-            new SetSediNavbarVisible()
+            new ClearRicercaRubricaPersonale(),
+            new SetSediNavbarVisible(),
         ]);
+        this.subscriptions.unsubscribe();
     }
 
     getRubricaPersonale(pageAttuale: boolean): void {
@@ -85,7 +92,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca !== null) {
+                if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetRubricaPersonale());
                 }
@@ -106,4 +113,14 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
         );
     }
 
+    addFiltro(filtro: string[]): void {
+        this.store.dispatch([
+            new SetStatoRubricaPersonale(filtro),
+            new GetRubricaPersonale()
+        ]);
+    }
+
+    clearFiltro(): void {
+        this.store.dispatch(new ClearStatoRubricaPersonale());
+    }
 }
