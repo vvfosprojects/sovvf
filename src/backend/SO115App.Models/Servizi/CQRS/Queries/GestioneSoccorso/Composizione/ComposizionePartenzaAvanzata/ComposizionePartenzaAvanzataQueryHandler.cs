@@ -262,17 +262,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .FindAll(x => x.MezzoPreaccoppiato != null && x.MezzoPreaccoppiato.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice))
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
-                //else
-                //{
-                //    // PAGINAZIONE STANDARD
-                //    result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
-                //            .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
-                //            .Take(query.Filtro.MezziPagination.PageSize).ToList();
-
-                //    result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
-                //           .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                //           .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-                //}
             }
             
             if (query.Filtro.Squadre != null)
@@ -296,17 +285,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
-                //else
-                //{
-                //    //PAGINAZINE STANDARD
-                //    result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
-                //            .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
-                //            .Take(query.Filtro.MezziPagination.PageSize).ToList();
-
-                //    result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
-                //           .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
-                //           .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-                //}
             }
 
             //PAGINAZIONE STANDARD
