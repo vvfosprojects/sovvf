@@ -57,7 +57,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Qualifica = personale.qualifica?.nome,
                     Sede = personale.sede?.descrizione,
                     Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
-                    Turno = /*dettaglio?.codTurno ?? */personale.turno,
+                    Turno = dettaglio?.codTurno ?? personale.turno,
                     Telefono1 = dettaglio?.telCellulare,
                     Telefono2 = dettaglio?.telefonoFisso,
                     Telefono3 = dettaglio?.fax,
