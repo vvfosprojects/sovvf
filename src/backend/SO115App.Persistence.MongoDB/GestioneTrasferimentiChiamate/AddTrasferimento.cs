@@ -18,7 +18,7 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
 
             _dbContext.TrasferimentiChiamateCollection.InsertOne(trasferimento);
 
-            _dbContext.RichiestaAssistenzaCollection.FindOneAndReplace(c => c.Id == richiesta.Id, richiesta);
+            _dbContext.RichiestaAssistenzaCollection.FindOneAndReplace(c => c.Codice.Equals(richiesta.Codice), richiesta);
         }
     }
 }

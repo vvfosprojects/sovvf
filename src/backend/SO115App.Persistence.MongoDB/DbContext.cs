@@ -80,6 +80,8 @@ namespace Persistence.MongoDB
             TipologiaDettaglioMap.Map();
             TriageMap.Map();
             TriageDataMap.Map();
+            TrasferimentiChiamateMap.Map();
+
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
