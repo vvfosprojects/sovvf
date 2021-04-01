@@ -7,21 +7,108 @@
         <span class="text-danger"><i class="fa fa-times"></i></span>
     </button>
 </div>
-<div class="modal-body">
-    <h5>{{ messaggio }}</h5>
-    <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold">{{ messaggioAttenzione }}</label>
-    <div>
+<div class="modal-body font-xxlarge">
+    <ng-container *ngIf="chiusuraChiamata">
+        <div class="w-75 mx-auto">
+            <div class="font-weight-bold mb-3">
+                Motivazione Chiusura
+            </div>
+            <form [formGroup]="actionRichiestaForm">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="tipologiaChiusuraChiamata"
+                                   id="trasmessaAdEnte"
+                                   value="TrasmessaAdEnte"
+                                   formControlName="tipologiaChiusuraChiamata">
+                            <label class="form-check-label"
+                                   for="trasmessaAdEnte">Trasmessa ad Ente</label>
+                        </div>
+                    </div>
+                    <div class="float-right">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="tipologiaChiusuraChiamata"
+                                   id="interventoNonNecessario"
+                                   value="InterventoNonNecessario"
+                                   formControlName="tipologiaChiusuraChiamata">
+                            <label class="form-check-label"
+                                   for="interventoNonNecessario">Intervento non più necessario</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-shadow p-3 mt-2"
+                     [class.opacity-50]="f.tipologiaChiusuraChiamata.value !== 'TrasmessaAdEnte'"
+                     style="max-height: 400px; overflow-y: scroll">
+                    <ul class="list-unstyled">
+                        <li *ngFor="let ente of enti" class="border-bottom">
+                            <div class="clearfix">
+                                <div class="float-left">
+                                    <label for="ente-{{ente.codice}}"
+                                           [class.cursor-pointer]="f.tipologiaChiusuraChiamata.value === 'TrasmessaAdEnte'">
+                                        {{ ente.descrizione }}
+                                    </label>
+                                </div>
+                                <div class="float-right">
+                                    <input id="ente-{{ente.codice}}"
+                                           type="checkbox"
+                                           [value]="ente"
+                                           [disabled]="f.tipologiaChiusuraChiamata.value !== 'TrasmessaAdEnte'"
+                                           (click)="onChangeSelectEnte(ente)">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="messaggioAttenzione"
+             class="text-center text-danger font-weight-bold mt-3">
+            {{ messaggioAttenzione }}
+        </div>
+    </ng-container>
+    <ng-container *ngIf="chiusuraIntervento">
+        <div class="font-weight-bold mb-3">
+            Motivazione Chiusura
+        </div>
         <form [formGroup]="actionRichiestaForm">
-            <div class="form-group">
-                    <textarea type="text" formControlName="note" class="form-control"
-                              placeholder="Note (opzionale)"></textarea>
+            <div class="text-center">
+                <div *ngFor="let mCI of motivazioniChiusuraIntervento"
+                     class="form-check form-check-inline">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="tipologiaChiusuraChiamata"
+                           [id]="mCI"
+                           [value]="mCI"
+                           formControlName="tipologiaChiusuraChiamata">
+                    <label class="form-check-label"
+                           [for]="mCI">{{ mCI }}</label>
+                </div>
             </div>
         </form>
-    </div>
+        <div *ngIf="messaggioAttenzione"
+             class="text-center text-danger font-weight-bold mt-3">
+            {{ messaggioAttenzione }}
+        </div>
+    </ng-container>
+    <ng-container *ngIf="sospensione || riapertura">
+        <h5 class="text-center">{{ messaggio }}</h5>
+        <div *ngIf="messaggioAttenzione"
+             class="text-center text-danger font-weight-bold mt-3">
+            {{ messaggioAttenzione }}
+        </div>
+    </ng-container>
 </div>
-<div class="modal-footer">
-    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-no-hover btn-lg btn-{{ bottone.colore }}"
-            style="font-weight:600" (click)="close(bottone.type)">
-        {{ bottone.descrizione | uppercase }}
+<div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+            (click)="close('ok')">
+        {{ 'Conferma' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Annulla' | uppercase }}
     </button>
 </div>

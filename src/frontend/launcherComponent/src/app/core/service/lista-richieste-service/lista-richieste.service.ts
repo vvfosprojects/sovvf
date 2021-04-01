@@ -8,6 +8,7 @@ import { PaginationInterface } from '../../../shared/interface/pagination.interf
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 import { Store } from '@ngxs/store';
 import { ZoneEmergenzaState } from '../../../features/home/store/states/filterbar/zone-emergenza.state';
+import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -55,7 +56,7 @@ export class SintesiRichiesteService {
         return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta);
     }
 
-    public aggiornaStatoRichiesta(obj: any): Observable<any> {
+    public aggiornaStatoRichiesta(obj: RichiestaActionInterface): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj);
     }
 

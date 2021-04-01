@@ -36,7 +36,7 @@ $n-black: #000000 !important;
 $n-dark: #343a40 !important;
 $n-muted: #6c757d !important;
 $n-dark-light: #464e56 !important;
-$n-light: #f8f9fa!important;
+$n-light: #f8f9fa !important;
 $n-guida: #bbbbbb !important;
 $n-weight: 500 !important;
 $n-font-large: 20px !important;
@@ -48,6 +48,7 @@ $n-middle: 50% !important;
 // Single Monitor Styles
 .single-monitor {
 }
+
 // END Single Monitor Styles
 
 // Double Monitor Styles
@@ -56,26 +57,32 @@ $n-middle: 50% !important;
     padding-right: $n-middle;
   }
 }
+
 // END Double Monitor Styles
 
 
 // Sun Mode Styles
 .sun-mode {
   background-color: $n-white;
+
   .n-li-box a {
     color: $n-black;
     font-weight: $n-weight;
     font-size: $n-font-large;
   }
+
   .n-icon-afm {
     color: $n-guida;
   }
+
   .n-text-muted {
     color: $n-muted;
   }
+
   .n-color {
     color: $n-black;
   }
+
   .n-box-azione {
     position: relative;
     min-width: 0;
@@ -86,51 +93,64 @@ $n-middle: 50% !important;
     border-radius: 0.25rem;
   }
 }
+
 // END Sun Mode Styles
 
 // Moon Mode Styles
 .moon-mode {
   background-color: $n-dark;
+
   .modal-header {
     background-color: $n-dark;
     color: $n-white;
   }
+
   .modal-body {
     background-color: $n-dark;
     color: $n-white;
   }
+
   .modal-footer {
     background-color: $n-dark;
     color: $n-white;
   }
+
   td {
     background-color: $n-dark-light;
     color: $n-white;
   }
+
   thead {
     font-size: 25px !important;
     font-weight: $n-weight;
   }
+
   .card-body {
     background-color: $n-dark;
   }
+
   .n-li-box a {
     color: $n-white;
     font-weight: $n-weight;
     font-size: $n-font-large;
   }
+
   hr {
     border-top: $n-hr;
   }
+
   .n-icon-afm {
     color: $n-white;
   }
+
   .n-color {
     color: $n-white;
   }
+
   .n-dark-light {
     background-color: $n-dark-light;
   }
+
   .n-card {
     position: relative;
     min-width: 0;
@@ -143,6 +163,7 @@ $n-middle: 50% !important;
     -moz-box-shadow: $n-box-shadow;
     box-shadow: $n-box-shadow;
   }
+
   .n-box-azione {
     position: relative;
     min-width: 0;
@@ -152,13 +173,16 @@ $n-middle: 50% !important;
     background-color: $n-dark-light;
     border-radius: 0.25rem;
   }
+
   .n-bg-light {
     background-color: $n-light;
   }
+
   .n-text-muted {
     color: $n-white;
   }
 }
+
 // END Moon Mode Styles
 
 // Loader index.html
@@ -186,11 +210,12 @@ $n-middle: 50% !important;
 .pac-container {
   z-index: 99999 !important;
 }
+
 // End Dropdown Google Places
 
 
 .moon-mode-box {
-  background-color:$n-dark;
+  background-color: $n-dark;
   color: #fdfdfd !important;
 }
 
@@ -237,6 +262,10 @@ $n-middle: 50% !important;
 
 .text-moon {
   color: #fdfdfd !important;
+}
+
+.opacity-50 {
+  opacity: .5;
 }
 
 .modal-holder {

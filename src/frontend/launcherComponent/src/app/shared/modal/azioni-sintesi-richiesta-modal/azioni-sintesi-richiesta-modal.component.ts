@@ -18,6 +18,11 @@ import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/ho
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
+import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
+import { Ente } from '../../interface/ente.interface';
+import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
+import { EntiState } from '../../store/states/enti/enti.state';
+import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -29,6 +34,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
+
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
 
     subscription: Subscription = new Subscription();
 
@@ -58,51 +65,80 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onClick(stato: StatoRichiestaActions): void {
+        const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         let modalConferma;
-        modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        const modalOptions = {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
+            size: 'lg',
             centered: true
-        });
-        modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        };
+
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere la richiesta?';
+                if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                    modalOptions.size = 'xl';
+                } else {
+                    modalOptions.size = 'lg';
+                }
+                break;
+            case StatoRichiestaActions.Sospesa:
+                modalOptions.size = 'lg';
+                break;
+            case StatoRichiestaActions.Riaperta:
+                modalOptions.size = 'lg';
+                break;
+        }
+
+        modalConferma = this.modalService.open(ActionRichiestaModalComponent, modalOptions);
+        modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+
+        switch (stato) {
+            case StatoRichiestaActions.Chiusa:
+                if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                    modalConferma.componentInstance.titolo = 'Chiusura Chiamata ' + codiceRichiesta;
+                    const enti = this.store.selectSnapshot(EntiState.enti) as Ente[];
+                    modalConferma.componentInstance.chiusuraChiamata = true;
+                    modalConferma.componentInstance.enti = enti;
+                } else {
+                    modalConferma.componentInstance.titolo = 'Chiusura Richiesta ' + codiceRichiesta;
+                    modalConferma.componentInstance.chiusuraIntervento = true;
+                    modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Int. non più necessario', 'Falso Allarme', 'Int. concluso'];
+                }
                 modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
                 break;
 
             case StatoRichiestaActions.Sospesa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta?';
+                modalConferma.componentInstance.titolo = 'Sospensione Richiesta ' + codiceRichiesta;
+                modalConferma.componentInstance.sospensione = true;
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta ' + codiceRichiesta + '?';
                 modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
                 break;
 
             case StatoRichiestaActions.Riaperta:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire la richiesta?';
+                modalConferma.componentInstance.titolo = 'Riapertura Richiesta ' + codiceRichiesta;
+                modalConferma.componentInstance.riapertura = true;
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire la richiesta ' + codiceRichiesta + '?';
                 break;
 
             default:
                 break;
         }
-        modalConferma.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
 
         const richiestaAction = {
             idRichiesta: null,
             stato,
-            note: null
-        };
+            motivazione: null,
+            entiIntervenuti: null
+        } as RichiestaActionInterface;
 
         modalConferma.result.then(
             (val) => {
                 switch (val.esito) {
                     case 'ok':
-                        richiestaAction.note = val.note;
                         richiestaAction.idRichiesta = this.richiesta.id;
+                        richiestaAction.motivazione = val?.motivazione;
+                        richiestaAction.entiIntervenuti = val?.entiIntervenuti;
                         this.store.dispatch(new ActionRichiesta(richiestaAction));
                         this.modal.close({ status: 'ko' });
                         break;

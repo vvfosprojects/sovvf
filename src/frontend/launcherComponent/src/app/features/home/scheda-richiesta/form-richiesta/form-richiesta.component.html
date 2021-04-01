@@ -413,30 +413,11 @@
                             <i class="fa fa-recycle mr-1"></i>
                             Ripulisci Campi
                         </button>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
-                                    (click)="onAnnullaChiamata()">
-                                Chiudi
-                            </button>
-                            <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
-                                <button class="btn btn-outline-danger dropdown-toggle-split btn-no-hover"
-                                        ngbDropdownToggle></button>
-                                <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
-                                    <button class="dropdown-item"
-                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.FalsoAllarme)">Falso
-                                        allarme
-                                    </button>
-                                    <button class="dropdown-item"
-                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoNonPiuNecessario)">
-                                        Non più necessario
-                                    </button>
-                                    <button class="dropdown-item"
-                                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoDuplicato)">
-                                        Duplicato
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- <div class="btn-group"> -->
+                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                                (click)="onAnnullaChiamata()">
+                            Chiudi
+                        </button>
                     </ng-template>
                     <ng-template [ngIf]="modifica">
                         <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
