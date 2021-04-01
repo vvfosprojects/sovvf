@@ -70,7 +70,9 @@ $n-middle: 50% !important;
     font-weight: $n-weight;
     font-size: $n-font-large;
   }
-
+  .n-bg-impostazioni {
+    background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);
+  }
   .n-icon-afm {
     color: $n-guida;
   }
@@ -92,6 +94,32 @@ $n-middle: 50% !important;
     background-color: $n-white;
     border-radius: 0.25rem;
   }
+  .diagonal-stripes {
+    background-color: gray;
+    background-image: repeating-linear-gradient(45deg,
+            transparent,
+            transparent 35px,
+            rgba(255, 255, 255, 0.5) 35px,
+            rgba(255, 255, 255, 0.5) 70px);
+  }
+  .bg-diagonal-stripes {
+    background-color: #d3d3d3 !important;
+  }
+  .badge-mod-secondary {
+    color: $n-muted;
+    border: solid thin $n-muted;
+    border-radius: 0.25rem !important;
+    padding: 0.15em 0.2em;
+  }
+  .bg-scheda-contatto {
+    background: #f8f9fa!important
+  }
+  .gestita {
+    background: #f8f9fa!important
+  }
+  .bg-resoconto-triage {
+    background-color: #d3d3d3 !important;
+  }
 }
 
 // END Sun Mode Styles
@@ -99,7 +127,13 @@ $n-middle: 50% !important;
 // Moon Mode Styles
 .moon-mode {
   background-color: $n-dark;
-
+  color: $n-white;
+  .text-muted {
+    color: $n-white;
+  }
+  .n-bg-impostazioni {
+    background: $n-dark-light;
+  }
   .modal-header {
     background-color: $n-dark;
     color: $n-white;
@@ -119,12 +153,6 @@ $n-middle: 50% !important;
     background-color: $n-dark-light;
     color: $n-white;
   }
-
-  thead {
-    font-size: 25px !important;
-    font-weight: $n-weight;
-  }
-
   .card-body {
     background-color: $n-dark;
   }
@@ -180,6 +208,34 @@ $n-middle: 50% !important;
 
   .n-text-muted {
     color: $n-white;
+  }
+  .divider-custom-line {
+    background: $n-white;
+  }
+  .diagonal-stripes {
+    background-color: $n-muted
+  }
+  .bg-diagonal-stripes {
+    background-color: #6a7177 !important;
+  }
+  .badge-mod-secondary {
+    color: $n-guida;
+    border: solid thin $n-guida;
+    border-radius: 0.25rem !important;
+    padding: 0.15em 0.2em;
+  }
+  .bg-scheda-contatto {
+    background: $n-dark-light;
+  }
+  .gestita {
+    background: $n-dark-light;
+  }
+  .btn-outline-secondary {
+    color: $n-white;
+    border-color: $n-muted;
+  }
+  .bg-resoconto-triage {
+    background-color: #6c757d !important;
   }
 }
 
@@ -240,9 +296,6 @@ $n-middle: 50% !important;
   border: 1px solid rgba(0, 0, 0, 0.125);
   background-color: $n-dark-light;
   border-radius: 0.25rem;
-  -webkit-box-shadow: $n-box-shadow;
-  -moz-box-shadow: $n-box-shadow;
-  box-shadow: $n-box-shadow;
 }
 
 .bg-moon-light {
@@ -487,30 +540,35 @@ tag-input {
   -webkit-box-shadow: 2px 0 2px 0.5px #28a745;
   -moz-box-shadow: 2px 0 2px 0.5px #28a745;
   box-shadow: 2px 0 2px 0.5px #28a745;
+  border: 1px solid #28a745;
 }
 
 .card-shadow-danger {
   -webkit-box-shadow: 2px 0 2px 0.5px #dc3545;
   -moz-box-shadow: 2px 0 2px 0.5px #dc3545;
   box-shadow: 2px 0 2px 0.5px #dc3545;
+  border: 1px solid #dc3545;
 }
 
 .card-shadow-warning {
   -webkit-box-shadow: 2px 0 2px 0.5px #ffc107;
   -moz-box-shadow: 2px 0 2px 0.5px #ffc107;
   box-shadow: 2px 0 2px 0.5px #ffc107;
+  border: 1px solid #ffc107;
 }
 
 .card-shadow-secondary {
   -webkit-box-shadow: 2px 0 2px 0.5px #868e96;
   -moz-box-shadow: 2px 0 2px 0.5px #868e96;
   box-shadow: 2px 0 2px 0.5px #868e96;
+  border: 1px solid #868e96;
 }
 
 .card-shadow-orange {
   -webkit-box-shadow: 2px 0 2px 0.5px #ff8800;
   -moz-box-shadow: 2px 0 2px 0.5px #ff8800;
   box-shadow: 2px 0 2px 0.5px #ff8800;
+  border: 1px solid #ff8800;
 }
 
 /* Shadow soft */
@@ -690,15 +748,6 @@ tag-input {
 .sidebar {
   width: 100%;
   height: 55px;
-}
-
-.diagonal-stripes {
-  background-color: gray;
-  background-image: repeating-linear-gradient(45deg,
-          transparent,
-          transparent 35px,
-          rgba(255, 255, 255, 0.5) 35px,
-          rgba(255, 255, 255, 0.5) 70px);
 }
 
 .bg-grey {
@@ -923,9 +972,23 @@ tag-input {
   padding: 0.15em 0.2em;
 }
 
-.badge-mod-secondary {
-  color: $n-muted;
-  border: solid thin $n-muted;
+.badge-prima-competenza {
+  color: #007bff !important;
+  border: solid thin #007bff !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-seconda-competenza {
+  color: #5C8DC4;
+  border: solid thin #5C8DC4;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-terza-competenza {
+  color: #45B5C6;
+  border: solid thin #45B5C6;
   border-radius: 0.25rem !important;
   padding: 0.15em 0.2em;
 }
@@ -1008,4 +1071,9 @@ tag-input {
   height: 25px;
   margin: 0;
   border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.color-refresh {
+  color: $n-white;
+  border-color: $n-white;
 }

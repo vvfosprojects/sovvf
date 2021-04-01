@@ -193,7 +193,7 @@ export class HelperSintesiRichiesta {
             return { ...classes, ...cardBorder };
         }
     }
-
+//1px solid #dc3545
     /* NgClass Card Fissata Status */
     cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {

@@ -9,7 +9,7 @@
                  class="col-12 scale-sintesi-richiesta">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"
-                     class="w-100 rounded card-shadow"
+                     class="w-100 rounded" [class.card-shadow]="!nightMode"
                      [ngClass]="cardClasses(r)">
                     <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
                     <app-sintesi-richiesta class="non-fissata"
@@ -24,6 +24,7 @@
                                            [inGestione]="richiestaGestione?.id === r.id"
                                            [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                            [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
+                                           [disabledAzioniRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || r.stato === statoRichiesta.Chiusa"
                                            [disableTooltips]="scrolling"
                                            [disableFissaInAlto]="richieste.length === 1"
@@ -74,6 +75,7 @@
         <div class="row">
             <div class="col-4">
                 <button class="btn btn-block btn-no-hover font-xlarge"
+                        [class.color-refresh]="nightMode && !needRefresh"
                         [class.btn-outline-primary]="!needRefresh"
                         [class.btn-primary]="needRefresh"
                         [disabled]="!needRefresh || loading"

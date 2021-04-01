@@ -132,16 +132,16 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-mod-secondary';
+        let result = 'badge-terza-competenza';
 
         if (this.richiesta && this.partenza.mezzoComposizione) {
             const distaccamentoMezzo = this.partenza.mezzoComposizione.mezzo.distaccamento.descrizione;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                    result = 'badge-mod-primary';
+                    result = 'badge-prima-competenza';
                 } else if (this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                    result = 'badge-mod-info';
+                    result = 'badge-seconda-competenza';
                 }
             }
         }

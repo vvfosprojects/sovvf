@@ -1,4 +1,5 @@
-<div class="py-2 px-3 border-top-richiesta"
+<div class="py-2 px-3"
+     [class.border-top-richiesta]="!nightMode"
      [class.text-moon]="nightMode"
      [class.moon-card-light]="nightMode"
      [class.double-monitor]="!(mapsIsActive$ | async) || doubleMonitor"
@@ -338,6 +339,8 @@
                                 <button *ngIf="boxAzioni"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
                                         [ngbTooltip]="'Visualizza azioni per Richiesta: ' + richiesta.codice"
+                                        [disabled]="disabledAzioniRichiesta"
+                                        [ngClass]="{'cursor-not-allowed': disabledAzioniRichiesta}"
                                         (click)="onShowAzioniRichiesta()">
                                     <i class="fa fa-fw fa-arrows-alt text-secondary"></i>
                                 </button>

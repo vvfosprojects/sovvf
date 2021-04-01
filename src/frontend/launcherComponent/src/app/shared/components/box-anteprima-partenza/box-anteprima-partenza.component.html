@@ -34,7 +34,7 @@
                     <span><i class="fa fa-search"></i></span>
                 </button>
             </div>
-            <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
+            <div><i class="fa fa-group guida mr-2" ngbTooltip="Squadra"></i>
                 <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }} ({{partenza?.squadre[0]?.turno}}) </b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
@@ -48,7 +48,7 @@
                     <span><i class="fa fa-search"></i></span>
                 </button>
             </div>
-            <div *ngFor="let squadre of partenza?.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+            <div *ngFor="let squadre of partenza?.squadre"><i class="guida fa fa-group mr-2" ngbTooltip="Squadre"></i>
                 <b class="font-box-partenza">{{ squadre['nome'] }}</b>
                 <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
@@ -68,7 +68,7 @@
                 </div>
                 <div *ngIf="!nuoveSquadre[0]" class="font-box-partenza"><span
                         class="text-muted">Nessun risultato...</span></div>
-                <div *ngIf="nuoveSquadre?.length === 1" class=""><i class="fa fa-group mr-2"
+                <div *ngIf="nuoveSquadre?.length === 1" class=""><i class="fa fa-group guida mr-2"
                                                                            ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
                     <b class="font-box-partenza ml-1">({{ nuoveSquadre[0]?.turno }})</b>
@@ -82,7 +82,7 @@
                             (click)="onListaSquadrePartenza($event)">
                         <span><i class="fa fa-search"></i></span>
                     </button>
-                <div *ngFor="let squadre of nuoveSquadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+                <div *ngFor="let squadre of nuoveSquadre"><i class="fa fa-group guida mr-2" ngbTooltip="Squadre"></i>
                     <b class="font-box-partenza">{{ squadre['nome'] }}</b>
                     <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>

@@ -188,22 +188,22 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 returnClass += 'border-warning';
                 break;
             case 'hover-no|selezionato-si|prenotato-no':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-si|selezionato-si|prenotato-no':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-no|selezionato-no|prenotato-si':
-                returnClass += 'diagonal-stripes bg-lightgrey';
+                returnClass += 'diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-si|selezionato-no|prenotato-si':
-                returnClass += 'diagonal-stripes bg-lightgrey';
+                returnClass += 'diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-no|selezionato-si|prenotato-si':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-si|selezionato-si|prenotato-si':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
         }
 
@@ -212,7 +212,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         }
 
         if (this.itemInPrenotazione) {
-            returnClass += ' diagonal-stripes bg-lightgrey';
+            returnClass += ' diagonal-stripes bg-diagonal-stripes';
         }
 
         if (this.nightMode) {
@@ -223,7 +223,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-mod-secondary';
+        let result = 'badge-terza-competenza';
 
         if (this.richiesta && this.mezzoComp) {
             const distaccamentoMezzo = this.mezzoComp.mezzo.distaccamento.descrizione;
@@ -231,10 +231,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
                     if (competenza.descrizione === distaccamentoMezzo && index === 0) {
-                        result = 'badge-mod-primary';
+                        result = 'badge-prima-competenza';
                     }
                     if (competenza.descrizione === distaccamentoMezzo && index === 1) {
-                        result = 'badge-mod-info';
+                        result = 'badge-seconda-competenza';
                     }
                 });
             }

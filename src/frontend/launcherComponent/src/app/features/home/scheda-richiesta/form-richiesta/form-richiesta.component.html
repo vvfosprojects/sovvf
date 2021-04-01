@@ -1,6 +1,6 @@
 <div class="row mt-2 h-100 shadow-lg">
     <!-- FORM RICHIESTA -->
-    <div class="col-8 mx-auto border border-light">
+    <div class="col-8 mx-auto">
         <form [formGroup]="richiestaForm"
               ngxsForm="schedaTelefonata.richiestaForm"
               autocomplete="off">
@@ -430,7 +430,7 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-    <div class="col-4 h-100 bg-lightgrey scroll-y"
+    <div class="col-4 h-100 bg-resoconto-triage scroll-y"
          [class.pt-3]="f.dettaglioTipologia?.value">
         <div class="px-3">
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"

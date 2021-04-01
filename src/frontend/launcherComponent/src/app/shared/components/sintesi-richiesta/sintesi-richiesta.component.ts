@@ -57,6 +57,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() loadingEliminaPartenza = false;
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
+    @Input() disabledAzioniRichiesta = false;
     @Input() disabledComposizionePartenza = false;
     @Input() nightMode: boolean;
     @Input() doubleMonitor: boolean;

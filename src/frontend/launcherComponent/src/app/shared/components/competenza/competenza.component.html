@@ -1,4 +1,4 @@
 <div class="list-inline-item mr-1">
-    <span class="badge font-xlarge" [ngClass]="{'badge-mod-primary': i==0, 'badge-mod-info': i==1, 'badge-mod-secondary': i>1}" (click)="localizzazioneCompetenza(competenza)"
+    <span class="badge font-xlarge" [ngClass]="{'badge-prima-competenza': i==0, 'badge-seconda-competenza': i==1, 'badge-terza-competenza': i>1}" (click)="localizzazioneCompetenza(competenza)"
           ngbTooltip="{{competenza?.descrizione}}" placement="bottom">{{ competenza?.descrizione | competenzaFormat }}</span>
 </div>

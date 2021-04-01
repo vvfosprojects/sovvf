@@ -54,9 +54,9 @@
             <div class="col-3">
                 <div class="clearfix">
                     <!-- Codice Richiesta -->
-                    <div class="float-left">
+                    <div class="float-left pr-3">
                         <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
-                                class="btn btn-block btn-light font-weight-bold font-xlarge mr-1"
+                                class="btn btn-block btn-light font-weight-bold font-xlarge"
                                 (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
                             <i class="fa fa-hashtag"></i>
                             {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}

@@ -1,6 +1,6 @@
 <div class="d-inline-block font-xxlarge"
      style="vertical-align: middle">
-    <i class="text-secondary fa fa-truck fa-fw mr-1"></i>
+    <i class="guida fa fa-truck fa-fw mr-1"></i>
     <div *ngIf="mezzo.descrizione"
          class="d-inline-block font-weight-bold"
          [ngbTooltip]="mezzo.descrizione"
@@ -69,7 +69,7 @@
 </div>
 
 <!-- notifiche mezzo -->
-<div *ngIf="mostraNotifiche" class="d-inline-block mr-1">
+<div *ngIf="mostraNotifiche" class="d-inline-block mr-2">
     <button class="btn btn-light border py-0 px-0" [ngbPopover]="notMez" placement="top" triggers="click"
             popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
         <i class="fa fa-bell fa-fw text-secondary" ngbTooltip="Elenco notifiche"></i>

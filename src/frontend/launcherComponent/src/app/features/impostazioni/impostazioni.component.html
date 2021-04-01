@@ -1,10 +1,9 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
         <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
-            <div class="card card-shadow px-4 py-3 no-padding-custom">
-                <div class="clearfix" style="background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);">
+            <div class="card px-4 py-3 no-padding-custom">
+                <div class="clearfix n-bg-impostazioni" style="">
                     <div class="text-center float-left"
-                         [class.text-white]="(nightMode$ | async)"
                          [class.bg-moon-light]="(nightMode$ | async)"
                          style="width: 50%">
                         <div class="container mt-2">
@@ -21,7 +20,7 @@
                             {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
                         </h3>
                         <div class="divider-custom">
-                            <div class="divider-custom-line" [class.bg-white]="(nightMode$ | async)"
+                            <div class="divider-custom-line"
                                  style="height: 0.09rem;"></div>
                         </div>
                         <h6 class="mt-1">
@@ -67,7 +66,7 @@
                                 </ng-template>
                                 <ng-template ngbPanelContent>
                                     <div *ngFor="let impostazione of listaImpostazioni; let i = index"
-                                         class="card card-shadow p-3" [class.text-white]="(nightMode$ | async)"
+                                         class="card p-3"
                                          [class.bg-moon-light]="(nightMode$ | async)"
                                          [class.mb-4]="i !== (listaImpostazioni.length - 1)">
                                         <div class="clearfix">

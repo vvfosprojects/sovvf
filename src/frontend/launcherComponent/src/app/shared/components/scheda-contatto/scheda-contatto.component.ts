@@ -60,10 +60,8 @@ export class SchedaContattoComponent implements OnChanges {
 
     cardClasses(id: string): string {
         let cardClasses = '';
-        if (this.idSchedaContattoHover === id && !this.scheda.gestita && !this.nightMode) {
-            cardClasses = ' bg-light';
-        } else if (this.idSchedaContattoHover === id && !this.scheda.gestita && this.nightMode) {
-            cardClasses = '';
+        if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
+            cardClasses = ' bg-scheda-contatto';
         }
         switch (this.scheda.classificazione) {
             case ClassificazioneSchedaContatto.Competenza:
@@ -79,10 +77,6 @@ export class SchedaContattoComponent implements OnChanges {
 
         if (this.scheda.gestita) {
             cardClasses += ' gestita';
-        }
-
-        if (this.nightMode) {
-            cardClasses += ' text-moon';
         }
 
         return cardClasses;

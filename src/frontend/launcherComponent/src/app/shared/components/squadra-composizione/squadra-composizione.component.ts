@@ -110,10 +110,10 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
                 returnClass += 'border-warning';
                 break;
             case 'hover-no|selezionato-si':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
             case 'hover-si|selezionato-si':
-                returnClass += 'border-danger diagonal-stripes bg-lightgrey';
+                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
                 break;
         }
 
@@ -132,7 +132,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     }
 
     badgeDistaccamentoClass(): string {
-        let result = 'badge-mod-secondary';
+        let result = 'badge-terza-competenza';
 
         if (this.richiesta && this.squadraComp) {
             const distaccamentoSquadra = this.squadraComp.squadra.distaccamento.descrizione;
@@ -140,10 +140,10 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
                     if (competenza.descrizione === distaccamentoSquadra && index === 0) {
-                        result = 'badge-mod-primary';
+                        result = 'badge-prima-competenza';
                     }
                     if (competenza.descrizione === distaccamentoSquadra && index === 1) {
-                        result = 'badge-mod-info';
+                        result = 'badge-seconda-competenza';
                     }
                 });
             }
