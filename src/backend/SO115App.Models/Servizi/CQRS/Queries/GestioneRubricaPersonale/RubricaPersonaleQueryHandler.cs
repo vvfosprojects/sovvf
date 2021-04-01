@@ -35,19 +35,21 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             Parallel.ForEach(query.IdSede, sede =>
             {
                 var lstIdDipendenti = _getAssociazioniByCodSede.GetCodUnitaOrganizzativaByCodSede(sede)
-                .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result;
+                    .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result;
 
                 Parallel.ForEach(lstIdDipendenti.Result, idDipendente =>
                     lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result));
             });
 
-            var lstPersonale = _getPersonaleByCF.Get(lstDettaglio.Select(d => d?.dati?.codFiscale).ToArray(), query.IdSede);
+            var lstCodiciFiscali = lstDettaglio.Select(d => d.dati.codFiscale.ToUpper()).ToArray();
+
+            var lstPersonale = _getPersonaleByCF.Get(lstCodiciFiscali, query.IdSede).Result.ToList();
 
             var result = new ConcurrentQueue<PersonaleRubrica>();
 
-            Parallel.ForEach(lstPersonale.Result, personale =>
+            Parallel.ForEach(lstPersonale, personale =>
             {
-                var dettaglio = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale == personale.codiceFiscale)?.dati;
+                var dettaglio = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()))?.dati;
 
                 var rubricaPersonale = new PersonaleRubrica()
                 {
@@ -66,7 +68,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             });
 
             //FILTRI
-            var filteredResult = result.Distinct()
+            var filteredResult = result
                 .Where(p => 
                 {
                     if (query.Filters?.Search != null)
@@ -79,12 +81,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                             (p.Telefono3?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
                             (p.Turno?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false);
                     return true;
-                });
+                })
+                .Distinct()
+                .OrderBy(p => p.Nominativo)
+                .ToList();
 
-            //ORDINAMENTO E PAGINAZIONE
+            //PAGINAZIONE
             return new RubricaPersonaleResult()
             {
-                DataArray = filteredResult.OrderBy(p => p.Nominativo)
+                DataArray = filteredResult
                     .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
                     .Take(query.Pagination.PageSize).ToList(),
 
@@ -92,7 +97,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = filteredResult.Count()
+                    TotalItems = filteredResult.Count
                 }
             };
         }

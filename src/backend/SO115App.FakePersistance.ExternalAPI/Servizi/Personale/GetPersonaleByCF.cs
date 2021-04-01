@@ -35,7 +35,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public async Task<IEnumerable<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
         {
             if (codSede != null)
-                return GetPersonaleVVFExternalAPI(codSede).Result.Where(c => codiceFiscale.Contains(c.codiceFiscale));
+                return GetPersonaleVVFExternalAPI(codSede).Result;//.Where(c => codiceFiscale.Contains(c.codiceFiscale.ToUpper()));
             else
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
         }
@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, async sede =>
+            Parallel.ForEach(codSede, sede =>
             {
                 _clientPersonale.SetCache("Personale_" + sede);
 
@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(CodFiscale, async codFiscale =>
+            Parallel.ForEach(CodFiscale, codFiscale =>
             {
                 _clientPersonale.SetCache("Personale_" + codFiscale);
 
