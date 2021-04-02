@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
+    ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
@@ -101,7 +102,9 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
         this.store.dispatch([
+            new ClearFiltriSchedeContatto(),
             new ClearListaSchedeContatto(),
             new ClearSchedeContattoMarkers(),
             new ClearMergeSchedeContatto(),

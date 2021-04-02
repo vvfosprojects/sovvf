@@ -70,11 +70,10 @@
             </div>
         </ng-container>
     </div>
-    <div *ngIf="richieste?.length"
-         class="col-12 mt-1">
-        <div class="row">
-            <div class="col-4">
-                <button class="btn btn-block btn-no-hover font-xlarge"
+    <div class="col-12">
+        <div class="clearfix">
+            <div class="float-left">
+                <button class="btn btn-lg btn-block btn-no-hover font-xlarge"
                         [class.color-refresh]="nightMode && !needRefresh"
                         [class.btn-outline-primary]="!needRefresh"
                         [class.btn-primary]="needRefresh"
@@ -96,7 +95,7 @@
                     </ng-template>
                 </button>
             </div>
-            <div class="col-8 pt-1 font-xlarge">
+            <div class="float-right pt-1 font-xlarge">
                 <ngb-pagination
                         class="float-right"
                         [(page)]="page"

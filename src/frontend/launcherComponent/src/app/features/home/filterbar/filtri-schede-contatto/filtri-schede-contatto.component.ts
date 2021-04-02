@@ -40,9 +40,7 @@ export class FiltriSchedeContattoComponent {
         this.filtriReset.emit();
     }
 
-
     _isSelezionato(filtro: VoceFiltro): boolean {
-        return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
+        return !!this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length;
     }
-
 }

@@ -15,11 +15,23 @@
             <div class="card-block pt-1 pb-0">
                 <h6 class="font-weight-bold">{{ Categoria.Gestione }}</h6>
                 <div *ngFor="let f of filtri" class="mb-2">
-                    <app-filtro [filtro]="f"
-                                [useCheckbox]="true"
-                                [selezionato]="_isSelezionato(f)"
-                                (filtroSelezionato)="onSelezioneFiltro($event)"
-                                (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                    <ng-container *ngIf="f.categoria === Categoria.Gestione">
+                        <app-filtro [filtro]="f"
+                                    [useCheckbox]="true"
+                                    [selezionato]="_isSelezionato(f)"
+                                    (filtroSelezionato)="onSelezioneFiltro($event)"
+                                    (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                    </ng-container>
+                </div>
+                <h6 class="font-weight-bold">{{ Categoria.DataRicezione }}</h6>
+                <div *ngFor="let f of filtri" class="mb-2">
+                    <ng-container *ngIf="f.categoria === Categoria.DataRicezione">
+                        <app-filtro [filtro]="f"
+                                    [useCheckbox]="true"
+                                    [selezionato]="_isSelezionato(f)"
+                                    (filtroSelezionato)="onSelezioneFiltro($event)"
+                                    (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                    </ng-container>
                 </div>
             </div>
         </div>

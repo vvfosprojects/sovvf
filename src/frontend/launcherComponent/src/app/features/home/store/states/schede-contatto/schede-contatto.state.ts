@@ -54,7 +54,6 @@ import { ResponseInterface } from '../../../../../shared/interface/response.inte
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewComponentState } from '../view/view.state';
-import { SetMezziInServizio } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -84,7 +83,10 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     codiceSchedaContattoHover: undefined,
     filtriSchedeContatto: [
         new VoceFiltro('1', Categoria.Gestione, 'Gestita', false),
-        new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false)
+        new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false),
+        new VoceFiltro('3', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimaOra, false),
+        new VoceFiltro('4', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimeDueOre, false),
+        new VoceFiltro('5', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimoGiorno, false),
     ],
     filtriSelezionati: {
         gestita: undefined,
@@ -340,12 +342,23 @@ export class SchedeContattoState {
     @Action(ReducerSetFiltroSchedeContatto)
     reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto): void {
         const state = getState();
+        const filtroGestita = state.filtriSelezionati.gestita;
+        const filtroRangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
         switch (action.filtro.codice) {
             case '1':
-                state.filtriSelezionati.gestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true));
+                filtroGestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true));
                 break;
             case '2':
-                state.filtriSelezionati.gestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
+                filtroGestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
+                break;
+            case '3':
+                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimaOra ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimaOra));
+                break;
+            case '4':
+                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimeDueOre ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimeDueOre));
+                break;
+            case '5':
+                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimoGiorno ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimoGiorno));
                 break;
             default:
                 console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
@@ -367,16 +380,13 @@ export class SchedeContattoState {
     }
 
     @Action(ClearFiltriSchedeContatto)
-    clearFiltriSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>): void {
-        const state = getState();
+    clearFiltriSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>): void {
         patchState({
-            filtriSelezionati: {
-                ...state.filtriSelezionati,
-                gestita: null
-            }
+            filtriSelezionati: SchedeContattoStateDefaults.filtriSelezionati
         });
         dispatch([
-            new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto()
+            new GetListaSchedeContatto(),
+            new ResetFiltriSelezionatiSchedeContatto()
         ]);
     }
 
@@ -386,27 +396,25 @@ export class SchedeContattoState {
         const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
         const filtro = makeCopy(action.filtro);
         patchState({
-            ...state,
             filtriSchedeContatto: _setFiltroSelezionato(filtriSchedeContatto, filtro)
         });
     }
 
     @Action(ResetFiltriSelezionatiSchedeContatto)
-    resetFiltriSelezionati({ getState, patchState }: StateContext<SchedeContattoStateModel>): void {
-        const state = getState();
-        const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
+    resetFiltriSelezionati({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
-            ...state,
-            filtriSchedeContatto: _resetFiltriSelezionati(filtriSchedeContatto)
+            filtriSchedeContatto: SchedeContattoStateDefaults.filtriSchedeContatto
         });
     }
 
     @Action(SetRangeVisualizzazioneSchedeContatto)
     setRangeVisualizzazioneSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetRangeVisualizzazioneSchedeContatto): void {
         const state = getState();
+        const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
+        const filtro = makeCopy(action.range);
         patchState({
+            filtriSchedeContatto: _setFiltroSelezionato(filtriSchedeContatto, filtro),
             filtriSelezionati: {
-                ...state.filtriSelezionati,
                 rangeVisualizzazione: action.range
             }
         });
