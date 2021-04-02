@@ -257,8 +257,8 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         return this.tipologie?.filter((t: Tipologia) => t.codice === codTipologia)[0];
     }
 
-    onCopiaIndirizzo(): void {
-        this.reducerSchedaTelefonata('copiaIndirizzo');
+    onCopiaCoordinate(): void {
+        this.reducerSchedaTelefonata('copiaCoordinate');
     }
 
     onCercaIndirizzo(result: Address): void {
