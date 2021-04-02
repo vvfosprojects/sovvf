@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
@@ -61,7 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Telefono1 = dettaglio?.telCellulare,
                     Telefono2 = dettaglio?.telefonoFisso,
                     Telefono3 = dettaglio?.fax,
-                    Stato = dettaglio?.oraIngresso == null ? "Non in servizio" : "In Servizio",
+                    Stato = dettaglio?.oraIngresso == null ? StatoPersonale.NonInServizio : StatoPersonale.InServizio,
                 };
 
                 result.Enqueue(rubricaPersonale);
@@ -69,22 +70,22 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
 
             //FILTRI
             var filteredResult = result
-                .Where(p => 
+                .Where(p =>
                 {
-                    if (query.Filters?.Search != null)
-                        return p.Nominativo.ToLower().Contains(query.Filters.Search.ToLower()) ||
-                            p.Qualifica.ToLower().Contains(query.Filters.Search.ToLower()) ||
-                            (p.Sede?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
-                            (p.Specializzazione?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
-                            (p.Telefono1?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
-                            (p.Telefono2?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
-                            (p.Telefono3?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
-                            (p.Turno?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false);
-                    return true;
+                    if (query.Filters?.Search != null) return
+                        p.Nominativo.ToLower().Contains(query.Filters.Search.ToLower()) ||
+                        p.Qualifica.ToLower().Contains(query.Filters.Search.ToLower()) ||
+                        (p.Sede?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                        (p.Specializzazione?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false) ||
+                        (p.Telefono1?.Contains(query.Filters.Search) ?? false) ||
+                        (p.Telefono2?.Contains(query.Filters.Search) ?? false) ||
+                        (p.Telefono3?.Contains(query.Filters.Search) ?? false) ||
+                        (p.Turno?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false);
+
+                    else return true;
                 })
-                .Distinct()
-                .OrderBy(p => p.Nominativo)
-                .ToList();
+                .Where(p => query.Filters?.Stato?.Equals(p.Stato) ?? true)
+                .OrderBy(p => p.Nominativo);
 
             //PAGINAZIONE
             return new RubricaPersonaleResult()
@@ -97,7 +98,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = filteredResult.Count
+                    TotalItems = filteredResult.Count()
                 }
             };
         }
