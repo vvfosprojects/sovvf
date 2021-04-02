@@ -341,11 +341,11 @@ export class RichiesteState {
 
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta): void {
-        // dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
+        dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
         const obj = action.richiestaAction;
         console.log('ActionRichiesta Obj', obj);
-        // this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        // }, error => dispatch(new StopLoadingActionRichiesta()));
+        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
+        }, error => dispatch(new StopLoadingActionRichiesta()));
     }
 
     @Action(ModificaStatoFonogramma)

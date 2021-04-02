@@ -37,7 +37,8 @@
                         </div>
                     </div>
                     <!-- Scheda Richiesta -->
-                    <app-scheda-richiesta *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
+                    <app-scheda-richiesta
+                            *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
                     <!-- Coda Chiamate -->
                     <app-coda-chiamate *ngIf="viewState.codaChiamate.active"></app-coda-chiamate>
                     <!-- Composizione Partenza -->

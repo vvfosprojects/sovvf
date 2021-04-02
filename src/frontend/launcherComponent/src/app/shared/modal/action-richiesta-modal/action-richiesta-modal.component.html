@@ -22,7 +22,8 @@
                                    name="tipologiaChiusuraChiamata"
                                    id="trasmessaAdEnte"
                                    value="TrasmessaAdEnte"
-                                   formControlName="tipologiaChiusuraChiamata">
+                                   formControlName="tipologiaChiusuraChiamata"
+                                   (ngModelChange)="onChangeTipologiaChiusuraChiamata($event)">
                             <label class="form-check-label"
                                    for="trasmessaAdEnte">Trasmessa ad Ente</label>
                         </div>
@@ -34,7 +35,8 @@
                                    name="tipologiaChiusuraChiamata"
                                    id="interventoNonNecessario"
                                    value="InterventoNonNecessario"
-                                   formControlName="tipologiaChiusuraChiamata">
+                                   formControlName="tipologiaChiusuraChiamata"
+                                   (ngModelChange)="onChangeTipologiaChiusuraChiamata($event)">
                             <label class="form-check-label"
                                    for="interventoNonNecessario">Intervento non più necessario</label>
                         </div>
@@ -104,7 +106,8 @@
 </div>
 <div class="modal-footer" style="place-content: space-between;">
     <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
-            (click)="close('ok')">
+            (click)="close('ok')"
+            [disabled]="actionRichiestaForm && !actionRichiestaForm.valid">
         {{ 'Conferma' | uppercase }}
     </button>
     <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"

@@ -1,5 +1,4 @@
 export enum CategoriaFiltriSchedeContatto {
-  Lettura = 'Lettura',
   Gestione = 'Gestione',
-  Appartenzenza = 'Appartenenza'
+  DataRicezione = 'Data Ricezione'
 }

@@ -137,9 +137,13 @@ export class SchedaTelefonataState {
 
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
-        const coordinate = getState().coordinate;
         switch (action.schedaTelefonata.tipo) {
-            case 'copiaIndirizzo':
+            case 'copiaCoordinate':
+                const state = getState();
+                const formValue = state.richiestaForm.model;
+                const latitudine = formValue.latitudine;
+                const longitudine = formValue.longitudine;
+                const coordinate = new Coordinate(latitudine, longitudine);
                 dispatch(new CopyToClipboard(coordinate));
                 break;
             case 'annullata':
