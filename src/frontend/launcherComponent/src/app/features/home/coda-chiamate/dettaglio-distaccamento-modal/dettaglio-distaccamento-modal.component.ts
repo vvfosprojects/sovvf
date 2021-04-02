@@ -4,6 +4,7 @@ import { Squadra } from '../../../../shared/model/squadra.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../../richieste/helper/_helper-sintesi-richiesta';
 import { nomeStatiSquadra } from '../../../../shared/helper/function-composizione';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-dettaglio-distaccamento-modal',
@@ -19,7 +20,8 @@ export class DettaglioDistaccamentoModalComponent implements OnInit {
 
     methods = new HelperSintesiRichiesta();
 
-    constructor(private modal: NgbActiveModal) {
+    constructor(private modal: NgbActiveModal,
+                private store: Store) {
     }
 
     ngOnInit(): void {
@@ -33,12 +35,12 @@ export class DettaglioDistaccamentoModalComponent implements OnInit {
         return nomeStatiSquadra(statoSquadra);
     }
 
-    onNuovaPartenza(): void {
-        this.close('nuovaPartenza');
+    onNuovaPartenza(richiesta: SintesiRichiesta): void {
+        this.close({ status: 'nuovaPartenza', data: richiesta });
     }
 
-    close(type: string): void {
-        this.modal.close({ status: type });
+    close(result: { status: string, data?: any }): void {
+        this.modal.close({ status: result.status, data: result.data });
     }
 
 }

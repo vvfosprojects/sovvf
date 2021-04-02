@@ -62,10 +62,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() nightMode: boolean;
     @Input() doubleMonitor: boolean;
 
-    @Output() clickRichiesta = new EventEmitter<any>();
+    @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
-    @Output() fissaInAlto = new EventEmitter<any>();
-    @Output() nuovaPartenza = new EventEmitter<any>();
+    @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
+    @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();

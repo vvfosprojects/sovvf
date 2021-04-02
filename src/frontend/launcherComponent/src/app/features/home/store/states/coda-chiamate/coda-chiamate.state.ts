@@ -8,6 +8,11 @@ import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioDistaccamentoModalComponent } from '../../../coda-chiamate/dettaglio-distaccamento-modal/dettaglio-distaccamento-modal.component';
 import { DettaglioSedeCodaChiamateDto } from '../../../../../shared/interface/dto/dettaglio-sede-coda-chiamate-dto.interface';
+import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
+import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { ToggleComposizione } from '../../actions/view/view.actions';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
 
 export interface CodaChiamateStateModel {
     data: ItemGraficoCodaChiamate[];
@@ -81,7 +86,7 @@ export class CodaChiamateState {
     }
 
     @Action(OpenModalDettaglioDistaccamento)
-    openModalDettaglioDistaccamento({ patchState }: StateContext<CodaChiamateStateModel>, action: OpenModalDettaglioDistaccamento): void {
+    openModalDettaglioDistaccamento({ patchState, dispatch }: StateContext<CodaChiamateStateModel>, action: OpenModalDettaglioDistaccamento): void {
         const codSede = action.item.extra.code;
         this.codaChiamateService.getDettaglioSede(codSede).subscribe((response: DettaglioSedeCodaChiamateDto) => {
             if (response?.infoDistaccamento) {
@@ -96,6 +101,23 @@ export class CodaChiamateState {
                     modal.componentInstance.descDistaccamento = response.infoDistaccamento.descDistaccamento;
                     modal.componentInstance.richieste = response.infoDistaccamento.listaSintesi;
                     modal.componentInstance.squadre = response.infoDistaccamento.listaSquadre;
+
+                    modal.result.then((result: { status: string, data: SintesiRichiesta }) => {
+                        switch (result.status) {
+                            case 'nuovaPartenza':
+                                const richiesta = result.data;
+                                dispatch([
+                                    new SetMarkerRichiestaSelezionato(richiesta.id),
+                                    new SetRichiestaComposizione(richiesta),
+                                    new ToggleComposizione(Composizione.Avanzata)
+                                ]);
+                                break;
+                            case 'ko':
+                                break;
+                            default:
+                                break;
+                        }
+                    });
                 });
             }
         });
