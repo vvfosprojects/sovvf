@@ -3,7 +3,7 @@
 </h3>
 <div class="mt-4">
     <!-- SELECT DETTAGLIO TIPOLOGIA -->
-    <div class="card card-shadow bg-light py-3 px-4 n-color n-dark-light">
+    <div class="card bg-light py-3 px-4 n-color n-dark-light">
         <div class="row">
             <div class="col-6">
                 <label for="selectTipologia" class="font-xxlarge">
@@ -82,7 +82,9 @@
                 <hr class="mt-3 mb-2">
             </ng-template>
             <ng-template [ngIf]="tItems">
-                <div class="card card-shadow bg-light mt-3 px-4 py-3">
+                <div class="card mt-3 px-4 py-3"
+                     [class.bg-light]="!(nightMode$ | async)"
+                     [class.n-dark-light]="(nightMode$ | async)">
                     <ngx-treeview [items]="tItems"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">
@@ -153,7 +155,6 @@
             <ng-template [ngIf]="item.value !== itemValueTitleEdit">
                 <label class="form-check-label cursor-pointer"
                        [class.text-info]="item.collapsed"
-                       [class.text-dark]="!item.collapsed"
                        [class.font-weight-bolder]="!item.collapsed"
                        (click)="item.children ? onCollapseExpand() : addItem(item)">
                     {{ item.text }}

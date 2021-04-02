@@ -21,14 +21,4 @@ export class TabellaTrasferimentoChiamataComponent {
 
     constructor() {
     }
-
-    nightModeStyle(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = ' ';
-        } else if (this.nightMode) {
-            value = 'moon-text moon-card-light';
-        }
-        return value;
-    }
 }

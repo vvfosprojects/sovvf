@@ -1,7 +1,8 @@
 <div class="row mt-1">
     <div class="col-12">
         <div *ngIf="richiesta" class="mb-2">
-            <div class="w-100 rounded card-shadow"
+            <div class="w-100 rounded"
+                 [class.card-shadow]="!nightMode"
                  [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta"
                                        [fissata]="false"

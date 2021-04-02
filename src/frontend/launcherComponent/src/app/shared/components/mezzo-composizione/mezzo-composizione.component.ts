@@ -170,7 +170,6 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             sganciamentoObj.idRichiestaDaSganciare = this.mezzoComp.mezzo.idRichiesta;
             sganciamentoObj.descrizione = this.mezzoComp.mezzo.descrizione;
             this.sganciamento.emit(sganciamentoObj);
-            // console.log('mezzoComp', this.mezzoComp);
         } else {
             console.error('[SganciamentoMezzo] IdRichiesta non presente nel Mezzo');
         }

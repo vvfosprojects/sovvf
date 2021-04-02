@@ -4,7 +4,7 @@
              [disableTooltip]="datimeteo?.descrizione.length <= 20" placement="bottom">
             <img class="iconameteo" src="https://openweathermap.org/img/w/{{datimeteo?.icona}}.png"><span
                 class="font-xlarge font-weight-bold text-capitalize">{{datimeteo?.descrizione | truncate: 20}}</span>
-            <span class="badge badge-mod-success h6 ml-2 mt-2 font-xlarge">{{datimeteo?.temperatura}}°</span>
+            <span class="badge badge-mod-success h6 ml-2 mt-1 font-xlarge">{{datimeteo?.temperatura}}°</span>
         </div>
         <div class="col-12">
             <hr class="m-0 mb-2">
@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col"></div>
                         <div class="col">
-                            <span class="badge badge-mod-secondary h6 mb-1">{{datimeteo?.umidita}}%</span>
+                            <span class="badge badge-mod-secondary h6 mb-2">{{datimeteo?.umidita}}%</span>
                         </div>
                     </div>
                 </div>

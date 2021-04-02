@@ -4,9 +4,9 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card card-shadow min-h-comp"
+        <div class="card min-h-comp"
              [class.bg-moon-light]="nightMode"
-             [class.text-white]="nightMode">
+             [class.card-shadow]="!nightMode">
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -74,9 +74,9 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card card-shadow mx-auto min-h-comp"
+        <div class="card mx-auto min-h-comp"
              [class.bg-moon-light]="nightMode"
-             [class.text-white]="nightMode">
+             [class.card-shadow]="!nightMode">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -154,9 +154,9 @@
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
         <!-- Lista Partenze Richiesta -->
         <div style="height:33%">
-            <div class="card card-shadow h-100"
+            <div class="card  h-100"
                  [class.bg-moon-light]="nightMode"
-                 [class.text-white]="nightMode">
+                 [class.card-shadow]="!nightMode">
                 <div class="card-header py-2">
                     <i class="fa fa-list-ul mr-2 font-xlarge" style="vertical-align:sub"></i>
                     <span class="font-xlarge" style="vertical-align:middle">

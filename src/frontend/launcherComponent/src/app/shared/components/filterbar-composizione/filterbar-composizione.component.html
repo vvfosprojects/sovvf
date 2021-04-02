@@ -1,5 +1,7 @@
 <ng-template [ngIf]="filtri">
-    <div class="border card-shadow rounded mt-1 mb-2 px-2 font-comp-xl"
+    <div class="rounded mt-1 mb-2 px-2 font-comp-xl"
+         [class.card-shadow]="!nightMode"
+         [class.border]="!nightMode"
          [ngClass]="nightModeBg()"
          [class.font-comp-xl]="viewState.composizione.active">
         <div class="row">

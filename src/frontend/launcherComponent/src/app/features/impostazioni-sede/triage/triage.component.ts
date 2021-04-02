@@ -28,6 +28,7 @@ import { ItemTriageModalComponent } from '../../../shared/modal/item-triage-moda
 import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/function-generiche';
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-triage',
@@ -58,6 +59,8 @@ export class TriageComponent implements OnDestroy {
     tItemsData: ItemTriageData[];
     @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
     editMode: boolean;
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     @Select(TriageCrudState._backupTriageByDettaglioTipologia) backupTriageByDettaglioTipologia$: Observable<TreeItem>;
     tItemsBackup: TreeItem[];
