@@ -21,7 +21,8 @@ export class RubricaPersonaleService {
         const obj = {
             filters: {
                 search: filters.search,
-                stato: filters.stato
+                stato: filters.stato,
+                tipo: filters.tipo
             },
             pagination
         };

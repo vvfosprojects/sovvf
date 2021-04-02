@@ -2,19 +2,21 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import {
     ClearRicercaRubricaPersonale,
-    ClearStatoRubricaPersonale,
+    ClearStatoRubricaPersonale, ClearTipoRubricaPersonale,
     SetRicercaRubricaPersonale,
-    SetStatoRubricaPersonale
+    SetStatoRubricaPersonale, SetTipoRubricaPersonale
 } from '../../actions/ricerca-rubrica-personale/ricerca-rubrica-personale.actions';
 
 export interface RicercaRubricaPersonaleStateModel {
     ricerca: string;
-    stato: string[];
+    stato: string;
+    tipo: string;
 }
 
 export const RicercaRubricaPersonaleStateDefaults: RicercaRubricaPersonaleStateModel = {
     ricerca: undefined,
     stato: undefined,
+    tipo: undefined,
 };
 
 @Injectable()
@@ -33,8 +35,13 @@ export class RicercaRubricaPersonaleState {
     }
 
     @Selector()
-    static stato(state: RicercaRubricaPersonaleStateModel): string[] {
+    static stato(state: RicercaRubricaPersonaleStateModel): string {
         return state.stato;
+    }
+
+    @Selector()
+    static tipo(state: RicercaRubricaPersonaleStateModel): string {
+        return state.tipo;
     }
 
     @Action(SetRicercaRubricaPersonale)
@@ -51,6 +58,13 @@ export class RicercaRubricaPersonaleState {
         });
     }
 
+    @Action(SetTipoRubricaPersonale)
+    setTipoRubricaPersonale({ getState, patchState }: StateContext<RicercaRubricaPersonaleStateModel>, action: SetTipoRubricaPersonale): void {
+        patchState({
+            tipo: action.tipo
+        });
+    }
+
     @Action(ClearRicercaRubricaPersonale)
     clearRicercaRubricaPersonale({ patchState }: StateContext<RicercaRubricaPersonaleStateModel>): void {
         patchState({
@@ -62,6 +76,13 @@ export class RicercaRubricaPersonaleState {
     clearStatoRubricaPersonale({ patchState }: StateContext<RicercaRubricaPersonaleStateModel>): void {
         patchState({
             stato: RicercaRubricaPersonaleStateDefaults.stato
+        });
+    }
+
+    @Action(ClearTipoRubricaPersonale)
+    clearTipoRubricaPersonale({ patchState }: StateContext<RicercaRubricaPersonaleStateModel>): void {
+        patchState({
+            tipo: RicercaRubricaPersonaleStateDefaults.tipo
         });
     }
 }

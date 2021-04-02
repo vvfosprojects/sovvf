@@ -8,7 +8,14 @@ export class SetRicercaRubricaPersonale {
 export class SetStatoRubricaPersonale {
     static readonly type = '[RicercaRubricaPersonale] Set Stato Personale';
 
-    constructor(public stato: string[]) {
+    constructor(public stato: string) {
+    }
+}
+
+export class SetTipoRubricaPersonale {
+    static readonly type = '[RicercaRubricaPersonale] Set Tipo Personale';
+
+    constructor(public tipo: string) {
     }
 }
 
@@ -18,4 +25,8 @@ export class ClearRicercaRubricaPersonale {
 
 export class ClearStatoRubricaPersonale {
     static readonly type = '[RicercaRubricaPersonale] Clear Stato Personale';
+}
+
+export class ClearTipoRubricaPersonale {
+    static readonly type = '[RicercaRubricaPersonale] Clear Tipo Personale';
 }

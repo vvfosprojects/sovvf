@@ -1,3 +1,7 @@
 export interface StatoRubricaPersonale {
-    stato?: string[];
+    stato?: string;
+}
+
+export interface TipoRubricaPersonale {
+    tipo?: string;
 }

@@ -11,9 +11,9 @@ import { RubricaPersonaleState } from './store/states/rubrica-personale/rubrica-
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import {
     ClearRicercaRubricaPersonale,
-    ClearStatoRubricaPersonale,
+    ClearStatoRubricaPersonale, ClearTipoRubricaPersonale,
     SetRicercaRubricaPersonale,
-    SetStatoRubricaPersonale
+    SetStatoRubricaPersonale, SetTipoRubricaPersonale
 } from './store/actions/ricerca-rubrica-personale/ricerca-rubrica-personale.actions';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { GetRubricaPersonale } from './store/actions/rubrica-personale/rubrica-personale.actions';
@@ -39,7 +39,8 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription = new Subscription();
     RoutesPath = RoutesPath;
-    filtriPersonale = ['Solo Operativi', 'In servizio', 'Altro personale', 'Non in servizio'];
+    filtriStatoPersonale = [ 'In servizio', 'Non in servizio'];
+    filtriTipoPersonale = ['Solo operativi', 'Altro personale'];
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -113,14 +114,20 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
         );
     }
 
-    addFiltro(filtro: string[]): void {
-        this.store.dispatch([
-            new SetStatoRubricaPersonale(filtro),
-            new GetRubricaPersonale()
-        ]);
+    addFiltro(filtro: string, tipo: string): void {
+        if (tipo === 'stato') {
+            this.store.dispatch(new SetStatoRubricaPersonale(filtro));
+        } else {
+            this.store.dispatch(new SetTipoRubricaPersonale(filtro));
+        }
+        this.store.dispatch(new GetRubricaPersonale());
     }
 
-    clearFiltro(): void {
-        this.store.dispatch(new ClearStatoRubricaPersonale());
+    clearFiltro(tipo: string): void {
+        if (tipo === 'stato') {
+            this.store.dispatch(new ClearStatoRubricaPersonale());
+        } else {
+            this.store.dispatch(new ClearTipoRubricaPersonale());
+        }
     }
 }

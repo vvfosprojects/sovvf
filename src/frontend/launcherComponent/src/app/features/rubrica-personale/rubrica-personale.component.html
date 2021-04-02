@@ -8,25 +8,35 @@
         </div>
         <div class="col-12 col-md-9 mx-auto mb-2">
             <div class="row">
-                <div class="col">
+                <div class="col-2">
                     <button class="btn btn-outline-secondary btn-no-hover mb-2 font-weight-bold font-xlarge" placement="right"
                             [routerLink]="['/' + RoutesPath.Rubrica]" ngbTooltip="Visualizza Rubrica">
                         <i class="fa fa-address-book mr-1"></i>
                         Rubrica
                     </button>
                 </div>
-                <div class="col">
-                    <ng-select class="align-self-center font-xlarge custom w-100 float-right"
-                               [items]="filtriPersonale"
-                               [multiple]="true"
-                               [maxSelectedItems]="3"
+                <div class="col d-inline-flex mb-2">
+                    <ng-select class="align-self-center font-xlarge mr-1 custom w-50 float-right custom"
+                               [items]="filtriStatoPersonale"
+                               [multiple]="false"
                                [closeOnSelect]="true"
                                [hideSelected]="true"
                                [searchable]="false"
-                               [loading]="!filtriPersonale"
-                               (change)="addFiltro($event)"
-                               (clear)="clearFiltro()"
+                               [loading]="!filtriStatoPersonale"
+                               (change)="addFiltro($event, 'stato')"
+                               (clear)="clearFiltro('stato')"
                                placeholder="Stato: Tutti">
+                    </ng-select>
+                    <ng-select class="align-self-center font-xlarge custom w-50 float-right custom"
+                               [items]="filtriTipoPersonale"
+                               [multiple]="false"
+                               [closeOnSelect]="true"
+                               [hideSelected]="true"
+                               [searchable]="false"
+                               [loading]="!filtriTipoPersonale"
+                               (change)="addFiltro($event, 'tipo')"
+                               (clear)="clearFiltro('tipo')"
+                               placeholder="Tipo: Tutti">
                     </ng-select>
                 </div>
                 <div class="col text-right">

@@ -42,9 +42,11 @@ export class RubricaPersonaleState {
         dispatch(new StartLoading());
         const ricerca = this.store.selectSnapshot(RicercaRubricaPersonaleState.ricerca);
         const stato = this.store.selectSnapshot(RicercaRubricaPersonaleState.stato);
+        const tipo = this.store.selectSnapshot(RicercaRubricaPersonaleState.tipo);
         const filters = {
             search: ricerca && ricerca.length > 0 ? ricerca : null,
-            stato: stato && stato.length > 0 ? stato : null,
+            stato: stato ? stato : null,
+            tipo: tipo ? tipo : null,
         };
         const pagination = {
             page: action.page ? action.page : 1,
