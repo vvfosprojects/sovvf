@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Ente } from '../../interface/ente.interface';
 import { MotivazioneChiusuraRichiestaEnum } from '../../enum/motivazione-chiusura-richiesta.enum';
 
@@ -38,7 +38,7 @@ export class ActionRichiestaModalComponent implements OnInit {
             });
         } else if (this.chiusuraIntervento) {
             this.actionRichiestaForm = this.formBuilder.group({
-                note: new FormControl()
+                tipologiaChiusuraChiamata: new FormControl()
             });
         }
     }
@@ -51,7 +51,7 @@ export class ActionRichiestaModalComponent implements OnInit {
         if (this.chiusuraChiamata) {
             this.actionRichiestaForm = this.formBuilder.group({
                 tipologiaChiusuraChiamata: ['InterventoNonNecessario'],
-                enti: [[]],
+                enti: [null],
             });
         } else if (this.chiusuraIntervento) {
             this.actionRichiestaForm = this.formBuilder.group({
@@ -60,10 +60,26 @@ export class ActionRichiestaModalComponent implements OnInit {
         }
     }
 
+    onChangeTipologiaChiusuraChiamata(tipologiaChiusuraChiamata: string): void {
+        switch (tipologiaChiusuraChiamata) {
+            case 'TrasmessaAdEnte':
+                this.f.enti.setValidators([Validators.required]);
+                this.f.enti.updateValueAndValidity();
+                break;
+            case 'InterventoNonNecessario':
+                this.f.enti.setValidators(null);
+                this.f.enti.updateValueAndValidity();
+                break;
+        }
+    }
+
     onChangeSelectEnte(ente: Ente): void {
         let entiSelezionati = this.f.enti.value;
-        const isSelezionato = entiSelezionati.filter((e: Ente) => e.codice === ente.codice)[0];
+        const isSelezionato = entiSelezionati?.filter((e: Ente) => e.codice === ente.codice)[0];
         if (!isSelezionato) {
+            if (!entiSelezionati) {
+                entiSelezionati = [];
+            }
             entiSelezionati.push(ente);
             this.f.enti.patchValue(entiSelezionati);
         } else {
