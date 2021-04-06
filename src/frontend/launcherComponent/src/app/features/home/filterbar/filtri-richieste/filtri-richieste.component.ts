@@ -3,19 +3,24 @@ import { VoceFiltro } from './voce-filtro.model';
 import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
 import {
-    ApplyFiltriTipologiaSelezionatiRichieste, ClearFiltroSenzaEsecuzione, ResetFiltriSelezionatiRichieste
+    ApplyFiltriTipologiaSelezionatiRichieste,
+    ClearFiltroSenzaEsecuzione,
+    RemoveChiuseRichiesta, RemoveFakeStatoRichiesta,
+    RemovePeriodoChiuse,
+    ResetFiltriSelezionatiRichieste,
+    SetChiuseRichiesta,
+    SetFakeStatoRichiesta,
+    SetPeriodoChiuse
 } from '../../store/actions/filterbar/filtri-richieste.actions';
 import { Select, Store } from '@ngxs/store';
 import { ModalRichiesteChiuseComponent } from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import { ModalZonaEmergenzaComponent } from './modal-zona-emergenza/modal-zona-emergenza.component';
 import {
-    RemoveChiuseRichiesta,
-    RemoveFakeStatoRichiesta, RemovePeriodoChiuse, ResetFiltriStatiZone, ResetFiltriZoneSelezionate, SetChiuseRichiesta,
-    SetFakeStatoRichiesta, SetPeriodoChiuse,
+    ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
     SetZoneEmergenzaSelezionate
 } from '../../store/actions/filterbar/zone-emergenza.actions';
-import { ZoneEmergenzaState } from '../../store/states/filterbar/zone-emergenza.state';
 import { Observable, Subscription } from 'rxjs';
+import { FiltriRichiesteState } from '../../store/states/filterbar/filtri-richieste.state';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -38,7 +43,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    @Select(ZoneEmergenzaState.disableFiltri) lockFiltri$: Observable<boolean>;
+    @Select(FiltriRichiesteState.disableFiltri) lockFiltri$: Observable<boolean>;
     lockFiltri: boolean;
 
     specialSelected = [false, false, false];

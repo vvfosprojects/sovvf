@@ -301,6 +301,14 @@ $n-prima-competenza: #007bff !important;
   .bg-partial-loader {
     background-color: transparent !important;
   }
+
+  .popover-header {
+    color: $n-black;
+  }
+
+  .ngb-dp-month-name {
+    color: $n-black;
+  }
 }
 
 // END Moon Mode Styles

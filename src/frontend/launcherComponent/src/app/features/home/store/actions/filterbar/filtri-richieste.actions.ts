@@ -61,3 +61,46 @@ export class ResetFiltriSelezionatiRichieste {
     constructor(public options?: { preventGetList: boolean }) {
     }
 }
+
+export class SetPeriodoChiuse {
+    static readonly type = '[FiltriRichieste] Set Periodo Chiuse Filtri';
+
+    constructor(public periodo: any, public tipologiaRichiesta: string) {
+    }
+}
+
+export class RemovePeriodoChiuse {
+    static readonly type = '[FiltriRichieste] Remove Periodo Chiuse Filtri';
+
+    constructor(public tipologiaRichiesta?: string) {
+    }
+}
+
+export class SetChiuseRichiesta {
+    static readonly type = '[FiltriRichieste] Set Chiuse Richiesta';
+
+    constructor(public chiuse: string) {
+    }
+}
+
+
+export class RemoveChiuseRichiesta {
+    static readonly type = '[FiltriRichieste] Remove Chiuse Richiesta';
+
+    constructor(public chiuse: string) {
+    }
+}
+
+export class SetFakeStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Set Stati Richiesta Fake';
+
+    constructor(public zoneEmergenza: string) {
+    }
+}
+
+export class RemoveFakeStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Remove Stati Richiesta Fake';
+
+    constructor(public zoneEmergenza: string) {
+    }
+}

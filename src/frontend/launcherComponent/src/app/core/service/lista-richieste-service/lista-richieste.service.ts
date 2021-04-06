@@ -9,6 +9,7 @@ import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/vo
 import { Store } from '@ngxs/store';
 import { ZoneEmergenzaState } from '../../../features/home/store/states/filterbar/zone-emergenza.state';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
+import { FiltriRichiesteState } from '../../../features/home/store/states/filterbar/filtri-richieste.state';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -31,11 +32,11 @@ export class SintesiRichiesteService {
         if (filtriTipologieRichiesta?.length) {
             filtriTipologia = filtriTipologieRichiesta[0]?.codice;
         }
-        const filtroStato = this.store.selectSnapshot(ZoneEmergenzaState.fakeStatoRichiesta);
+        const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.fakeStatoRichiesta);
         const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
-        const chiuse = this.store.selectSnapshot(ZoneEmergenzaState.chiuse);
-        const periodoChiuseChiamate = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiuseChiamate);
-        const periodoChiusiInterventi = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiusiInterventi);
+        const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
+        const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
+        const periodoChiusiInterventi = this.store.selectSnapshot(FiltriRichiesteState.periodoChiusiInterventi);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,

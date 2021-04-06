@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
   <h4 class="modal-title" style="font-weight: 700">
     {{ 'SELEZIONA FILTRO PER RICHIESTE CHIUSE' | uppercase }}
   </h4>
@@ -8,7 +8,7 @@
   </button>
 </div>
 
-<div class="modal-body pb-0" [ngClass]="onNightMode()">
+<div class="modal-body pb-0">
   <div class="row pt-4" style="justify-content: center; font-size: x-large">
     <div class="clearfix form-check">
       <input (click)="onCheckFiltro('DaA')" class="checkbox-size" type="checkbox" id="DaA" name="DaA"
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<div class="modal-footer" [ngClass]="onNightMode()" style="place-content: space-between;">
+<div class="modal-footer" style="place-content: space-between;">
   <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
           (click)="chiudiModalFiltriTipologia('ok')">
     {{ 'Applica Filtro' | uppercase }}

@@ -38,7 +38,7 @@
                             <i class="fa fa-arrow-right"></i>
                         </button>
                         <button class="btn btn-lg float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
-                                ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci"
+                                ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci" placement="left"
                                 [class.cursor-not-allowed]="disableCreaRichiesta"
                                 (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
                             <i class="fa fa-cog"></i>
