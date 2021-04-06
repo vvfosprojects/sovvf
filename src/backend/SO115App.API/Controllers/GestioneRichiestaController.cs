@@ -197,9 +197,11 @@ namespace SO115App.API.Controllers
             {
                 IdOperatore = idOperatore,
                 IdRichiesta = richiesta.IdRichiesta,
-                Note = richiesta.Note ?? "",
+                // Note = richiesta.Note ?? "",
                 Stato = richiesta.Stato,
-                CodiceSede = codiceSede
+                CodiceSede = codiceSede,
+                EntiIntervenuti = richiesta.EntiIntervenuti,
+                Motivazione = richiesta.Motivazione
             };
 
             try

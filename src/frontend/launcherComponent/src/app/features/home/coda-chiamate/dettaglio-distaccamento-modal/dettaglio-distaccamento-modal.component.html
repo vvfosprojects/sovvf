@@ -19,7 +19,7 @@
                 <div *ngFor="let s of squadre"
                      class="clearfix px-4">
                     <div class="float-left">
-                        {{ s.nome }}
+                        {{ s.nome }} ({{ s?.turno }})
                     </div>
                     <div class="float-right">
                         <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>

@@ -24,6 +24,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
@@ -74,7 +75,12 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                 }
             }
 
-            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note, DateTime.UtcNow);
+            if (command.EntiIntervenuti != null)
+            {
+                richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice.ToString()).ToList();
+            }
+
+            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Motivazione.ToString(), DateTime.UtcNow, command.EntiIntervenuti);
 
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;

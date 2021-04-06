@@ -118,7 +118,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodUOCompetenza = Competenze.ToArray(),
                 Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = command.CodiceSede,
+                CodSOCompetente = Competenze.ToList()[0],
                 CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
@@ -128,10 +128,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
 
-            if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
-            {
-                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.CodUtente);
-            }
+            //if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
+            //{
+            //    new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.CodUtente);
+            //}
 
             new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.CodUtente)
             {
@@ -150,12 +150,12 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
             command.Chiamata.RilevanteStArCu);
 
-            if (command.Chiamata.Azione.Equals(Azione.FalsoAllarme) || command.Chiamata.Azione.Equals(Azione.ChiusuraForzata) ||
-                command.Chiamata.Azione.Equals(Azione.InterventoDuplicato) || command.Chiamata.Azione.Equals(Azione.InterventoNonPiuNecessario))
-            {
-                command.Chiamata.Stato = Costanti.RichiestaChiusa;
-                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
-            }
+            //if (command.Chiamata.Azione.Equals(Azione.FalsoAllarme) || command.Chiamata.Azione.Equals(Azione.ChiusuraForzata) ||
+            //    command.Chiamata.Azione.Equals(Azione.InterventoDuplicato) || command.Chiamata.Azione.Equals(Azione.InterventoNonPiuNecessario))
+            //{
+            //    command.Chiamata.Stato = Costanti.RichiestaChiusa;
+            //    new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
+            //}
 
             if (command.Chiamata.CodiceSchedaNue != null)
             {

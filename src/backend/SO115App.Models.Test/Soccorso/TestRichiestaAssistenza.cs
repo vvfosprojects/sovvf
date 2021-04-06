@@ -310,7 +310,7 @@ namespace Modello.Test.Classi.Soccorso
         public void UnaRichiestaConEventoChiusuraEChiusa()
         {
             var richiesta = new RichiestaAssistenza();
-            new ChiusuraRichiesta("test", richiesta, DateTime.Now, "fonte");
+            new ChiusuraRichiesta("test", richiesta, DateTime.Now, "fonte", null);
 
             var chiusa = richiesta.Chiusa;
 
@@ -322,7 +322,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ChiusuraRichiesta("test", richiesta, now, "fonte");
+            new ChiusuraRichiesta("test", richiesta, now, "fonte", null);
             new RiaperturaRichiesta("test", richiesta, now.AddSeconds(10), "fonte");
 
             var aperta = !richiesta.Chiusa;
@@ -335,9 +335,9 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
-            new ChiusuraRichiesta("test", richiesta, now, "fonte");
+            new ChiusuraRichiesta("test", richiesta, now, "fonte", null);
             new RiaperturaRichiesta("test", richiesta, now.AddSeconds(10), "fonte");
-            new ChiusuraRichiesta("test", richiesta, now.AddSeconds(20), "fonte");
+            new ChiusuraRichiesta("test", richiesta, now.AddSeconds(20), "fonte", null);
 
             var chiusa = richiesta.Chiusa;
 

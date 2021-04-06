@@ -87,10 +87,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
-                codDistaccamento = listaSedi.First().Codice,
-                descDistaccamento = listaSedi.First().Nome,
-                listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodSOCompetente.Equals(listaSedi.First().Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))) : null,
-                listaSquadre = listaSquadre.Select(x => x.Squadra).ToList()
+                codDistaccamento = query.CodiceSede,
+                descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome == "Comando VV.F. di Roma" ? "Sede Centrale" : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
+                listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))) : null,
+                listaSquadre = listaSquadre.FindAll(x => x.Squadra.Distaccamento.Codice.Equals(query.CodiceSede)).Select(x => x.Squadra).ToList()
             };
 
             return new CodaChiamateDettaglioResult()
