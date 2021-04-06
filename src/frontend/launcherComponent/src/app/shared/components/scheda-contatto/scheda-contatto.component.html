@@ -33,7 +33,7 @@
                 <div class="clearfix">
                     <ng-container *ngIf="!editSchedaContatto">
                         <button class="btn btn-lg btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
-                                [disabled]="disableCreaRichiesta" [class.cursor-not-allowed]="disableCreaRichiesta"
+                                [disabled]="disableCreaRichiesta" [class.cursor-not-allowed]="disableCreaRichiesta" placement="left"
                                 (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
                             <i class="fa fa-arrow-right"></i>
                         </button>
