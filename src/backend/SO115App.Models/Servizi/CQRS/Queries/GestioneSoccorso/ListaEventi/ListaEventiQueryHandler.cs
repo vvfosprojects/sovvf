@@ -135,6 +135,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case AnnullamentoRichiestaSoccorsoAereo _:
                     return ((AnnullamentoRichiestaSoccorsoAereo)evento).Note;
 
+                case ChiusuraRichiesta _:
+                    return ((ChiusuraRichiesta)evento).Motivazione;
+
                 case AllertaSedi _:
 
                 default:

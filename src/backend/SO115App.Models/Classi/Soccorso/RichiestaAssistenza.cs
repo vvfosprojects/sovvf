@@ -28,6 +28,7 @@ using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using System;
@@ -109,14 +110,14 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, RichiestaAssistenza richiestaDaRientrare = null)
         {
-            switch(stato.Stato)
+            switch (stato.Stato)
             {
                 case Costanti.MezzoInUscita:
-            
+
                     if (!Eventi.OfType<InizioPresaInCarico>().Any())
                     {
                         new InizioPresaInCarico(this, stato.DataOraAggiornamento.AddSeconds(1), CodOperatore);
-                        SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+                        SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
                     }
 
                     new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
@@ -124,28 +125,31 @@ namespace SO115App.API.Models.Classi.Soccorso
                     partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                     partenza.Mezzo.IdRichiesta = Id;
 
-                break;
+                    break;
+
                 case Costanti.MezzoInViaggio:
-            
+
                     var dataComposizione = stato.DataOraAggiornamento.AddSeconds(2);
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
                     partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                     partenza.Mezzo.IdRichiesta = Id;
 
-                break;
+                    break;
+
                 case Costanti.MezzoSulPosto:
-            
+
                     new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                    SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+                    SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
 
                     partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
                     partenza.Mezzo.IdRichiesta = Id;
 
-                break;
+                    break;
+
                 case Costanti.MezzoInRientro:
-            
+
                     partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
@@ -153,9 +157,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                     if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                         new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
 
-                break;
+                    break;
+
                 case Costanti.MezzoRientrato:
-            
+
                     partenza.Mezzo.Stato = Costanti.MezzoInSede;
                     partenza.Mezzo.IdRichiesta = null;
                     partenza.Terminata = true;
@@ -163,9 +168,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
                     if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                        new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+                        new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore, null);
 
-                break;
+                    break;
             }
 
             foreach (var squadra in partenza.Squadre)
@@ -179,11 +184,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="statoRichiesta">stato attuale della richiesta</param>
         /// <param name="id">id della fonte (operatore)</param>
         /// <param name="motivazione">testo della motivazione</param>
-        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione, DateTime dataEvento)
+        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione, DateTime dataEvento, List<EnteDTO> EntiIntervenuti)
         {
             if (stato == Costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
             {
-                new ChiusuraRichiesta(motivazione, this, dataEvento, id);
+                new ChiusuraRichiesta(motivazione, this, dataEvento, id, EntiIntervenuti);
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
@@ -433,6 +438,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
         public virtual List<string> Tipologie { get; set; }
+
         public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
