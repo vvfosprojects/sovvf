@@ -7,9 +7,9 @@
     <input id="{{typeName}}{{checkboxState.label}}"
            type="checkbox"
            [checked]="checkboxState.status"
-           [disabled]="checkboxState?.disabled"
+           [disabled]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.id !== 'Chiuse'))"
            (click)="onCheck()"/>
     <label for="{{typeName}}{{checkboxState.label}}"
            [innerHTML]="labelFormat()"
-           [class.disable-checkbox]="checkboxState?.disabled"></label>
+           [class.disable-checkbox]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.id !== 'Chiuse'))"></label>
 </div>

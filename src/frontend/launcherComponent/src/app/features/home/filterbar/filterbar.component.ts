@@ -41,6 +41,8 @@ export class FilterbarComponent {
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.filtriStatiRichiesta) filtriStatiRichieste$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.filtriRichiesteChiuse) filtriRichiesteChiuse$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
 
     // Ricerca Richieste

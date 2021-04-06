@@ -32,6 +32,7 @@
                     <div *ngFor="let f of filtri; let index = index" class="cursor-pointer mb-2">
                         <app-filtro *ngIf="f.star === true"
                                     [filtro]="f"
+                                    [disableFiltri]="lockFiltri$ | async"
                                     [useCheckbox]="true"
                                     [selezionato]="specialSelected[index]"
                                     [disabled]="disableFilters"
@@ -46,9 +47,24 @@
                 <app-filtro *ngIf="f.star === true"
                             [filtro]="f"
                             [useCheckbox]="true"
+                            [disableFiltri]="lockFiltri$ | async"
                             [selezionato]="f | selectedFilterRichieste"
                             [disabled]="disableFilters"
-                            [periodoChiuse]="periodoChiuse"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+              </div>
+            </div>
+            <h6 class="font-weight-bold">Chiuse:</h6>
+            <div class="py-1">
+              <div *ngFor="let f of chiuse" class="cursor-pointer mb-2">
+                <app-filtro *ngIf="f.star === true"
+                            [filtro]="f"
+                            [useCheckbox]="true"
+                            [disableFiltri]="lockFiltri$ | async"
+                            [selezionato]="f | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            [periodoChiuseChiamate]="periodoChiuseChiamate"
+                            [periodoChiusiInterventi]="periodoChiusiInterventi"
                             (filtroSelezionato)="onSelezioneFiltro($event)"
                             (filtroDeselezionato)="onDeselezioneFiltro($event)"
                             (chiusiModal)="openChiusiModal($event)"></app-filtro>
@@ -58,6 +74,7 @@
             <div class="py-1">
               <div *ngFor="let f of altriFiltri" class="cursor-pointer mb-2">
                 <app-filtro *ngIf="f.star === true"
+                            [disableFiltri]="lockFiltri$ | async"
                             [filtro]="f"
                             [listaZoneEmergenzaSelezionate]="listaZoneEmergenzaSelezionate"
                             [useCheckbox]="true"

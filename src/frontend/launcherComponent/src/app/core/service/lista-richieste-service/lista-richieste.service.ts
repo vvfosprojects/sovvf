@@ -26,14 +26,16 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri');
+        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri' && f.categoria !== 'Chiuse');
         let filtriTipologia;
         if (filtriTipologieRichiesta?.length) {
             filtriTipologia = filtriTipologieRichiesta[0]?.codice;
         }
         const filtroStato = this.store.selectSnapshot(ZoneEmergenzaState.fakeStatoRichiesta);
         const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
-        const periodoChiuse = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiuse);
+        const chiuse = this.store.selectSnapshot(ZoneEmergenzaState.chiuse);
+        const periodoChiuseChiamate = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiuseChiamate);
+        const periodoChiusiInterventi = this.store.selectSnapshot(ZoneEmergenzaState.periodoChiusiInterventi);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
@@ -43,7 +45,9 @@ export class SintesiRichiesteService {
             statiRichiesta: filtroStato && filtroStato.length ? filtroStato : null,
             tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
             zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
-            periodoChiuse: periodoChiuse.da || periodoChiuse.data || periodoChiuse.turno ? periodoChiuse : null,
+            chiuse: chiuse && chiuse.length ? chiuse : null,
+            periodoChiuseChiamate: periodoChiuseChiamate.da || periodoChiuseChiamate.data || periodoChiuseChiamate.turno ? periodoChiuseChiamate : null,
+            periodoChiusiInterventi: periodoChiusiInterventi.da || periodoChiusiInterventi.data || periodoChiusiInterventi.turno ? periodoChiusiInterventi : null,
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }

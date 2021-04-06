@@ -12,6 +12,8 @@
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
+                                      [statiRichiesta]="filtriStatiRichieste$ | async"
+                                      [chiuse]="filtriRichiesteChiuse$ | async"
                                       [filtriAttiviToolTip]="filtriAttiviToolTip$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [disableFilters]="loadingRichieste$ | async"
