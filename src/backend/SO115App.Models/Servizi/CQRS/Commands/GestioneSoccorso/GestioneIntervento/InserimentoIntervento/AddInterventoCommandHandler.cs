@@ -118,7 +118,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodUOCompetenza = Competenze.ToArray(),
                 Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = command.CodiceSede,
+                CodSOCompetente = Competenze.ToList()[0],
                 CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
