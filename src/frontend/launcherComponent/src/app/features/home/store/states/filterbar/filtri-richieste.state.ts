@@ -9,32 +9,34 @@ import {
     ClearFiltriTipologiaSelezionatiRichieste,
     ClearFiltroSelezionatoRichieste, ClearFiltroSenzaEsecuzione,
     ClearFiltroTipologiaSelezionatoRichieste,
-    GetFiltriRichieste, RemoveChiuseRichiesta, RemoveFakeStatoRichiesta, RemovePeriodoChiuse,
-    ResetFiltriSelezionatiRichieste, SetChiuseRichiesta, SetFakeStatoRichiesta,
+    GetFiltriRichieste, RemoveChiuseRichiesta, RemovePeriodoChiuse, RemoveSelezioneStatoRichiesta,
+    ResetFiltriSelezionatiRichieste, SetChiuseRichiesta,
     SetFiltroBoxRichieste,
     SetFiltroSelezionatoRichieste,
-    SetFiltroTipologiaSelezionatoRichieste, SetPeriodoChiuse
+    SetFiltroTipologiaSelezionatoRichieste, SetPeriodoChiuse, SetSelezioneStatoRichiesta
 } from '../../actions/filterbar/filtri-richieste.actions';
 import { Injectable } from '@angular/core';
 import produce from 'immer';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { TipologiaRichiesta } from '../../../../../shared/enum/tipologiaRichiesta.enum';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
+import { FiltroPeriodoChiuse } from '../../../../../shared/interface/filtro-chiuse-dettaglio.interface';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
     statiRichiesta: VoceFiltro[];
+    selezioneStatoRichiesta: string[];
     filtriRichiesteChiuse: VoceFiltro[];
-    periodoChiuseChiamate: any;
     chiuse: string[];
-    periodoChiusiInterventi: any;
+    periodoChiuseChiamate: FiltroPeriodoChiuse;
+    periodoChiusiInterventi: FiltroPeriodoChiuse;
+    altriFiltri: VoceFiltro[];
     filtriRichieste: VoceFiltro[];
     filtriRichiesteSelezionati: VoceFiltro[];
     categoriaFiltriRichieste: string[];
     filtriTipologiaSelezionati: VoceFiltro[];
     filtriStatoRichiesteSelezionati: StatoRichiesta[];
     disableFiltri: boolean;
-    fakeStatoRichiesta: string[];
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
@@ -89,6 +91,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
             star: true,
             statico: true,
         }],
+    selezioneStatoRichiesta: [],
     filtriRichiesteChiuse: [
         {
             categoria: 'Chiuse',
@@ -119,6 +122,16 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
         data: null,
         turno: null,
     },
+    altriFiltri: [
+        {
+            categoria: 'AltriFiltri',
+            codice: 'ZonaEmergenza',
+            descrizione: 'Zona Emergenza',
+            name: 'zonaEmergenza',
+            star: true,
+            statico: true,
+        }
+    ],
     chiuse: [],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [],
@@ -126,7 +139,6 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriTipologiaSelezionati: [],
     filtriStatoRichiesteSelezionati: [],
     disableFiltri: false,
-    fakeStatoRichiesta: [],
 };
 
 @Injectable()
@@ -152,6 +164,11 @@ export class FiltriRichiesteState {
     @Selector()
     static filtriRichiesteChiuse(state: FiltriRichiesteStateModel): VoceFiltro[] {
         return state.filtriRichiesteChiuse;
+    }
+
+    @Selector()
+    static altriFiltri(state: FiltriRichiesteStateModel): VoceFiltro[] {
+        return state.altriFiltri;
     }
 
     @Selector()
@@ -195,8 +212,8 @@ export class FiltriRichiesteState {
     }
 
     @Selector()
-    static fakeStatoRichiesta(state: FiltriRichiesteStateModel): string[] {
-        return state.fakeStatoRichiesta;
+    static selezioneStatoRichiesta(state: FiltriRichiesteStateModel): string[] {
+        return state.selezioneStatoRichiesta;
     }
 
     @Action(GetFiltriRichieste)
@@ -436,25 +453,25 @@ export class FiltriRichiesteState {
         });
     }
 
-    @Action(SetFakeStatoRichiesta)
-    setFakeStatoRichiesta({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: any): void {
+    @Action(SetSelezioneStatoRichiesta)
+    setSelezioneStatoRichiesta({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: any): void {
         const state = getState();
-        const singleValue = action.zoneEmergenza;
-        const arrayStati = [...state.fakeStatoRichiesta];
+        const singleValue = action.statoRichiesta;
+        const arrayStati = [...state.selezioneStatoRichiesta];
         arrayStati.push(singleValue);
         patchState({
-            fakeStatoRichiesta: arrayStati,
+            selezioneStatoRichiesta: arrayStati,
         });
     }
 
-    @Action(RemoveFakeStatoRichiesta)
-    removeFakeStatoRichiesta({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: any): void {
+    @Action(RemoveSelezioneStatoRichiesta)
+    removeSelezioneStatoRichiesta({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: any): void {
         const state = getState();
-        const singleValue = action.zoneEmergenza;
-        const arrayStati = [...state.fakeStatoRichiesta];
+        const singleValue = action.statoRichiesta;
+        const arrayStati = [...state.selezioneStatoRichiesta];
         const arrayStatiFiltrati = arrayStati.filter(x => x !== singleValue);
         patchState({
-            fakeStatoRichiesta: arrayStatiFiltrati,
+            selezioneStatoRichiesta: arrayStatiFiltrati,
         });
     }
 }

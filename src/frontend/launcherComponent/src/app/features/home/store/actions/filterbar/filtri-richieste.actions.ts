@@ -91,16 +91,16 @@ export class RemoveChiuseRichiesta {
     }
 }
 
-export class SetFakeStatoRichiesta {
-    static readonly type = '[FiltriRichieste] Set Stati Richiesta Fake';
+export class SetSelezioneStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Set Selezione Stato Richiesta';
 
-    constructor(public zoneEmergenza: string) {
+    constructor(public statoRichiesta: string) {
     }
 }
 
-export class RemoveFakeStatoRichiesta {
-    static readonly type = '[FiltriRichieste] Remove Stati Richiesta Fake';
+export class RemoveSelezioneStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Remove Selezione Stato Richiesta';
 
-    constructor(public zoneEmergenza: string) {
+    constructor(public statoRichiesta: string) {
     }
 }

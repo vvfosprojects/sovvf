@@ -5,12 +5,11 @@ import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-fi
 import {
     ApplyFiltriTipologiaSelezionatiRichieste,
     ClearFiltroSenzaEsecuzione,
-    RemoveChiuseRichiesta, RemoveFakeStatoRichiesta,
-    RemovePeriodoChiuse,
+    RemoveChiuseRichiesta,
+    RemovePeriodoChiuse, RemoveSelezioneStatoRichiesta,
     ResetFiltriSelezionatiRichieste,
     SetChiuseRichiesta,
-    SetFakeStatoRichiesta,
-    SetPeriodoChiuse
+    SetPeriodoChiuse, SetSelezioneStatoRichiesta
 } from '../../store/actions/filterbar/filtri-richieste.actions';
 import { Select, Store } from '@ngxs/store';
 import { ModalRichiesteChiuseComponent } from './modal-richieste-chiuse/modal-richieste-chiuse.component';
@@ -21,6 +20,7 @@ import {
 } from '../../store/actions/filterbar/zone-emergenza.actions';
 import { Observable, Subscription } from 'rxjs';
 import { FiltriRichiesteState } from '../../store/states/filterbar/filtri-richieste.state';
+import { FiltroChiuseDettaglio } from '../../../../shared/interface/filtro-chiuse-dettaglio.interface';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -38,6 +38,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
     @Input() disableFilters: boolean;
     @Input() nightMode: boolean;
     @Input() filtriAttiviToolTip: VoceFiltro[];
+    @Input() altriFiltri: VoceFiltro[];
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
@@ -49,25 +50,9 @@ export class FiltriRichiesteComponent implements OnDestroy {
     specialSelected = [false, false, false];
 
     listaZoneEmergenzaSelezionate: string[] = [];
-    periodoChiuseChiamate: any = {
-        daA: null,
-        data: null,
-        turno: null,
-    };
-    periodoChiusiInterventi: any = {
-        daA: null,
-        data: null,
-        turno: null,
-    };
+    periodoChiuseChiamate: FiltroChiuseDettaglio;
+    periodoChiusiInterventi: FiltroChiuseDettaglio;
     onlyOneCheck = false;
-    altriFiltri: VoceFiltro[] = [{
-        categoria: 'AltriFiltri',
-        codice: 'ZonaEmergenza',
-        descrizione: 'Zona Emergenza',
-        name: 'zonaEmergenza',
-        star: true,
-        statico: true,
-    }];
 
     private subscriptions: Subscription = new Subscription();
 
@@ -100,7 +85,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
         modal.result.then((res: string[]) => {
             this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
         });
-    } // Da rimuovere
+    } // TODO: Da rimuovere
 
     openChiusiModal(event: any): void {
         let modalOptions;
@@ -128,9 +113,9 @@ export class FiltriRichiesteComponent implements OnDestroy {
                     break;
                 case 'ko':
                     if (event.richiesta === 'Chiamate') {
-                        this.periodoChiuseChiamate = {};
+                        this.periodoChiuseChiamate = null;
                     } else if (event.richiesta === 'Interventi') {
-                        this.periodoChiusiInterventi = {};
+                        this.periodoChiusiInterventi = null;
                     }
                     break;
             }
@@ -187,7 +172,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
             });
         }
         if (filtro.categoria === 'StatiRichiesta') {
-            this.store.dispatch(new SetFakeStatoRichiesta(filtro.codice));
+            this.store.dispatch(new SetSelezioneStatoRichiesta(filtro.codice));
             this.filtroSelezionato.emit(filtro);
         } else if (filtro.categoria === 'Chiuse') {
             if (!this.lockFiltri) {
@@ -208,13 +193,13 @@ export class FiltriRichiesteComponent implements OnDestroy {
             this.listaZoneEmergenzaSelezionate = [];
         }
         if (filtro.categoria === 'StatiRichiesta') {
-            this.store.dispatch(new RemoveFakeStatoRichiesta(filtro.codice));
+            this.store.dispatch(new RemoveSelezioneStatoRichiesta(filtro.codice));
             this.filtroDeselezionato.emit(filtro);
         } else if (filtro.categoria === 'Chiuse') {
             if (filtro.descrizione === 'Chiamate') {
-                this.periodoChiuseChiamate = {};
+                this.periodoChiuseChiamate = null;
             } else if (filtro.descrizione === 'Interventi') {
-                this.periodoChiusiInterventi = {};
+                this.periodoChiusiInterventi = null;
             }
             this.store.dispatch(new RemovePeriodoChiuse(filtro.descrizione));
             this.store.dispatch(new RemoveChiuseRichiesta(filtro.codice));
@@ -227,8 +212,8 @@ export class FiltriRichiesteComponent implements OnDestroy {
     resetFiltri(chiuse?: boolean): void {
         this.specialSelected = [false, false, false];
         this.listaZoneEmergenzaSelezionate = [];
-        this.periodoChiuseChiamate = {};
-        this.periodoChiusiInterventi = {};
+        this.periodoChiuseChiamate = null;
+        this.periodoChiusiInterventi = null;
         this.store.dispatch(new ResetFiltriStatiZone());
         this.store.dispatch(new RemovePeriodoChiuse());
         if (!chiuse) {

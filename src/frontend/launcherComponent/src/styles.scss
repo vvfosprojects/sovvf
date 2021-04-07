@@ -309,6 +309,15 @@ $n-prima-competenza: #007bff !important;
   .ngb-dp-month-name {
     color: $n-black;
   }
+
+  .box-zona-emergenza {
+    background: $n-dark-light;
+    box-shadow: none !important;
+  }
+
+  .box-locked {
+    color: $n-muted;
+  }
 }
 
 // END Moon Mode Styles

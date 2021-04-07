@@ -32,7 +32,7 @@ export class SintesiRichiesteService {
         if (filtriTipologieRichiesta?.length) {
             filtriTipologia = filtriTipologieRichiesta[0]?.codice;
         }
-        const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.fakeStatoRichiesta);
+        const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.selezioneStatoRichiesta);
         const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
         const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
         const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
