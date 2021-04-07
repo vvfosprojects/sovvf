@@ -31,7 +31,7 @@ import {
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { FiltersInterface } from '../../../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';

@@ -79,8 +79,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
 
         /// <summary>
         ///   Indica l'estensione territoriale delle richieste da cercare
-        /// </summary>
-        public Geolocalizzazione GeoLocalizzazione { get; set; }
+        ///// </summary>
+        //public Geolocalizzazione GeoLocalizzazione { get; set; }
 
         /// <summary>
         ///   L'id dell'operatore che sta facendo la richiesta
@@ -89,12 +89,17 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
 
         public Localita IndirizzoIntervento { get; set; }
 
+
         /// <summary>
         ///   Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
         /// </summary>
         public string TipologiaRichiesta { get; set; } = "ChiamateInterventi";
 
-        public PeriodoChiuse PeriodoChiuse { get; set; }
+        public string[] Chiuse { get; set; }
+
+        public PeriodoChiuse PeriodoChiuseChiamate { get; set; } = null;
+
+        public PeriodoChiuse PeriodoChiusiInterventi { get; set; } = null;
 
         public List<string> ZoneEmergenza { get; set; }
     }

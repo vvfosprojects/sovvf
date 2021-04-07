@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FiltersInterface } from 'src/app/shared/interface/filters/filters.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { Observable } from 'rxjs';
-import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 import { AddTrasferimentoChiamata } from '../../../shared/interface/trasferimento-chiamata.interface';
 
 const BASE_URL = environment.baseUrl;

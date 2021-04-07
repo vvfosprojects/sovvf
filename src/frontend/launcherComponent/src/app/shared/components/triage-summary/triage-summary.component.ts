@@ -22,6 +22,10 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() codSchedaContatto: string;
     @Input() countInterventiProssimita: number;
     @Input() interventiProssimita: SintesiRichiesta[];
+    @Input() countInterventiStessaVia: number;
+    @Input() interventiStessaVia: SintesiRichiesta[];
+    @Input() countInterventiChiusiStessaVia: number;
+    @Input() interventiChiusiStessaVia: SintesiRichiesta[];
     @Input() triageSummary: TriageSummary[];
     @Input() schedaContatto: SchedaContatto;
 

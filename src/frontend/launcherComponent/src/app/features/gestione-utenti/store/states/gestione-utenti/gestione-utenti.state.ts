@@ -17,7 +17,7 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';

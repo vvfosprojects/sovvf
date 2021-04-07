@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_SCHEDE_CONTATTO = BASE_URL + environment.apiUrl.schedeContatto;
