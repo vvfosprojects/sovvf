@@ -47,7 +47,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';

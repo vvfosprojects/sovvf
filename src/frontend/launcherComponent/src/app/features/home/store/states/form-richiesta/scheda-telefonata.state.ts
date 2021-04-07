@@ -38,7 +38,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PatchRichiesta, SetRichiestaModifica } from '../../actions/form-richiesta/richiesta-modifica.actions';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ConfirmModalComponent } from '../../../../../shared/modal/confirm-modal/confirm-modal.component';
@@ -49,6 +49,8 @@ import { TipologieState } from '../../../../../shared/store/states/tipologie/tip
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
+import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -61,6 +63,10 @@ export interface SchedaTelefonataStateModel {
     competenze: Sede[];
     countInterventiProssimita: number;
     interventiProssimita: SintesiRichiesta[];
+    countInterventiStessaVia: number;
+    interventiStessaVia: SintesiRichiesta[];
+    countInterventiChiusiStessaVia: number;
+    interventiChiusiStessaVia: SintesiRichiesta[];
     nuovaRichiesta: SintesiRichiesta;
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
@@ -79,6 +85,10 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     competenze: null,
     countInterventiProssimita: undefined,
     interventiProssimita: null,
+    countInterventiStessaVia: undefined,
+    interventiStessaVia: null,
+    countInterventiChiusiStessaVia: undefined,
+    interventiChiusiStessaVia: null,
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
@@ -121,6 +131,26 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
+    static countInterventiStessaVia(state: SchedaTelefonataStateModel): number {
+        return state.countInterventiStessaVia;
+    }
+
+    @Selector()
+    static interventiStessaVia(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
+        return state.interventiStessaVia;
+    }
+
+    @Selector()
+    static countInterventiChiusiStessaVia(state: SchedaTelefonataStateModel): number {
+        return state.countInterventiChiusiStessaVia;
+    }
+
+    @Selector()
+    static interventiChiusiStessaVia(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
+        return state.interventiChiusiStessaVia;
+    }
+
+    @Selector()
     static resetChiamata(state: SchedaTelefonataStateModel): boolean {
         return state.resetChiamata;
     }
@@ -138,7 +168,7 @@ export class SchedaTelefonataState {
     @Action(ReducerSchedaTelefonata)
     reducer({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
 
-        const coordinate = action.schedaTelefonata.markerChiamata.localita.coordinate;
+        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate;
 
         function getCooordinate(): Coordinate {
             return coordinate;
@@ -216,18 +246,22 @@ export class SchedaTelefonataState {
 
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
-        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: ResponseInterface) => {
+        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
-                countInterventiProssimita: res.count
+                countInterventiProssimita: res.count,
+                countInterventiStessaVia: res.countStessaVia,
+                countInterventiChiusiStessaVia: res.countInterventiChiusiStessaVia
             });
         });
     }
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
-        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: ResponseInterface) => {
+        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
-                interventiProssimita: res.dataArray
+                interventiProssimita: res.dataArray,
+                interventiStessaVia: res.dataArrayStessaVia,
+                interventiChiusiStessaVia: res.dataArrayInterventiChiusiStessaVia
             });
         });
     }

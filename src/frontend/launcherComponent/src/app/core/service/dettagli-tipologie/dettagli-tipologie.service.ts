@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, GetDettaglioTipologiaByCodTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';

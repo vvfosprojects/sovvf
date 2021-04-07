@@ -16,7 +16,7 @@ import {
 } from '../../actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { StartLoading, StopLoading } from '../../actions/loading/loading.actions';
 import { PaginationState } from '../pagination/pagination.state';
-import { ResponseInterface } from '../../../interface/response.interface';
+import { ResponseInterface } from '../../../interface/response/response.interface';
 import { PatchPagination } from '../../actions/pagination/pagination.actions';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';

@@ -62,6 +62,10 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     @Input() competenze: Sede[];
     @Input() countInterventiProssimita: number;
     @Input() interventiProssimita: SintesiRichiesta[];
+    @Input() countInterventiStessaVia: number;
+    @Input() interventiStessaVia: SintesiRichiesta[];
+    @Input() countInterventiChiusiStessaVia: number;
+    @Input() interventiChiusiStessaVia: SintesiRichiesta[];
     @Input() enti: Ente[];
     @Input() disabledInviaPartenza = false;
     @Input() resetChiamata: boolean;

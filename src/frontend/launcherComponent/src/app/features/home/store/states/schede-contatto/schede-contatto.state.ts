@@ -50,7 +50,7 @@ import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
 import { FiltersInterface } from '../../../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewComponentState } from '../view/view.state';

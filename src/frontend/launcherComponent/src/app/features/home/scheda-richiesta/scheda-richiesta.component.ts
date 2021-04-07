@@ -29,6 +29,10 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
     @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
+    @Select(SchedaTelefonataState.countInterventiStessaVia) countInterventiStessaVia$: Observable<number>;
+    @Select(SchedaTelefonataState.interventiStessaVia) interventiStessaVia$: Observable<SintesiRichiesta[]>;
+    @Select(SchedaTelefonataState.countInterventiChiusiStessaVia) countInterventiChiusiStessaVia$: Observable<number>;
+    @Select(SchedaTelefonataState.interventiChiusiStessaVia) interventiChiusiStessaVia$: Observable<SintesiRichiesta[]>;
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
