@@ -42,11 +42,11 @@
                                 <a class="h6" [class.text-moon]="nightMode"
                                    (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
-                                          class="font-xxlarge n-color">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                                          class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                                         <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                                     </span>
                                     <span *ngIf="!richiesta.codiceRichiesta"
-                                          class="font-xxlarge n-color">{{ richiesta.codice.slice(0, -5) }}
+                                          class="font-xxlarge">{{ richiesta.codice.slice(0, -5) }}
                                         <span style="font-size: 30px; font-weight: 700">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                                     </span>
                                 </a>
@@ -261,7 +261,7 @@
                                 <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 140%"
                                            ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge n-color">{{ richiesta?.richiedente?.telefono }}</a>
+                                        <a class="font-xxlarge">{{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                             </div>
                         </div>
@@ -327,7 +327,7 @@
                                 <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%"
                                            ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge n-color" [class.text-moon]="nightMode">
+                                        <a class="font-xxlarge" [class.text-moon]="nightMode">
                                           {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                             </div>

@@ -74,6 +74,7 @@ $n-prima-competenza: #007bff !important;
 // Sun Mode Styles
 .sun-mode {
   background-color: $n-white;
+  color: $n-black;
 
   .n-li-box a {
     color: $n-black;
@@ -87,14 +88,6 @@ $n-prima-competenza: #007bff !important;
 
   .n-icon-afm {
     color: $n-guida;
-  }
-
-  .n-text-muted {
-    color: $n-muted;
-  }
-
-  .n-color {
-    color: $n-black;
   }
 
   .n-box-azione {
@@ -169,6 +162,10 @@ $n-prima-competenza: #007bff !important;
     background-color: $n-dark;
   }
 
+  .table {
+    color: $n-white;
+  }
+
   .legend-labels {
     background-color: $n-dark-light;
   }
@@ -227,10 +224,6 @@ $n-prima-competenza: #007bff !important;
     color: $n-white;
   }
 
-  .n-color {
-    color: $n-white;
-  }
-
   .n-dark-light {
     background-color: $n-dark-light;
   }
@@ -265,10 +258,6 @@ $n-prima-competenza: #007bff !important;
 
   .n-bg-light {
     background-color: $n-light;
-  }
-
-  .n-text-muted {
-    color: $n-white;
   }
 
   .divider-custom-line {
