@@ -1,9 +1,9 @@
-<div *ngIf="datimeteo" style="padding: 0px 5px 0px 5px">
+<div *ngIf="datimeteo" style="padding: 0 5px 0 5px">
     <div class="row">
         <div class="col-12 pt-0 pb-0" ngbTooltip="{{ datimeteo?.descrizione }}"
              [disableTooltip]="datimeteo?.descrizione.length <= 20" placement="bottom">
             <img class="iconameteo" src="https://openweathermap.org/img/w/{{datimeteo?.icona}}.png"><span
-                class="font-xlarge font-weight-bold text-capitalize">{{datimeteo?.descrizione | truncate: 20}}</span>
+                class="font-weight-bold text-capitalize" style="font-size: 20px; vertical-align: sub;">{{datimeteo?.descrizione | truncate: 20}}</span>
             <span class="badge badge-mod-success h6 ml-2 mt-1 font-xlarge">{{datimeteo?.temperatura}}°</span>
         </div>
         <div class="col-12">

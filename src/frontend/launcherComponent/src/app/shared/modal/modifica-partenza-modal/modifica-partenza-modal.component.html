@@ -77,7 +77,7 @@
         </div>
         <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 35.5rem; margin-left: 250px;">
             <ul class="list-group list-group-flush font-xlarge">
-                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item n-color n-card"
+                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item n-card"
                     style="display: inline-flex; place-content: space-between;">
                     <input class="form-control font-xlarge" [(ngModel)]="sequenze[index].select[index].name"
                            [ngModelOptions]="{standalone: true}" style="min-width: 220px; align-self: center;" readonly>
@@ -86,7 +86,7 @@
                                         style="margin-left: 25px;"></ngb-timepicker>
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
-                        <small class="text-muted n-color"
+                        <small class="text-muted"
                                style="display: flex; position: absolute; transform: translate(-305px, 100px); min-width: fit-content; display: ruby">
                             * Il cambio di stato "{{sequenze[index]?.select[index]?.name}}" risulterà
                             alle {{sequenza?.time?.hour <= 9 ? '0' + sequenza?.time?.hour : sequenza?.time?.hour}}
