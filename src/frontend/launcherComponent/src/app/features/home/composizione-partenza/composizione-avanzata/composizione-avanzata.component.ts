@@ -151,16 +151,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         ]);
     }
 
-    nightModeText(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'text-dark';
-        } else if (this.nightMode) {
-            value = 'text-white';
-        }
-        return value;
-    }
-
     checkSquadraSelezione(idSquadra: string): boolean {
         let squadraSelezionata = false;
         if (this.idSquadreSelezionate) {

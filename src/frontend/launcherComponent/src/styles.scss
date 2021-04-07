@@ -175,14 +175,6 @@ $n-prima-competenza: #007bff !important;
     border-top: $n-hr;
   }
 
-  .bg-dark-light {
-    background-color: $n-dark-light;
-  }
-
-  .n-bg-light {
-    background-color: $n-light;
-  }
-
   .divider-custom-line {
     background: $n-white;
   }
@@ -198,10 +190,6 @@ $n-prima-competenza: #007bff !important;
     padding: 0.15em 0.2em;
   }
 
-  .bg-scheda-contatto {
-    background: $n-dark-light;
-  }
-
   .gestita {
     background: $n-dark-light;
   }
@@ -211,16 +199,8 @@ $n-prima-competenza: #007bff !important;
     border-color: $n-muted;
   }
 
-  .bg-resoconto-triage {
-    background-color: $n-muted;
-  }
-
   .list-group-item {
     background-color: #464e56;
-  }
-
-  .bg-partial-loader {
-    background-color: transparent !important;
   }
 
   .popover-header {
@@ -238,6 +218,26 @@ $n-prima-competenza: #007bff !important;
 
   .box-locked {
     color: $n-muted;
+  }
+
+  .bg-dark-light {
+    background-color: $n-dark-light;
+  }
+
+  .bg-white-light {
+    background-color: $n-light;
+  }
+
+  .bg-scheda-contatto {
+    background: $n-dark-light;
+  }
+
+  .bg-resoconto-triage {
+    background-color: $n-muted;
+  }
+
+  .bg-partial-loader {
+    background-color: transparent !important;
   }
 }
 
@@ -272,15 +272,6 @@ $n-prima-competenza: #007bff !important;
 // End Dropdown Google Places
 
 
-.moon-mode-box {
-  background-color: $n-dark;
-  color: $n-white;
-}
-
-.moon-text {
-  color: $n-white;
-}
-
 .moon-card {
   position: relative;
   min-width: 0;
@@ -313,10 +304,6 @@ $n-prima-competenza: #007bff !important;
 
 .moon-hr {
   border-top: $n-hr;
-}
-
-.text-moon {
-  color: $n-white;
 }
 
 .opacity-50 {

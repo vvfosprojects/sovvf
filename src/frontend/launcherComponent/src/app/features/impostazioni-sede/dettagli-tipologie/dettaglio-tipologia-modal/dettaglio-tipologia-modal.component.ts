@@ -9,7 +9,6 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state';
 import { TipologieState } from '../../../../shared/store/states/tipologie/tipologie.state';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-dettaglio-tipologia-modal',
@@ -22,8 +21,6 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(DettaglioTipologiaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
-    nightMode: boolean;
 
     editDettaglioTipologia: DettaglioTipologia;
 
@@ -37,7 +34,6 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder) {
         this.initForm();
         this.getFormValid();
-        this.getNightMode();
     }
 
     initForm(): void {
@@ -72,24 +68,6 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
                 this.formValid = valid;
             })
         );
-    }
-
-    getNightMode(): void {
-        this.subscription.add(
-            this.nightMode$.subscribe((nightMode: boolean) => {
-                this.nightMode = nightMode;
-            })
-        );
-    }
-
-    onNightMode(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = '';
-        } else if (this.nightMode) {
-            value = 'moon-text moon-mode';
-        }
-        return value;
     }
 
     get f(): any {
