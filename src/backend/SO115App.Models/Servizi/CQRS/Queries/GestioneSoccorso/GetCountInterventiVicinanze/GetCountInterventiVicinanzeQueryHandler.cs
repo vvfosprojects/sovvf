@@ -11,6 +11,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
     {
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
         private readonly IGetListaSintesi _getListaSintesi;
+
         public GetCountInterventiVicinanzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze, IGetListaSintesi getListaSintesi)
         {
             _getCompetenze = getCompetenze;
@@ -28,9 +29,23 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
                 UnitaOperative = lstPinNodo
             });
 
+            var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            {
+                UnitaOperative = lstPinNodo,
+                SoloChiuse = true
+            });
+
+            var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            {
+                UnitaOperative = lstPinNodo,
+                IndirizzoIntervento = new API.Models.Classi.Condivise.Localita(null, query.Indirizzo.Split(',')[0], "")
+            });
+
             return new GetCountInterventiVicinanzeResult()
             {
-                Count = result.Count
+                Count = result.Count,
+                CountInterventiChiusiStessaVia = resultChiuseStessoIndirizzo.Count,
+                CountStessaVia = resultStessaVia.Count
             };
         }
     }

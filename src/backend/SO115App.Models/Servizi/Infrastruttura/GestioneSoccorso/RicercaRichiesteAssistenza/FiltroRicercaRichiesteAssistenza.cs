@@ -53,16 +53,19 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public ISet<PinNodo> UnitaOperative { get; set; }
 
         /// <summary>
-        ///   Indica se si vogliono includere le richieste aperte
-        ///   andrebbe eliminato questo filtro
+        ///   Indica se si vogliono includere le richieste aperte andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteAperte { get; set; } = true;
 
         /// <summary>
-        ///   Indica se si vogliono includere le richieste chiuse
-        ///   andrebbe eliminato questo filtro
+        ///   Indica se si vogliono includere le richieste chiuse andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteChiuse { get; set; } = false;
+
+        /// <summary>
+        ///   Indica la volontà di visualizzare solo le richieste Chiuse
+        /// </summary>
+        public bool SoloChiuse { get; set; } = false;
 
         /// <summary>
         ///   Contiene eventuali filtri delle tipologie
@@ -87,7 +90,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public Localita IndirizzoIntervento { get; set; }
 
         /// <summary>
-        /// Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
+        ///   Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
         /// </summary>
         public string TipologiaRichiesta { get; set; } = "ChiamateInterventi";
 

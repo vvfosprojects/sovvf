@@ -131,7 +131,9 @@ namespace SO115App.Persistence.MongoDB
 
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
-            else //CHIUSE NASCOSTE DI DEFAULT
+            else if (filtro.SoloChiuse)
+                result = result.Where(r => r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
+            else
                 result = result.Where(r => !r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
 
             //FILTRO ZONE EMERGENZA
@@ -143,20 +145,17 @@ namespace SO115App.Persistence.MongoDB
             {
                 if (filtro.PeriodoChiuse.Data != null)
                     return r.Aperta == true || (r.Chiusa == true && r.IstanteChiusura.Value.Year == filtro.PeriodoChiuse.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuse.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuse.Data.Value.Day);
-
                 else if (filtro.PeriodoChiuse.Turno != null)
                 {
                     var turno = _getTurno.Get(r.IstanteChiusura);
 
                     return r.Aperta == true || (r.Chiusa == true && turno.Codice.Contains(filtro.PeriodoChiuse.Turno));
                 }
-
                 else if (filtro.PeriodoChiuse.Da != null && filtro.PeriodoChiuse.A != null)
                     return r.Aperta == true || (r.IstanteChiusura >= filtro.PeriodoChiuse.Da && r.IstanteChiusura <= filtro.PeriodoChiuse.A);
 
                 return true;
             }).ToList();
-
 
             if (filtro.FiltriTipologie != null)
             {
@@ -165,7 +164,10 @@ namespace SO115App.Persistence.MongoDB
 
             if (filtro.IndirizzoIntervento != null)
             {
-                result = result.FindAll(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine));
+                if (filtro.IndirizzoIntervento.Coordinate != null)
+                    result = result.FindAll(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine));
+                else if (filtro.IndirizzoIntervento.Indirizzo != null)
+                    result = result.FindAll(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo));
             }
 
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)

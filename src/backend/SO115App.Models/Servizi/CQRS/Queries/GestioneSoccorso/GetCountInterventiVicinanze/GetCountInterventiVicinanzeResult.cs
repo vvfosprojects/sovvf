@@ -3,5 +3,7 @@
     public class GetCountInterventiVicinanzeResult
     {
         public int Count { get; set; }
+        public int CountStessaVia { get; set; }
+        public int CountInterventiChiusiStessaVia { get; set; }
     }
 }

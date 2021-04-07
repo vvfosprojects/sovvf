@@ -27,6 +27,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Classi.UtilityRichiesta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterventiVicinanze;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVicinanze;
@@ -70,7 +71,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("GetInterventiVicinanze")]
-        public async Task<IActionResult> GetInterventiVicinanze([FromBody] Coordinate coordinate)
+        public async Task<IActionResult> GetInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
             try
             {
@@ -78,8 +79,8 @@ namespace SO115App.API.Controllers
                 {
                     CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
-
-                    Coordinate = coordinate
+                    Coordinate = controllo.Coordinate,
+                    Indirizzo = controllo.Indirizzo
                 };
 
                 return Ok(_getInterventiVicinanze.Handle(query));
@@ -96,7 +97,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("GetCountInterventiVicinanze")]
-        public async Task<IActionResult> GetCountInterventiVicinanze([FromBody] Coordinate coordinate)
+        public async Task<IActionResult> GetCountInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
             try
             {
@@ -104,8 +105,8 @@ namespace SO115App.API.Controllers
                 {
                     CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
-
-                    Coordinate = coordinate
+                    Coordinate = controllo.Coordinate,
+                    Indirizzo = controllo.Indirizzo
                 };
 
                 return Ok(_getCountInterventiVicinanze.Handle(query));

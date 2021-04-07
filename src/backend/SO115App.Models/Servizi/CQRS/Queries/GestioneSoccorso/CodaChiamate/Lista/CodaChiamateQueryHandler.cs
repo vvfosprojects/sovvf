@@ -91,7 +91,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                  var infoDistaccamento = new Istogramma()
                  {
                      codDistaccamento = unita.Codice,
-                     descDistaccamento = unita.Nome == "Comando VV.F. ROMA" ? "Sede Centrale" : unita.Nome,
+                     descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
                      numRichieste = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))).Count() : 0,
                      squadreLibere = listaSquadre != null ? listaSquadre.FindAll(x => x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice)).Count() : 0,
                      squadreOccupate = listaSquadre != null ? listaSquadre.FindAll(x => !x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice)).Count() : 0
