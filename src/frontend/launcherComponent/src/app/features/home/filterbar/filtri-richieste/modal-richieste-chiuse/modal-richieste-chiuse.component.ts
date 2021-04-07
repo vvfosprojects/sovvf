@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal, NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Select } from '@ngxs/store';
 import { TurnoState } from '../../../../navbar/store/states/turno.state';
-import { TurnoCalendario } from '../../../../navbar/turno/turno-calendario.model';
+import { TurnoCalendario } from '../../../../navbar/turno/model/turno-calendario.model';
 
 @Component({
     selector: 'app-modal-richieste-chiuse',
@@ -33,7 +33,7 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     date: { year: number, month: number };
     todayDate;
 
-    subscription: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal, calendar: NgbCalendar) {
         this.fromDate = calendar.getToday();
@@ -43,11 +43,11 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.subscriptions.unsubscribe();
     }
 
     getTurnoCalendario(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
                 this.turnoCalendario = turnoC;
             })

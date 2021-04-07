@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-tabella-rubrica',
     templateUrl: './tabella-rubrica.component.html',
-    styleUrls: ['./tabella-rubrica.component.css']
+    styleUrls: ['./tabella-rubrica.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabellaRubricaComponent {
 

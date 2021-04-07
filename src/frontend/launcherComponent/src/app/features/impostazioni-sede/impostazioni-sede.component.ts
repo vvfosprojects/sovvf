@@ -6,7 +6,6 @@ import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/s
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
-import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-impostazioni-sede',
@@ -15,9 +14,7 @@ import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
 
-    constructor(private ngbAccordionconfig: NgbAccordionConfig,
-                private store: Store) {
-        ngbAccordionconfig.type = 'dark';
+    constructor(private store: Store) {
         this.fetchTipologie();
     }
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
@@ -6,26 +6,26 @@ import {
     ApplyFiltriTipologiaSelezionatiRichieste,
     ClearFiltroSenzaEsecuzione,
     RemoveChiuseRichiesta,
-    RemovePeriodoChiuse, RemoveSelezioneStatoRichiesta,
+    RemovePeriodoChiuse,
+    RemoveSelezioneStatoRichiesta,
     ResetFiltriSelezionatiRichieste,
     SetChiuseRichiesta,
-    SetPeriodoChiuse, SetSelezioneStatoRichiesta
+    SetPeriodoChiuse,
+    SetSelezioneStatoRichiesta
 } from '../../store/actions/filterbar/filtri-richieste.actions';
 import { Select, Store } from '@ngxs/store';
 import { ModalRichiesteChiuseComponent } from './modal-richieste-chiuse/modal-richieste-chiuse.component';
 import { ModalZonaEmergenzaComponent } from './modal-zona-emergenza/modal-zona-emergenza.component';
-import {
-    ResetFiltriStatiZone, ResetFiltriZoneSelezionate,
-    SetZoneEmergenzaSelezionate
-} from '../../store/actions/filterbar/zone-emergenza.actions';
 import { Observable, Subscription } from 'rxjs';
 import { FiltriRichiesteState } from '../../store/states/filterbar/filtri-richieste.state';
 import { FiltroChiuseDettaglio } from '../../../../shared/interface/filtro-chiuse-dettaglio.interface';
+import { ResetFiltriStatiZone, ResetFiltriZoneSelezionate, SetZoneEmergenzaSelezionate } from '../../store/actions/filterbar/zone-emergenza.actions';
 
 @Component({
     selector: 'app-filtri-richieste',
     templateUrl: './filtri-richieste.component.html',
-    styleUrls: ['./filtri-richieste.component.css']
+    styleUrls: ['./filtri-richieste.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltriRichiesteComponent implements OnDestroy {
 

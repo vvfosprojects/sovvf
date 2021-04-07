@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
@@ -8,7 +8,8 @@ import { Composizione } from '../../enum/composizione.enum';
 @Component({
     selector: 'app-checkbox',
     templateUrl: './checkbox.component.html',
-    styleUrls: ['./checkbox.component.css']
+    styleUrls: ['./checkbox.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent {
 

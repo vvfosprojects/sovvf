@@ -51,6 +51,11 @@ $n-grey-light: #d3d3d3 !important;
 $n-prima-competenza: #007bff !important;
 // END SCSS Styles Sheet
 
+// Index Style
+.body-background {
+  background-color: $n-dark;
+}
+
 // Single Monitor Styles
 .single-monitor {
 }
@@ -154,6 +159,14 @@ $n-prima-competenza: #007bff !important;
     text {
       fill: $n-white;
     }
+  }
+
+  .card-header {
+    background-color: $n-dark-light;
+  }
+
+  .card-body {
+    background-color: $n-dark;
   }
 
   .legend-labels {

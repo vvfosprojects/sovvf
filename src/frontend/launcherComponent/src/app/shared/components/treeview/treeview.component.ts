@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function-generiche';
@@ -17,7 +17,8 @@ import { LSNAME } from '../../../core/settings/config';
     encapsulation: ViewEncapsulation.Emulated,
     providers: [
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
 

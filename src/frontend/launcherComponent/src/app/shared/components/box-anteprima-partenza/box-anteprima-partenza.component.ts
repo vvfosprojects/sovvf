@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function-mezzo';
@@ -8,7 +8,8 @@ import { Squadra } from '../../model/squadra.model';
 @Component({
     selector: 'app-box-anteprima-partenza',
     templateUrl: './box-anteprima-partenza.component.html',
-    styleUrls: ['./box-anteprima-partenza.component.css']
+    styleUrls: ['./box-anteprima-partenza.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxAnteprimaPartenzaComponent {
 

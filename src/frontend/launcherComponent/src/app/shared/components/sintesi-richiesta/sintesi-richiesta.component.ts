@@ -39,6 +39,7 @@ import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit, OnChanges {
+
     @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;

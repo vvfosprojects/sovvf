@@ -17,7 +17,7 @@ import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.compo
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
-import { TastoSchedeContattoComponent } from '../home/filterbar/tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
+import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
 /**
  * Module
  */

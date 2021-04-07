@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { TurnoCalendario } from '../../../../navbar/turno/turno-calendario.model';
+import { TurnoCalendario } from '../../../../navbar/turno/model/turno-calendario.model';
 
 @Component({
     selector: 'app-box-interventi',
     templateUrl: './box-interventi.component.html',
-    styleUrls: ['./box-interventi.component.css']
+    styleUrls: ['./box-interventi.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxInterventiComponent implements OnChanges {
 

@@ -1,10 +1,11 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { makeCopy } from '../../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-ricerca',
     templateUrl: './ricerca.component.html',
-    styleUrls: ['./ricerca.component.scss']
+    styleUrls: ['./ricerca.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RicercaComponent {
 

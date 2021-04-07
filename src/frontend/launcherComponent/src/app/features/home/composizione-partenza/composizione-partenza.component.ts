@@ -37,6 +37,12 @@ import { TriageSummaryState } from '../../../shared/store/states/triage-summary/
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { ClearTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { wipeStatoRichiesta } from '../../../shared/helper/function-richieste';
+import { PaginationComposizionePartenzaState } from '../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { MezziComposizioneState } from '../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { MezzoComposizione } from '../../../shared/interface/mezzo-composizione-interface';
+import { SquadreComposizioneState } from '../../../shared/store/states/squadre-composizione/squadre-composizione.state';
+import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
+import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -51,13 +57,63 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() nightMode: boolean;
     @Input() doubleMonitor: boolean;
 
-    @Select(TriageSummaryState.summary) summary$: Observable<TriageSummary[]>;
-    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
+    // Richiesta Composizione
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+
+    // Loading
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
+
+    // Filterbar
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
+    @Select(FiltriComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
+    @Select(TriageSummaryState.summary) summary$: Observable<TriageSummary[]>;
+
+    // Mezzi Composizione
+    @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
+    @Select(MezziComposizioneState.idMezzoComposizioneSelezionato) idMezzoSelezionato$: Observable<string>;
+    @Select(MezziComposizioneState.idMezziInPrenotazione) idMezziInPrenotazione$: Observable<string[]>;
+    @Select(MezziComposizioneState.idMezziPrenotati) idMezziPrenotati$: Observable<string[]>;
+    @Select(MezziComposizioneState.idMezziBloccati) idMezziBloccati$: Observable<string[]>;
+    @Select(MezziComposizioneState.idMezzoHover) idMezzoHover$: Observable<string>;
+
+    // Squadre Composizione
+    @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
+    @Select(SquadreComposizioneState.idSquadreSelezionate) idSquadreSelezionate$: Observable<string[]>;
+    @Select(SquadreComposizioneState.idSquadraHover) idSquadraHover$: Observable<string>;
+
+    // Paginazione Mezzi
+    @Select(PaginationComposizionePartenzaState.pageMezzi) currentPageMezzi$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsMezzi$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizeMezzi$: Observable<number>;
+
+    // Paginazione Squadre
+    @Select(PaginationComposizionePartenzaState.pageSquadre) currentPageSquadre$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.totalItemsSquadre) totalItemsSquadre$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
+
+    // BoxPartenza Composizione
+    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
+    boxPartenzaList: BoxPartenza[];
+    @Select(BoxPartenzaState.idBoxPartenzaSelezionato) idBoxPartenzaSelezionato$: Observable<string>;
+    idBoxPartenzaSelezionato: string;
+
+    // Bottoni Composizione
+    @Select(BoxPartenzaState.disableConfirmPartenza) disableConfirmPartenza$: Observable<boolean>;
+    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+
+    // Composizione Veloce
+    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
+    @Select(ComposizioneVeloceState.idPreAccoppiatoSelezionato) idPreAccoppiatoSelezionato$: Observable<string>;
+    @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
+    @Select(ComposizioneVeloceState.idPreAccoppiatiOccupati) idPreAccoppiatiOccupati$: Observable<string[]>;
+    @Select(ComposizioneVeloceState.idPreAccoppiatoHover) idPreaccoppiatoHover$: Observable<string>;
+
+    // Paginazione Composizione Veloce
+    @Select(PaginationComposizionePartenzaState.pagePreaccoppiati) currentPagePreaccoppiati$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.totalItemsPreaccoppiati) totalItemsPreaccoppiati$: Observable<number>;
+    @Select(PaginationComposizionePartenzaState.pageSizePreaccoppiati) pageSizePreaccoppiati$: Observable<number>;
 
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;

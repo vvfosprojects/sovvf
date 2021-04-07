@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +6,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-filtri-schede-contatto',
     templateUrl: './filtri-schede-contatto.component.html',
-    styleUrls: ['./filtri-schede-contatto.component.css']
+    styleUrls: ['./filtri-schede-contatto.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltriSchedeContattoComponent {
 

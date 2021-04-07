@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
@@ -10,7 +10,8 @@ import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEn
 @Component({
     selector: 'app-mezzo-actions',
     templateUrl: './mezzo-actions.component.html',
-    styleUrls: ['./mezzo-actions.component.css']
+    styleUrls: ['./mezzo-actions.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MezzoActionsComponent implements OnInit {
 

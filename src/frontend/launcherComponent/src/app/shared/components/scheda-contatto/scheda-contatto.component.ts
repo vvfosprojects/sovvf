@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { Priorita } from '../../model/sintesi-richiesta.model';
@@ -7,7 +7,8 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 @Component({
     selector: 'app-scheda-contatto',
     templateUrl: './scheda-contatto.component.html',
-    styleUrls: ['./scheda-contatto.component.css']
+    styleUrls: ['./scheda-contatto.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SchedaContattoComponent implements OnChanges {
 

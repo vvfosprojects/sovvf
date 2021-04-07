@@ -1,7 +1,7 @@
-<div class="row border rounded shadow-sm p-2 h-100 font-xxlarge" [class.moon-text]="nightMode"
-     [class.bg-moon-light]="nightMode"
+<div class="row border rounded shadow-sm p-2 h-100 font-xxlarge"
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
-     (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
+     (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)"
+     (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
     <ng-template [ngIf]="loadingArray.includes(mezzoInServizio.mezzo.mezzo.codice)">
         <app-partial-loader></app-partial-loader>

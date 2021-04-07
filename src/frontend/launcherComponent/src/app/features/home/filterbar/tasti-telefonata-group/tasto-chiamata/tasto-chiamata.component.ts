@@ -1,10 +1,11 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-tasto-chiamata',
     templateUrl: './tasto-chiamata.component.html',
-    styleUrls: ['./tasto-chiamata.component.css']
+    styleUrls: ['./tasto-chiamata.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TastoChiamataComponent {
 
@@ -13,6 +14,7 @@ export class TastoChiamataComponent {
     @Input() colorButtonChiamata = 'btn-outline-success';
     @Input() richiestaModifica: SintesiRichiesta;
     @Input() disabled: boolean;
+
     @Output() startChiamata = new EventEmitter();
 
     defaultColorButtonChiamata: string;

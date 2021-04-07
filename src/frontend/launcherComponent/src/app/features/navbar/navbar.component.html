@@ -25,6 +25,7 @@
                             <i class="fa fa-truck"></i>
                         </button>
                         <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
+                                                   [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
                                                    (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
                         <button class="btn btn-light font-xlarge mr-2"
@@ -89,8 +90,13 @@
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-cogs"></i>
                         </button>
-                        <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato" [url]="url$ | async"
-                                       (notificheLette)="setNotificheLette()" (logout)="logout()"></app-operatore>
+                        <app-operatore [user]="user"
+                                       [ruoliUtenteLoggato]="ruoliUtenteLoggato"
+                                       [url]="url$ | async"
+                                       [listaNotifiche]="listaNotifiche$ | async"
+                                       [nuoveNotifiche]="nuoveNotifiche$ | async"
+                                       (notificheLette)="setNotificheLette()"
+                                       (logout)="logout()"></app-operatore>
                     </div>
                 </div>
             </div>

@@ -36,6 +36,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     RoutesPath = RoutesPath;
+
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,

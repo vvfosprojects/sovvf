@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FiltroTargaMezzo } from '../interface/filtro-targa-mezzo.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
@@ -6,7 +6,8 @@ import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model
 @Component({
     selector: 'app-filtri-eventi-richiesta',
     templateUrl: './filtri-eventi-richiesta.component.html',
-    styleUrls: ['./filtri-eventi-richiesta.component.css']
+    styleUrls: ['./filtri-eventi-richiesta.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltriEventiRichiestaComponent implements OnChanges {
 

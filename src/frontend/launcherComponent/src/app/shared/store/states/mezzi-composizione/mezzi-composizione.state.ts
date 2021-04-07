@@ -395,7 +395,7 @@ export class MezziComposizioneState {
         dispatch(new ClearMarkerMezzoHover());
     }
 
-    // todo: cotnrollare utilizzo
+    // todo: controllare utilizzo
     @Action(LockMezzoComposizione)
     lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione): void {
         setState(
@@ -406,7 +406,7 @@ export class MezziComposizioneState {
         );
     }
 
-  // todo: cotnrollare utilizzo
+  // todo: controllare utilizzo
   @Action(UnlockMezzoComposizione)
     unlockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: UnlockMezzoComposizione): void {
         setState(

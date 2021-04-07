@@ -4,10 +4,10 @@ import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno.state';
 import { Ruolo, Utente } from '../../shared/model/utente.model';
-import { TurnoExtra } from './turno/turno-extra.model';
+import { TurnoExtra } from './turno/model/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { TurnoCalendario } from './turno/turno-calendario.model';
+import { TurnoCalendario } from './turno/model/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
@@ -26,6 +26,10 @@ import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/ric
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { AnnullaChiamata } from '../home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { SchedeContattoState } from '../home/store/states/schede-contatto/schede-contatto.state';
+import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
+import { NotificheState } from '../../shared/store/states/notifiche/notifiche.state';
+import { NotificaInterface } from '../../shared/interface/notifica.interface';
 
 @Component({
     selector: 'app-navbar',
@@ -55,6 +59,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     @Select(RouterState.url) url$: Observable<string>;
     url: string;
+
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+
+    @Select(NotificheState.listaNotifiche) listaNotifiche$: Observable<NotificaInterface[]>;
+    @Select(NotificheState.nuoveNotifiche) nuoveNotifiche$: Observable<number>;
 
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
     @Select(ViewComponentState.codaChiamateStatus) codaChiamateStatus$: Observable<boolean>;

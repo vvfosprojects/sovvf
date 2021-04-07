@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContatoriSchedeContatto } from '../../interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
@@ -9,7 +9,8 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 @Component({
     selector: 'app-lista-schede-contatto',
     templateUrl: './lista-schede-contatto.component.html',
-    styleUrls: ['./lista-schede-contatto.component.scss']
+    styleUrls: ['./lista-schede-contatto.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListaSchedeContattoComponent implements OnInit {
 
@@ -48,8 +49,6 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Output() changeFiltroRange: EventEmitter<RangeSchedeContattoEnum> = new EventEmitter<RangeSchedeContattoEnum>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
-    rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
-    RangeVisualizzazione = RangeSchedeContattoEnum;
     ClassificazioneEnum = ClassificazioneSchedaContatto;
     permessiFeature = PermissionFeatures;
 
@@ -99,21 +98,12 @@ export class ListaSchedeContattoComponent implements OnInit {
         this.schedaContattoGestita.emit({ scheda, value });
     }
 
-    // Todo: eliminare
-    // onTornaIndietro(): void {
-    //     this.indietro.emit();
-    // }
-
     onToggleModalitaMerge(): void {
         this.toggleModalitaMerge.emit();
     }
 
     onSaveMerge(): void {
         this.saveMerge.emit();
-    }
-
-    onSetFiltroRange(r: RangeSchedeContattoEnum): void {
-        this.changeFiltroRange.emit(r);
     }
 
     onPageChange(page: number): void {

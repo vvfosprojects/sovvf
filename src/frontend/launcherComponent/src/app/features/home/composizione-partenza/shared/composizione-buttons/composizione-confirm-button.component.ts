@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
 import { SoccorsoAereoModalComponent } from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
@@ -8,7 +8,8 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 @Component({
     selector: 'app-composizione-confirm-button',
     templateUrl: './composizione-confirm-button.component.html',
-    styleUrls: ['./composizione-confirm-button.component.css']
+    styleUrls: ['./composizione-confirm-button.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComposizioneConfirmButtonComponent implements OnInit {
 

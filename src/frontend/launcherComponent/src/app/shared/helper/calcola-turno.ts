@@ -1,4 +1,4 @@
-import { TurnoCalendario } from '../../features/navbar/turno/turno-calendario.model';
+import { TurnoCalendario } from '../../features/navbar/turno/model/turno-calendario.model';
 import { OFFSET_SYNC_TIME, REF_SHIFT_MAP, REF_TIME } from '../../core/settings/referral-time';
 import * as moment from 'moment';
 

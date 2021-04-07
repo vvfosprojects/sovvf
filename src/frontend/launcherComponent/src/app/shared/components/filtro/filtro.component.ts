@@ -1,10 +1,11 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-filtro',
     templateUrl: './filtro.component.html',
-    styleUrls: ['./filtro.component.css']
+    styleUrls: ['./filtro.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltroComponent {
 

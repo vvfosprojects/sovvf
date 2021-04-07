@@ -13,7 +13,6 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
-import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-impostazioni',
@@ -35,9 +34,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription = new Subscription();
 
-    constructor(private ngbAccordionconfig: NgbAccordionConfig,
-                private store: Store) {
-        ngbAccordionconfig.type = 'dark';
+    constructor(private store: Store) {
         this.getUtente();
         this.getRuoliUtenteLoggato();
         this.getListaImpostazioni();

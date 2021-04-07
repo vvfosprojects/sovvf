@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'app-partial-loader',
     templateUrl: './partial-loader.component.html',
-    styleUrls: ['./partial-loader.component.css']
+    styleUrls: ['./partial-loader.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PartialLoaderComponent implements OnInit, OnDestroy {
 
