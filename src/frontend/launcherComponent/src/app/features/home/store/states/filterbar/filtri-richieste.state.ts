@@ -417,7 +417,7 @@ export class FiltriRichiesteState {
             patchState({
                 periodoChiuseChiamate: periodoChiuse
             });
-        } else if (action.tipologiaIntervento === 'Interventi') {
+        } else if (action.tipologiaRichiesta === 'Interventi') {
             patchState({
                 periodoChiusiInterventi: periodoChiuse
             });

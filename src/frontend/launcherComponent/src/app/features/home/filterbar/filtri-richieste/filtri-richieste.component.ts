@@ -36,7 +36,6 @@ export class FiltriRichiesteComponent implements OnDestroy {
     @Input() chiuse: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() disableFilters: boolean;
-    @Input() nightMode: boolean;
     @Input() filtriAttiviToolTip: VoceFiltro[];
     @Input() altriFiltri: VoceFiltro[];
 
@@ -112,11 +111,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
                     }
                     break;
                 case 'ko':
-                    if (event.richiesta === 'Chiamate') {
-                        this.periodoChiuseChiamate = null;
-                    } else if (event.richiesta === 'Interventi') {
-                        this.periodoChiusiInterventi = null;
-                    }
+                    event.richiesta === 'Chiamate' ? this.periodoChiuseChiamate = null : this.periodoChiusiInterventi = null;
                     break;
             }
         });
@@ -196,11 +191,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
             this.store.dispatch(new RemoveSelezioneStatoRichiesta(filtro.codice));
             this.filtroDeselezionato.emit(filtro);
         } else if (filtro.categoria === 'Chiuse') {
-            if (filtro.descrizione === 'Chiamate') {
-                this.periodoChiuseChiamate = null;
-            } else if (filtro.descrizione === 'Interventi') {
-                this.periodoChiusiInterventi = null;
-            }
+            filtro.descrizione === 'Chiamate' ? this.periodoChiuseChiamate = null : this.periodoChiusiInterventi = null;
             this.store.dispatch(new RemovePeriodoChiuse(filtro.descrizione));
             this.store.dispatch(new RemoveChiuseRichiesta(filtro.codice));
             this.filtroDeselezionato.emit(filtro);
@@ -221,16 +212,6 @@ export class FiltriRichiesteComponent implements OnDestroy {
         } else {
             this.store.dispatch(new ResetFiltriSelezionatiRichieste({ preventGetList: true }));
         }
-    }
-
-    nightModeStyle(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'cod-int';
-        } else if (this.nightMode) {
-            value = 'moon-cod';
-        }
-        return value;
     }
 
     checkIndex(index): boolean {

@@ -10,7 +10,6 @@
             </div>
             <div class="float-left mr-3">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
-                                      [nightMode]="nightMode"
                                       [filtri]="filtriRichieste$ | async"
                                       [statiRichiesta]="filtriStatiRichieste$ | async"
                                       [chiuse]="filtriRichiesteChiuse$ | async"
