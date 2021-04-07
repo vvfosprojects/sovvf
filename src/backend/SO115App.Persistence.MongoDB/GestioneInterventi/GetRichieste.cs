@@ -132,21 +132,6 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.ZoneEmergenza != null)
                 result.AddRange(lstRichieste.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))));
 
-            //FILTRO RICHIESTE CHIUSE
-            //if(filtro.Chiuse?.Count() > 0)
-            //{
-            //    if(filtro.Chiuse.Contains("Chiamate chiuse") && filtro.Chiuse.Contains("Interventi chiusi"))
-            //        result.AddRange(lstRichieste.Where(r => r.Chiusa));
-            //    else
-            //    {
-            //        if (filtro.Chiuse.Contains("Chiamate chiuse"))
-            //            result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
-
-            //        if (filtro.Chiuse.Contains("Interventi chiusi"))
-            //            result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
-            //    }
-            //}
-
             //FILTRO PERIODO CHIAMATE CHIUSE
             if (filtro.PeriodoChiuseChiamate != null) result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
             {
@@ -167,7 +152,6 @@ namespace SO115App.Persistence.MongoDB
                     if (filtro.Chiuse.Contains("Chiamate chiuse"))
                         result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
             }
-
 
             //FILTRO PERIODO INTERVENTI CHIUSE
             if (filtro.PeriodoChiusiInterventi != null) result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).Where(r =>
@@ -199,6 +183,7 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
                 result.AddRange(lstRichieste.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)));
 
+            //MAPPING
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
