@@ -17,7 +17,7 @@
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.nominativo" [ngbTooltip]="voce?.nominativo?.length > 20 ? voce?.nominativo : null" placement="top">
                     {{voce?.nominativo | truncate: 20}}</span>
-                <small *ngIf="!voce?.nominativo" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.nominativo" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
@@ -26,7 +26,7 @@
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.sede" [ngbTooltip]="voce?.sede?.length > 14 ? voce?.sede : null" placement="top">
                     {{voce?.sede | truncate: 14}}</span>
-                <small *ngIf="!voce?.sede" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.sede" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
@@ -34,7 +34,7 @@
         <td style="width:8%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px; text-align-last: center;">
                 <span *ngIf="voce?.turno" >{{voce?.turno}}</span>
-                <small *ngIf="!voce?.turno" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.turno" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
@@ -42,7 +42,7 @@
         <td style="width:9%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px; text-align-last: center;">
                 <span *ngIf="voce?.qualifica">{{voce?.qualifica}}</span>
-                <small *ngIf="!voce?.qualifica" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.qualifica" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
@@ -51,7 +51,7 @@
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.specializzazione" [ngbTooltip]="voce?.specializzazione?.length > 16 ? voce?.specializzazione : null" placement="top">
                     {{voce?.specializzazione | truncate: 16}}</span>
-                <small *ngIf="!voce?.specializzazione" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.specializzazione" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
@@ -59,21 +59,21 @@
         <td style="width:10%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono1" >{{voce?.telefono1}}</span>
-                <small *ngIf="!voce?.telefono1" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.telefono1" class="ml-1 text-muted">
                     Non presente
                 </small>            </div>
         </td>
         <td style="width:10%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono2" >{{voce?.telefono2}}</span>
-                <small *ngIf="!voce?.telefono2" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.telefono2" class="ml-1 text-muted">
                     Non presente
                 </small>            </div>
         </td>
         <td style="width:10%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.telefono3" >{{voce?.telefono3}}</span>
-                <small *ngIf="!voce?.telefono3" class="ml-1 n-text-muted">
+                <small *ngIf="!voce?.telefono3" class="ml-1 text-muted">
                     Non presente
                 </small>
             </div>
