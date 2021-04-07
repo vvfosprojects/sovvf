@@ -7,8 +7,12 @@
                  class="w-100 rounded bg-light"
                  [ngClass]="cardFissataClasses(richiestaFissata)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === richiestaFissata.id"></app-partial-loader>
-                <app-sintesi-richiesta *ngIf="richiestaFissata" [richiesta]="richiestaFissata" [fissata]="true"
-                                       [fissabile]="true" [espandibile]="true" [boxAzioni]="true"
+                <app-sintesi-richiesta *ngIf="richiestaFissata"
+                                       [richiesta]="richiestaFissata"
+                                       [fissata]="true"
+                                       [fissabile]="true"
+                                       [espandibile]="true"
+                                       [boxAzioni]="true"
                                        [isEspanso]="isEspanso(richiestaFissata.id)"
                                        [nightMode]="nightMode"
                                        [inGestione]="richiestaGestione?.id === richiestaFissata.id"
@@ -16,16 +20,13 @@
                                        [disabledGestisciRichiesta]="disabledGestisciRichiesta"
                                        [disabledComposizionePartenza]="disabledComposizionePartenza"
                                        (fissaInAlto)="onDefissa()"
-                                       (eventiRichiesta)="visualizzaEventiRichiesta($event)"
                                        (nuovaPartenza)="nuovaPartenza($event)"
                                        (modificaRichiesta)="onModificaRichiesta($event)"
                                        (espanso)="setEspanso()"
                                        (outEspansoId)="outEspansoId.emit($event)"
                                        (gestioneRichiesta)="onGestioneRichiesta($event)"
                                        (actionMezzo)="actionMezzo.emit($event)"
-                                       (actionRichiesta)="actionRichiesta.emit($event)"
-                                       (eliminaPartenza)="eliminaPartenza.emit($event)"
-                                       (modificaStatoFonogramma)="modificaStatoFonogramma.emit($event)">
+                                       (eliminaPartenza)="eliminaPartenza.emit($event)">
                 </app-sintesi-richiesta>
             </div>
         </div>

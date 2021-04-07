@@ -2,11 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
-import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
-import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
-import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -51,14 +48,10 @@ export class ListaRichiesteComponent {
     @Output() hoverOut = new EventEmitter<boolean>();
     @Output() selezione = new EventEmitter<string>();
     @Output() deselezione = new EventEmitter<boolean>();
-    @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
-    @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
-    @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     // Permessi
@@ -125,11 +118,6 @@ export class ListaRichiesteComponent {
         if (id) {
             this.hoverOut.emit(true);
         }
-    }
-
-    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(codice: string): void {
-        this.eventiRichiesta.emit(codice);
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta): void {

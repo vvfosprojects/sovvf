@@ -161,31 +161,31 @@
         </ngb-panel>
     </ng-template>
     <!-- INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
-    <ng-template [ngIf]="countInterventiChiusiStessaVia || interventiChiusiStessaVia?.length">
-        <ngb-panel id="interventi-chiusi-stessa-via"
-                   [disabled]="!countInterventiChiusiStessaVia || !interventiChiusiStessaVia?.length">
+    <ng-template [ngIf]="countInterventiChiusiStessoIndirizzo || interventiChiusiStessoIndirizzo?.length">
+        <ngb-panel id="interventi-chiusi-stesso-indirizzo"
+                   [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
             <ng-template ngbPanelTitle>
                 <div class="font-xlarge font-weight-bold text-white">
                     INTERVENTI CHIUSI CON STESSO INDIRIZZO
-                    ({{ countInterventiChiusiStessaVia ? countInterventiChiusiStessaVia : 0 }})
+                    ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
                 <div class="px-3">
                     <ul class="list-group font-xlarge">
-                        <li *ngFor="let interventoChiusoStessaVia of interventiChiusiStessaVia"
+                        <li *ngFor="let interventoChiusoStessoIndirizzo of interventiChiusiStessoIndirizzo"
                             class="font-xlarge mb-2">
                             <div>
-                                <b>{{ interventoChiusoStessaVia?.codiceRichiesta ? interventoChiusoStessaVia?.codiceRichiesta :
-                                    interventoChiusoStessaVia?.codice }}</b>
+                                <b>{{ interventoChiusoStessoIndirizzo?.codiceRichiesta ? interventoChiusoStessoIndirizzo?.codiceRichiesta :
+                                    interventoChiusoStessoIndirizzo?.codice }}</b>
                             </div>
                             <div>
                                 <i class="fa fa-map-marker mr-1"></i>
-                                {{ interventoChiusoStessaVia?.localita?.indirizzo }}
+                                {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
                             </div>
                             <div>
                                 <i class="fa fa-user mr-1"></i>
-                                {{ interventoChiusoStessaVia?.richiedente?.nominativo }}
+                                {{ interventoChiusoStessoIndirizzo?.richiedente?.nominativo }}
                             </div>
                         </li>
                     </ul>

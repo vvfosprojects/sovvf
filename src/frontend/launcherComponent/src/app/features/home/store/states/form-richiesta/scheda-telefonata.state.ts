@@ -65,8 +65,8 @@ export interface SchedaTelefonataStateModel {
     interventiProssimita: SintesiRichiesta[];
     countInterventiStessaVia: number;
     interventiStessaVia: SintesiRichiesta[];
-    countInterventiChiusiStessaVia: number;
-    interventiChiusiStessaVia: SintesiRichiesta[];
+    countInterventiChiusiStessoIndirizzo: number;
+    interventiChiusiStessoIndirizzo: SintesiRichiesta[];
     nuovaRichiesta: SintesiRichiesta;
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
@@ -87,8 +87,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     interventiProssimita: null,
     countInterventiStessaVia: undefined,
     interventiStessaVia: null,
-    countInterventiChiusiStessaVia: undefined,
-    interventiChiusiStessaVia: null,
+    countInterventiChiusiStessoIndirizzo: undefined,
+    interventiChiusiStessoIndirizzo: null,
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
@@ -141,13 +141,13 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
-    static countInterventiChiusiStessaVia(state: SchedaTelefonataStateModel): number {
-        return state.countInterventiChiusiStessaVia;
+    static countInterventiChiusiStessoIndirizzo(state: SchedaTelefonataStateModel): number {
+        return state.countInterventiChiusiStessoIndirizzo;
     }
 
     @Selector()
-    static interventiChiusiStessaVia(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
-        return state.interventiChiusiStessaVia;
+    static interventiChiusiStessoIndirizzo(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
+        return state.interventiChiusiStessoIndirizzo;
     }
 
     @Selector()
@@ -250,7 +250,7 @@ export class SchedaTelefonataState {
             patchState({
                 countInterventiProssimita: res.count,
                 countInterventiStessaVia: res.countStessaVia,
-                countInterventiChiusiStessaVia: res.countInterventiChiusiStessaVia
+                countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
             });
         });
     }
@@ -261,7 +261,7 @@ export class SchedaTelefonataState {
             patchState({
                 interventiProssimita: res.dataArray,
                 interventiStessaVia: res.dataArrayStessaVia,
-                interventiChiusiStessaVia: res.dataArrayInterventiChiusiStessaVia
+                interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
             });
         });
     }
