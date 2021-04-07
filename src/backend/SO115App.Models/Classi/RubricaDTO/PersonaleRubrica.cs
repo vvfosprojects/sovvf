@@ -12,5 +12,6 @@
         public string Telefono3 { get; set; }
 
         public string Stato { get; set; }
+        public string Tipo { get; set; }
     }
 }

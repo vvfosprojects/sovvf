@@ -24,7 +24,7 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
+                query.IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries);
                 query.IdOperatore = Request.Headers["IdUtente"];
                 
                 var result = _queryHandler.Handle(query);

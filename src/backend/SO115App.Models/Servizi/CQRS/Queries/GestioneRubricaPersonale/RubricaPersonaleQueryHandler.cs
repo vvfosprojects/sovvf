@@ -3,6 +3,7 @@ using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -16,16 +17,19 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
         private readonly IGetSedeAssociazioniByCodSede _getAssociazioniByCodSede;
         private readonly IGetIdDipendentiByCodUnitaOrg _getIdDipendentiByCodUnitaOrg;
         private readonly IGetDettaglioDipendenteById _getDettaglioDipendenteById;
+        private readonly IGetPercorsoByIdQualifica _getPercorsoByIdQualifica;
 
         public RubricaPersonaleQueryHandler(IGetPersonaleByCF getPersonaleByCF,
             IGetSedeAssociazioniByCodSede getAssociazioniByCodSede,
             IGetIdDipendentiByCodUnitaOrg getIdDipendentiByCodUnitaOrg,
-            IGetDettaglioDipendenteById getDettaglioDipendenteById)
+            IGetDettaglioDipendenteById getDettaglioDipendenteById,
+            IGetPercorsoByIdQualifica getPercorsoByIdQualifica)
         {
             _getPersonaleByCF = getPersonaleByCF;
             _getAssociazioniByCodSede = getAssociazioniByCodSede;
             _getIdDipendentiByCodUnitaOrg = getIdDipendentiByCodUnitaOrg;
             _getDettaglioDipendenteById = getDettaglioDipendenteById;
+            _getPercorsoByIdQualifica = getPercorsoByIdQualifica;
         }
 
         public RubricaPersonaleResult Handle(RubricaPersonaleQuery query)
@@ -51,6 +55,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             Parallel.ForEach(lstPersonale, personale =>
             {
                 var dettaglio = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()))?.dati;
+                var codComparto = _getPercorsoByIdQualifica.Get(dettaglio.idQualifica).Result.dati.FirstOrDefault();
 
                 var rubricaPersonale = new PersonaleRubrica()
                 {
@@ -62,7 +67,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Telefono1 = dettaglio?.telCellulare,
                     Telefono2 = dettaglio?.telefonoFisso,
                     Telefono3 = dettaglio?.fax,
-                    Stato = dettaglio?.oraIngresso == null ? StatoPersonale.NonInServizio : StatoPersonale.InServizio,
+                    Stato = dettaglio?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
+                    Tipo = codComparto.CodComparto == 2 ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale
                 };
 
                 result.Enqueue(rubricaPersonale);
@@ -85,6 +91,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     else return true;
                 })
                 .Where(p => query.Filters?.Stato?.Equals(p.Stato) ?? true)
+                .Where(p => query.Filters?.Tipo?.Equals(p.Tipo) ?? true)
                 .OrderBy(p => p.Nominativo);
 
             //PAGINAZIONE

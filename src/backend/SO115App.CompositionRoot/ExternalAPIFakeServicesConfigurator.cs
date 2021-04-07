@@ -30,6 +30,7 @@ using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
@@ -40,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
@@ -61,6 +63,12 @@ namespace SO115App.CompositionRoot
 
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
             container.Register<IGetToken, GetToken>();
+
+            #region Qualifiche
+
+            container.Register<IGetPercorsoByIdQualifica, GetPercorsoByIdQualifica>();
+
+            #endregion
 
             #region NUE
 
