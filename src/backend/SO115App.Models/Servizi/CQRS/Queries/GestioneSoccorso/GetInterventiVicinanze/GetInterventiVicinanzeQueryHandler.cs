@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
             return new GetInterventiVicinanzeResult()
             {
                 DataArray = result,
-                DataArrayInterventiChiusiStessaVia = resultChiuseStessoIndirizzo,
+                DataArrayInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo,
                 DataArrayStessaVia = resultStessaVia
             };
         }

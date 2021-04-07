@@ -4,6 +4,6 @@
     {
         public int Count { get; set; }
         public int CountStessaVia { get; set; }
-        public int CountInterventiChiusiStessaVia { get; set; }
+        public int CountInterventiChiusiStessoIndirizzo { get; set; }
     }
 }

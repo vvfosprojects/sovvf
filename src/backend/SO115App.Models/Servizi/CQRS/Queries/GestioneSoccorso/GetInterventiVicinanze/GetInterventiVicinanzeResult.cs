@@ -9,6 +9,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
 
         public List<SintesiRichiesta> DataArrayStessaVia { get; set; }
 
-        public List<SintesiRichiesta> DataArrayInterventiChiusiStessaVia { get; set; }
+        public List<SintesiRichiesta> DataArrayInterventiChiusiStessoIndirizzo { get; set; }
     }
 }

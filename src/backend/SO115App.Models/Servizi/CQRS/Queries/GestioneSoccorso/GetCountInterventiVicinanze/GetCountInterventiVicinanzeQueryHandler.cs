@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
             return new GetCountInterventiVicinanzeResult()
             {
                 Count = result.Count,
-                CountInterventiChiusiStessaVia = resultChiuseStessoIndirizzo.Count,
+                CountInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo.Count,
                 CountStessaVia = resultStessaVia.Count
             };
         }
