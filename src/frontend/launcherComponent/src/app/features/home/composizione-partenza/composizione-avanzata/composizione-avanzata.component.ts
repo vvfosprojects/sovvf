@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
@@ -53,6 +52,7 @@ import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../.
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
+import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -60,7 +60,7 @@ import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triag
     styleUrls: ['./composizione-avanzata.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
+export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
     // Mezzi Composizione
     @Input() mezziComposizione: MezzoComposizione[];
@@ -115,10 +115,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     statoMezzo = StatoMezzo;
     Composizione = Composizione;
 
+    partenzeRichiesta: Partenza[];
+
     ricercaSquadre: string;
     ricercaMezzi: string;
-
-    private subscription = new Subscription();
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -135,6 +135,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetFiltriComposizione());
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.richiesta?.currentValue) {
+            const richiesta = changes?.richiesta?.currentValue;
+            this.partenzeRichiesta = richiesta.partenzeRichiesta;
+        }
+    }
+
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearBoxPartenze(),
@@ -142,7 +149,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             new SetRicercaMezziComposizione(undefined),
             new SetRicercaSquadreComposizione(undefined),
         ]);
-        this.subscription.unsubscribe();
     }
 
     nightModeText(): string {

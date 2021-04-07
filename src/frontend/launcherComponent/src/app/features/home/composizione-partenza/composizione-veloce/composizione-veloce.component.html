@@ -9,7 +9,7 @@
                 <i class="fa fa-truck mr-2"></i>
                 Pre-Accoppiati
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
                     <div class="col-6" *ngFor="let preAcc of preAccoppiati">
                         <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
@@ -66,7 +66,7 @@
                     </span>
             </div>
             <div class="card-body px-3 py-2">
-                <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
+                <app-lista-partenze [partenze]="partenzeRichiesta">
                 </app-lista-partenze>
             </div>
         </div>
