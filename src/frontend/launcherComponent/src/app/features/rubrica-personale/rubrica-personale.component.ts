@@ -11,9 +11,11 @@ import { RubricaPersonaleState } from './store/states/rubrica-personale/rubrica-
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import {
     ClearRicercaRubricaPersonale,
-    ClearStatoRubricaPersonale, ClearTipoRubricaPersonale,
+    ClearStatoRubricaPersonale,
+    ClearTipoRubricaPersonale,
     SetRicercaRubricaPersonale,
-    SetStatoRubricaPersonale, SetTipoRubricaPersonale
+    SetStatoRubricaPersonale,
+    SetTipoRubricaPersonale
 } from './store/actions/ricerca-rubrica-personale/ricerca-rubrica-personale.actions';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { GetRubricaPersonale } from './store/actions/rubrica-personale/rubrica-personale.actions';

@@ -144,10 +144,10 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.update();
     }
 
-    resetFiltri(): void {
-        this.store.dispatch(new ClearFiltriComposizione());
-        this.update();
-    }
+    // resetFiltri(): void {
+    //     this.store.dispatch(new ClearFiltriComposizione());
+    //     this.update();
+    // }
 
     update(): void {
         if (this.composizionePartenza) {
@@ -180,6 +180,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
         dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
+        dettaglioTriageModal.componentInstance.triageSummary = this.richiesta.triageSummary;
     }
 
     _confirmPrenota(): void {

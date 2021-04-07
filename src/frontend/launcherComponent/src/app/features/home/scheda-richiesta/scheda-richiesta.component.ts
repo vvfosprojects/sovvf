@@ -18,7 +18,6 @@ import { DettagliTipologieState } from '../../../shared/store/states/dettagli-ti
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
-import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-scheda-richiesta',
@@ -53,8 +52,7 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();
 
-    constructor(private ngbAccordionconfig: NgbAccordionConfig) {
-        ngbAccordionconfig.type = 'dark';
+    constructor() {
         this.getLoadingNuovaChiamata();
     }
 

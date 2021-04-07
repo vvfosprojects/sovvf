@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
@@ -8,7 +8,8 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-box-mezzi',
     templateUrl: './box-mezzi.component.html',
-    styleUrls: ['./box-mezzi.component.css']
+    styleUrls: ['./box-mezzi.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxMezziComponent implements OnChanges {
 
@@ -18,21 +19,20 @@ export class BoxMezziComponent implements OnChanges {
 
     @Output() clickMezzi = new EventEmitter<string>();
 
+    constructor(config: NgbTooltipConfig) {
+        config.container = 'body';
+        // config.openDelay = 200;
+        // config.closeDelay = 100;
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         const mezzi = changes.mezzi;
         if (mezzi && mezzi.currentValue && mezzi.previousValue) {
             this.mezziDiff = objectDiff(mezzi.currentValue, mezzi.previousValue);
-            setTimeout( () => {
+            setTimeout(() => {
                 this.mezziDiff = null;
             }, 5000);
         }
-    }
-
-    constructor(config: NgbTooltipConfig) {
-        config.container = 'body';
-        // config.openDelay = 200;
-        // config.closeDelay = 100;
     }
 
     checkDiff(key: string): string {

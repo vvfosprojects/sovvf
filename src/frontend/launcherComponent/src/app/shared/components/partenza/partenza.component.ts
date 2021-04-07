@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
@@ -9,7 +9,8 @@ import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 @Component({
     selector: 'app-partenza',
     templateUrl: './partenza.component.html',
-    styleUrls: ['./partenza.component.css']
+    styleUrls: ['./partenza.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class PartenzaComponent implements OnInit {

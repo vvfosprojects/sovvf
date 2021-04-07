@@ -58,7 +58,6 @@ import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/t
 })
 export class RichiesteComponent implements OnInit, OnDestroy {
 
-    @Input() split: boolean;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
 

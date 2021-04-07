@@ -15,7 +15,7 @@ import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state'
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
-import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
+import { TurnoCalendario } from '../../../navbar/turno/model/turno-calendario.model';
 import { AuthState } from '../../../auth/store/auth.state';
 
 @Component({

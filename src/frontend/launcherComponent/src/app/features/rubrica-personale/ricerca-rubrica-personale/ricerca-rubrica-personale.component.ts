@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ricerca-rubrica-personale',
     templateUrl: './ricerca-rubrica-personale.component.html',
-    styleUrls: ['./ricerca-rubrica-personale.component.css']
+    styleUrls: ['./ricerca-rubrica-personale.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RicercaRubricaPersonaleComponent {
 

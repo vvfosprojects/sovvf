@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Ente } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-lista-enti',
     templateUrl: './lista-enti.component.html',
-    styleUrls: ['./lista-enti.component.css']
+    styleUrls: ['./lista-enti.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListaEntiComponent implements OnInit, OnDestroy {
 

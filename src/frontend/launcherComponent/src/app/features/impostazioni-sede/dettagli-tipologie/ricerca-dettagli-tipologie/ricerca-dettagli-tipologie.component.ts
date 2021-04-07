@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-ricerca-dettagli-tipologie',
     templateUrl: './ricerca-dettagli-tipologie.component.html',
-    styleUrls: ['./ricerca-dettagli-tipologie.component.css']
+    styleUrls: ['./ricerca-dettagli-tipologie.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RicercaDettagliTipologieComponent {
 

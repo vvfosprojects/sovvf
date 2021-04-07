@@ -23,6 +23,7 @@ import { ViewComponentState } from './features/home/store/states/view/view.state
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-root',
@@ -77,7 +78,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private store: Store,
                 private permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
-                private render: Renderer2) {
+                private render: Renderer2,
+                private ngbAccordionconfig: NgbAccordionConfig) {
         this.getNightMode();
         this.getDoubleMonitorMode();
         this.getRouterEvents();
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
+        ngbAccordionconfig.type = 'dark';
     }
 
 

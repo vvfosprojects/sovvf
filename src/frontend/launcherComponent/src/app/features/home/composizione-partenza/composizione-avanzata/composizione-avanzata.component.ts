@@ -1,34 +1,32 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
-    UnselectMezzoComposizione,
     ReducerSelectMezzoComposizione,
     ReducerSelectMezzoComposizioneInRientro,
-    ReducerSelectMezzoComposizionePreAccoppiati
+    ReducerSelectMezzoComposizionePreAccoppiati,
+    UnselectMezzoComposizione
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
     AddBoxPartenza,
     ClearBoxPartenze,
+    DeselectBoxPartenza,
     RemoveBoxPartenza,
     RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
-    RequestAddBoxPartenza,
-    DeselectBoxPartenza
+    RequestAddBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedSquadreComposizione,
@@ -48,15 +46,10 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import {
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione
-} from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
@@ -64,65 +57,47 @@ import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triag
 @Component({
     selector: 'app-composizione-avanzata',
     templateUrl: './composizione-avanzata.component.html',
-    styleUrls: ['./composizione-avanzata.component.css']
+    styleUrls: ['./composizione-avanzata.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     // Mezzi Composizione
-    @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
-    mezziComposizione: MezzoComposizione[];
-    @Select(MezziComposizioneState.idMezzoComposizioneSelezionato) idMezzoSelezionato$: Observable<string>;
-    idMezzoSelezionato: string;
-    @Select(MezziComposizioneState.idMezziInPrenotazione) idMezziInPrenotazione$: Observable<string[]>;
-    idMezziInPrenotazione: string[];
-    @Select(MezziComposizioneState.idMezziPrenotati) idMezziPrenotati$: Observable<string[]>;
-    idMezziPrenotati: string[];
-    @Select(MezziComposizioneState.idMezziBloccati) idMezziBloccati$: Observable<string[]>;
-    idMezziBloccati: string[];
-    @Select(MezziComposizioneState.idMezzoHover) idMezzoHover$: Observable<string>;
-    idMezzoHover: string;
+    @Input() mezziComposizione: MezzoComposizione[];
+    @Input() idMezzoSelezionato: string;
+    @Input() idMezziInPrenotazione: string[];
+    @Input() idMezziPrenotati: string[];
+    @Input() idMezziBloccati: string[];
+    @Input() idMezzoHover: string;
 
     // Squadre Composizione
-    @Select(SquadreComposizioneState.squadreComposizione) squadraComposizione$: Observable<SquadraComposizione[]>;
-    squadreComposizione: SquadraComposizione[];
-    @Select(SquadreComposizioneState.idSquadreSelezionate) idSquadreSelezionate$: Observable<string[]>;
-    idSquadreSelezionate: Array<string>;
-    @Select(SquadreComposizioneState.idSquadraHover) idSquadraHover$: Observable<string>;
-    idSquadraHover: string;
+    @Input() squadreComposizione: SquadraComposizione[];
+    @Input() idSquadreSelezionate: Array<string>;
+    @Input() idSquadraHover: string;
 
     // Filtri Composizione
-    @Select(FiltriComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
-    filtriSelezionati: any;
+    @Input() filtriSelezionati: any;
 
     // BoxPartenza Composizione
-    @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
-    boxPartenzaList: BoxPartenza[];
-    @Select(BoxPartenzaState.idBoxPartenzaSelezionato) idBoxPartenzaSelezionato$: Observable<string>;
-    idBoxPartenzaSelezionato: string;
-
-    @Select(BoxPartenzaState.disableConfirmPartenza) disableConfirmPartenza$: Observable<boolean>;
-    @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+    @Input() boxPartenzaList: BoxPartenza[];
+    @Input() idBoxPartenzaSelezionato: string;
 
     // Loading Liste Mezzi e Squadre
-    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
-    loadingListe: boolean;
+    @Input() loadingListe: boolean;
 
     // Paginazione Mezzi
-    @Select(PaginationComposizionePartenzaState.pageMezzi) currentPageMezzi$: Observable<number>;
-    currentPageMezzi: number;
-    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsMezzi$: Observable<number>;
-    totalItemsMezzi: number;
-    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizeMezzi$: Observable<number>;
-    pageSizeMezzi: number;
+    @Input() currentPageMezzi: number;
+    @Input() totalItemsMezzi: number;
+    @Input() pageSizeMezzi: number;
 
     // Paginazione Squadre
-    @Select(PaginationComposizionePartenzaState.pageSquadre) currentPageSquadre$: Observable<number>;
-    currentPageSquadre: number;
-    @Select(PaginationComposizionePartenzaState.totalItemsSquadre) totalItemsSquadre$: Observable<number>;
-    totalItemsSquadre: number;
-    @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
-    pageSizeSquadre: number;
+    @Input() currentPageSquadre: number;
+    @Input() totalItemsSquadre: number;
+    @Input() pageSizeSquadre: number;
 
+    // Bottoni Composizione
+    @Input() disableNuovaPartenza: number;
+    @Input() disableConfirmPartenza: number;
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
@@ -154,123 +129,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         // Tooltip options
         this.tooltipConfig.container = 'body';
         this.tooltipConfig.placement = 'top';
-
-        // Prendo i mezzi da visualizzare nella lista
-        this.subscription.add(
-            this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
-                this.mezziComposizione = mezziComp;
-            })
-        );
-        // Prendo il mezzo selezionato
-        this.subscription.add(
-            this.idMezzoSelezionato$.subscribe((idMezzo: string) => {
-                this.idMezzoSelezionato = idMezzo;
-            })
-        );
-        // Prendo i mezzi in prenotazione
-        this.subscription.add(
-            this.idMezziInPrenotazione$.subscribe((idMezzi: string[]) => {
-                this.idMezziInPrenotazione = idMezzi;
-            })
-        );
-        // Prendo i mezzi prenotati
-        this.subscription.add(
-            this.idMezziPrenotati$.subscribe((idMezzi: string[]) => {
-                this.idMezziPrenotati = idMezzi;
-            })
-        );
-        // Prendo il mezzo hover
-        this.subscription.add(
-            this.idMezzoHover$.subscribe((idMezzo: string) => {
-                this.idMezzoHover = idMezzo;
-            })
-        );
-        // Prendo il mezzo bloccato
-        this.subscription.add(
-            this.idMezziBloccati$.subscribe((idMezzi: string[]) => {
-                this.idMezziBloccati = idMezzi;
-            })
-        );
-
-        // Prendo le squadre da visualizzare nella lista
-        this.subscription.add(
-            this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {
-                if (squadreComp) {
-                    this.squadreComposizione = makeCopy(squadreComp);
-                }
-            })
-        );
-        // Prendo la squadra selezionata
-        this.subscription.add(
-            this.idSquadreSelezionate$.subscribe((idSquadre: string[]) => {
-                this.idSquadreSelezionate = idSquadre;
-            })
-        );
-        // Prendo la squadra hover
-        this.subscription.add(
-            this.idSquadraHover$.subscribe((idSquadra: string) => {
-                this.idSquadraHover = idSquadra;
-            })
-        );
-
-        // Prendo i filtri selezionati
-        this.subscription.add(
-            this.filtriSelezionati$.subscribe((filtriSelezionati: any) => {
-                this.filtriSelezionati = makeCopy(filtriSelezionati);
-            })
-        );
-
-        // Prendo i box partenza
-        this.subscription.add(
-            this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
-                this.boxPartenzaList = boxPartenza;
-            })
-        );
-        // Prendo il box partenza selezionato
-        this.subscription.add(
-            this.idBoxPartenzaSelezionato$.subscribe((idBoxPartenza: string) => {
-                this.idBoxPartenzaSelezionato = idBoxPartenza;
-            })
-        );
-
-        // Prendo Pagina Corrente Mezzi
-        this.subscription.add(
-            this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
-                this.currentPageMezzi = currentPageMezzi;
-            })
-        );
-        // Prendo Totale Items Mezzi
-        this.subscription.add(
-            this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
-                this.totalItemsMezzi = totalItemsMezzi;
-            })
-        );
-        // Prendo Pagina Size Mezzi
-        this.subscription.add(
-            this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
-                this.pageSizeMezzi = pageSizeMezzi;
-            })
-        );
-
-        // Prendo Pagina Corrente Squadre
-        this.subscription.add(
-            this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
-                this.currentPageSquadre = currentPageSquadre;
-            })
-        );
-        // Prendo Totale Items Squadre
-        this.subscription.add(
-            this.totalItemsSquadre$.subscribe((totalItemsSquadre: number) => {
-                this.totalItemsSquadre = totalItemsSquadre;
-            })
-        );
-        // Prendo Pagina Size Squadre
-        this.subscription.add(
-            this.pageSizeSquadre$.subscribe((pageSizeSquadre: number) => {
-                this.pageSizeSquadre = pageSizeSquadre;
-            })
-        );
-        this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
     }
 
     ngOnInit(): void {

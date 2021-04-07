@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-view-mode',
     templateUrl: './view-mode.component.html',
-    styleUrls: ['./view-mode.component.css']
+    styleUrls: ['./view-mode.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewModeComponent {
 
@@ -18,7 +19,6 @@ export class ViewModeComponent {
     @Output() toggleMeteo: EventEmitter<boolean> = new EventEmitter();
 
     AppFeature = AppFeatures;
-    public filtriNonImplementati = true;
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';

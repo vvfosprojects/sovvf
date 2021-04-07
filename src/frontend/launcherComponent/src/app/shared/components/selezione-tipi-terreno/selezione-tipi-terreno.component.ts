@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
 import { TipoTerrenoCheckboxInterface, UnitaMisuraTerreno } from '../../interface/tipo-terreno-checkbox.interface';
@@ -6,11 +6,13 @@ import { TipoTerrenoCheckboxInterface, UnitaMisuraTerreno } from '../../interfac
 @Component({
     selector: 'app-selezione-tipi-terreno',
     templateUrl: './selezione-tipi-terreno.component.html',
-    styleUrls: ['./selezione-tipi-terreno.component.css']
+    styleUrls: ['./selezione-tipi-terreno.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelezioneTipiTerrenoComponent implements OnChanges, AfterViewInit {
 
     @Input() tipiTerreno: TipoTerreno[];
+
     @Output() tipiTerrenoSelezionati = new EventEmitter<TipoTerreno[]>();
 
     terrenoHa: boolean;

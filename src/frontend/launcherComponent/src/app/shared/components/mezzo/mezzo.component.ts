@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -11,7 +11,8 @@ import { statoMezzoColor } from '../../helper/function-mezzo';
 @Component({
     selector: 'app-mezzo',
     templateUrl: './mezzo.component.html',
-    styleUrls: ['./mezzo.component.scss']
+    styleUrls: ['./mezzo.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MezzoComponent {
 

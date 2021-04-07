@@ -4,9 +4,7 @@
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card min-h-comp"
-             [class.bg-moon-light]="nightMode"
-             [class.card-shadow]="!nightMode">
+        <div class="card min-h-comp">
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -34,30 +32,32 @@
                        (click)="onClearSearchSquadre()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom min-h-comp">
-                <li *ngIf="!squadreComposizione?.length"
-                    class="list-group-item border">
-                    <span class="text-muted">Nessun risultato...</span>
-                </li>
-                <ng-template [ngIf]="squadreComposizione?.length">
-                    <app-squadra-composizione
-                            *ngFor="let sC of squadreComposizione"
-                            [nightMode]="nightMode"
-                            [squadraComp]="sC"
-                            [boxPartenzaList]="(boxPartenzaList$ | async)"
-                            [itemSelezionato]="checkSquadraSelezione(sC.id)"
-                            [itemHover]="checkSquadraHover(sC.id)"
-                            [richiesta]="richiesta"
-                            (selezionata)="squadraSelezionata($event)"
-                            (selezionataInRientro)="squadraSelezionataInRientro($event)"
-                            (selezionataPreAccoppiati)="squadraSelezionataPreAccoppiati($event)"
-                            (deselezionata)="squadraDeselezionata($event)"
-                            (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
-                            (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
-                            (hoverIn)="squadraHoverIn($event)"
-                            (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
-                </ng-template>
-            </ul>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush min-h-comp">
+                    <li *ngIf="!squadreComposizione?.length"
+                        class="list-group-item border">
+                        <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <ng-template [ngIf]="squadreComposizione?.length">
+                        <app-squadra-composizione
+                                *ngFor="let sC of squadreComposizione"
+                                [nightMode]="nightMode"
+                                [squadraComp]="sC"
+                                [boxPartenzaList]="boxPartenzaList"
+                                [itemSelezionato]="checkSquadraSelezione(sC.id)"
+                                [itemHover]="checkSquadraHover(sC.id)"
+                                [richiesta]="richiesta"
+                                (selezionata)="squadraSelezionata($event)"
+                                (selezionataInRientro)="squadraSelezionataInRientro($event)"
+                                (selezionataPreAccoppiati)="squadraSelezionataPreAccoppiati($event)"
+                                (deselezionata)="squadraDeselezionata($event)"
+                                (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
+                                (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
+                                (hoverIn)="squadraHoverIn($event)"
+                                (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                    </ng-template>
+                </ul>
+            </div>
         </div>
         <div class="row">
             <div class="col"
@@ -74,9 +74,7 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card mx-auto min-h-comp"
-             [class.bg-moon-light]="nightMode"
-             [class.card-shadow]="!nightMode">
+        <div class="card mx-auto min-h-comp">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -103,39 +101,40 @@
                        (click)="onClearSearchMezzi()"></i>
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom min-h-comp"
-                [class.bg-moon-light]="nightMode">
-                <li *ngIf="!mezziComposizione?.length"
-                    class="list-group-item border">
-                    <span class="text-muted">Nessun risultato...</span>
-                </li>
-                <ng-template [ngIf]="mezziComposizione?.length">
-                    <div *ngFor="let mC of mezziComposizione">
-                        <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
-                            <app-mezzo-composizione [mezzoComp]="mC"
-                                                    [nightMode]="nightMode"
-                                                    [boxPartenzaList]="(boxPartenzaList$ | async)"
-                                                    [itemSelezionato]="checkMezzoSelezione(mC.id)"
-                                                    [itemHover]="checkMezzoHover(mC.id)"
-                                                    [itemInPrenotazione]="idMezziInPrenotazione ? idMezziInPrenotazione.indexOf(mC.id) !== -1 : false"
-                                                    [itemPrenotato]="idMezziPrenotati ? idMezziPrenotati.indexOf(mC.id) !== -1 : false"
-                                                    [itemBloccato]="idMezziBloccati ? idMezziBloccati.indexOf(mC.id) !== -1 : false"
-                                                    [richiesta]="richiesta"
-                                                    (selezionato)="mezzoSelezionato($event)"
-                                                    (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
-                                                    (selezionatoPreAccoppiati)="mezzoSelezionatoPreAccoppiati($event)"
-                                                    (deselezionato)="mezzoDeselezionato($event)"
-                                                    (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
-                                                    (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
-                                                    (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
-                                                    (mezzoCoordinate)="mezzoCoordinate($event)"
-                                                    (mezzoCoordinateClear)="mezzoCoordinateClear()"
-                                                    (sganciamento)="sganciamento.emit($event)">
-                            </app-mezzo-composizione>
-                        </ng-template>
-                    </div>
-                </ng-template>
-            </ul>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush min-h-comp">
+                    <li *ngIf="!mezziComposizione?.length"
+                        class="list-group-item border">
+                        <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <ng-template [ngIf]="mezziComposizione?.length">
+                        <div *ngFor="let mC of mezziComposizione">
+                            <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
+                                <app-mezzo-composizione [mezzoComp]="mC"
+                                                        [nightMode]="nightMode"
+                                                        [boxPartenzaList]="boxPartenzaList"
+                                                        [itemSelezionato]="checkMezzoSelezione(mC.id)"
+                                                        [itemHover]="checkMezzoHover(mC.id)"
+                                                        [itemInPrenotazione]="idMezziInPrenotazione ? idMezziInPrenotazione.indexOf(mC.id) !== -1 : false"
+                                                        [itemPrenotato]="idMezziPrenotati ? idMezziPrenotati.indexOf(mC.id) !== -1 : false"
+                                                        [itemBloccato]="idMezziBloccati ? idMezziBloccati.indexOf(mC.id) !== -1 : false"
+                                                        [richiesta]="richiesta"
+                                                        (selezionato)="mezzoSelezionato($event)"
+                                                        (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
+                                                        (selezionatoPreAccoppiati)="mezzoSelezionatoPreAccoppiati($event)"
+                                                        (deselezionato)="mezzoDeselezionato($event)"
+                                                        (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
+                                                        (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
+                                                        (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
+                                                        (mezzoCoordinate)="mezzoCoordinate($event)"
+                                                        (mezzoCoordinateClear)="mezzoCoordinateClear()"
+                                                        (sganciamento)="sganciamento.emit($event)">
+                                </app-mezzo-composizione>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+                </ul>
+            </div>
         </div>
         <div class="row">
             <div class="col"
@@ -163,15 +162,17 @@
                         Partenze
                         <span *ngIf="richiesta.codiceRichiesta"
                               class="font-xlarge" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
-                            <span class="pb-1" style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                            <span class="pb-1"
+                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                         </span>
                         <span *ngIf="!richiesta.codiceRichiesta"
                               class="font-xlarge" style="float: right">{{ richiesta.codice.slice(0, -5) }}
-                            <span class="pb-1" style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                            <span class="pb-1"
+                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                         </span>
                     </span>
                 </div>
-                <div class="px-3 pt-1 pb-2" style="overflow: auto">
+                <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
                     <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
                     </app-lista-partenze>
                 </div>
@@ -183,7 +184,7 @@
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
                 <button class="btn btn-primary font-xlarge btn-no-hover"
                         (click)="nuovaPartenza()"
-                        [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i
+                        [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
                         class="fa fa-plus mr-2 font-xlarge"></i><span
                         style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
@@ -226,7 +227,7 @@
         <!-- Bottoni Composizione -->
         <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                          [richiesta]="richiesta"
-                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                         [disableConfirmPartenza]="disableConfirmPartenza"
                                          (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
         </app-composizione-confirm-button>
     </div>

@@ -14,8 +14,8 @@
 </div>
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
     <!-- RIEPILOGO TRIAGE -->
-    <ng-template [ngIf]="summary?.length">
-        <ngb-panel id="riepilogo-triage" [disabled]="!summary">
+    <ng-template [ngIf]="triageSummary?.length">
+        <ngb-panel id="riepilogo-triage" [disabled]="!triageSummary">
             <ng-template ngbPanelTitle>
                 <div class="font-xlarge font-weight-bold text-white">
                     RIEPILOGO TRIAGE
@@ -25,10 +25,10 @@
                 <!-- RISPOSTE -->
                 <h5 class="text-danger">
                     <i class="fa fa-question-circle mr-2"></i>
-                    <b>RISPOSTE <span class="text-danger">({{ summary?.length }})</span></b>
+                    <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
                 </h5>
                 <ul class="list-group font-xlarge px-3">
-                    <li *ngFor="let s of summary, let i = index">
+                    <li *ngFor="let s of triageSummary, let i = index">
                         <div>
                             <b>{{ s.domanda }}</b>
                         </div>

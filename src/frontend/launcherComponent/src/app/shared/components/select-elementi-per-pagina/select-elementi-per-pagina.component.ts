@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'app-select-elementi-per-pagina',
     templateUrl: './select-elementi-per-pagina.component.html',
-    styleUrls: ['./select-elementi-per-pagina.component.css']
+    styleUrls: ['./select-elementi-per-pagina.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectElementiPerPaginaComponent {
 

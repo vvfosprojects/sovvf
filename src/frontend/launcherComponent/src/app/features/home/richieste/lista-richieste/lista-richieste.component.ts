@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
@@ -11,7 +11,8 @@ import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-s
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
-    styleUrls: ['./lista-richieste.component.scss']
+    styleUrls: ['./lista-richieste.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListaRichiesteComponent {
 

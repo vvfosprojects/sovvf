@@ -9,7 +9,7 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 import { DettaglioTipologiaModalState } from '../../store/states/dettaglio-tipologia-modal-state';
 import { TipologieState } from '../../../../shared/store/states/tipologie/tipologie.state';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import {ImpostazioniState} from '../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ImpostazioniState } from '../../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
     selector: 'app-dettaglio-tipologia-modal',
@@ -24,7 +24,6 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     nightMode: boolean;
-
 
     editDettaglioTipologia: DettaglioTipologia;
 

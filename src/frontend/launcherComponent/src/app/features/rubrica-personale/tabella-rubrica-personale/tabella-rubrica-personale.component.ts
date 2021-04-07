@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { RubricaPersonale } from '../../../shared/interface/rubrica-personale.interface';
 
 @Component({
     selector: 'app-tabella-rubrica-personale',
     templateUrl: './tabella-rubrica-personale.component.html',
-    styleUrls: ['./tabella-rubrica-personale.component.css']
+    styleUrls: ['./tabella-rubrica-personale.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabellaRubricaPersonaleComponent {
 

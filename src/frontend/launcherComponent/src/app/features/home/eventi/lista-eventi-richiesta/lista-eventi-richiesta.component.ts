@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 
 @Component({
     selector: 'app-lista-eventi-richiesta',
     templateUrl: './lista-eventi-richiesta.component.html',
-    styleUrls: ['./lista-eventi-richiesta.component.css']
+    styleUrls: ['./lista-eventi-richiesta.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListaEventiRichiestaComponent {
 

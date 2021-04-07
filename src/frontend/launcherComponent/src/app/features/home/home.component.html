@@ -23,7 +23,6 @@
                     <!-- Richieste -->
                     <app-richieste *ngIf="viewState.richieste.active"
                                    [nightMode]="(nightMode$ | async)"
-                                   [split]="viewState.richieste.split"
                                    [boxAttivi]="boxAttivi">
                     </app-richieste>
                     <div *ngIf="(doubleMonitor$ | async) === false">

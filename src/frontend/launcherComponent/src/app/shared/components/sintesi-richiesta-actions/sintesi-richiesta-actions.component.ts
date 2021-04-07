@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
@@ -9,7 +9,8 @@ import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray
 @Component({
     selector: 'app-sintesi-richiesta-actions',
     templateUrl: './sintesi-richiesta-actions.component.html',
-    styleUrls: ['./sintesi-richiesta-actions.component.css']
+    styleUrls: ['./sintesi-richiesta-actions.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaActionsComponent implements OnInit {
 

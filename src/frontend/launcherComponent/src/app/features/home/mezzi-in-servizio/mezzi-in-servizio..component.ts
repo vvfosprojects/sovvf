@@ -204,11 +204,5 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     selezionato(idMezzoInServizio: string): void {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
     }
-
-    // Todo: da eliminare
-    // tornaIndietro(): void {
-    //     this.store.dispatch(new ToggleMezziInServizio());
-    // }
-
 }
 

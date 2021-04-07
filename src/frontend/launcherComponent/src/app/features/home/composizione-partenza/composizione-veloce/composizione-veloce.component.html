@@ -9,35 +9,37 @@
                 <i class="fa fa-truck mr-2"></i>
                 Pre-Accoppiati
             </div>
-            <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
-                <div class="col-6" *ngFor="let preAcc of preAccoppiati">
-                    <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
-                                            [nightMode]="nightMode"
-                                            [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
-                                            [itemHover]="preAcc.id === idPreaccoppiatoHover"
-                                            [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
-                                            [compPartenzaMode]="Composizione.Veloce"
-                                            (selezionato)="selezionaPreaccoppiato($event)"
-                                            (deselezionato)="deselezionaPreaccoppiato($event)"
-                                            (hoverIn)="onHoverIn($event)"
-                                            (hoverOut)="onHoverOut()">
-                    </app-box-nuova-partenza>
+            <div class="card-body">
+                <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
+                    <div class="col-6" *ngFor="let preAcc of preAccoppiati">
+                        <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
+                                                [nightMode]="nightMode"
+                                                [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
+                                                [itemHover]="preAcc.id === idPreaccoppiatoHover"
+                                                [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
+                                                [compPartenzaMode]="Composizione.Veloce"
+                                                (selezionato)="selezionaPreaccoppiato($event)"
+                                                (deselezionato)="deselezionaPreaccoppiato($event)"
+                                                (hoverIn)="onHoverIn($event)"
+                                                (hoverOut)="onHoverOut()">
+                        </app-box-nuova-partenza>
+                    </div>
+                    <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
+                         style="display: flex; place-content: center; margin-top: 10px;">
+                        <ngb-pagination
+                                [(page)]="currentPagePreaccoppiati"
+                                [pageSize]="pageSizePreaccoppiati"
+                                [collectionSize]="totalItemsPreaccoppiati"
+                                (pageChange)="preAccoppiatiPageChange($event)"
+                                [maxSize]="2">
+                        </ngb-pagination>
+                    </div>
                 </div>
-                <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
-                     style="display: flex; place-content: center; margin-top: 10px;">
-                    <ngb-pagination
-                            [(page)]="currentPagePreaccoppiati"
-                            [pageSize]="pageSizePreaccoppiati"
-                            [collectionSize]="totalItemsPreaccoppiati"
-                            (pageChange)="preAccoppiatiPageChange($event)"
-                            [maxSize]="2">
-                    </ngb-pagination>
-                </div>
-            </div>
-            <div class="row">
-                <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
-                    <div class="text-center font-xlarge">
-                        <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
+                <div class="row">
+                    <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
+                        <div class="text-center font-xlarge">
+                            <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,7 +65,7 @@
                         </span>
                     </span>
             </div>
-            <div class="px-3 py-2">
+            <div class="card-body px-3 py-2">
                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
                 </app-lista-partenze>
             </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -52,7 +52,8 @@ import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contat
     selector: 'app-form-richiesta',
     templateUrl: './form-richiesta.component.html',
     styleUrls: ['./form-richiesta.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormRichiestaComponent implements OnChanges, OnDestroy {
 

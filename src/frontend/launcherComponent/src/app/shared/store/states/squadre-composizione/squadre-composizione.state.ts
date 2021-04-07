@@ -1,7 +1,8 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import {
-    AddSquadraComposizione, ClearIdSquadreSelezionate,
+    AddSquadraComposizione,
+    ClearIdSquadreSelezionate,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
