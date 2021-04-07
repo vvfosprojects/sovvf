@@ -39,8 +39,7 @@
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
-                                <a class="h6" [class.text-moon]="nightMode"
-                                   (click)="toggleEspanso(richiesta.id)">
+                                <a class="h6" (click)="toggleEspanso(richiesta.id)">
                                     <span *ngIf="richiesta.codiceRichiesta"
                                           class="font-xxlarge">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                                         <span style="font-size: 30px; font-weight: 700">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
@@ -132,7 +131,7 @@
                                 </ng-template>
                                 <span>
                                     <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
-                                       class="h6 font-double-monitor descrizione-int"
+                                       class="h6 text-tipologia font-double-monitor"
                                        ngbTooltip="{{ richiesta?.descrizione }}"
                                        [disableTooltip]="richiesta?.descrizione?.length <= 45">
                                         {{ getDescrizionePrimaTipologia(richiesta) | truncate:45 }}
@@ -327,7 +326,7 @@
                                 <span class="ml-1">
                                         <i class="guida fa fa-phone fa-fw mr-1" style="font-size: 145%"
                                            ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge" [class.text-moon]="nightMode">
+                                        <a class="font-xxlarge">
                                           {{ richiesta?.richiedente?.telefono }}</a>
                                 </span>
                             </div>
@@ -575,8 +574,7 @@
                                     <div class="h6 font-dettaglio">
                                         <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                            placement="right"></i>
-                                        <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
-                                           [class.text-moon]="nightMode">
+                                        <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
                                             {{ richiesta?.codiceSchedaNue }}
                                         </a>
                                         <ng-template #nessunCodiceNue>

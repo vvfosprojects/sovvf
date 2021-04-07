@@ -149,14 +149,14 @@
     color: #f1f1f1 !important;
 }
 
-text-cod {
-    color: #000000 !important;
-}
-
 a {
-    color: #000000
+    color: #000000;
 }
 
 .border-top-richiesta {
-  border-top: solid thin #e0e0e0
+  border-top: solid thin #e0e0e0;
+}
+
+.text-tipologia {
+    color: #ffc107 !important;
 }
