@@ -270,14 +270,14 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (innerWidth && innerWidth > 3700) {
             config = {
                 hasProgressBar: false,
-                overlayColor: 'rgba(206,43,55,0.85)',
+                overlayColor: 'rgb(52,58,64)',
                 logoUrl: '../assets/img/logo_vvf_200x.png',
                 logoSize: 300,
                 logoPosition: 'center-center loader-position-img-left',
                 fgsColor: '#FFFFFF',
                 fgsPosition: 'center-center loader-position-fgs-left',
                 fgsSize: 50,
-                gap: 60,
+                gap: '60',
                 text: 'ATTENDI, STO CARICANDO I DATI...',
                 textColor: '#FFFFFF',
                 textPosition: 'top-center loader-position-left'
@@ -285,14 +285,14 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         } else {
             config = {
                 hasProgressBar: false,
-                overlayColor: 'rgba(206,43,55,0.85)',
+                overlayColor: 'rgb(52,58,64)',
                 logoUrl: '../assets/img/logo_vvf_200x.png',
                 logoSize: 300,
                 logoPosition: 'center-center',
                 fgsColor: '#FFFFFF',
                 fgsPosition: 'center-center',
                 fgsSize: 50,
-                gap: 60,
+                gap: '60',
                 text: 'ATTENDI, STO CARICANDO I DATI...',
                 textColor: '#FFFFFF',
                 textPosition: 'top-center'
