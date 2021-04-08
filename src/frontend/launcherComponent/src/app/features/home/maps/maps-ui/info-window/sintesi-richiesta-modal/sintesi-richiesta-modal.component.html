@@ -1,17 +1,17 @@
-<div class="modal-header bg-primary">
+<div class="modal-header" style="border-bottom: none;">
     <h4 class="modal-title text-light" id="modal-basic-title">Dettaglio Richiesta di Intervento</h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('Cross click')">
         <span class="text-white-50"><i class="fa fa-times"></i></span>
     </button>
 </div>
-<div *ngIf="sintesiRichiesta" class="bg-dark-light modal-content p-0">
+<div *ngIf="sintesiRichiesta" class="modal-body p-0">
     <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta" [fissata]="false" [fissabile]="false"
                            [isEspanso]="true" [gestibile]="false" [modificabile]="false" [espandibile]="false"
                            [boxAzioni]="false"
                            [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
 </div>
-<div *ngIf="!sintesiRichiesta" class="bg-dark-light modal-content p-0">
+<div *ngIf="!sintesiRichiesta" class="modal-body">
     <div class="position-relative m-h-300">
         <div class="loader-centrato">
             <img src="assets/img/pink_loader_resized.gif" alt="loader">
