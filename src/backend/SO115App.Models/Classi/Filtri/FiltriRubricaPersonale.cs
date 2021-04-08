@@ -7,9 +7,15 @@
         public string Tipo { get; set; }
     }
 
-    public static class StatoPersonale
+    public static class StatoPersonaleRubrica
     {
         public const string InServizio = "In servizio";
         public const string NonInServizio = "Non in servizio";
+    }
+
+    public static class TipoPersonaleRubrica
+    {
+        public const string SoloOperativi = "Solo operativi";
+        public const string AltroPersonale = "Altro personale";
     }
 }

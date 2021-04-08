@@ -18,5 +18,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
         public string codFiscale { get; set; }
 
         public string codTurno { get; set; }
+        public string idQualifica { get; set; }
     }
 }
