@@ -416,13 +416,13 @@
                         <!-- <div class="btn-group"> -->
                         <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
                                 (click)="onAnnullaChiamata()">
-                            Chiudi
+                            Torna Indietro
                         </button>
                     </ng-template>
                     <ng-template [ngIf]="modifica">
                         <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
                                 (click)="onChiudiModifica()">
-                            Chiudi
+                            Annulla Modifiche
                         </button>
                     </ng-template>
                 </div>
@@ -438,6 +438,10 @@
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"
                                 [countInterventiProssimita]="countInterventiProssimita"
                                 [interventiProssimita]="interventiProssimita"
+                                [countInterventiStessaVia]="countInterventiStessaVia"
+                                [interventiStessaVia]="interventiStessaVia"
+                                [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo"
+                                [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
                                 [triageSummary]="triageSummary"
                                 [schedaContatto]="schedaContatto">
             </app-triage-summary>

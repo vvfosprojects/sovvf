@@ -100,7 +100,6 @@
             </ng-template>
         </ngb-panel>
     </ng-template>
-    <!-- TODO: prevedere dettaglio se si preme su un codice intervento (modale con all'interno la sintesi richiesta) -->
     <!-- INTERVENTI IN PROSSIMITA' -->
     <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
         <ngb-panel id="interventi-prossimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
@@ -131,29 +130,66 @@
             </ng-template>
         </ngb-panel>
     </ng-template>
-    <!-- TODO: INTERVENTI STESSA VIA -->
-    <ng-template [ngIf]="false">
-        <ngb-panel id="interventi-stessa-via" [disabled]="true">
+    <!-- INTERVENTI STESSA VIA -->
+    <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
+        <ngb-panel id="interventi-stessa-via" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
             <ng-template ngbPanelTitle>
                 <div class="font-xlarge font-weight-bold text-white">
-                    INTERVENTI NELLA STESSA VIA
+                    INTERVENTI NELLA STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
-                <!-- TODO: inserire "INTERVENTI NELLA STESSA VIA" -->
+                <div class="px-3">
+                    <ul class="list-group font-xlarge">
+                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="font-xlarge mb-2">
+                            <div>
+                                <b>{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
+                                    interventoStessaVia?.codice }}</b>
+                            </div>
+                            <div>
+                                <i class="fa fa-map-marker mr-1"></i>
+                                {{ interventoStessaVia?.localita?.indirizzo }}
+                            </div>
+                            <div>
+                                <i class="fa fa-user mr-1"></i>
+                                {{ interventoStessaVia?.richiedente?.nominativo }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </ng-template>
         </ngb-panel>
     </ng-template>
-    <!-- TODO: INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
-    <ng-template [ngIf]="false">
-        <ngb-panel id="interventi-chiusi-stesso-indirizzo" [disabled]="true">
+    <!-- INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
+    <ng-template [ngIf]="countInterventiChiusiStessoIndirizzo || interventiChiusiStessoIndirizzo?.length">
+        <ngb-panel id="interventi-chiusi-stesso-indirizzo"
+                   [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
             <ng-template ngbPanelTitle>
                 <div class="font-xlarge font-weight-bold text-white">
                     INTERVENTI CHIUSI CON STESSO INDIRIZZO
+                    ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
-                <!-- TODO: inserire "INTERVENTI CHIUSI CON STESSO INDIRIZZO" -->
+                <div class="px-3">
+                    <ul class="list-group font-xlarge">
+                        <li *ngFor="let interventoChiusoStessoIndirizzo of interventiChiusiStessoIndirizzo"
+                            class="font-xlarge mb-2">
+                            <div>
+                                <b>{{ interventoChiusoStessoIndirizzo?.codiceRichiesta ? interventoChiusoStessoIndirizzo?.codiceRichiesta :
+                                    interventoChiusoStessoIndirizzo?.codice }}</b>
+                            </div>
+                            <div>
+                                <i class="fa fa-map-marker mr-1"></i>
+                                {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
+                            </div>
+                            <div>
+                                <i class="fa fa-user mr-1"></i>
+                                {{ interventoChiusoStessoIndirizzo?.richiedente?.nominativo }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </ng-template>
         </ngb-panel>
     </ng-template>

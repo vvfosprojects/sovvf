@@ -62,6 +62,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         //private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
 
         private readonly IGetListaSintesi _iGetListaSintesi;
+
         //private readonly IMapper _mapper;
         //private readonly IGetUtenteById _getUtenteById;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;

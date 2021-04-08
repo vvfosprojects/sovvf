@@ -5,20 +5,16 @@ import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
-import { ModificaStatoFonogrammaEmitInterface } from '../../interface/modifica-stato-fonogramma-emit.interface';
 import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../modal/allerta-sede-modal/allerta-sede-modal.component';
-import { AllertaSedeEmitInterface } from '../../interface/allerta-sede-emit.interface';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
-import { ModificaFonogrammaModalComponent } from '../../modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../model/tipologia.model';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
@@ -74,9 +70,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
-    @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
-    @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
@@ -303,11 +296,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         });
     }
 
-    onActionRichiesta(richiestaAction: RichiestaActionInterface): void {
-        richiestaAction.idRichiesta = this.richiesta.id;
-        this.actionRichiesta.emit(richiestaAction);
-    }
-
     onDettaglioStatoFonogramma(): void {
         let modalDettaglioFonogramma;
         modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
@@ -317,46 +305,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
-    }
-
-    onModificaStatoFonogramma(): void {
-        let modalModificaStatoFonogramma;
-        modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
-        modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
-        modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.modificaStatoFonogramma.emit(res.result);
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
-    }
-
-    onAllertaSede(): void {
-        let modalAllertaSede;
-        modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
-        modalAllertaSede.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.allertaSede.emit(res.result);
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
     }
 
     onSostituzioneFineTurno(partenze: Partenza[]): void {

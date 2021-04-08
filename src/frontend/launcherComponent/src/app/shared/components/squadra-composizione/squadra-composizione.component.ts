@@ -110,10 +110,10 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
                 returnClass += 'border-warning';
                 break;
             case 'hover-no|selezionato-si':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
             case 'hover-si|selezionato-si':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
         }
 

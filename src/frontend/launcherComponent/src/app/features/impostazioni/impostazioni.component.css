@@ -66,3 +66,7 @@
   text-align-last: left;
   padding-left: 40px;
 }
+
+.bg-impostazioni {
+  background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);
+}

@@ -187,22 +187,22 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 returnClass += 'border-warning';
                 break;
             case 'hover-no|selezionato-si|prenotato-no':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
             case 'hover-si|selezionato-si|prenotato-no':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
             case 'hover-no|selezionato-no|prenotato-si':
-                returnClass += 'diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'selected-composizione';
                 break;
             case 'hover-si|selezionato-no|prenotato-si':
-                returnClass += 'diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'selected-composizione';
                 break;
             case 'hover-no|selezionato-si|prenotato-si':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
             case 'hover-si|selezionato-si|prenotato-si':
-                returnClass += 'border-danger diagonal-stripes bg-diagonal-stripes';
+                returnClass += 'border-danger selected-composizione';
                 break;
         }
 
@@ -211,7 +211,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         }
 
         if (this.itemInPrenotazione) {
-            returnClass += ' diagonal-stripes bg-diagonal-stripes';
+            returnClass += ' selected-composizione';
         }
 
         if (this.nightMode) {

@@ -104,15 +104,17 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     modalConferma.componentInstance.titolo = 'Chiusura Richiesta ' + codiceRichiesta;
                     modalConferma.componentInstance.chiusuraIntervento = true;
                     modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Int. non più necessario', 'Falso Allarme', 'Int. concluso'];
+                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
                 }
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
                 break;
 
             case StatoRichiestaActions.Sospesa:
                 modalConferma.componentInstance.titolo = 'Sospensione Richiesta ' + codiceRichiesta;
                 modalConferma.componentInstance.sospensione = true;
                 modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta ' + codiceRichiesta + '?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                if (this.richiesta.stato !== StatoRichiesta.Chiamata) {
+                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                }
                 break;
 
             case StatoRichiestaActions.Riaperta:

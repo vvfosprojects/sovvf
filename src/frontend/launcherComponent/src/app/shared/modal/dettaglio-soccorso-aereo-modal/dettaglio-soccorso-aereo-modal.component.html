@@ -17,13 +17,13 @@
             style="padding: 10px; opacity: 0.8">Eventi</span>
     </div>
     <div class="clearfix d-inline-flex">
-      <span class="h6 w-100 mb-0 n-icon-afm" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
+      <span class="h6 w-100 mb-0 text-muted" style="font-size: x-large; padding: 10px">Dati ricevuti dal Sistema AFM</span>
     </div>
   </div>
   <div class="row my-4 align-items-center">
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-hashtag fa-fw mr-1 n-icon-afm"
+        <i class="fa fa-hashtag fa-fw mr-1 text-muted"
            ngbTooltip="Identificativo richiesta" placement="bottom"></i>
         <a class="h6">
           <span *ngIf="richiesta?.codiceRichiesta" class="font-xxlarge">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
@@ -37,7 +37,7 @@
     </div>
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-rss fa-fw mr-1 n-icon-afm"
+        <i class="fa fa-rss fa-fw mr-1 text-muted"
            ngbTooltip="Data Trasmissione" placement="bottom"></i>
         <a class="h6">
           <span class="font-xxlarge"> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
@@ -47,7 +47,7 @@
     </div>
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-address-book fa-fw mr-1 n-icon-afm"
+        <i class="fa fa-address-book fa-fw mr-1 text-muted"
            ngbTooltip="Operatore SO115" placement="bottom"></i>
         <a class="h6">
           <span *ngIf="richiesta?.operatore" class="font-xxlarge">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
@@ -69,7 +69,7 @@
     <div class="row w-100">
       <div class="clearfix input-soccorso-format mr-3" style="width: 51%; margin-left: 2.5rem">
         <label for="localita" class="d-none">Località</label>
-        <i class="fa fa-map-marker fa-fw mr-1 n-icon-afm" ngbTooltip="Località" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-map-marker fa-fw mr-1 text-muted" ngbTooltip="Località" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="localita" [(ngModel)]="richiesta.localita.indirizzo" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
       </div>
       <div class="clearfix input-soccorso-format mr-2" style="width: 20%">
@@ -86,24 +86,24 @@
     <div class="row w-100 my-4 d-inline-flex">
       <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
         <label for="tipologia" class="d-none">Tipologia Intervento</label>
-        <i class="fa fa-exclamation-triangle fa-fw mx-1 n-icon-afm" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
+        <i class="fa fa-exclamation-triangle fa-fw mx-1 text-muted" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="font-size: 150%; padding-bottom: 5px"></i>
         <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
       </div>
       <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
-        <i class="fa fa-address-book-o fa-fw mx-3 n-icon-afm" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-address-book-o fa-fw mx-3 text-muted" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
       <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
-        <i class="fa fa-phone fa-fw mx-1 n-icon-afm" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
+        <i class="fa fa-phone fa-fw mx-1 text-muted" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="font-size: 185%; padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
       </div>
     </div>
     <div class="row d-inline-flex w-100">
       <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
         <label class="d-none" for="noteintervento">Note Intervento</label>
-        <i class="fa fa-sticky-note-o fa-fw mx-1 n-icon-afm" ngbTooltip="Note Intervento" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
+        <i class="fa fa-sticky-note-o fa-fw mx-1 text-muted" ngbTooltip="Note Intervento" placement="left" style="font-size: 180%; padding-bottom: 5px"></i>
         <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
                   placeholder="Nessuna Nota Pubblica disponibile"
                   class="form-control font-xlarge area-size" disabled></textarea>

@@ -3,7 +3,7 @@ import { RicercaTrasferimentoChiamataState } from '../ricerca-trasferimento-chia
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { PatchPagination } from 'src/app/shared/store/actions/pagination/pagination.actions';
 import { StopLoading, StartLoading } from 'src/app/shared/store/actions/loading/loading.actions';
-import { ResponseInterface } from 'src/app/shared/interface/response.interface';
+import { ResponseInterface } from 'src/app/shared/interface/response/response.interface';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
 import { GetListaTrasferimentiChiamate, SetListaTrasferimentiChiamate, AddTrasferimentoChiamata } from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';

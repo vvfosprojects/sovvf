@@ -3,7 +3,6 @@ import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/anim
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
-import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 
 @Component({
@@ -26,7 +25,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() loadingActionRichiesta: string;
 
-    @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() defissa = new EventEmitter<any>();
@@ -35,7 +33,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() outEspansoId = new EventEmitter<string>();
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
 
@@ -138,10 +135,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         if (this.playerRichiesta) {
             this.playerRichiesta.play();
         }
-    }
-
-    visualizzaEventiRichiesta(idRichiesta: string): void {
-        this.eventiRichiesta.emit(idRichiesta);
     }
 
     /* Apre il componente per la creazione della partenza */

@@ -10,12 +10,3 @@
 .bad {
     color: #c23535;
 }
-
-.gestita {
-  background-color: #dbdbdb;
-  background-image: repeating-linear-gradient(45deg,
-  transparent,
-  transparent 35px,
-  rgba(255, 255, 255, 0.5) 35px,
-  rgba(255, 255, 255, 0.5) 70px);
-}

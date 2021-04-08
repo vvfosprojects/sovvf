@@ -8,7 +8,7 @@ import {
     RequestDeleteDettaglioTipologia,
     RequestUpdateDettaglioTipologia
 } from '../actions/dettaglio-tipologia-modal.actions';
-import { ResponseInterface } from '../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../shared/interface/response/response.interface';
 import { DeleteDettaglioTipologia } from '../../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 
 export interface DettaglioTipologiaModalStateModel {

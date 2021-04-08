@@ -1,4 +1,4 @@
-<div class="modal-header" [ngClass]="onNightMode()">
+<div class="modal-header">
     <h4 class="modal-title font-weight-bold">
         {{ 'Crea Dettaglio Tipologia' | uppercase }}
     </h4>
@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body" [ngClass]="onNightMode()">
+<div class="modal-body">
     <form [formGroup]="dettaglioTipologiaForm" ngxsForm="dettaglioTipologiaModal.dettaglioTipologiaForm">
         <div class="mb-3">
             <label for="tipologia"
@@ -34,7 +34,7 @@
         </div>
     </form>
 </div>
-<div class="modal-footer" [ngClass]="onNightMode()" style="place-content: space-between">
+<div class="modal-footer" style="place-content: space-between">
     <ng-template [ngIf]="!editDettaglioTipologia">
         <button class="btn btn-lg btn-success btn-no-hover mr-2" [disabled]="!formValid" (click)="onConfermaEChiudi()">
             {{ 'Conferma e Chiudi' | uppercase }}

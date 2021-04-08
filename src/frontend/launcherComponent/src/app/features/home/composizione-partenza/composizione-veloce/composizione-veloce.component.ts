@@ -1,7 +1,6 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { Subscription } from 'rxjs';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
@@ -26,6 +25,7 @@ import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/p
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
+import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -33,7 +33,7 @@ import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triag
     styleUrls: ['./composizione-veloce.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FasterComponent implements OnInit, OnDestroy {
+export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
@@ -58,7 +58,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     Composizione = Composizione;
 
-    subscription = new Subscription();
+    partenzeRichiesta: Partenza[];
 
     constructor(private store: Store) {
     }
@@ -67,9 +67,15 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetFiltriComposizione());
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.richiesta?.currentValue) {
+            const richiesta = changes?.richiesta?.currentValue;
+            this.partenzeRichiesta = richiesta.partenzeRichiesta;
+        }
+    }
+
     ngOnDestroy(): void {
         this.store.dispatch(new ResetPaginationPreaccoppiati());
-        this.subscription.unsubscribe();
     }
 
     getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {

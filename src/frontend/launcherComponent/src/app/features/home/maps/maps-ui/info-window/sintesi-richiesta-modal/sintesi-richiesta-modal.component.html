@@ -5,13 +5,13 @@
         <span class="text-white-50"><i class="fa fa-times"></i></span>
     </button>
 </div>
-<div *ngIf="sintesiRichiesta" class="modal-content bg-lightinfo p-0">
-    <app-sintesi-richiesta class="bg-white rounded" [richiesta]="sintesiRichiesta" [fissata]="false" [fissabile]="false"
+<div *ngIf="sintesiRichiesta" class="bg-dark-light modal-content p-0">
+    <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta" [fissata]="false" [fissabile]="false"
                            [isEspanso]="true" [gestibile]="false" [modificabile]="false" [espandibile]="false"
                            [boxAzioni]="false"
                            [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
 </div>
-<div *ngIf="!sintesiRichiesta" class="modal-content p-0">
+<div *ngIf="!sintesiRichiesta" class="bg-dark-light modal-content p-0">
     <div class="position-relative m-h-300">
         <div class="loader-centrato">
             <img src="assets/img/pink_loader_resized.gif" alt="loader">

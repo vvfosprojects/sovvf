@@ -3,7 +3,6 @@ import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
@@ -13,7 +12,6 @@ import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/act
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
-import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import {
@@ -32,23 +30,17 @@ import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gest
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
 import {
     ActionMezzo,
-    ActionRichiesta,
-    AllertaSede,
     ClearRichieste,
     EliminaPartenzaRichiesta,
-    GetListaRichieste,
-    ModificaStatoFonogramma
+    GetListaRichieste
 } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
-import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
-import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
-import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
 import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 @Component({
@@ -290,20 +282,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearRichiestaFissata());
     }
 
-    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    onVisualizzaEventiRichiesta(codice: string): void {
-        this.store.dispatch(new SetIdRichiestaEventi(codice));
-        let modal;
-        modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
-    }
-
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetTriageSummary(richiesta.triageSummary));
@@ -332,11 +310,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         // console.log('actionMezzo', actionMezzo);
     }
 
-    onActionRichiesta(actionRichiesta: RichiestaActionInterface): void {
-        this.store.dispatch(new ActionRichiesta(actionRichiesta));
-        // console.log('actionRichiesta', actionRichiesta);
-    }
-
     toggleEspanso(id: string): void {
         this.store.dispatch(new ReducerRichiesteEspanse(id));
     }
@@ -347,13 +320,5 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }): void {
         this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
-    }
-
-    onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface): void {
-        this.store.dispatch(new ModificaStatoFonogramma(event));
-    }
-
-    onAllertaSede(event: AllertaSedeEmitInterface): void {
-        this.store.dispatch(new AllertaSede(event));
     }
 }

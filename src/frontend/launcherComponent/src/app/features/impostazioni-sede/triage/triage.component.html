@@ -3,7 +3,7 @@
 </h3>
 <div class="mt-4">
     <!-- SELECT DETTAGLIO TIPOLOGIA -->
-    <div class="card bg-light py-3 px-4 n-dark-light">
+    <div class="card bg-light py-3 px-4 bg-dark-light">
         <div class="row">
             <div class="col-6">
                 <label for="selectTipologia" class="font-xxlarge">
@@ -84,7 +84,7 @@
             <ng-template [ngIf]="tItems">
                 <div class="card mt-3 px-4 py-3"
                      [class.bg-light]="!(nightMode$ | async)"
-                     [class.n-dark-light]="(nightMode$ | async)">
+                     [class.bg-dark-light]="(nightMode$ | async)">
                     <ngx-treeview [items]="tItems"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">

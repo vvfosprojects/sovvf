@@ -13,10 +13,10 @@
                            (defissa)="onDefissa()"
                            (modificaRichiesta)="onModificaRichiesta($event)"
                            (gestioneRichiesta)="onGestioneRichiesta($event)"
-                           (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (outEspanso)="onSetEspanso($event)"
-                           (outEspansoId)="toggleEspanso($event)" (actionMezzo)="onActionMezzo($event)"
-                           (actionRichiesta)="onActionRichiesta($event)" (eliminaPartenza)="onEliminaPartenza($event)"
-                           (modificaStatoFonogramma)="onModificaStatoFonogramma($event)">
+                           (outEspanso)="onSetEspanso($event)"
+                           (outEspansoId)="toggleEspanso($event)"
+                           (actionMezzo)="onActionMezzo($event)"
+                           (eliminaPartenza)="onEliminaPartenza($event)">
     </app-richiesta-fissata>
 </ng-template>
 
@@ -40,7 +40,6 @@
                      (statoPartenza)="toggleComposizione()"
                      (composizionePartenza)="nuovaPartenza($event)"
                      (fissaInAlto)="onFissaInAlto($event)"
-                     (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                      (hoverIn)="onHoverIn($event)"
                      (hoverOut)="onHoverOut()"
                      (selezione)="onSelezione($event)"
@@ -50,9 +49,6 @@
                      (modificaRichiesta)="onModificaRichiesta($event)"
                      (gestioneRichiesta)="onGestioneRichiesta($event)"
                      (actionMezzo)="onActionMezzo($event)"
-                     (actionRichiesta)="onActionRichiesta($event)"
                      (outEspansoId)="toggleEspanso($event)"
-                     (eliminaPartenza)="onEliminaPartenza($event)"
-                     (modificaStatoFonogramma)="onModificaStatoFonogramma($event)"
-                     (allertaSede)="onAllertaSede($event)">
+                     (eliminaPartenza)="onEliminaPartenza($event)">
 </app-lista-richieste>

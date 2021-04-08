@@ -75,66 +75,6 @@ $n-prima-competenza: #007bff !important;
 .sun-mode {
   background-color: $n-white;
   color: $n-black;
-
-  .n-li-box a {
-    color: $n-black;
-    font-weight: $n-weight;
-    font-size: $n-font-large;
-  }
-
-  .n-bg-impostazioni {
-    background: linear-gradient(90deg, white 50%, rgba(255, 0, 0, 0.1) 50%);
-  }
-
-  .n-icon-afm {
-    color: $n-guida;
-  }
-
-  .n-box-azione {
-    position: relative;
-    min-width: 0;
-    word-wrap: break-word;
-    background-clip: border-box;
-    border: $n-card-border $n-muted;
-    background-color: $n-white;
-    border-radius: 0.25rem;
-  }
-
-  .diagonal-stripes {
-    background-color: gray;
-    background-image: repeating-linear-gradient(45deg,
-            transparent,
-            transparent 35px,
-            rgba(255, 255, 255, 0.5) 35px,
-            rgba(255, 255, 255, 0.5) 70px);
-  }
-
-  .bg-diagonal-stripes {
-    background-color: $n-grey-light;
-  }
-
-  .badge-mod-secondary {
-    color: $n-muted;
-    border: solid thin $n-muted;
-    border-radius: 0.25rem !important;
-    padding: 0.15em 0.2em;
-  }
-
-  .bg-scheda-contatto {
-    background: $n-light;
-  }
-
-  .gestita {
-    background: $n-light;
-  }
-
-  .bg-resoconto-triage {
-    background-color: $n-grey-light;
-  }
-
-  .bg-partial-loader {
-    background-color: rgba(255, 255, 255, .7);
-  }
 }
 
 // END Sun Mode Styles
@@ -143,6 +83,10 @@ $n-prima-competenza: #007bff !important;
 .moon-mode {
   background-color: $n-dark;
   color: $n-white;
+
+  a {
+    color: $n-white;
+  }
 
   g {
     color: $n-white;
@@ -162,10 +106,6 @@ $n-prima-competenza: #007bff !important;
     background-color: $n-dark;
   }
 
-  .table {
-    color: $n-white;
-  }
-
   .legend-labels {
     background-color: $n-dark-light;
   }
@@ -182,7 +122,7 @@ $n-prima-competenza: #007bff !important;
     color: $n-white;
   }
 
-  .n-bg-impostazioni {
+  .bg-impostazioni {
     background: $n-dark-light;
   }
 
@@ -201,13 +141,18 @@ $n-prima-competenza: #007bff !important;
     color: $n-white;
   }
 
+  table {
+    color: $n-white;
+    border: $n-card-border $n-white;
+  }
+
+  thead {
+    background-color: $n-dark-light;
+  }
+
   td {
     background-color: $n-dark-light;
     color: $n-white;
-  }
-
-  .card-body {
-    background-color: $n-dark;
   }
 
   .n-li-box a {
@@ -216,37 +161,7 @@ $n-prima-competenza: #007bff !important;
     font-size: $n-font-large;
   }
 
-  hr {
-    border-top: $n-hr;
-  }
-
-  .n-icon-afm {
-    color: $n-white;
-  }
-
-  .n-dark-light {
-    background-color: $n-dark-light;
-  }
-
-  .diagonal-stripes {
-    background-color: $n-dark-light;
-  }
-
-  .bg-diagonal-stripes {
-    background-color: $n-dark-light;
-  }
-
-  .n-card {
-    position: relative;
-    min-width: 0;
-    word-wrap: break-word;
-    background-clip: border-box;
-    background-color: $n-dark-light;
-    border-radius: 0.25rem;
-    border: $n-card-border $n-white;
-  }
-
-  .n-box-azione {
+  .box-azione {
     position: relative;
     min-width: 0;
     word-wrap: break-word;
@@ -256,19 +171,15 @@ $n-prima-competenza: #007bff !important;
     border-radius: 0.25rem;
   }
 
-  .n-bg-light {
-    background-color: $n-light;
+  hr {
+    border-top: $n-hr;
   }
 
   .divider-custom-line {
     background: $n-white;
   }
 
-  .diagonal-stripes {
-    background-color: $n-muted
-  }
-
-  .bg-diagonal-stripes {
+  .selected-composizione {
     background-color: #6a7177 !important;
   }
 
@@ -277,10 +188,6 @@ $n-prima-competenza: #007bff !important;
     border: solid thin $n-guida;
     border-radius: 0.25rem !important;
     padding: 0.15em 0.2em;
-  }
-
-  .bg-scheda-contatto {
-    background: $n-dark-light;
   }
 
   .gestita {
@@ -292,16 +199,8 @@ $n-prima-competenza: #007bff !important;
     border-color: $n-muted;
   }
 
-  .bg-resoconto-triage {
-    background-color: $n-muted;
-  }
-
   .list-group-item {
     background-color: #464e56;
-  }
-
-  .bg-partial-loader {
-    background-color: transparent !important;
   }
 
   .popover-header {
@@ -319,6 +218,26 @@ $n-prima-competenza: #007bff !important;
 
   .box-locked {
     color: $n-muted;
+  }
+
+  .bg-dark-light {
+    background-color: $n-dark-light;
+  }
+
+  .bg-white-light {
+    background-color: $n-light;
+  }
+
+  .bg-scheda-contatto {
+    background: $n-dark-light;
+  }
+
+  .bg-resoconto-triage {
+    background-color: $n-muted;
+  }
+
+  .bg-partial-loader {
+    background-color: transparent !important;
   }
 }
 
@@ -353,15 +272,6 @@ $n-prima-competenza: #007bff !important;
 // End Dropdown Google Places
 
 
-.moon-mode-box {
-  background-color: $n-dark;
-  color: $n-white;
-}
-
-.moon-text {
-  color: $n-white;
-}
-
 .moon-card {
   position: relative;
   min-width: 0;
@@ -394,10 +304,6 @@ $n-prima-competenza: #007bff !important;
 
 .moon-hr {
   border-top: $n-hr;
-}
-
-.text-moon {
-  color: $n-white;
 }
 
 .opacity-50 {
@@ -1041,20 +947,6 @@ tag-input {
   font-weight: $n-weight;
 }
 
-.badge-mod-primary {
-  color: #007bff !important;
-  border: solid thin #007bff !important;
-  border-radius: 0.25rem !important;
-  padding: 0.15em 0.2em;
-}
-
-.badge-mod-info {
-  color: #17a2b8 !important;
-  border: solid thin #17a2b8 !important;
-  border-radius: 0.25rem !important;
-  padding: 0.15em 0.2em;
-}
-
 .badge-prima-competenza {
   color: #007bff !important;
   border: solid thin #007bff !important;
@@ -1072,6 +964,27 @@ tag-input {
 .badge-terza-competenza {
   color: #45B5C6;
   border: solid thin #45B5C6;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-primary {
+  color: #007bff !important;
+  border: solid thin #007bff !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-info {
+  color: #17a2b8 !important;
+  border: solid thin #17a2b8 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.15em 0.2em;
+}
+
+.badge-mod-secondary {
+  color: $n-muted;
+  border: solid thin $n-muted;
   border-radius: 0.25rem !important;
   padding: 0.15em 0.2em;
 }
@@ -1159,4 +1072,40 @@ tag-input {
 .color-refresh {
   color: $n-white;
   border-color: $n-white;
+}
+
+.box-azione {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border: $n-card-border $n-muted;
+  background-color: $n-white;
+  border-radius: 0.25rem;
+}
+
+.gestita {
+  background: #f8f9fa !important;
+}
+
+.bg-scheda-contatto {
+  background: $n-light;
+}
+
+.bg-resoconto-triage {
+  background-color: $n-grey-light;
+}
+
+.bg-partial-loader {
+  background-color: rgba(255, 255, 255, .7);
+}
+
+.n-li-box a {
+  color: $n-black;
+  font-weight: $n-weight;
+  font-size: $n-font-large;
+}
+
+.selected-composizione {
+  background-color: #f8f9fa !important;
 }
