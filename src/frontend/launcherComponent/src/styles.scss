@@ -46,15 +46,21 @@ $SO-blue-light: #17a2b8;
 $SO-orange: #ff8800;
 $SO-success: #28a745;
 $SO-danger: #dc3545;
+$SO-warning: #ffc107;
 $SO-secondary: #868e96;
+$SO-verdemela: #92b565;
+$SO-seconda-competenza: #5C8DC4;
+$SO-terza-competenza: #45B5C6;
+$SO-hr: 1px solid #ffffff;
 $SO-weight: 500;
 $SO-middle: 50%;
 $SO-font-xlarge: 20px;
 $SO-font-xxlarge: 25px;
 $SO-xxlModal-width: 1800px;
-$SO-hr: 1px solid #ffffff;
+$SO-btn-nav-selected-shadow: 0 0 10px 2px;
 $SO-box-shadow: 1px 1px 2px 1px #dee2e6;
 $SO-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+$SO-shadow-info-aggregate: 0 0 1px 3px;
 $SO-card-shadow: 2px 0 2px 0.5px;
 $SO-card-border: 1px solid;
 $SO-border-radius: 0.25rem;
@@ -280,7 +286,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .loader {
   margin-top: calc(25%);
   margin-left: calc(50% - 60px);
-  border: 16px solid #464e56;
+  border: 16px solid $SO-dark-light;
   border-top: 16px solid #f3f3f3;
   border-radius: $SO-middle $SO-i;
   width: 120px;
@@ -573,10 +579,10 @@ tag-input {
 }
 
 .card-shadow-warning {
-  -webkit-box-shadow: $SO-card-shadow #ffc107;
-  -moz-box-shadow: $SO-card-shadow #ffc107;
-  box-shadow: $SO-card-shadow #ffc107;
-  border: $SO-card-border #ffc107;
+  -webkit-box-shadow: $SO-card-shadow $SO-warning;
+  -moz-box-shadow: $SO-card-shadow $SO-warning;
+  box-shadow: $SO-card-shadow $SO-warning;
+  border: $SO-card-border $SO-warning;
 }
 
 .card-shadow-secondary {
@@ -641,11 +647,11 @@ tag-input {
 
 .status_sospeso {
   // border-left: $SO-status-border-left $SO-orange;
-  border-left: $SO-status-border-left #ffc107;
+  border-left: $SO-status-border-left $SO-warning;
 }
 
 .status_assegnato {
-  border-left: $SO-status-border-left #ffc107;
+  border-left: $SO-status-border-left $SO-warning;
 }
 
 .status_chiuso {
@@ -658,11 +664,11 @@ tag-input {
 }
 
 .status_inRientro {
-  border-top: $SO-status-border-top #92b565;
+  border-top: $SO-status-border-top $SO-verdemela;
 }
 
 .status_inViaggio {
-  border-top: $SO-status-border-top #ffc107;
+  border-top: $SO-status-border-top $SO-warning;
 }
 
 .status_sulPosto {
@@ -699,11 +705,11 @@ tag-input {
 }
 
 .text-verdemela {
-  color: #92b565 $SO-i;
+  color: $SO-verdemela $SO-i;
 }
 
 .badge-verdemela {
-  background-color: #92b565 $SO-i;
+  background-color: $SO-verdemela $SO-i;
   color: $SO-white $SO-i;
 }
 
@@ -713,7 +719,7 @@ tag-input {
 }
 
 .btn-verdemela {
-  background-color: #92b565 $SO-i;
+  background-color: $SO-verdemela $SO-i;
   color: $SO-white $SO-i;
 }
 
@@ -798,7 +804,7 @@ tag-input {
 }
 
 .bg-verdemela {
-  background-color: #92b565 $SO-i;
+  background-color: $SO-verdemela $SO-i;
 }
 
 .bg-scheda-contatto {
@@ -887,15 +893,15 @@ tag-input {
 }
 
 .border-info-aggregate:hover {
-  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
-  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
-  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+  -webkit-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
+  -moz-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
+  box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
 }
 
 .border-click-checked {
-  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
-  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
-  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+  -webkit-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
+  -moz-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
+  box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
 }
 
 .blink-aggregate span {
@@ -1002,20 +1008,20 @@ tag-input {
 }
 
 .badge-seconda-competenza {
-  color: #5C8DC4;
-  border: $SO-badge-border #5C8DC4;
+  color: $SO-seconda-competenza;
+  border: $SO-badge-border $SO-seconda-competenza;
+  border-radius: $SO-border-radius $SO-i;
+  padding: $SO-badge-padding;
+}
+
+.badge-terza-competenza {
+  color: $SO-terza-competenza;
+  border: $SO-badge-border $SO-terza-competenza;
   border-radius: $SO-border-radius $SO-i;
   padding: $SO-badge-padding;
 }
 
 /* Badge */
-.badge-terza-competenza {
-  color: #45B5C6;
-  border: $SO-badge-border #45B5C6;
-  border-radius: $SO-border-radius $SO-i;
-  padding: $SO-badge-padding;
-}
-
 .badge-mod-primary {
   color: $SO-blue $SO-i;
   border: $SO-badge-border $SO-blue $SO-i;
@@ -1045,8 +1051,8 @@ tag-input {
 }
 
 .badge-mod-warning {
-  color: #ffc107 $SO-i;
-  border: $SO-badge-border #ffc107 $SO-i;
+  color: $SO-warning $SO-i;
+  border: $SO-badge-border $SO-warning $SO-i;
   border-radius: $SO-border-radius $SO-i;
   padding: $SO-badge-padding;
 }
@@ -1066,14 +1072,14 @@ tag-input {
 }
 
 .badge-mod-verdemela {
-  color: #92b565 $SO-i;
-  border: $SO-badge-border #92b565 $SO-i;
+  color: $SO-verdemela $SO-i;
+  border: $SO-badge-border $SO-verdemela $SO-i;
   border-radius: $SO-border-radius $SO-i;
   padding: $SO-badge-padding;
 }
 
 .btn-nav-selected {
-  box-shadow: 0 0 10px 2px $SO-danger $SO-i;
+  box-shadow: $SO-btn-nav-selected-shadow $SO-danger $SO-i;
   transform: scale(1.1) $SO-i;
   color: $SO-danger $SO-i;
   border: $SO-badge-border $SO-danger;
@@ -1084,7 +1090,7 @@ tag-input {
 }
 
 .btn-impostazioni-selected {
-  box-shadow: 0 0 10px 2px $SO-danger $SO-i;
+  box-shadow: $SO-btn-nav-selected-shadow $SO-danger $SO-i;
   transform: scale(1.02) $SO-i;
   color: $SO-danger $SO-i;
   border: solid thin $SO-danger;
