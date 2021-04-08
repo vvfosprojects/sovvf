@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import {
+    ReducerFilterListeComposizione,
+    SetRichiestaComposizione,
+} from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
@@ -10,7 +13,6 @@ import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriC
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
-import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ViewLayouts } from '../../interface/view.interface';
 import { Sede } from '../../model/sede.model';
@@ -18,6 +20,7 @@ import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
+import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -42,6 +45,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -117,7 +121,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     addFiltro(event: any, tipo: string): void {
-        this.store.dispatch(new StartListaComposizioneLoading());
         if (event) {
             if (event?.id || event?.descrizione) {
                 this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
