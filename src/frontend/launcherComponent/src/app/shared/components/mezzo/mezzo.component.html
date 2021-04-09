@@ -1,6 +1,6 @@
 <div class="d-inline-block font-xxlarge"
      style="vertical-align: middle">
-    <i class="guida fa fa-truck fa-fw mr-1"></i>
+    <i class="fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo?.stato)}}" [ngbTooltip]="mezzo?.stato"></i>
     <div *ngIf="mezzo.descrizione"
          class="d-inline-block font-weight-bold"
          [ngbTooltip]="mezzo.descrizione"

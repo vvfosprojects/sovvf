@@ -65,7 +65,9 @@ export class RichiestaGestioneState {
             dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
         }
-        dispatch(new RemoveRichiestaEspansa(state.richiestaGestione.id));
+        if (state.richiestaGestione) {
+            dispatch(new RemoveRichiestaEspansa(state.richiestaGestione.id));
+        }
         patchState(RichiestaGestioneStateDefaults);
     }
 }
