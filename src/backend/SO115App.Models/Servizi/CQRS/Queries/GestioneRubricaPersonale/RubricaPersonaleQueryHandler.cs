@@ -55,7 +55,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             Parallel.ForEach(lstPersonale, personale =>
             {
                 var dettaglio = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()))?.dati;
-                var codComparto = _getPercorsoByIdQualifica.Get(dettaglio?.idQualifica).Result.dati?.FirstOrDefault();
+                //var codComparto = _getPercorsoByIdQualifica.Get(dettaglio?.idQualifica).Result.dati?.FirstOrDefault();
 
                 var rubricaPersonale = new PersonaleRubrica()
                 {
@@ -68,7 +68,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Telefono2 = dettaglio?.telefonoFisso,
                     Telefono3 = dettaglio?.fax,
                     Stato = dettaglio?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
-                    Tipo = codComparto?.CodComparto == 2 ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale
+                    //Tipo = codComparto?.CodComparto == 2 ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale
                 };
 
                 result.Enqueue(rubricaPersonale);

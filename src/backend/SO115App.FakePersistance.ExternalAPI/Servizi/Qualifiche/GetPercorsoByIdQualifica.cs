@@ -35,7 +35,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Qualifiche
             {
                 e = e.GetBaseException();
 
-                throw new Exception($"Servizio qualifiche non disponibile: {e.Message} {e.StackTrace}");
+                throw new Exception($"Servizio qualifiche non disponibile: {e.Message}");
             }
         }
     }
