@@ -14,7 +14,6 @@ import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-pa
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
-import { Tipologia } from '../../model/tipologia.model';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
@@ -200,22 +199,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             nominativo: utentiPresaInCaricoValue.nominativo.length <= 15 ? '' : utentiPresaInCaricoValue.nominativo,
             dataInizioAttivita: utentiPresaInCaricoValue.dataInizioAttivita
         };
-    }
-
-    getPrimaTipologia(richiesta: SintesiRichiesta): Tipologia {
-        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
-            return richiesta.tipologie[0];
-        } else {
-            return null;
-        }
-    }
-
-    getDescrizionePrimaTipologia(richiesta: SintesiRichiesta): string {
-        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
-            return richiesta.tipologie[0].descrizione;
-        } else {
-            return '';
-        }
     }
 
     getInLavorazioneTooltip(utentiInLavorazioneValue: any): string {

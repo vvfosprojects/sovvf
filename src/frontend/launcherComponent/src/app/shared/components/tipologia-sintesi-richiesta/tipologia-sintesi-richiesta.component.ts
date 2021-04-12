@@ -11,6 +11,7 @@ export class TipologiaSintesiRichiestaComponent implements OnInit {
 
     @Input() tipologieRichiesta: Tipologia[];
     @Input() descrizioneRichiesta: string;
+    @Input() triage: boolean;
 
     methods = new HelperSintesiRichiesta();
 

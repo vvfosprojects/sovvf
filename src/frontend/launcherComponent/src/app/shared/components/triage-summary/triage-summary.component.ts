@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { getContatoreGeneriMezzo, getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
 import { SetSchedaContattoTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
+import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-triage-summary',
@@ -32,6 +33,8 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
     noteOperatore: string[];
+    methods = new HelperSintesiRichiesta();
+    live = true;
 
     private subscription: Subscription = new Subscription();
 
