@@ -29,9 +29,9 @@
 </ng-template>
 <div class="d-inline-block">
     <span *ngIf="!!tipologieRichiesta?.length"
-       class="d-inline-block font-xxlarge text-tipologia font-double-monitor"
+       class="d-inline-block text-tipologia font-double-monitor"
        ngbTooltip="{{ descrizioneRichiesta }}"
        [disableTooltip]="descrizioneRichiesta?.length <= 45">
-        {{ getDescrizionePrimaTipologia() | truncate:45 }}
+        {{ !triage ? (getDescrizionePrimaTipologia() | truncate:45) : getDescrizionePrimaTipologia() | truncate:40 }}
     </span>
 </div>
