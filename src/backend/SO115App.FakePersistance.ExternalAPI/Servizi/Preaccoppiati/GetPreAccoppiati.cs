@@ -2,9 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using System;
 using System.Collections.Generic;
@@ -21,12 +24,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
+        private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetPreAccoppiati(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
+        public GetPreAccoppiati(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IGetStatoMezzi getStatoMezzi)
         {
             _client = client;
             _configuration = configuration;
             _memoryCache = memoryCache;
+            _getStatoMezzi = getStatoMezzi;
         }
 
         public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
@@ -86,7 +91,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
 
-            return preAccoppiati
+            return FiltraPerStatoMezzo(preAccoppiati
                 .Where(x => query.CodiceSede.Contains(x.CodiceSede))
                 .Where(c =>
                 {
@@ -109,7 +114,26 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     if (query.Filtri.CodiceDistaccamento != null)
                         return query.Filtri.CodiceDistaccamento.Contains(c.MezzoComposizione.Mezzo.Distaccamento.Codice);
                     return true;
-                }).ToList();
+                }).ToList(), query.CodiceSede);
+        }
+
+        private List<PreAccoppiatiFakeJson> FiltraPerStatoMezzo(List<PreAccoppiatiFakeJson> listaPreaccoppiati, String[] CodiciSede)
+        {
+            var statiOperativi = _getStatoMezzi.Get(CodiciSede[0]);
+
+            foreach (PreAccoppiatiFakeJson pre in listaPreaccoppiati)
+            {
+                if (statiOperativi.Exists(x => x.CodiceMezzo.Equals(pre.MezzoComposizione.Mezzo.Codice)))
+                {
+                    pre.MezzoComposizione.Mezzo.Stato = statiOperativi.Find(x => x.CodiceMezzo.Equals(pre.MezzoComposizione.Mezzo.Codice)).StatoOperativo;
+                }
+                else
+                {
+                    pre.MezzoComposizione.Mezzo.Stato = "InSede";
+                }
+            }
+
+            return listaPreaccoppiati;
         }
 
         private List<PreAccoppiati> MapPreAccoppiati(List<PreAccoppiatiFake> ListaPreAccoppiatiFake)

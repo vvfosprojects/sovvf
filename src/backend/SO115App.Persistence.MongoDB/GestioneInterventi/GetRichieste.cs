@@ -121,9 +121,6 @@ namespace SO115App.Persistence.MongoDB
             //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
-                if (filtro.StatiRichiesta.Contains("Assegnata"))
-                    filtro.StatiRichiesta.Add("InAttesa");
-
                 result.AddRange(lstRichieste.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)));
             }
             else if (filtro.SoloChiuse)
@@ -186,9 +183,6 @@ namespace SO115App.Persistence.MongoDB
                         result = result.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && !o.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
                 }
             }
-
-            if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
-                result.AddRange(lstRichieste.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)));
 
             //MAPPING
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
