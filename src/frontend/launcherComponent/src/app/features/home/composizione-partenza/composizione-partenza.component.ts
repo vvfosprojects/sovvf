@@ -55,7 +55,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     // Richiesta Composizione
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
