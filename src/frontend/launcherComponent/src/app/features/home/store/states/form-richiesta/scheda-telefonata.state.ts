@@ -2,7 +2,6 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     AnnullaChiamata,
-    ApriModaleRichiestaDuplicata,
     CestinaChiamata,
     ClearChiamata,
     ClearIndirizzo,
@@ -35,7 +34,6 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
 import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
@@ -476,32 +474,6 @@ export class SchedaTelefonataState {
                 longitudine: ''
             }
         }));
-    }
-
-    @Action(ApriModaleRichiestaDuplicata)
-    apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata): void {
-        const innerWidth = window.innerWidth;
-        if (innerWidth && innerWidth > 3700) {
-            this.ngZone.run(() => {
-                const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-                    windowClass: 'modal-holder modal-left',
-                    size: 'lg',
-                    centered: true,
-                    backdrop: 'static'
-                });
-                richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
-            });
-        } else {
-            this.ngZone.run(() => {
-                const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-                    windowClass: 'modal-holder',
-                    size: 'lg',
-                    centered: true,
-                    backdrop: 'static'
-                });
-                richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
-            });
-        }
     }
 
     @Action(StartLoadingNuovaChiamata)

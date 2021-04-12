@@ -10,7 +10,6 @@ import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
-import { AllertaSedeModalComponent } from '../../modal/allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
@@ -104,7 +103,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes && changes.disableTooltips && changes.disableTooltips.currentValue) {
+        if (changes?.disableTooltips?.currentValue) {
             if (changes.disableTooltips.currentValue) {
                 this.tooltipConfig.disableTooltip = true;
             } else if (!changes.disableTooltips.currentValue) {
