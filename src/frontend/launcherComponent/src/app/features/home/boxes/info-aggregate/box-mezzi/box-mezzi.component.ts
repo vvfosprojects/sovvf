@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
@@ -8,8 +8,7 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-box-mezzi',
     templateUrl: './box-mezzi.component.html',
-    styleUrls: ['./box-mezzi.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./box-mezzi.component.css']
 })
 export class BoxMezziComponent implements OnChanges {
 

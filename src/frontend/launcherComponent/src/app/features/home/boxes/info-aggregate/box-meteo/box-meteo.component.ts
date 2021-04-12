@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 
 @Component({
     selector: 'app-box-meteo',
     templateUrl: './box-meteo.component.html',
-    styleUrls: ['./box-meteo.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./box-meteo.component.css']
 })
 export class BoxMeteoComponent {
 

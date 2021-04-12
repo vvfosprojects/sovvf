@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
@@ -7,8 +7,7 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-box-personale',
     templateUrl: './box-personale.component.html',
-    styleUrls: ['./box-personale.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./box-personale.component.css']
 })
 export class BoxPersonaleComponent implements OnChanges {
 
