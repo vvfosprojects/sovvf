@@ -38,7 +38,6 @@ import { ActionRichiestaModalComponent } from './modal/action-richiesta-modal/ac
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { PartialLoaderComponent } from './components/partial-loader/partial-loader.component';
 import { EliminaPartenzaModalComponent } from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
-import { RichiestaDuplicataModalComponent } from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { ModificaFonogrammaModalComponent } from './modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { DettaglioFonogrammaModalComponent } from './modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
@@ -69,6 +68,7 @@ import { TriageSummaryComponent } from './components/triage-summary/triage-summa
 import { TriageSummaryModalComponent } from './modal/triage-summary-modal/triage-summary-modal.component';
 import { IconaStatoComponent } from './components/icona-stato/icona-stato.component';
 import { VersioneComponent } from './components/versione/versione.component';
+import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -89,7 +89,6 @@ const COMPONENTS = [
     CheckboxComponent,
     PartialLoaderComponent,
     EliminaPartenzaModalComponent,
-    RichiestaDuplicataModalComponent,
     ModificaFonogrammaModalComponent,
     DettaglioFonogrammaModalComponent,
     MezzoActionsModalComponent,
@@ -156,6 +155,7 @@ const MODULES = [
     ],
     declarations: [
         ...COMPONENTS,
+        TipologiaSintesiRichiestaComponent,
     ],
     exports: [
         ...COMPONENTS,

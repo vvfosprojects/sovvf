@@ -5,9 +5,9 @@ import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import {
-  GetListaRichieste,
-  StopLoadingActionMezzo,
-  UpdateRichiesta
+    GetListaRichieste,
+    StopLoadingActionMezzo,
+    UpdateRichiesta
 } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
@@ -16,7 +16,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
@@ -25,8 +25,6 @@ import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     GetListaSchedeContatto,
-    InsertSchedeContatto,
-    RemoveSchedeContatto,
     SetContatoriSchedeContatto,
     SetListaSchedeContatto,
     UpdateSchedaContatto
@@ -138,25 +136,25 @@ export class SignalRService {
         // Todo: tipicizzare
 
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
-          console.log('NotifySuccessAFM', data);
-          this.store.dispatch(new UpdateRichiesta(data.richiesta));
-          this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
+            console.log('NotifySuccessAFM', data);
+            this.store.dispatch(new UpdateRichiesta(data.richiesta));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
         });
 
         this.hubNotification.on('NotifyErrorAFM', (data: string) => {
-          console.log('NotifyErrorAFM:', data);
-          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+            console.log('NotifyErrorAFM:', data);
+            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
-          console.log('NotifySuccessAnnullamentoAFM:', data);
-          this.store.dispatch(new UpdateRichiesta(data.richiesta));
-          this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+            console.log('NotifySuccessAnnullamentoAFM:', data);
+            this.store.dispatch(new UpdateRichiesta(data.richiesta));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
         });
 
         this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
-          console.log('NotifyErrorAnnullamentoAFM:', data);
-          this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+            console.log('NotifyErrorAnnullamentoAFM:', data);
+            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         /**
@@ -247,10 +245,11 @@ export class SignalRService {
         /**
          * Inserimento Chiamata
          */
-        this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
-            console.log('NotifyDoppioneChiamataInCorso', message);
-            this.store.dispatch(new ApriModaleRichiestaDuplicata(message));
-        });
+        // TODO: eliminare da BE, non più utilizzata
+        // this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
+        //     console.log('NotifyDoppioneChiamataInCorso', message);
+        //     this.store.dispatch(new ApriModaleRichiestaDuplicata(message));
+        // });
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch(new InsertChiamataSuccess(data));

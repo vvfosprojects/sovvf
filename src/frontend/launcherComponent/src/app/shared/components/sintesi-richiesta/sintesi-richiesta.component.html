@@ -11,9 +11,13 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-12">
-                    <span *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
-                          class="d-inline-block text-danger font-weight-bolder h4"
-                          style="position: absolute; left: 0; top:22px">S</span>
+
+                    <!-- Icona Richiesta Sospesa -->
+                    <div *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
+                         class="d-inline-block text-danger font-weight-bolder h4"
+                         style="position: absolute; left: 0; top:22px">S
+                    </div>
+
                     <!-- PRIMA RIGA -->
                     <div class="row">
                         <div class="clearfix ml-4" style="width: 2%">
@@ -36,6 +40,7 @@
                         </div>
                         <div class="clearfix" style="width: 15%"
                              [class.col-1-d-monitor]="!(mapsIsActive$ | async) || doubleMonitor">
+                            <!-- Codice Richiesta -->
                             <div class="h6 mb-1 nowrap">
                                 <i class="guida fa fa-hashtag fa-fw mr-1 font-double-monitor"
                                    ngbTooltip="Identificativo richiesta" placement="top-left"></i>
@@ -52,6 +57,7 @@
                             </div>
                         </div>
                         <div class="clearfix" style="width: 7%">
+                            <!-- Campana Chiamata Urgente -->
                             <button *ngIf="richiesta.chiamataUrgente && richiesta.stato === 'Chiamata'"
                                     class="btn border btn-no-hover pl-0 py-0 font-double-monitor btn-glow"
                                     ngbTooltip="Chiamata Urgente!"
@@ -59,90 +65,17 @@
                                 <i class="fa fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
                             </button>
                         </div>
-                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="col-7"
-                             style="flex: 0 0 54.5% !important;">
-                            <!-- descrizione intervento -->
-                            <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
-                                <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
-                                <ng-template #thenBlock>
-                                    <span>
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
-                                           ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
-                                    </span>
-                                </ng-template>
-                                <ng-template #elseBlock>
-                                    <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
-                                          tabindex="0">
-                                        <span class="position-relative">
-                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
-                                               ngbTooltip="{{ getDescrizionePrimaTipologia(richiesta) }}"></i>
-                                            <span class="badge badge-notify text-light">
-                                                {{ richiesta?.tipologie?.length }}
-                                            </span>
-                                        </span>
-                                    </span>
-                                </ng-template>
-                                <!-- ngbPopover tipologie intervento -->
-                                <ng-template #popTipologie>
-                                    <div class="h6" *ngFor="let t of richiesta?.tipologie">
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t) }}"></i>&nbsp
-                                        {{ t?.descrizione }}
-                                    </div>
-                                </ng-template>
-                                <span>
-                                    <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
-                                       class="h6 font-xxlarge descrizione-int"
-                                       ngbTooltip="{{ richiesta?.descrizione }}"
-                                       [disableTooltip]="richiesta?.descrizione?.length <= 45">
-                                        {{ richiesta.descrizione | truncate:45 }}
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                        <div *ngIf="!(mapsIsActive$ | async) || doubleMonitor" class="clearfix"
-                             style="width: 33%">
-                            <!-- descrizione intervento -->
-                            <div class="h6 mb-1 nowrap default-cursor font-double-monitor">
-                                <div *ngIf="richiesta?.tipologie && richiesta?.tipologie?.length > 0; then thenBlock else elseBlock"></div>
-                                <ng-template #thenBlock>
-                                    <span>
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
-                                           ngbTooltip="{{ richiesta.tipologie[0].descrizione }}"></i>
-                                    </span>
-                                </ng-template>
-                                <ng-template #elseBlock>
-                                    <span [ngbPopover]="popTipologie" popoverTitle="Tipologie" triggers="click"
-                                          tabindex="0">
-                                        <span class="position-relative">
-                                            <i class="fa-fw mr-1 {{ methods.coloraIcona(getPrimaTipologia(richiesta)) }}"
-                                               ngbTooltip="{{ getDescrizionePrimaTipologia(richiesta) }}"></i>
-                                            <span class="badge badge-notify text-light">
-                                                {{ richiesta?.tipologie?.length }}
-                                            </span>
-                                        </span>
-                                    </span>
-                                </ng-template>
-                                <!-- ngbPopover tipologie intervento -->
-                                <ng-template #popTipologie>
-                                    <div class="h6" *ngFor="let t of richiesta?.tipologie">
-                                        <i class="fa-fw mr-1 {{ methods.coloraIcona(t) }}"></i>&nbsp
-                                        {{ t?.descrizione }}
-                                    </div>
-                                </ng-template>
-                                <span>
-                                    <a *ngIf="!!richiesta?.tipologie && richiesta?.tipologie?.length > 0"
-                                       class="h6 text-tipologia font-double-monitor"
-                                       ngbTooltip="{{ richiesta?.descrizione }}"
-                                       [disableTooltip]="richiesta?.descrizione?.length <= 45">
-                                        {{ getDescrizionePrimaTipologia(richiesta) | truncate:45 }}
-                                    </a>
-                                </span>
+                        <div style="width: 33%">
+                            <!-- Tipologia/Descrizione Chiamata/Intervento -->
+                            <div class="mb-1 nowrap default-cursor font-xxlarge font-double-monitor">
+                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="richiesta?.tipologie"
+                                                                 [descrizioneRichiesta]="richiesta?.descrizione">
+                                </app-tipologia-sintesi-richiesta>
                             </div>
                         </div>
                         <div class="clearfix" style="width: 18%"></div>
                         <div class="clearfix pr-3 text-right" style="width: 23%">
                             <div class="h6 mb-0">
-
                                 <!-- stato fonogramma -->
                                 <button *ngIf="richiesta?.fonogramma"
                                         class="btn btn-light border big_font py-0 mr-1 font-double-monitor"
@@ -223,6 +156,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- SECONDA RIGA -->
                     <div class="row">
                         <div class="clearfix ml-4" style="width: 2%">
@@ -282,8 +216,8 @@
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
                         </div>
-                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor"
-                             class="col-2 pr-3 text-right" [ngClass]="{'mb-1': isEspanso}">
+                        <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="col-2 pr-3 text-right"
+                             [class.mb-1]="isEspanso">
                             <div class="h6 m-0 nowrap mt-1">
                                 <button *ngIf="!fissata && fissabile"
                                         class="btn btn-light border py-0 px-0 mr-1 font-double-monitor"
@@ -395,6 +329,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- TERZA RIGA IN SINGLE MONITOR -->
                     <div [class.d-none]="!(mapsIsActive$ | async) || doubleMonitor" class="row">
                         <div class="clearfix mx-3">

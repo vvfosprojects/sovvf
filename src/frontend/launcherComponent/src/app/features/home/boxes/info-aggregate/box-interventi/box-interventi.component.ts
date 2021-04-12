@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function-generiche';
@@ -9,8 +9,7 @@ import { TurnoCalendario } from '../../../../navbar/turno/model/turno-calendario
 @Component({
     selector: 'app-box-interventi',
     templateUrl: './box-interventi.component.html',
-    styleUrls: ['./box-interventi.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./box-interventi.component.css']
 })
 export class BoxInterventiComponent implements OnChanges {
 
@@ -22,9 +21,15 @@ export class BoxInterventiComponent implements OnChanges {
 
     interventiDiff: any;
 
+    constructor(config: NgbTooltipConfig) {
+        config.container = 'body';
+        // config.openDelay = 200;
+        // config.closeDelay = 100;
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         const interventi = changes.interventi;
-        if (interventi && interventi.currentValue && interventi.previousValue) {
+        if (interventi?.currentValue && interventi?.previousValue) {
             this.interventiDiff = objectDiff({
                 chiamate: interventi.currentValue.chiamate,
                 assegnati: interventi.currentValue.assegnati,
@@ -40,12 +45,6 @@ export class BoxInterventiComponent implements OnChanges {
                 this.interventiDiff = null;
             }, 5000);
         }
-    }
-
-    constructor(config: NgbTooltipConfig) {
-        config.container = 'body';
-        // config.openDelay = 200;
-        // config.closeDelay = 100;
     }
 
     checkDiff(key: string): string {
