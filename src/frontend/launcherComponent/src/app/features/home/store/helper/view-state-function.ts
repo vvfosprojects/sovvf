@@ -84,7 +84,7 @@ export function switchComposizione(state: any, modalita: Composizione): ViewComp
  * @param: lastState
  */
 export function turnOffComposizione(state: any, lastState: ViewComponentStateModel): ViewComponentStateModel {
-    if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
+    if (lastState.column && lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
         state.view.mappa.active = false;
         state.view.richieste.split = false;
         state.view.mappa.split = false;

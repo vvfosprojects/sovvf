@@ -7,12 +7,12 @@
                       >Richieste: {{interventi?.totale}}</span>
                 <span style="font-size: 16px">
           <span ngbTooltip="Interventi aperti nel turno precedente" placement="top-left">
-            <span class="ml-2 mr-1">Turno {{turno?.precedente}}:</span>
+            <span class="ml-2 mr-1">T ({{turno?.precedente}}):</span>
             <span class="font-weight-bold">{{interventi?.totTurnoPrecedente}}</span>
           </span>
             <span class="mx-1 fa fa-arrow-right fa-fw"></span>
             <span ngbTooltip="Interventi aperti nel turno corrente" placement="top-left">
-            <span class="mr-1">Turno {{turno?.corrente}}:</span>
+            <span class="mr-1">T ({{turno?.corrente}}):</span>
             <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
           </span>
                 </span>

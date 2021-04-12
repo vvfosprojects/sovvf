@@ -10,12 +10,10 @@ import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
-import { AllertaSedeModalComponent } from '../../modal/allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
-import { Tipologia } from '../../model/tipologia.model';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
@@ -57,7 +55,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledAzioniRichiesta = false;
     @Input() disabledComposizionePartenza = false;
     @Input() nightMode: boolean;
-    @Input() doubleMonitor: boolean;
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
@@ -104,7 +101,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes && changes.disableTooltips && changes.disableTooltips.currentValue) {
+        if (changes?.disableTooltips?.currentValue) {
             if (changes.disableTooltips.currentValue) {
                 this.tooltipConfig.disableTooltip = true;
             } else if (!changes.disableTooltips.currentValue) {
@@ -201,22 +198,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             nominativo: utentiPresaInCaricoValue.nominativo.length <= 15 ? '' : utentiPresaInCaricoValue.nominativo,
             dataInizioAttivita: utentiPresaInCaricoValue.dataInizioAttivita
         };
-    }
-
-    getPrimaTipologia(richiesta: SintesiRichiesta): Tipologia {
-        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
-            return richiesta.tipologie[0];
-        } else {
-            return null;
-        }
-    }
-
-    getDescrizionePrimaTipologia(richiesta: SintesiRichiesta): string {
-        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
-            return richiesta.tipologie[0].descrizione;
-        } else {
-            return '';
-        }
     }
 
     getInLavorazioneTooltip(utentiInLavorazioneValue: any): string {

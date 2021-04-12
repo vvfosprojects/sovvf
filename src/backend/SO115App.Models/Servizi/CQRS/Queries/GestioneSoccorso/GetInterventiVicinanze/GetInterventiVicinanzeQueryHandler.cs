@@ -29,17 +29,18 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
                 UnitaOperative = lstPinNodo
             });
 
-            var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = lstPinNodo,
-                SoloChiuse = true
-            });
-
             var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {
                 UnitaOperative = lstPinNodo,
                 IndirizzoIntervento = new API.Models.Classi.Condivise.Localita(null, query.Indirizzo.Split(',')[0], "")
             });
+
+            var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            {
+                UnitaOperative = lstPinNodo,
+                SoloChiuse = true
+            }).Where(r => !resultStessaVia.Contains(r)).ToList();
+
 
             return new GetInterventiVicinanzeResult()
             {

@@ -85,13 +85,6 @@ export class ClearIndirizzo {
     static readonly type = '[SchedaTelefonata] Clear Indirizzo';
 }
 
-export class ApriModaleRichiestaDuplicata {
-    static readonly type = '[SchedaTelefonata] Apri Modale Richiesta Duplicata';
-
-    constructor(public messaggio: string) {
-    }
-}
-
 export class StartLoadingNuovaChiamata {
     static readonly type = '[SchedaTelefonata] Start Loading Nuova Chiamata';
 }

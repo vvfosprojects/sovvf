@@ -42,7 +42,6 @@
                     <app-coda-chiamate *ngIf="viewState.codaChiamate.active"></app-coda-chiamate>
                     <!-- Composizione Partenza -->
                     <app-composizione-partenza *ngIf="viewState.composizione.active"
-                                               [doubleMonitor]="(doubleMonitor$ | async)"
                                                [nightMode]="(nightMode$ | async)"
                                                [boxAttivi]="boxAttivi"
                                                [compPartenzaMode]="(composizioneMode$ | async)">
