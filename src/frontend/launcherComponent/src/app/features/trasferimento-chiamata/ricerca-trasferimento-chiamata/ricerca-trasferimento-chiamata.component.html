@@ -1,8 +1,8 @@
 <form class="m-0" autocomplete="off">
     <div class="input-group">
         <label for="ricercaTrasferimentoChiamata" class="d-none"></label>
-        <input id="ricercaTrasferimentoChiamata" name="ricercaRichieste" [(ngModel)]="ricerca"
-               class="form-control font-xlarge" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
+        <input id="ricercaTrasferimentoChiamata" name="ricercaRichieste" [(ngModel)]="ricerca" style="font-size: 21px"
+               class="form-control" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
                (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
         <div class="input-group-append">
             <button class="btn btn-primary btn-no-hover">

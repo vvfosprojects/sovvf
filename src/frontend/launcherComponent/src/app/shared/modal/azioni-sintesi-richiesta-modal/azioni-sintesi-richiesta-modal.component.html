@@ -12,7 +12,7 @@
 
     <div class="row justify-content-center">
         <!-- LISTA EVENTI -->
-        <div class="clearfix box-azione w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-list text-secondary"></i></button>
@@ -26,7 +26,7 @@
             </button>
         </div>
         <!-- TRASFERIMENTO CHIAMATA -->
-        <div class="clearfix box-azione w-25 font-xlarge mx-3" style="height: fit-content">
+        <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
             <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-send-o"></i></button>
@@ -40,7 +40,7 @@
             </button>
         </div>
         <!-- ALLERTA SEDE -->
-        <div class="clearfix box-azione w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-exclamation-triangle"></i></button>
@@ -57,7 +57,7 @@
 
     <div class="row justify-content-center mt-3">
         <!-- MODIFICA ENTI INTERVENUTI -->
-        <div class="clearfix box-azione w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-edit"></i></button>
@@ -71,7 +71,7 @@
             </button>
         </div>
         <!-- MODIFICA FONOGRAMMA -->
-        <div class="clearfix box-azione w-25 font-xlarge mx-3" style="height: fit-content">
+        <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
             <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-edit"></i></button>
@@ -85,13 +85,13 @@
             </button>
         </div>
         <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-        <div class="clearfix w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix w-25" style="height: fit-content">
         </div>
     </div>
 
     <div class="row justify-content-center mt-3">
         <!-- CHIUDI CHIAMATA -->
-        <div class="clearfix box-azione w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa fa-forward"></i></button>
@@ -105,7 +105,7 @@
             </button>
         </div>
         <!-- SOSPENDI CHIAMATA -->
-        <div class="clearfix w-25 font-xlarge mx-3" [class.box-azione]="statoRichiestaString?.length"
+        <div class="clearfix w-25 mx-3" [class.box-azione]="statoRichiestaString?.length"
              style="height: fit-content">
       <span *ngFor="let stato of statoRichiestaString">
        <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
@@ -120,7 +120,7 @@
       </span>
         </div>
         <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-        <div class="clearfix w-25 font-xlarge" style="height: fit-content">
+        <div class="clearfix w-25" style="height: fit-content">
         </div>
     </div>
 </div>
