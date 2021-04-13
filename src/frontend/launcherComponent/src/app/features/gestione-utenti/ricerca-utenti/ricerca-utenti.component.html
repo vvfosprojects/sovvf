@@ -16,7 +16,7 @@
                             </div>
                             <div class="float-right pr-1">
                                 <div class="text-center mt-2">
-                                    <input class="form-control-lg font-xlarge" [(ngModel)]="sediFiltroSearch"
+                                    <input class="form-control-lg" [(ngModel)]="sediFiltroSearch" style="font-size: 21px"
                                            [ngModelOptions]="{standalone: true}" placeholder="Cerca una sede"
                                            type="search">
                                 </div>
@@ -47,8 +47,8 @@
                 </div>
             </div>
         </div>
-        <input id="ricercaRichieste" name="ricercaRichieste" [(ngModel)]="ricerca"
-               class="form-control font-xlarge" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
+        <input id="ricercaRichieste" name="ricercaRichieste" [(ngModel)]="ricerca" style="font-size: 21px"
+               class="form-control" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
                (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
         <div class="input-group-append">
             <button class="btn btn-primary btn-no-hover">

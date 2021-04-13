@@ -1,4 +1,4 @@
-<table class="table table-striped bg-white font-xlarge">
+<table class="table table-striped bg-white">
     <thead>
     <tr>
         <th scope="col" style="width:10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
@@ -86,7 +86,7 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
+<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <ngb-pagination

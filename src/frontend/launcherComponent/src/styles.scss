@@ -85,12 +85,40 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
 // Single Monitor Styles
 .single-monitor {
+  font-size: $SO-font-xlarge;
+  font-weight: $SO-weight;
+  button {
+    font-size: $SO-font-xlarge;
+    font-weight: $SO-weight;
+  }
+  input {
+    font-size: $SO-font-xlarge;
+    font-weight: $SO-weight;
+  }
+  .toast-container {
+    font-size: 1rem;
+    font-weight: 400;
+  }
 }
 
 // END Single Monitor Styles
 
 // Double Monitor Styles
 .double-monitor {
+  font-size: $SO-font-xlarge;
+  font-weight: $SO-weight;
+  button {
+    font-size: $SO-font-xlarge;
+    font-weight: $SO-weight;
+  }
+  input {
+    font-size: $SO-font-xlarge;
+    font-weight: $SO-weight;
+  }
+  .toast-container {
+    font-size: 1rem;
+    font-weight: 400;
+  }
   ngb-modal-window {
     padding-right: $SO-middle $SO-i;
   }
