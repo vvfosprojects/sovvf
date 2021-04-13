@@ -11,11 +11,13 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
@@ -78,14 +80,13 @@ namespace SO115App.CompositionRoot
 
             #region Gestione Sedi
 
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetCoordinateByCodSede,
-                               Persistence.MongoDB.GestioneSedi.GetCoordinateByCodSede>();
+            container.Register<IGetSedi, GetSedi>();
 
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento,
-                               Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
+            container.Register<IGetCoordinateByCodSede, GetCoordinateByCodSede>();
 
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByPinListaSedi,
-                               Persistence.MongoDB.GestioneSedi.GetDistaccamentiByCodiciSede>();
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento, GetcompetenzeByCoordinateIntervento>();
+
+            container.Register<IGetListaDistaccamentiByPinListaSedi, GetDistaccamentiByCodiciSede>();
 
             #endregion Gestione Sedi
 
