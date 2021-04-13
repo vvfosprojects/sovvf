@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FiltroMezzi } from '../../../maps-model/filtro-mezzi.interface';
 import { StatoMezzo } from '../../../../../../shared/enum/stato-mezzo.enum';
-import { DescrizioneTipologicaMezzo } from '../../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { CheckboxInterface } from '../../../../../../shared/interface/checkbox.interface';
 
 @Component({
@@ -12,11 +12,11 @@ import { CheckboxInterface } from '../../../../../../shared/interface/checkbox.i
 export class FiltriMarkersMezziComponent implements OnInit {
 
     @Input() filtroMezziAttivi: FiltroMezzi;
-    @Input() genereMezzo: DescrizioneTipologicaMezzo[];
+    @Input() genereMezzo: TipologicaComposizionePartenza[];
 
     @Output() changeMezziAltriComandi = new EventEmitter<boolean>();
     @Output() changeStati = new EventEmitter<StatoMezzo[]>();
-    @Output() changeGenere = new EventEmitter<DescrizioneTipologicaMezzo[]>();
+    @Output() changeGenere = new EventEmitter<TipologicaComposizionePartenza[]>();
 
     checkboxMezziAltriComandiState = { id: 'mezziAltriComandi', status: false, label: 'Mezzi Altri Comandi' };
     statiMezzo = Object.values(StatoMezzo);

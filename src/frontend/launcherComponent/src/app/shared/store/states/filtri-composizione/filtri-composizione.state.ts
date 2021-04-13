@@ -17,7 +17,7 @@ import { ListaTipologicheMezzi } from '../../../../features/home/composizione-pa
 import { Injectable } from '@angular/core';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { makeCopy } from '../../../helper/function-generiche';
 import { FiltroTurnoSquadre } from '../../../enum/filtro-turno-composizione-partenza.enum';
 
@@ -106,7 +106,7 @@ export class FiltriComposizioneState {
             dispatch(new GetListaComposizioneVeloce());
         }
         const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
-        filtri.distaccamenti = filtri.distaccamenti.map((d: DescrizioneTipologicaMezzo) => {
+        filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {
             d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
             d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
             return d;

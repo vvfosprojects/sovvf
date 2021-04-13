@@ -73,8 +73,9 @@ export class RicercaUtentiState {
 
     @Action(ReducerSelezioneFiltroSede)
     reducerSelezioneFiltroSede({ getState, dispatch }: StateContext<RicercaUtentiStateModel>, action: ReducerSelezioneFiltroSede): void {
-        const filtriSedeSelezionati = getState().sediFiltroSelezionate;
-        const filtroSelezionato = filtriSedeSelezionati && filtriSedeSelezionati.filter(f => f === action.sedeFiltro).length === 1;
+        const state = getState();
+        const filtriSedeSelezionati = state.sediFiltroSelezionate;
+        const filtroSelezionato = filtriSedeSelezionati?.filter(f => f === action.sedeFiltro).length === 1;
         if (!filtroSelezionato) {
             dispatch(new SetSedeFiltroSelezionato(action.sedeFiltro));
         } else {

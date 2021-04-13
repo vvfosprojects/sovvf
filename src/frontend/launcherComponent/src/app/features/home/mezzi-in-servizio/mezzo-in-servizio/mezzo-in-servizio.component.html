@@ -56,7 +56,7 @@
                     <!-- Codice Richiesta -->
                     <div class="float-left pr-3">
                         <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
-                                class="btn btn-block btn-light font-weight-bold font-xlarge"
+                                class="btn btn-block btn-light font-weight-bold"
                                 (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
                             <i class="fa fa-hashtag"></i>
                             {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
@@ -65,7 +65,7 @@
                     <!-- Eventi -->
                     <div class="float-left">
                         <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta"
-                                class="btn btn-block btn-light font-xlarge"
+                                class="btn btn-block btn-light"
                                 (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
                             <i class="fa fa-list"></i>
                             Eventi

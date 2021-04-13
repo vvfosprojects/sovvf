@@ -1,9 +1,9 @@
 import { FiltroTurnoSquadre } from 'src/app/shared/enum/filtro-turno-composizione-partenza.enum';
-import { DescrizioneTipologicaMezzo } from './descrizione-filtro-composizione-interface';
+import { TipologicaComposizionePartenza } from './tipologica-composizione-partenza.interface';
 
 export interface ListaTipologicheMezzi {
     turni: FiltroTurnoSquadre[];
-    distaccamenti: DescrizioneTipologicaMezzo[];
-    generiMezzi: DescrizioneTipologicaMezzo[];
-    stati: DescrizioneTipologicaMezzo[];
+    distaccamenti: TipologicaComposizionePartenza[];
+    generiMezzi: TipologicaComposizionePartenza[];
+    stati: TipologicaComposizionePartenza[];
 }

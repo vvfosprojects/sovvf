@@ -18,17 +18,19 @@ export class RicercaUtentiComponent {
     @Output() filtroChange = new EventEmitter<string>();
     @Output() filtriReset = new EventEmitter<any>();
 
-    sediFiltroSearch: string;
-
     constructor(config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
     }
 
-    _isSelected(codSede: string): boolean {
-        return this.sediFiltroSelezionate && this.sediFiltroSelezionate.filter(s => s === codSede).length > 0;
+    onAddFiltroSede(filtroSede: Ruolo): void {
+        this.filtroChange.emit(filtroSede.codSede);
     }
 
-    resetFiltriSedi(): void {
+    onRemoveFiltroSede(event: { value: Ruolo }): void {
+        this.filtroChange.emit(event.value.codSede);
+    }
+
+    onResetFiltriSedi(): void {
         this.filtriReset.emit();
     }
 }

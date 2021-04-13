@@ -1,4 +1,4 @@
-<table class="table table-striped bg-white font-xlarge">
+<table class="table table-striped bg-white">
     <thead>
     <tr>
         <th scope="col" style="width: 25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
@@ -28,7 +28,8 @@
                 </div>
                 <div class="col-11">
                     <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
-                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
+                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="p-2"
+                            [class.border-bottom]="(i + 1) < utente.ruoli?.length">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
                                     <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
@@ -67,7 +68,7 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
+<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <ngb-pagination

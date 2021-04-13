@@ -3,7 +3,7 @@
                (notificheLette)="setNotificheLette()">
 </app-notifiche>
 <div *ngIf="user" class="btn-group" role="group">
-    <button class="btn btn-light mr-2 font-xlarge btn-no-hover"
+    <button class="btn btn-light mr-2 btn-no-hover"
             [routerLink]="['/' + RoutesPath.Impostazioni]"
             [routerLinkActive]="['btn-light-nav', 'text-dark']"
             [class.btn-impostazioni-selected]="url === '/impostazioni'">
@@ -11,7 +11,7 @@
         {{user.nome}} {{user.cognome}}
     </button>
 </div>
-<button *ngIf="user" class="btn btn-secondary font-xlarge" ngbTooltip="Disconnettiti" placement="bottom"
+<button *ngIf="user" class="btn btn-secondary" ngbTooltip="Disconnettiti" placement="bottom"
         (click)="logout.emit()">
     <i class="fa fa-sign-out"></i>
     Esci

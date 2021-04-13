@@ -1,4 +1,4 @@
-<div class="row min-h-comp font-xlarge">
+<div class="row min-h-comp">
     <div *ngIf="loadingInvioPartenza"
          class="col-12 h-100">
         <app-partial-loader></app-partial-loader>
@@ -156,16 +156,14 @@
             <div class="card h-100"
                  [class.card-shadow]="!nightMode">
                 <div class="card-header py-2">
-                    <i class="fa fa-list-ul mr-2 font-xlarge" style="vertical-align:sub"></i>
-                    <span class="font-xlarge" style="vertical-align:middle">
+                    <i class="fa fa-list-ul mr-2" style="vertical-align:sub"></i>
+                    <span style="vertical-align:middle">
                         Partenze
-                        <span *ngIf="richiesta.codiceRichiesta"
-                              class="font-xlarge" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                        <span *ngIf="richiesta.codiceRichiesta" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                             <span class="pb-1"
                                   style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                         </span>
-                        <span *ngIf="!richiesta.codiceRichiesta"
-                              class="font-xlarge" style="float: right">{{ richiesta.codice.slice(0, -5) }}
+                        <span *ngIf="!richiesta.codiceRichiesta" style="float: right">{{ richiesta.codice.slice(0, -5) }}
                             <span class="pb-1"
                                   style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                         </span>
@@ -181,10 +179,10 @@
         <div class="w-100 py-2 px-1" style="height:56%">
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
-                <button class="btn btn-primary font-xlarge btn-no-hover"
+                <button class="btn btn-primary btn-no-hover"
                         (click)="nuovaPartenza()"
                         [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
-                        class="fa fa-plus mr-2 font-xlarge"></i><span
+                        class="fa fa-plus mr-2"></i><span
                         style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
             </div>

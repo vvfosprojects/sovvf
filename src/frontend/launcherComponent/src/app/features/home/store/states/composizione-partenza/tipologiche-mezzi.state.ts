@@ -1,7 +1,7 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { SetTipologicheMezzi } from '../../actions/composizione-partenza/tipologiche-mezzi.actions';
-import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { Injectable } from '@angular/core';
 
 export interface TipologicheMezziStateModel {
@@ -27,7 +27,7 @@ export class TipologicheMezziState {
     }
 
     @Selector()
-    static generiMezzi(state: TipologicheMezziStateModel): DescrizioneTipologicaMezzo[] {
+    static generiMezzi(state: TipologicheMezziStateModel): TipologicaComposizionePartenza[] {
         return state.tipologiche.generiMezzi;
     }
 

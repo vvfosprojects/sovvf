@@ -17,7 +17,7 @@ import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum'
 import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { TipologicheMezziState } from '../../../store/states/composizione-partenza/tipologiche-mezzi.state';
-import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { FiltroSchedeContatto } from '../../maps-model/filtro-schede-contatto';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 
@@ -34,7 +34,7 @@ export class FiltriMarkersComponent {
     @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
     @Select(FiltriMarkersState.filtriAttivi) filtriAttivi$: Observable<boolean>;
     filtriAttivi: boolean;
-    @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo[]>;
+    @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<TipologicaComposizionePartenza[]>;
     @Select(ViewComponentState.schedeContattoStatus) scStatus$: Observable<boolean>;
 
     private subscription = new Subscription();
@@ -68,7 +68,7 @@ export class FiltriMarkersComponent {
         this.store.dispatch(new UpdateStatiMezzi(statiMezzi));
     }
 
-    changeGenere(genere: DescrizioneTipologicaMezzo[]): void {
+    changeGenere(genere: TipologicaComposizionePartenza[]): void {
         this.store.dispatch(new UpdateGenereMezzi(genere.map(x => x.descrizione)));
     }
 
