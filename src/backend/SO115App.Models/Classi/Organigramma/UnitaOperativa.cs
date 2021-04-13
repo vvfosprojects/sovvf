@@ -55,21 +55,25 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Codice { get; private set; }
 
+        private string _nome { get; set; }
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
-        public string Nome { get; private set; }
+        public string Nome 
+        { 
+            get => _nome.Replace("Comando VV.F.", "Centrale");
+            set => _nome = value;
+        }
 
+        //private ISet<UnitaOperativa> _figli { get; set; }
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
         public ISet<UnitaOperativa> Figli { get; set; }
-
-        /// <summary>
-        ///   L'unità operativa padre
-        /// </summary>
-        /// <remarks>Il valore è null per le unità operative radice</remarks>
-        //public UnitaOperativa Padre { get; set; }
+        //{ 
+        //    get => _figli.OrderBy(s => s.Nome).ToHashSet();
+        //    set => _figli = value; 
+        //}
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa

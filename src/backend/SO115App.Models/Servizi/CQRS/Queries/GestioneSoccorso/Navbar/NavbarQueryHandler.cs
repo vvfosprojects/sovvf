@@ -23,6 +23,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 {
@@ -32,15 +33,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     public class NavbarQueryHandler : IQueryHandler<NavbarQuery, NavbarResult>
     {
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
-        private readonly IGetRuoliById _getRuoliById;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
-        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById,
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
                                   IGetConteggioSchede getConteggioSchedeHandler, IGetUtenteById getUtenteById)
         {
-            this._alberaturaUO = alberaturaUO;
-            _getRuoliById = getRuoliById;
+            _alberaturaUO = alberaturaUO;
             _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
         }
@@ -54,9 +53,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         {
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
-            var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
+            var lstSedi = _alberaturaUO.ListaSediAlberata();
+
+            var navbars = new Classi.NavBar.Navbar
             {
-                ListaSedi = _alberaturaUO.ListaSediAlberata(),
+                ListaSedi = lstSedi,
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
                 infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi)
             };
