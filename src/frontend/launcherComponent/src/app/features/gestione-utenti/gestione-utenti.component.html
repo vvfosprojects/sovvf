@@ -9,15 +9,16 @@
             </h2>
         </div>
         <div class="col-12 col-md-9 mx-auto mb-2">
-            <div class="row">
-                <div class="col">
+            <div class="clearfix">
+                <div class="float-left">
                     <button class="btn btn-primary mb-2" (click)="onAddUtente()">
                         <i class="fa fa-plus mr-1"></i>
                         Aggiungi Utente
                     </button>
                 </div>
-                <div class="col text-right">
-                    <app-ricerca-utenti [loading]="loading$ | async" [sediFiltro]="sediFiltro$ | async"
+                <div class="float-right">
+                    <app-ricerca-utenti [loading]="loading$ | async"
+                                        [sediFiltro]="sediFiltro$ | async"
                                         [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
                                         (ricercaChange)="onRicercaUtenti($event)"
                                         (filtroChange)="onFiltroSediChange($event)"

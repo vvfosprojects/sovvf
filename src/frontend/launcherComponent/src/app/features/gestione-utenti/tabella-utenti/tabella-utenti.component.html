@@ -28,7 +28,8 @@
                 </div>
                 <div class="col-11">
                     <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
-                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
+                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="p-2"
+                            [class.border-bottom]="(i + 1) < utente.ruoli?.length">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
                                     <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
