@@ -19,7 +19,7 @@
         <ng-template [ngIf]="!primaDomanda">
             <div class="card card-shadow p-4" [class.mt-3]="rispostaTitle">
                 <div>
-                    <label for="mezzi" class="font-xlarge">
+                    <label for="mezzi">
                         <i class="fa fa-truck mr-1"></i>
                         Generi Mezzo Appropriati
                     </label>
@@ -34,7 +34,7 @@
                     </ng-select>
                 </div>
                 <div class="mt-3">
-                    <label for="soccorsoAereo" class="font-xlarge">
+                    <label for="soccorsoAereo">
                         <i class="fa fa-plane mr-1"></i>
                         Richiesta Soccorso Aereo
                     </label>
@@ -47,7 +47,7 @@
                     </ng-select>
                 </div>
                 <div class="mt-3">
-                    <label for="prioritaConsigliata" class="font-xlarge">
+                    <label for="prioritaConsigliata">
                         <i class="fa fa-thermometer mr-1"></i>
                         Priorità Intervento
                     </label>
@@ -60,7 +60,7 @@
                     </ng-select>
                 </div>
                 <div class="mt-3">
-                    <label for="noteOperatore" class="font-xlarge">
+                    <label for="noteOperatore">
                         <i class="fa fa-sticky-note-o mr-1"></i>
                         Suggerimenti Utili per l'Operatore
                     </label>
@@ -71,7 +71,7 @@
                     </textarea>
                 </div>
                 <div class="mt-3">
-                    <label for="noteUtente" class="font-xlarge">
+                    <label for="noteUtente">
                         <i class="fa fa-sticky-note-o mr-1"></i>
                         Indicazioni all'Utente
                     </label>
@@ -87,10 +87,10 @@
         <div class="card card-shadow pt-3 pb-4 px-4"
              [class.mt-3]="!primaDomanda">
             <ng-template [ngIf]="primaDomanda">
-                <label for="domandaSeguente" class="font-xlarge">Inserisci il testo della Prima Domanda</label>
+                <label for="domandaSeguente">Inserisci il testo della Prima Domanda</label>
             </ng-template>
             <ng-template [ngIf]="!primaDomanda">
-                <label for="domandaSeguente" class="font-xlarge">
+                <label for="domandaSeguente">
                     <i class="fa fa-forward mr-1"></i>
                     Domanda Seguente
                 </label>

@@ -144,7 +144,7 @@
 
 
 <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
-    <div class="form-inline row-item font-xlarge mt-3"
+    <div class="form-inline row-item mt-3"
          [class.item-treeview-custom]="!viewEditButtons">
         <i *ngIf="item.children" class="mr-2 text-info cursor-pointer" (click)="onCollapseExpand()" aria-hidden="true"
            [ngSwitch]="item.collapsed">

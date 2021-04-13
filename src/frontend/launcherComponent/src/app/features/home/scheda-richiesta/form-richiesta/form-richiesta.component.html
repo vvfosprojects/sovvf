@@ -7,7 +7,7 @@
             <div class="row">
                 <!-- TIPOLOGIA  -->
                 <div class="col-12 px-0">
-                    <div class="px-2 mb-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
+                    <div class="px-2 mb-2 bg-secondary font-weight-bold">TIPOLOGIA</div>
                 </div>
                 <div class="col-12">
                     <div class="form-group mb-1">
@@ -15,7 +15,7 @@
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
                                 <div [class.required-field]="!modifica">
-                                    <ng-select class="border font-xlarge"
+                                    <ng-select class="border"
                                                [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"
                                                bindValue="codice"
@@ -48,14 +48,14 @@
             <!-- INDIRIZZO  -->
             <div class="row">
                 <div class="col-12 px-0">
-                    <div class="px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">INDIRIZZO</div>
+                    <div class="px-2 my-2 bg-secondary font-weight-bold">INDIRIZZO</div>
                 </div>
                 <div class="col-5">
                     <div class="form-group mb-0">
                         <label for="indirizzo"
                                class="d-none">Indirizzo</label>
                         <input id="indirizzo"
-                               class="form-control font-xlarge required-field"
+                               class="form-control required-field"
                                [class.is-invalid]="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                                type="text"
                                formControlName="indirizzo"
@@ -77,7 +77,7 @@
                             <label for="latitudine"
                                    class="d-none">Latitudine</label>
                             <input id="latitudine"
-                                   class="form-control font-xlarge required-field"
+                                   class="form-control required-field"
                                    [class.is-invalid]="submitted && f.latitudine.errors"
                                    type="tel"
                                    placeholder="Latitudine"
@@ -94,7 +94,7 @@
                             <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
                                    (paste)="checkInputPattern($event, 'LAT_LON')"
-                                   class="form-control font-xlarge required-field"
+                                   class="form-control required-field"
                                    [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
                             <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
                                 <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="float-left mx-2">
                             <label class="d-none">Copia</label>
-                            <button type="button" class="btn btn-secondary btn-no-hover font-xlarge"
+                            <button type="button" class="btn btn-secondary btn-no-hover"
                                     [ngbTooltip]="coordsTooltip"
                                     placement="bottom"
                                     (click)="onCopiaCoordinate()"
@@ -130,7 +130,7 @@
                 <div class="col-12">
                     <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
                     <textarea id="noteIndirizzo"
-                              class="form-control font-xlarge my-2"
+                              class="form-control my-2"
                               [class.is-invalid]="submitted && f.noteIndirizzo.errors"
                               placeholder="Inserisci le Note Indirizzo"
                               formControlName="noteIndirizzo"
@@ -143,13 +143,13 @@
             <div class="row">
                 <div class="col-9">
                     <!-- RICHIEDENTE  -->
-                    <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">RICHIEDENTE</div>
+                    <div class="row px-2 my-2 bg-secondary font-weight-bold">RICHIEDENTE</div>
                     <div class="row mb-2">
                         <div class="col-8">
                             <div class="form-group mb-1">
                                 <label class="d-none" for="nominativo">Nominativo</label>
                                 <input id="nominativo"
-                                       class="form-control font-xlarge required-field"
+                                       class="form-control required-field"
                                        [class.is-invalid]="submitted && f.nominativo.errors"
                                        type="text"
                                        placeholder="Nominativo"
@@ -166,7 +166,7 @@
                                 <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
                                        formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
                                        (paste)="checkInputPattern($event, 'PHONE')"
-                                       class="form-control font-xlarge required-field"
+                                       class="form-control required-field"
                                        [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                                 <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                                     <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
@@ -180,17 +180,17 @@
                             <label class="d-none" for="palazzo">Palazzo</label>
                             <input id="palazzo" type="text" placeholder="Palazzo/Citofono/Info"
                                    formControlName="palazzo"
-                                   class="form-control font-xlarge"/>
+                                   class="form-control"/>
                         </div>
                         <div class="col-2 px-1">
                             <label class="d-none" for="scala">Scala</label>
                             <input id="scala" type="text" placeholder="Scala" formControlName="scala"
-                                   class="form-control font-xlarge"/>
+                                   class="form-control"/>
                         </div>
                         <div class="col-2 px-1">
                             <label class="d-none" for="piano">Piano</label>
                             <input id="piano" type="text" placeholder="Piano" formControlName="piano"
-                                   class="form-control font-xlarge"
+                                   class="form-control"
                                    [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
                             <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
                                 <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
@@ -199,14 +199,14 @@
                         <div class="col-2 px-1">
                             <label class="d-none" for="interno">Interno</label>
                             <input id="interno" type="text" placeholder="Interno" formControlName="interno"
-                                   class="form-control font-xlarge"/>
+                                   class="form-control"/>
                         </div>
                         <div class="col-2 pl-1">
                             <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                 <label class="d-none" for="contatto">Contatto</label>
                                 <input id="contatto" type="text" placeholder="Contatto"
                                        formControlName="codSchedaContatto"
-                                       class="form-control font-xlarge"/>
+                                       class="form-control"/>
                             </ng-template>
                             <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                 <button class="btn btn-secondary btn-block btn-no-hover"
@@ -221,7 +221,7 @@
                     <div class="row my-2 bg-secondary" style="padding: 15px"></div>
                     <div class="row">
                         <div class="col wrapper-grid custom-control custom-radio">
-                            <div class="font-xlarge d-none">Numeri</div>
+                            <div class="d-none">Numeri</div>
                             <div class="d-inline-block pl-2" style="font-size: 18px;">
                                 <div style="width: max-content; display: inline-grid; margin-left: 5px">
                                     <div class="d-inline-block">
@@ -278,7 +278,7 @@
                         <div class="col mb-2">
                             <label class="d-none" for="notePubbliche">Note Pubbliche</label>
                             <textarea id="notePubbliche"
-                                      class="form-control font-xlarge area-size"
+                                      class="form-control area-size"
                                       [class.is-invalid]="submitted && f.notePubbliche.errors"
                                       placeholder="Inserisci le Note Pubbliche"
                                       formControlName="notePubbliche">
@@ -290,7 +290,7 @@
                                       [class.is-invalid]="submitted && f.notePrivate.errors"
                                       type="text"
                                       placeholder="Inserisci le Note Private"
-                                      formControlName="notePrivate" class="form-control font-xlarge area-size">
+                                      formControlName="notePrivate" class="form-control area-size">
                             </textarea>
                         </div>
                         <div class="col-12">
@@ -300,12 +300,11 @@
                                        [class.is-invalid]="submitted && f.zoneEmergenza.errors"
                                        type="text"
                                        placeholder="Inserisci il Codice Emergenza"
-                                       formControlName="zoneEmergenza" class="form-control font-xlarge"/>
+                                       formControlName="zoneEmergenza" class="form-control"/>
                             </div>
                             <div class="form-group mb-2">
                                 <label class="d-none" for="etichette">Tag</label>
                                 <tag-input id="etichette"
-                                           class="font-xlarge"
                                            formControlName="etichette"
                                            [modelAsStrings]="true"
                                            [placeholder]="'Inserisci Tag'"
@@ -324,7 +323,7 @@
                         </app-checkbox>
                     </div>
                     <div class="wrapper-grid">
-                        <span class="mb-0 h5 font-xlarge">Priorità</span>
+                        <span class="mb-0 h5">Priorità</span>
                         <span class="pl-2"
                               style="font-size: 18px;">
                           <ngb-rating [formControl]="f.prioritaRichiesta"

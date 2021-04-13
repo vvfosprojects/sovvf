@@ -1,4 +1,4 @@
-<div class="row min-h-comp font-xlarge">
+<div class="row min-h-comp">
     <div class="col-8 pl-0">
         <div class="card card-shadow h-100"
              [class.moon-text]="nightMode"
@@ -36,9 +36,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
-                        <div class="text-center font-xlarge">
-                            <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
+                    <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-2">
+                        <div class="text-center">
+                            <div class="m-0 mt-1">Nessun Pre-Accoppiato trovato con i filtri selezionati</div>
                         </div>
                     </div>
                 </div>
@@ -52,15 +52,13 @@
              [class.moon-card-light]="nightMode"
              style="height: 85%">
             <div class="card-header py-2">
-                <i class="fa fa-list-ul mr-2 font-xlarge" style="vertical-align:sub"></i>
-                <span class="font-xlarge" style="vertical-align:sub">
+                <i class="fa fa-list-ul mr-2" style="vertical-align:sub"></i>
+                <span style="vertical-align:sub">
                         Partenze
-                        <span *ngIf="richiesta.codiceRichiesta"
-                              class="font-xlarge" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                        <span *ngIf="richiesta.codiceRichiesta" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
                             <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
                         </span>
-                        <span *ngIf="!richiesta.codiceRichiesta"
-                              class="font-xlarge" style="float: right">{{ richiesta.codice.slice(0, -5) }}
+                        <span *ngIf="!richiesta.codiceRichiesta" style="float: right">{{ richiesta.codice.slice(0, -5) }}
                             <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
                         </span>
                     </span>

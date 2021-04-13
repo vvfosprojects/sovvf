@@ -1,4 +1,4 @@
-<table class="table table-striped mt-2 bg-white font-xlarge">
+<table class="table table-striped mt-2 bg-white">
     <thead>
     <tr>
         <th scope="col" style="width: 24%">
@@ -95,7 +95,7 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
+<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                     [placeholderElementi]="'trasferimenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>

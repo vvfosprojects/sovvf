@@ -1,6 +1,6 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside" class="btn-group w-100" placement="bottom">
-        <button ngbDropdownToggle class="btn btn-block btn-secondary font-xlarge"
+        <button ngbDropdownToggle class="btn btn-block btn-secondary"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-secondary font-xlarge p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
+    <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
             [disabled]="disableFilters">
         <i class="fa fa-undo text-dark px-1" [class.text-moon]="nightMode"></i>
     </button>

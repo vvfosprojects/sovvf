@@ -1,4 +1,4 @@
-<table class="table table-striped bg-white font-xlarge">
+<table class="table table-striped bg-white">
     <thead>
     <tr>
         <th scope="col" style="width: 25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
@@ -67,7 +67,7 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2 font-xlarge">
+<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <ngb-pagination

@@ -17,7 +17,7 @@
     <ng-template [ngIf]="triageSummary?.length">
         <ngb-panel id="riepilogo-triage" [disabled]="!triageSummary">
             <ng-template ngbPanelTitle>
-                <div class="font-xlarge font-weight-bold text-white">
+                <div class="font-weight-bold text-white">
                     RIEPILOGO TRIAGE
                 </div>
             </ng-template>
@@ -27,7 +27,7 @@
                     <i class="fa fa-question-circle mr-2"></i>
                     <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
                 </h5>
-                <ul class="list-group font-xlarge px-3">
+                <ul class="list-group px-3">
                     <li *ngFor="let s of triageSummary, let i = index">
                         <div>
                             <b>{{ s.domanda }}</b>
@@ -60,7 +60,7 @@
                             <b>MEZZI CONSIGLIATI <span class="text-danger">({{ contatoreGeneriMezzo }})</span></b>
                         </h5>
                         <div class="px-3">
-                            <ul class="list-group font-xlarge">
+                            <ul class="list-group">
                                 <li *ngFor="let genereMezzo of generiMezzo; let i = index">
                                     {{ genereMezzo }}
                                 </li>
@@ -75,7 +75,7 @@
                             <i class="fa fa-file mr-2"></i>
                             <b>Suggerimenti Operatore <span class="text-danger">({{ noteOperatore.length }})</span></b>
                         </h5>
-                        <div class="font-xlarge">
+                        <div>
                             <div *ngFor="let nota of noteOperatore; let i = index">
                                 {{ i + 1 }}. {{ nota }}
                             </div>
@@ -89,12 +89,12 @@
     <ng-template [ngIf]="schedaContatto">
         <ngb-panel id="note-nue" [disabled]="!schedaContatto">
             <ng-template ngbPanelTitle>
-                <div class="font-xlarge font-weight-bold text-white">
+                <div class="font-weight-bold text-white">
                     NOTE NUE
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
-                <div class="font-xlarge">
+                <div>
                     {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
                 </div>
             </ng-template>
@@ -104,14 +104,14 @@
     <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
         <ngb-panel id="interventi-prossimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-xlarge font-weight-bold text-white">
+                <div class="font-weight-bold text-white">
                     INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
                 <div class="px-3">
-                    <ul class="list-group font-xlarge">
-                        <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item font-xlarge mb-2" style="display: list-item">
+                    <ul class="list-group">
+                        <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2" style="display: list-item">
                             <div>
                                 <b class="mr-2" style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
                                     interventoProssimita?.codice }}</b>
@@ -120,8 +120,7 @@
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
-                                    <span timeago class="font-xlarge"
-                                          [date]="methods._dateNumber(interventoProssimita.istanteRicezioneRichiesta)"
+                                    <span timeago [date]="methods._dateNumber(interventoProssimita.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
                                 </a>
@@ -151,14 +150,14 @@
     <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
         <ngb-panel id="interventi-stessa-via" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-xlarge font-weight-bold text-white">
+                <div class="font-weight-bold text-white">
                     INTERVENTI NELLA STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
                 <div class="px-3">
-                    <ul class="list-group font-xlarge">
-                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item font-xlarge mb-2" style="display: list-item">
+                    <ul class="list-group">
+                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2" style="display: list-item">
                             <div>
                                 <b class="mr-2" style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
                                     interventoStessaVia?.codice }}</b>
@@ -167,8 +166,7 @@
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
-                                    <span timeago class="font-xlarge"
-                                          [date]="methods._dateNumber(interventoStessaVia.istanteRicezioneRichiesta)"
+                                    <span timeago [date]="methods._dateNumber(interventoStessaVia.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
                                 </a>
@@ -199,16 +197,16 @@
         <ngb-panel id="interventi-chiusi-stesso-indirizzo"
                    [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-xlarge font-weight-bold text-white">
+                <div class="font-weight-bold text-white">
                     INTERVENTI CHIUSI CON STESSO INDIRIZZO
                     ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
                 <div class="px-3">
-                    <ul class="list-group font-xlarge">
+                    <ul class="list-group">
                         <li *ngFor="let interventoChiusoStessoIndirizzo of interventiChiusiStessoIndirizzo"
-                            class="font-xlarge mb-2">
+                            class="mb-2">
                             <div>
                                 <b>{{ interventoChiusoStessoIndirizzo?.codiceRichiesta ? interventoChiusoStessoIndirizzo?.codiceRichiesta :
                                     interventoChiusoStessoIndirizzo?.codice }}</b>
