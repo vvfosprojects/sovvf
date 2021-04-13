@@ -22,7 +22,6 @@ import { ComposizionePartenzaModule } from './composizione-partenza/composizione
 import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { HomeState } from './store/states/home.state';
-import { RichiestaModificaState } from './store/states/form-richiesta/richiesta-modifica.state';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { TipologicheMezziState } from './store/states/composizione-partenza/tipologiche-mezzi.state';
@@ -35,8 +34,7 @@ import { MezziComposizioneState } from '../../shared/store/states/mezzi-composiz
 import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import {ZoneEmergenzaState} from './store/states/filterbar/zone-emergenza.state';
-import { CodaChiamateComponent } from './coda-chiamate/coda-chiamate.component';
+import { ZoneEmergenzaState } from './store/states/filterbar/zone-emergenza.state';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
 

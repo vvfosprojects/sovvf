@@ -43,6 +43,7 @@ export const environment = {
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        distaccamenti: '/api/Distaccamenti',
         tipologie: '/api/GestioneTipologie',
         dettagliTipologie: '/api/GestioneDettaglioTipologia',
         triage: '/api/GestioneTriage'

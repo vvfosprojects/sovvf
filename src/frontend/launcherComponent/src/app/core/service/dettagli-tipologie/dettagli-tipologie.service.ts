@@ -7,7 +7,6 @@ import { PaginationInterface } from '../../../shared/interface/pagination.interf
 import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, GetDettaglioTipologiaByCodTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
 import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
-import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;

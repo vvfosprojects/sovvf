@@ -70,6 +70,7 @@ import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
+import { DistaccamentiState } from './shared/store/states/distaccamenti/distaccamenti.state';
 
 @NgModule({
     declarations: [
@@ -122,7 +123,8 @@ import { TriageSummaryState } from './shared/store/states/triage-summary/triage-
                 DettagliTipologieState,
                 TriageCrudState,
                 TriageChiamataModalState,
-                TriageSummaryState
+                TriageSummaryState,
+                DistaccamentiState
             ],
             { developmentMode: !environment.production }
         ),

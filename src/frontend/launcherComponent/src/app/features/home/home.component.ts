@@ -12,6 +12,7 @@ import { ViewportState } from '../../shared/store/states/viewport/viewport.state
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('Componente Home creato');
         this.store.dispatch([
             new GetDataHome(),
+            new GetDistaccamenti(),
             new GetTipologie()
         ]);
     }
