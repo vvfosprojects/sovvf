@@ -36,9 +36,6 @@ namespace SO115App.Models.Classi.MongoDTO
         [BsonElement("CODFIGLIO_TC")]
         public int codFiglio_TC { get; set; }
 
-        [BsonElement("CODPADRE_TC")]
-        public int codPadre_TC { get; set; }
-
         [BsonElement("CODSEDE_TC")]
         public string codSede_TC { get; set; }
 
