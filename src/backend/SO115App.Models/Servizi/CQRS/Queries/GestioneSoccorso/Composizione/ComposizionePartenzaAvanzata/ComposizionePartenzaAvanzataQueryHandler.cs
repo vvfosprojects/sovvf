@@ -97,19 +97,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             DateTime adesso = DateTime.Now;
 
-            //OTTENGO tutte le sedi al di sotto della sede indicata nel filtro
+            //Prendo tutte le sedi al disotto della sede indicata nel filtro
+
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
 
             foreach (var sede in query.CodiceSede)
+            {
                 pinNodi.Add(new PinNodo(sede, true));
+                pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
+            }
 
-            foreach (var figlio in _getAlberaturaUnitaOperative.ListaSediAlberata().GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
-            var lstCodiciSede = pinNodi.Where(p => p.Codice.Contains(".1000")).Select(p => p.Codice).Distinct().ToArray();
-
             //PREPARO I DATI CHE MI SERVONO
-            var lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToList()).Select(x => x.Id.ToString());
+            IEnumerable<string> lstSediPreaccoppiati;
+            if (query.CodiceSede[0].Equals("CON"))
+                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList()).Select(x => x.Id.ToString());
+            else
+                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti).Select(x => x.Id.ToString());
 
             var lstPosizioneFlotta = _getPosizioneFlotta.Get(0);
 
@@ -119,8 +127,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var turnoPrecedente = _getTurno.Get(turnoCorrente.DataOraInizio.AddMilliseconds(-1));
             var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
-            var statiOperativiMezzi = _getMezziPrenotati.Get(lstCodiciSede);
-            var statiOperativiSquadre = _getStatoSquadre.Get(lstCodiciSede.ToList());
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiceSede);
+            var statiOperativiSquadre = _getStatoSquadre.Get(query.CodiceSede.ToList());
 
             var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = lstSediPreaccoppiati.ToArray(), Filtri = new FiltriPreaccoppiati() }).Select(p =>
             {
@@ -135,8 +143,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 return p;
             });
 
-            //OTTENGO MEZZI E SQUADRE
-            var lstSquadreComposizione = _getListaSquadre.Get(lstCodiciSede.ToList())
+            //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
+            var lstSquadreComposizione = _getListaSquadre.Get(query.CodiceSede.ToList())
                 //MAPPING
                 .ContinueWith(lstsquadre => lstsquadre.Result.Select(squadra =>
                 {
@@ -154,7 +162,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //FILTRI E ORDINAMENTI
                 .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
-            var lstMezziComposizione = _getMezziUtilizzabili.Get(lstCodiciSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
+            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
                 //MAPPING
                 .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
                 {
@@ -293,13 +301,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 Page = query.Filtro.MezziPagination.Page,
                 PageSize = query.Filtro.MezziPagination.PageSize,
-                TotalItems = lstMezziComposizione.Result.Count
+                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray.Count
             };
             result.ComposizionePartenzaAvanzata.SquadrePagination = new Paginazione()
             {
                 Page = query.Filtro.SquadrePagination.Page,
                 PageSize = query.Filtro.SquadrePagination.PageSize,
-                TotalItems = lstSquadreComposizione.Result.Count
+                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray.Count
             };
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
