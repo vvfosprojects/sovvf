@@ -30,8 +30,7 @@ export class DistaccamentiState {
 
     @Action(GetDistaccamenti)
     getDistaccamenti({ dispatch }: StateContext<DistaccamentiStateModel>): void {
-        // TODO: tipizzare
-        this.distaccamentiService.getDistaccamenti().subscribe((data: any) => {
+        this.distaccamentiService.getDistaccamenti().subscribe((data: Sede[]) => {
             dispatch(new SetDistaccamenti(data));
         });
     }
