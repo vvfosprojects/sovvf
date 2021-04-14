@@ -295,19 +295,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
                     .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                     .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-            
+
 
             result.ComposizionePartenzaAvanzata.MezziPagination = new Paginazione()
             {
                 Page = query.Filtro.MezziPagination.Page,
                 PageSize = query.Filtro.MezziPagination.PageSize,
-                TotalItems = lstMezziComposizione.Result.Count
+                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray.Count
             };
             result.ComposizionePartenzaAvanzata.SquadrePagination = new Paginazione()
             {
                 Page = query.Filtro.SquadrePagination.Page,
                 PageSize = query.Filtro.SquadrePagination.PageSize,
-                TotalItems = lstSquadreComposizione.Result.Count
+                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray.Count
             };
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
