@@ -263,7 +263,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
             }
-            
+            else
+            {
+                result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
+                    .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                    .Take(query.Filtro.MezziPagination.PageSize).ToList();
+
+                result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
+                    .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                    .Take(query.Filtro.SquadrePagination.PageSize).ToList();
+            }
+
             if (query.Filtro.Squadre != null)
             {
                 var indexSquadra = lstSquadreComposizione.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice));
@@ -286,28 +296,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Take(query.Filtro.SquadrePagination.PageSize).ToList();
                 }
             }
-
-            //PAGINAZIONE STANDARD
-            result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
+            else
+            {
+                result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray = lstMezziComposizione.Result
                     .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList();
 
-            result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
+                result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray = lstSquadreComposizione.Result
                     .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                     .Take(query.Filtro.SquadrePagination.PageSize).ToList();
-
+            }
 
             result.ComposizionePartenzaAvanzata.MezziPagination = new Paginazione()
             {
                 Page = query.Filtro.MezziPagination.Page,
                 PageSize = query.Filtro.MezziPagination.PageSize,
-                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneMezziDataArray.Count
+                TotalItems = lstMezziComposizione.Result.Count
             };
             result.ComposizionePartenzaAvanzata.SquadrePagination = new Paginazione()
             {
                 Page = query.Filtro.SquadrePagination.Page,
                 PageSize = query.Filtro.SquadrePagination.PageSize,
-                TotalItems = result.ComposizionePartenzaAvanzata.ComposizioneSquadreDataArray.Count
+                TotalItems = lstSquadreComposizione.Result.Count
             };
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
