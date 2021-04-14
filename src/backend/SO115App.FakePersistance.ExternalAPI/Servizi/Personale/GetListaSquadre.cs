@@ -84,12 +84,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 .Distinct()
                 .ToArray();
 
-            var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray());
+            var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali/*, ListaCodiciSedi.Distinct().ToArray()*/).Result;
 
             //MAPPING
             var result = new ConcurrentQueue<Squadra>();
 
-            Parallel.ForEach(listaSquadreJson, squadraFake => result.Enqueue(MapSqaudra(squadraFake, lstVVF.Result)));
+            Parallel.ForEach(listaSquadreJson, squadraFake => result.Enqueue(MapSqaudra(squadraFake, lstVVF)));
 
             return result;
         }
