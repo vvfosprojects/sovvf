@@ -99,7 +99,15 @@ namespace SO115App.Persistence.MongoDB
             var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
                 .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Select(uo => uo.Codice));
 
-            var lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti).ToEnumerable();
+            List<string> listaCodSedi = new List<string>();
+            foreach (var sede in filtro.UnitaOperative)
+            {
+                listaCodSedi.Add(sede.Codice);
+            }
+
+            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
+
+            var lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToEnumerable();
 
             if (filtro == null)
                 return lstRichieste.Select(r => _mapperSintesi.Map(r)).ToList();
