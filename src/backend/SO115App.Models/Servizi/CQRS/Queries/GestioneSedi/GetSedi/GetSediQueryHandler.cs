@@ -18,7 +18,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSedi
 
         public GetSediResult Handle(GetSediQuery query)
         {
-            var result = _service.GetAll().Select(s => new Sede(s.codProv, s.sede, "", new Coordinate(s.latitudine, s.longitudine), "", "", "", "", "")).ToList();
+            var result = _service.GetAll()
+                .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
+                .Select(s => new Sede($"{s.codPadre_TC}.{s.codFiglio_TC}", s.sede, "", new Coordinate(s.latitudine, s.longitudine), "", "", "", "", ""))
+                .OrderBy(s => s.Codice)
+                .ToList();
 
             return new GetSediResult() { DataArray = result };
         }
