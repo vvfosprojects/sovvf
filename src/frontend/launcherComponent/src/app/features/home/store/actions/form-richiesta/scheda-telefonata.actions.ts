@@ -57,7 +57,7 @@ export class InsertChiamata {
 export class InsertChiamataSuccess {
     static readonly type = '[SchedaTelefonata] Insert chiamata success';
 
-    constructor(public nuovaRichiesta: SintesiRichiesta) {
+    constructor(public nuovaRichiesta: SintesiRichiesta, public options?: { trasferimento?: boolean }) {
     }
 }
 
