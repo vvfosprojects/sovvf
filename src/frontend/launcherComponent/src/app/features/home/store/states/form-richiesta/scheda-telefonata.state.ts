@@ -390,12 +390,12 @@ export class SchedaTelefonataState {
         } else {
             dispatch(new SetNeedRefresh(true));
         }
-        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id) {
+        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
             dispatch([
                 new StopLoadingNuovaChiamata(),
                 new ToggleChiamata()
             ]);
-        } else {
+        } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }

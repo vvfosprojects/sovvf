@@ -64,7 +64,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 }).BoxRichieste;
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamataTrasferita", richiesta);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()

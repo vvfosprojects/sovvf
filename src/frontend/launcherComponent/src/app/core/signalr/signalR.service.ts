@@ -254,6 +254,12 @@ export class SignalRService {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch(new InsertChiamataSuccess(data));
         });
+        this.hubNotification.on('SaveAndNotifySuccessChiamataTrasferita', (data: SintesiRichiesta) => {
+            console.log('SaveAndNotifySuccessChiamataTrasferita', data);
+            this.store.dispatch([
+                new InsertChiamataSuccess(data, { trasferimento: true }),
+            ]);
+        });
 
         /**
          * Schede Contatto
