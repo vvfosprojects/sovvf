@@ -2,7 +2,7 @@
     <h3>{{ title }}</h3>
 </ng-template>
 <div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo"
-     class="border-partenza-box pb-4 d-flex font-xlarge bg-dark-light" style="place-content: space-evenly;">
+     class="border-partenza-box pb-4 d-flex bg-dark-light" style="place-content: space-evenly;">
     <div class="mb-3" style="display: contents;">
         <div>
             <label class="mb-3">Mezzo</label>
@@ -28,7 +28,7 @@
         <div *ngIf="partenza?.squadre?.length === 1">
             <div class="mb-2">
                 <label>Squadra</label>
-                <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
+                <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
                         style="padding: 5px !important; line-height: 0;"
                         (click)="onListaSquadrePartenza($event)">
                     <span><i class="fa fa-search"></i></span>
@@ -42,7 +42,7 @@
         <div *ngIf="partenza?.squadre.length > 1">
             <div class="mb-2">
                 <label>Squadre</label>
-                <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
+                <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                         style="padding: 5px !important; line-height: 0;"
                         (click)="onListaSquadrePartenza($event)">
                     <span><i class="fa fa-search"></i></span>
@@ -59,7 +59,7 @@
             <div>
                 <div *ngIf="nuoveSquadre?.length === 0 || nuoveSquadre?.length === 1" class="mb-2">
                     <label>Squadra</label>
-                    <button *ngIf="nuoveSquadre?.length === 1" class="btn font-xlarge btn-light border ml-2 p-1 mr-2"
+                    <button *ngIf="nuoveSquadre?.length === 1" class="btn btn-light border ml-2 p-1 mr-2"
                             ngbTooltip="Elenco squadra"
                             style="padding: 5px !important; line-height: 0;"
                             (click)="onListaSquadrePartenza($event)">
@@ -77,7 +77,7 @@
             </div>
             <div *ngIf="nuoveSquadre?.length > 1">
                     <label class="mb-3">Squadre</label>
-                    <button class="btn font-xlarge btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
+                    <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                             style="padding: 5px !important; line-height: 0;"
                             (click)="onListaSquadrePartenza($event)">
                         <span><i class="fa fa-search"></i></span>

@@ -375,16 +375,16 @@
                                     </div>
 
                                     <!-- scheda nue -->
-                                    <div class="h6 font-dettaglio">
-                                        <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
+                                    <div>
+                                        <i class="guida fa fa-id-card-o fa-fw" ngbTooltip="Codice scheda NUE"
                                            placement="right"></i>
                                         <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
                                             {{ richiesta?.codiceSchedaNue }}
                                         </a>
                                         <ng-template #nessunCodiceNue>
-                                            <div>
+                                            <span>
                                                 Nessuna scheda NUE
-                                            </div>
+                                            </span>
                                         </ng-template>
                                     </div>
 
