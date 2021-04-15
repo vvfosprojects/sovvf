@@ -24,7 +24,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
 {
     public class AllertaAltreSediCommand
     {
-        public string[] CodSediAllertate { get; set; }
+        public string CodSediAllertate { get; set; }
         public string CodiceRichiesta { get; set; }
         public string CodUtente { get; set; }
         public SintesiRichiesta Chiamata { get; set; }

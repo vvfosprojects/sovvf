@@ -67,6 +67,7 @@ namespace SO115App.CompositionRoot
             #region Qualifiche
 
             container.Register<IGetPercorsoByIdQualifica, GetPercorsoByIdQualifica>();
+            container.Register<IGetDettaglioQualificaByIdDipendenteByDate, GetDettaglioQualificaByIdDipendenteByDate>();
 
             #endregion
 
