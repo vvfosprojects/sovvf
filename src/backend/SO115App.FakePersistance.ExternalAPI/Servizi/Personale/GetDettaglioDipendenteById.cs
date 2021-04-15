@@ -23,9 +23,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             string url = _config.GetSection("UrlExternalApi").GetSection("GestionePersonale").Value;
             var uri = new Uri($"{url}VisualizzaDettaglioDipendente?IdDipendente={IdDipendente}");
 
-            _client.SetCache("GestionePersonale_" + IdDipendente);
+            _client.SetCache("DettaglioDipendente_" + IdDipendente);
 
             var result = _client.GetAsync(uri, null).Result;
+
+            result.dati.IdDipentente = IdDipendente;
 
             return result;
         }

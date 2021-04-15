@@ -4,11 +4,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
 {
     public class DettaglioDipententeResult
     {
-        public Dati dati { get; set; }
+        public DatiDipendente dati { get; set; }
     }
 
-    public class Dati
+    public class DatiDipendente
     {
+        public string IdDipentente { get; set; }
 
         public string telefonoFisso { get; set; }
         public string telCellulare { get; set; }
@@ -18,6 +19,5 @@ namespace SO115App.Models.Classi.ServiziEsterni.Rubrica
         public string codFiscale { get; set; }
 
         public string codTurno { get; set; }
-        public string idQualifica { get; set; }
     }
 }

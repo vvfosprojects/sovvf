@@ -2,7 +2,7 @@
 {
     public class PercorsoQualifica
     {
-        public DatiPercorso[] dati { get; set; }
+        public DatiPercorso dati { get; set; }
     }
 
     public class DatiPercorso
