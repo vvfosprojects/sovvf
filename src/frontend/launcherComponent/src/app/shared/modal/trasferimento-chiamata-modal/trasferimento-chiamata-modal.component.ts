@@ -5,15 +5,10 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TrasferimentoChiamataModalState } from '../../store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
-import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
-import { TreeviewSelezione } from '../../model/treeview-selezione.model';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
-import { Utente } from '../../model/utente.model';
 import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
+import { Sede } from '../../model/sede.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
-import { oneElementLengthArray } from '../../helper/validators-custom';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -23,17 +18,12 @@ import { oneElementLengthArray } from '../../helper/validators-custom';
 export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    user: Utente;
     @Select(TrasferimentoChiamataModalState.codiciRichiesteTrasferibili) codiciRichiesteTrasferibili$: Observable<string[]>;
     @Select(TrasferimentoChiamataModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(TrasferimentoChiamataModalState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
-    sediSelezionate: string;
-    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
-    listeSediNavbar: TreeviewItem[];
+    @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
+    distaccamenti: Sede[];
 
-    operatore: string;
     codRichiesta: string;
 
     trasferimentoChiamataForm: FormGroup;
@@ -46,16 +36,21 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder) {
         this.initForm();
         this.getFormValid();
-        this.inizializzaSediTreeview();
-        this.getSediSelezionate();
-        this.inizializzaUser();
+        this.getSedi();
     }
 
     ngOnInit(): void {
         if (!this.codRichiesta) {
             this.getCodiciRichiesteTrasferibili();
         } else {
-            this.f.codiceRichiesta.patchValue(this.codRichiesta);
+            this.store.dispatch(
+                new UpdateFormValue({
+                    path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
+                    value: {
+                        codiceRichiesta: this.codRichiesta
+                    }
+                })
+            );
             this.f.codiceRichiesta.disable();
         }
     }
@@ -63,15 +58,12 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.trasferimentoChiamataForm = new FormGroup({
             codiceRichiesta: new FormControl(),
-            operatore: new FormControl(),
             sedeA: new FormControl()
         });
         this.trasferimentoChiamataForm = this.fb.group({
             codiceRichiesta: [null, Validators.required],
-            operatore: [null, Validators.required],
-            sedeA: [null, oneElementLengthArray(1)]
+            sedeA: [null, Validators.required],
         });
-        this.f.operatore.disable();
     }
 
     get f(): any {
@@ -79,6 +71,14 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(
+            new UpdateFormValue({
+                path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
+                value: {
+                    codiceRichiesta: null
+                }
+            })
+        );
         this.trasferimentoChiamataForm.reset();
         this.subscription.unsubscribe();
     }
@@ -99,56 +99,16 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         return title;
     }
 
-    inizializzaSediTreeview(): void {
+    getSedi(): void {
         this.subscription.add(
-            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
-                this.listeSediNavbar = [];
-                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
+            this.distaccamenti$.subscribe((sedi: Sede[]) => {
+                this.distaccamenti = sedi;
             })
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]): void {
+    onPatchSedi(event: Sede): void {
         this.f.sedeA.patchValue(event);
-    }
-
-    getSediSelezionate(): void {
-        this.subscription.add(
-            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
-                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-                if (listaSediNavbar && sedi && sedi.length >= 0) {
-                    switch (sedi.length) {
-                        case 0:
-                            this.sediSelezionate = 'nessuna sede selezionata';
-                            break;
-                        case 1:
-                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
-                            break;
-                        default:
-                            this.sediSelezionate = 'più sedi selezionate';
-                            break;
-                    }
-                } else {
-                    this.sediSelezionate = 'Seleziona una o più sedi';
-                }
-            })
-        );
-    }
-
-    inizializzaUser(): void {
-        this.subscription.add(
-            this.user$.subscribe((user: Utente) => {
-                console.log('inizializzaUser', user);
-                this.store.dispatch(
-                    new UpdateFormValue({
-                        path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
-                        value: {
-                            operatore: user.nome + ' ' + user.cognome
-                        }
-                    })
-                );
-            })
-        );
     }
 
     getCodiciRichiesteTrasferibili(): void {

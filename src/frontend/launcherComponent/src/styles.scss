@@ -240,6 +240,11 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     font-size: $SO-font-xlarge $SO-i;
   }
 
+  .dropdown-menu {
+    color: $SO-white $SO-i;
+    background-color: $SO-dark $SO-i;
+  }
+
   .box-azione {
     position: relative;
     min-width: 0;
@@ -276,6 +281,14 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .btn-outline-secondary {
     color: $SO-white $SO-i;
     border-color: $SO-muted $SO-i;
+  }
+
+  .btn-warning {
+    color: $SO-white $SO-i;
+  }
+
+  .btn-outline-warning:hover {
+    color: $SO-white $SO-i;
   }
 
   .list-group-item {

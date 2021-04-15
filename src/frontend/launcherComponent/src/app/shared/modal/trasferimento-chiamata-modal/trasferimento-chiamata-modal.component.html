@@ -12,12 +12,6 @@
         <form [formGroup]="trasferimentoChiamataForm" ngxsForm="trasferimentoChiamataModal.trasferimentoChiamataForm"
               autocomplete="off">
             <div class="form-group">
-                <label for="operatore">Operatore
-                    <small class="text-danger">*</small>
-                </label>
-                <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
-            </div>
-            <div class="form-group">
                 <label for="codiceRichesta">
                     Codice Richiesta da Trasferire
                     <small class="text-danger">*</small>
@@ -33,17 +27,20 @@
                 </ng-select>
             </div>
             <div class="form-group">
-                <label for="sede">Dove vuoi trasferire la Chiamata?</label>
-                <div class="border rounded bg-white-light">
-                    <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
-                                         [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
-                                         [visualizzaTasti]="false" [disabled]="false"
-                                         (confermaSelezione)="onPatchSedi($event)">
-                    </app-shared-treeview>
-                </div>
-                <div *ngIf="f.sedeA.errors" class="text-danger mt-1">
-                    <div *ngIf="f.sedeA.errors.required">Campo Obbligatorio</div>
-                </div>
+                <label for="sede">Dove vuoi trasferire la Chiamata?
+                    <small class="text-danger">*</small>
+                </label>
+                    <ng-select class="align-self-center"
+                               id="sede"
+                               [items]="distaccamenti"
+                               bindLabel="descrizione"
+                               bindValue="id"
+                               [closeOnSelect]="true"
+                               [hideSelected]="false"
+                               [loading]="!distaccamenti"
+                               (change)="onPatchSedi($event)"
+                               placeholder="Seleziona Distaccamento">
+                    </ng-select>
             </div>
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>

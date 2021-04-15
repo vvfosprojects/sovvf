@@ -1,6 +1,6 @@
-import { TreeviewSelezione } from '../model/treeview-selezione.model';
+import { Sede } from '../model/sede.model';
 
 export interface AllertaSedeEmitInterface {
     codRichiesta: string;
-    sedi: TreeviewSelezione[];
+    sedi: Sede;
 }

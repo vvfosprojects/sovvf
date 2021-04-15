@@ -10,19 +10,23 @@
 <div class="modal-body height py-4 px-5 font-xlarge">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
-            <label for="sede">Quale sede vuoi allertare?</label>
-            <div class="border rounded bg-white">
-                <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
-                                     [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
-                                     [visualizzaTasti]="false" [disabled]="false"
-                                     (confermaSelezione)="onPatchSedi($event)">
-                </app-shared-treeview>
-            </div>
-            <div *ngIf="f.sedi.errors" class="text-danger mt-1">
-                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
-            </div>
+            <label for="sede">Quale sede vuoi allertare?
+                <small class="text-danger">*</small>
+            </label>
+                <ng-select class="align-self-center"
+                           id="sede"
+                           [items]="distaccamenti"
+                           bindLabel="descrizione"
+                           bindValue="id"
+                           [closeOnSelect]="true"
+                           [hideSelected]="false"
+                           [loading]="!distaccamenti"
+                           (change)="onPatchSedi($event)"
+                           placeholder="Seleziona Distaccamento">
+                </ng-select>
         </div>
     </form>
+    <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
     <button type="button" class="btn btn-lg btn-danger btn-no-hover font-xlarge" [disabled]="!formValid" (click)="onConferma()">

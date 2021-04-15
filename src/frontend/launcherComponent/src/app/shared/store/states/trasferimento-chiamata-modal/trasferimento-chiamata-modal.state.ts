@@ -1,9 +1,9 @@
 import { AddTrasferimentoChiamata, TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
-import { TreeviewSelezione } from 'src/app/shared/model/treeview-selezione.model';
 import { GetRichiesteTrasferibili, RequestAddTrasferimentoChiamata } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { Injectable } from '@angular/core';
+import { Sede } from '../../../model/sede.model';
 
 export interface TrasferimentoChiamataModalStateModel {
     trasferimentoChiamata: Array<TrasferimentoChiamata>;
@@ -12,7 +12,7 @@ export interface TrasferimentoChiamataModalStateModel {
         model?: {
             codiceRichiesta: string;
             operatore: string;
-            sedeA: TreeviewSelezione[];
+            sedeA: Sede;
         };
         dirty: boolean;
         status: string;
@@ -52,7 +52,7 @@ export class TrasferimentoChiamataModalState {
     }
 
     @Selector()
-    static sedeSelezionata(state: TrasferimentoChiamataModalStateModel): TreeviewSelezione[] {
+    static sedeSelezionata(state: TrasferimentoChiamataModalStateModel): Sede {
         return state.trasferimentoChiamataForm.model.sedeA;
     }
 
@@ -76,7 +76,7 @@ export class TrasferimentoChiamataModalState {
         const form = state.trasferimentoChiamataForm.model;
         const obj = {
             codChiamata: form.codiceRichiesta,
-            codSedeA: form.sedeA[0].idSede
+            codSedeA: form.sedeA.codice
         } as AddTrasferimentoChiamata;
         this.trasferimentoChiamataService.addTrasferimentoChiamata(obj).subscribe(() => {
         });

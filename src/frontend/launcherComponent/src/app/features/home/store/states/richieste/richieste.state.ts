@@ -54,7 +54,6 @@ import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.act
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
@@ -367,7 +366,7 @@ export class RichiesteState {
     allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede): void {
         const obj = {
             codiceRichiesta: action.event.codRichiesta,
-            codSediAllertate: action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
+            codSediAllertate: action.event.sedi.codice
         };
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });

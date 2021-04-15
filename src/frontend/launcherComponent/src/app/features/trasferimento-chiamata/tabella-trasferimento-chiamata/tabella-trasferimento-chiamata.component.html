@@ -28,7 +28,7 @@
     <tr *ngFor="let trasferimento of listaTrasferimentiChiamate | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
         <td class="align-middle" style="width: 24%">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span>{{trasferimento?.codRichiesta}}</span>
+                <span>{{trasferimento?.codChiamata}}</span>
             </div>
         </td>
         <td class="align-middle" style="width: 22%">
@@ -37,8 +37,8 @@
                     <ul class=" mb-0"
                         style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
                         <li>
-                                <span ngbTooltip="{{trasferimento?.codSedeDa }}"
-                                      class="ml-1">{{trasferimento?.codSedeDa | truncate: 40}}</span>
+                            <span ngbTooltip="{{trasferimento?.sedeDa }}"
+                                  class="ml-1">{{trasferimento?.sedeDa | truncate: 40}}</span>
                         </li>
                     </ul>
                 </div>
@@ -50,8 +50,8 @@
                     <ul class=" mb-0"
                         style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
                         <li>
-                                <span ngbTooltip="{{trasferimento?.codSedeA }}"
-                                      class="ml-1">{{trasferimento?.codSedeA | truncate: 40}}</span>
+                            <span ngbTooltip="{{trasferimento?.sedeA }}"
+                                  class="ml-1">{{trasferimento?.sedeA | truncate: 40}}</span>
                         </li>
                     </ul>
                 </div>
