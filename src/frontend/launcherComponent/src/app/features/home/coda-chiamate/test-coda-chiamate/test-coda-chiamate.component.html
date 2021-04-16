@@ -1,0 +1,50 @@
+<div class="mb-4">
+    <div>
+        <label for="count">count</label>
+        <input id="count"
+               [(ngModel)]="count"
+               [value]="count"
+               type="number"
+               class="form-control"/>
+    </div>
+    <div class="mt-2">
+        <label for="codDistaccamento">codDistaccamento</label>
+        <input id="codDistaccamento"
+               [(ngModel)]="codDistaccamento"
+               [value]="codDistaccamento"
+               type="text"
+               class="form-control"/>
+    </div>
+</div>
+<div *ngIf="count > 0">
+    <button class="btn-primary btn-lg btn-block mt-2"
+            (click)="addChiamateDistaccamentoCodaChiamate()">
+        <i class="fa fa-plus mr-1"></i>
+        Aggiungi {{ count }} Chiamat<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+    <button class="btn-danger btn-lg btn-block mt-2"
+            (click)="removeChiamateDistaccamentoCodaChiamate()">
+        <i class="fa fa-minus mr-1"></i>
+        Rimuovi {{ count }} Chiamat<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+    <button class="btn-primary btn-lg btn-block mt-3"
+            (click)="addSquadreLibereDistaccamentoCodaChiamate()">
+        <i class="fa fa-plus mr-1"></i>
+        Aggiungi {{ count }} Squadre Liber<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+    <button class="btn-danger btn-lg btn-block mt-2"
+            (click)="removeSquadreLibereDistaccamentoCodaChiamate()">
+        <i class="fa fa-minus mr-1"></i>
+        Rimuovi {{ count }} Squadre Liber<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+    <button class="btn-primary btn-lg btn-block mt-3"
+            (click)="addSquadreOccupateDistaccamentoCodaChiamate()">
+        <i class="fa fa-plus mr-1"></i>
+        Aggiungi {{ count }} Squadre Occupat<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+    <button class="btn-danger btn-lg btn-block mt-2"
+            (click)="removeSquadreOccupateDistaccamentoCodaChiamate()">
+        <i class="fa fa-minus mr-1"></i>
+        Rimuovi {{ count }} Squadre Occupat<span *ngIf="count === 1">a</span><span *ngIf="count > 1">e</span>
+    </button>
+</div>
