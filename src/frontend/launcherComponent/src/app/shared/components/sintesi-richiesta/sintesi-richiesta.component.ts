@@ -8,8 +8,6 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
-import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
@@ -373,34 +371,4 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 return 'Non Necessario';
         }
     }
-
-    onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        let addTrasferimentoChiamataModal;
-        addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
-        addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
-        addTrasferimentoChiamataModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.addTrasferimentoChiamata();
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                }
-            },
-            (err) => {
-                this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
-            }
-        );
-    }
-
-    addTrasferimentoChiamata(): void {
-        this.store.dispatch(new RequestAddTrasferimentoChiamata());
-    }
-
 }

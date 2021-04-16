@@ -40,17 +40,17 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(
+            new UpdateFormValue({
+                path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
+                value: {
+                    codiceRichiesta: this.codRichiesta ? this.codRichiesta : null
+                }
+            })
+        );
         if (!this.codRichiesta) {
             this.getCodiciRichiesteTrasferibili();
         } else {
-            this.store.dispatch(
-                new UpdateFormValue({
-                    path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
-                    value: {
-                        codiceRichiesta: this.codRichiesta
-                    }
-                })
-            );
             this.f.codiceRichiesta.disable();
         }
     }
@@ -71,14 +71,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(
-            new UpdateFormValue({
-                path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
-                value: {
-                    codiceRichiesta: null
-                }
-            })
-        );
         this.trasferimentoChiamataForm.reset();
         this.subscription.unsubscribe();
     }
@@ -121,7 +113,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         if (!this.trasferimentoChiamataForm.valid) {
             return;
         }
-
         this.modal.close({ success: true, result: this.trasferimentoChiamataForm.value });
     }
 

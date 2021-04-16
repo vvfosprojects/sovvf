@@ -402,20 +402,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     return s.Squadra.ColonnaMobile == query.Filtro.SquadreColonnaMobile;
                 return true;
             })
-
-            //FILTRO TURNO FUNZIONANTE SOLO IN TEST
-#if !DEBUG
-            .Where(s =>
-            {
-                if (turnoPrecedente != null)
-                    return turnoPrecedente.Codice.Contains(s.Squadra.Turno);
-                else if (turnoPrecedente != null)
-                    return turnoSuccessivo.Codice.Contains(s.Squadra.Turno);
-                return turnoCorrente.Codice.Contains(s.Squadra.Turno);
-            })
-#endif
-            //QUI MASCHERO I RISULTATI MOSTRANDO, SEMPRE, ALMENO UNA SQUADRA PER TURNO
-#if DEBUG
             .Select(s =>
             {
                 switch (query.Filtro.Turno)
@@ -431,7 +417,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 return s;
             })
             .Where(s => s != null)
-#endif
             .OrderByDescending(c =>
             {
                 if (query.Filtro.Mezzo?.PreAccoppiato ?? false)
