@@ -2,7 +2,18 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable, NgZone } from '@angular/core';
 import { CodaChiamateService } from '../../../../../core/service/coda-chiamate-service/coda-chiamate.service';
 import { ItemGraficoCodaChiamate } from '../../../../../shared/interface/item-grafico-coda-chiamate';
-import { GetDataGrafico, OpenModalDettaglioDistaccamento, StartLoadingCodaChiamate, StopLoadingCodaChiamate } from '../../actions/coda-chiamate/coda-chiamate.actions';
+import {
+    AddChiamateDistaccamentoCodaChiamate,
+    AddSquadreLibereDistaccamentoCodaChiamate,
+    AddSquadreOccupateDistaccamentoCodaChiamate,
+    GetDataGrafico,
+    OpenModalDettaglioDistaccamento,
+    RemoveChiamateDistaccamentoCodaChiamate,
+    RemoveSquadreLibereDistaccamentoCodaChiamate,
+    RemoveSquadreOccupateDistaccamentoCodaChiamate,
+    StartLoadingCodaChiamate,
+    StopLoadingCodaChiamate
+} from '../../actions/coda-chiamate/coda-chiamate.actions';
 import { ItemChart } from '../../../../../shared/interface/item-chart.interface';
 import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/data-grafico-coda-chiamate-dto.interface';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +24,7 @@ import { SetRichiestaComposizione } from '../../actions/composizione-partenza/co
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import produce from 'immer';
 
 export interface CodaChiamateStateModel {
     data: ItemGraficoCodaChiamate[];
@@ -121,6 +133,108 @@ export class CodaChiamateState {
                 });
             }
         });
+    }
+
+    @Action(AddChiamateDistaccamentoCodaChiamate)
+    addChiamateDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: AddChiamateDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered) {
+                        dataGraficoFiltered.numRichieste += action.changes.count;
+                    }
+                })
+            );
+        }
+    }
+
+    @Action(AddSquadreLibereDistaccamentoCodaChiamate)
+    addSquadreLibereDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: AddSquadreLibereDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered) {
+                        dataGraficoFiltered.squadreLibere += action.changes.count;
+                    }
+                })
+            );
+        }
+    }
+
+    @Action(AddSquadreOccupateDistaccamentoCodaChiamate)
+    addSquadreOccupateDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: AddSquadreOccupateDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered) {
+                        dataGraficoFiltered.squadreOccupate += action.changes.count;
+                    }
+                })
+            );
+        }
+    }
+
+    @Action(RemoveChiamateDistaccamentoCodaChiamate)
+    removeChiamateDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: RemoveChiamateDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered && dataGraficoFiltered?.numRichieste > 0) {
+                        dataGraficoFiltered.numRichieste -= action.changes.count;
+                    }
+                })
+            );
+        }
+    }
+
+    @Action(RemoveSquadreLibereDistaccamentoCodaChiamate)
+    removeSquadreLibereDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: RemoveSquadreLibereDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered && dataGraficoFiltered?.squadreLibere > 0) {
+                        dataGraficoFiltered.squadreLibere -= action.changes.count;
+                    }
+                })
+            );
+        }
+    }
+
+    @Action(RemoveSquadreOccupateDistaccamentoCodaChiamate)
+    removeSquadreOccupateDistaccamentoCodaChiamate({ getState, setState, dispatch }: StateContext<CodaChiamateStateModel>, action: AddSquadreOccupateDistaccamentoCodaChiamate): void {
+        const state = getState();
+        const dataGrafico = state.data;
+        const codDistaccamento = action.changes.codDistaccamento;
+        if (dataGrafico) {
+            setState(
+                produce(state, (draft: CodaChiamateStateModel) => {
+                    const dataGraficoFiltered = draft.data.filter((i: ItemGraficoCodaChiamate) => i.codDistaccamento === codDistaccamento)[0];
+                    if (dataGraficoFiltered && dataGraficoFiltered?.squadreOccupate > 0) {
+                        dataGraficoFiltered.squadreOccupate -= action.changes.count;
+                    }
+                })
+            );
+        }
     }
 
     @Action(StartLoadingCodaChiamate)

@@ -130,7 +130,8 @@ const COMPONENTS = [
     TriageSummaryComponent,
     TriageSummaryModalComponent,
     IconaStatoComponent,
-    VersioneComponent
+    VersioneComponent,
+    TipologiaSintesiRichiestaComponent
 ];
 const MODULES = [
     PipeModule
@@ -155,7 +156,6 @@ const MODULES = [
     ],
     declarations: [
         ...COMPONENTS,
-        TipologiaSintesiRichiestaComponent,
     ],
     exports: [
         ...COMPONENTS,

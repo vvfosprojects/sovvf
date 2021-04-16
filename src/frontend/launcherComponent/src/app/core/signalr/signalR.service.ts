@@ -4,11 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import {
-    GetListaRichieste,
-    StopLoadingActionMezzo,
-    UpdateRichiesta
-} from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -23,12 +19,7 @@ import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/hom
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
-import {
-    GetListaSchedeContatto,
-    SetContatoriSchedeContatto,
-    SetListaSchedeContatto,
-    UpdateSchedaContatto
-} from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
@@ -56,6 +47,15 @@ import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasfe
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import {
+    AddChiamateDistaccamentoCodaChiamate,
+    AddSquadreLibereDistaccamentoCodaChiamate,
+    AddSquadreOccupateDistaccamentoCodaChiamate,
+    RemoveChiamateDistaccamentoCodaChiamate,
+    RemoveSquadreLibereDistaccamentoCodaChiamate,
+    RemoveSquadreOccupateDistaccamentoCodaChiamate
+} from '../../features/home/store/actions/coda-chiamate/coda-chiamate.actions';
+import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -303,6 +303,34 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
             this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
+        });
+
+        /**
+         * Coda Chiamate
+         */
+        this.hubNotification.on('NotifyAddChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddChiamataCodaChiamate', changes);
+            this.store.dispatch(new AddChiamateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyAddSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddSquadraLiberaCodaChiamate', changes);
+            this.store.dispatch(new AddSquadreLibereDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyAddSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddSquadraOccupataCodaChiamate', changes);
+            this.store.dispatch(new AddSquadreOccupateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveChiamataCodaChiamate', changes);
+            this.store.dispatch(new RemoveChiamateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveSquadraLiberaCodaChiamate', changes);
+            this.store.dispatch(new RemoveSquadreLibereDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveSquadraOccupataCodaChiamate', changes);
+            this.store.dispatch(new RemoveSquadreOccupateDistaccamentoCodaChiamate(changes));
         });
 
         /**
