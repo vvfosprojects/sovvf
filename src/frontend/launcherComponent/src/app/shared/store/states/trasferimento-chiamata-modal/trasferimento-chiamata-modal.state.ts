@@ -11,7 +11,6 @@ export interface TrasferimentoChiamataModalStateModel {
     trasferimentoChiamataForm: {
         model?: {
             codiceRichiesta: string;
-            operatore: string;
             sedeA: Sede;
         };
         dirty: boolean;
@@ -26,7 +25,6 @@ export const TrasferimentoChiamataModalStateDefaults: TrasferimentoChiamataModal
     trasferimentoChiamataForm: {
         model: {
             codiceRichiesta: undefined,
-            operatore: undefined,
             sedeA: undefined
         },
         dirty: false,
