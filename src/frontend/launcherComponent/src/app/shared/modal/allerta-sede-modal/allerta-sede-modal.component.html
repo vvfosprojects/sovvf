@@ -18,11 +18,16 @@
                            [items]="distaccamenti"
                            bindLabel="descrizione"
                            bindValue="id"
-                           [closeOnSelect]="true"
+                           [closeOnSelect]="false"
                            [hideSelected]="false"
+                           [multiple]="true"
                            [loading]="!distaccamenti"
                            (change)="onPatchSedi($event)"
                            placeholder="Seleziona Distaccamento">
+                    <ng-template ng-option-tmp let-item="item">
+                        <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>
+                        {{ item.descrizione }}
+                    </ng-template>
                 </ng-select>
         </div>
     </form>
