@@ -309,27 +309,27 @@ export class SignalRService {
          * Coda Chiamate
          */
         this.hubNotification.on('NotifyAddChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyAddChiamataCodaChiamate', changes);
+            console.log('NotifyAddChiamateCodaChiamate', changes);
             this.store.dispatch(new AddChiamateDistaccamentoCodaChiamate(changes));
         });
         this.hubNotification.on('NotifyAddSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyAddSquadraLiberaCodaChiamate', changes);
+            console.log('NotifyAddSquadreLibereCodaChiamate', changes);
             this.store.dispatch(new AddSquadreLibereDistaccamentoCodaChiamate(changes));
         });
         this.hubNotification.on('NotifyAddSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyAddSquadraOccupataCodaChiamate', changes);
+            console.log('NotifyAddSquadreOccupateCodaChiamate', changes);
             this.store.dispatch(new AddSquadreOccupateDistaccamentoCodaChiamate(changes));
         });
         this.hubNotification.on('NotifyRemoveChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyRemoveChiamataCodaChiamate', changes);
+            console.log('NotifyRemoveChiamateCodaChiamate', changes);
             this.store.dispatch(new RemoveChiamateDistaccamentoCodaChiamate(changes));
         });
         this.hubNotification.on('NotifyRemoveSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyRemoveSquadraLiberaCodaChiamate', changes);
+            console.log('NotifyRemoveSquadreLibereCodaChiamate', changes);
             this.store.dispatch(new RemoveSquadreLibereDistaccamentoCodaChiamate(changes));
         });
         this.hubNotification.on('NotifyRemoveSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
-            console.log('NotifyRemoveSquadraOccupataCodaChiamate', changes);
+            console.log('NotifyRemoveSquadreOccupateCodaChiamate', changes);
             this.store.dispatch(new RemoveSquadreOccupateDistaccamentoCodaChiamate(changes));
         });
 
