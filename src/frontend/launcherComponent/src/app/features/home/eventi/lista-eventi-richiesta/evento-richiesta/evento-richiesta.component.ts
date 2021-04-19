@@ -61,7 +61,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['RichiestaSoccorsoAereo', ['fa-plane']],
             ['AnnullamentoRichiestaSoccorsoAereo', ['fa-plane', 'fa-times']],
 
-            // Default per gli eventi non gestiti
+            // Default per gli eventi-richiesta-richiesta non gestiti
             ['EventoGenerico', ['fa-question-circle']],
 
             // Per adesso non utilizzqti

@@ -37,7 +37,14 @@ export class ClearEventiRichiesta {
     static readonly type = '[EventiRichiesta] Clear Eventi Richieste';
 }
 
-
 export class ToggleIconeNomeClasseEvento {
-  static readonly type = '[EventiRichiesta] Toggle Icone Nome Classe Evento';
+    static readonly type = '[EventiRichiesta] Toggle Icone Nome Classe Evento';
+}
+
+export class StartLoadingEventiRichiesta {
+    static readonly type = '[EventiRichiesta] Start Loading Eventi Richiesta';
+}
+
+export class StopLoadingEventiRichiesta {
+    static readonly type = '[EventiRichiesta] Stop Loading Eventi Richiesta';
 }

@@ -19,7 +19,7 @@ import { DettaglioTipologia } from '../interface/dettaglio-tipologia.interface';
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
  * ad alimentare il primo ed il secondo livello di zoom. Non include il dettaglio
- * degli eventi della richiesta.
+ * degli eventi-richiesta-richiesta della richiesta.
  */
 export class SintesiRichiesta {
 
@@ -78,7 +78,7 @@ export class SintesiRichiesta {
          */
         public competenze: Sede[],
         /**
-         * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
+         * indice di complessità dell'intervento (per es. numero di eventi-richiesta-richiesta collegati alla richiesta)
          */
         public complessita: Complessita,
         /**
@@ -195,7 +195,7 @@ export class SintesiRichiesta {
          */
         public triageSummary?: TriageSummary[],
         /**
-         * eventi relativi a mezzi e velivoli
+         * eventi-richiesta-richiesta relativi a mezzi e velivoli
          */
         public eventi?: any
     ) {
