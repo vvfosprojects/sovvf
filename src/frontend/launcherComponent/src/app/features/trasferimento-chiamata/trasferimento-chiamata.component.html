@@ -16,7 +16,8 @@
                 </div>
                 <div class="col text-right">
                     <app-ricerca-trasferimento-chiamata [loading]="loading$ | async"
-                                                        (ricercaChange)="onRicercaTrasferimentoChiamata($event)"></app-ricerca-trasferimento-chiamata>
+                                                        (ricercaChange)="onRicercaTrasferimentoChiamata($event)">
+                    </app-ricerca-trasferimento-chiamata>
                 </div>
             </div>
         </div>
@@ -32,7 +33,8 @@
                                                 [page]="page$ | async"
                                                 [pageSizes]="pageSizes$ | async"
                                                 (pageChange)="onPageChange($event)"
-                                                (pageSizeChange)="onPageSizeChange($event)"></app-tabella-trasferimento-chiamata>
+                                                (pageSizeChange)="onPageSizeChange($event)">
+            </app-tabella-trasferimento-chiamata>
         </div>
     </div>
 </div>

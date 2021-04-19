@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
+import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
@@ -178,7 +178,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         });
     }
 
-    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
+    /* Apre il modal per visualizzare gli eventi-richiesta-richiesta relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(mezzo: Mezzo): void {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));

@@ -24,6 +24,8 @@ import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interf
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { GetDistaccamenti } from './shared/store/actions/distaccamenti/distaccamenti.actions';
+import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
 
 @Component({
     selector: 'app-root',
@@ -87,6 +89,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
+        this.getTipologie();
+        this.getDistaccamenti();
         ngbAccordionconfig.type = 'dark';
     }
 
@@ -262,6 +266,14 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (casLogin) {
             this.store.dispatch(new SetLoggedCas());
         }
+    }
+
+    getTipologie(): void {
+        this.store.dispatch(new GetTipologie());
+    }
+
+    getDistaccamenti(): void {
+        this.store.dispatch(new GetDistaccamenti());
     }
 
     private setLoaderPosition(): void {

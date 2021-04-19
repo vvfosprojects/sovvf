@@ -18,3 +18,11 @@ export class SetListaTrasferimentiChiamate {
 export class AddTrasferimentoChiamata {
     static readonly type = '[TrasferimentoChiamata] Add Voce Trasferimento Chiamata';
 }
+
+export class StartLoadingTrasferimentiChiamate {
+    static readonly type = '[TrasferimentoChiamata] Start Loading Trasferimenti Chiamate';
+}
+
+export class StopLoadingTrasferimentiChiamate {
+    static readonly type = '[TrasferimentoChiamata] Stop Loading Trasferimenti Chiamate';
+}

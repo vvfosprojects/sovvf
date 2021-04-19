@@ -14,7 +14,7 @@ import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 
 import { AllertaSedeModalComponent } from '../allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti-modal.component';
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
-import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi/eventi-richiesta.actions';
+import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
