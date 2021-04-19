@@ -6,6 +6,7 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import {
+    ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
     HoverOutPreAccoppiatoComposizione,
@@ -75,7 +76,10 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ResetPaginationPreaccoppiati());
+        this.store.dispatch([
+            new ClearPreAccoppiatiSelezionatiComposizione(),
+            new ResetPaginationPreaccoppiati()
+        ]);
     }
 
     getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
