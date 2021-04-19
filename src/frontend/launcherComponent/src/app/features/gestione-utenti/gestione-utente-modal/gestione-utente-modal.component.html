@@ -75,6 +75,13 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">Conferma</button>
+    <button type="button" class="btn btn-no-hover btn-lg btn-secondary"
+            (click)="closeModal('ko')">
+        Annulla
+    </button>
+    <button type="button" class="btn btn-no-hover btn-lg btn-danger"
+            [disabled]="!formValid"
+            (click)="onConferma()">
+        Conferma
+    </button>
 </div>
