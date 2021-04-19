@@ -18,7 +18,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -35,7 +34,6 @@ import { _isAdministrator } from '../../../../../shared/helper/function-generich
 import { AuthState } from '../../../../auth/store/auth.state';
 import { SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 import { Injectable } from '@angular/core';
-import { LSNAME } from '../../../../../core/settings/config';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -45,7 +43,7 @@ export interface GestioneUtentiStateModel {
         model?: {
             utente: string;
             ruolo: string;
-            sedi: TreeviewSelezione[];
+            sedi: string[];
             ricorsivo: boolean;
         };
         dirty: boolean;
@@ -92,11 +90,6 @@ export class GestioneUtentiState {
     @Selector()
     static utenteDetail(state: GestioneUtentiStateModel): Utente {
         return state.utenteDetail;
-    }
-
-    @Selector()
-    static sedeSelezionata(state: GestioneUtentiStateModel): TreeviewSelezione[] {
-        return state.addUtenteRuoloForm.model.sedi;
     }
 
     @Selector()
@@ -175,10 +168,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((value: TreeviewSelezione) => {
+        form.sedi.forEach((codice: string) => {
             obj.ruoli.push({
                 descrizione: form.ruolo,
-                codSede: value.idSede,
+                codSede: codice,
                 ricorsivo: form.ricorsivo
             });
         });
@@ -212,10 +205,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((value: TreeviewSelezione) => {
+        form.sedi.forEach((codice: string) => {
             obj.ruoli.push({
                 descrizione: form.ruolo,
-                codSede: value.idSede,
+                codSede: codice,
                 ricorsivo: form.ricorsivo
             });
         });
