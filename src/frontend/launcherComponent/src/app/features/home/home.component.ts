@@ -45,11 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Home creato');
-        this.store.dispatch([
-            new GetDataHome(),
-            new GetDistaccamenti(),
-            new GetTipologie()
-        ]);
+        this.store.dispatch(new GetDataHome());
     }
 
     ngOnDestroy(): void {
