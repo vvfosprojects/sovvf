@@ -91,7 +91,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 personale.nome = personale.nome.Replace(" ", "").ToLower() + "1";
             }
             //Test di refresh chain
-            var utenteVVF = new Utente(command.CodFiscale, personale.nome.Split(".")[0], personale.nome.Split(".")[1])
+            var utenteVVF = new Utente(command.CodFiscale, personale.accountDipvvf.Split(".")[0], personale.accountDipvvf.Split(".")[1])
             {
                 Ruoli = command.Ruoli,
                 Username = personale.nome.Replace(" ", "").ToLower(),
