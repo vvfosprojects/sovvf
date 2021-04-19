@@ -68,3 +68,11 @@ export class SetFiltroTipologiaDeselezionato {
 export class ResetFiltroTipologiaSelezionato {
     static readonly type = '[DettagliTipologie] Reset Filtro Tipologia Selezionato';
 }
+
+export class StartLoadingDettagliTipologie {
+    static readonly type = '[DettagliTipologie] Start Loading Dettagli Tipologie';
+}
+
+export class StopLoadingDettagliTipologie {
+    static readonly type = '[DettagliTipologie] Stop Loading Dettagli Tipologie';
+}

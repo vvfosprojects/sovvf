@@ -31,3 +31,11 @@ export class DeleteVoceRubrica {
     constructor(public idVoceRubrica: string) {
     }
 }
+
+export class StartLoadingRubrica {
+    static readonly type = '[Rubrica] Start Loading Rubrica';
+}
+
+export class StopLoadingRubrica {
+    static readonly type = '[Rubrica] Stop Loading Rubrica';
+}

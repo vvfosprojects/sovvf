@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body font-xlarge" *ngIf="enti && enti?.length > 0">
+<div class="modal-body" *ngIf="enti && enti?.length > 0">
     <form [formGroup]="modificaEntiIntervenutiForm">
         <div class="form-group">
             <label for="listaEnti">
@@ -28,8 +28,8 @@
         </div>
     </form>
     <div class="mt-2">
-        <h6 class="text-center font-xlarge">Vuoi creare un nuovo ente?</h6>
-        <button class="btn btn-sm btn-block btn-primary btn-no-hover font-xlarge" (click)="aggiungiNuovoEnte()">
+        <div class="text-center">Vuoi creare un nuovo ente?</div>
+        <button class="btn btn-sm btn-block btn-primary btn-no-hover" (click)="aggiungiNuovoEnte()">
             <i class="fa fa-plus mr-1"></i>
             Nuovo ente
         </button>

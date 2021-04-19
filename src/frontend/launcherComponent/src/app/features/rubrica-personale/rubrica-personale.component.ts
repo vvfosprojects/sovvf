@@ -8,7 +8,6 @@ import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/s
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { RubricaPersonaleState } from './store/states/rubrica-personale/rubrica-personale.state';
-import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import {
     ClearRicercaRubricaPersonale,
     ClearStatoRubricaPersonale,
@@ -30,6 +29,7 @@ import { RubricaPersonale } from '../../shared/interface/rubrica-personale.inter
 export class RubricaPersonaleComponent implements OnInit, OnDestroy {
 
     @Select(RubricaPersonaleState.vociRubricaPersonale) vociRubricaPersonale$: Observable<RubricaPersonale[]>;
+    @Select(RubricaPersonaleState.loadingRubricaPersonale) loading$: Observable<boolean>;
     @Select(RicercaRubricaPersonaleState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -37,11 +37,10 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     private subscriptions: Subscription = new Subscription();
     RoutesPath = RoutesPath;
-    filtriStatoPersonale = [ 'In servizio', 'Non in servizio'];
+    filtriStatoPersonale = ['In servizio', 'Non in servizio'];
     filtriTipoPersonale = ['Solo operativi', 'Altro personale'];
 
     constructor(public modalService: NgbModal,
@@ -60,7 +59,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.RubricaPersonale),
             new SetSediNavbarVisible(false),
-            new StopBigLoading()
+            new StopBigLoading(),
         ]);
     }
 

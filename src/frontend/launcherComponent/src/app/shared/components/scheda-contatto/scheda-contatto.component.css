@@ -32,3 +32,7 @@
 .btn-gestita:not(:hover) {
   background-color: #f8f8f8;
 }
+
+.btn-outline-warning:hover {
+  color: #ffffff !important;
+}

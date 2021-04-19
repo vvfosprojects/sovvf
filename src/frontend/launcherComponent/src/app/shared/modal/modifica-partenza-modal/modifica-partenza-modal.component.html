@@ -13,12 +13,12 @@
           autocomplete="off">
         <!-- operatore e sede -->
         <div class="d-inline-flex mb-3">
-            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user font-xlarge"
+            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
                     style="margin-left: 0 !important;"
                     ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
                 <i class="fa fa-user"></i>
             </button>
-            <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user font-xlarge"
+            <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user"
                     ngbTooltip="Visualizza Sede" [ngbPopover]="sede">
                 <i class="fa fa-building-o"></i>
             </button>
@@ -61,15 +61,15 @@
             alle {{timeAnnullamento?.hour <= 9 ? '0' + timeAnnullamento?.hour : timeAnnullamento?.hour}}
             :{{timeAnnullamento?.minute <= 9 ? '0' + timeAnnullamento?.minute : timeAnnullamento?.minute}}</div>
         <!-- sequenza eventi -->
-        <div class="my-4 font-xlarge" style="display: flex; justify-content: center;">
+        <div class="my-4" style="display: flex; justify-content: center;">
             <span id="sequenzaEventi" class="pt-1">Crea sequenza Eventi
             </span>
-            <button class="btn btn-sm btn-info btn-no-hover ml-2 font-xlarge" (click)="onAddSequenza()"
+            <button class="btn btn-sm btn-info btn-no-hover ml-2" (click)="onAddSequenza()"
                     [disabled]="!sequenzeValid"
                     ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
                 <i class="fa fa-plus"></i>
             </button>
-            <button class="btn btn-sm btn-danger btn-no-hover ml-2 font-xlarge" (click)="onRemoveSequenza()"
+            <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
                     [disabled]="sequenze?.length === 0"
                     ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
                 <i class="fa fa-minus"></i>
