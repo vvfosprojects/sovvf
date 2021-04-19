@@ -11,10 +11,9 @@ import {
     SetDettagliTipologie,
     SetFiltroTipologiaDeselezionato,
     SetFiltroTipologiaSelezionato,
-    SetRicercaDettagliTipologie,
+    SetRicercaDettagliTipologie, StartLoadingDettagliTipologie, StopLoadingDettagliTipologie,
     UpdateDettaglioTipologia
 } from '../../actions/dettagli-tipologie/dettagli-tipologie.actions';
-import { StartLoading, StopLoading } from '../../actions/loading/loading.actions';
 import { PaginationState } from '../pagination/pagination.state';
 import { ResponseInterface } from '../../../interface/response/response.interface';
 import { PatchPagination } from '../../actions/pagination/pagination.actions';
@@ -26,12 +25,14 @@ export interface DettagliTipologieStateModel {
     dettagliTipologie: DettaglioTipologia[];
     ricerca: string;
     filtroTipologia: number;
+    loadingDettagliTipologie: boolean;
 }
 
 export const DettagliTipologieStateDefaults: DettagliTipologieStateModel = {
     dettagliTipologie: null,
     ricerca: undefined,
-    filtroTipologia: null
+    filtroTipologia: null,
+    loadingDettagliTipologie: false,
 };
 
 @Injectable()
@@ -52,13 +53,18 @@ export class DettagliTipologieState {
     }
 
     @Selector()
+    static loadingDettagliTipologie(state: DettagliTipologieStateModel): boolean {
+        return state.loadingDettagliTipologie;
+    }
+
+    @Selector()
     static ricerca(state: DettagliTipologieStateModel): string {
         return state.ricerca;
     }
 
     @Action(GetDettagliTipologie)
     getDettagliTipologie({ getState, dispatch }: StateContext<DettagliTipologieStateModel>, action: GetDettagliTipologie): void {
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingDettagliTipologie());
         const state = getState();
         const ricerca = state.ricerca;
         const filtroTipologia = state.filtroTipologia;
@@ -75,7 +81,7 @@ export class DettagliTipologieState {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetDettagliTipologie(response.dataArray),
-                new StopLoading()
+                new StopLoadingDettagliTipologie()
             ]);
         });
     }
@@ -167,5 +173,19 @@ export class DettagliTipologieState {
             filtroTipologia: DettagliTipologieStateDefaults.filtroTipologia
         });
         dispatch(new GetDettagliTipologie());
+    }
+
+    @Action(StartLoadingDettagliTipologie)
+    startLoadingDettagliTipologie({ patchState }: StateContext<DettagliTipologieStateModel>): void {
+        patchState({
+            loadingDettagliTipologie: true
+        });
+    }
+
+    @Action(StopLoadingDettagliTipologie)
+    stopLoadingDettagliTipologie({ patchState }: StateContext<DettagliTipologieStateModel>): void {
+        patchState({
+            loadingDettagliTipologie: false
+        });
     }
 }

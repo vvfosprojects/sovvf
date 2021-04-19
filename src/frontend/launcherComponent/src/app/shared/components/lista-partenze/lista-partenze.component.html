@@ -1,5 +1,5 @@
 <div *ngIf="checkNumeroPartenze(partenze) <= 0">
-    <div class="mt-1 font-xlarge">Non ci sono mezzi su questa richiesta di intervento</div>
+    <div class="mt-1">Non ci sono mezzi su questa richiesta di intervento</div>
 </div>
 <ul *ngIf="checkNumeroPartenze(partenze) > 0" class="list-unstyled">
     <div *ngFor="let p of partenze; let index = index">

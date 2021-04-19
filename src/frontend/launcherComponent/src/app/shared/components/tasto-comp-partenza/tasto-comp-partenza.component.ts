@@ -11,6 +11,7 @@ export class TastoCompPartenzaComponent {
 
     @Input() compPartenzaMode: Composizione;
     @Input() disableTasto: boolean;
+    @Input() nightMode: boolean;
 
     @Output() cambioModalita = new EventEmitter<Composizione>();
 

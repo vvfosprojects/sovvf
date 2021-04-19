@@ -1,6 +1,6 @@
 <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown" (openChange)="onToggleDropdown($event)"
      placement="bottom-left">
-    <button class="btn font-xlarge mx-2" [ngbTooltip]="getTooltip()" style="position:relative;" [ngClass]="getClasses()"
+    <button class="btn mx-2" [ngbTooltip]="getTooltip()" style="position:relative;" [ngClass]="getClasses()"
             (click)="listaNotifiche?.length > 0 && myDrop.toggle()" ngbDropdownAnchor>
         <i class="fa fa-bell-o"></i>
         <div *ngIf="nuoveNotifiche" class="position-absolute badge badge-danger px-1" style="top:2px; right:4px;">

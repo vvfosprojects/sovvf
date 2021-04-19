@@ -54,7 +54,7 @@ export class SchedaContattoComponent implements OnChanges {
             if (changes.scheda.currentValue.gestita) {
                 this.btnGestita = { type: 'btn-outline-warning btn-gestita', tooltip: 'Segna come "Non Gestita"' };
             } else {
-                this.btnGestita = { type: 'btn-warning text-moon', tooltip: 'Segna come "Gestita"' };
+                this.btnGestita = { type: 'btn-warning text-white', tooltip: 'Segna come "Gestita"' };
             }
         }
     }

@@ -33,12 +33,14 @@
                             <div ngbDropdownMenu>
                                 <div ngbDropdownItem>
                                     <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
+                                                             [nightMode]="nightMode"
                                                              [compPartenzaMode]="(composizioneMode$ | async)"
                                                              [disableTasto]="disableComposizioneMode">
                                     </app-tasto-comp-partenza>
                                 </div>
                                 <div ngbDropdownItem>
                                     <button class="btn btn-block btn-no-hover"
+                                            [class.text-white]="nightMode"
                                             [ngbTooltip]="tooltipPrenota"
                                             [disabled]="disableComposizioneMode"
                                             (click)="_confirmPrenota()">
@@ -97,6 +99,7 @@
                                    [items]="filtri?.generiMezzi"
                                    bindLabel="descrizione"
                                    bindValue="descrizione"
+                                   [clearSearchOnAdd]="true"
                                    [multiple]="true"
                                    [isOpen]="(loadingListe$ | async) ? false : null"
                                    [closeOnSelect]="false"
@@ -143,6 +146,7 @@
                                    [items]="filtri?.distaccamenti"
                                    bindLabel="descDistaccamento"
                                    bindValue="id"
+                                   [clearSearchOnAdd]="true"
                                    [multiple]="true"
                                    [appendTo]="'body'"
                                    [isOpen]="(loadingListe$ | async) ? false : null"

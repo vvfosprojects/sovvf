@@ -1,6 +1,6 @@
 <button class="btn btn-block btn-no-hover" (click)="changeMode()" [disabled]="disableTasto"
-        [ngbTooltip]="tooltipCompPartenzaMode">
-    <i class="fa"
+        [ngbTooltip]="tooltipCompPartenzaMode" [class.text-white]="nightMode">
+    <i class="fa" [class.text-white]="nightMode"
        [class.fa-bolt]="compPartenzaMode === Composizione.Avanzata"
        [class.fa-clone]="compPartenzaMode === Composizione.Veloce">
     </i>

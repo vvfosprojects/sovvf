@@ -1,13 +1,12 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { Ente } from '../../../../../shared/interface/ente.interface';
 import {
     GetRubrica,
     SetRubrica,
     AddVoceRubrica,
     UpdateVoceRubrica,
-    DeleteVoceRubrica
+    DeleteVoceRubrica, StartLoadingRubrica, StopLoadingRubrica
 } from '../../actions/rubrica/rubrica.actions';
 import { RubricaService } from '../../../../../core/service/rubrica-service/rubrica.service';
 import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
@@ -18,10 +17,12 @@ import { Injectable } from '@angular/core';
 
 export interface RubricaStateModel {
     vociRubrica: Ente[];
+    loadingRubrica: boolean;
 }
 
 export const RubricaStateModelDefaults: RubricaStateModel = {
-    vociRubrica: undefined
+    vociRubrica: undefined,
+    loadingRubrica: false,
 };
 
 @Injectable()
@@ -41,9 +42,14 @@ export class RubricaState {
         return state.vociRubrica;
     }
 
+    @Selector()
+    static loadingRubrica(state: RubricaStateModel): boolean {
+        return state.loadingRubrica;
+    }
+
     @Action(GetRubrica)
     getRubrica({ dispatch }: StateContext<RubricaStateModel>, action: GetRubrica): void {
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingRubrica());
         const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
         const filters = {
             search: ricerca
@@ -56,7 +62,7 @@ export class RubricaState {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetRubrica(response.dataArray),
-                new StopLoading()
+                new StopLoadingRubrica()
             ]);
         });
     }
@@ -96,5 +102,19 @@ export class RubricaState {
                 vociRubrica: removeItem<Ente>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
             })
         );
+    }
+
+    @Action(StartLoadingRubrica)
+    startLoadingRubrica({ patchState }: StateContext<RubricaStateModel>): void {
+        patchState({
+            loadingRubrica: true
+        });
+    }
+
+    @Action(StopLoadingRubrica)
+    stopLoadingRubrica({ patchState }: StateContext<RubricaStateModel>): void {
+        patchState({
+            loadingRubrica: false
+        });
     }
 }

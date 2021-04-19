@@ -10,7 +10,6 @@ import {
     SetRicercaDettagliTipologie
 } from '../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
@@ -33,6 +32,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 export class DettagliTipologieComponent implements OnDestroy {
 
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Select(DettagliTipologieState.loadingDettagliTipologie) loading$: Observable<boolean>;
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
     dettagliTipologie: DettaglioTipologia[];
     @Select(DettagliTipologieState.ricerca) ricerca$: Observable<string>;
@@ -43,7 +43,6 @@ export class DettagliTipologieComponent implements OnDestroy {
     totalItems: number;
     @Select(PaginationState.page) page$: Observable<number>;
     page: number;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     private subscriptions: Subscription = new Subscription();
 
