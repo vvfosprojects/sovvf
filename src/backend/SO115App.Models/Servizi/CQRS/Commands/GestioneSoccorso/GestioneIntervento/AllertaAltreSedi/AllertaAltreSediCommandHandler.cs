@@ -47,7 +47,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
             if (richiesta.CodSOAllertate != null && richiesta.CodSOAllertate.Count > 0)
                 command.CodSediAllertateOld = richiesta.CodSOAllertate.ToArray();
 
-            richiesta.CodSOAllertate = new string[] { command.CodSediAllertate }.ToHashSet();
+            richiesta.CodSOAllertate = command.CodSediAllertate.ToHashSet();
 
             new AllertaSedi(richiesta, DateTime.UtcNow, command.CodUtente, "Allerta", command.CodSediAllertate);
 

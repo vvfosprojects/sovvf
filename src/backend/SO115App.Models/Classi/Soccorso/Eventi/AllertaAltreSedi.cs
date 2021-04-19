@@ -6,13 +6,13 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
 {
     public class AllertaSedi : Evento
     {
-        public AllertaSedi(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento, string codSedeAllertata)
+        public AllertaSedi(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento, string[] codSedeAllertata)
             : base(richiesta, istante, codiceFonte, "Allerta")
         {
             TipoEvento = tipoEvento;
-            CodiceSedeAllertata = codSedeAllertata;
+            CodiceSediAllertate = codSedeAllertata;
         }
 
-        public string CodiceSedeAllertata { get; set; }
+        public string[] CodiceSediAllertate { get; set; }
     }
 }
