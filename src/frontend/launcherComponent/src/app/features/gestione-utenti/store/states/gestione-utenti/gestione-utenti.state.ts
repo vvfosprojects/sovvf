@@ -12,7 +12,9 @@ import {
     AddUtenteGestione,
     UpdateUtenteGestioneInLista,
     SuccessAddUtenteGestione,
-    SuccessRemoveUtente
+    SuccessRemoveUtente,
+    StartLoadingGestioneUtenti,
+    StopLoadingGestioneUtenti
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
@@ -27,7 +29,6 @@ import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.i
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function-generiche';
@@ -50,6 +51,7 @@ export interface GestioneUtentiStateModel {
         status: string;
         errors: any;
     };
+    loadingGestioneUtenti: boolean;
 }
 
 export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
@@ -61,7 +63,8 @@ export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
         dirty: false,
         status: '',
         errors: {}
-    }
+    },
+    loadingGestioneUtenti: false
 };
 
 @Injectable()
@@ -97,12 +100,18 @@ export class GestioneUtentiState {
         return state.addUtenteRuoloForm.status !== 'INVALID';
     }
 
+    @Selector()
+    static loadingGestioneUtenti(state: GestioneUtentiStateModel): boolean {
+        return state.loadingGestioneUtenti;
+    }
+
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF): void {
+        dispatch(new StartLoadingGestioneUtenti());
         this.gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
             dispatch([
                 new SetUtentiVVF(data),
-                new StopLoading()
+                new StopLoadingGestioneUtenti()
             ]);
         });
     }
@@ -125,7 +134,7 @@ export class GestioneUtentiState {
     getUtentiGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione): void {
         const route = this.router.children[0].snapshot.url[0].path;
         if (route === 'gestione-utenti') {
-            dispatch(new StartLoading());
+            dispatch(new StartLoadingGestioneUtenti());
             const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
             const filtroSede = this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate);
             const filters = {
@@ -141,7 +150,7 @@ export class GestioneUtentiState {
                         new SetUtentiGestione(response.dataArray),
                         new PatchPagination(response.pagination),
                         new SetSediFiltro(response.listaSediPresenti),
-                        new StopLoading()
+                        new StopLoadingGestioneUtenti()
                     ]);
                 },
                 error => {
@@ -268,5 +277,19 @@ export class GestioneUtentiState {
             new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'),
             new ClearUtentiVVF()
         ]);
+    }
+
+    @Action(StartLoadingGestioneUtenti)
+    startLoadingGestioneUtenti({ patchState }: StateContext<GestioneUtentiStateModel>): void {
+        patchState({
+            loadingGestioneUtenti: true
+        });
+    }
+
+    @Action(StopLoadingGestioneUtenti)
+    stopLoadingGestioneUtenti({ patchState }: StateContext<GestioneUtentiStateModel>): void {
+        patchState({
+            loadingGestioneUtenti: false
+        });
     }
 }

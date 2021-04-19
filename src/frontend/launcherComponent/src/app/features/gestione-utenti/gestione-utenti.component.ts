@@ -20,7 +20,6 @@ import {
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
-import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function-generiche';
@@ -50,7 +49,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
     @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggatoConDistaccamenti$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;

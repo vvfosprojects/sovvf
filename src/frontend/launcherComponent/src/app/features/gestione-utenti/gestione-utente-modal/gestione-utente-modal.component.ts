@@ -8,7 +8,6 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role, Ruolo } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { DistaccamentiState } from '../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../../shared/model/sede.model';
 
@@ -19,7 +18,7 @@ import { Sede } from '../../../shared/model/sede.model';
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
     @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
     @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;

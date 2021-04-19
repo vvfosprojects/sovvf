@@ -81,14 +81,14 @@ export class TrasferimentoChiamataState {
     }
 
     @Action(StartLoadingTrasferimentiChiamate)
-    startLoadingMezziInServizio({ patchState }: StateContext<TrasferimentoChiamataStateModel>): void {
+    startLoadingTrasferimentiChiamate({ patchState }: StateContext<TrasferimentoChiamataStateModel>): void {
         patchState({
             loadingTrasferimentiChiamata: true
         });
     }
 
     @Action(StopLoadingTrasferimentiChiamate)
-    stopLoadingMezziInServizio({ patchState }: StateContext<TrasferimentoChiamataStateModel>): void {
+    stopLoadingTrasferimentiChiamate({ patchState }: StateContext<TrasferimentoChiamataStateModel>): void {
         patchState({
             loadingTrasferimentiChiamata: false
         });
