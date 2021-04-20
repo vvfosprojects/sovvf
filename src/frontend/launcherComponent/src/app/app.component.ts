@@ -89,8 +89,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
-        this.getTipologie();
-        this.getDistaccamenti();
         ngbAccordionconfig.type = 'dark';
     }
 
@@ -266,14 +264,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (casLogin) {
             this.store.dispatch(new SetLoggedCas());
         }
-    }
-
-    getTipologie(): void {
-        this.store.dispatch(new GetTipologie());
-    }
-
-    getDistaccamenti(): void {
-        this.store.dispatch(new GetDistaccamenti());
     }
 
     private setLoaderPosition(): void {
