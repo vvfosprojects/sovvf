@@ -18,11 +18,15 @@
                            [items]="distaccamenti"
                            bindLabel="descrizione"
                            bindValue="id"
+                           [clearSearchOnAdd]="true"
                            [closeOnSelect]="false"
                            [hideSelected]="false"
                            [multiple]="true"
+                           [(ngModel)]="sediSelezionate"
+                           [ngModelOptions]="{standalone: true}"
                            [loading]="!distaccamenti"
                            (change)="onPatchSedi($event)"
+                           (clear)="onClearSedi()"
                            placeholder="Seleziona Distaccamento">
                     <ng-template ng-option-tmp let-item="item">
                         <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>

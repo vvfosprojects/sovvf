@@ -7,6 +7,9 @@ import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/all
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../model/sede.model';
+import { AuthState } from '../../../features/auth/store/auth.state';
+import { Utente } from '../../model/utente.model';
+import { makeCopy } from '../../helper/function-generiche';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -20,6 +23,8 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
+    @Select(AuthState.currentUser) user$: Observable<Utente>;
+    codiceSedeUser: any;
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
@@ -34,6 +39,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getSedi();
+        this.getCodiceSedeUser();
     }
 
     initForm(): void {
@@ -49,6 +55,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
+        this.removeSedeUser();
     }
 
     ngOnDestroy(): void {
@@ -76,9 +83,33 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    removeSedeUser(): void {
+        const distaccamentiUnique = makeCopy(this.distaccamenti);
+        const codiciDistaccamenti = [];
+        distaccamentiUnique.forEach(x => codiciDistaccamenti.push(x.codice));
+        const indexRemove = codiciDistaccamenti.indexOf(this.codiceSedeUser);
+        distaccamentiUnique.splice(indexRemove, 1);
+        this.distaccamenti = distaccamentiUnique;
+    }
+
+    getCodiceSedeUser(): void {
+        this.subscriptions.add(
+            this.user$.subscribe((user: any) => {
+                this.codiceSedeUser = user.sede.codice;
+            })
+        );
+
+    }
+
     onPatchSedi(event: Sede[]): void {
-        event.forEach(x => this.sediSelezionate.push(x.codice));
+        if (event.length) {
+            event.forEach(x => this.sediSelezionate.push(x.codice));
+        }
         this.f.sedi.patchValue(event);
+    }
+
+    onClearSedi(): void {
+        this.sediSelezionate = [];
     }
 
     onConferma(): void {
