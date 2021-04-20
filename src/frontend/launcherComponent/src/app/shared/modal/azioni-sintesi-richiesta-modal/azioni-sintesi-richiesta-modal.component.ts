@@ -182,6 +182,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
+            size: 'lg',
             keyboard: false,
         });
         modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;

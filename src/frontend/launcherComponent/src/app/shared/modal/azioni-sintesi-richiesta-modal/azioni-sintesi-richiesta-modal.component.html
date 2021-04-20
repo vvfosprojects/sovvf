@@ -25,22 +25,8 @@
                     (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">Esegui
             </button>
         </div>
-        <!-- TRASFERIMENTO CHIAMATA -->
-        <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
-            <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
-                    style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-send-o"></i></button>
-            <div class="my-1 px-3" style="height: 30px">Trasferimento Chiamata</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci la chiamata ad un altro
-                Comando.
-            </div>
-            <button class="btn btn-outline-secondary btn-no-hover"
-                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-                    (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
-            </button>
-        </div>
         <!-- ALLERTA SEDE -->
-        <div class="clearfix box-azione w-25" style="height: fit-content">
+        <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
             <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-exclamation-triangle"></i></button>
@@ -52,6 +38,22 @@
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onAllertaSede(); $event.stopPropagation()">Esegui
             </button>
+        </div>
+        <!-- TRASFERIMENTO CHIAMATA -->
+        <div class="clearfix box-azione w-25" style="height: fit-content">
+            <span *ngIf="!richiesta.codiceRichiesta">
+            <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
+                                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-send-o"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Trasferimento Chiamata</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci la chiamata ad un altro
+                Comando.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
+            </button>
+            </span>
         </div>
     </div>
 
