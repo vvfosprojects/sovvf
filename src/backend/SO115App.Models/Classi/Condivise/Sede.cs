@@ -40,10 +40,15 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string Codice { get; set; }
 
+        private string _descrizione;
         /// <summary>
         ///   Descrizione Sede
         /// </summary>
-        public string Descrizione { get; set; }
+        public string Descrizione
+        {
+            get => _descrizione.Replace("Comando VV.F.", "Centrale");
+            set => _descrizione = value;
+        }
 
         /// <summary>
         ///   Coordinate
