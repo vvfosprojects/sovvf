@@ -10,15 +10,13 @@ import { CodaChiamateService } from '../../../core/service/coda-chiamate-service
 import { SharedModule } from '../../../shared/shared.module';
 import { TimeagoModule } from 'ngx-timeago';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { TestCodaChiamateComponent } from './test-coda-chiamate/test-coda-chiamate.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
         CodaChiamateComponent,
         GraficoDistaccamentiComponent,
-        DettaglioDistaccamentoModalComponent,
-        TestCodaChiamateComponent
+        DettaglioDistaccamentoModalComponent
     ],
     imports: [
         CommonModule,

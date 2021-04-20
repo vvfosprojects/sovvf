@@ -1,6 +1,6 @@
 <div class="row" style="max-height:720px; overflow-y: scroll">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
-    <div class="col-10">
+    <div class="col-11 mx-auto">
         <div *ngIf="(loading$ | async) === false" class="mt-3">
             <app-grafico-distaccamenti [data]="dataGrafico$ | async"
                                        [view]="[1500, ((dataGrafico$ | async)?.length * 70)]"
@@ -21,8 +21,5 @@
                                        (deactivate)="onDeactivate($event)">
             </app-grafico-distaccamenti>
         </div>
-    </div>
-    <div class="col-2">
-        <app-test-coda-chiamate></app-test-coda-chiamate>
     </div>
 </div>
