@@ -164,6 +164,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             (result: { success: boolean }) => {
                 if (result.success) {
                     this.addTrasferimentoChiamata();
+                    this.modal.close({ status: 'ko' });
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormTrasferimentoChiamata());
                     console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
