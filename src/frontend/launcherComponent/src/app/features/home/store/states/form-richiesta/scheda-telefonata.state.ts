@@ -49,6 +49,7 @@ import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-f
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
+import { ViewComponentState } from '../view/view.state';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -391,10 +392,11 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
-            dispatch([
-                new StopLoadingNuovaChiamata(),
-                new ToggleChiamata()
-            ]);
+            dispatch(new StopLoadingNuovaChiamata());
+            const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+            if (chiamataStatus) {
+                dispatch(new ToggleChiamata());
+            }
         } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
