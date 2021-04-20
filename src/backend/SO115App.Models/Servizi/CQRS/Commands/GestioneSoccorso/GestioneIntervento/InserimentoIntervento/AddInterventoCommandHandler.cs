@@ -163,6 +163,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true);
             }
 
+            //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
+            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList();
+
             _saveRichiestaAssistenza.Save(richiesta);
         }
     }

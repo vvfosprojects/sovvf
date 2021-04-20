@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.NotificheNavbar;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
@@ -90,6 +91,14 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     Tipo = TipoNotifica.TrasferimentoChiamata,
                     Data = command.TrasferimentoChiamata.Data
                 });
+
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = command.TrasferimentoChiamata.CodSedeA,
+                    count = boxInterventi.Chiamate
+                };
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
             }
 
             //GESTIONE SEDI DA
@@ -119,6 +128,14 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         TotalItems = totalItemsDa
                     }
                 });
+
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = command.TrasferimentoChiamata.CodSedeA,
+                    count = 1
+                };
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
             }
         }
     }
