@@ -6,10 +6,15 @@
     </button>
 </div>
 <div *ngIf="sintesiRichiesta" class="modal-body p-0">
-    <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta" [fissata]="false" [fissabile]="false"
-                           [isEspanso]="true" [gestibile]="false" [modificabile]="false" [espandibile]="false"
+    <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta"
+                           [fissata]="false"
+                           [fissabile]="false"
+                           [inGestione]="true"
+                           [gestibile]="false"
+                           [modificabile]="false"
                            [boxAzioni]="false"
-                           [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)"></app-sintesi-richiesta>
+                           [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)">
+    </app-sintesi-richiesta>
 </div>
 <div *ngIf="!sintesiRichiesta" class="modal-body">
     <div class="position-relative m-h-300">

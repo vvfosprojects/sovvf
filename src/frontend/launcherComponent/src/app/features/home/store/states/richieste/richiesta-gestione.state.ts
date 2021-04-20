@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
-import {AddRichiestaEspansa, RemoveRichiestaEspansa} from '../../actions/richieste/richieste-espanse.actions';
 import { ClearMarkerRichiestaSelezionato, SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { RichiestaFissataState } from './richiesta-fissata.state';
@@ -40,33 +39,23 @@ export class RichiestaGestioneState {
         const state = getState();
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
             dispatch(new ClearRichiestaGestione(action.richiesta.id));
-            dispatch(new RemoveRichiestaEspansa(action.richiesta.id));
         } else {
             patchState({
                 richiestaGestione: action.richiesta
             });
-            dispatch(new AddRichiestaEspansa(action.richiesta.id));
             dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
             dispatch(new SetMarkerRichiestaSelezionato(action.richiesta.id));
-            if (state.richiestaGestione && state.richiestaGestione.id) {
-              dispatch(new RemoveRichiestaEspansa(state.richiestaGestione.id));
-            }
         }
     }
 
     @Action(ClearRichiestaGestione)
     clearRichiestaGestione({ patchState, dispatch, getState }: StateContext<RichiestaGestioneStateModel>, action: ClearRichiestaGestione): void {
-        const state = getState();
         const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
-
         // se la richiesta non è fissata deseleziono il marker della richiesta in gestione e centro la mappa
         if (idRichiestaFissata !== action.idRichiesta) {
             dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
-        }
-        if (state.richiestaGestione) {
-            dispatch(new RemoveRichiestaEspansa(state.richiestaGestione.id));
         }
         patchState(RichiestaGestioneStateDefaults);
     }

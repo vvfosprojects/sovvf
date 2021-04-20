@@ -5,7 +5,7 @@ import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
-import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
+import { ClearRichiestaFissata, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
 import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
@@ -14,27 +14,15 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import {
-    ClearMarkerRichiestaHover,
-    ClearMarkerRichiestaSelezionato,
-    SetMarkerRichiestaHover,
-    SetMarkerRichiestaSelezionato
-} from '../store/actions/maps/marker.actions';
+import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
 import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
-import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import {
-    ActionMezzo,
-    ClearRichieste,
-    EliminaPartenzaRichiesta,
-    GetListaRichieste
-} from '../store/actions/richieste/richieste.actions';
-import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
+import { ActionMezzo, ClearRichieste, EliminaPartenzaRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
@@ -71,9 +59,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     richiestaHover: SintesiRichiesta;
 
     @Select(RichiestaSelezionataState.idRichiestaSelezionata) idRichiestaSelezionata$: Observable<string>;
-    richiestaSelezionata: SintesiRichiesta;
-
-    @Select(RichiesteEspanseState.richiesteEspanse) idRichiesteEspanse$: Observable<string[]>;
+    idRichiestaSelezionata: string;
 
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
@@ -195,10 +181,13 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.idRichiestaSelezionata$.subscribe((idRichiestaSelezionata: string) => {
                 if (idRichiestaSelezionata) {
-                    const richiestaSelezionataArray = this.richieste.filter(r => r.id === idRichiestaSelezionata);
-                    this.richiestaSelezionata = richiestaSelezionataArray[0];
+                    this.idRichiestaSelezionata = idRichiestaSelezionata;
                 } else {
-                    this.richiestaSelezionata = null;
+                    this.idRichiestaSelezionata = null;
+                }
+                const aggiornamentoRichiesto = this.store.selectSnapshot(RichiesteState.needRefresh);
+                if (aggiornamentoRichiesto) {
+                    this.store.dispatch(new GetListaRichieste());
                 }
             })
         );
@@ -308,14 +297,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
         // console.log('actionMezzo', actionMezzo);
-    }
-
-    toggleEspanso(id: string): void {
-        this.store.dispatch(new ReducerRichiesteEspanse(id));
-    }
-
-    onSetEspanso(result?: boolean): void {
-        this.store.dispatch(new SetEspanso(result));
     }
 
     onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }): void {

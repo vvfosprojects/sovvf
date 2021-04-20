@@ -14,7 +14,6 @@ import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interfa
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() richiestaFissata: SintesiRichiesta;
-    @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() nightMode: boolean;
 
@@ -30,7 +29,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() defissa = new EventEmitter<any>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
-    @Output() outEspansoId = new EventEmitter<string>();
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
@@ -51,8 +49,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         console.log('Componente RichiestaFissata creato');
         if (this.richiestaFissata) {
             this.animazioneIn();
-            const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
-            setTimeout(() => this.outEspanso.emit(result));
         }
     }
 
@@ -159,12 +155,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     /* NgClass Template */
     cardFissataClasses(r: any): void {
         return this.methods.cardFissataClasses(r);
-    }
-
-    isEspanso(id: string): boolean {
-        if (this.idRichiesteEspanse && id) {
-            return this.idRichiesteEspanse.includes(id);
-        }
     }
 
 }

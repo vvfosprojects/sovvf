@@ -15,7 +15,6 @@ import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
-import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
@@ -167,9 +166,6 @@ export class FilterbarComponent {
 
     onOptionsRichieste(event: OptionsRichieste): void {
         switch (event) {
-            case OptionsRichieste.Restringi:
-                this.store.dispatch(new ClearRichiesteEspanse());
-                break;
             case OptionsRichieste.MezziInServizio:
                 this.store.dispatch(new ToggleMezziInServizio());
                 break;

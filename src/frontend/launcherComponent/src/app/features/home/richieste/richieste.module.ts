@@ -27,7 +27,6 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 
@@ -49,7 +48,6 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
             RichiestaFissataState,
             RichiestaHoverState,
             RichiestaSelezionataState,
-            RichiesteEspanseState,
             RichiestaGestioneState,
             RichiestaAttivitaUtenteState
         ]),

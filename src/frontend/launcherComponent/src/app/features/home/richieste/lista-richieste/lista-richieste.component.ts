@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
@@ -11,16 +11,15 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
     styleUrls: ['./lista-richieste.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListaRichiesteComponent {
+export class ListaRichiesteComponent implements OnChanges {
 
     @Input() ricerca: any;
     @Input() richieste: SintesiRichiesta[] = [];
     @Input() richiestaHover: SintesiRichiesta;
-    @Input() richiestaSelezionata: SintesiRichiesta;
+    @Input() idRichiestaSelezionata: string;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() listHeightClass: string;
-    @Input() idRichiesteEspanse: string[] = [];
 
     // Loading
     @Input() loading: boolean;
@@ -51,7 +50,6 @@ export class ListaRichiesteComponent {
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() outEspansoId = new EventEmitter<string>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     // Permessi
@@ -66,7 +64,6 @@ export class ListaRichiesteComponent {
     constructor() {
     }
 
-    // tslint:disable-next-line:use-lifecycle-interface
     ngOnChanges(): void {
         if (this.loadingActionRichiesta && !this.actionRichiestaArray.includes(this.loadingActionRichiesta)) {
             this.actionRichiestaArray.push(this.loadingActionRichiesta);
@@ -77,16 +74,21 @@ export class ListaRichiesteComponent {
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta): void {
-        if (richiesta !== this.richiestaSelezionata) {
+        if (richiesta?.id !== this.idRichiestaSelezionata) {
             this.selezione.emit(richiesta.id);
         } else {
             this.deselezione.emit(true);
         }
     }
 
+    /* Gestisce il singolo click sulla richiesta */
+    onDeselezionaRichiesta(value: boolean): void {
+        this.deselezione.emit(value);
+    }
+
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta: SintesiRichiesta): void {
-        if (richiesta !== this.richiestaSelezionata) {
+        if (richiesta?.id !== this.idRichiestaSelezionata) {
             this.selezione.emit(richiesta.id);
         } else {
             this.deselezione.emit(true);
@@ -133,14 +135,8 @@ export class ListaRichiesteComponent {
     }
 
     cardClasses(r: SintesiRichiesta): any {
-        const richiestaSelezionataId = this.richiestaSelezionata ? this.richiestaSelezionata.id : null;
+        const richiestaSelezionataId = this.idRichiestaSelezionata ? this.idRichiestaSelezionata : null;
         const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
         return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
-    }
-
-    isEspanso(id: string): boolean {
-        if (this.idRichiesteEspanse && id) {
-            return this.idRichiesteEspanse.includes(id);
-        }
     }
 }
