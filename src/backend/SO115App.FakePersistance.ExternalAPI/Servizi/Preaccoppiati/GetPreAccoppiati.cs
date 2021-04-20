@@ -129,7 +129,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 }
                 else
                 {
-                    pre.MezzoComposizione.Mezzo.Stato = "InSede";
+                    pre.MezzoComposizione.Mezzo.Stato = Costanti.MezzoInSede;
                 }
             }
 

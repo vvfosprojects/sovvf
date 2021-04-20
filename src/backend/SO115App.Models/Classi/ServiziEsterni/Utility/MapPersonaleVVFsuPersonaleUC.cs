@@ -1,6 +1,8 @@
 ﻿using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Classi.ServiziEsterni.Utility
 {
@@ -15,23 +17,22 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         /// </summary>
         /// <param name="listaPersonaleUC">la lista di PersonaleUC</param>
         /// <returns>una lista di personaleVVF</returns>
-        public static List<PersonaleVVF> Map(List<PersonaleUC> listaPersonaleUC)
+        public static List<PersonaleVVF> Map(this List<PersonaleUC> listaPersonaleUC)
         {
-            var listaPersonaleVVF = new List<PersonaleVVF>();
-            foreach (var personaUC in listaPersonaleUC)
+            var listaPersonaleVVF = new ConcurrentQueue<PersonaleVVF>();
+
+            listaPersonaleUC.ForEach(personaUC => listaPersonaleVVF.Enqueue(new PersonaleVVF
             {
-                listaPersonaleVVF.Add(new PersonaleVVF
+                codiceFiscale = personaUC.CodiceFiscale,
+                sede = new DistaccamentoPersonale()
                 {
-                    codiceFiscale = personaUC.CodiceFiscale,
-                    sede = new DistaccamentoPersonale()
-                    {
-                        id = personaUC.Sede.Id,
-                        descrizione = personaUC.Sede.Descrizione
-                    },
-                    nome = $"{personaUC.Cognome}.{personaUC.Nome}"
-                });
-            }
-            return listaPersonaleVVF;
+                    id = personaUC.Sede.Id,
+                    descrizione = personaUC.Sede.Descrizione
+                },
+                nome = $"{personaUC.Cognome}.{personaUC.Nome}"
+            }));
+
+            return listaPersonaleVVF.ToList();
         }
     }
 }

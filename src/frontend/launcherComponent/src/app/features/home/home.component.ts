@@ -9,9 +9,9 @@ import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
-import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
+        this.getTipologie();
+        this.getDistaccamenti();
     }
 
     ngOnInit(): void {
@@ -52,6 +54,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataHome());
+    }
+
+    getTipologie(): void {
+        this.store.dispatch(new GetTipologie());
+    }
+
+    getDistaccamenti(): void {
+        this.store.dispatch(new GetDistaccamenti());
     }
 
     onMapFullLoaded(): void {
