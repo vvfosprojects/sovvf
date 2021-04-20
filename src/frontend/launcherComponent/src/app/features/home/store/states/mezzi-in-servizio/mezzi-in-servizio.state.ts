@@ -17,7 +17,8 @@ import {
 import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
 import {
-    ClearFiltriMezziInServizio, ClearListaMezziInServizio,
+    ClearFiltriMezziInServizio,
+    ClearListaMezziInServizio,
     ClearMezzoInServizioHover,
     ClearMezzoInServizioSelezionato,
     GetListaMezziInServizio,

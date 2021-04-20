@@ -7,7 +7,7 @@ import { ListaEventiRichiestaComponent } from './lista-eventi-richiesta/lista-ev
 import { SharedModule } from '../../../shared/shared.module';
 import { EventiRichiestaService } from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { NgxsModule } from '@ngxs/store';
-import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
+import { EventiRichiestaState } from '../store/states/eventi-richiesta/eventi-richiesta.state';
 import { FiltriEventiRichiestaComponent } from './filtri-eventi-richiesta/filtri-eventi-richiesta.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';

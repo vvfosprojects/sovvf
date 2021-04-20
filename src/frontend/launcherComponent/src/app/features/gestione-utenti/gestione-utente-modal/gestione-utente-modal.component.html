@@ -13,8 +13,8 @@
             <label for="utente">Nominativo</label>
             <ng-select id="utente"
                        [items]="listaUtentiVVF$ | async"
-                       bindLabel="nominativo"
-                       bindValue="codFiscale"
+                       bindLabel="nome"
+                       bindValue="codiceFiscale"
                        formControlName="utente"
                        placeholder="Nessun Nominativo trovato"
                        typeToSearchText="Inserisci almeno tre caratteri per iniziare la ricerca"
@@ -27,7 +27,7 @@
                 <ng-template ng-option-tmp let-item="item">
                     <div class="pb-1">
                         <div class="font-weight-bold">
-                            {{ item.nominativo?.replace('.', ' ')}}
+                            {{ item.nome?.replace('.', ' ')}}
                         </div>
                         <div class="small">
                             {{ item.codFiscale }}
@@ -41,17 +41,14 @@
         </div>
         <div class="mb-3">
             <label for="sede">Sede</label>
-            <div class="border rounded">
-                <app-shared-treeview id="sede"
-                                     class="height-test"
-                                     [items]="listeSediNavbar"
-                                     [testoSedeSelezionata]="sediSelezionate"
-                                     [placement]="'bottom-left'"
-                                     [visualizzaTasti]="false"
-                                     [disabled]="treeviewState.disabled"
-                                     (confermaSelezione)="onPatchSedi($event)">
-                </app-shared-treeview>
-            </div>
+            <ng-select id="sede"
+                       [items]="distaccamenti"
+                       placeholder="Seleziona una Sede"
+                       bindValue="codice"
+                       bindLabel="descrizione"
+                       formControlName="sedi"
+                       [multiple]="true">
+            </ng-select>
             <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
                 <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
             </div>
@@ -78,6 +75,13 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">Conferma</button>
+    <button type="button" class="btn btn-no-hover btn-lg btn-secondary"
+            (click)="closeModal('ko')">
+        Annulla
+    </button>
+    <button type="button" class="btn btn-no-hover btn-lg btn-danger"
+            [disabled]="!formValid"
+            (click)="onConferma()">
+        Conferma
+    </button>
 </div>

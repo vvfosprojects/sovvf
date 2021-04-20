@@ -2,9 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from '../../../eventi/interface/filtro-targa-mezzo.interface';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
-import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import {
     ClearEventiRichiesta,
     GetEventiRichiesta,
@@ -13,8 +11,10 @@ import {
     SetListaTarghe,
     SetFiltroTargaMezzo,
     FiltraEventiRichiesta,
-    ToggleIconeNomeClasseEvento
-} from '../../actions/eventi/eventi-richiesta.actions';
+    ToggleIconeNomeClasseEvento,
+    StartLoadingEventiRichiesta,
+    StopLoadingEventiRichiesta
+} from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
 
 export interface EventiRichiestaStateModel {
@@ -24,6 +24,7 @@ export interface EventiRichiestaStateModel {
     listaTargaMezzo: FiltroTargaMezzo[];
     filtroTargaMezzo: string[];
     visualizzazioneIconeNomeClasseEvento: boolean;
+    loadingEventiRichiesta: boolean;
 }
 
 export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
@@ -32,7 +33,8 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     listaEventiFiltrata: null,
     listaTargaMezzo: null,
     filtroTargaMezzo: null,
-    visualizzazioneIconeNomeClasseEvento: true
+    visualizzazioneIconeNomeClasseEvento: true,
+    loadingEventiRichiesta: false
 };
 
 @Injectable()
@@ -44,8 +46,7 @@ export class EventiRichiestaState {
 
     constructor(private store: Store,
                 private richiesteService: SintesiRichiesteService,
-                private eventiRichiesta: EventiRichiestaService,
-                private gestioneUtentiService: GestioneUtentiService) {
+                private eventiRichiesta: EventiRichiestaService) {
     }
 
     @Selector()
@@ -73,6 +74,11 @@ export class EventiRichiestaState {
         return state.visualizzazioneIconeNomeClasseEvento;
     }
 
+    @Selector()
+    static loadingEventiRichiesta(state: EventiRichiestaStateModel): boolean {
+        return state.loadingEventiRichiesta;
+    }
+
     @Action(SetIdRichiestaEventi)
     setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi): void {
         patchState({
@@ -84,11 +90,11 @@ export class EventiRichiestaState {
     @Action(GetEventiRichiesta)
     getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
         const codice = getState().codiceRichiesta;
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingEventiRichiesta());
         this.eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
             console.log('Risposta Controller Eventi', data);
             dispatch(new SetEventiRichiesta(data));
-            dispatch(new StopLoading());
+            dispatch(new StopLoadingEventiRichiesta());
         });
     }
 
@@ -164,4 +170,17 @@ export class EventiRichiestaState {
         });
     }
 
+    @Action(StartLoadingEventiRichiesta)
+    startLoadingEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>): void {
+        patchState({
+            loadingEventiRichiesta: true
+        });
+    }
+
+    @Action(StopLoadingEventiRichiesta)
+    stopLoadingEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>): void {
+        patchState({
+            loadingEventiRichiesta: false
+        });
+    }
 }

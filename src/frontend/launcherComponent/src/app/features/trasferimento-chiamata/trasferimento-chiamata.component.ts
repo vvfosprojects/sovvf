@@ -4,7 +4,6 @@ import { RoutesPath } from 'src/app/shared/enum/routes-path.enum';
 import { SetCurrentUrl } from 'src/app/shared/store/actions/app/app.actions';
 import { SetSediNavbarVisible } from 'src/app/shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SetRicercaTrasferimentoChiamata, CleaRicercaTrasferimentoChiamata } from './store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
-import { LoadingState } from 'src/app/shared/store/states/loading/loading.state';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
 import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamata/trasferimento-chiamata.state';
@@ -17,7 +16,6 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
-
 
 @Component({
     selector: 'app-trasferimento-chiamata',
@@ -34,7 +32,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(TrasferimentoChiamataState.loadingTrasferimentiChiamata) loading$: Observable<boolean>;
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
 

@@ -245,6 +245,11 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark $SO-i;
   }
 
+  .dropdown-item:hover {
+    color: $SO-white $SO-i;
+    background-color: $SO-dark-light $SO-i;
+  }
+
   .box-azione {
     position: relative;
     min-width: 0;
@@ -257,6 +262,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   hr {
     border-top: $SO-hr $SO-i;
+  }
+
+  .chevron-stato {
+    color: $SO-white $SO-i;
   }
 
   .divider-custom-line {

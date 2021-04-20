@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5 font-xlarge">
+<div class="modal-body height py-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
             <label for="sede">Quale sede vuoi allertare?
@@ -18,21 +18,26 @@
                            [items]="distaccamenti"
                            bindLabel="descrizione"
                            bindValue="id"
-                           [closeOnSelect]="true"
+                           [closeOnSelect]="false"
                            [hideSelected]="false"
+                           [multiple]="true"
                            [loading]="!distaccamenti"
                            (change)="onPatchSedi($event)"
                            placeholder="Seleziona Distaccamento">
+                    <ng-template ng-option-tmp let-item="item">
+                        <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>
+                        {{ item.descrizione }}
+                    </ng-template>
                 </ng-select>
         </div>
     </form>
     <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover font-xlarge" [disabled]="!formValid" (click)="onConferma()">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!formValid" (click)="onConferma()">
       {{ 'Conferma Allerta' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-xlarge" (click)="closeModal('ko')">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
 </div>

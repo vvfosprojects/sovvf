@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
+import { EventiRichiestaState } from '../store/states/eventi-richiesta/eventi-richiesta.state';
 import { Observable, Subscription } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from './interface/filtro-targa-mezzo.interface';
-import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi/eventi-richiesta.actions';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
@@ -20,7 +19,7 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
     @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
     @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(EventiRichiestaState.loadingEventiRichiesta) loading$: Observable<boolean>;
 
     @Select(ImpostazioniState.visualizzazioneTestualeEventi) visualizzazioneTestualeEventi$: Observable<boolean>;
 

@@ -9,6 +9,7 @@ import { Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import {
+    ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
     ReducerSelectMezzoComposizione,
@@ -145,6 +146,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearBoxPartenze(),
+            new ClearSelectedSquadreComposizione(),
+            new ClearSelectedMezziComposizione(),
             new ResetPaginationComposizionePartenza(),
             new SetRicercaMezziComposizione(undefined),
             new SetRicercaSquadreComposizione(undefined),

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
 import { Observable, Subscription } from 'rxjs';
-import { LoadingState } from 'src/app/shared/store/states/loading/loading.state';
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
@@ -26,6 +25,7 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 export class RubricaComponent implements OnInit, OnDestroy {
 
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
+    @Select(RubricaState.loadingRubrica) loading$: Observable<boolean>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -33,7 +33,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     RoutesPath = RoutesPath;
 

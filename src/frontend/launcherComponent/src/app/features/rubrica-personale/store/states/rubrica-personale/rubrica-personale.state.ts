@@ -1,8 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import {
     GetRubricaPersonale,
-    SetRubricaPersonale,
+    SetRubricaPersonale, StartLoadingRubricaPersonale, StopLoadingRubricaPersonale,
 } from '../../actions/rubrica-personale/rubrica-personale.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { Injectable } from '@angular/core';
@@ -14,10 +13,12 @@ import { RubricaPersonale } from '../../../../../shared/interface/rubrica-person
 
 export interface RubricaPersonaleStateModel {
     vociRubricaPersonale: RubricaPersonale[];
+    loadingRubricaPersonale: boolean;
 }
 
 export const RubricaPersonaleStateModelDefaults: RubricaPersonaleStateModel = {
-    vociRubricaPersonale: undefined
+    vociRubricaPersonale: undefined,
+    loadingRubricaPersonale: false,
 };
 
 @Injectable()
@@ -37,9 +38,14 @@ export class RubricaPersonaleState {
         return state.vociRubricaPersonale;
     }
 
+    @Selector()
+    static loadingRubricaPersonale(state: RubricaPersonaleStateModel): boolean {
+        return state.loadingRubricaPersonale;
+    }
+
     @Action(GetRubricaPersonale)
     getRubricaPersonale({ dispatch }: StateContext<RubricaPersonaleStateModel>, action: GetRubricaPersonale): void {
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingRubricaPersonale());
         const ricerca = this.store.selectSnapshot(RicercaRubricaPersonaleState.ricerca);
         const stato = this.store.selectSnapshot(RicercaRubricaPersonaleState.stato);
         const tipo = this.store.selectSnapshot(RicercaRubricaPersonaleState.tipo);
@@ -56,7 +62,7 @@ export class RubricaPersonaleState {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetRubricaPersonale(response.dataArray),
-                new StopLoading()
+                new StopLoadingRubricaPersonale()
             ]);
         });
     }
@@ -65,6 +71,21 @@ export class RubricaPersonaleState {
     setRubricaPersonale({ patchState }: StateContext<RubricaPersonaleStateModel>, action: SetRubricaPersonale): void {
         patchState({
             vociRubricaPersonale: action.vociRubricaPersonale
+        });
+    }
+
+
+    @Action(StartLoadingRubricaPersonale)
+    startLoadingRubricaPersonale({ patchState }: StateContext<RubricaPersonaleStateModel>): void {
+        patchState({
+            loadingRubricaPersonale: true
+        });
+    }
+
+    @Action(StopLoadingRubricaPersonale)
+    stopLoadingRubricaPersonale({ patchState }: StateContext<RubricaPersonaleStateModel>): void {
+        patchState({
+            loadingRubricaPersonale: false
         });
     }
 }

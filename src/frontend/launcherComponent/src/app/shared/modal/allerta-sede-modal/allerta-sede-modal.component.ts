@@ -23,6 +23,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
+    sediSelezionate: string[] = [];
 
     codRichiesta: string;
 
@@ -51,6 +52,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.sediSelezionate = [];
         this.subscriptions.unsubscribe();
     }
 
@@ -74,7 +76,8 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onPatchSedi(event: Sede): void {
+    onPatchSedi(event: Sede[]): void {
+        event.forEach(x => this.sediSelezionate.push(x.codice));
         this.f.sedi.patchValue(event);
     }
 

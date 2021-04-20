@@ -13,3 +13,11 @@ export class SetRubricaPersonale {
     constructor(public vociRubricaPersonale: RubricaPersonale[]) {
     }
 }
+
+export class StartLoadingRubricaPersonale {
+    static readonly type = '[RubricaPersonale] Start Loading Rubrica Personale';
+}
+
+export class StopLoadingRubricaPersonale {
+    static readonly type = '[RubricaPersonale] Stop Loading Rubrica Personale';
+}
