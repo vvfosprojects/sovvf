@@ -154,6 +154,9 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .sun-mode {
   background-color: $SO-white $SO-i;
   color: $SO-black $SO-i;
+  .bg-mezzo-in-servizio:hover {
+    background: $SO-light $SO-i;
+  }
 }
 
 // END Sun Mode Styles
@@ -342,6 +345,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-scheda-contatto {
+    background: $SO-dark-light $SO-i;
+  }
+
+  .bg-mezzo-in-servizio:hover {
     background: $SO-dark-light $SO-i;
   }
 
