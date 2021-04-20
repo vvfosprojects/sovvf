@@ -55,7 +55,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Codice { get; private set; }
 
-        private string _nome { get; set; }
+        private string _nome;
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>

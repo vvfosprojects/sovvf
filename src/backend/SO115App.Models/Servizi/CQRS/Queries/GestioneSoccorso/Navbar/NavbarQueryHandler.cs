@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -53,20 +54,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
             var lstSedi = _alberaturaUO.ListaSediAlberata();
-            
-            var orderedLstSedi = lstSedi.Figli.Select(s =>
-            {
-                s.Figli = s.Figli.Select(ss =>
-                {
-                    ss.Figli = ss.Figli.OrderBy(sss => sss.Nome).ToHashSet();
 
-                    return ss;
-                }).OrderBy(ss => ss.Nome).ToHashSet();
-
-                return s;
-            }).OrderBy(s => s.Nome).ToHashSet();
-
-            lstSedi.Figli = orderedLstSedi;
+            lstSedi.Figli = lstSedi.Map();
 
             var navbars = new Classi.NavBar.Navbar
             {
