@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.SignalR.Utility;
@@ -155,6 +156,18 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
                         _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                     });
+                }
+
+                foreach (var partenza in conferma.ConfermaPartenze.Partenze)
+                {
+                    var counterCodaChiamate = new CounterNotifica()
+                    {
+                        codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                        count = partenza.Squadre.Count
+                    };
+
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
                 }
             });
         }
