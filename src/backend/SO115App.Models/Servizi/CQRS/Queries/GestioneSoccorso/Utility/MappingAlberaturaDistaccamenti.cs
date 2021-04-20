@@ -1,5 +1,4 @@
 ﻿using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Classi.MongoDTO;
 using System.Collections.Generic;
 using System.Linq;
 
