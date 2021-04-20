@@ -364,9 +364,11 @@ export class RichiesteState {
 
     @Action(AllertaSede)
     allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede): void {
+        const codSediAllertate = [];
+        action.event.sedi.forEach(x => codSediAllertate.push(x.codice));
         const obj = {
             codiceRichiesta: action.event.codRichiesta,
-            codSediAllertate: action.event.sedi.codice
+            codSediAllertate
         };
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });

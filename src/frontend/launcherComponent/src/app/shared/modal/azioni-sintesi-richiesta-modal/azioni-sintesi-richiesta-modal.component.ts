@@ -181,7 +181,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            keyboard: false,
         });
         modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
         modalAllertaSede.result.then((res: { status: string, result: any }) => {
