@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -29,6 +30,7 @@ using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static SO115App.API.Models.Classi.Condivise.Squadra;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate.Dettaglio
 {
@@ -58,11 +60,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
         /// <returns>Tutti i parametri iniziali della Home Page</returns>
         public CodaChiamateDettaglioResult Handle(CodaChiamateDettaglioQuery query)
         {
-            var listaSquadre = Task.Factory.StartNew(() => _iGetComposizioneSquadre.Get(new ComposizioneSquadreQuery() { CodiciSede = new string[] { query.CodiceSede } }));
-
             var turnoCorrente = _getTurno.Get().Codice.Substring(0, 1);
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>() { new PinNodo(query.CodiceSede, false) };
+            var pinNodi = new List<PinNodo>();
+
+            pinNodi.Add(new PinNodo(query.CodiceSede, false));
 
             var listaSedi = listaSediAlberate.GetSottoAlbero(pinNodi);
             foreach (var figlio in listaSedi)
@@ -70,21 +72,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                 pinNodi.Add(new PinNodo(figlio.Codice, false));
             }
 
-            query.Filtro = new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = pinNodi.ToHashSet(),
-                IncludiRichiesteAperte = true,
-                IncludiRichiesteChiuse = false
-            };
+            query.Filtro = new FiltroRicercaRichiesteAssistenza();
+            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
+            query.Filtro.IncludiRichiesteAperte = true;
+            query.Filtro.IncludiRichiesteChiuse = false;
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
-            var dettaglio = new DettaglioDistaccamento()
+            InfoIstogramma info = new InfoIstogramma();
+            info.ListaCodaChiamate = new List<Istogramma>();
+
+            ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
+            {
+                CodiceSede = query.CodiceSede
+            };
+
+            var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
+
+            DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
                 codDistaccamento = query.CodiceSede,
                 descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? "Sede Centrale" : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
-                listaSintesi = listaSintesi?.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))),
-                listaSquadre = listaSquadre.Result.FindAll(x => x.Squadra.Distaccamento.Codice.Equals(query.CodiceSede) && x.Squadra.Turno.Equals(turnoCorrente)).Select(x => x.Squadra).ToList()
+                listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))) : null,
+                listaSquadre = listaSquadre.FindAll(x => x.Squadra.Distaccamento.Codice.Equals(query.CodiceSede) && x.Squadra.Turno.Equals(turnoCorrente)).Select(x => x.Squadra).ToList()
             };
 
             return new CodaChiamateDettaglioResult()

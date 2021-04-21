@@ -68,36 +68,41 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             {
                 pinNodi.Add(new PinNodo(sede, true));
             }
-
             var listaSedi = listaSediAlberate.GetSottoAlbero(pinNodi);
-
-            var listaSquadre = Task.Factory.StartNew(() => _iGetComposizioneSquadre.Get(new ComposizioneSquadreQuery() { CodiciSede = listaSedi.Select(s => s.Codice).ToArray() }));
-
             foreach (var figlio in listaSedi)
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            query.Filtro = new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = pinNodi.ToHashSet(),
-                IncludiRichiesteAperte = true,
-                IncludiRichiesteChiuse = false
-            };
+            query.Filtro = new FiltroRicercaRichiesteAssistenza();
+            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
+            query.Filtro.IncludiRichiesteAperte = true;
+            query.Filtro.IncludiRichiesteChiuse = false;
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
-            var info = new InfoIstogramma()
-            {
-                ListaCodaChiamate = listaSedi.Select(unita => new Istogramma()
-                {
-                    codDistaccamento = unita.Codice,
-                    descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
-                    numRichieste = listaSintesi?.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))).Count() ?? 0,
-                    squadreLibere = listaSquadre.Result?.FindAll(x => x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice) && x.Squadra.Turno.Equals(turnoCorrente)).Count() ?? 0,
-                    squadreOccupate = listaSquadre.Result?.FindAll(x => !x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice) && x.Squadra.Turno.Equals(turnoCorrente)).Count() ?? 0
-                }).ToList()
-            };
+            InfoIstogramma info = new InfoIstogramma();
+            info.ListaCodaChiamate = new List<Istogramma>();
+            Parallel.ForEach(listaSedi, unita =>
+             {
+                 ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
+                 {
+                     CodiceSede = unita.Codice
+                 };
+
+                 var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
+
+                 var infoDistaccamento = new Istogramma()
+                 {
+                     codDistaccamento = unita.Codice,
+                     descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
+                     numRichieste = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Stato.Equals("Sospesa"))).Count() : 0,
+                     squadreLibere = listaSquadre != null ? listaSquadre.FindAll(x => x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice) && x.Squadra.Turno.Equals(turnoCorrente)).Count() : 0,
+                     squadreOccupate = listaSquadre != null ? listaSquadre.FindAll(x => !x.Squadra.Stato.Equals(StatoSquadra.InSede) && x.Squadra.Distaccamento.Codice.Equals(unita.Codice) && x.Squadra.Turno.Equals(turnoCorrente)).Count() : 0
+                 };
+
+                 info.ListaCodaChiamate.Add(infoDistaccamento);
+             });
 
             return new CodaChiamateResult()
             {
