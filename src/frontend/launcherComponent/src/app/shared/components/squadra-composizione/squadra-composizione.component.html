@@ -6,7 +6,7 @@
     (click)="onClick()">
     <div class="row px-3">
         <div class="clearfix"
-             style="width: 80%">
+             style="width: 70%">
           <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp.squadra.stato)"></app-icona-stato>
           <div class="badge badge-info mx-2 py-1"
                  [ngbPopover]="componenti"
@@ -97,7 +97,7 @@
         </div>
         <div *ngIf="viewState?.composizione?.active"
              class="clearfix text-right pr-1"
-             style="width: 20%;">
+             style="width: 30%;">
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"
                  [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">
