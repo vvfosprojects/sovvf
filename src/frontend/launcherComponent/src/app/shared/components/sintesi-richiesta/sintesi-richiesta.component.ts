@@ -37,8 +37,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() fissata: boolean;
     @Input() boxAzioni: boolean;
     @Input() fissabile: boolean;
-    @Input() isEspanso: boolean;
-    @Input() espandibile: boolean;
     @Input() partenza: boolean;
     @Input() inGestione: boolean;
     @Input() composizionePartenza = true;
@@ -61,11 +59,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
-    @Output() espanso = new EventEmitter();
+    @Output() deseleziona = new EventEmitter<boolean>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() outEspansoId = new EventEmitter<string>();
 
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
 
@@ -169,13 +166,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         richiesta.codUOCompetenza.forEach(x => competenzeDefault.push(x));
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
-        }
-    }
-
-    toggleEspanso(id: string): void {
-        if (this.espandibile) {
-            this.espanso.emit();
-            this.outEspansoId.emit(id);
         }
     }
 
@@ -356,6 +346,9 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 case 'ok':
                     break;
                 case 'ko':
+                    break;
+                default:
+                    this.deseleziona.emit(true);
                     break;
             }
         });

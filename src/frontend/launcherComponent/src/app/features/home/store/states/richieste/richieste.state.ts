@@ -39,8 +39,6 @@ import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
-import { RichiesteEspanseState } from './richieste-espanse.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -48,7 +46,6 @@ import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
@@ -93,7 +90,6 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
         RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
-        RichiesteEspanseState,
         RichiestaGestioneState,
         RichiestaAttivitaUtenteState
     ]
@@ -182,11 +178,7 @@ export class RichiesteState {
                 dispatch(new StopLoadingRichieste());
             });
             // Clear dei dati presenti nella pagina che si sta lasciando
-            dispatch([
-                new ClearRichiestaSelezionata(),
-                new ClearRichiestaHover(),
-                new ClearRichiesteEspanse()
-            ]);
+            dispatch(new ClearRichiestaHover());
             const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
             if (richiestaGestione) {
                 dispatch(new ClearRichiestaGestione(richiestaGestione.id));
@@ -202,8 +194,7 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>): void {
-        dispatch(new ClearRichiesteEspanse());
+    clearRichieste({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState(RichiesteStateDefaults);
     }
 

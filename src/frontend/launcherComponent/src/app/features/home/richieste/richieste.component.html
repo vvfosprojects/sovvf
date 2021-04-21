@@ -3,7 +3,6 @@
     <app-richiesta-fissata [nightMode]="nightMode"
                            [richiestaFissata]="richiestaFissata"
                            [richiestaGestione]="richiestaGestione"
-                           [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                            [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate"
                            [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate"
                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate) || richiestaFissata.stato === statoRichiesta.Chiusa"
@@ -13,8 +12,6 @@
                            (defissa)="onDefissa()"
                            (modificaRichiesta)="onModificaRichiesta($event)"
                            (gestioneRichiesta)="onGestioneRichiesta($event)"
-                           (outEspanso)="onSetEspanso($event)"
-                           (outEspansoId)="toggleEspanso($event)"
                            (actionMezzo)="onActionMezzo($event)"
                            (eliminaPartenza)="onEliminaPartenza($event)">
     </app-richiesta-fissata>
@@ -24,11 +21,10 @@
                      [richieste]="richieste"
                      [ricerca]="ricerca"
                      [richiestaFissata]="richiestaFissata"
-                     [richiestaSelezionata]="richiestaSelezionata"
+                     [idRichiestaSelezionata]="idRichiestaSelezionata"
                      [richiestaHover]="richiestaHover"
                      [richiestaGestione]="richiestaGestione"
                      [listHeightClass]="listHeightClass"
-                     [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                      [codiciFiltriSelezionati]="codiciFiltriSelezionati"
                      [page]="page$ | async"
                      [pageSize]="pageSize$ | async"
@@ -49,6 +45,5 @@
                      (modificaRichiesta)="onModificaRichiesta($event)"
                      (gestioneRichiesta)="onGestioneRichiesta($event)"
                      (actionMezzo)="onActionMezzo($event)"
-                     (outEspansoId)="toggleEspanso($event)"
                      (eliminaPartenza)="onEliminaPartenza($event)">
 </app-lista-richieste>

@@ -203,7 +203,7 @@
                                                 [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"
                                                 (click)="toggleEspanso(r.id); $event.stopPropagation()">
                                             <i class="fa fa-fw"
-                                               [ngClass]="methods.toggleEspansoClass(isEspanso)"></i>
+                                               [ngClass]="methods.toggleGestioneClass(isEspanso)"></i>
                                         </button>
                                         <button *ngIf="listaEventi"
                                                 class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"

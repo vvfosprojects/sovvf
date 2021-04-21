@@ -17,8 +17,6 @@
                                            [fissata]="false"
                                            [fissabile]="true"
                                            [boxAzioni]="true"
-                                           [isEspanso]="isEspanso(r.id)"
-                                           [espandibile]="true"
                                            [sostituzioneFineTurno]="true"
                                            [nightMode]="nightMode"
                                            [inGestione]="richiestaGestione?.id === r.id"
@@ -29,6 +27,7 @@
                                            [disableTooltips]="scrolling"
                                            [disableFissaInAlto]="richieste.length === 1"
                                            [loadingEliminaPartenza]="loadingEliminaPartenza"
+                                           (deseleziona)="onDeselezionaRichiesta($event)"
                                            (hoverIn)="richiestaHoverIn($event)"
                                            (hoverOut)="richiestaHoverOut($event)"
                                            (fissaInAlto)="onFissaInAlto($event)"
@@ -38,7 +37,6 @@
                                            (modificaRichiesta)="onModificaRichiesta($event)"
                                            (gestioneRichiesta)="onGestioneRichiesta($event)"
                                            (actionMezzo)="actionMezzo.emit($event)"
-                                           (outEspansoId)="outEspansoId.emit($event)"
                                            (eliminaPartenza)="eliminaPartenza.emit($event)">
                     </app-sintesi-richiesta>
                 </div>

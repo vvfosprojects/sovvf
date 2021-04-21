@@ -6,11 +6,10 @@
                  [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta"
                                        [fissata]="false"
-                                       [isEspanso]="true"
+                                       [inGestione]="true"
                                        [partenza]="true"
                                        [modificabile]="false"
                                        [gestibile]="false"
-                                       [inGestione]="false"
                                        [boxAzioni]="false"
                                        [nightMode]="nightMode"
                                        (actionMezzo)="onActionMezzo($event)">

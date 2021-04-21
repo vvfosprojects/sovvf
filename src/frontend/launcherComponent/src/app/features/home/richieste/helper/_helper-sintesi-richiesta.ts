@@ -101,15 +101,15 @@ export class HelperSintesiRichiesta {
 
     /* Restituisce il numero dei mezzi in rientro */
     numeroMezziInRietro(richiesta: SintesiRichiesta): number {
-      let numeroMezzi = 0;
-      if (richiesta.partenzeRichiesta) {
-        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-          if (partenza.mezzo.stato === 'In Rientro' && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-            numeroMezzi++;
-          }
-        });
-      }
-      return numeroMezzi;
+        let numeroMezzi = 0;
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+                if (partenza.mezzo.stato === 'In Rientro' && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                    numeroMezzi++;
+                }
+            });
+        }
+        return numeroMezzi;
     }
 
     /* Permette di colorare l'icona della tipologia */
@@ -156,12 +156,12 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    toggleEspansoClass(espanso: boolean): string {
+    toggleGestioneClass(gestione: boolean): string {
         let returnClass = '';
-        if (!espanso) {
+        if (!gestione) {
             returnClass = 'fa-long-arrow-down text-secondary';
         } else {
-            returnClass = 'fa-long-arrow-up text-light';
+            returnClass = 'fa-long-arrow-up text-secondary';
         }
         return returnClass;
     }
@@ -193,6 +193,7 @@ export class HelperSintesiRichiesta {
             return { ...classes, ...cardBorder };
         }
     }
+
 //1px solid #dc3545
     /* NgClass Card Fissata Status */
     cardFissataClasses(r: SintesiRichiesta): any {
