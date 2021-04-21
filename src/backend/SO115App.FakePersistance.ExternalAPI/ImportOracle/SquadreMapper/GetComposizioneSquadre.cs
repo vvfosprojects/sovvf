@@ -4,6 +4,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Com
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {
@@ -18,8 +19,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
         public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
         {
-            List<string> ListaSedi = new List<string>();
-            ListaSedi.Add(query.CodiceSede);
+            var ListaSedi = query.CodiciSede.ToList();
+
             var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
 
             var composizioneSquadre = new List<ComposizioneSquadre>();

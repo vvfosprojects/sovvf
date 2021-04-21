@@ -49,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Box
             foreach (var Codsede in codiciSede)
             {
                 ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
-                query.CodiceSede = Codsede;
+                query.CodiciSede = new string[] { Codsede };
 
                 listaSquadreComposizione.AddRange(_getComposizioneSquadre.Get(query));
             }
