@@ -46,7 +46,8 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string Descrizione
         {
-            get => _descrizione.Replace("Comando VV.F.", "Centrale");
+            get => _descrizione.Replace("Comando VV.F.", "Centrale")
+                .Replace("COMANDO VV.F.", "CENTRALE");
             set => _descrizione = value;
         }
 
