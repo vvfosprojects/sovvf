@@ -1,6 +1,7 @@
 import { Sede } from './sede.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { Coordinate } from './coordinate.model';
+import { IstanteCambioStato } from '../interface/istante-cambio-stato.interface';
 
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
@@ -88,6 +89,10 @@ export class Mezzo {
          * Se il mezzo ha squadre pre accoppiate
          */
         public preAccoppiato?: boolean,
-) {
+        /**
+         * Istanti cambi stato del mezzo
+         */
+        public istantiCambiStato?: IstanteCambioStato[],
+    ) {
     }
 }

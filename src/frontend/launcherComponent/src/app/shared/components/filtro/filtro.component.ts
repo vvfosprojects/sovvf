@@ -29,12 +29,12 @@ export class FiltroComponent {
 
     onSelezione(filtro: VoceFiltro): void {
         if (!this.selezionato) {
-            if ((!this.disabled && !this.disableFiltri) || this.filtro.categoria === 'Chiuse') {
+            if ((!this.disabled && !this.disableFiltri) || this.filtro.descrizione === 'Chiamate Chiuse') {
                 this.zonaEmergenzaModal.emit(true);
                 this.filtroSelezionato.emit(filtro);
             }
         } else {
-            if ((!this.disabled && !this.disableFiltri) || this.filtro.categoria === 'Chiuse') {
+            if ((!this.disabled && !this.disableFiltri) || this.filtro.descrizione === 'Chiamate Chiuse') {
                 this.filtroDeselezionato.emit(filtro);
             }
         }

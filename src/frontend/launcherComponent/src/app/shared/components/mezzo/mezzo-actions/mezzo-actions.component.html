@@ -1,9 +1,12 @@
-<button type="button" class="btn btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" style="color: #fff"
-        (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))"
-        ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
-  <i class="fa fa-forward"></i>
-  <span class="font-xlarge ml-1">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</span>
-</button>
+<!--<button type="button" class="btn btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" style="color: #fff"-->
+<!--        (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))"-->
+<!--        ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">-->
+<!--  <i class="fa fa-forward"></i>-->
+<!--  <span class="font-xlarge ml-1">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</span>-->
+<!--</button>-->
+<a (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))" ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
+    <div class="btn chevron-stato bg-{{getBtnColor(mezzo.stato)}} pl-2">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</div>
+</a>
 <!--
 <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
     <button class="btn btn-sm btn-{{getBtnColor(mezzo.stato)}} text-light p-1 dropdown-toggle-split"

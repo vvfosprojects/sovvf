@@ -24,7 +24,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     @Select(TrasferimentoChiamataModalState.codiciRichiesteTrasferibili) codiciRichiesteTrasferibili$: Observable<string[]>;
     @Select(TrasferimentoChiamataModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
+    @Select(DistaccamentiState.sediTrasferimenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     codiceSedeUser: any;

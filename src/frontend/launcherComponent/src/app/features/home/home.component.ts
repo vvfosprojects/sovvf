@@ -12,7 +12,7 @@ import { ViewportState } from '../../shared/store/states/viewport/viewport.state
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
-import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getBoxAttivi();
         this.getTipologie();
         this.getDistaccamenti();
+        this.getSediAllerta();
+        this.getSediTrasferimenti();
     }
 
     ngOnInit(): void {
@@ -62,6 +64,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     getDistaccamenti(): void {
         this.store.dispatch(new GetDistaccamenti());
+    }
+
+    getSediAllerta(): void {
+        this.store.dispatch(new GetSediAllerta());
+    }
+
+    getSediTrasferimenti(): void {
+        this.store.dispatch(new GetSediTrasferimenti());
     }
 
     onMapFullLoaded(): void {

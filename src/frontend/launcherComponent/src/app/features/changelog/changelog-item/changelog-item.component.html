@@ -36,7 +36,7 @@
         </div>
     </ng-template>
     <!-- TESTO -->
-    <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="my-5" [id]="changelogId + '-' + (''+i)">
+    <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="my-5" [id]="changelogId + '-' + i">
         <h3 class="mb-4 font-weight-bolder">
             {{ i + 1 }}. {{ capitolo?.titolo | uppercase }}
         </h3>

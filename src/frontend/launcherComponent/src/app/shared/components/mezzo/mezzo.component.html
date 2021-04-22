@@ -13,12 +13,10 @@
 </div>
 
 <div *ngFor="let s of listaEventiMezzo; let index = index"
-     class="d-inline-block font-xlarge mx-2"
+     class="d-inline-block mr-2"
      style="vertical-align: bottom">
-    <app-icona-stato [stato]="s.stato"></app-icona-stato>
-    <div class="d-inline-block text-{{ statoMezzoColor(s.stato) }} ml-1">
-        {{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}
-    </div>
+<!--    <app-icona-stato [stato]="s.stato"></app-icona-stato>-->
+    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default">{{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}</div>
 </div>
 
 <!-- indicatori -->
@@ -85,8 +83,13 @@
     </ng-template>
 </div>
 
-<app-mezzo-actions *ngIf="actionsAttive" [mezzo]="mezzo"
+<app-mezzo-actions *ngIf="actionsAttive && !mezzoInServizioPage" [mezzo]="mezzo"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
+
+<span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
+      style="vertical-align: middle; border: solid thin; font-size: 20px">
+    <span *ngFor="let s of mezzo?.istantiCambiStato">{{s.stato}}: {{s.istanteCambioStato}}</span>
+</span>
 
 <div *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">
     Richiesta {{ mezzo.idRichiesta }}
