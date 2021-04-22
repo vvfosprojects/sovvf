@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ 'AZIONI RICHIESTA '}} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
+        {{ 'AZIONI ' + defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta).toUpperCase() }} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
             (click)="chiudiModalAzioniSintesi('ko')">
@@ -16,9 +16,9 @@
             <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-list text-secondary"></i></button>
-            <div class="my-1 px-3" style="height: 30px">Dettaglio Eventi Richiesta</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Lista degli eventi relativi alla
-                richiesta.
+            <div class="my-1 px-3" style="height: 30px">Lista Eventi</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Dettaglio eventi
+                {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}.
             </div>
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
@@ -30,8 +30,8 @@
             <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-exclamation-triangle"></i></button>
-            <div class="my-1 px-3" style="height: 30px">Allerta Sede</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Notifica la richiesta ad un altro
+            <div class="my-1 px-3" style="height: 30px">Allerta Comando</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Notifica {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}} ad un altro
                 Comando.
             </div>
             <button class="btn btn-outline-secondary btn-no-hover"
@@ -40,19 +40,19 @@
             </button>
         </div>
         <!-- TRASFERIMENTO CHIAMATA -->
-        <div class="clearfix box-azione w-25" style="height: fit-content">
+        <div class="clearfix w-25" [class.box-azione]="!richiesta.codiceRichiesta"  style="height: fit-content">
             <span *ngIf="!richiesta.codiceRichiesta">
-            <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
-                                    style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-send-o"></i></button>
-            <div class="my-1 px-3" style="height: 30px">Trasferimento Chiamata</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci la chiamata ad un altro
-                Comando.
-            </div>
-            <button class="btn btn-outline-secondary btn-no-hover"
-                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-                    (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
-            </button>
+                <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
+                                        style="height: 50px; font-size: 25px; width: 50px;">
+                    <i class="fa fa-fw fa-send-o"></i></button>
+                <div class="my-1 px-3" style="height: 30px">Trasferimento</div>
+                <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}} ad un altro
+                    Comando.
+                </div>
+                <button class="btn btn-outline-secondary btn-no-hover"
+                        style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                        (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
+                </button>
             </span>
         </div>
     </div>
@@ -64,9 +64,7 @@
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-edit"></i></button>
             <div class="my-1 px-3" style="height: 30px">Modifica Enti Intervenuti</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica gli Enti intervenuti nella
-                richiesta.
-            </div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">Esegui
@@ -78,53 +76,27 @@
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa-edit"></i></button>
             <div class="my-1 px-3" style="height: 30px">Modifica Fonogramma</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica Fonogramma relativo alla
-                richiesta.
-            </div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onModificaStatoFonogramma(); $event.stopPropagation()">Esegui
             </button>
         </div>
-        <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-        <div class="clearfix w-25" style="height: fit-content">
-        </div>
-    </div>
-
-    <div class="row justify-content-center mt-3">
         <!-- CHIUDI CHIAMATA -->
         <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa fa-forward"></i></button>
             <div class="my-1 px-3" style="height: 30px">Stato {{calcolaActionSuggeritaRichiesta(richiesta)}}</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta
-                a {{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}.
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale a {{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}.
             </div>
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato
             </button>
         </div>
-        <!-- SOSPENDI CHIAMATA -->
-        <div class="clearfix w-25 mx-3" [class.box-azione]="statoRichiestaString?.length"
-             style="height: fit-content">
-      <span *ngFor="let stato of statoRichiestaString">
-       <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
-               style="height: 50px; font-size: 25px; width: 50px;">
-         <i class="fa fa-fw fa fa-pause"></i></button>
-      <div class="my-1 px-3" style="height: 30px">Stato {{stato}}</div>
-      <div class="my-1 px-3"
-           style="height: 60px; font-weight: 300; ">Modifica lo stato attuale della richiesta a {{stato.toUpperCase()}}
-          .</div>
-      <button class="btn btn-outline-secondary btn-no-hover" style="width: 93%; margin-bottom: 10px; margin-left: 10px"
-              (click)="onClick(stato)">Cambia Stato</button>
-      </span>
-        </div>
-        <!-- SLOT LIBERO PER FUNZIONALITA' FUTURA -->
-        <div class="clearfix w-25" style="height: fit-content">
-        </div>
     </div>
+
 </div>
 
 <div class="modal-footer">

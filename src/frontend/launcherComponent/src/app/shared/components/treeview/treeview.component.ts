@@ -7,8 +7,6 @@ import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.in
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
-import { LSNAME } from '../../../core/settings/config';
-
 
 @Component({
     selector: 'app-shared-treeview',
@@ -185,11 +183,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                 };
             }
         }
-        if (unique[0] && this.cache) {
-            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
-        } else {
-            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
-        }
+        // if (unique[0] && this.cache) {
+        //     sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
+        // } else {
+        //     sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
+        // }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);
             this.patch(eventEmitter);

@@ -74,6 +74,14 @@ export function statoRichiestaColor(stato: string): string {
     return color;
 }
 
+export function defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+    if (!codiceRichiesta) {
+        return 'Chiamata';
+    } else {
+        return 'Intervento';
+    }
+}
+
 export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boolean {
     let count = 0;
     let visualizza = false;

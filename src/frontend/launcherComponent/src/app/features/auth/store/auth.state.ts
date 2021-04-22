@@ -126,11 +126,11 @@ export class AuthState {
         if (cS) {
             cS = JSON.parse(cS);
         }
-        let codice = currentUser.sede.codice;
+        let codice = [currentUser.sede.codice];
         if (cS) {
             codice = cS;
         }
-        dispatch(new SetVistaSedi([codice]));
+        dispatch(new SetVistaSedi(codice));
     }
 
     @Action(UpdateCurrentUser)

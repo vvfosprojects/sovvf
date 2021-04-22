@@ -22,6 +22,7 @@ export class MezzoComponent {
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
+    @Input() mezzoInServizioPage: boolean;
     @Input() listaEventiMezzo: EventoMezzo[];
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();

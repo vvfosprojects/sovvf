@@ -17,7 +17,7 @@ import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/m
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
+import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { Ente } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -104,15 +104,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     modalConferma.componentInstance.titolo = 'Chiusura Richiesta ' + codiceRichiesta;
                     modalConferma.componentInstance.chiusuraIntervento = true;
                     modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Int. non più necessario', 'Falso Allarme', 'Int. concluso'];
-                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
-                }
-                break;
-
-            case StatoRichiestaActions.Sospesa:
-                modalConferma.componentInstance.titolo = 'Sospensione Richiesta ' + codiceRichiesta;
-                modalConferma.componentInstance.sospensione = true;
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta ' + codiceRichiesta + '?';
-                if (this.richiesta.stato !== StatoRichiesta.Chiamata) {
                     modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
                 }
                 break;
@@ -270,6 +261,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     statoRichiestaColor(richiesta: SintesiRichiesta): string {
         return statoRichiestaColor(richiesta.stato);
+    }
+
+    defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+        return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
 }

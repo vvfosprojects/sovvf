@@ -6,24 +6,24 @@
 
 <div *ngIf="useCheckbox" class="d-inline-flex">
     <app-checkbox
-            [checkboxState]="{id: filtro.categoria, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled, disableFiltri: disableFiltri}"
+            [checkboxState]="{id: filtro.categoria, descrizione: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled, disableFiltri: disableFiltri}"
             [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
-  <button *ngIf="filtro.categoria === 'Chiuse'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" ngbTooltip="Filtra in dettaglio" placement="right"
+  <button *ngIf="filtro.categoria === 'Chiuse'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" ngbTooltip="Filtra in dettaglio" placement="right" style="font-size: 15px; width: 38px"
           (click)="chiusiModal.emit({value: true, richiesta: filtro.descrizione})" [disabled]="!selezionato"><i class="fa fa-calendar"></i></button>
-  <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" style="inline-size: max-content; height: max-content" ngbTooltip="Filtra in dettaglio" placement="right"
+  <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" style="inline-size: max-content; height: max-content; font-size: 15px" ngbTooltip="Filtra in dettaglio" placement="right"
           (click)="zonaEmergenzaModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-exclamation-triangle"></i></button>
 </div>
-<div *ngIf="filtro.name === 'chiamate' && periodoChiuseChiamate" class="mt-1" style="cursor: default; font-size: 15px; display: grid; color: #000000">
+<div *ngIf="filtro.name === 'chiamate' && periodoChiuseChiamate" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
   <span *ngIf="periodoChiuseChiamate['data']"><b>Selezione:</b><br>Del {{periodoChiuseChiamate['data']}}</span>
   <span *ngIf="periodoChiuseChiamate['daA']"><b>Selezione:</b><br>Periodo {{periodoChiuseChiamate['daA']}}</span>
   <span *ngIf="periodoChiuseChiamate['turno']"><b>Selezione:</b><br>Turno {{periodoChiuseChiamate['turno']}}</span>
 </div>
-<div *ngIf="filtro.name === 'interventi' && periodoChiusiInterventi" class="mt-1" style="cursor: default; font-size: 15px; display: grid; color: #000000">
+<div *ngIf="filtro.name === 'interventi' && periodoChiusiInterventi" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
   <span *ngIf="periodoChiusiInterventi['data']"><b>Selezione:</b><br>Del {{periodoChiusiInterventi['data']}}</span>
   <span *ngIf="periodoChiusiInterventi['daA']"><b>Selezione:</b><br>Periodo {{periodoChiusiInterventi['daA']}}</span>
   <span *ngIf="periodoChiusiInterventi['turno']"><b>Selezione:</b><br>Turno {{periodoChiusiInterventi['turno']}}</span>
 </div>
-<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1" style="cursor: default; font-size: 15px; display: grid; color: #000000">
+<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
   <b>Selezione:</b>
   <span *ngFor="let z of listaZoneEmergenzaSelezionate">{{ z }}</span>
 </div>
