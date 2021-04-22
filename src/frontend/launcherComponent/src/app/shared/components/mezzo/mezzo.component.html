@@ -88,7 +88,7 @@
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
       style="vertical-align: middle; border: solid thin; font-size: 20px">
-    <span *ngFor="let s of mezzo?.istantiCambiStato">{{s.stato}}: {{s.istante}}</span>
+    <span *ngFor="let s of mezzo?.istantiCambiStato">{{s.stato}}: {{s.istante | date : 'HH:mm'}}</span>
 </span>
 
 <div *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">
