@@ -463,7 +463,7 @@ export class SignalRService {
 
     addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.log('addToGroup', notification);
+            console.warn('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(
@@ -474,7 +474,7 @@ export class SignalRService {
 
     removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.log('removeToGroup', notification);
+            console.warn('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(

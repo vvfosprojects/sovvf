@@ -24,8 +24,6 @@ import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interf
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
-import { GetDistaccamenti } from './shared/store/actions/distaccamenti/distaccamenti.actions';
-import { GetTipologie } from './shared/store/actions/tipologie/tipologie.actions';
 
 @Component({
     selector: 'app-root',
@@ -174,10 +172,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            if (r) {
-                this.store.dispatch(
-                    new PatchListaSediNavbar([this.user.sede.codice])
-                );
+            const cS = sessionStorage.getItem(LSNAME.cacheSedi);
+            const cSArray = JSON.parse(cS) as string[];
+            if (r && this.user) {
+                cS ? this.store.dispatch(new PatchListaSediNavbar(cSArray)) : this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
             }
         }));
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
