@@ -25,6 +25,13 @@ export class GraficoDistaccamentiComponent {
     @Input() yAxisLabel: string;
     @Input() showYAxisLabel: boolean;
     @Input() xAxisLabel: string;
+    @Input() roundDomains: boolean;
+    @Input() barPadding: number;
+    @Input() groupPadding: number;
+    @Input() showGridLines: boolean;
+    @Input() showDataLabel: boolean;
+    @Input() noBarWhenZero: boolean;
+    @Input() roundEdges: boolean;
 
     @Input() colorScheme: any;
     @Input() schemeType: string;
