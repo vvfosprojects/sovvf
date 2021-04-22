@@ -22,7 +22,10 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Sede
     {
-        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, string tipoSede, string label, string icona, string regione, string provincia)
+        private bool VisualizzazioneCentrale = true;
+        private string _descrizione;
+
+        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, string tipoSede, string label, string icona, string regione, string provincia, bool visualizzazioneCentrale = true)
         {
             this.Codice = codice;
             this.Descrizione = descrizione;
@@ -33,6 +36,7 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Icona = icona;
             this.Regione = regione;
             this.Provincia = provincia;
+            this.VisualizzazioneCentrale = visualizzazioneCentrale;
         }
 
         /// <summary>
@@ -40,14 +44,19 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string Codice { get; set; }
 
-        private string _descrizione;
         /// <summary>
         ///   Descrizione Sede
         /// </summary>
         public string Descrizione
         {
-            get => _descrizione.Replace("Comando VV.F.", "Centrale")
-                .Replace("COMANDO VV.F.", "CENTRALE");
+            get
+            {
+                if (VisualizzazioneCentrale) return _descrizione
+                    .Replace("Comando VV.F.", "Centrale")
+                    .Replace("COMANDO VV.F.", "CENTRALE");
+                else return _descrizione;
+            }
+
             set => _descrizione = value;
         }
 

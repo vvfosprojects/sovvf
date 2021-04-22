@@ -19,5 +19,15 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         {
             return _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
         }
+
+        public List<ListaSedi> GetSediAllerta()
+        {
+            return _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+        }
+
+        public List<ListaSedi> GetSediTrasferimento()
+        {
+            return _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+        }
     }
 }
