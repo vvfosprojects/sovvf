@@ -114,18 +114,6 @@ namespace SO115App.Persistence.MongoDB
 
             var result = new List<RichiestaAssistenza>();
 
-            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
-            if (filtro.TipologiaRichiesta != null) result.AddRange(lstRichieste.Where(r =>
-            {
-                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
-                    return r.TestoStatoRichiesta == "C";
-
-                if (filtro.TipologiaRichiesta.Equals("Interventi"))
-                    return r.TestoStatoRichiesta != "C";
-
-                return true;
-            }));
-
             //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
@@ -135,6 +123,18 @@ namespace SO115App.Persistence.MongoDB
                 result = lstRichieste.Where(r => r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
             else
                 result = lstRichieste.Where(r => !r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
+
+            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
+            if (filtro.TipologiaRichiesta != null) result = lstRichieste.Where(r =>
+            {
+                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
+                    return r.CodRichiesta == null && r.TestoStatoRichiesta != "X";
+
+                if (filtro.TipologiaRichiesta.Equals("Interventi"))
+                    return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
+
+                return true;
+            }).ToList();
 
             //FILTRO ZONE EMERGENZA
             if (filtro.ZoneEmergenza != null)
@@ -155,7 +155,7 @@ namespace SO115App.Persistence.MongoDB
             else if (filtro.Chiuse?.Count() > 0)
             {
                 if (filtro.Chiuse.Contains("Chiamate chiuse"))
-                    result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
+                    result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).ToList();
             }
 
             //FILTRO PERIODO INTERVENTI CHIUSE
@@ -173,7 +173,7 @@ namespace SO115App.Persistence.MongoDB
             else if (filtro.Chiuse?.Count() > 0)
             {
                 if (filtro.Chiuse.Contains("Interventi chiusi"))
-                    result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
+                    result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
             }
 
             if (filtro.FiltriTipologie != null)
