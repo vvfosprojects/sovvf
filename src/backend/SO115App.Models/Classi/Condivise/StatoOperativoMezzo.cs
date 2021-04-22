@@ -18,7 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using MongoDB.Bson.Serialization.Attributes;
+using SO115App.API.Models.Classi.Condivise;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Condivise
 {
@@ -64,5 +66,7 @@ namespace SO115App.Models.Classi.Condivise
         ///   indica lo stato operativo del mezzo (In Viaggio, In Rientro, In Sede, Sul Posto)
         /// </summary>
         public string StatoOperativo { get; set; }
+
+        //public List<IstanteCambioStato> IstantiCambiStato { get; set; }
     }
 }
