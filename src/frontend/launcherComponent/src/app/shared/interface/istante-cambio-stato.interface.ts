@@ -1,4 +1,4 @@
 export interface IstanteCambioStato {
     stato: string;
-    istanteCambioStato: string;
+    istante: string;
 }
