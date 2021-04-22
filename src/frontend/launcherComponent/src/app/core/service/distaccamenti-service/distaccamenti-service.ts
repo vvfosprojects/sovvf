@@ -19,4 +19,12 @@ export class DistaccamentiService {
         return this.http.get<Sede[]>(API_DISTACCAMENTI + '/Get');
     }
 
+    getSediAllerta(): Observable<Sede[]> {
+        return this.http.get<Sede[]>(API_DISTACCAMENTI + '/GetSediAllerta');
+    }
+
+    getSediTrasferimenti(): Observable<Sede[]> {
+        return this.http.get<Sede[]>(API_DISTACCAMENTI + '/GetSediTrasferimenti');
+    }
+
 }

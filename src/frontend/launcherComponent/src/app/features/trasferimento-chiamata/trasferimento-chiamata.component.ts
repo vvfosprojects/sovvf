@@ -16,7 +16,7 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
-import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({
     selector: 'app-trasferimento-chiamata',
@@ -47,7 +47,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getPageSize();
         this.getTrasferimentoChiamata(true);
-        this.getDistaccamenti();
+        this.getSediTrasferimenti();
     }
 
     ngOnInit(): void {
@@ -66,8 +66,8 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
-    getDistaccamenti(): void {
-        this.store.dispatch(new GetDistaccamenti());
+    getSediTrasferimenti(): void {
+        this.store.dispatch(new GetSediTrasferimenti());
     }
 
     onRicercaTrasferimentoChiamata(ricerca: string): void {

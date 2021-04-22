@@ -64,7 +64,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
             name: 'includiInterventiChiamate',
             star: true,
             statico: true
-        }
+        },
     ],
     statiRichiesta: [
         {
@@ -96,7 +96,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
         {
             categoria: 'Chiuse',
             codice: 'Chiamate chiuse',
-            descrizione: 'Chiamate',
+            descrizione: 'Chiamate Chiuse',
             name: 'chiamate',
             star: true,
             statico: true,
@@ -104,7 +104,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
         {
             categoria: 'Chiuse',
             codice: 'Interventi chiusi',
-            descrizione: 'Interventi',
+            descrizione: 'Interventi Chiusi',
             name: 'interventi',
             star: true,
             statico: true,

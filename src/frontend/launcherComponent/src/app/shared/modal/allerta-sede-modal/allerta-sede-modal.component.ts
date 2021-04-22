@@ -21,7 +21,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(AllertaSedeModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
+    @Select(DistaccamentiState.sediAllerta) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     codiceSedeUser: any;

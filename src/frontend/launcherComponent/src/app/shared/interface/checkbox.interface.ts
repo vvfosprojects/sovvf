@@ -5,4 +5,5 @@ export interface CheckboxInterface {
     disableFiltri?: boolean;
     object?: any;
     label?: string;
+    descrizione?: string;
 }

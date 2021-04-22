@@ -39,6 +39,17 @@
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
                     </div>
+                    <app-filtro *ngIf="chiuse && chiuse[1].star === true"
+                                [filtro]="chiuse[1]"
+                                [useCheckbox]="true"
+                                [disableFiltri]="lockFiltri$ | async"
+                                [selezionato]="chiuse[1] | selectedFilterRichieste"
+                                [disabled]="disableFilters"
+                                [periodoChiuseChiamate]="periodoChiuseChiamate"
+                                [periodoChiusiInterventi]="periodoChiusiInterventi"
+                                (filtroSelezionato)="onSelezioneFiltro($event)"
+                                (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                                (chiusiModal)="openChiusiModal($event)"></app-filtro>
                 </div>
             </div>
             <h6 class="font-weight-bold">Stati:</h6>
@@ -52,22 +63,6 @@
                             [disabled]="disableFilters"
                             (filtroSelezionato)="onSelezioneFiltro($event)"
                             (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
-              </div>
-            </div>
-            <h6 class="font-weight-bold">Chiuse:</h6>
-            <div class="py-1">
-              <div *ngFor="let f of chiuse" class="cursor-pointer mb-2">
-                <app-filtro *ngIf="f.star === true"
-                            [filtro]="f"
-                            [useCheckbox]="true"
-                            [disableFiltri]="lockFiltri$ | async"
-                            [selezionato]="f | selectedFilterRichieste"
-                            [disabled]="disableFilters"
-                            [periodoChiuseChiamate]="periodoChiuseChiamate"
-                            [periodoChiusiInterventi]="periodoChiusiInterventi"
-                            (filtroSelezionato)="onSelezioneFiltro($event)"
-                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
-                            (chiusiModal)="openChiusiModal($event)"></app-filtro>
               </div>
             </div>
             <h6 class="font-weight-bold">Altri:</h6>
@@ -84,14 +79,18 @@
                             (filtroDeselezionato)="onDeselezioneFiltro($event)"
                             (zonaEmergenzaModal)="openZonaEmergenzaModal($event)"></app-filtro>
               </div>
+                <app-filtro *ngIf="chiuse && chiuse[0].star === true"
+                            [filtro]="chiuse[0]"
+                            [useCheckbox]="true"
+                            [disableFiltri]="lockFiltri$ | async"
+                            [selezionato]="chiuse[0] | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            [periodoChiuseChiamate]="periodoChiuseChiamate"
+                            [periodoChiusiInterventi]="periodoChiusiInterventi"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                            (chiusiModal)="openChiusiModal($event)"></app-filtro>
             </div>
-          <!--
-            <div class="text-center">
-                <button class="btn btn-sm btn-block btn-secondary" (click)="openFiltersModal()">
-                    Visualizza altri
-                </button>
-            </div>
-            -->
         </div>
     </div>
     <button class="btn btn-outline-secondary p-1" (click)="resetFiltri()" [disabled]="disableFilters">

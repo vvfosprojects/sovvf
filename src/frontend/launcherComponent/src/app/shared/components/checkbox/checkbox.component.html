@@ -7,9 +7,9 @@
     <input id="{{typeName}}{{checkboxState.label}}"
            type="checkbox"
            [checked]="checkboxState.status"
-           [disabled]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.id !== 'Chiuse'))"
+           [disabled]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.descrizione !== 'Chiamate Chiuse'))"
            (click)="onCheck()"/>
     <label for="{{typeName}}{{checkboxState.label}}"
            [innerHTML]="labelFormat()"
-           [class.disable-checkbox]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.id !== 'Chiuse'))"></label>
+           [class.disable-checkbox]="checkboxState?.disabled || (checkboxState?.disableFiltri && (checkboxState?.descrizione !== 'Chiamate Chiuse'))"></label>
 </div>

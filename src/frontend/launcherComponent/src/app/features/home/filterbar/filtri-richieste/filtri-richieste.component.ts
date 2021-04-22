@@ -104,9 +104,9 @@ export class FiltriRichiesteComponent implements OnDestroy {
                 case 'ok':
                     this.store.dispatch(new SetPeriodoChiuse(res.result, event.richiesta));
                     this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
-                    if (event.richiesta === 'Chiamate') {
+                    if (event.richiesta === 'Chiamate Chiuse') {
                         this.periodoChiuseChiamate = res.date;
-                    } else if (event.richiesta === 'Interventi') {
+                    } else if (event.richiesta === 'Interventi Chiusi') {
                         this.periodoChiusiInterventi = res.date;
                     }
                     break;
