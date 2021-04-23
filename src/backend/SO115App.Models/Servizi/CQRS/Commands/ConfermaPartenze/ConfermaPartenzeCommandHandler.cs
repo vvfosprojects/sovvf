@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
@@ -63,10 +64,71 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             //PREPARAZIONE DTO E VARIABILI
             command.ConfermaPartenze.richiesta = command.Richiesta;
 
+            var dataAdesso = DateTime.UtcNow;
+
+            #region SGANCIAMENTO
+
+            var idComposizioneDaSganciare = 0;
+            var StatoInViaggio = 0;
+            var StatoSulPosto = 0;
+
+            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
+                //&& command.RichiestaDaSganciare.lstPartenze
+                //    .Where(p => command.ConfermaPartenze.Partenze.Select(p => p.Mezzo.Codice).Contains(p.Mezzo.Codice))
+                //    .All(p => new string[] { Costanti.MezzoInViaggio, Costanti.MezzoSulPosto, Costanti.MezzoOccupato }.Contains(p.Mezzo.Stato)))
+            {
+                command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
+
+                foreach (var composizione in command.RichiestaDaSganciare.Eventi.OfType<ComposizionePartenze>().Select(p => p.Partenza))
+                {
+                    //var CompPartenza = composizione.Partenza;
+                    if (!composizione.PartenzaAnnullata && !composizione.Terminata
+                        && !composizione.Sganciata && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                    {
+                        if (composizione.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                            composizione.Sganciata = true;
+
+                        if (composizione.Mezzo.Stato == Costanti.MezzoInViaggio && !composizione.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                            StatoInViaggio++;
+
+                        if (composizione.Mezzo.Stato == Costanti.MezzoSulPosto && !composizione.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                            StatoSulPosto++;
+
+                        idComposizioneDaSganciare++;
+                    }
+                }
+
+                foreach (var composizione in command.RichiestaDaSganciare.Partenze)
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
+                        composizione.Partenza.Sganciata = true;
+                }
+
+                if (idComposizioneDaSganciare == 1)
+                    command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
+                else
+                {
+                    if (StatoSulPosto > 0)
+                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
+                    else if (StatoInViaggio > 0)
+                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
+                }
+
+                new RevocaPerRiassegnazione(command.Richiesta, command.RichiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, dataAdesso, command.Utente.Id,
+                    command.ConfermaPartenze.Partenze.FirstOrDefault(p => p.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare).Codice);
+
+                //SOSPENDO LA RICHIESTA SE LA PARTENZA DA SGANCIARE E' L'ULTIMA IN CORSO SU TALE RICHIESTA
+                if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
+                    new RichiestaSospesa($"Scangio dell'ultima partenza {command.ConfermaPartenze.Partenze.First().Codice} sulla richiesta {command.Richiesta.Codice}", command.Richiesta, dataAdesso, command.Utente.Id);
+
+                _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+            }
+
+            #endregion SGANCIAMENTO
+
             for (int i = 1; i <= command.ConfermaPartenze.Partenze.Count; i++)
                 command.ConfermaPartenze.Partenze.ToArray()[i - 1].Codice = command.Richiesta.CodiceUltimaPartenza + i;
 
-            var dataAdesso = DateTime.UtcNow;
             var PartenzaEsistente = false;
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
@@ -88,7 +150,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (partenza.Mezzo.IdRichiesta != null && partenza.Mezzo.IdRichiesta != command.Richiesta.Codice)
                 {
                     //SE IL MEZZO E' IN RIENTRO SU UN'ALTRA RICHIESTA, FACCIO RIENTRARE LE PARTENZE E GESTISCO LA RICHIESTA
-                    command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(partenza.Mezzo.IdRichiesta);
+                    command.RichiestaDaSganciare = _getRichiestaById.GetById(partenza.Mezzo.IdRichiesta);
 
                     var partenzaDaRientrare = command.RichiestaDaSganciare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
 
@@ -121,60 +183,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }
-
-            #region SGANCIAMENTO
-
-            var idComposizioneDaSganciare = 0;
-            var StatoInViaggio = 0;
-            var StatoSulPosto = 0;
-
-            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null
-                && command.RichiestaDaSganciare.lstPartenze
-                    .Where(p => command.ConfermaPartenze.Partenze.Select(p => p.Mezzo).Contains(p.Mezzo))
-                    .All(p => new string[] { Costanti.MezzoInViaggio, Costanti.MezzoSulPosto, Costanti.MezzoOccupato }.Contains(p.Mezzo.Stato)))
-            {
-                command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
-
-                foreach (var composizione in command.RichiestaDaSganciare.Eventi.Where(x => x is ComposizionePartenze).ToList())
-                {
-                    var CompPartenza = ((ComposizionePartenze)composizione).Partenza;
-                    if (!CompPartenza.PartenzaAnnullata && !CompPartenza.Terminata
-                        && !CompPartenza.Sganciata && !CompPartenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
-                    {
-                        if (CompPartenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                            CompPartenza.Sganciata = true;
-
-                        if (CompPartenza.Mezzo.Stato == Costanti.MezzoInViaggio && !CompPartenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                            StatoInViaggio++;
-
-                        if (CompPartenza.Mezzo.Stato == Costanti.MezzoSulPosto && !CompPartenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                            StatoSulPosto++;
-
-                        idComposizioneDaSganciare++;
-                    }
-                }
-
-                foreach (var composizione in command.RichiestaDaSganciare.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                        composizione.Partenza.Sganciata = true;
-                }
-
-                if (idComposizioneDaSganciare == 1)
-                    command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
-                else
-                {
-                    if (StatoSulPosto > 0)
-                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
-                    else if (StatoInViaggio > 0)
-                        command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
-                }
-
-                //new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.CodOperatore);
-                _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
-            }
-
-            #endregion SGANCIAMENTO
 
             //GENERAZIONE CODICE INTERVENTO
             var sedeRichiesta = command.Richiesta.CodSOCompetente;

@@ -89,7 +89,7 @@ namespace SO115App.API.Controllers
                     else if (ex.Message.Contains("404"))
                         return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                     else
-                        return BadRequest($"{ex.Message}: {ex.StackTrace}");
+                        return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });
                 }
             }
             else
