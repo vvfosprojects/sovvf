@@ -170,7 +170,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
             this.store.dispatch(new SetSelezioneStatoRichiesta(filtro.codice));
             this.filtroSelezionato.emit(filtro);
         } else if (filtro.categoria === 'Chiuse') {
-            if (!this.lockFiltri) {
+            if (!this.lockFiltri && filtro.descrizione === 'Chiamate Chiuse') {
                 this.resetFiltri(true);
             }
             this.store.dispatch(new SetChiuseRichiesta(filtro.codice));

@@ -203,7 +203,11 @@ export class FiltriRichiesteState {
 
     @Selector()
     static disableFiltri(state: FiltriRichiesteStateModel): boolean {
-        return !!(state.chiuse && state.chiuse.length);
+        let value;
+        if (state.chiuse.length) {
+            state.chiuse.forEach(x => x === 'Chiamate chiuse' ? value = true : value = false);
+        }
+        return value;
     }
 
     @Selector()
@@ -277,7 +281,7 @@ export class FiltriRichiesteState {
     @Action(ClearFiltroSenzaEsecuzione)
     clearFiltroSenzaEsecuzione({ getState, setState }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste): void {
         const state = getState();
-        const filtroStaticoSelezionato = state.filtriRichiesteSelezionati && state.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.categoria !== 'AltriFiltri' && f.categoria !== 'StatiRichiesta')[0];
+        const filtroStaticoSelezionato = state.filtriRichiesteSelezionati && state.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.categoria !== 'AltriFiltri' && f.categoria !== 'StatiRichiesta' && f.categoria !== 'Chiuse')[0];
         if (filtroStaticoSelezionato && filtroStaticoSelezionato.categoria) {
             setState(
                 patch({
@@ -394,11 +398,11 @@ export class FiltriRichiesteState {
             data: action.periodo.data,
             turno: action.periodo.turno,
         };
-        if (action.tipologiaRichiesta === 'Chiamate') {
+        if (action.tipologiaRichiesta === 'Chiamate Chiuse') {
             patchState({
                 periodoChiuseChiamate: periodoChiuse
             });
-        } else if (action.tipologiaRichiesta === 'Interventi') {
+        } else if (action.tipologiaRichiesta === 'Interventi Chiusi') {
             patchState({
                 periodoChiusiInterventi: periodoChiuse
             });
