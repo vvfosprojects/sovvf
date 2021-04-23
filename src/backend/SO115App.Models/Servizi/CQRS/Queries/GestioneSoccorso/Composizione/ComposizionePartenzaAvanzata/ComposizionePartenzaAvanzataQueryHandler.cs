@@ -180,16 +180,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
                     if (statoMezzo != null) switch (mc.Mezzo.Stato)
                     {
-                            case Costanti.MezzoInSede:
-                                mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
-                                break;
-                            case Costanti.MezzoInViaggio:
+                        case Costanti.MezzoInSede:
+                            mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
+                            break;
+
+                        case Costanti.MezzoInViaggio:
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
+
                         case Costanti.MezzoSulPosto: 
                             mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
+
                         case Costanti.MezzoInRientro:
                             mc.ListaSquadre = lstSquadreComposizione.Result.FindAll(x => statiOperativiSquadre.FindAll(x => 
                                 x.CodMezzo.Equals(mc.Mezzo.Codice)).Select(x => x.IdSquadra).Any(s => s.Equals(x.Squadra.Codice)));
