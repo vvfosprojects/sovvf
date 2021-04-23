@@ -132,6 +132,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                     var dataComposizione = stato.DataOraAggiornamento.AddSeconds(2);
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
+                    SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
+
                     partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                     partenza.Mezzo.IdRichiesta = Id;
 
@@ -154,8 +156,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                    if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                        new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
+                    //if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    //    new RichiestaSospesa("", this, stato.DataOraAggiornamento, CodOperatore);
 
                     break;
 
