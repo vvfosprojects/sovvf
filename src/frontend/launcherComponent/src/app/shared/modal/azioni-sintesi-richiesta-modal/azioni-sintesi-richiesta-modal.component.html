@@ -83,13 +83,24 @@
             </button>
         </div>
         <!-- CHIUDI CHIAMATA -->
-        <div class="clearfix box-azione w-25" style="height: fit-content">
+        <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Chiusa'" class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
                 <i class="fa fa-fw fa fa-forward"></i></button>
-            <div class="my-1 px-3" style="height: 30px">Stato {{calcolaActionSuggeritaRichiesta(richiesta)}}</div>
-            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Modifica lo stato attuale a {{calcolaActionSuggeritaRichiesta(richiesta).toUpperCase()}}.
-            </div>
+            <div class="my-1 px-3" style="height: 30px">Chiusura {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; "></div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato
+            </button>
+        </div>
+        <!-- RIAPRI CHIAMATA -->
+        <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'" class="clearfix box-azione w-25" style="height: fit-content">
+            <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa fa-forward"></i></button>
+            <div class="my-1 px-3" style="height: 30px">Riapri {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato
