@@ -88,7 +88,8 @@
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
       style="vertical-align: middle; border: solid thin; font-size: 20px">
-    <span *ngFor="let s of mezzo?.istantiCambiStato">{{s.stato}}: {{s.istante | date : 'HH:mm'}}</span>
+    <span>{{mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.stato}}</span>
+    <span *ngIf="mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.stato !== 'In Sede'">: {{mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.istante | date : 'HH:mm'}}</span>
 </span>
 
 <div *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">
