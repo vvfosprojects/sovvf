@@ -120,6 +120,12 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                 if (schedaContatto && schedaContatto.codiceScheda) {
                     this.setSchedaContatto(schedaContatto);
                 }
+                // Controllo scorciatoia numero da Scheda Contatto
+                const telefono = schedaContatto.richiedente.telefono;
+                const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
+                if (checkTelefono.includes(telefono)) {
+                    this.onCheckScorciatoiaNumero(telefono);
+                }
             }
             if (changes.resetChiamata?.currentValue) {
                 const reset = changes.resetChiamata.currentValue;
