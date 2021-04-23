@@ -65,10 +65,12 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.trasferimentoChiamataForm = new FormGroup({
             codiceRichiesta: new FormControl(),
+            sedeDa: new FormControl(),
             sedeA: new FormControl()
         });
         this.trasferimentoChiamataForm = this.fb.group({
             codiceRichiesta: [null, Validators.required],
+            sedeDa: [null],
             sedeA: [null, Validators.required],
         });
     }
@@ -94,6 +96,10 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.user$.subscribe((user: any) => {
                 this.codiceSedeUser = user.sede.codice;
+                const sedeUser = user.sede;
+                if (sedeUser) {
+                    this.f.sedeDa.patchValue(sedeUser);
+                }
             })
         );
 

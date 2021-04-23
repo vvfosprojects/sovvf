@@ -12,6 +12,7 @@ export interface TrasferimentoChiamata {
 
 export interface AddTrasferimentoChiamata {
     codChiamata: string;
+    codSedeDa: string;
     codSedeA: string;
 }
 

@@ -11,6 +11,7 @@ export interface TrasferimentoChiamataModalStateModel {
     trasferimentoChiamataForm: {
         model?: {
             codiceRichiesta: string;
+            sedeDa: Sede;
             sedeA: Sede;
         };
         dirty: boolean;
@@ -25,6 +26,7 @@ export const TrasferimentoChiamataModalStateDefaults: TrasferimentoChiamataModal
     trasferimentoChiamataForm: {
         model: {
             codiceRichiesta: undefined,
+            sedeDa: undefined,
             sedeA: undefined
         },
         dirty: false,
@@ -74,6 +76,7 @@ export class TrasferimentoChiamataModalState {
         const form = state.trasferimentoChiamataForm.model;
         const obj = {
             codChiamata: form.codiceRichiesta,
+            codSedeDa: form.sedeDa.codice,
             codSedeA: form.sedeA.codice
         } as AddTrasferimentoChiamata;
         this.trasferimentoChiamataService.addTrasferimentoChiamata(obj).subscribe(() => {
