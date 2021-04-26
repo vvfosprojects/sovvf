@@ -52,4 +52,20 @@ export class GraficoDistaccamentiComponent {
         this.deactivate.emit(data);
     }
 
+    formatXAxisTick(value: number): any {
+        const valueString = '' + value;
+        const isDecimal = valueString.indexOf('.') > 0;
+        if (!isDecimal) {
+            return value;
+        }
+        return '';
+    }
+
+    formatDataLabel(value): string {
+        if (value > 0) {
+            return value;
+        }
+        return '';
+    }
+
 }

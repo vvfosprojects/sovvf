@@ -5,6 +5,10 @@ export class GetDataGrafico {
     static readonly type = '[CodaChiamate] Get Data Grafico';
 }
 
+export class SortDataGrafico {
+    static readonly type = '[CodaChiamate] Sort Data Grafico';
+}
+
 export class OpenModalDettaglioDistaccamento {
     static readonly type = '[CodaChiamate] Open Modal Dettaglio Distaccamento';
 
