@@ -963,7 +963,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
                 var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta; //this.CodRichiesta != null ? true : false; //
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
                 var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
