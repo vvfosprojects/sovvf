@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -25,19 +26,19 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-        public Mezzo() { this.IstantiCambiStato = new List<IstanteCambioStato>(); }
+        public Mezzo() { /*IstantiCambiStato = new List<IstanteCambioStato>();*/ }
 
         public Mezzo(string codice, string descrizione, string genere, string stato,
                      string appartenenza, Sede distaccamento, Coordinate coordinate)
         {
-            this.IstantiCambiStato = new List<IstanteCambioStato>();
-            this.Codice = codice;
-            this.Descrizione = descrizione;
-            this.Genere = genere;
-            this.Stato = stato;
-            this.Appartenenza = appartenenza;
-            this.Distaccamento = distaccamento;
-            this.Coordinate = coordinate;
+            IstantiCambiStato = new List<IstanteCambioStato>() { new IstanteCambioStato() };
+            Codice = codice;
+            Descrizione = descrizione;
+            Genere = genere;
+            Stato = stato;
+            Appartenenza = appartenenza;
+            Distaccamento = distaccamento;
+            Coordinate = coordinate;
         }
 
         /// <summary>
@@ -60,25 +61,11 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string Genere { get; set; }
 
-        private string _stato { get; set; }
         /// <summary>
         ///   Stato del mezzo
         /// </summary>
-        public string Stato
-        {
-            get => this._stato;
-            set
-            {
-                this._stato = value;
+        public string Stato { get; set; }
 
-                this.IstantiCambiStato.Add(new IstanteCambioStato()
-                {
-                    Stato = this._stato,
-                    Istante = DateTime.Now
-                });
-            }
-        }
-        
         /// <summary>
         ///   Appartenenza del mezzo (su GAC sarebbe la destinazione d'uso).
         /// </summary>
@@ -94,45 +81,10 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string DescrizioneAppartenenza { get; set; }
 
-        ///// <summary>
-        /////   Descrizione dello stato del mezzo
-        ///// </summary>
-        //public string DescrizioneStato { get; set; }
-
         /// <summary>
         ///   Stato efficenza del mezzo
         /// </summary>
         public int StatoEfficenza { get; set; }
-
-        ///// <summary>
-        /////   Descrizione dello Stato efficenza del mezzo
-        ///// </summary>
-        //public string DescrizioneStatoEfficenza { get; set; }
-
-        ///// <summary>
-        /////   Indica il livello del carburante del mezzo
-        ///// </summary>
-        //public int LivelloCarburante { get; set; }
-
-        ///// <summary>
-        /////   descrive il livello del carburante del mezzo
-        ///// </summary>
-        //public string DescrizioneLivelloCarburante { get; set; }
-
-        ///// <summary>
-        /////   Indica il livello dell'estinguente del mezzo
-        ///// </summary>
-        //public int LivelloEstinguente { get; set; }
-
-        ///// <summary>
-        /////   descrive il livello dell'estinguente del mezzo
-        ///// </summary>
-        //public string DescrizioneLivelloEstinguente { get; set; }
-
-        ///// <summary>
-        /////   Note eventuali
-        ///// </summary>
-        //public string[] Notifiche { get; set; }
 
         /// <summary>
         ///   Localizzazione del mezzo da Geofleet
@@ -143,16 +95,6 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   identifica l'istante dell'acquisizione coordinate del mezzo
         /// </summary>
         public DateTime? IstanteAcquisizione { get; set; }
-
-        ///// <summary>
-        /////   identifica l'istante della prenotazione del mezzo
-        ///// </summary>
-        //public DateTime? IstantePrenotazione { get; set; }
-
-        ///// <summary>
-        /////   identifica l'istante della movimentazione del mezzo
-        ///// </summary>
-        //public DateTime? IstanteMovimentazione { get; set; }
 
         /// <summary>
         ///   Se non ho le coordinate di un mezzo su GeoFleet metto le coordinate e metto a true
@@ -170,7 +112,15 @@ namespace SO115App.API.Models.Classi.Condivise
 
     public class IstanteCambioStato
     {
+        public IstanteCambioStato() => Stato = Costanti.MezzoInSede;
+
+        public IstanteCambioStato(string StatoMezzo, DateTime? IstanteStatoMezzo = null)
+        {
+            Stato = StatoMezzo;
+            Istante = IstanteStatoMezzo;
+        }
+
         public string Stato { get; set; }
-        public DateTime Istante { get; set; }
+        public DateTime? Istante { get; set; }
     }
 }

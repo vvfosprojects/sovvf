@@ -18,9 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Linq;
 
@@ -30,11 +32,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     {
         private readonly IGetMezziInServizio _getListaMezzi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public ListaMezziInServizioQueryHandler(IGetMezziInServizio getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public ListaMezziInServizioQueryHandler(IGetMezziInServizio getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetStatoMezzi getStatoMezzi)
         {
             _getListaMezzi = getListaMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getStatoMezzi = getStatoMezzi;
         }
 
         /// <summary>
@@ -73,10 +77,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                         return true;
                 }).ToList();
 
+            var lstStati = _getStatoMezzi.Get(query.CodiciSede);
+
+            var listaMezziConStati = listaMezzi.Select(m =>
+            {
+                var lstStatiMezzo = lstStati.FindAll(s => s.CodiceMezzo.Equals(m.Mezzo.Mezzo.Codice))?
+                    .Select(s => new IstanteCambioStato(s.StatoOperativo, s.IstantePrenotazione));
+
+                m.Mezzo.Mezzo.IstantiCambiStato.AddRange(lstStatiMezzo);
+
+                return m;
+            }).ToList();
+
             //GESTISCO PAGINAZIONE
             if (query.Pagination != null) return new ListaMezziInServizioResult()
             {
-                DataArray = listaMezzi
+                DataArray = listaMezziConStati
                      .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
                      .Take(query.Pagination.PageSize).ToList(),
 
@@ -84,12 +100,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = listaMezzi.Count,
+                    TotalItems = listaMezziConStati.Count,
                 }
             };
             else return new ListaMezziInServizioResult()
             {
-                DataArray = listaMezzi
+                DataArray = listaMezziConStati
             };
         }
     }
