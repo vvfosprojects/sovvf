@@ -985,6 +985,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
+        public List<Partenza> lstPartenzeInCorso => Partenze?
+            .Where(p => !p.PartenzaAnnullata)
+            .Select(p => p.Partenza)
+            .Where(p => !p.PartenzaAnnullata && !p.Sganciata && !p.Terminata)
+            .ToList();
 
         /// <summary>
         ///   Se non ci sono partenze è uguale a 0

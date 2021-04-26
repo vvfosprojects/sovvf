@@ -39,5 +39,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public RichiestaAssistenza Richiesta { get; set; }
 
         public string[] CodiciSede { get; set; }
+
+        public bool ChiudereIntervento { get; set; } = false;
     }
 }
