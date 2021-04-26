@@ -1,5 +1,4 @@
-<div class="d-inline-block font-xxlarge"
-     style="vertical-align: middle">
+<div class="d-inline-block font-xxlarge mt-1">
     <i class="fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo?.stato)}}" [ngbTooltip]="mezzo?.stato"></i>
     <div *ngIf="mezzo.descrizione"
          class="d-inline-block font-weight-bold"
@@ -13,10 +12,9 @@
 </div>
 
 <div *ngFor="let s of listaEventiMezzo; let index = index"
-     class="d-inline-block mr-2"
-     style="vertical-align: bottom">
-<!--    <app-icona-stato [stato]="s.stato"></app-icona-stato>-->
-    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default">{{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}</div>
+     class="d-inline-block mr-2">
+    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default"
+    >{{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}</div>
 </div>
 
 <!-- indicatori -->
@@ -84,10 +82,11 @@
 </div>
 
 <app-mezzo-actions *ngIf="actionsAttive && !mezzoInServizioPage" [mezzo]="mezzo"
+                   [listaEventi]="listaEventi"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
-      style="vertical-align: middle; border: solid thin; font-size: 20px">
+      style="border: solid thin; font-size: 20px">
     <span>{{mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.stato}}</span>
     <span *ngIf="mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.stato !== 'In Sede'">: {{mezzo.istantiCambiStato[mezzo.istantiCambiStato.length -1]?.istante | date : 'HH:mm'}}</span>
 </span>
