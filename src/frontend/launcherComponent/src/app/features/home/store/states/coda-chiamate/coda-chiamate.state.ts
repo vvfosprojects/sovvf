@@ -6,6 +6,7 @@ import {
     AddChiamateDistaccamentoCodaChiamate,
     AddSquadreLibereDistaccamentoCodaChiamate,
     AddSquadreOccupateDistaccamentoCodaChiamate,
+    SortDataGrafico,
     GetDataGrafico,
     OpenModalDettaglioDistaccamento,
     RemoveChiamateDistaccamentoCodaChiamate,
@@ -25,6 +26,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import produce from 'immer';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 
 export interface CodaChiamateStateModel {
     data: ItemGraficoCodaChiamate[];
@@ -92,9 +94,30 @@ export class CodaChiamateState {
                         data: response.infoIstogramma
                     }
                 );
+                dispatch(new SortDataGrafico());
             }
             dispatch(new StopLoadingCodaChiamate());
         });
+    }
+
+    @Action(SortDataGrafico)
+    sortDataGrafico({ getState, patchState }: StateContext<CodaChiamateStateModel>): void {
+        const state = getState();
+        const dataGrafico = makeCopy(state.data);
+
+        patchState({
+            data: dataGrafico.sort(sortType)
+        });
+
+        function sortType(a, b): number {
+            if (a.numRichieste < b.numRichieste) {
+                return 1;
+            }
+            if (a.numRichieste > b.numRichieste) {
+                return -1;
+            }
+            return 0;
+        }
     }
 
     @Action(OpenModalDettaglioDistaccamento)
@@ -149,6 +172,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 
@@ -166,6 +190,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 
@@ -183,6 +208,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 
@@ -200,6 +226,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 
@@ -217,6 +244,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 
@@ -234,6 +262,7 @@ export class CodaChiamateState {
                     }
                 })
             );
+            dispatch(new SortDataGrafico());
         }
     }
 

@@ -8,7 +8,7 @@
         <div class="clearfix"
              style="width: 70%">
           <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp.squadra.stato)"></app-icona-stato>
-          <div class="badge badge-info mx-2 py-1"
+          <div class="badge badge-info mx-1 py-1"
                  [ngbPopover]="componenti"
                  placement="right"
                  triggers="mouseenter:mouseleave"
@@ -31,7 +31,7 @@
                 </div>
             </ng-template>
             <div class="d-inline-block font-weight-bolder mr-1">{{ squadraComp.squadra.nome }}</div>
-            <div class="d-inline-block mr-2">({{ squadraComp.squadra.turno }})</div>
+            <div class="d-inline-block">({{ squadraComp.squadra.turno }})</div>
             <!-- Mezzo Preaccoppiato -->
             <ng-template [ngIf]="squadraComp.squadra?.preAccoppiato">
                 <div class="d-inline-block ml-2">

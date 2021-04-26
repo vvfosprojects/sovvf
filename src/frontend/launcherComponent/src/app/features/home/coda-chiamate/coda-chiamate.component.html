@@ -3,7 +3,7 @@
     <div class="col-11 mx-auto">
         <div *ngIf="(loading$ | async) === false" class="mt-3">
             <app-grafico-distaccamenti [data]="dataGrafico$ | async"
-                                       [view]="[1500, ((dataGrafico$ | async)?.length * 70)]"
+                                       [view]="[1450, ((dataGrafico$ | async)?.length * 70)]"
                                        [showXAxis]="false"
                                        [showYAxis]="true"
                                        [gradient]="true"
@@ -14,7 +14,7 @@
                                        [xAxisLabel]="''"
                                        [showYAxisLabel]="false"
                                        [yAxisLabel]="''"
-                                       [colorScheme]="{ domain: ['#5AA454', '#C7B42C', '#AAAAAA'] }"
+                                       [colorScheme]="{ domain: ['#AA4A4A', '#5AA454', '#AAAAAA'] }"
                                        [schemeType]="'ordinal'"
                                        [barPadding]="10"
                                        [groupPadding]="20"
@@ -22,7 +22,7 @@
                                        [showDataLabel]="true"
                                        [roundDomains]="true"
                                        [noBarWhenZero]="true"
-                                       [roundEdges]="false"
+                                       [roundEdges]="true"
                                        (select)="onSelect($event)"
                                        (activate)="onActivate($event)"
                                        (deactivate)="onDeactivate($event)">

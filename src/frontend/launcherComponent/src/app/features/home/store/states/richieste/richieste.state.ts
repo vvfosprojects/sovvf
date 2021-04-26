@@ -306,7 +306,10 @@ export class RichiesteState {
             idMezzo: action.mezzoAction.mezzo.codice,
             statoMezzo: action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             dataOraAggiornamento: action.mezzoAction.data
-        };
+        } as any;
+        if (action.mezzoAction.chiudereIntervento) {
+            obj.chiudereIntervento = action.mezzoAction.chiudereIntervento;
+        }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
                 dispatch(new StopLoadingActionMezzo());
             },

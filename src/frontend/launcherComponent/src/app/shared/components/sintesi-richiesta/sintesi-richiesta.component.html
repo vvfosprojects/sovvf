@@ -1,5 +1,4 @@
-<div class="py-2 px-3"
-     [class.border-top-richiesta]="!nightMode"
+<div class="py-2 px-3 border-top-richiesta"
      [class.text-moon]="nightMode"
      [class.moon-card-light]="nightMode"
      (click)="richiestaClick(richiesta)"
@@ -420,10 +419,10 @@
                                 </div>
                             </div>
                             <!-- II colonna -->
-                            <div class="col-8 border"
+                            <div class="col-8 px-0 border"
                                  [ngClass]="{'shadow border-info rounded': inGestione}"
                                  [class.border-light]="!inGestione">
-                                <div class="scroll-y p-2"
+                                <div class="scroll-y px-2"
                                      [class.m-h-160]="inGestione"
                                      [class.m-h-100]="!inGestione">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
