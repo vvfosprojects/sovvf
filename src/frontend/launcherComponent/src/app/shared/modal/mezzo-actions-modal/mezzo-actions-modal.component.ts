@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbActiveModal, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -16,13 +16,22 @@ export class MezzoActionsModalComponent implements OnInit {
     navigation: 'select';
     outsideDays: 'visible';
     submitted: boolean;
+    statoMezzo: string;
+    listaEventi: any;
+    ultimoMezzo = false;
+    checkbox: {Si: boolean, No: boolean} = {
+        Si: false,
+        No: true,
+    };
+    chiudereIntervento = false;
 
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
-      this.todayDate = calendar.getToday();
+        this.todayDate = calendar.getToday();
     }
 
     ngOnInit(): void {
         this.initForm();
+        this.checkUltimoMezzo();
     }
 
     initForm(): void {
@@ -39,8 +48,25 @@ export class MezzoActionsModalComponent implements OnInit {
         this.time.second = d.getSeconds();
     }
 
+    onCheck(key: string): void {
+        if (this.checkbox[key]) {
+            this.checkbox[key] = false;
+        } else {
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
+        }
+    }
+
     onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
+    }
+
+    checkUltimoMezzo(): void {
+        const mezziEventi = [];
+        this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
+        const singleValue = Array.from(new Set(mezziEventi));
+        if (singleValue.length === 1) {
+            this.ultimoMezzo = true;
+        }
     }
 
     onSubmit(): void {
@@ -49,12 +75,14 @@ export class MezzoActionsModalComponent implements OnInit {
         if (!this.timeActionForm.valid) {
             return;
         }
-
+        if (this.checkbox.Si) {
+            this.chiudereIntervento = true;
+        }
         this.modal.close({ status: 'ok', result: this.formatTimeForCallBack() });
     }
 
     formatTimeForCallBack(): any {
-        return { oraEvento: this.time, dataEvento: this.todayDate };
+        return { oraEvento: this.time, dataEvento: this.todayDate, chiudereIntervento: this.chiudereIntervento };
     }
 
 }

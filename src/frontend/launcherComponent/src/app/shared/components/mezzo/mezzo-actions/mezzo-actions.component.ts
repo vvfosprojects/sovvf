@@ -17,6 +17,7 @@ export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
     @Input() doubleMonitor: Mezzo;
+    @Input() listaEventi: any;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
@@ -42,21 +43,27 @@ export class MezzoActionsComponent implements OnInit {
         if (event) {
             event.stopPropagation();
         }
-        this.modalService.open(MezzoActionsModalComponent, {
+        let modal;
+        modal = this.modalService.open(MezzoActionsModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        }).result.then((res: { status: string, result: any }) => {
+        });
+        modal.componentInstance.statoMezzo = this.mezzo.stato;
+        modal.componentInstance.listaEventi = this.listaEventi;
+        modal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
                     if (action) {
                         this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                         const orario = res.result.oraEvento;
                         const data = res.result.dataEvento;
+                        const chiudereIntervento = res.result.chiudereIntervento;
                         this.actionMezzo.emit({
                             mezzoAction: this.statoMezzoActions,
                             oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                            dataEvento: { giorno: data.day, mese: data.month, anno: data.year }
+                            dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
+                            chiudereIntervento,
                         });
                     } else {
                         this.actionMezzo.emit();

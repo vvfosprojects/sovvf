@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Linq;
@@ -33,19 +34,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(AggiornaStatoMezzoCommand command)
         {
             var richiesta = command.Richiesta;
-            var data = command.DataOraAggiornamento;
+            var dataAdesso = command.DataOraAggiornamento;
 
             var partenzaDaLavorare = richiesta.Partenze.OrderByDescending(p => p.Istante).FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
             richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, new CambioStatoMezzo()
             {
                 CodMezzo = command.IdMezzo,
-                DataOraAggiornamento = data,
+                DataOraAggiornamento = dataAdesso,
                 Stato = command.StatoMezzo
             });
 
-            //if (richiesta.StatoRichiesta is Sospesa)
-            //new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
+            if(command.ChiudereIntervento && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
+                new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore, null);
 
             _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
             {
@@ -53,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodRichiesta = richiesta.Codice,
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
-                DataOraAggiornamento = data,
+                DataOraAggiornamento = dataAdesso,
                 StatoMezzo = command.StatoMezzo,
                 IdMezzo = command.IdMezzo
             });

@@ -963,7 +963,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
                 var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta; //this.CodRichiesta != null ? true : false; //
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
                 var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
@@ -985,6 +985,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
+        public List<Partenza> lstPartenzeInCorso => Partenze?
+            .Where(p => !p.PartenzaAnnullata)
+            .Select(p => p.Partenza)
+            .Where(p => !p.PartenzaAnnullata && !p.Sganciata && !p.Terminata)
+            .ToList();
 
         /// <summary>
         ///   Se non ci sono partenze è uguale a 0

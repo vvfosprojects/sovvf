@@ -119,10 +119,6 @@ namespace SO115App.Persistence.MongoDB
             {
                 result.AddRange(lstRichieste.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)));
             }
-            else if (filtro.SoloChiuse)
-                result = lstRichieste.Where(r => r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
-            else
-                result = lstRichieste.Where(r => !r.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
 
             //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
             if (filtro.TipologiaRichiesta != null) result = lstRichieste.Where(r =>
@@ -133,6 +129,9 @@ namespace SO115App.Persistence.MongoDB
                 if (filtro.TipologiaRichiesta.Equals("Interventi"))
                     return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
 
+                if (filtro.TipologiaRichiesta.Equals("ChiamateInterventi"))
+                    return r.TestoStatoRichiesta != "X";
+
                 return true;
             }).ToList();
 
@@ -141,7 +140,7 @@ namespace SO115App.Persistence.MongoDB
                 result.AddRange(lstRichieste.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))));
 
             //FILTRO PERIODO CHIAMATE CHIUSE
-            if (filtro.PeriodoChiuseChiamate != null) result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
+            if (filtro.PeriodoChiuseChiamate != null) result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
             {
                 if (filtro.PeriodoChiuseChiamate.Data != null)
                     return r.IstanteChiusura.Value.Year == filtro.PeriodoChiuseChiamate.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuseChiamate.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuseChiamate.Data.Value.Day;
@@ -151,15 +150,20 @@ namespace SO115App.Persistence.MongoDB
                     return r.IstanteChiusura >= filtro.PeriodoChiuseChiamate.Da && r.IstanteChiusura <= filtro.PeriodoChiuseChiamate.A;
 
                 return true;
-            }));
+            }).ToList();
             else if (filtro.Chiuse?.Count() > 0)
             {
                 if (filtro.Chiuse.Contains("Chiamate chiuse"))
-                    result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).ToList();
+                {
+                    if (filtro.SoloboxRichieste)
+                        result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
+                    else
+                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).ToList();
+                }
             }
 
             //FILTRO PERIODO INTERVENTI CHIUSE
-            if (filtro.PeriodoChiusiInterventi != null) result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).Where(r =>
+            if (filtro.PeriodoChiusiInterventi != null) result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).Where(r =>
             {
                 if (filtro.PeriodoChiusiInterventi.Data != null)
                     return r.CodRichiesta != null && r.IstanteChiusura.Value.Year == filtro.PeriodoChiusiInterventi.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiusiInterventi.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiusiInterventi.Data.Value.Day;
@@ -169,11 +173,17 @@ namespace SO115App.Persistence.MongoDB
                     return r.IstanteChiusura >= filtro.PeriodoChiusiInterventi.Da && r.IstanteChiusura <= filtro.PeriodoChiusiInterventi.A;
 
                 return true;
-            }));
+            }).ToList();
             else if (filtro.Chiuse?.Count() > 0)
             {
                 if (filtro.Chiuse.Contains("Interventi chiusi"))
-                    result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
+                {
+                    if (filtro.SoloboxRichieste)
+
+                        result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
+                    else
+                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
+                }
             }
 
             if (filtro.FiltriTipologie != null)
@@ -186,11 +196,12 @@ namespace SO115App.Persistence.MongoDB
                 else if (filtro.IndirizzoIntervento.Indirizzo != null)
                 {
                     if (filtro.SoloChiuse)
-                        result = result.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
-                    else
-                        result = result.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && !o.StatoRichiesta.GetType().Name.Contains("Chiusa")).ToList();
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Chiusa).ToList();
                 }
             }
+
+            //if (filtro.SoloChiuse)
+            //    result = lstRichieste.Where(r => r.Chiusa).ToList();
 
             //MAPPING
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>

@@ -6,6 +6,7 @@
                    [mostraIndicatori]="false"
                    [mostraNotifiche]="false"
                    [listaEventiMezzo]="listaEventiMezzo"
+                   [listaEventi]="listaEventi"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
         <div *ngIf="!partenza.mezzo" class="d-inline-block p-2">

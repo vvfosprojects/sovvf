@@ -22,9 +22,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
-using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -56,7 +54,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                                            ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
                                            IGetUtenteById getUtenteById)
         {
-            this._saveRichiestaAssistenza = saveRichiestaAssistenza;
+            _saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
             _getCompetenze = getCompetenze;
@@ -68,37 +66,18 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Handle(AddInterventoCommand command)
         {
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
-            var lstCompetenze = new List<Distaccamento>();
-            Competenze.ToList().ForEach(c => lstCompetenze.Add(_getDistaccamento.Get(c).Result));
+            var lstCompetenze = Competenze.Select(c => _getDistaccamento.Get(c).Result).ToList();
 
             if (Competenze.ToList()[0] == null)
                 throw new Exception(Costanti.CoordinateErrate);
 
-            var sedeRichiesta = command.CodiceSede;
-            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
-            var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
-            command.Chiamata.Codice = codiceChiamata;
-            var listaCodiciTipologie = new List<string>();
-            var utentiInLavorazione = new List<string>();
-            var utentiPresaInCarico = new List<string>();
-            foreach (var tipologia in command.Chiamata.Tipologie)
-            {
-                listaCodiciTipologie.Add(tipologia.Codice);
-            }
-            if (command.Chiamata.ListaUtentiInLavorazione != null)
-            {
-                foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
-                {
-                    utentiInLavorazione.Add(utente.Nominativo);
-                }
-            }
-            if (command.Chiamata.ListaUtentiPresaInCarico != null)
-            {
-                foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
-                {
-                    utentiPresaInCarico.Add(utente.Nominativo);
-                }
-            }
+            command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
+
+            var listaCodiciTipologie = command.Chiamata.Tipologie?.Select(t => t.Codice).ToList();
+
+            var utentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione?.Select(u => u.Nominativo).ToList();
+
+            var utentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -107,7 +86,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
-                Codice = codiceChiamata,
+                Codice = command.Chiamata.Codice,
                 TrnInsChiamata = $"Turno {_getTurno.Get().Codice.Substring(0, 1)}",
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
@@ -119,7 +98,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = Competenze.ToList()[0],
-                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
+                CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c.ToString()).ToList(),
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
                 ChiamataUrgente = command.Chiamata.ChiamataUrgente
@@ -144,6 +123,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue
             };
 
+            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
 
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
@@ -167,6 +147,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, null, null, null, null, null)).ToList();
 
             _saveRichiestaAssistenza.Save(richiesta);
+
+            //Salvo l'intervento nel command per usarlo nella notifica
+            command.Intervento = richiesta;
         }
     }
 }

@@ -115,6 +115,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
                 query.Filtro.IncludiRichiesteChiuse = true;
             }
 
+            if (query.Filtro.TipologiaRichiesta == null)
+                query.Filtro.TipologiaRichiesta = "ChiamateInterventi";
+
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             var listaSintesiPaginata = new List<SintesiRichiesta>();

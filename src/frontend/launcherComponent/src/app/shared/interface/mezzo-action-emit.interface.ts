@@ -12,4 +12,5 @@ export interface MezzoActionEmit {
       mese: number,
       anno: number
     };
+    chiudereIntervento?: boolean;
 }

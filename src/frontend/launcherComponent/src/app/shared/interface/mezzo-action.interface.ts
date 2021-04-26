@@ -1,5 +1,4 @@
 import { Mezzo } from '../model/mezzo.model';
-import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 
 export interface MezzoActionInterface {
     mezzo: Mezzo;
@@ -7,4 +6,5 @@ export interface MezzoActionInterface {
     data?: Date;
     codRichiesta?: string;
     listaMezzi?: boolean;
+    chiudereIntervento?: boolean;
 }

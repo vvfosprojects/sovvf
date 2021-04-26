@@ -30,6 +30,23 @@
           </div>
         </div>
       </div>
+      <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo" class="mb-4">
+        <span class="mr-4">Chiudere l'intervento?</span>
+          <div class="form-check-inline">
+              <input class="form-check-input radio-custom" type="radio" id="Si" name="Si" [checked]="checkbox['Si']"
+                     (click)="onCheck('Si')">
+              <label class="form-check-label" for="Si">
+                  Si
+              </label>
+          </div>
+          <div class="form-check-inline">
+              <input class="form-check-input radio-custom" type="radio" id="No" name="No" [checked]="checkbox['No']"
+                     (click)="onCheck('No')">
+              <label class="form-check-label" for="No">
+                  No
+              </label>
+          </div>
+      </div>
     <small class="text-muted">* Il cambiamento di stato risulterà il {{todayDate?.day + '/' + todayDate?.month + '/' + todayDate?.year}} alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
   </form>
 </div>
