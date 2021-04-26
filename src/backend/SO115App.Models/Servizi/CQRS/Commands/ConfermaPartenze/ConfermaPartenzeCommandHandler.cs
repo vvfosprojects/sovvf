@@ -66,6 +66,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var dataAdesso = DateTime.UtcNow;
 
+
+            //GENERAZIONE CODICE INTERVENTO
+            var sedeRichiesta = command.Richiesta.CodSOCompetente;
+
+            if (command.Richiesta.CodRichiesta == null)
+                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, dataAdesso.Year);
+
+
             #region SGANCIAMENTO
 
             var idComposizioneDaSganciare = 0;
@@ -73,9 +81,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var StatoSulPosto = 0;
 
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
-                //&& command.RichiestaDaSganciare.lstPartenze
-                //    .Where(p => command.ConfermaPartenze.Partenze.Select(p => p.Mezzo.Codice).Contains(p.Mezzo.Codice))
-                //    .All(p => new string[] { Costanti.MezzoInViaggio, Costanti.MezzoSulPosto, Costanti.MezzoOccupato }.Contains(p.Mezzo.Stato)))
+            //&& command.RichiestaDaSganciare.lstPartenze
+            //    .Where(p => command.ConfermaPartenze.Partenze.Select(p => p.Mezzo.Codice).Contains(p.Mezzo.Codice))
+            //    .All(p => new string[] { Costanti.MezzoInViaggio, Costanti.MezzoSulPosto, Costanti.MezzoOccupato }.Contains(p.Mezzo.Stato)))
             {
                 command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
 
@@ -114,12 +122,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
                 }
 
-                new RevocaPerRiassegnazione(command.Richiesta, command.RichiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, dataAdesso, command.Utente.Id,
+                new RevocaPerRiassegnazione(command.RichiestaDaSganciare, command.Richiesta, command.ConfermaPartenze.IdMezzoDaSganciare, dataAdesso, command.Utente.Id,
                     command.ConfermaPartenze.Partenze.FirstOrDefault(p => p.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare).Codice);
 
                 //SOSPENDO LA RICHIESTA SE LA PARTENZA DA SGANCIARE E' L'ULTIMA IN CORSO SU TALE RICHIESTA
-                if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
-                    new RichiestaSospesa($"Scangio dell'ultima partenza {command.ConfermaPartenze.Partenze.First().Codice} sulla richiesta {command.Richiesta.Codice}", command.Richiesta, dataAdesso, command.Utente.Id);
+                //if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
+                //    new RichiestaSospesa($"Scangio dell'ultima partenza {command.ConfermaPartenze.Partenze.First().Codice} sulla richiesta {command.Richiesta.Codice}", command.Richiesta, dataAdesso, command.Utente.Id);
 
                 _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
             }
@@ -183,12 +191,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }
-
-            //GENERAZIONE CODICE INTERVENTO
-            var sedeRichiesta = command.Richiesta.CodSOCompetente;
-
-            if (command.Richiesta.CodRichiesta == null)
-                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, dataAdesso.Year);
 
             //GESTIONE UTENTE PRESA IN CARICO
             var nominativo = command.Utente.Nome + "." + command.Utente.Cognome;

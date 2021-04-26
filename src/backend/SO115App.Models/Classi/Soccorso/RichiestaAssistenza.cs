@@ -337,7 +337,8 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 return this._eventi
-                    .LastOrDefault() is RichiestaSospesa;
+                    .LastOrDefault() is RichiestaSospesa || this._eventi
+                    .LastOrDefault() is RevocaPerRiassegnazione;
             }
         }
 
@@ -683,7 +684,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var composizionePartenza = this.Partenze;
 
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
+                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
                 var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta;
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
@@ -961,7 +962,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             get
             {
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa;
+                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
                 var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
                 var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta; //this.CodRichiesta != null ? true : false; //
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
