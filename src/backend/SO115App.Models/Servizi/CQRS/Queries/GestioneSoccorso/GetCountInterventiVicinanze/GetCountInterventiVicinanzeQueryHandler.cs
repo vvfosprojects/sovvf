@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
             var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {
                 UnitaOperative = lstPinNodo,
-                SoloChiuse = true
+                Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }
             });
 
             return new GetCountInterventiVicinanzeResult()
