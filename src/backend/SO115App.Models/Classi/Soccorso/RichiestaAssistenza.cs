@@ -110,7 +110,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato)
         {
-            //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento));
             partenza.Mezzo.Stato = stato.Stato;
 
             switch (stato.Stato)
@@ -125,19 +124,20 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
 
+                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento.AddSeconds(2)));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = stato.DataOraAggiornamento.AddSeconds(2);
+                    var dataComposizione = stato.DataOraAggiornamento.AddMinutes(1);
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
+                    //if(this.ListaEventi.OfType<>().LastOrDefault())
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato() { Stato = stato.Stato, Istante = stato.DataOraAggiornamento });
-                    //partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, dataComposizione));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
@@ -148,25 +148,21 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato() { Stato = stato.Stato, Istante = stato.DataOraAggiornamento });
-                    //partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
+                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
 
                 case Costanti.MezzoInRientro:
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato() { Stato = stato.Stato, Istante = stato.DataOraAggiornamento });
-                    //partenza.Mezzo.Stato = Costanti.MezzoInRientro;
-
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
+
+                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento));
 
                     break;
 
                 case Costanti.MezzoRientrato:
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato() { Stato = stato.Stato, Istante = stato.DataOraAggiornamento });
-                    //partenza.Mezzo.Stato = Costanti.MezzoInSede;
                     partenza.Mezzo.IdRichiesta = null;
                     partenza.Terminata = true;
 

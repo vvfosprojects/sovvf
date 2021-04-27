@@ -185,7 +185,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
-                    DataOraAggiornamento = dataAdesso.AddMinutes(1),
+                    DataOraAggiornamento = dataAdesso,
                     Stato = Costanti.MezzoInViaggio
                 });
 
