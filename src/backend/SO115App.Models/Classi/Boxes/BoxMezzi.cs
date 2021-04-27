@@ -31,6 +31,6 @@ namespace SO115App.API.Models.Classi.Boxes
 
         public int Istituto { get; set; }
 
-        public int InServizio { get; set; }
+        public int InServizio  => InSede + InRientro + SulPosto + Istituto + InViaggio;
     }
 }

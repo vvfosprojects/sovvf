@@ -19,7 +19,7 @@ export class MezzoActionsModalComponent implements OnInit {
     statoMezzo: string;
     listaEventi: any;
     ultimoMezzo = false;
-    checkbox: {Si: boolean, No: boolean} = {
+    checkbox: { Si: boolean, No: boolean } = {
         Si: false,
         No: true,
     };
@@ -63,7 +63,17 @@ export class MezzoActionsModalComponent implements OnInit {
     checkUltimoMezzo(): void {
         const mezziEventi = [];
         this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
+        // Trovo storico mezzi di quella partenza
         const singleValue = Array.from(new Set(mezziEventi));
+        // Rimuovo mezzi già rientrati
+        const mezziRientrati = [];
+        this.listaEventi.forEach(x => x.stato === 'Rientrato' ? mezziRientrati.push(x.codiceMezzo) : null);
+        mezziRientrati.forEach(x => {
+            const index = mezziRientrati.indexOf(x);
+            if (index !== -1) {
+                singleValue.splice(index, 1);
+            }});
+        // Attivo la checkbox per ultimo mezzo
         if (singleValue.length === 1) {
             this.ultimoMezzo = true;
         }

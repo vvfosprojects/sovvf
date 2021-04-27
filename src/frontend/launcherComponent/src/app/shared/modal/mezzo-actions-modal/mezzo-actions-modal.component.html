@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo" class="mb-4">
+      <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo" class="mb-4 alert alert-warning">
         <span class="mr-4">Chiudere l'intervento?</span>
           <div class="form-check-inline">
               <input class="form-check-input radio-custom" type="radio" id="Si" name="Si" [checked]="checkbox['Si']"
