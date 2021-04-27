@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
     {
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        //private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         private readonly IConfiguration _configuration;
 
@@ -29,11 +30,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         public GetMezziUtilizzabiliPerBox(IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetPosizioneFlotta getPosizioneFlotta, IGetToken getToken, IHttpRequestManager<List<MezzoDTO>> clientMezzi)
+            /*IGetPosizioneFlotta getPosizioneFlotta,*/ IGetToken getToken, IHttpRequestManager<List<MezzoDTO>> clientMezzi)
         {
             _getStatoMezzi = GetStatoMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getPosizioneFlotta = getPosizioneFlotta;
+            //_getPosizioneFlotta = getPosizioneFlotta;
             _clientMezzi = clientMezzi;
             _getToken = getToken;
             _configuration = configuration;
@@ -41,11 +42,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
         {
-            var ListaCodiciSedi = new List<string>();
-            var ListaCodiciComandi = new List<string>();
-
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = sedi.Select(sede => new PinNodo(sede, true)).ToList();
+
+            var ListaCodiciSedi = new List<string>();
+            var ListaCodiciComandi = new List<string>();
 
             foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
             {
@@ -60,49 +61,25 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
             }
 
-            var ListaAnagraficaMezzo = new List<AnagraficaMezzo>();
-            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
-
             #region LEGGO DA API ESTERNA
 
             var token = _getToken.GeneraToken();
 
-            var lstMezziDto = new List<MezzoDTO>();
+            var lstMezzi = new ConcurrentQueue<Mezzo>();
+
             Parallel.ForEach(sedi, sede =>
             {
                 _clientMezzi.SetCache("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-                lock (lstMezziDto)
-                    lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
+                
+                _clientMezzi.GetAsync(url, token).Result.ForEach(m => lstMezzi.Enqueue(MapMezzo(m)));
             });
 
             #endregion LEGGO DA API ESTERNA
 
-            var ListaStatiOperativiMezzi = _getStatoMezzi.Get(sedi.ToArray());
-
-            var ListaMezzi = lstMezziDto.Select(m =>
-            {
-                //if (!mezzoFake.Equals("CMOB"))
-                //{
-                var mezzo = MapMezzo(m);
-                if (mezzo != null)
-                {
-                    //listaMezziBySedeAppo.Add(mezzo);
-                    return mezzo;
-                }
-                //}
-
-                if (ListaStatiOperativiMezzi.Count > 0)
-                    mezzo.Stato = ListaStatiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
-                else
-                    mezzo.Stato = Costanti.MezzoInSede;
-
-                return mezzo;
-            }).ToList();
-
-            return ListaMezzi;
+            return lstMezzi.ToList();
         }
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
