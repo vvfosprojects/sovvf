@@ -73,8 +73,6 @@ export class MezzoActionsModalComponent implements OnInit {
             if (index !== -1) {
                 singleValue.splice(index, 1);
             }});
-        console.log('***listaEventi ', this.listaEventi);
-        console.log('***singleValue ', singleValue);
         // Attivo la checkbox per ultimo mezzo
         if (singleValue.length === 1) {
             this.ultimoMezzo = true;
