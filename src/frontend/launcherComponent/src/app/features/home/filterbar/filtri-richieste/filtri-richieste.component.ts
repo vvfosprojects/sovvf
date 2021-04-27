@@ -191,7 +191,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
             this.store.dispatch(new RemoveSelezioneStatoRichiesta(filtro.codice));
             this.filtroDeselezionato.emit(filtro);
         } else if (filtro.categoria === 'Chiuse') {
-            filtro.descrizione === 'Chiamate' ? this.periodoChiuseChiamate = null : this.periodoChiusiInterventi = null;
+            filtro.descrizione === 'Chiamate Chiuse' ? this.periodoChiuseChiamate = null : this.periodoChiusiInterventi = null;
             this.store.dispatch(new RemovePeriodoChiuse(filtro.descrizione));
             this.store.dispatch(new RemoveChiuseRichiesta(filtro.codice));
             this.filtroDeselezionato.emit(filtro);

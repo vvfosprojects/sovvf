@@ -417,11 +417,11 @@ export class FiltriRichiesteState {
             data: null,
             turno: null,
         };
-        if (action.tipologiaRichiesta === 'Chiamate') {
+        if (action.tipologiaRichiesta === 'Chiamate Chiuse') {
             patchState({
                 periodoChiuseChiamate: periodoChiuse
             });
-        } else if (action.tipologiaRichiesta === 'Interventi') {
+        } else if (action.tipologiaRichiesta === 'Interventi Chiusi') {
             patchState({
                 periodoChiusiInterventi: periodoChiuse
             });
