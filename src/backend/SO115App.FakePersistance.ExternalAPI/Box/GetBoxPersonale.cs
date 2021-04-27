@@ -24,8 +24,10 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Box
 {
@@ -40,27 +42,28 @@ namespace SO115App.ExternalAPI.Fake.Box
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            var personale = new BoxPersonale();
             var numeroComponenti = 0;
-            var listaFunzionari = new List<Componente>();
 
-            var listaSquadreComposizione = new List<ComposizioneSquadre>();
+            var listaSquadreComposizione = new ConcurrentQueue<ComposizioneSquadre>();
 
-            foreach (var Codsede in codiciSede)
+            Parallel.ForEach(codiciSede, Codsede =>
             {
-                ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
-                query.CodiceSede = Codsede;
+                var query = new ComposizioneSquadreQuery() { CodiceSede = Codsede };
 
-                listaSquadreComposizione.AddRange(_getComposizioneSquadre.Get(query));
-            }
+                _getComposizioneSquadre.Get(query).ForEach(cs => listaSquadreComposizione.Enqueue(cs));
+            });
 
-            personale.SquadreAssegnate =
+            var result = new BoxPersonale();
+
+            result.SquadreAssegnate =
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InUscita) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
-            personale.SquadreServizio =
+            result.SquadreServizio =
                 listaSquadreComposizione.Count;
+
+            var listaFunzionari = new ConcurrentQueue<Componente>();
 
             foreach (var partenza in listaSquadreComposizione)
             {
@@ -70,15 +73,15 @@ namespace SO115App.ExternalAPI.Fake.Box
                     if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
                         componente.FunGuardia)
                     {
-                        listaFunzionari.Add(componente);
+                        listaFunzionari.Enqueue(componente);
                     }
                 }
             }
 
-            personale.PersonaleTotale = numeroComponenti;
-            personale.Funzionari = listaFunzionari;
+            result.PersonaleTotale = numeroComponenti;
+            result.Funzionari = listaFunzionari.ToList();
 
-            return personale;
+            return result;
         }
     }
 }

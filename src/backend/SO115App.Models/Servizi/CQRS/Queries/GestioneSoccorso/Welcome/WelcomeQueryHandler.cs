@@ -20,17 +20,12 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.Filtri;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,11 +45,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IGetFiltri _filtriHandler;
         private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
-        private readonly IGetConteggioSchede _getConteggioSchedeHandler;
-        private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetZoneEmergenza _getZoneEmergenza;
-        private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
+        private readonly IGetRubrica _getRurbica;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
@@ -63,11 +56,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetCentroMappaMarker centroMappaMarkerHandler,
             IGetFiltri filtriHandler,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
-            IGetConteggioSchede getConteggioSchedeHandler,
-            IGetTipologieByCodice tipologieQueryHandler,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetZoneEmergenza getZoneEmergenza,
-            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
+            IGetRubrica getRurbica)
         {
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
@@ -76,10 +67,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
             _filtriHandler = filtriHandler;
             _getDistaccamenti = getDistaccamenti;
-            _getConteggioSchedeHandler = getConteggioSchedeHandler;
-            _tipologieQueryHandler = tipologieQueryHandler;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _rubricaQueryHandler = rubricaQueryHandler;
+            _getRurbica = getRurbica;
             _getZoneEmergenza = getZoneEmergenza;
         }
 
@@ -104,22 +93,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             }
 
             foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
-            {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
-            }
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
-            {
-                SearchKey = "0",
-                idOperatore = query.idOperatore,
-                UnitaOperative = pinNodi.ToHashSet()
-            };
-
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
-            {
-                CodiciSede = query.CodiceSede,
-                Filtro = filtro
-            };
+            var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
+            var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
+            var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
 
             var filtri = _filtriHandler.Get();
 
@@ -128,29 +106,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             else
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
-            var rubrica = Task.Factory.StartNew(() => _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray);
-            var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
-            var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
-            var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
             var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
             var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
-            //var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
-            //var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
+
+            var rubrica = Task.Factory.StartNew(() => _getRurbica.Get(pinNodi.Select(n => n.Codice).ToArray()));
+
             var ListaZoneEmergenza = Task.Factory.StartNew(() => _getZoneEmergenza.GetAll());
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
-                BoxListaInterventi = boxListaInterventi.Result,
-                BoxListaMezzi = boxListaMezzi.Result,
-                BoxListaPersonale = boxListaPersonale.Result,
                 ListaChiamateInCorso = listaChiamateInCorso.Result,
                 CentroMappaMarker = centroMappaMarker.Result,
                 ListaFiltri = filtri,
-                //InfoNue = infoNue.Result,
-                //Tipologie = tipologie.Result,
                 ZoneEmergenza = ListaZoneEmergenza.Result,
-                Rubrica = rubrica.Result
-            };
+                Rubrica = rubrica.Result,
+                BoxListaInterventi = boxListaInterventi.Result,
+                BoxListaMezzi = boxListaMezzi.Result,
+                BoxListaPersonale = boxListaPersonale.Result
+            };            
 
             Log.Debug("Fine elaborazione Welcome Handler");
 

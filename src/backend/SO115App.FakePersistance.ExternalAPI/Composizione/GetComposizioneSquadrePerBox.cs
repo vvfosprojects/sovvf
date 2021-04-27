@@ -24,8 +24,10 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -47,29 +49,31 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 query.CodiceSede
             };
-            var listaSquadre = _getSquadre.Get(listaSedi).Result;
+            var listaSquadre = _getSquadre.Get(listaSedi);
             var statiOperativi = _getStatoSquadre.Get().Where(x => x.IdSquadra != null).ToList();
-            var composizioneSquadre = new List<ComposizioneSquadre>();
 
-            foreach (Squadra s in listaSquadre)
+            var composizioneSquadre = new ConcurrentQueue<ComposizioneSquadre>();
+
+            Parallel.ForEach(listaSquadre.Result, squadra =>
             {
-                if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
+                if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
                 {
-                    s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
-                    s.IndiceOrdinamento = -200;
+                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
+                    squadra.IndiceOrdinamento = -200;
                 }
                 else
                 {
-                    s.Stato = Squadra.StatoSquadra.InSede;
+                    squadra.Stato = Squadra.StatoSquadra.InSede;
                 }
 
                 var c = new ComposizioneSquadre
                 {
-                    Squadra = s,
-                    Id = s.Id
+                    Squadra = squadra,
+                    Id = squadra.Id
                 };
-                composizioneSquadre.Add(c);
-            }
+
+                composizioneSquadre.Enqueue(c);
+            });
 
             return composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
         }
