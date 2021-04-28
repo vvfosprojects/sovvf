@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, List<EnteDTO> entiDTO) : base(richiesta, istante, codiceFonte, "ChiusuraRichiesta")
+        public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, List<EnteDTO> entiDTO = null) : base(richiesta, istante, codiceFonte, "ChiusuraRichiesta")
         {
             richiesta.IstanteChiusura = this.Istante;
             this.Motivazione = motivazione;

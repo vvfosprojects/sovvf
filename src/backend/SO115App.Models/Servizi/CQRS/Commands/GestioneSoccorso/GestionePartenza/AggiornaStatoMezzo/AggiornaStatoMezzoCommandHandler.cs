@@ -45,8 +45,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Stato = command.StatoMezzo
             });
 
-            if(command.ChiudereIntervento && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
-                new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore, null);
+            if(command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
+            {
+                if(command.AzioneIntervento.Equals("Chiusa"))
+                    new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
+                else if (command.AzioneIntervento.Equals("Sospesa"))
+                    new RichiestaSospesa("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
+            }
 
             _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
             {
