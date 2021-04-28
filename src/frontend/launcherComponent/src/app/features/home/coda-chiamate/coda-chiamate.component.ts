@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 export class CodaChiamateComponent implements OnInit {
 
     @Select(CodaChiamateState.dataGrafico) dataGrafico$: Observable<ItemChart[]>;
+    @Select(CodaChiamateState.valoreMassimo) valoreMassimo$: Observable<number>;
     @Select(CodaChiamateState.loading) loading$: Observable<boolean>;
 
     constructor(private store: Store) {

@@ -25,8 +25,8 @@ import { SetRichiestaComposizione } from '../../actions/composizione-partenza/co
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import produce from 'immer';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import produce from 'immer';
 
 export interface CodaChiamateStateModel {
     data: ItemGraficoCodaChiamate[];
@@ -76,6 +76,24 @@ export class CodaChiamateState {
     }
 
     @Selector()
+    static valoreMassimo(state: CodaChiamateStateModel): number {
+        let val = 0;
+        state.data.forEach((d: ItemGraficoCodaChiamate) => {
+            const numRichieste = d.numRichieste;
+            const squadreLibere = d.squadreLibere;
+            const squadreOccupate = d.squadreOccupate;
+            if ((numRichieste > squadreLibere && numRichieste > val) && (numRichieste > squadreOccupate && numRichieste > val)) {
+                val = numRichieste;
+            } else if ((squadreLibere > numRichieste && squadreLibere > val) && (squadreLibere > squadreOccupate && squadreLibere > val)) {
+                val = squadreLibere;
+            } else if ((squadreOccupate > numRichieste && squadreOccupate > val) && (squadreOccupate > numRichieste && squadreOccupate > val)) {
+                val = squadreOccupate;
+            }
+        });
+        return val;
+    }
+
+    @Selector()
     static loading(state: CodaChiamateStateModel): boolean {
         return state.loading;
     }
@@ -106,7 +124,7 @@ export class CodaChiamateState {
         const dataGrafico = makeCopy(state.data);
 
         patchState({
-            data: dataGrafico.sort(sortType)
+            data: dataGrafico.sort(sortType).filter((data: ItemGraficoCodaChiamate) => !!data.numRichieste || !!data.squadreLibere || !!data.squadreOccupate)
         });
 
         function sortType(a, b): number {
