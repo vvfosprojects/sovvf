@@ -47,6 +47,7 @@ export class MezzoActionsComponent implements OnInit {
         modal = this.modalService.open(MezzoActionsModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
+            size: 'lg',
             centered: true
         });
         modal.componentInstance.statoMezzo = this.mezzo.stato;
@@ -58,12 +59,12 @@ export class MezzoActionsComponent implements OnInit {
                         this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                         const orario = res.result.oraEvento;
                         const data = res.result.dataEvento;
-                        const chiudereIntervento = res.result.chiudereIntervento;
+                        const azioneIntervento = res.result.azioneIntervento;
                         this.actionMezzo.emit({
                             mezzoAction: this.statoMezzoActions,
                             oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                             dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
-                            chiudereIntervento,
+                            azioneIntervento,
                         });
                     } else {
                         this.actionMezzo.emit();

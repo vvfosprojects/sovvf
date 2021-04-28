@@ -6,5 +6,5 @@ export interface MezzoActionInterface {
     data?: Date;
     codRichiesta?: string;
     listaMezzi?: boolean;
-    chiudereIntervento?: boolean;
+    azioneIntervento?: string;
 }

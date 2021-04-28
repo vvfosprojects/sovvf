@@ -19,11 +19,12 @@ export class MezzoActionsModalComponent implements OnInit {
     statoMezzo: string;
     listaEventi: any;
     ultimoMezzo = false;
-    checkbox: { Si: boolean, No: boolean } = {
-        Si: false,
-        No: true,
+    checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {
+        sospesa: false,
+        chiusa: false,
+        aperta: true
     };
-    chiudereIntervento = false;
+    azioneIntervento: string;
 
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
         this.todayDate = calendar.getToday();
@@ -54,6 +55,7 @@ export class MezzoActionsModalComponent implements OnInit {
         } else {
             Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
         }
+        this.azioneIntervento = key;
     }
 
     onCancel(): void {
@@ -85,14 +87,11 @@ export class MezzoActionsModalComponent implements OnInit {
         if (!this.timeActionForm.valid) {
             return;
         }
-        if (this.checkbox.Si) {
-            this.chiudereIntervento = true;
-        }
         this.modal.close({ status: 'ok', result: this.formatTimeForCallBack() });
     }
 
     formatTimeForCallBack(): any {
-        return { oraEvento: this.time, dataEvento: this.todayDate, chiudereIntervento: this.chiudereIntervento };
+        return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento };
     }
 
 }

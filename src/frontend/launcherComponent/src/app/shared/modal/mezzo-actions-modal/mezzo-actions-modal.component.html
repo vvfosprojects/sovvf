@@ -31,19 +31,26 @@
         </div>
       </div>
       <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo" class="mb-4 alert alert-warning">
-        <span class="mr-4">Chiudere l'intervento?</span>
+        <span class="mr-4">Scegliere azione Intervento:</span>
           <div class="form-check-inline">
-              <input class="form-check-input radio-custom" type="radio" id="Si" name="Si" [checked]="checkbox['Si']"
-                     (click)="onCheck('Si')">
-              <label class="form-check-label" for="Si">
-                  Si
+              <input class="form-check-input radio-custom" type="radio" id="sospesa" name="sospesa" [checked]="checkbox.sospesa"
+                     (click)="onCheck('Sospesa')">
+              <label class="form-check-label" for="sospesa">
+                  Sospendi
               </label>
           </div>
           <div class="form-check-inline">
-              <input class="form-check-input radio-custom" type="radio" id="No" name="No" [checked]="checkbox['No']"
-                     (click)="onCheck('No')">
-              <label class="form-check-label" for="No">
-                  No
+              <input class="form-check-input radio-custom" type="radio" id="chiusa" name="chiusa" [checked]="checkbox.chiusa"
+                     (click)="onCheck('Chiusa')">
+              <label class="form-check-label" for="chiusa">
+                  Chiudi
+              </label>
+          </div>
+          <div class="form-check-inline">
+              <input class="form-check-input radio-custom" type="radio" id="aperta" name="aperta" [checked]="checkbox.aperta"
+                     (click)="onCheck('Aperta')">
+              <label class="form-check-label" for="aperta">
+                  Mantieni Aperto
               </label>
           </div>
       </div>

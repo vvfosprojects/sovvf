@@ -307,8 +307,8 @@ export class RichiesteState {
             statoMezzo: action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             dataOraAggiornamento: action.mezzoAction.data
         } as any;
-        if (action.mezzoAction.chiudereIntervento) {
-            obj.chiudereIntervento = action.mezzoAction.chiudereIntervento;
+        if (action.mezzoAction.azioneIntervento) {
+            obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
                 dispatch(new StopLoadingActionMezzo());
