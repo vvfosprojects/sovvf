@@ -69,14 +69,9 @@ export class MezzoActionsModalComponent implements OnInit {
         const singleValue = Array.from(new Set(mezziEventi));
         // Rimuovo mezzi già rientrati
         const mezziRientrati = [];
-        this.listaEventi.forEach(x => x.stato === 'Rientrato' ? mezziRientrati.push(x.codiceMezzo) : null);
-        mezziRientrati.forEach(x => {
-            const index = mezziRientrati.indexOf(x);
-            if (index !== -1) {
-                singleValue.splice(index, 1);
-            }});
+        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce( (a, e) => !a ? e : (new Date(a.ora) > new Date (e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
         // Attivo la checkbox per ultimo mezzo
-        if (singleValue.length === 1) {
+        if (singleValue.length - mezziRientrati.length === 1) {
             this.ultimoMezzo = true;
         }
     }
