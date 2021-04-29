@@ -1,7 +1,7 @@
-<div class="clearfix d-inline-flex" style="vertical-align: sub"
+<div [ngClass]="_boxStatiClass(stato)" class="clearfix badge"
+     style="width: 27px; height: 27px; vertical-align: text-bottom; font-size: large; border-radius: initial;"
      [ngbTooltip]="stato" placement="top">
-  <div [ngClass]="_boxStatiClass(stato)"></div>
-  <span *ngIf="stato === 'In Viaggio'" class="font-xlarge" style="transform: translate(-19px, -3px);">V</span>
-  <span *ngIf="stato === 'Sul Posto'" class="font-xlarge"  style="transform: translate(-19px, -3px);">P</span>
-  <span *ngIf="stato === 'In Rientro'" class="font-xlarge"  style="transform: translate(-19px, -3px);">R</span>
+  <span *ngIf="stato === 'In Viaggio'">V</span>
+  <span *ngIf="stato === 'Sul Posto'">P</span>
+  <span *ngIf="stato === 'In Rientro'">R</span>
 </div>

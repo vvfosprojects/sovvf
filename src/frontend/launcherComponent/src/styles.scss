@@ -246,6 +246,14 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     font-size: $SO-font-xlarge $SO-i;
   }
 
+  [ngbdatepickerdayview] {
+    color: $SO-white $SO-i;
+  }
+
+  [ngbdatepickerdayview]:hover {
+    color: $SO-black $SO-i;
+  }
+
   .dropdown-menu {
     color: $SO-white $SO-i;
     background-color: $SO-dark $SO-i;
@@ -1202,13 +1210,6 @@ tag-input {
   bottom: 0 $SO-i;
   left: $SO-middle $SO-i;
   margin-left: -135px;
-}
-
-.box-stato {
-  width: $SO-font-xxlarge;
-  height: $SO-font-xxlarge;
-  margin: 0;
-  border: $SO-card-border rgba(0, 0, 0, .2);
 }
 
 .color-refresh {

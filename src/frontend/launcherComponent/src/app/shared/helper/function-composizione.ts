@@ -75,25 +75,25 @@ export function boxStatiClass(stato: string): string {
   let returnClass = '';
   switch (stato) {
     case StatoMezzo.InSede:
-      returnClass = 'box-stato bg-success';
+      returnClass = 'badge-success';
       break;
     case StatoMezzo.Rientrato:
-      returnClass = 'box-stato bg-success';
+      returnClass = 'badge-success';
       break;
     case StatoMezzo.InUscita:
-      returnClass = 'box-stato bg-secondary';
+      returnClass = 'badge-secondary';
       break;
     case StatoMezzo.InViaggio:
-      returnClass = 'box-stato bg-danger';
+      returnClass = 'badge-danger';
       break;
     case StatoMezzo.InRientro:
-      returnClass = 'box-stato bg-success';
+      returnClass = 'badge-success';
       break;
     case StatoMezzo.SulPosto:
-      returnClass = 'box-stato bg-danger';
+      returnClass = 'badge-danger';
       break;
 
-    default: returnClass = 'box-stato bg-dark';
+    default: returnClass = 'badge-dark';
              break;
   }
   return returnClass;
