@@ -55,12 +55,11 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
     idMezzoInServizioSelezionato: null,
     filtriMezziInServizio: [
         new VoceFiltro('3', Categoria.InSede, 'In Sede', false),
-        new VoceFiltro('4', Categoria.Istituto, 'In Uscita', false),
-        new VoceFiltro('5', Categoria.InViaggio, 'In Viaggio', false),
-        new VoceFiltro('7', Categoria.SulPosto, 'Sul Posto', false),
+        new VoceFiltro('4', Categoria.InViaggio, 'In Viaggio', false),
+        new VoceFiltro('6', Categoria.SulPosto, 'Sul Posto', false),
         new VoceFiltro('2', Categoria.InRientro, 'In Rientro', false),
         new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
-        new VoceFiltro('6', Categoria.Istituto, 'Istituto', false),
+        new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
     ],
     loadingMezziInServizio: false
 };
@@ -233,7 +232,7 @@ export class MezziInServizioState {
     }
 
     @Action(ClearListaMezziInServizio)
-    clearListaMezziInServizio({ patchState, dispatch }: StateContext<MezziInServizioStateModel>): void {
+    clearListaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>): void {
         patchState({
             mezziInServizio: MezziInServizioStateDefaults.mezziInServizio,
             mezziInServizioFiltered: MezziInServizioStateDefaults.mezziInServizioFiltered,
