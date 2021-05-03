@@ -972,7 +972,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return "X";
                 else if (eventoPresidiata)
                     return "P";
-                else if (eventoAssegnata)
+                else if (eventoAssegnata || eventoRiaperta || eventoInRientro || eventoRientrata)
                     return "A";
                 else if (eventoSospesa)
                     return "S";
@@ -985,6 +985,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
+
         public List<Partenza> lstPartenzeInCorso => Partenze?
             .Where(p => !p.PartenzaAnnullata)
             .Select(p => p.Partenza)
