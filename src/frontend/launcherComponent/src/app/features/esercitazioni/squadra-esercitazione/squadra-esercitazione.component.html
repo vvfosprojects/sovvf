@@ -1,0 +1,37 @@
+<li class="list-group-item border cursor-pointer px-2">
+    <div class="clearfix">
+        <div class="float-left mr-2">
+            <app-icona-stato [stato]="squadraEsercitazione.squadra.stato"></app-icona-stato>
+        </div>
+        <div class="float-left">
+            <div class="badge badge-info mx-1 py-1"
+                 [ngbPopover]="componenti"
+                 placement="right"
+                 triggers="mouseenter:mouseleave"
+                 style="vertical-align: text-bottom;">
+                <i class="fa fa-user mr-1"></i>
+                <ng-template [ngIf]="squadraEsercitazione.squadra.componenti?.length">
+                    <div class="d-inline-block">
+                        {{ squadraEsercitazione.squadra.componenti.length }}
+                    </div>
+                </ng-template>
+            </div>
+            <ng-template #componenti>
+                <div *ngFor="let c of squadraEsercitazione.squadra.componenti">
+                    <div class="badge badge-secondary mr-1">
+                        {{ c.descrizioneQualifica | truncate: 18 }}
+                    </div>
+                    <div class="d-inline-block">
+                        {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
+                    </div>
+                </div>
+            </ng-template>
+            <div class="d-inline-block font-weight-bolder mr-1">{{ squadraEsercitazione.squadra.nome }}</div>
+            <div class="d-inline-block">({{ squadraEsercitazione.squadra.turno }})</div>
+        </div>
+        <div class="float-right">
+            <label for="test" class="d-none">Test</label>
+            <input id="test" type="checkbox"/>
+        </div>
+    </div>
+</li>

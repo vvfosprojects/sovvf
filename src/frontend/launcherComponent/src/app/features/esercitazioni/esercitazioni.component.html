@@ -1,0 +1,85 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div class="col-12 col-md-9 mx-auto mb-2">
+            <h2>
+                <i class="fa fa-book"></i>
+                Esercitazioni
+            </h2>
+        </div>
+        <div class="col-12 col-md-9 mx-auto">
+            <div class="row">
+                <div class="col-3 px-0">
+                    <div class="card min-h-comp-esercitazioni">
+                        <app-partial-loader *ngIf="loadingListe || !squadreEsercitazione"></app-partial-loader>
+                        <div class="card-header clearfix px-3 py-1">
+                            <div class="float-left pt-2">
+                                <i class="fa fa-users mr-2"></i>
+                                Squadre
+                            </div>
+                            <div class="float-right w-50">
+                                <!-- TODO: ricerca squadre -->
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush min-h-comp">
+                                <li *ngIf="!squadreEsercitazione?.length"
+                                    class="list-group-item border">
+                                    <span class="text-muted">Nessun risultato...</span>
+                                </li>
+                                <ng-template [ngIf]="squadreEsercitazione?.length">
+                                    <div *ngFor="let sE of squadreEsercitazione">
+                                        <app-squadra-esercitazione [squadraEsercitazione]="sE">
+                                        </app-squadra-esercitazione>
+                                    </div>
+                                </ng-template>
+                            </ul>
+                        </div>
+                        <!-- TODO: paginazione squadre -->
+                        <div *ngIf="false" class="row">
+                            <div class="col"
+                                 style="display: flex; place-content: center; margin-top: 10px;">
+                                <!-- TODO: inserire componente paginazione@ -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 pr-0">
+                    <div class="card mx-auto min-h-comp-esercitazioni">
+                        <app-partial-loader *ngIf="loadingListe || !mezziEsercitazione"></app-partial-loader>
+                        <div class="card-header clearfix px-3 py-1">
+                            <div class="float-left pt-2">
+                                <i class="fa fa-truck mr-2"></i>
+                                Mezzi
+                            </div>
+                            <div class="float-right"
+                                 style="width: 35%">
+                                <!-- TODO: ricerca mezzi -->
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="list-group list-group-flush min-h-comp">
+                                <li *ngIf="!mezziEsercitazione?.length"
+                                    class="list-group-item border">
+                                    <span class="text-muted">Nessun risultato...</span>
+                                </li>
+                                <ng-template [ngIf]="mezziEsercitazione?.length">
+                                    <div *ngFor="let mE of mezziEsercitazione">
+                                        <app-mezzo-esercitazione [mezzoEsercitazione]="mE">
+                                        </app-mezzo-esercitazione>
+                                    </div>
+                                </ng-template>
+                            </ul>
+                        </div>
+                        <!-- TODO: paginazione mezzi -->
+                        <div *ngIf="false" class="row">
+                            <div class="col"
+                                 style="display: flex; place-content: center; margin-top: 10px;">
+                                <!-- TODO: inserire componente paginazione -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

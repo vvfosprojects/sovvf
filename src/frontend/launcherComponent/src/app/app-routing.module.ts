@@ -18,6 +18,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.Esercitazioni,
+        loadChildren: () => import('./features/esercitazioni/esercitazioni.module').then(m => m.EsercitazioniModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.Autorimessa,
         loadChildren: () => import('./features/autorimessa/autorimessa.module').then(m => m.AutorimessaModule),
         canActivate: [AuthGuard],

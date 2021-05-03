@@ -6,13 +6,14 @@ import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
-import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
+import { SetCurrentUrl, SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -49,7 +50,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Home creato');
-        this.store.dispatch(new GetDataHome());
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.Home),
+            new GetDataHome()
+        ]);
     }
 
     ngOnDestroy(): void {
