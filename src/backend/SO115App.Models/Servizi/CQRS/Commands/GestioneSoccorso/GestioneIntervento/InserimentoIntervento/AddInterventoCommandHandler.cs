@@ -101,7 +101,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c.ToString()).ToList(),
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
-                ChiamataUrgente = command.Chiamata.ChiamataUrgente
+                ChiamataUrgente = command.Chiamata.ChiamataUrgente,
+                Esercitazione = command.Chiamata.Esercitazione
             };
 
             if (command.Chiamata.Tags != null)

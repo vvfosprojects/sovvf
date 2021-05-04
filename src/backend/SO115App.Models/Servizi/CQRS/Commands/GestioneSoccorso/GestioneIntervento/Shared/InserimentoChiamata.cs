@@ -198,5 +198,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   Indica se la chiamata è stata definita urgente durante il triage
         /// </summary>
         public bool ChiamataUrgente { get; set; }
+
+        /// <summary>
+        ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
+        /// </summary>
+        public bool Esercitazione { get; set; } = false;
     }
 }
