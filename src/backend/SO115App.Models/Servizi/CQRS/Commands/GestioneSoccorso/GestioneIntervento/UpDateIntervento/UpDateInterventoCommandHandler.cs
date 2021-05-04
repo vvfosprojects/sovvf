@@ -81,6 +81,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null;
             richiesta.TriageSummary = command.Chiamata.TriageSummary;
             richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
+            richiesta.Esercitazione = command.Chiamata.Esercitazione;
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
