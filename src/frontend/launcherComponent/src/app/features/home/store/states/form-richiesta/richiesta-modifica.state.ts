@@ -200,6 +200,7 @@ export class RichiestaModificaState {
                     f.codSOCompetente,
                     f.listaEnti,
                     f.urgenza,
+                    f.esercitazione,
                     triageSummary?.length ? triageSummary : null
                 );
             }
