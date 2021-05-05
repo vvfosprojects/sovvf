@@ -40,7 +40,7 @@
             </button>
         </div>
         <!-- TRASFERIMENTO CHIAMATA -->
-        <div class="clearfix w-25" [class.box-azione]="!richiesta.codiceRichiesta"  style="height: fit-content">
+        <div class="clearfix box-azione w-25"  style="height: fit-content">
             <span *ngIf="!richiesta.codiceRichiesta">
                 <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
                                         style="height: 50px; font-size: 25px; width: 50px;">
@@ -54,6 +54,18 @@
                         (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">Esegui
                 </button>
             </span>
+            <span *ngIf="richiesta.codiceRichiesta">
+                <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
+                        style="height: 50px; font-size: 25px; width: 50px;">
+                    <i class="fa fa-fw fa-print"></i></button>
+                <div class="my-1 px-3" style="height: 30px"> Stampa {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
+                <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
+                <button class="btn btn-outline-secondary btn-no-hover"
+                        style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                        (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">Esegui
+                </button>
+            </span>
+
         </div>
     </div>
 
@@ -104,6 +116,21 @@
             <button class="btn btn-outline-secondary btn-no-hover"
                     style="width: 93%; margin-bottom: 10px; margin-left: 10px"
                     (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">Cambia Stato
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="!richiesta.codiceRichiesta" class="row justify-content-center mt-3">
+        <!-- STAMPA PDF -->
+        <div class="clearfix box-azione w-25" style="height: fit-content">
+            <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fa fa-fw fa-print"></i></button>
+            <div class="my-1 px-3" style="height: 30px"> Stampa {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">Esegui
             </button>
         </div>
     </div>
