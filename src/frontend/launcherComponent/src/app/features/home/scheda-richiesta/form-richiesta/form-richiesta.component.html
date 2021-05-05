@@ -314,7 +314,13 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="wrapper-grid my-2"
+                    <div class="wrapper-grid mt-1">
+                        <app-checkbox
+                                [checkboxState]="getCheckboxEsercitazioneState()"
+                                (checkbox)="setEsercitazioneValue()">
+                        </app-checkbox>
+                    </div>
+                    <div class="wrapper-grid mt-1"
                          ngbTooltip="Necessaria la compilazione dei campi obbligatori"
                          [disableTooltip]="!formIsInvalid()">
                         <app-checkbox
@@ -322,7 +328,7 @@
                                 (click)="setUrgenza()">
                         </app-checkbox>
                     </div>
-                    <div class="wrapper-grid">
+                    <div class="wrapper-grid mt-1">
                         <span class="mb-0 h5">Priorità</span>
                         <span class="pl-2"
                               style="font-size: 18px;">

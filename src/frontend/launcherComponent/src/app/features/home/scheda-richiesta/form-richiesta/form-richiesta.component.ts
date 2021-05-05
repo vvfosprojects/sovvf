@@ -84,7 +84,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
 
-    listaEnti: Ente[];
     scorciatoieTelefono = {
         112: false,
         113: false,
@@ -206,7 +205,8 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             zoneEmergenza: [null],
             prioritaRichiesta: [3, Validators.required],
             stato: [StatoRichiesta.Chiamata],
-            urgenza: [false]
+            urgenza: [false],
+            esercitazione: [false],
         });
     }
 
@@ -240,7 +240,8 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             zoneEmergenza: this.richiestaModifica.zoneEmergenza,
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
             stato: StatoRichiesta.Chiamata,
-            urgenza: this.richiestaModifica.chiamataUrgente
+            urgenza: this.richiestaModifica.chiamataUrgente,
+            esercitazione: this.richiestaModifica.esercitazione
         });
         this.f.codTipologia.disable();
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
@@ -519,11 +520,24 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         return { id, status, label, disabled };
     }
 
+    getCheckboxEsercitazioneState(): CheckboxInterface {
+        const id = 'check-chiamata-esercitazione';
+        const status = this.f.esercitazione.value;
+        const label = 'ESERCITAZIONE';
+        const disabled = !!(this.modifica && this.richiestaModifica);
+        return { id, status, label, disabled };
+    }
+
     setUrgenza(): void {
         if (this.checkSubmit() && !this.f.urgenza.value && !this.richiestaModifica) {
             this.f.urgenza.patchValue(true);
             this.onSubmit(AzioneChiamataEnum.MettiInCoda, { urgente: true });
         }
+    }
+
+    setEsercitazioneValue(): void {
+        const newUrgenzaValue = !this.f.esercitazione.value;
+        this.f.esercitazione.patchValue(newUrgenzaValue);
     }
 
     onInAttesa(): void {

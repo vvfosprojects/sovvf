@@ -49,6 +49,7 @@ export interface RichiestaForm {
     codSchedaContatto: string;
     listaEntiPresaInCarico: Ente[];
     urgenza: boolean;
+    esercitazione: boolean;
     codSOCompetente: string;
     sediAllertate: Sede[];
     codSOAllertate: string[];

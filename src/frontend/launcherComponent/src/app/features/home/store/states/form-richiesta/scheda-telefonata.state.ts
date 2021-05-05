@@ -333,6 +333,7 @@ export class SchedaTelefonataState {
                 f.codSOCompetente,
                 f.listaEnti,
                 f.urgenza || urgente,
+                f.esercitazione,
                 triageSummary?.length ? triageSummary : null
             );
         }

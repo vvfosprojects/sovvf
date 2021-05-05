@@ -191,6 +191,10 @@ export class SintesiRichiesta {
          */
         public chiamataUrgente?: boolean,
         /**
+         * richiesta creata per esercitazione
+         */
+        public esercitazione?: boolean,
+        /**
          * resoconto triage
          */
         public triageSummary?: TriageSummary[],
