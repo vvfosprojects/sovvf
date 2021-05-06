@@ -240,7 +240,7 @@ export class RichiestaModificaState {
     }
 
     @Action(ClearIndirizzo)
-    ClearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
+    clearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
         dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.richiestaForm',
             value: {

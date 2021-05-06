@@ -1,0 +1,37 @@
+<div class="h-100 bg-dark sidebar-border-right p-3">
+    <p class="h2">Menù</p>
+    <hr>
+    <app-operatore [user]="user"
+                   [ruoliUtenteLoggato]="ruoliUtenteLoggato"
+                   [url]="url"
+                   (logout)="onLogout()">
+    </app-operatore>
+    <hr class="mb-5">
+    <button class="btn btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.GestioneUtenti]"
+            [class.btn-nav-selected]="url === '/gestione-utenti'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="fa fa-users mr-1"></i>
+        Gestione Utenti
+    </button>
+    <button class="btn btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
+            [class.btn-nav-selected]="url === '/impostazioni-sede'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="fa fa-cogs mr-1"></i>
+        Impostazioni Sede
+    </button>
+    <button class="btn btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.Changelog]"
+            [class.btn-nav-selected]="url === '/changelog'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="fa fa-newspaper-o mr-1"></i>
+        Aggiornamenti
+    </button>
+    <hr class="mt-5">
+    <button class="btn btn-danger btn-block btn-no-hover"
+            (click)="toggleSidebar.emit(true)">
+        <i class="fa fa-arrow-left mr-1"></i>
+        Chiudi
+    </button>
+</div>

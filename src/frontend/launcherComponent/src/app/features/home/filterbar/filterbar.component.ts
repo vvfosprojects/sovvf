@@ -10,7 +10,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
+import { ChangeView, ToggleChiamata, ToggleMezziInServizio, ToggleSchedeContatto } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
@@ -25,6 +25,9 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
+import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-filterbar',
@@ -73,6 +76,7 @@ export class FilterbarComponent {
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
@@ -158,6 +162,17 @@ export class FilterbarComponent {
 
     toggleChiamata(): void {
         this.store.dispatch(new ToggleChiamata());
+    }
+
+    toggleSchedeContatto(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    returnToHome(): void {
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home])
+        ]);
     }
 
     switchView(event: AppFeatures): void {
