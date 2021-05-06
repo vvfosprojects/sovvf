@@ -1,6 +1,5 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        <!-- <i class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> -->
         {{ titolo | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
@@ -19,8 +18,8 @@
         </div>
     </ng-template>
 </div>
-<div class="modal-footer">
-    <button *ngFor="let bottone of bottoni" type="button" class="btn  btn-lg btn-{{bottone.colore}} btn-no-hover"
+<div class="modal-footer" style="place-content: space-between;">
+    <button *ngFor="let bottone of bottoni.reverse()" type="button" class="btn  btn-lg btn-{{bottone.colore}} btn-no-hover"
             style="font-weight:600" (click)="modal.close(bottone.type)">
         {{ bottone.descrizione | uppercase }}
     </button>
