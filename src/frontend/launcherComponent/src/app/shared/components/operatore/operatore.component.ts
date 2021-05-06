@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Ruolo, Utente } from '../../../shared/model/utente.model';
-import { NotificaInterface } from '../../../shared/interface/notifica.interface';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
+import { Ruolo, Utente } from '../../model/utente.model';
+import { RoutesPath } from '../../enum/routes-path.enum';
 
 @Component({
     selector: 'app-operatore',
@@ -14,15 +13,7 @@ export class OperatoreComponent {
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
     @Input() url: string;
-    @Input() listaNotifiche: NotificaInterface[];
-    @Input() nuoveNotifiche: number;
-
-    @Output() notificheLette: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() logout = new EventEmitter();
 
     RoutesPath = RoutesPath;
-
-    setNotificheLette(): void {
-        this.notificheLette.emit();
-    }
 }

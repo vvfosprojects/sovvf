@@ -17,13 +17,18 @@ import { SetAvailHeight, SetContentHeight, SetInnerWidth } from './shared/store/
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
-import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
+import { Logout, SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { GetDataNavbar, ToggleSidebarOpened } from './features/navbar/store/actions/navbar.actions';
+import { NavbarState } from './features/navbar/store/states/navbar.state';
+import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
+import { NotificaInterface } from './shared/interface/notifica.interface';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-root',
@@ -60,6 +65,15 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     user: Utente;
 
+    @Select(RouterState.url) url$: Observable<string>;
+    url: string;
+
+    @Select(NotificheState.listaNotifiche) listaNotifiche$: Observable<NotificaInterface[]>;
+    @Select(NotificheState.nuoveNotifiche) nuoveNotifiche$: Observable<number>;
+
+    @Select(NavbarState.sidebarOpened) sidebarOpened$: Observable<boolean>;
+    sidebarOpened: boolean;
+
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
 
@@ -80,6 +94,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2,
                 private ngbAccordionconfig: NgbAccordionConfig) {
+        this.getUrl();
+        this.getSidebarOpened();
         this.getNightMode();
         this.getDoubleMonitorMode();
         this.getRouterEvents();
@@ -89,7 +105,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.initSubscription();
         ngbAccordionconfig.type = 'dark';
     }
-
 
     ngOnInit(): void {
         this.versionCheckService.initVersionCheck(3);
@@ -106,11 +121,35 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
+    getUrl(): void {
+        this.subscription.add(
+            this.url$.subscribe((url: string) => {
+                this.url = url;
+                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
+                    this.store.dispatch(new GetDataNavbar());
+                }
+                this.store.dispatch(new ToggleSidebarOpened(false));
+            })
+        );
+    }
+
     getRouterEvents(): void {
         this.subscription.add(
             this.router.events.subscribe((val) => {
                 if (val instanceof NavigationEnd) {
                     this.currentUrl = val.urlAfterRedirects.slice(1);
+                }
+            })
+        );
+    }
+
+    getSidebarOpened(): void {
+        this.subscription.add(
+            this.sidebarOpened$.subscribe((sidebarOpened: boolean) => {
+                if (sidebarOpened) {
+                    this.sidebarOpened = sidebarOpened;
+                } else {
+                    this.sidebarOpened = false;
                 }
             })
         );
@@ -154,6 +193,15 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     getImpostazioniLocalStorage(): void {
         this.store.dispatch(new GetImpostazioniLocalStorage());
+    }
+
+    toggleSidebar(): void {
+        this.store.dispatch(new ToggleSidebarOpened());
+    }
+
+    onLogout(): void {
+        const homeUrl = this.store.selectSnapshot(RouterState.url);
+        this.store.dispatch(new Logout(homeUrl));
     }
 
     private initSubscription(): void {

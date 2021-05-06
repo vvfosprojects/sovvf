@@ -23,6 +23,8 @@ import { Ente } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -43,7 +45,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     statoRichiestaString: Array<StatoRichiestaActions>;
 
 
-    constructor(private modal: NgbActiveModal, private store: Store, private modalService: NgbModal) {
+    constructor(private modal: NgbActiveModal, private store: Store, private modalService: NgbModal, private stampaRichiestaService: StampaRichiestaService) {
         this.getUtente();
     }
 
@@ -187,6 +189,42 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     break;
             }
         });
+    }
+
+    onStampaPDF(): void {
+        let modalConfermaReset;
+        modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+        modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
+        modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
+        modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
+        modalConfermaReset.componentInstance.messaggioAttenzione = 'Si verrà reinderizzati alla pagina di stampa.';
+        modalConfermaReset.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        modalConfermaReset.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        const obj = {
+                            idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+                        };
+                        this.stampaRichiestaService.requestStampaRichiesta(obj).subscribe((data: string) => {
+                            console.log('***Data stampaRichiestaService: ', data);
+                            window.open(data);
+                        }, error => console.log('Errore Stampa Richiesta'));
+                        break;
+                    case 'ko':
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     onModificaEntiIntervenuti(): void {

@@ -69,6 +69,9 @@ import { TriageSummaryModalComponent } from './modal/triage-summary-modal/triage
 import { IconaStatoComponent } from './components/icona-stato/icona-stato.component';
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { OperatoreComponent } from './components/operatore/operatore.component';
+import { RouterModule } from '@angular/router';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -131,7 +134,9 @@ const COMPONENTS = [
     TriageSummaryModalComponent,
     IconaStatoComponent,
     VersioneComponent,
-    TipologiaSintesiRichiestaComponent
+    TipologiaSintesiRichiestaComponent,
+    OperatoreComponent,
+    SidebarComponent
 ];
 const MODULES = [
     PipeModule
@@ -140,6 +145,7 @@ const MODULES = [
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         ReactiveFormsModule,
         NgbModule,
         FormsModule,
