@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoriSchedeContatto } from '../../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',

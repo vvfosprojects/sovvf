@@ -4,6 +4,8 @@ import { environment } from '../environments/environment';
  * Component
  */
 import { AppComponent } from './app.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 /**
  * Module
  */
@@ -17,12 +19,15 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { SidebarModule } from 'ng-sidebar';
 /**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 /**
  * State
  */
@@ -50,6 +55,8 @@ import { NewVersionState } from './shared/store/states/nuova-versione/nuova-vers
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
+import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
+import { DistaccamentiState } from './shared/store/states/distaccamenti/distaccamenti.state';
 /**
  * Route
  */
@@ -65,12 +72,6 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
-import { FooterComponent } from './shared/components/footer/footer.component';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
-import { DistaccamentiState } from './shared/store/states/distaccamenti/distaccamenti.state';
 
 @NgModule({
     declarations: [
@@ -92,6 +93,7 @@ import { DistaccamentiState } from './shared/store/states/distaccamenti/distacca
         NgProgressHttpModule,
         SharedModule,
         NavbarModule,
+        SidebarModule,
         NgxUiLoaderModule.forRoot({}),
         ToastrModule.forRoot({
             positionClass: 'toast-bottom-center',

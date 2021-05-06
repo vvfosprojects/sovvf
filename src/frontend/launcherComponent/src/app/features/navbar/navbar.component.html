@@ -7,6 +7,9 @@
                 <div class="clearfix">
                     <!-- Bottoni Sinistra -->
                     <div class="float-left mr-5">
+                        <button class="btn btn-light mr-2" (click)="toggleSidebar.emit()">
+                            <i class="fa fa-bars"></i>
+                        </button>
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
                                 placement="right"
@@ -24,10 +27,6 @@
                                 (click)="toggleMezziInSerivizo()">
                             <i class="fa fa-truck"></i>
                         </button>
-                        <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
-                                                   [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
-                                                   (toggle)="toggleSchedeContatto()">
-                        </app-tasto-schede-contatto>
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Coda Chiamate"
                                 placement="right"
@@ -60,43 +59,24 @@
                 <div class="clearfix">
                     <!-- Operatore e Bottono Destra -->
                     <div class="float-right">
-                        <button class="btn btn-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Trasferimenti Chiamate"
                                 [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
                                 [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-exchange"></i>
                         </button>
-                        <button class="btn btn-light mr-2" ngbTooltip="Visualizza Rubrica Enti"
+                        <button class="btn btn-light"
+                                ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
                                 [class.btn-nav-selected]="url === '/rubrica' || url === '/rubrica-personale'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
                             <i class="fa fa-address-book"></i>
                         </button>
-                        <button class="btn btn-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
-                                [routerLink]="['/' + RoutesPath.GestioneUtenti]"
-                                [class.btn-nav-selected]="url === '/gestione-utenti'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-users"></i>
-                        </button>
-                        <button class="btn btn-light mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
-                                [routerLink]="['/' + RoutesPath.Changelog]"
-                                [class.btn-nav-selected]="url === '/changelog'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-newspaper-o"></i>
-                        </button>
-                        <button class="btn btn-light" ngbTooltip="Visualizza Impostazioni Sede"
-                                [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
-                                [class.btn-nav-selected]="url === '/impostazioni-sede'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-cogs"></i>
-                        </button>
-                        <app-operatore [user]="user"
-                                       [ruoliUtenteLoggato]="ruoliUtenteLoggato"
-                                       [url]="url$ | async"
-                                       [listaNotifiche]="listaNotifiche$ | async"
+                        <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
                                        [nuoveNotifiche]="nuoveNotifiche$ | async"
-                                       (notificheLette)="setNotificheLette()"
-                                       (logout)="logout()"></app-operatore>
+                                       (notificheLette)="setNotificheLette()">
+                        </app-notifiche>
                     </div>
                 </div>
             </div>

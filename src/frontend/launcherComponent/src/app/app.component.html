@@ -1,15 +1,34 @@
 <ng-progress [spinner]="false"></ng-progress>
-<div ngxUiLoaderBlurred>
-    <div #contentElement>
-        <app-navbar [user]="user"
-                    [nightMode]="(nightMode$ | async)"
-                    [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
-                    [colorButtonView]="colorButton$ | async"
-                    [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"></app-navbar>
-        <router-outlet></router-outlet>
-        <app-footer></app-footer>
+<ng-sidebar-container>
+    <!-- Sidebar -->
+    <ng-sidebar [(opened)]="sidebarOpened">
+        <app-sidebar [user]="user"
+                     [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
+                     [url]="url"
+                     (toggleSidebar)="toggleSidebar()"
+                     (logout)="onLogout()">
+        </app-sidebar>
+    </ng-sidebar>
+
+    <!-- Page content -->
+    <div ng-sidebar-content>
+        <div ngxUiLoaderBlurred>
+            <div #contentElement>
+                <app-navbar [user]="user"
+                            [nightMode]="(nightMode$ | async)"
+                            [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
+                            [colorButtonView]="colorButton$ | async"
+                            [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"
+                            [sidebarOpened]="sidebarOpened"
+                            (toggleSidebar)="toggleSidebar()">
+                </app-navbar>
+                <router-outlet></router-outlet>
+                <app-footer></app-footer>
+            </div>
+        </div>
     </div>
-</div>
+</ng-sidebar-container>
+
 <ngx-ui-loader [hasProgressBar]="ngxLoaderConfiguration.hasProgressBar"
                [overlayColor]="ngxLoaderConfiguration.overlayColor"
                [logoUrl]="ngxLoaderConfiguration.logoUrl"
@@ -18,7 +37,7 @@
                [fgsColor]="ngxLoaderConfiguration.fgsColor"
                [fgsSize]="ngxLoaderConfiguration.fgsSize"
                [fgsPosition]="ngxLoaderConfiguration.fgsPosition"
-               [gap]="ngxLoaderConfiguration.gap"
+               [gap]="+ngxLoaderConfiguration.gap"
                [text]="ngxLoaderConfiguration.text"
                [textColor]="ngxLoaderConfiguration.textColor"
                [textPosition]="ngxLoaderConfiguration.textPosition">

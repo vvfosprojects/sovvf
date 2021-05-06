@@ -12,12 +12,10 @@ import { TurnoExtraServiceFake } from '../../core/service/turno-service/turno-ex
 /**
  * Component
  */
-import { OperatoreComponent } from './operatore/operatore.component';
 import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
-import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
 /**
  * Module
  */
@@ -39,26 +37,23 @@ import { SediTreeviewI18n } from '../../shared/store/states/sedi-treeview/sedi-t
     imports: [
         CommonModule,
         NgbModule,
-        SharedModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
         FormsModule,
         RouterModule,
+        SharedModule,
         NgxsModule.forFeature(
             [
                 NavbarState,
                 TurnoState
             ]
         ),
-        SharedModule,
     ],
     declarations: [
         NavbarComponent,
         TurnoComponent,
         ClockComponent,
-        OperatoreComponent,
-        UnitaOperativaComponent,
-        TastoSchedeContattoComponent
+        UnitaOperativaComponent
     ],
     exports: [NavbarComponent],
     providers: [

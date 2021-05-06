@@ -1,0 +1,18 @@
+<ng-container *ngIf="user">
+    <button class="btn btn-block btn-light btn-no-hover"
+            [routerLink]="['/' + RoutesPath.Impostazioni]"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']"
+            [class.btn-impostazioni-selected]="url === '/impostazioni'">
+        <i class="fa fa-user"></i>
+        {{user.nome}} {{user.cognome}}
+    </button>
+</ng-container>
+<ng-container *ngIf="user">
+    <button class="btn btn-block btn-secondary btn-no-hover"
+            ngbTooltip="Disconnettiti"
+            placement="bottom"
+            (click)="logout.emit()">
+        <i class="fa fa-sign-out"></i>
+        Disconnettiti
+    </button>
+</ng-container>
