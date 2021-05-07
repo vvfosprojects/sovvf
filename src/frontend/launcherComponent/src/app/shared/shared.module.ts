@@ -70,6 +70,9 @@ import { IconaStatoComponent } from './components/icona-stato/icona-stato.compon
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
 import { RiepilogoInterventiModalComponent } from './modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { OperatoreComponent } from './components/operatore/operatore.component';
+import { RouterModule } from '@angular/router';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -133,6 +136,9 @@ const COMPONENTS = [
     IconaStatoComponent,
     VersioneComponent,
     TipologiaSintesiRichiestaComponent,
+    OperatoreComponent,
+    SidebarComponent,
+    TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent
 ];
 const MODULES = [
@@ -142,6 +148,7 @@ const MODULES = [
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         ReactiveFormsModule,
         NgbModule,
         FormsModule,

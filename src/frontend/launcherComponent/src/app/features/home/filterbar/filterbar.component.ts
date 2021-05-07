@@ -31,6 +31,9 @@ import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { RiepilogoInterventiModalComponent } from '../../../shared/modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
+import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-filterbar',
@@ -79,6 +82,7 @@ export class FilterbarComponent {
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
@@ -187,6 +191,17 @@ export class FilterbarComponent {
 
     toggleChiamata(): void {
         this.store.dispatch(new ToggleChiamata());
+    }
+
+    toggleSchedeContatto(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    returnToHome(): void {
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home])
+        ]);
     }
 
     switchView(event: AppFeatures): void {

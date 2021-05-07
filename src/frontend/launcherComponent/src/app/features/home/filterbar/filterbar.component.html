@@ -2,11 +2,22 @@
     <div class="float-left">
         <div class="clearfix">
             <div class="float-left mr-4">
-                <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
-                                    [richiestaModifica]="richiestaModifica$ | async"
-                                    [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
-                                    (startChiamata)="toggleChiamata()">
-                </app-tasto-chiamata>
+                <div class="clearfix">
+                    <div class="float-left mr-2">
+                        <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
+                                            [richiestaModifica]="richiestaModifica$ | async"
+                                            [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
+                                            (startChiamata)="toggleChiamata()">
+                        </app-tasto-chiamata>
+                    </div>
+                    <div class="float-left">
+                        <app-tasto-schede-contatto
+                                [active]="schedeContattoStatus$ | async"
+                                [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
+                                (toggle)="toggleSchedeContatto()">
+                        </app-tasto-schede-contatto>
+                    </div>
+                </div>
             </div>
             <div class="float-left mr-2">
                 <button class="btn btn-primary" (click)="onRiepilogoInterventi()"
