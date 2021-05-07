@@ -24,7 +24,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             XFont font = new XFont("Verdana", 50);
 
-            gfx.DrawString("Hello, World!", font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
+            gfx.DrawString("Hello, World!", font, XBrushes.Black, 0.0, 0.0, XStringFormats.Center);
         }
 
         public void salva()
