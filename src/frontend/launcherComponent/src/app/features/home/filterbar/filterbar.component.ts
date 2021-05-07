@@ -14,7 +14,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
+import { ChangeView, ToggleChiamata, ToggleMezziInServizio, ToggleSchedeContatto } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
