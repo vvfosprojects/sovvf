@@ -2,7 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import {
+    ClearFiltroSelezionatoRichieste,
+    ResetFiltriSelezionatiRichieste,
+    SetFiltroSelezionatoRichieste,
+} from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
@@ -25,6 +29,8 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { RiepilogoInterventiModalComponent } from '../../../shared/modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
 
 @Component({
     selector: 'app-filterbar',
@@ -93,7 +99,7 @@ export class FilterbarComponent {
 
     permessiFeature = PermissionFeatures;
 
-    constructor(private store: Store) {
+    constructor(private store: Store,  private modalService: NgbModal) {
     }
 
     /**
@@ -125,6 +131,29 @@ export class FilterbarComponent {
             placeholder = 'Che targa vuoi cercare?';
         }
         return placeholder;
+    }
+
+    /**
+     * Stampa Riepilogo Interventi
+     */
+    onRiepilogoInterventi(): void {
+        const modalOptions = {
+                windowClass: '',
+                backdrop: 'static',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                keyboard: false,
+                size: 'lg',
+            } as NgbModalOptions;
+        const modal = this.modalService.open(RiepilogoInterventiModalComponent, modalOptions);
+        modal.result.then((res: any) => {
+            switch (res.status) {
+                case 'ok':
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     /**

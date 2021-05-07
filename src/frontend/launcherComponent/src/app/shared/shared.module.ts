@@ -69,6 +69,7 @@ import { TriageSummaryModalComponent } from './modal/triage-summary-modal/triage
 import { IconaStatoComponent } from './components/icona-stato/icona-stato.component';
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
+import { RiepilogoInterventiModalComponent } from './modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -131,7 +132,8 @@ const COMPONENTS = [
     TriageSummaryModalComponent,
     IconaStatoComponent,
     VersioneComponent,
-    TipologiaSintesiRichiestaComponent
+    TipologiaSintesiRichiestaComponent,
+    RiepilogoInterventiModalComponent
 ];
 const MODULES = [
     PipeModule

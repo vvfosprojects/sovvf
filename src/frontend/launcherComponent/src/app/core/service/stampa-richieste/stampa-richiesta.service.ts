@@ -15,8 +15,7 @@ export class StampaRichiestaService {
     constructor(private http: HttpClient) {
     }
 
-    requestStampaRichiesta(obj: any): Observable<any> {
-        console.log('***request che mandiamo: ', obj);
-        return this.http.post<any>(API_STAMPA_RICHIESTA + '/Id ', obj);
+    getStampaRichiesta(obj: any): Observable<any> {
+        return this.http.get<any>(API_STAMPA_RICHIESTA + '?codice=' + obj.idRichiesta);
     }
 }
