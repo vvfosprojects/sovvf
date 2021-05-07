@@ -27,7 +27,7 @@
                            [loading]="!distaccamenti"
                            (change)="onPatchSedi($event)"
                            (clear)="onClearSedi()"
-                           placeholder="Seleziona Distaccamento">
+                           placeholder="Seleziona Comando">
                     <ng-template ng-option-tmp let-item="item">
                         <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>
                         {{ item.descrizione }}

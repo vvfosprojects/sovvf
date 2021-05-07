@@ -69,6 +69,7 @@ import { TriageSummaryModalComponent } from './modal/triage-summary-modal/triage
 import { IconaStatoComponent } from './components/icona-stato/icona-stato.component';
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
+import { RiepilogoInterventiModalComponent } from './modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
@@ -136,7 +137,9 @@ const COMPONENTS = [
     VersioneComponent,
     TipologiaSintesiRichiestaComponent,
     OperatoreComponent,
-    SidebarComponent
+    SidebarComponent,
+    TipologiaSintesiRichiestaComponent,
+    RiepilogoInterventiModalComponent
 ];
 const MODULES = [
     PipeModule
