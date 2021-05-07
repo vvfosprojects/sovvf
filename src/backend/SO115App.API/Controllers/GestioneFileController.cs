@@ -38,7 +38,11 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { message = e.GetBaseException().Message });
+                return BadRequest(new 
+                { 
+                    message = e.GetBaseException().Message,
+                    stacktrace = e.GetBaseException().StackTrace
+                });
             }
         }
     }

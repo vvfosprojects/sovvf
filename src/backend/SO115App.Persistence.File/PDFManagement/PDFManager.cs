@@ -8,14 +8,17 @@ namespace SO115App.Persistence.File.PDFManagement
     public class PDFManager
     {
         private readonly string _basePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        private string _fileName;
         private PdfDocument _document;
 
         private PDFManager() { }
-        public PDFManager(string filePath)
+        public PDFManager(string fileName)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            _document = PdfReader.Open(_basePath + "\\" + filePath, PdfDocumentOpenMode.Modify);
+            _document = PdfReader.Open(_basePath + "\\" + fileName, PdfDocumentOpenMode.Modify);
+
+            _fileName = fileName;
         }
 
         public void modifica()
@@ -31,11 +34,11 @@ namespace SO115App.Persistence.File.PDFManagement
 
         public string salva()
         {
-            var PDFPath = "C:\\users\\francescodangelis\\desktop\\PDFResults\\prova.pdf";
+            string fullPath = _basePath + _fileName;
 
-            _document.Save(PDFPath);
+            //_document.Save(fullPath);
 
-            return PDFPath;
+            return fullPath;
         }
     }
 }

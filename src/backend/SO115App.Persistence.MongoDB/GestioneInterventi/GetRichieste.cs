@@ -279,7 +279,7 @@ namespace SO115App.Persistence.MongoDB
 
         public string GetDettaglioByCodiceChiamata(string codiceChiamata)
         {
-            var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.Codice, codiceChiamata);
+            var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.Codice, codiceChiamata);
 
             var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
 
@@ -288,7 +288,7 @@ namespace SO115App.Persistence.MongoDB
 
         public string GetDettaglioByCodiceIntervento(string codiceIntervento)
         {
-            var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodRichiesta, codiceIntervento);
+            var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodRichiesta, codiceIntervento);
 
             var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
 

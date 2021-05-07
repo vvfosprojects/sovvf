@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.File\SO115App.Persistence.File.csproj" />
   </ItemGroup>
 
   <ItemGroup>

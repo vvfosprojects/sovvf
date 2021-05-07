@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Persistence.File.PDFManagement;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
@@ -14,6 +15,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
         public DettaglioRichiestaResult Handle(DettaglioRichiestaQuery query)
         {
+            //genero il file fake
+            string filename = $"dettaglio_richiesta_{query.Codice}";
+
+            var managr = new PDFManager(filename);
+
+            managr.salva();
+
+            //command vero e proprio
             string result;
 
             bool chiamata = query.Codice.Length == 17;
