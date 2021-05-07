@@ -37,11 +37,11 @@ namespace SO115App.Persistence.File.PDFManagement
 
         public string Salva()
         {
-            string fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName.ToString());
+            string fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName);
 
             _document.Save(fullPath);
 
-            return "http://localhost:31497/PublicFiles/DettagliChiamate/" + _fileName; 
+            return ( "http://localhost:31497/PublicFiles/DettagliChiamate/" + _fileName).Split(_fileName)[0]; 
         }
     }
 }
