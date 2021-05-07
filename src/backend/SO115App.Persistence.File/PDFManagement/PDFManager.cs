@@ -7,16 +7,18 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     public class PDFManager
     {
+        private readonly string _basePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         private PdfDocument _document;
 
         private PDFManager() { }
         public PDFManager(string filePath)
         {
-            _document = PdfReader.Open(filePath, PdfDocumentOpenMode.Modify);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            _document = PdfReader.Open(_basePath + "\\" + filePath, PdfDocumentOpenMode.Modify);
         }
 
-        public void prova()
+        public void modifica()
         {
             PdfPage page = _document.Pages[0];
 
@@ -27,9 +29,13 @@ namespace SO115App.Persistence.File.PDFManagement
             gfx.DrawString("Hello, World!", font, XBrushes.Black, 0.0, 0.0, XStringFormats.Center);
         }
 
-        public void salva()
+        public string salva()
         {
-            _document.Save("C:\\users\\francescodangelis\\desktop\\PDFResults\\prova.pdf");
+            var PDFPath = "C:\\users\\francescodangelis\\desktop\\PDFResults\\prova.pdf";
+
+            _document.Save(PDFPath);
+
+            return PDFPath;
         }
     }
 }
