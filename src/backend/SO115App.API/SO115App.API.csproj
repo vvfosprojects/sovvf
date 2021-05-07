@@ -32,6 +32,9 @@
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
     <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PublicFiles\DettagliChiamate\" />
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties />

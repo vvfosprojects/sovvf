@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
 
         List<string> GetListaCodiciSintesiRichiesta(string[] CodUoCompetenti);
 
-        string GetDettaglioByCodiceChiamata(string codiceChiamata);
-        string GetDettaglioByCodiceIntervento(string codiceIntervento);
+        //string GetDettaglioByCodiceChiamata(string codiceChiamata);
+        //string GetDettaglioByCodiceIntervento(string codiceIntervento);
     }
 }

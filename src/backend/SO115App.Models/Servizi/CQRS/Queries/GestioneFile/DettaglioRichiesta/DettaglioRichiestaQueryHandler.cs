@@ -15,30 +15,25 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
         public DettaglioRichiestaResult Handle(DettaglioRichiestaQuery query)
         {
-            //genero il file fake
-            string filename = $"dettaglio_richiesta_{query.Codice}";
+            bool chiamata = query.Codice.Length == 17;
+
+            //GENERO IL FILE
+            string filename = chiamata ? "dettaglio_chiamata_" : "dettaglio_intervento";
+            filename += query.Codice + ".pdf";
 
             var managr = new PDFManager(filename);
 
-            managr.salva();
+            string path = managr.Salva();
 
-            //command vero e proprio
-            string result;
-
-            bool chiamata = query.Codice.Length == 17;
-
+            //GENERO L'URL DEL FILE
             if (chiamata)
-            {
-                result = _getRichiesta.GetDettaglioByCodiceChiamata(query.Codice);
-            }
+                path += $"{filename}";
             else
-            {
-                result = _getRichiesta.GetDettaglioByCodiceIntervento(query.Codice);
-            }
+                path += $"{filename}";
 
             return new DettaglioRichiestaResult()
             {
-                Data = result
+                Data = path
             };
         }
     }
