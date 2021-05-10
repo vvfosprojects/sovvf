@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PublicFiles\DettagliChiamate\" />
+    <Folder Include="PublicFiles\DettagliInterventi\" />
   </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>

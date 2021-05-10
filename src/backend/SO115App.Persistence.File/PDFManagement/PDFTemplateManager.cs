@@ -26,33 +26,42 @@ namespace SO115App.Persistence.File.PDFManagement
 
         public void GenerateDocument(TemplateModelForm template, string fileName)
         {
-            _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
-
             _fileName = fileName;
 
             switch (template)
             {
-                case DettaglioChiamataModelForm model: 
+                case DettaglioChiamataModelForm model:
+                    _document = PdfReader.Open($"{_templateBasePath}\\DettaglioChiamata\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioCihamataPDF(model); break;
 
-                case DettaglioInterventoModelForm model: 
+                case DettaglioInterventoModelForm model:
+                    _document = PdfReader.Open($"{_templateBasePath}\\DettaglioIntervento\\dettaglio_intervento.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioRichiestaPDF(model); break;
 
-                case RiepilogoInterventiModelForm model:
-                    break;
+                //case RiepilogoInterventiModelForm model:
+                //    break;
             }
         }
-
+            
         public void SaveDocumentOnPublicFileFolder(TemplateModelForm template)
         {
-            string fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName);
+            string fullPath = null;
+
+            switch (template)
+            {
+                case DettaglioChiamataModelForm model:
+                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName); break;
+
+                case DettaglioInterventoModelForm model:
+                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliIntervento", _fileName); break;
+            }
 
             _document.Save(fullPath);
         }
 
         public string GetDocumentPath(string requestFolder)
         {
-            return $"http://localhost:31497/PublicFiles/{requestFolder}/{_fileName}".Split(_fileName)[0];
+            return $"http://localhost:31497/PublicFiles/{requestFolder}/{_fileName}";
         }
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)

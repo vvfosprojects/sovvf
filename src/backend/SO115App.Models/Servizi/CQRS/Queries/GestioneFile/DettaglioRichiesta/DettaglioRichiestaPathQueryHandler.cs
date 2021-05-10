@@ -39,40 +39,34 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
                 var form = new DettaglioChiamataModelForm()
                 {
-                    MyProperty = "",
-                    MyProperty2 = ""
+                    MyProperty1 = "prop1",
+                    MyProperty2 = "prop2"
                 };
 
                 _dettChiamataManagr.GenerateDocument(form, filename);
 
                 _dettChiamataManagr.SaveDocumentOnPublicFileFolder(form);
 
-                path = _dettChiamataManagr.GetDocumentPath(""); //TODO: RIEMPIRE STRING
+                path = _dettChiamataManagr.GetDocumentPath("DettagliChiamate");
             }
             else // intervento
             {
                 _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
 
-                filename = "dettaglio_intervento" + query.CodiceRichiesta + ".pdf";
+                filename = "dettaglio_intervento_" + query.CodiceRichiesta + ".pdf";
 
                 var form = new DettaglioInterventoModelForm()
                 {
-                    MyProperty1 = "",
-                    MyProperty2 = ""
+                    MyProperty1 = "prop1",
+                    MyProperty2 = "prop2"
                 };
 
                 _dettInterventoManagr.GenerateDocument(form, filename);
 
                 _dettInterventoManagr.SaveDocumentOnPublicFileFolder(form);
 
-                path = _dettInterventoManagr.GetDocumentPath("") + filename; //TODO:RIEPMPIRE STRING
+                path = _dettInterventoManagr.GetDocumentPath("DettagliInterventi") + filename;
             }
-
-            ////GENERO L'URL DEL FILE
-            //if (chiamata)
-            //    path += $"{filename}";
-            //else
-            //    path += $"{filename}";
 
             return new DettaglioRichiestaPathResult()
             {
