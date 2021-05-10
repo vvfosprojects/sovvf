@@ -45,6 +45,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+using SO115App.Persistence.File.PDFManagement;
 using System;
 using System.Linq;
 
@@ -61,7 +62,11 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
+            //SERVIZI GENERICI
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+
+            container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
+
             container.Register<IGetToken, GetToken>();
 
             #region Qualifiche

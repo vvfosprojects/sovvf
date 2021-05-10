@@ -43,7 +43,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     MyProperty2 = ""
                 };
 
-                _dettChiamataManagr.GenerateDocument(form);
+                _dettChiamataManagr.GenerateDocument(form, filename);
 
                 _dettChiamataManagr.SaveDocumentOnPublicFileFolder(form);
 
@@ -61,7 +61,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     MyProperty2 = ""
                 };
 
-                _dettInterventoManagr.GenerateDocument(form);
+                _dettInterventoManagr.GenerateDocument(form, filename);
 
                 _dettInterventoManagr.SaveDocumentOnPublicFileFolder(form);
 

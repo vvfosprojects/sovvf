@@ -3,37 +3,43 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using SO115App.Persistence.File.PDFManagement.Templates.DettaglioChiamata;
 using SO115App.Persistence.File.PDFManagement.Templates.DettaglioIntervento;
+using SO115App.Persistence.File.PDFManagement.Templates.RiepilogoInterventi;
 using System;
 using System.IO;
 using System.Text;
 
 namespace SO115App.Persistence.File.PDFManagement
 {
-    public class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
+    internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
         private readonly string _baseDocumentPath = Directory.GetCurrentDirectory();
         private readonly string _templateBasePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
-        private readonly string _fileName;
+        private string _fileName;
 
         private PdfDocument _document;
 
-        private PDFTemplateManager() { }
-        public PDFTemplateManager(string fileName)
+        //private PDFTemplateManager() { }
+        public PDFTemplateManager()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
 
+        public void GenerateDocument(TemplateModelForm template, string fileName)
+        {
             _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
 
             _fileName = fileName;
-        }
 
-        public void GenerateDocument(TemplateModelForm template)
-        {
             switch (template)
             {
-                case DettaglioChiamataModelForm model: generaDettaglioCihamataPDF(model); break;
+                case DettaglioChiamataModelForm model: 
+                    generaDettaglioCihamataPDF(model); break;
 
-                case DettaglioInterventoModelForm model: generaDettaglioRichiestaPDF(model); break;
+                case DettaglioInterventoModelForm model: 
+                    generaDettaglioRichiestaPDF(model); break;
+
+                case RiepilogoInterventiModelForm model:
+                    break;
             }
         }
 
@@ -46,7 +52,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
         public string GetDocumentPath(string requestFolder)
         {
-            return ($"http://localhost:31497/PublicFiles/{requestFolder}/{_fileName}").Split(_fileName)[0];
+            return $"http://localhost:31497/PublicFiles/{requestFolder}/{_fileName}".Split(_fileName)[0];
         }
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)

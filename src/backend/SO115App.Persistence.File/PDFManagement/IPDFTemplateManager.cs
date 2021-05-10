@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-
-namespace SO115App.Persistence.File.PDFManagement
+﻿namespace SO115App.Persistence.File.PDFManagement
 {
-    public interface IPDFTemplateManager<TemplateModel> where TemplateModel : class
+    public interface IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        void GenerateDocument(TemplateModel template);
-        void SaveDocumentOnPublicFileFolder(TemplateModel template);
+        void GenerateDocument(TemplateModelForm template, string fileName);
+        void SaveDocumentOnPublicFileFolder(TemplateModelForm template);
         string GetDocumentPath(string requestFolder);
     }
 }
