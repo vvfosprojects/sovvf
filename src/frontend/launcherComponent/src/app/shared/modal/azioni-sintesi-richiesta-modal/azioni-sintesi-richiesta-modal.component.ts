@@ -213,9 +213,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
                         };
-                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: string) => {
-                            // TODO: Inserire link
-                            window.open(data, '_blank', 'toolbar=0,location=0,menubar=0');
+                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((link: any) => {
+                            window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
                         }, error => console.log('Errore Stampa Richiesta'));
                         break;
                     case 'ko':
