@@ -7,6 +7,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
@@ -17,6 +18,7 @@ using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestionePOS;
 using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
@@ -38,7 +40,6 @@ namespace SO115App.CompositionRoot
             container.Register<ISetTipologie, SetTipologie>();
 
             container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
-
 
             #region Gestione richiesta di assistenza
 
@@ -283,6 +284,12 @@ namespace SO115App.CompositionRoot
             container.Register<IGetTriageData, GetTriageData>();
 
             #endregion Triage
+
+            #region POS
+
+            container.Register<ISavePos, SavePOS>();
+
+            #endregion POS
         }
     }
 }
