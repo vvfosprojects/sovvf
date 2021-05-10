@@ -42,6 +42,7 @@ export class SidebarComponent implements OnInit {
         modal.result.then((res: any) => {
             switch (res.status) {
                 case 'ok':
+                    console.log('***RUNNING RESULT ', res.result);
                     break;
                 case 'ko':
                     break;
