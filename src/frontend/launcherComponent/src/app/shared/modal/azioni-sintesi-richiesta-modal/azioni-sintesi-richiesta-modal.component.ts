@@ -201,7 +201,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
-        modalConfermaReset.componentInstance.messaggioAttenzione = 'Si verrà reinderizzati alla pagina di stampa.';
+        modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
         modalConfermaReset.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
