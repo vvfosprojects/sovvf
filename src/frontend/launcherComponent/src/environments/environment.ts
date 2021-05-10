@@ -46,7 +46,8 @@ export const environment = {
         distaccamenti: '/api/Distaccamenti',
         tipologie: '/api/GestioneTipologie',
         dettagliTipologie: '/api/GestioneDettaglioTipologia',
-        triage: '/api/GestioneTriage'
+        triage: '/api/GestioneTriage',
+        pos: '/api/GestionePos'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

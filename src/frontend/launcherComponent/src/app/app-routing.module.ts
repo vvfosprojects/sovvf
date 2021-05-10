@@ -71,6 +71,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.POS,
+        loadChildren: () => import('./features/pos/pos.module').then(m => m.PosModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.Impostazioni,
         loadChildren: () => import('./features/impostazioni/impostazioni.module').then(m => m.ImpostazioniModule),
         canActivate: [AuthGuard]
