@@ -18,4 +18,8 @@ export class StampaRichiestaService {
     getStampaRichiesta(obj: any): Observable<any> {
         return this.http.get<any>(API_STAMPA_RICHIESTA + '?codice=' + obj.idRichiesta);
     }
+
+    stampaRiepilogoInterventi(obj: any): Observable<any> {
+        return this.http.post<any>(API_STAMPA_RICHIESTA + '/RiepilogoInterventi', obj);
+    }
 }

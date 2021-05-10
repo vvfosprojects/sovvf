@@ -32,7 +32,7 @@
                         <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2" ngbTooltip="Fax"></i>
                         <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fa fa-phone pr-2"
                            ngbTooltip="Telefono"></i>
-                        <a href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
+                        <a class="numero-tel" href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
                     </span>
                 </div>
             </div>

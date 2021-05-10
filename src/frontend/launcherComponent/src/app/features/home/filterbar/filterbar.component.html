@@ -19,10 +19,6 @@
                     </div>
                 </div>
             </div>
-            <div class="float-left mr-2">
-                <button class="btn btn-primary" (click)="onRiepilogoInterventi()"
-                        ngbTooltip="Stampa Riepilogo Interventi" placement="top"><i class="fa fa-print"></i></button>
-            </div>
             <div class="float-left mr-3">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [filtri]="filtriRichieste$ | async"

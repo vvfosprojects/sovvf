@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NgbActiveModal, NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select } from '@ngxs/store';
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Observable, Subscription } from 'rxjs';
 import { Sede } from '../../model/sede.model';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 
 @Component({
     selector: 'app-riepilogo-interventi-modal',
@@ -44,7 +46,7 @@ export class RiepilogoInterventiModalComponent {
 
     subscription: Subscription = new Subscription();
 
-    constructor(private modal: NgbActiveModal, calendar: NgbCalendar) {
+    constructor(private modal: NgbActiveModal, calendar: NgbCalendar, private stampaRichiestaService: StampaRichiestaService, private modalService: NgbModal) {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
         this.todayDate = calendar.getToday();
@@ -102,10 +104,24 @@ export class RiepilogoInterventiModalComponent {
     }
 
     onCheckAltriFiltri(key: string): void {
-        if (this.altriFiltri[key]) {
-            this.altriFiltri[key] = false;
-        } else {
-            Object.keys(this.altriFiltri).forEach(x => this.altriFiltri[x] = x === key);
+        // LOGICA CHECKBOX CON SELEZIONE ALTERNATA
+        // if (this.altriFiltri[key]) {
+        //     this.altriFiltri[key] = false;
+        // } else {
+        //     Object.keys(this.altriFiltri).forEach(x => this.altriFiltri[x] = x === key);
+        // }
+        switch (key) {
+            case 'tipologia':
+                this.altriFiltri.tipologia = !this.altriFiltri.tipologia;
+                break;
+
+            case 'trasmessi':
+                this.altriFiltri.trasmessi = !this.altriFiltri.trasmessi;
+                break;
+
+            case 'interventi':
+                this.altriFiltri.interventi = !this.altriFiltri.interventi;
+                break;
         }
     }
 
@@ -122,28 +138,58 @@ export class RiepilogoInterventiModalComponent {
 
     chiudiRiepilogoInterventiModal(closeRes: string): void {
         if (closeRes === 'ok') {
-            this.modal.close({
-                status: 'ok',
-                result: {
-                    da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
-                    a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
-                    distaccamento: this.distaccamentoSelezionato ? this.distaccamentoSelezionato : null,
-                    turno: this.turnoSelezionato ? this.turnoSelezionato : null,
-                    squadra: this.squadraSelezionata ? this.squadraSelezionata : null,
-                    altriFiltri: {
-                        tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
-                        trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
-                        soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
-                    }
-                },
+            let modalConfermaReset;
+            modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
             });
+            modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
+            modalConfermaReset.componentInstance.titolo = 'STAMPA RIEPILOGO INTERVENTI';
+            modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
+            modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
+            modalConfermaReset.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+            ];
+            modalConfermaReset.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            const obj = {
+                                da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
+                                a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
+                                distaccamento: this.distaccamentoSelezionato ? this.distaccamentoSelezionato : null,
+                                turno: this.turnoSelezionato ? this.turnoSelezionato : null,
+                                squadra: this.squadraSelezionata ? this.squadraSelezionata : null,
+                                altriFiltri: {
+                                    tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
+                                    trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
+                                    soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
+                                }
+                            };
+                            this.modal.close({
+                                status: 'ok',
+                                result: obj
+                            });
+                            this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((link: any) => {
+                                window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
+                            }, error => console.log('Errore Stampa Richiesta'));
+                            break;
+                        case 'ko':
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
         } else {
             this.modal.close({ status: 'ko' });
         }
     }
 
     onPatchFiltriSquadre(event: any, tipologia: string): void {
-        console.log('***onPatchFiltriSquadre ', event);
+        // console.log('***onPatchFiltriSquadre ', event);
         switch (tipologia) {
             case 'distaccamenti':
                 if (event) {

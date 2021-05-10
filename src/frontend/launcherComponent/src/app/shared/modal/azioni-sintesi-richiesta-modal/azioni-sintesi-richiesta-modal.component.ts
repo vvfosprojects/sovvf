@@ -201,7 +201,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
-        modalConfermaReset.componentInstance.messaggioAttenzione = 'Si verrà reinderizzati alla pagina di stampa.';
+        modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
         modalConfermaReset.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
@@ -213,9 +213,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
                         };
-                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: string) => {
-                            // TODO: Inserire link
-                            window.open(data, '_blank', 'toolbar=0,location=0,menubar=0');
+                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((link: any) => {
+                            window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
                         }, error => console.log('Errore Stampa Richiesta'));
                         break;
                     case 'ko':

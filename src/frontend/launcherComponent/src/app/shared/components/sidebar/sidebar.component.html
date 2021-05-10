@@ -1,4 +1,4 @@
-<div class="h-100 bg-dark sidebar-border-right p-3">
+<div class="h-100 bg-sidebar sidebar-border-right p-3">
     <p class="h2">Menù</p>
     <hr>
     <app-operatore [user]="user"
@@ -27,6 +27,10 @@
             [routerLinkActive]="['btn-light-nav', 'text-dark']">
         <i class="fa fa-newspaper-o mr-1"></i>
         Aggiornamenti
+    </button>
+    <button class="btn btn-light btn-block btn-no-hover" (click)="onRiepilogoInterventi()">
+        <i class="fa fa-print"></i>
+        Riepilogo Interventi
     </button>
     <hr class="mt-5">
     <button class="btn btn-danger btn-block btn-no-hover"

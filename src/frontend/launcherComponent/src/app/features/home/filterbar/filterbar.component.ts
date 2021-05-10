@@ -29,8 +29,6 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { RiepilogoInterventiModalComponent } from '../../../shared/modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
@@ -103,7 +101,7 @@ export class FilterbarComponent {
 
     permessiFeature = PermissionFeatures;
 
-    constructor(private store: Store,  private modalService: NgbModal) {
+    constructor(private store: Store) {
     }
 
     /**
@@ -135,29 +133,6 @@ export class FilterbarComponent {
             placeholder = 'Che targa vuoi cercare?';
         }
         return placeholder;
-    }
-
-    /**
-     * Stampa Riepilogo Interventi
-     */
-    onRiepilogoInterventi(): void {
-        const modalOptions = {
-                windowClass: '',
-                backdrop: 'static',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                keyboard: false,
-                size: 'lg',
-            } as NgbModalOptions;
-        const modal = this.modalService.open(RiepilogoInterventiModalComponent, modalOptions);
-        modal.result.then((res: any) => {
-            switch (res.status) {
-                case 'ok':
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
     }
 
     /**
