@@ -7,20 +7,20 @@ using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
-    public class DettaglioRichiestaAuthorization
+    public class DettaglioRichiestaPathAuthorization
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         //private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public DettaglioRichiestaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public DettaglioRichiestaPathAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             //_getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(DettaglioRichiestaQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(DettaglioRichiestaPathQuery query)
         {
             string username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);

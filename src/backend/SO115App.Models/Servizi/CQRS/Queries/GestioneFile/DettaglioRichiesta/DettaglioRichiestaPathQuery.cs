@@ -4,7 +4,7 @@ using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
-    public class DettaglioRichiestaQuery : IQuery<DettaglioRichiestaResult>
+    public class DettaglioRichiestaPathQuery : IQuery<DettaglioRichiestaPathResult>
     {
         /// <summary>
         ///   Il filtro utilizzato per la ricerca delle voci in rubrica
@@ -17,8 +17,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         public string IdOperatore { get; set; }
 
         /// <summary>
-        /// E' il codice della chiamata o dell'intervento
+        /// E' il codice della chiamata o dell'intervento (Richiesta)
         /// </summary>
-        public string Codice { get; set; }
+        public string CodiceRichiesta { get; set; }
     }
 }

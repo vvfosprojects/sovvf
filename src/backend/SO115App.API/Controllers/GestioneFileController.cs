@@ -12,9 +12,9 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneFileController : ControllerBase
     {
-        private readonly IQueryHandler<DettaglioRichiestaQuery, DettaglioRichiestaResult> _dettaglioRichiestaQuery;
+        private readonly IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> _dettaglioRichiestaQuery;
 
-        public GestioneFileController(IQueryHandler<DettaglioRichiestaQuery, DettaglioRichiestaResult> dettaglioRichiestaQuery)
+        public GestioneFileController(IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
         {
             _dettaglioRichiestaQuery = dettaglioRichiestaQuery;
         }  
@@ -24,9 +24,9 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                var query = new DettaglioRichiestaQuery()
+                var query = new DettaglioRichiestaPathQuery()
                 {
-                    Codice = codice,
+                    CodiceRichiesta = codice,
 
                     IdOperatore = Request.Headers["IdUtente"],
                     IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)                

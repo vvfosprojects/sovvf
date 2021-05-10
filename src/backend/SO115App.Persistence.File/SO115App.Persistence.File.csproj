@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="PDFsharp" Version="1.50.5147" />
+    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 

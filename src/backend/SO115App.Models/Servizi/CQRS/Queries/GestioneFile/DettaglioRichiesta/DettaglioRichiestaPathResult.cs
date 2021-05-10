@@ -1,6 +1,6 @@
 ﻿namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
-    public class DettaglioRichiestaResult
+    public class DettaglioRichiestaPathResult
     {
         public string Data { get; set; }
     }
