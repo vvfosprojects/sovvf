@@ -1,7 +1,7 @@
 <ng-container *ngIf="user">
-    <button class="btn btn-block btn-light btn-no-hover"
+    <button class="btn btn-light btn-block border-secondary btn-no-hover"
             [routerLink]="['/' + RoutesPath.Impostazioni]"
-            [routerLinkActive]="['btn-light-nav', 'text-dark']"
+            [routerLinkActive]="['text-dark']"
             [class.btn-impostazioni-selected]="url === '/impostazioni'">
         <i class="fa fa-user"></i>
         {{user.nome}} {{user.cognome}}

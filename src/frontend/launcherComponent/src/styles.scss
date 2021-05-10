@@ -1191,6 +1191,12 @@ tag-input {
   border: $SO-badge-border $SO-danger;
 }
 
+.btn-sidebar-selected {
+  box-shadow: $SO-btn-nav-selected-shadow $SO-danger $SO-i;
+  color: $SO-danger $SO-i;
+  border: $SO-badge-border $SO-danger;
+}
+
 .btn-nav-selected:hover {
   transform: scale(1.1) $SO-i;
 }

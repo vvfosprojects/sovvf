@@ -20,9 +20,9 @@ export class TastoSchedeContattoComponent {
     }
 
     coloreTasto(): string {
-        let returnClass = 'btn-light';
+        let returnClass = '';
         if (this.active) {
-            returnClass = 'btn-light btn-nav-selected';
+            returnClass = 'btn-nav-selected';
         }
         if (this.disabled) {
             returnClass = 'btn-secondary cursor-not-allowed';
