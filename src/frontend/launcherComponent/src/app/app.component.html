@@ -1,7 +1,9 @@
 <ng-progress [spinner]="false"></ng-progress>
 <ng-sidebar-container>
     <!-- Sidebar -->
-    <ng-sidebar [(opened)]="sidebarOpened">
+    <ng-sidebar [(opened)]="sidebarOpened"
+                [closeOnClickOutside]="true"
+                (onClosed)="toggleSidebar(false)">
         <app-sidebar [user]="user"
                      [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                      [url]="url"

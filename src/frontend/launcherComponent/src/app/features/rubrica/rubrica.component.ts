@@ -49,7 +49,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.getRubrica(true);
     }
 
-
     ngOnInit(): void {
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Rubrica),

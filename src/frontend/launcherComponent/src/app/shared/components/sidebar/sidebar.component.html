@@ -22,6 +22,13 @@
         Impostazioni Sede
     </button>
     <button class="btn btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.POS]"
+            [class.btn-nav-selected]="url === '/pos'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="fa fa-list mr-1"></i>
+        P.O.S.
+    </button>
+    <button class="btn btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.Changelog]"
             [class.btn-nav-selected]="url === '/changelog'"
             [routerLinkActive]="['btn-light-nav', 'text-dark']">

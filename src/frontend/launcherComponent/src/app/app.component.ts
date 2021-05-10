@@ -195,8 +195,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.store.dispatch(new GetImpostazioniLocalStorage());
     }
 
-    toggleSidebar(): void {
-        this.store.dispatch(new ToggleSidebarOpened());
+    toggleSidebar(value?: boolean): void {
+        const val = value === false || value === true ? value : null;
+        this.store.dispatch(new ToggleSidebarOpened(val));
     }
 
     onLogout(): void {

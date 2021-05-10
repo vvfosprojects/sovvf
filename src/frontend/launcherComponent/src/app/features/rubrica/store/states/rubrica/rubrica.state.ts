@@ -6,7 +6,9 @@ import {
     SetRubrica,
     AddVoceRubrica,
     UpdateVoceRubrica,
-    DeleteVoceRubrica, StartLoadingRubrica, StopLoadingRubrica
+    DeleteVoceRubrica,
+    StartLoadingRubrica,
+    StopLoadingRubrica
 } from '../../actions/rubrica/rubrica.actions';
 import { RubricaService } from '../../../../../core/service/rubrica-service/rubrica.service';
 import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
