@@ -257,6 +257,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         });
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
+        modalModificaStatoFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
         modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
         modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
