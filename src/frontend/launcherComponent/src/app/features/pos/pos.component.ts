@@ -14,6 +14,7 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
 import { AddPos, ClearFormPos } from '../../shared/store/actions/pos-modal/pos-modal.actions';
+import { PosInterface } from '../../shared/interface/pos.interface';
 
 @Component({
     selector: 'app-pos',
@@ -22,7 +23,7 @@ import { AddPos, ClearFormPos } from '../../shared/store/actions/pos-modal/pos-m
 })
 export class PosComponent implements OnInit, OnDestroy {
 
-    @Select(PosState.pos) pos$: Observable<any[]>;
+    @Select(PosState.pos) pos$: Observable<PosInterface[]>;
     @Select(PosState.loadingPos) loading$: Observable<boolean>;
     @Select(RicercaPosState.ricerca) ricerca$: Observable<string>;
     ricerca: string;

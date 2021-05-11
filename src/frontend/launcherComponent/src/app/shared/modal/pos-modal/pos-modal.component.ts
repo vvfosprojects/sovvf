@@ -7,7 +7,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { environment } from '../../../../environments/environment';
 import { LSNAME } from '../../../core/settings/config';
-import { $e } from 'codelyzer/angular/styles/chars';
 import { AngularFileUploaderConfig } from 'angular-file-uploader';
 
 @Component({
@@ -21,13 +20,12 @@ export class PosModalComponent implements OnInit, OnDestroy {
     @Select(PosModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-    codRichiesta: string;
-
     posForm: FormGroup;
     submitted: boolean;
 
+    uploadVisible: boolean;
+
     api = environment.baseUrl + environment.apiUrl.pos as string;
-    uploadVisible = false as boolean;
     token = sessionStorage.getItem(LSNAME.token) as string;
     afuConfig = {
         multiple: false,
@@ -55,7 +53,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         }
     } as AngularFileUploaderConfig;
 
-    subscription: Subscription = new Subscription();
+    private subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
@@ -101,11 +99,13 @@ export class PosModalComponent implements OnInit, OnDestroy {
         }
 
         this.uploadVisible = true;
-        // this.modal.close({ success: true, result: this.posForm.value });
     }
 
     onDocUploaded($event: any): void {
         console.log('onDocUploaded', $event);
+        if ($event.ok) {
+            this.modal.close({ success: true, result: this.posForm.value });
+        }
     }
 
     onDismiss(): void {

@@ -2,11 +2,12 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PosService } from '../../../../core/service/pos-service/pos.service';
 import { AddPos } from '../../actions/pos-modal/pos-modal.actions';
+import { PosInterface } from '../../../interface/pos.interface';
 
 export interface PosModalStateModel {
     posForm: {
         model?: {
-            descrizione: string;
+            descrizionePos: string;
         };
         dirty: boolean;
         status: string;
@@ -17,7 +18,7 @@ export interface PosModalStateModel {
 export const PosModalStateDefaults: PosModalStateModel = {
     posForm: {
         model: {
-            descrizione: undefined
+            descrizionePos: undefined
         },
         dirty: false,
         status: '',
@@ -42,9 +43,13 @@ export class PosModalState {
     }
 
     @Action(AddPos)
-    addPos({ dispatch }: StateContext<PosModalStateModel>): void {
-        const obj = {};
-        this.posService.add(obj).subscribe((response: any) => {
+    addPos({ getState }: StateContext<PosModalStateModel>): void {
+        const state = getState();
+        const formValue = state.posForm.model;
+        const obj = {
+            descrizionePos: formValue.descrizionePos
+        };
+        this.posService.add(obj).subscribe((response: PosInterface) => {
         });
     }
 }
