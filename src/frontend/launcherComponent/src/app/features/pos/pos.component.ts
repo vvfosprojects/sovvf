@@ -12,6 +12,8 @@ import { ClearRicercaPos, SetRicercaPos } from './store/actions/ricerca-pos/rice
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
+import { AddPos, ClearFormPos } from '../../shared/store/actions/pos-modal/pos-modal.actions';
 
 @Component({
     selector: 'app-pos',
@@ -68,8 +70,31 @@ export class PosComponent implements OnInit, OnDestroy {
     }
 
     onAddPos(): void {
-        console.log('onAddPos');
-        // this.store.dispatch(new RequestAddEnte());
+        let addPosModal;
+        addPosModal = this.modalService.open(PosModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addPosModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.addPos();
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearFormPos());
+                    console.log('Modal "addPos" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ClearFormPos());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    addPos(): void {
+        this.store.dispatch(new AddPos());
     }
 
     onRicercaPos(ricerca: string): void {

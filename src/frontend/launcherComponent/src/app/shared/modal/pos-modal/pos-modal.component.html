@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Aggiungi nuova P.O.S.' | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onDismiss()">
+        <i class="fa fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height py-4 px-5">
+    <div class="modal-body height py-4 px-5">
+        <form [formGroup]="posForm"
+              ngxsForm="posModal.posForm"
+              autocomplete="off">
+            <div class="form-group">
+                <label for="descrizione">
+                    Descrizione P.O.S.
+                    <small class="text-danger">*</small>
+                </label>
+                <input type="text"
+                       id="descrizione"
+                       class="form-control-lg w-100"
+                       formControlName="descrizione"
+                       placeholder="Inserisci descrizione della P.O.S."/>
+            </div>
+        </form>
+        <h6 class="text-danger">* Campi Obbligatori</h6>
+    </div>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover"
+            ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid"
+            [disabled]="!formValid"
+            (click)="onConferma()">
+        {{ 'Inserisci' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover"
+            (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+</div>

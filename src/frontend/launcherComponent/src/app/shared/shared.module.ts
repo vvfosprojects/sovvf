@@ -72,6 +72,7 @@ import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sinte
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
+import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -136,7 +137,8 @@ const COMPONENTS = [
     VersioneComponent,
     TipologiaSintesiRichiestaComponent,
     OperatoreComponent,
-    SidebarComponent
+    SidebarComponent,
+    PosModalComponent
 ];
 const MODULES = [
     PipeModule

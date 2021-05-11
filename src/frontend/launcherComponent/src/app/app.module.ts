@@ -57,6 +57,7 @@ import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
 import { DistaccamentiState } from './shared/store/states/distaccamenti/distaccamenti.state';
+import { PosModalState } from './shared/store/states/pos-modal/pos-modal.state';
 /**
  * Route
  */
@@ -126,7 +127,8 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
                 TriageCrudState,
                 TriageChiamataModalState,
                 TriageSummaryState,
-                DistaccamentiState
+                DistaccamentiState,
+                PosModalState
             ],
             { developmentMode: !environment.production }
         ),
