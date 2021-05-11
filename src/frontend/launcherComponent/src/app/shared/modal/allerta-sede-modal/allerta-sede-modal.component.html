@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ 'Allerta Sede' | uppercase }}
+        {{ 'Allerta Comando' | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
@@ -10,7 +10,7 @@
 <div class="modal-body height py-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
-            <label for="sede">Quale sede vuoi allertare?
+            <label for="sede">Quale Comando vuoi allertare?
                 <small class="text-danger">*</small>
             </label>
                 <ng-select class="align-self-center"

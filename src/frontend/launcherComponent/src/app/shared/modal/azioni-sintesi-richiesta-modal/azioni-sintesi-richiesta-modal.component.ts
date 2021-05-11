@@ -98,22 +98,22 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
                 if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                    modalConferma.componentInstance.titolo = 'Chiusura Chiamata ' + codiceRichiesta;
+                    modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
                     const enti = this.store.selectSnapshot(EntiState.enti) as Ente[];
                     modalConferma.componentInstance.chiusuraChiamata = true;
                     modalConferma.componentInstance.enti = enti;
                 } else {
-                    modalConferma.componentInstance.titolo = 'Chiusura Richiesta ' + codiceRichiesta;
+                    modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
                     modalConferma.componentInstance.chiusuraIntervento = true;
-                    modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Int. non più necessario', 'Falso Allarme', 'Int. concluso'];
-                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                    modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
+                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
                 }
                 break;
 
             case StatoRichiestaActions.Riaperta:
-                modalConferma.componentInstance.titolo = 'Riapertura Richiesta ' + codiceRichiesta;
+                modalConferma.componentInstance.titolo = 'Riapertura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
                 modalConferma.componentInstance.riapertura = true;
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire la richiesta ' + codiceRichiesta + '?';
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta + '?';
                 break;
 
             default:
