@@ -9,33 +9,45 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <div class="modal-body height py-4 px-5">
-        <form [formGroup]="posForm"
-              ngxsForm="posModal.posForm"
-              autocomplete="off">
-            <div class="form-group">
-                <label for="descrizione">
-                    Descrizione P.O.S.
-                    <small class="text-danger">*</small>
-                </label>
-                <input type="text"
-                       id="descrizione"
-                       class="form-control-lg w-100"
-                       formControlName="descrizione"
-                       placeholder="Inserisci descrizione della P.O.S."/>
+        <ng-container *ngIf="!uploadVisible">
+            <form [formGroup]="posForm"
+                  ngxsForm="posModal.posForm"
+                  autocomplete="off">
+                <div class="form-group">
+                    <label for="descrizione">
+                        Descrizione P.O.S.
+                        <small class="text-danger">*</small>
+                    </label>
+                    <input type="text"
+                           id="descrizione"
+                           class="form-control-lg w-100"
+                           formControlName="descrizione"
+                           placeholder="Inserisci descrizione della P.O.S."/>
+                </div>
+            </form>
+            <h6 class="text-danger">* Campi Obbligatori</h6>
+        </ng-container>
+        <ng-container *ngIf="uploadVisible">
+            <div class="w-100">
+                <angular-file-uploader
+                        [config]="afuConfig"
+                        (ApiResponse)="onDocUploaded($event)">
+                </angular-file-uploader>
             </div>
-        </form>
-        <h6 class="text-danger">* Campi Obbligatori</h6>
+        </ng-container>
     </div>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <button type="button"
-            class="btn btn-lg btn-danger btn-no-hover"
-            ngbTooltip="Riempi tutti i campi obbligatori"
-            [disableTooltip]="formValid"
-            [disabled]="!formValid"
-            (click)="onConferma()">
-        {{ 'Inserisci' | uppercase }}
-    </button>
+    <ng-container *ngIf="!uploadVisible">
+        <button type="button"
+                class="btn btn-lg btn-danger btn-no-hover"
+                ngbTooltip="Riempi tutti i campi obbligatori"
+                [disableTooltip]="formValid"
+                [disabled]="!formValid"
+                (click)="onProsegui()">
+            {{ 'Prosegui' | uppercase }}
+        </button>
+    </ng-container>
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover"
             (click)="closeModal('ko')">

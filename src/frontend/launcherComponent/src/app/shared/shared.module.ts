@@ -73,6 +73,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
+import { AngularFileUploaderModule } from 'angular-file-uploader';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -160,7 +161,8 @@ const MODULES = [
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
-        })
+        }),
+        AngularFileUploaderModule
     ],
     declarations: [
         ...COMPONENTS,

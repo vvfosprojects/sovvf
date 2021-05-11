@@ -5,6 +5,10 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
+import { environment } from '../../../../environments/environment';
+import { LSNAME } from '../../../core/settings/config';
+import { $e } from 'codelyzer/angular/styles/chars';
+import { AngularFileUploaderConfig } from 'angular-file-uploader';
 
 @Component({
     selector: 'app-pos-modal',
@@ -21,6 +25,35 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     posForm: FormGroup;
     submitted: boolean;
+
+    api = environment.baseUrl + environment.apiUrl.pos as string;
+    uploadVisible = false as boolean;
+    token = sessionStorage.getItem(LSNAME.token) as string;
+    afuConfig = {
+        multiple: false,
+        formatsAllowed: '.pdf,.doc,.docx',
+        uploadAPI: {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=UTF-8',
+                Authorization: `Bearer ${this.token}`
+            },
+            url: this.api,
+            responseType: 'blob',
+        },
+        fileNameIndex: true,
+        hideProgressBar: true,
+        hideResetBtn: true,
+        replaceTexts: {
+            selectFileBtn: 'Seleziona documento',
+            resetBtn: 'Reset',
+            uploadBtn: 'Carica P.O.S',
+            attachPinBtn: 'Allega P.O.S',
+            afterUploadMsg_success: 'Caricamento P.O.S. completato!',
+            afterUploadMsg_error: 'Caricamento P.O.S. fallito!',
+            sizeLimit: 'Limite Documento'
+        }
+    } as AngularFileUploaderConfig;
 
     subscription: Subscription = new Subscription();
 
@@ -60,13 +93,19 @@ export class PosModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onConferma(): void {
+    onProsegui(): void {
         this.submitted = true;
 
         if (!this.posForm.valid) {
             return;
         }
-        this.modal.close({ success: true, result: this.posForm.value });
+
+        this.uploadVisible = true;
+        // this.modal.close({ success: true, result: this.posForm.value });
+    }
+
+    onDocUploaded($event: any): void {
+        console.log('onDocUploaded', $event);
     }
 
     onDismiss(): void {
