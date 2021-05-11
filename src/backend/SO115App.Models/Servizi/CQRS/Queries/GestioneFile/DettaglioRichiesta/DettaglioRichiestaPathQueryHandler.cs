@@ -1,22 +1,28 @@
 ﻿using CQRS.Queries;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.Templates.DettaglioChiamata;
 using SO115App.Persistence.File.PDFManagement.Templates.DettaglioIntervento;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
     public class DettaglioRichiestaPathQueryHandler : IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult>
     {
+        private readonly IGetTipologieByCodice _getTipologie;
         private readonly IGetRichiesta _getRichiesta;
         private readonly IPDFTemplateManager<DettaglioChiamataModelForm> _dettChiamataManagr;
         private readonly IPDFTemplateManager<DettaglioInterventoModelForm> _dettInterventoManagr;
 
-        public DettaglioRichiestaPathQueryHandler(IGetRichiesta getRichiesta, 
+        public DettaglioRichiestaPathQueryHandler(IGetRichiesta getRichiesta, IGetTipologieByCodice getTipologie,
             IPDFTemplateManager<DettaglioChiamataModelForm> dettChiamataManagr,
             IPDFTemplateManager<DettaglioInterventoModelForm> dettInterventoManagr)
         {
+            _getTipologie = getTipologie;
             _getRichiesta = getRichiesta;
             _dettChiamataManagr = dettChiamataManagr;
             _dettInterventoManagr = dettInterventoManagr;
@@ -24,36 +30,43 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
         public DettaglioRichiestaPathResult Handle(DettaglioRichiestaPathQuery query)
         {
-            RichiestaAssistenza richiesta;
             string path;
 
-            bool chiamata = query.CodiceRichiesta.Length == 17;
-            string filename;
+            var richiesta = _getRichiesta.GetByCodice(query.CodiceRichiesta) ?? _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
 
-            //GENERO IL Dettaglio CHIAMATA o INTERVENTO
-            if(chiamata)
+            if(string.IsNullOrEmpty(richiesta.CodRichiesta)) // CHIAMATA
             {
-                _getRichiesta.GetByCodice(query.CodiceRichiesta);
-
-                filename = "dettaglio_chiamata_" + query.CodiceRichiesta + ".pdf";
+                var filename = "dettaglio_chiamata_" + query.CodiceRichiesta + ".pdf";
 
                 var form = new DettaglioChiamataModelForm()
                 {
-                    MyProperty1 = "prop1",
-                    MyProperty2 = "prop2"
+                    Civ_Km = richiesta.Localita.Indirizzo,
+                    Comune = richiesta.Localita.Citta,
+                    Prov = richiesta.Localita.Provincia,
+                    DataOraChiamata = richiesta.ListaEventi.OfType<Telefonata>().First().Istante,
+                    NumeroChiamata = richiesta.Codice,
+                    Tipologia = string.Concat(_getTipologie.Get(richiesta.Tipologie) + ", ").TrimEnd(',', ' '),
+                    Richiedente = richiesta.Richiedente.Nominativo,
+                    RichiedenteTelefono = richiesta.Richiedente.Telefono,
+                    Dettaglio = richiesta.DettaglioTipologia.Descrizione,
+                    NoteChiamata = richiesta.NotePubbliche,
+                    Interno = richiesta.Localita.Interno,
+                    Palazzo = richiesta.Localita.Palazzo,
+                    Operatore = query.IdOperatore, //TODO: tornare nome e cognome con servizio
+                    Piano = richiesta.Localita.Piano,
+                    Scala = richiesta.Localita.Scala,
+                    TitoloDistaccamento = richiesta.Competenze.First().Descrizione
                 };
-
+                
                 _dettChiamataManagr.GenerateDocument(form, filename);
 
                 _dettChiamataManagr.SaveDocumentOnPublicFileFolder(form);
 
                 path = _dettChiamataManagr.GetDocumentPath("DettagliChiamate");
             }
-            else // intervento
+            else // INTERVENTO
             {
-                _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
-
-                filename = "dettaglio_intervento_" + query.CodiceRichiesta + ".pdf";
+                var filename = "dettaglio_intervento_" + query.CodiceRichiesta + ".pdf";
 
                 var form = new DettaglioInterventoModelForm()
                 {

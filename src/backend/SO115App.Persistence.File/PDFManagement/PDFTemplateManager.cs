@@ -72,7 +72,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            XFont font = new XFont("Verdana", 50);
+            XFont font = new XFont("Tiems New Roman", 50);
 
             gfx.DrawString("Hello, World!", font, XBrushes.Black, 0.0, 0.0, XStringFormats.Center);
 
