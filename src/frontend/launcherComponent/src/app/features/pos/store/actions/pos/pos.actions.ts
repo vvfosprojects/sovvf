@@ -19,3 +19,11 @@ export class StartLoadingPos {
 export class StopLoadingPos {
     static readonly type = '[POS] Stop Loading Pos';
 }
+
+
+export class TestUploadFile {
+    static readonly type = '[POS] Test Upload File';
+
+    constructor(public testFile: any) {
+    }
+}
