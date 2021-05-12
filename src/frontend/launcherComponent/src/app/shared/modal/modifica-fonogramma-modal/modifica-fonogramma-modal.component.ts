@@ -13,6 +13,7 @@ export class ModificaFonogrammaModalComponent implements OnInit {
 
     codiceRichiesta: string;
     idRichiesta: string;
+    titolo: string;
     fonogramma: Fonogramma;
 
     modificaStatoFonogrammaForm: FormGroup;

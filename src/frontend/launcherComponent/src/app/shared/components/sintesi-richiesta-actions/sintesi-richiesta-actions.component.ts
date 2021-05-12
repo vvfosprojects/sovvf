@@ -4,7 +4,7 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../../modal/action-richiesta-modal/action-richiesta-modal.component';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
+import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 
 @Component({
     selector: 'app-sintesi-richiesta-actions',
@@ -44,20 +44,20 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere la richiesta?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
+                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
                 break;
 
             case StatoRichiestaActions.Sospesa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
+                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
                 break;
 
             case StatoRichiestaActions.Riaperta:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire la richiesta?';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
                 break;
 
             default:
