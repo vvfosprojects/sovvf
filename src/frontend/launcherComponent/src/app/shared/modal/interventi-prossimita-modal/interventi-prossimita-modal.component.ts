@@ -25,10 +25,7 @@ export class InterventiProssimitaModalComponent {
     inGestione: boolean;
     gestibile = true;
     disabledGestisciRichiesta: boolean;
-    modificabile = true;
     composizionePartenza = true;
-    disabledModificaRichiesta: boolean;
-    disabledComposizionePartenza: boolean;
     loadingEliminaPartenza = false;
     idDaSganciare = '';
 
@@ -227,6 +224,7 @@ export class InterventiProssimitaModalComponent {
             centered: true
         });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = r.codiceRichiesta ? r.codiceRichiesta : r.codice;
+        modalDettaglioFonogramma.componentInstance.titolo = !r.codiceRichiesta ? 'Chiamata' : 'Intervento';
         modalDettaglioFonogramma.componentInstance.fonogramma = r.fonogramma;
     }
 

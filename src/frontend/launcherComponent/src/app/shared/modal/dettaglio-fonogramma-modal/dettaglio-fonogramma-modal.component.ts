@@ -11,6 +11,7 @@ import { getStatoFonogrammaStringByEnum } from '../../helper/function-fonogramma
 export class DettaglioFonogrammaModalComponent {
 
     codiceRichiesta: string;
+    titolo: string;
     fonogramma: Fonogramma;
 
     constructor(public modal: NgbActiveModal) {
