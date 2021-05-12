@@ -7,26 +7,36 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body px-0">
     <div class="mb-3">
-        <h6>Richiesta</h6>
-        <h6 class="font-weight-bolder">{{ codiceRichiesta }}</h6>
+        <div class="clearfix w-100 badge badge-secondary" style="font-size: 25px; border-radius: 0">
+            <span class="float-left">{{titolo}}</span>
+        </div>
+        <div class="font-weight-bolder mx-3">{{ codiceRichiesta }}</div>
     </div>
     <div class="mb-3">
-        <h6>Numero Fonogramma</h6>
-        <h5 class="font-weight-bolder">{{ fonogramma.numeroFonogramma }}</h5>
+        <div class="clearfix w-100 badge badge-secondary" style="font-size: 25px; border-radius: 0">
+            <span class="float-left">Numero Fonogramma</span>
+        </div>
+        <div class="font-weight-bolder mx-3">{{ fonogramma.numeroFonogramma }}</div>
     </div>
     <div class="mb-3">
-        <h6>Protocollo Fonogramma</h6>
-        <h5 class="font-weight-bolder">{{ fonogramma.protocolloFonogramma }}</h5>
+        <div class="clearfix w-100 badge badge-secondary" style="font-size: 25px; border-radius: 0">
+            <span class="float-left">Protocollo Fonogramma</span>
+        </div>
+        <div class="font-weight-bolder mx-3">{{ fonogramma.protocolloFonogramma }}</div>
     </div>
     <div class="mb-3">
-        <h6>Destinatari</h6>
-        <h5 class="font-weight-bolder">{{ fonogramma.destinatari }}</h5>
+        <div class="clearfix w-100 badge badge-secondary" style="font-size: 25px; border-radius: 0">
+            <span class="float-left">Destinatari</span>
+        </div>
+        <div class="font-weight-bolder mx-3">{{ fonogramma.destinatari }}</div>
     </div>
     <div class="mb-3">
-        <h6>Stato</h6>
-        <h5 class="font-weight-bolder">{{ getStatoFonogrammaStringByEnum(fonogramma.stato) }}</h5>
+        <div class="clearfix w-100 badge badge-secondary" style="font-size: 25px; border-radius: 0">
+            <span class="float-left">Stato</span>
+        </div>
+        <div class="font-weight-bolder mx-3">{{ getStatoFonogrammaStringByEnum(fonogramma.stato) }}</div>
     </div>
 </div>
 <div class="modal-footer">

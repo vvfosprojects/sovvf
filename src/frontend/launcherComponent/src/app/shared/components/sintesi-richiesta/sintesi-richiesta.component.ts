@@ -273,6 +273,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             centered: true
         });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+        modalDettaglioFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
 
