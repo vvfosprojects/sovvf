@@ -161,8 +161,7 @@ namespace SO115App.API
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
-                RequestPath = "/PublicFiles",
-                OnPrepareResponse = ctx => ctx.Context.Response.Headers.Append(HeaderNames.CacheControl, $"public, max-age={30}")
+                RequestPath = "/PublicFiles"
             });
 
             app.UseRouting();
