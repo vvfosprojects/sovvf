@@ -34,7 +34,7 @@
     "@ngx-translate/core": "^8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/googlemaps": "^3.30.2",
-    "chart.js": "^2.7.1",
+    "chart.js": "^2.9.4",
     "core-js": "^2.5.1",
     "express": "^4.16.2",
     "font-awesome": "^4.7.0",
