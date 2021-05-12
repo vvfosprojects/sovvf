@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -159,9 +160,9 @@ namespace SO115App.API
             //Configurazione URL per visualizzare file sul server
             app.UseStaticFiles(new StaticFileOptions
             {
-                //FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
-                OnPrepareResponse = ctx => ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={60}"),
-                //RequestPath = "/PublicFiles"
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
+                RequestPath = "/PublicFiles",
+                OnPrepareResponse = ctx => ctx.Context.Response.Headers.Append(HeaderNames.CacheControl, $"public, max-age={30}")
             });
 
             app.UseRouting();
