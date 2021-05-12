@@ -5,9 +5,7 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
-import { environment } from '../../../../environments/environment';
-import { LSNAME } from '../../../core/settings/config';
-import { AngularFileUploaderConfig } from 'angular-file-uploader';
+import { SetSelectedFile } from '../../store/actions/pos-modal/pos-modal.actions';
 
 @Component({
     selector: 'app-pos-modal',
@@ -22,36 +20,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     posForm: FormGroup;
     submitted: boolean;
-
-    uploadVisible: boolean;
-
-    api = environment.baseUrl + environment.apiUrl.pos as string;
-    token = sessionStorage.getItem(LSNAME.token) as string;
-    afuConfig = {
-        multiple: false,
-        formatsAllowed: '.pdf,.doc,.docx',
-        uploadAPI: {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain;charset=UTF-8',
-                Authorization: `Bearer ${this.token}`
-            },
-            url: this.api,
-            responseType: 'blob',
-        },
-        fileNameIndex: true,
-        hideProgressBar: true,
-        hideResetBtn: true,
-        replaceTexts: {
-            selectFileBtn: 'Seleziona documento',
-            resetBtn: 'Reset',
-            uploadBtn: 'Carica P.O.S',
-            attachPinBtn: 'Allega P.O.S',
-            afterUploadMsg_success: 'Caricamento P.O.S. completato!',
-            afterUploadMsg_error: 'Caricamento P.O.S. fallito!',
-            sizeLimit: 'Limite Documento'
-        }
-    } as AngularFileUploaderConfig;
 
     private subscription: Subscription = new Subscription();
 
@@ -91,28 +59,26 @@ export class PosModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onProsegui(): void {
+    onFileSelected(event: any): void {
+        const file = event.target.files[0] as File;
+        this.store.dispatch(new SetSelectedFile(file));
+    }
+
+    onConfirm(): void {
         this.submitted = true;
 
         if (!this.posForm.valid) {
             return;
         }
 
-        this.uploadVisible = true;
-    }
-
-    onDocUploaded($event: any): void {
-        console.log('onDocUploaded', $event);
-        if ($event.ok) {
-            this.modal.close({ success: true, result: this.posForm.value });
-        }
+        this.modal.close({ success: true });
     }
 
     onDismiss(): void {
         this.modal.dismiss('ko');
     }
 
-    closeModal(type: string): void {
-        this.modal.close(type);
+    closeModal(): void {
+        this.modal.close({ success: false });
     }
 }

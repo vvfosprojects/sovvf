@@ -7,7 +7,7 @@ import { PosState } from './store/states/pos/pos.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { GetPos, TestUploadFile } from './store/actions/pos/pos.actions';
+import { GetPos } from './store/actions/pos/pos.actions';
 import { ClearRicercaPos, SetRicercaPos } from './store/actions/ricerca-pos/ricerca-pos.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -102,18 +102,6 @@ export class PosComponent implements OnInit, OnDestroy {
 
     onRicercaPos(ricerca: string): void {
         this.store.dispatch(new SetRicercaPos(ricerca));
-    }
-
-
-    changeFileInput(fileInput: any): void {
-        const selectedFile = fileInput.target.files[0];
-        this.formData = new FormData();
-        this.formData.append('FDFile', selectedFile);
-        console.log('formData', this.formData);
-    }
-
-    testUploadFile(): void {
-        this.store.dispatch(new TestUploadFile(this.formData));
     }
 
     getRicerca(): void {

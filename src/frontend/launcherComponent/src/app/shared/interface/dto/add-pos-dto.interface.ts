@@ -1,7 +1,6 @@
-export interface PosInterface {
+export interface AddPosDtoInterface {
     descrizionePos: string;
-    fileName: string;
-    filePath: string;
+    FDFile: string;
     codTipologia: number;
     codTipologiaDettaglio?: number;
 }

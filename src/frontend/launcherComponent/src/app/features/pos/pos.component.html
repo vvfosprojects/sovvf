@@ -26,11 +26,6 @@
             <app-risultati-ricerca [ricerca]="ricerca">
             </app-risultati-ricerca>
         </div>
-        <div class="col-12">
-            <input type="file" accept=".doc,.docx,.pdf"
-                   (change)="changeFileInput($event)">
-            <button class="btn btn-primary" (click)="testUploadFile()">Carica File</button>
-        </div>
         <div class="col-12 col-md-9 mx-auto">
             <app-tabella-pos [pos]="pos$ | async">
             </app-tabella-pos>

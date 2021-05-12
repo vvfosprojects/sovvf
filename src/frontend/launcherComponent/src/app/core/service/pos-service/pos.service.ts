@@ -26,11 +26,7 @@ export class PosService {
         return this.http.post(API_POS, obj);
     }
 
-    add(obj: any): Observable<any> {
-        return this.http.post(API_POS + '/Add', obj);
-    }
-
-    testUploadFile(obj: any): Observable<any> {
-        return this.http.post(API_POS + '/Add', obj);
+    add(formData: FormData): Observable<any> {
+        return this.http.post<any>(API_POS + '/Add', formData);
     }
 }

@@ -3,7 +3,7 @@ import {
     GetPos,
     SetPos,
     StartLoadingPos,
-    StopLoadingPos, TestUploadFile
+    StopLoadingPos
 } from '../../actions/pos/pos.actions';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
@@ -83,13 +83,6 @@ export class PosState {
     stopLoadingPos({ patchState }: StateContext<PosStateModel>): void {
         patchState({
             loadingPos: false
-        });
-    }
-
-    @Action(TestUploadFile)
-    testUploadFile({ }: StateContext<PosStateModel>, action: TestUploadFile): void {
-        this.posService.testUploadFile(action.testFile).subscribe((response: any) => {
-            console.log('Response Upload Test File', response);
         });
     }
 }

@@ -9,48 +9,47 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <div class="modal-body height py-4 px-5">
-        <ng-container *ngIf="!uploadVisible">
-            <form [formGroup]="posForm"
-                  ngxsForm="posModal.posForm"
-                  autocomplete="off">
-                <div class="form-group">
-                    <label for="descrizione">
-                        Descrizione P.O.S.
-                        <small class="text-danger">*</small>
-                    </label>
-                    <input type="text"
-                           id="descrizione"
-                           class="form-control-lg w-100"
-                           formControlName="descrizione"
-                           placeholder="Inserisci descrizione della P.O.S."/>
-                </div>
-            </form>
-            <h6 class="text-danger">* Campi Obbligatori</h6>
-        </ng-container>
-        <ng-container *ngIf="uploadVisible">
-            <div class="w-100">
-                <angular-file-uploader
-                        [config]="afuConfig"
-                        (ApiResponse)="onDocUploaded($event)">
-                </angular-file-uploader>
+        <form [formGroup]="posForm"
+              ngxsForm="posModal.posForm"
+              autocomplete="off">
+            <div class="form-group">
+                <label for="descrizione">
+                    Descrizione P.O.S.
+                    <small class="text-danger">*</small>
+                </label>
+                <input type="text"
+                       id="descrizione"
+                       class="form-control-lg w-100"
+                       formControlName="descrizione"
+                       placeholder="Inserisci descrizione della P.O.S."/>
             </div>
-        </ng-container>
+            <div class="form-group">
+                <label for="file">
+                    File
+                    <small class="text-danger">*</small>
+                </label>
+                <input type="file"
+                       id="file"
+                       class="w-100"
+                       accept=".docx, .doc, .pdf"
+                       (change)="onFileSelected($event)"/>
+            </div>
+        </form>
+        <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <ng-container *ngIf="!uploadVisible">
-        <button type="button"
-                class="btn btn-lg btn-danger btn-no-hover"
-                ngbTooltip="Riempi tutti i campi obbligatori"
-                [disableTooltip]="formValid"
-                [disabled]="!formValid"
-                (click)="onProsegui()">
-            {{ 'Prosegui' | uppercase }}
-        </button>
-    </ng-container>
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover"
+            ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid"
+            [disabled]="!formValid"
+            (click)="onConfirm()">
+        {{ 'Prosegui' | uppercase }}
+    </button>
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover"
-            (click)="closeModal('ko')">
+            (click)="closeModal()">
         {{ 'Annulla' | uppercase }}
     </button>
 </div>
