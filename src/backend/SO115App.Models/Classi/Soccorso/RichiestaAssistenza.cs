@@ -289,10 +289,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </remarks>
         public string CodRichiesta { get; set; }
 
-        /// <summary>
-        /// Il path del PDF dettaglio INTERVENTO
-        /// </summary>
-        public string PathDettaglio { get; set; }
+        ///// <summary>
+        ///// Il path del PDF dettaglio INTERVENTO
+        ///// </summary>
+        //public string PathDettaglio { get; set; }
 
         /// <summary>
         ///   E' il codice dell'operatore che ha registrato la richiesta

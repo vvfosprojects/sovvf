@@ -54,6 +54,8 @@ namespace SO115App.Persistence.File.PDFManagement
 
                 case DettaglioInterventoModelForm model:
                     fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliIntervento", _fileName); break;
+
+                default: throw new NotImplementedException("PDF non supportato dal sistema.");
             }
 
             _document.Save(fullPath);
@@ -66,17 +68,50 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)
         {
-            #region FAKE
+            static double AlignY(int x) => x * 1.02;
 
             PdfPage page = _document.Pages[0];
-
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            XFont font = new XFont("Tiems New Roman", 50);
+            //IMPOSTO GLI STILI DELLE FONT
+            var titolo = new XFont("Times new roman", 18, XFontStyle.Bold);
+            var field = new XFont("Times new roman", 12);
+            double y;
 
-            gfx.DrawString("Hello, World!", font, XBrushes.Black, 0.0, 0.0, XStringFormats.Center);
+            //POPOLO IL PDF
+            gfx.DrawString(model.TitoloDistaccamento, titolo, XBrushes.Black, 250, AlignY(40));
 
-            #endregion
+            y = AlignY(80);
+            gfx.DrawString(model.NumeroChiamata ?? "", field, XBrushes.Black, 180, y);
+            gfx.DrawString(model.DataOraChiamata.ToString("MM/dd/yyyy") ?? "", field, XBrushes.Black, 450, y);
+
+            gfx.DrawString(model.DataOraChiamata.ToString("H:mm") ?? "", field, XBrushes.Black, 450, AlignY(100));
+
+            y = AlignY(150);
+            gfx.DrawString(model.Tipologia ?? "", field, XBrushes.Black, 100, y);
+            gfx.DrawString(model.Dettaglio?.Substring(0, 10) ?? "", field, XBrushes.Black, 350, y);
+
+            y = AlignY(180);
+            gfx.DrawString(model.Dettaglio?.Substring(10) ?? "", field, XBrushes.Black, 180, y);
+            gfx.DrawString(model.Civ_Km ?? "", field, XBrushes.Black, 500, y);
+
+            y = AlignY(216);
+            gfx.DrawString(model.Palazzo ?? "", field, XBrushes.Black, 80, y);
+            gfx.DrawString(model.Scala ?? "", field, XBrushes.Black, 220, y);
+            gfx.DrawString(model.Piano ?? "", field, XBrushes.Black, 360, y);
+            gfx.DrawString(model.Interno ?? "", field, XBrushes.Black, 520, y);
+
+            y = AlignY(246);
+            gfx.DrawString(model.Comune ?? "", field, XBrushes.Black, 100, y);
+            gfx.DrawString(model.Prov ?? "", field, XBrushes.Black, 500, y);
+
+            y = AlignY(285);
+            gfx.DrawString(model.Richiedente ?? "", field, XBrushes.Black, 110, y);
+            gfx.DrawString(model.RichiedenteTelefono ?? "", field, XBrushes.Black, 450, y);
+
+            gfx.DrawString(model.NoteChiamata ?? "", field, XBrushes.Black, 130, AlignY(340));
+
+            gfx.DrawString(model.Operatore ?? "", field, XBrushes.Black, 400, AlignY(740));
         }
 
         private void generaDettaglioRichiestaPDF(DettaglioInterventoModelForm model)
