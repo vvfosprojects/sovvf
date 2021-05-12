@@ -24,41 +24,29 @@ namespace SO115App.Persistence.File.PDFManagement
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public void GenerateDocument(TemplateModelForm template, string fileName)
+        public void GenerateDocumentAndSave(TemplateModelForm template, string fileName)
         {
             _fileName = fileName;
+            string fullPath;
 
             switch (template)
             {
                 case DettaglioChiamataModelForm model:
+
                     _document = PdfReader.Open($"{_templateBasePath}\\DettaglioChiamata\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
+                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName);
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
+
                     _document = PdfReader.Open($"{_templateBasePath}\\DettaglioIntervento\\dettaglio_intervento.pdf", PdfDocumentOpenMode.Modify);
+                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliIntervento", _fileName);
                     generaDettaglioRichiestaPDF(model); break;
 
-                //case RiepilogoInterventiModelForm model:
-                //    break;
-            }
-        }
-            
-        public void SaveDocumentOnPublicFileFolder(TemplateModelForm template)
-        {
-            string fullPath = null;
-
-            switch (template)
-            {
-                case DettaglioChiamataModelForm model:
-                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliChiamate", _fileName); break;
-
-                case DettaglioInterventoModelForm model:
-                    fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliIntervento", _fileName); break;
-
-                default: throw new NotImplementedException("PDF non supportato dal sistema.");
+                default: throw new NotImplementedException("Template non gestito");
             }
 
-            _document.Save(fullPath);
+            //_document.Save(fullPath);
         }
 
         public string GetDocumentPath(string requestFolder)
@@ -83,9 +71,9 @@ namespace SO115App.Persistence.File.PDFManagement
 
             y = AlignY(80);
             gfx.DrawString(model.NumeroChiamata ?? "", field, XBrushes.Black, 180, y);
-            gfx.DrawString(model.DataOraChiamata.ToString("MM/dd/yyyy") ?? "", field, XBrushes.Black, 450, y);
+            gfx.DrawString(model.DataOraChiamata.ToString("dd/MM/yyyy") ?? "", field, XBrushes.Black, 450, y);
 
-            gfx.DrawString(model.DataOraChiamata.ToString("H:mm") ?? "", field, XBrushes.Black, 450, AlignY(100));
+            gfx.DrawString(model.DataOraChiamata.ToString("HH:mm") ?? "", field, XBrushes.Black, 450, AlignY(100));
 
             y = AlignY(150);
             gfx.DrawString(model.Tipologia ?? "", field, XBrushes.Black, 100, y);

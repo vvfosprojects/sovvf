@@ -64,9 +64,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     TitoloDistaccamento = richiesta.Competenze.First().Descrizione
                 };
                 
-                _dettChiamataManagr.GenerateDocument(form, filename);
-
-                _dettChiamataManagr.SaveDocumentOnPublicFileFolder(form);
+                _dettChiamataManagr.GenerateDocumentAndSave(form, filename);
 
                 path = _dettChiamataManagr.GetDocumentPath("DettagliChiamate");
             }
@@ -80,9 +78,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     MyProperty2 = "prop2"
                 };
 
-                _dettInterventoManagr.GenerateDocument(form, filename);
-
-                _dettInterventoManagr.SaveDocumentOnPublicFileFolder(form);
+                _dettInterventoManagr.GenerateDocumentAndSave(form, filename);
 
                 path = _dettInterventoManagr.GetDocumentPath("DettagliInterventi") + filename;
             }

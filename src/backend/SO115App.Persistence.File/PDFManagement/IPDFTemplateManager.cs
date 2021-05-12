@@ -2,8 +2,7 @@
 {
     public interface IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        void GenerateDocument(TemplateModelForm template, string fileName);
-        void SaveDocumentOnPublicFileFolder(TemplateModelForm template);
+        void GenerateDocumentAndSave(TemplateModelForm template, string fileName);
         string GetDocumentPath(string requestFolder);
     }
 }
