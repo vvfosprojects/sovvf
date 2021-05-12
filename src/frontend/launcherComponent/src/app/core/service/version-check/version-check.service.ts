@@ -41,17 +41,24 @@ export class VersionCheckService {
                 },
                 () => {
                     if (first) {
-                        this.currentVersion({ number: 'err', hash: 'hash', date: null});
+                        this.currentVersion({ number: 'err', hash: 'hash', date: null });
                     }
                 }
             );
-
     }
 
+    /**
+     * Saves the new version in Redux Store
+     * @param: version
+     */
     newVersion(version: VersionInterface): void {
         this.store.dispatch(new SetNewVersion(version));
     }
 
+    /**
+     * Saves the current version in Redux Store
+     * @param: version
+     */
     currentVersion(version: VersionInterface): void {
         this.store.dispatch(new SetCurrentVersion(version));
     }
