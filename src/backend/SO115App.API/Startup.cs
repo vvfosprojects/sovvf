@@ -159,8 +159,9 @@ namespace SO115App.API
             //Configurazione URL per visualizzare file sul server
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
-                RequestPath = "/PublicFiles"
+                //FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
+                OnPrepareResponse = ctx => ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={60}"),
+                //RequestPath = "/PublicFiles"
             });
 
             app.UseRouting();
