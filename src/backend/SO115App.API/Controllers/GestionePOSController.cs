@@ -6,6 +6,7 @@ using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.InsertPos;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -26,7 +27,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] DtoPos pos)
+        public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
             var codiceSede = Request.Headers["codicesede"];
 

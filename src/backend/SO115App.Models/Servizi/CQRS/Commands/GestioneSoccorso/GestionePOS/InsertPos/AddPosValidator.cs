@@ -28,14 +28,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
     {
         public IEnumerable<ValidationResult> Validate(AddPosCommand command)
         {
-            if (command.Pos.FSFile.Length == 0)
+            if (command.Pos.FDFile.Length == 0)
                 yield return new ValidationResult(Costanti.POSFileNonPresente);
 
-            if(command.Pos.CodTipologia == 0)
-                yield return new ValidationResult(Costanti.POSTipologiaNonPresente);
+            //if (command.Pos.FSFile.Length == 0)
+            //    yield return new ValidationResult(Costanti.POSFileNonPresente);
 
-            if(command.Pos.DescrizionePos.Length == 0)
-                yield return new ValidationResult(Costanti.POSDescrizioneNonPresente);
+            //if(command.Pos.CodTipologia == 0)
+            //    yield return new ValidationResult(Costanti.POSTipologiaNonPresente);
+
+            //if(command.Pos.DescrizionePos.Length == 0)
+            //    yield return new ValidationResult(Costanti.POSDescrizioneNonPresente);
 
         }
     }

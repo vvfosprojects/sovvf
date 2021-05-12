@@ -40,15 +40,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
         {
             var PathFile = _config.GetSection("GenericSettings").GetSection("PathfilePOS").Value;
             var PathDirectory = PathFile + "\\" + command.Pos.CodSede;
-            var PathCompleto = PathDirectory + "\\" + command.Pos.FileName;
+            var PathCompleto = PathDirectory + "\\" + command.Pos.FDFile.FileName;
             //Creo una directory con il nome della sede qualora non esistesse
             if (!Directory.Exists(PathDirectory))
                 Directory.CreateDirectory(PathDirectory);
 
-            using (FileStream fs = File.Create(PathCompleto))
+            if (command.Pos.FDFile.Length > 0)
             {
-                byte[] pos = command.Pos.FSFile;
-                fs.Write(pos, 0, pos.Length);
+                var filePath = Path.GetTempFileName();
+
+                using (var stream = File.Create(PathCompleto))
+                {
+                    command.Pos.FDFile.CopyTo(stream);
+                }
             }
 
             command.Pos.FilePath = PathCompleto;
