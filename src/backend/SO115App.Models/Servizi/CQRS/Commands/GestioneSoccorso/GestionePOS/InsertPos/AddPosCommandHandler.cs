@@ -45,15 +45,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
             if (!Directory.Exists(PathDirectory))
                 Directory.CreateDirectory(PathDirectory);
 
-            if (command.Pos.FDFile.Length > 0)
-            {
-                var filePath = Path.GetTempFileName();
 
-                using (var stream = File.Create(PathCompleto))
-                {
-                    command.Pos.FDFile.CopyTo(stream);
-                }
+            using (var stream = File.Create(PathCompleto))
+            {
+                command.Pos.FDFile.CopyTo(stream);
             }
+            
 
             command.Pos.FilePath = PathCompleto;
 
