@@ -5,6 +5,7 @@ import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
+import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 
 @Component({
     selector: 'app-partenza',
@@ -56,5 +57,13 @@ export class PartenzaComponent implements OnInit {
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
+    }
+
+    _iconaStatiClass(statoMezzo: any): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 }

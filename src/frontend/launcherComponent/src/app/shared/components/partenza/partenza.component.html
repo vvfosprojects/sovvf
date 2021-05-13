@@ -18,7 +18,9 @@
             <div *ngIf="partenza.squadre?.length"
                  class="text-right font-weight-bold font-xxlarge"
                  style="display: inline-flex; align-items: center;">
-                <i class="fa guida fa-group mr-2"></i>
+                <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
+                   ngbTooltip="{{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
+                   class="fa fa-group mr-2"></i>
                 <div class="d-inline-block"
                      [ngbTooltip]="partenza.squadre[0].nome"
                      [disableTooltip]="partenza.squadre[0].nome.length <= 6">
