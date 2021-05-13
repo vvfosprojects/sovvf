@@ -99,6 +99,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
             } as NgbModalOptions;
         }
         const modal = this.modalService.open(ModalRichiesteChiuseComponent, modalOptions);
+        modal.componentInstance.titolo = event.richiesta;
         modal.result.then((res: any) => {
             switch (res.status) {
                 case 'ok':

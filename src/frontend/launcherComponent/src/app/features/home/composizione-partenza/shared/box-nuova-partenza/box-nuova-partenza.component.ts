@@ -5,7 +5,7 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
-import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
+import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
@@ -178,10 +178,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         return { result: result + ' ' + prefix + icon, tooltip };
     }
 
-    _iconaStatiClass(statoMezzo: string): string {
-        return iconaStatiClass(statoMezzo);
-    }
-
     _checkSquadraOccupata(squadreComposizione: SquadraComposizione[]): boolean {
         return checkSquadraOccupata(squadreComposizione);
     }
@@ -203,6 +199,14 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
 
     squadraShortcutEvent(): void {
         this.squadraShortcut.emit(this.partenza.squadreComposizione[0]);
+    }
+
+    _iconaStatiClass(statoMezzo: any): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 
 }

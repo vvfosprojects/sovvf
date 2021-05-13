@@ -1,13 +1,13 @@
 <div class="text-center">
     <div class="btn-group" role="group">
         <button type="button" class="btn"
-                ngbTooltip="Visualizzazione solo Richieste"
+                ngbTooltip="Visualizzazione solo lista Chiamate/Interventi"
                 [class.text-white]="nightMode"
                 [ngClass]="colorButtonView[0]"
                 [disableTooltip]="colorButtonView[0] === 'btn-secondary'"
                 (click)="buttonViewMode(AppFeature.Richieste)">
             <i class="fa fa-list-ul"></i>
-            Richieste
+            Chiamate/Interventi
         </button>
         <button type="button" class="btn"
                 ngbTooltip="Visualizzazione solo Mappa"

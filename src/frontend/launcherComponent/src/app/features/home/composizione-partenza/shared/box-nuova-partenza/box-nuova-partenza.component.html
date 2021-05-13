@@ -11,22 +11,24 @@
         <div *ngIf="partenza.mezzoComposizione"
              class="col">
             <div class="nowrap">
-                <i class="guida fa fa-truck mr-1"
+                <i class="fa fa-truck mr-1"
                    [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
                    ngbTooltip="Mezzo {{ partenza.mezzoComposizione.mezzo.stato }}"
-                   placement="top"></i>
+                   placement="top-left"></i>
                 <span class="font-weight-bold mr-1" [ngbTooltip]="partenza.mezzoComposizione.mezzo.descrizione"
                       [disableTooltip]="partenza.mezzoComposizione.mezzo.descrizione.length <= 7">{{partenza.mezzoComposizione.mezzo.descrizione | slice: 0:7}}</span>
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
             </div>
         </div>
         <div *ngIf="!partenza.squadreComposizione?.length" class="col text-danger">
-            <i class="fa fa-group mr-1"></i>
+            <i class="guida fa fa-group mr-1"></i>
             <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
         </div>
         <div *ngIf="partenza.squadreComposizione?.length === 1" class="col">
             <div class="nowrap">
-                <i class="guida fa fa-group mr-1 font-weight-bold"></i>
+                <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadreComposizione[0].squadra.stato))"
+                    ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadreComposizione[0].squadra.stato) }}"
+                    class="fa fa-group mr-1 font-weight-bold"></i>
                 <span>{{ partenza.squadreComposizione[0].squadra.nome }}</span>
                 <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1 && partenza.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && !disableDividi"
                         class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
@@ -39,7 +41,7 @@
         </div>
         <div *ngIf="partenza.squadreComposizione?.length > 1" class="col">
             <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-                <i class="guida fa fa-group mr-1"></i>
+                <i class="fa fa-group guida mr-1"></i>
                 <small>{{ partenza.squadreComposizione?.length }} squadre</small>
             </span>
             <ng-template #piusquadre>

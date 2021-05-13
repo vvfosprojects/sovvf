@@ -26,7 +26,7 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
             index: 1,
             isActive: true,
             picture: 'icon-fa-richieste',
-            name: 'Richieste'
+            name: 'Chiamate/Interventi'
         },
         {
             id: 'sede',

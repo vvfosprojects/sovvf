@@ -56,10 +56,10 @@ export function iconaStatiClass(stato: string): string {
             returnClass = 'text-secondary';
             break;
         case StatoMezzo.InViaggio:
-            returnClass = 'text-warning';
+            returnClass = 'text-danger';
             break;
         case StatoMezzo.InRientro:
-            returnClass = 'text-verdemela';
+            returnClass = 'text-success';
             break;
         case StatoMezzo.SulPosto:
             returnClass = 'text-danger';

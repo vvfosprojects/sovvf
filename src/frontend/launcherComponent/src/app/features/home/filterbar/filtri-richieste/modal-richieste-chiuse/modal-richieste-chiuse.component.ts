@@ -32,6 +32,7 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     toDate: NgbDate | null = null;
     date: { year: number, month: number };
     todayDate;
+    titolo: string;
 
     private subscriptions: Subscription = new Subscription();
 
