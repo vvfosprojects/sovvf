@@ -70,7 +70,7 @@
                 <i class="fa fa-plus"></i>
             </button>
             <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
-                    [disabled]="sequenze?.length === 0"
+                    [disabled]="sequenze?.length === 0" placement="right"
                     ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
                 <i class="fa fa-minus"></i>
             </button>
@@ -87,7 +87,7 @@
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
                         <small class="text-muted"
-                               style="display: flex; position: absolute; transform: translate(-305px, 100px); min-width: fit-content; display: ruby">
+                               style="display: flex; position: absolute; transform: translate(-305px, 110px); min-width: fit-content; display: ruby">
                             * Il cambio di stato "{{sequenze[index]?.select[index]?.name}}" risulterà
                             alle {{sequenza?.time?.hour <= 9 ? '0' + sequenza?.time?.hour : sequenza?.time?.hour}}
                             :{{sequenza?.time?.minute <= 9 ? '0' + sequenza?.time?.minute : sequenza?.time?.minute}}.

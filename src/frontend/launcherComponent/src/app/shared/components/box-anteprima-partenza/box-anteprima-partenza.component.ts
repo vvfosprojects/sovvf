@@ -4,6 +4,7 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function-mezzo';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 
 @Component({
     selector: 'app-box-anteprima-partenza',
@@ -55,5 +56,13 @@ export class BoxAnteprimaPartenzaComponent {
         }
         this.annullaPartenza.emit();
         this.nuoveSquadre = [];
+    }
+
+    _iconaStatiClass(statoMezzo: any): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 }
