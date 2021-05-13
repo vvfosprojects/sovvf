@@ -6,7 +6,7 @@ export interface Impostazione {
 
 export enum TipoImpostazione {
     Box = 'Box Riepilogo',
-    EventiRichiesta = 'Lista Eventi Richiesta',
+    EventiRichiesta = 'Lista Eventi Chiamate / Interventi',
     ModalitaNotte = 'Modalità Notte',
 
 }
