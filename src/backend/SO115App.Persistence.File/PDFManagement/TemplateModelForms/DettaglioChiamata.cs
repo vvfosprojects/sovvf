@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SO115App.Persistence.File.PDFManagement.Templates.DettaglioChiamata
+namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {
-    public sealed class DettaglioChiamataModelForm
+    public sealed class DettaglioChiamata
     {
         public string TitoloDistaccamento { get; set; } = null;
         public string NumeroChiamata { get; set; } = null;
