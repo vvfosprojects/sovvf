@@ -7,7 +7,7 @@
         <div>
             <label class="mb-3">Mezzo</label>
             <div *ngIf="!boxSostitutivo">
-                <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
+                <i class="fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
                 <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
                 <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
@@ -17,7 +17,7 @@
                 <span class="text-muted">Nessun risultato...</span>
             </div>
             <div *ngIf="boxSostitutivo && nuovoMezzo['descrizione']">
-                <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
+                <i class="fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ nuovoMezzo['stato'] }}"></i>
                 <b class="font-box-partenza">{{ nuovoMezzo['descrizione'] }}</b>
                 <span class="badge badge-default m-0">{{ nuovoMezzo['genere'] }}</span>
@@ -34,7 +34,11 @@
                     <span><i class="fa fa-search"></i></span>
                 </button>
             </div>
-            <div><i class="fa fa-group guida mr-2" ngbTooltip="Squadra"></i>
+            <div>
+                <i class="fa fa-group mr-2"
+                    [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
+                    ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
+                ></i>
                 <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }} ({{partenza?.squadre[0]?.turno}}) </b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
@@ -48,7 +52,11 @@
                     <span><i class="fa fa-search"></i></span>
                 </button>
             </div>
-            <div *ngFor="let squadre of partenza?.squadre"><i class="guida fa fa-group mr-2" ngbTooltip="Squadre"></i>
+            <div *ngFor="let squadre of partenza?.squadre">
+                <i class="fa fa-group mr-2"
+                   [ngClass]="_iconaStatiClass(_nomeStatiSquadra(squadre['stato']))"
+                   ngbTooltip="Squadra {{ _nomeStatiSquadra(squadre['stato']) }}"
+                ></i>
                 <b class="font-box-partenza">{{ squadre['nome'] }}</b>
                 <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>

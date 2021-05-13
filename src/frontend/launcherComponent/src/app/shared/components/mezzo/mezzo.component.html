@@ -13,7 +13,7 @@
 
 <div *ngFor="let s of listaEventiMezzo; let index = index"
      class="d-inline-block mr-2">
-    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default"
+    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default; color: #ffffff"
     >{{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}</div>
 </div>
 
