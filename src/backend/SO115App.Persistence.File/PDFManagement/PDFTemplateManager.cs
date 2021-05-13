@@ -25,7 +25,7 @@ namespace SO115App.Persistence.File.PDFManagement
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public void GenerateDocumentAndSave(TemplateModelForm template, string fileName)
+        public string GenerateDocumentAndSave(TemplateModelForm template, string fileName, string requestFolder)
         {
             _fileName = fileName;
 
@@ -52,11 +52,8 @@ namespace SO115App.Persistence.File.PDFManagement
             }
 
             _document.Save(_fullPath);
-        }
 
-        public string GetDocumentPath(string requestFolder)
-        {
-            return $"http://localhost:31497/{requestFolder}/{_fileName}";//.Split(_fileName)[0];
+            return "http://localhost:31497/" + requestFolder + "/" + _fileName;
         }
 
         private static double AlignY(int x) => x * 1.02;

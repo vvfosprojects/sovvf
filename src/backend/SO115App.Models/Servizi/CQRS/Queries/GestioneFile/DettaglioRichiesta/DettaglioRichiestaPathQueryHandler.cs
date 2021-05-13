@@ -66,9 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     Chiamata = chiamata
                 };
 
-                _dettChiamataManagr.GenerateDocumentAndSave(form, filename);
-
-                path = _dettChiamataManagr.GetDocumentPath("DettagliChiamate");
+                path = _dettChiamataManagr.GenerateDocumentAndSave(form, filename, "DettagliChiamate");
             }
             else // INTERVENTO
             {
@@ -87,9 +85,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     })).ToList()
                 };
 
-                _dettInterventoManagr.GenerateDocumentAndSave(form, filename);
-
-                path = _dettInterventoManagr.GetDocumentPath("DettagliInterventi") + filename;
+                path = _dettInterventoManagr.GenerateDocumentAndSave(form, filename, "DettagliInterventi");
             }
 
             return new DettaglioRichiestaPathResult()
