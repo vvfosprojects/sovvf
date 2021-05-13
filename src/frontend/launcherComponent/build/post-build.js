@@ -28,7 +28,7 @@ readDir(path.join(__dirname, currentPath))
             }
         }
         console.log(`Writing version and hash to ${versionFilePath}`);
-// write current version and hash into the version.json file
+        // write current version and hash into the version.json file
         const currentDate = new Date().toISOString();
         console.log(currentDate);
         const src = `{"number": "${appVersion}", "hash": "${mainHash}", "date": "${currentDate}"}`;
@@ -39,7 +39,7 @@ readDir(path.join(__dirname, currentPath))
         return;
     }
     console.log(`Replacing hash in the ${mainBundleFile}`);
-// replace hash placeholder in our main.js file so the code knows it's current hash
+    // replace hash placeholder in our main.js file so the code knows it's current hash
     const mainFilepath = path.join(__dirname, currentPath, mainBundleFile);
     return readFile(mainFilepath, 'utf8')
         .then(mainFileData => {

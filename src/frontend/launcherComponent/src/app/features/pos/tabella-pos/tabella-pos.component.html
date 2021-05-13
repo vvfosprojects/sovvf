@@ -1,0 +1,45 @@
+<table class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:20%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:80%"><i class="fa fa-university mr-2"></i>Nome</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of pos | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+        <td style="width:20%" class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
+                    placement="bottom" (click)="onDeletePos(p?.id, p?.descrizione)">
+                <i class="fa fa-trash"></i>
+            </button>
+        </td>
+        <td style="width:80%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span>{{p?.descrizione}}</span>
+            </div>
+        </td>
+    </tr>
+    <tr *ngIf="pos?.length <= 0">
+        <td style="width:20%">
+        <td style="width:80%">
+            <ng-template [ngIf]="!loading">Nessuna Pos trovata</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="pos?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <app-select-elementi-per-pagina [pageSize]="pageSize"
+                                    [pageSizes]="pageSizes"
+                                    [placeholderElementi]="'pos'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)">
+    </app-select-elementi-per-pagina>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
+</div>

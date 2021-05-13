@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -107,7 +107,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.versionCheckService.initVersionCheck(3);
+        // tslint:disable-next-line:no-unused-expression
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
         this.preloadImage(Images.Disconnected);
         this.setLoaderPosition();
     }
@@ -195,8 +196,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.store.dispatch(new GetImpostazioniLocalStorage());
     }
 
-    toggleSidebar(): void {
-        this.store.dispatch(new ToggleSidebarOpened());
+    toggleSidebar(value?: boolean): void {
+        const val = value === false || value === true ? value : null;
+        this.store.dispatch(new ToggleSidebarOpened(val));
     }
 
     onLogout(): void {

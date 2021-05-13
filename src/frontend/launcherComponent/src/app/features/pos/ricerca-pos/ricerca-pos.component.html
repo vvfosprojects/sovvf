@@ -1,0 +1,21 @@
+<form class="m-0" autocomplete="off">
+    <div class="input-group">
+        <label for="ricercaPos" class="d-none"></label>
+        <input id="ricercaPos"
+               name="ricercaPos"
+               [(ngModel)]="ricerca"
+               style="font-size: 21px"
+               class="form-control"
+               type="text"
+               placeholder="Che P.O.S. stai cercando?"
+               appDebounceKeyUp
+               [debounceTime]="600"
+               (debounceKeyUp)="ricercaChange.emit(ricerca)">
+        <div class="input-group-append">
+            <button class="btn btn-primary btn-no-hover">
+                <i *ngIf="!loading" class="fa fa-search text-light"></i>
+                <i *ngIf="loading" class="fa fa-spinner fa-spin text-light"></i>
+            </button>
+        </div>
+    </div>
+</form>

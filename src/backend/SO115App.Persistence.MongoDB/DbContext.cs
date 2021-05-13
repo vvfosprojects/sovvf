@@ -20,6 +20,7 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
@@ -32,10 +33,13 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
+using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
@@ -45,6 +49,7 @@ namespace Persistence.MongoDB
     public class DbContext
     {
         private readonly IMongoDatabase database;
+        private MongoClient _client = new MongoClient();
 
         public DbContext(string mongoUrl, string databaseName)
         {
@@ -118,6 +123,15 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
+            BsonClassMap.RegisterClassMap<PosDAO>();
+        }
+
+        public IMongoCollection<PosDAO> DtoPosCollection
+        {
+            get
+            {
+                return database.GetCollection<PosDAO>("pos");
+            }
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection

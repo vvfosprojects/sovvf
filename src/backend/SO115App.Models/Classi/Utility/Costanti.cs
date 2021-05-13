@@ -122,6 +122,7 @@ namespace SO115App.Models.Classi.Utility
 
         public const string RichiestaSoccorsoAereo = "RichiestaSoccorsoAereo";
         public const string AnnullamentoRichiestaSoccorsoAereo = "AnnullamentoRichiestaSoccorsoAereo";
+
         #endregion Eventi
 
         #region Ruoli Utenti
@@ -131,6 +132,12 @@ namespace SO115App.Models.Classi.Utility
         public const string Amministratore = "Amministratore";
 
         #endregion Ruoli Utenti
+
+        #region POS
+        public const string POSFileNonPresente = "Il file non risulta allegato alla richiesta";
+        public const string POSDescrizioneNonPresente = "Non risulta essere presente la descrizione";
+        public const string POSTipologiaNonPresente = "Associare una tipologia alla POS";
+        #endregion
 
         #region FAKE
 
