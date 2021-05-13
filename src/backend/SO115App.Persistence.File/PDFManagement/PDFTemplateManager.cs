@@ -46,7 +46,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 default: throw new NotImplementedException("Template non gestito");
             }
 
-            //_document.Save(fullPath);
+            _document.Save(fullPath);
         }
 
         public string GetDocumentPath(string requestFolder)
