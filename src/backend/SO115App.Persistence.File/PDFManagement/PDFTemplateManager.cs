@@ -11,17 +11,21 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        private string _fullPath;
-        private readonly string _templateBasePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
-        private PdfPage _page;
-        private XGraphics _gfx;
-        private string _fileName;
+        internal string _resultPath { get => ResultPath; set => DirectoryCheck(value); }
+        internal readonly string _templateBasePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
+        internal PdfPage _page;
+        internal XGraphics _gfx;
+        internal string _fileName;
+
+        private string ResultPath;
 
         private PdfDocument _document;
 
         public PDFTemplateManager(IHostingEnvironment env)
         {
-            _fullPath = env.WebRootPath;
+            var path = Path.Combine(env.ContentRootPath, "wwwroot");
+            _resultPath = path;
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
@@ -34,26 +38,34 @@ namespace SO115App.Persistence.File.PDFManagement
                 case DettaglioChiamataModelForm model:
 
                     _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
-                    _fullPath = Path.Combine(_fullPath, "DettagliChiamate", _fileName);
+                    _resultPath += "\\DettagliChiamate";
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
 
                     _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
-                    _fullPath = Path.Combine(_fullPath, "DettagliInterventi", _fileName);
+                    _resultPath += "\\DettagliInterventi";
                     generaDettaglioInterventoPDF(model); break;
 
                 case RiepilogoInterventiModelForm model:
 
-                    _fullPath = Path.Combine(_fullPath, "RiepiloghiInterventi", _fileName); 
+                    //_resultPath = Path.Combine(_resultPath, "RiepiloghiInterventi", _fileName);
                     break;
 
                 default: throw new NotImplementedException("Template non gestito");
             }
 
-            _document.Save(_fullPath);
+            _document.Save(Path.Combine(_resultPath, _fileName));
 
             return "http://localhost:31497/" + requestFolder + "/" + _fileName;
+        }
+
+        private void DirectoryCheck(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            ResultPath = path;
         }
 
         private static double AlignY(int x) => x * 1.02;
