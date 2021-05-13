@@ -82,7 +82,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                         SiglaMezzo = partenza.Mezzo.Descrizione,
                         TargaMezzo = partenza.Mezzo.Codice,
                         SiglaSquadra = squadra.Codice,
-                        SchedaCapoPartenza = squadra.Componenti.FirstOrDefault(c => c.CapoPartenza)?.Nominativo
+                        SchedaCapoPartenza = squadra.Componenti.FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
+                        //OraAss = DateTime.Now
                     })).ToList()
                 };
 

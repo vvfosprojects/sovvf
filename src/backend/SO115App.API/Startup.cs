@@ -27,10 +27,8 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -38,7 +36,6 @@ using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -157,13 +154,7 @@ namespace SO115App.API
                 app.UseHsts();
             }
 
-            //Configurazione URL per visualizzare file sul server
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "PublicFiles")),
-                RequestPath = "/PublicFiles"
-            });
-
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
