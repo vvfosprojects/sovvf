@@ -1,6 +1,7 @@
+import { TipologiaPos } from '../pos.interface';
+
 export interface AddPosDtoInterface {
     descrizionePos: string;
     FDFile: string;
-    codTipologia: number;
-    codTipologiaDettaglio?: number;
+    listaTipologie: TipologiaPos[];
 }

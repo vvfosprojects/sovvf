@@ -1,16 +1,13 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PosService } from '../../../../core/service/pos-service/pos.service';
-import { AddPos, SetSelectedFile } from '../../actions/pos-modal/pos-modal.actions';
-import { PosInterface } from '../../../interface/pos.interface';
+import { AddPos, ResetPosModal } from '../../actions/pos-modal/pos-modal.actions';
+import { PosInterface, TipologiaPos } from '../../../interface/pos.interface';
 
 export interface PosModalStateModel {
-    selectedFile: File;
     posForm: {
         model?: {
             descrizionePos: string;
-            codTipologia: string;
-            codDettaglioTipologia?: string;
         };
         dirty: boolean;
         status: string;
@@ -19,12 +16,9 @@ export interface PosModalStateModel {
 }
 
 export const PosModalStateDefaults: PosModalStateModel = {
-    selectedFile: undefined,
     posForm: {
         model: {
-            descrizionePos: undefined,
-            codTipologia: undefined,
-            codDettaglioTipologia: undefined
+            descrizionePos: undefined
         },
         dirty: false,
         status: '',
@@ -49,26 +43,24 @@ export class PosModalState {
     }
 
     @Action(AddPos)
-    addPos({ getState }: StateContext<PosModalStateModel>): void {
+    addPos({ getState, dispatch }: StateContext<PosModalStateModel>, action: AddPos): void {
         const state = getState();
         const formValue = state.posForm.model;
-        const selectedFile = state.selectedFile;
-        const formData = new FormData();
+        const listaTipologie = [
+            {
+                codTipologia: 1
+            }
+        ] as TipologiaPos[];
+        const formData = action.formData;
         formData.append('descrizionePos', formValue.descrizionePos);
-        formData.append('FDFile', selectedFile);
-        formData.append('fileName', selectedFile.name);
-        formData.append('codTipologia', formValue.codTipologia);
-        if (formValue.codDettaglioTipologia) {
-            formData.append('codDettaglioTipologia', formValue.codDettaglioTipologia);
-        }
+        formData.append('listaTipologie', JSON.stringify(listaTipologie));
+        dispatch(new ResetPosModal());
         this.posService.add(formData).subscribe((response: PosInterface) => {
         });
     }
 
-    @Action(SetSelectedFile)
-    setSelectedFile({ patchState }: StateContext<PosModalStateModel>, action: SetSelectedFile): void {
-        patchState({
-            selectedFile: action.file
-        });
+    @Action(ResetPosModal)
+    resetPosModal({ patchState }: StateContext<PosModalStateModel>): void {
+        patchState(PosModalStateDefaults);
     }
 }

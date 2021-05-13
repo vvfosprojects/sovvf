@@ -81,9 +81,9 @@ export class PosComponent implements OnInit, OnDestroy {
             size: 'lg'
         });
         addPosModal.result.then(
-            (result: { success: boolean }) => {
+            (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
-                    this.addPos();
+                    this.addPos(result.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormPos());
                     console.log('Modal "addPos" chiusa con val ->', result);
@@ -96,8 +96,8 @@ export class PosComponent implements OnInit, OnDestroy {
         );
     }
 
-    addPos(): void {
-        this.store.dispatch(new AddPos());
+    addPos(formData: FormData): void {
+        this.store.dispatch(new AddPos(formData));
     }
 
     onRicercaPos(ricerca: string): void {

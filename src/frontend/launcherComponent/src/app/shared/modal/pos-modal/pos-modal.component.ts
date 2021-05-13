@@ -5,7 +5,6 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
-import { SetSelectedFile } from '../../store/actions/pos-modal/pos-modal.actions';
 
 @Component({
     selector: 'app-pos-modal',
@@ -19,6 +18,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
 
     posForm: FormGroup;
+    formData: FormData;
+
     submitted: boolean;
 
     private subscription: Subscription = new Subscription();
@@ -35,10 +36,10 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     initForm(): void {
         this.posForm = new FormGroup({
-            descrizione: new FormControl()
+            descrizionePos: new FormControl()
         });
         this.posForm = this.fb.group({
-            descrizione: [null, Validators.required]
+            descrizionePos: [null, Validators.required]
         });
     }
 
@@ -47,7 +48,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.posForm.reset();
         this.subscription.unsubscribe();
     }
 
@@ -60,8 +60,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     onFileSelected(event: any): void {
-        const file = event.target.files[0] as File;
-        this.store.dispatch(new SetSelectedFile(file));
+        const file = event.target.files[0];
+        this.formData = new FormData();
+        this.formData.append('FDFile', file);
     }
 
     onConfirm(): void {
@@ -71,7 +72,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true });
+        this.modal.close({ success: true, formData: this.formData });
     }
 
     onDismiss(): void {
