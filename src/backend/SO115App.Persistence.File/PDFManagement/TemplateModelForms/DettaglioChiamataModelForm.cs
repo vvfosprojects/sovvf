@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
+﻿namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {
     public sealed class DettaglioChiamataModelForm
     {

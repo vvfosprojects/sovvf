@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {

@@ -35,7 +35,7 @@ namespace SO115App.Persistence.File.PDFManagement
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
-
+                    //_document = PdfSharp.
                     _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_intervento.pdf", PdfDocumentOpenMode.Modify);
                     fullPath = Path.Combine(_baseDocumentPath, "PublicFiles\\DettagliIntervento", _fileName);
                     generaDettaglioRichiestaPDF(model); break;
