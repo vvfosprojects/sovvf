@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="27.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="PDFsharp" Version="1.50.5147" />
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
