@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 const BASE_URL = environment.baseUrl;
 const API_STAMPA_RICHIESTA = BASE_URL + environment.apiUrl.stampaRichiesta;
-const API_STAMPA_RIEPILOGO_RICHIESTA = BASE_URL + environment.apiUrl.stampaRiepilogoRichiesta;
+const API_STAMPA_RIEPILOGO_INTERVENTI = BASE_URL + environment.apiUrl.stampaRiepilogoInterventi;
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +21,6 @@ export class StampaRichiestaService {
     }
 
     stampaRiepilogoInterventi(obj: any): Observable<any> {
-        return this.http.post<any>(API_STAMPA_RIEPILOGO_RICHIESTA, obj);
+        return this.http.post<any>(API_STAMPA_RIEPILOGO_INTERVENTI, obj);
     }
 }
