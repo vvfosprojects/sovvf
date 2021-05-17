@@ -41,7 +41,7 @@ export const environment = {
         enti: '/api/GestioneEnti',
         rubricaPersonale: '/api/GestioneRubricaPersonale',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
-        stampaRichiesta: '/api/GestioneFile/DettaglioRichiesta/Get',
+        stampaRichiesta: '/api/GestioneFile/DettaglioRichiesta',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
         distaccamenti: '/api/Distaccamenti',
