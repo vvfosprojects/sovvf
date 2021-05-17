@@ -32,7 +32,7 @@
                 </div>
                 <button class="btn btn-sm btn-light p-1 mx-2"
                         ngbTooltip="Elenco squadre"
-                        placement="left"
+                        placement="top"
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                     <div *ngIf="partenza.squadre?.length === 1"
                          class="d-inline-block">
@@ -44,38 +44,42 @@
                     </div>
                 </button>
                 <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                    <div class="float-right"
-                         style="display:flex;"
-                         (click)="$event.stopPropagation()">
-                        <div class="d-inline-block"
-                             ngbDropdown
-                             #dropdownActionsMezzo="ngbDropdown"
-                             container="body"
-                             (click)="$event.stopPropagation()">
-                            <button id="dropdownActionsMezzo"
-                                    class="btn btn-info btn-no-hover"
-                                    ngbDropdownAnchor
-                                    ngbTooltip="Opzioni"
-                                    (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
-                                <i class="fa fa-ellipsis-v"></i>
-                            </button>
-                            <div ngbDropdownMenu
-                                 aria-labelledby="dropdownConfig">
-                                <button class="btn btn-block btn-no-hover"
-                                        ngbDropdownItem
-                                        (click)="modificaPartenza.emit(index); $event.stopPropagation()">
-                                    <i class="fa fa-cog mr-1"></i>
-                                    Gestisci Partenza
-                                </button>
-                                <button class="btn btn-block btn-no-hover text-danger font-weight-bold"
-                                        ngbDropdownItem
-                                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
-                                    <i class="fa fa-trash mr-1"></i>
-                                    Elimina
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="float-right"-->
+<!--                         style="display:flex;"-->
+<!--                         (click)="$event.stopPropagation()">-->
+<!--                        <div class="d-inline-block"-->
+<!--                             ngbDropdown-->
+<!--                             #dropdownActionsMezzo="ngbDropdown"-->
+<!--                             container="body"-->
+<!--                             (click)="$event.stopPropagation()">-->
+<!--                            <button id="dropdownActionsMezzo"-->
+<!--                                    class="btn btn-info btn-no-hover"-->
+<!--                                    ngbDropdownAnchor-->
+<!--                                    ngbTooltip="Opzioni"-->
+<!--                                    (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">-->
+<!--                                <i class="fa fa-ellipsis-v"></i>-->
+<!--                            </button>-->
+<!--                            <div ngbDropdownMenu-->
+<!--                                 aria-labelledby="dropdownConfig">-->
+<!--                                <button class="btn btn-block btn-no-hover"-->
+<!--                                        ngbDropdownItem-->
+<!--                                        (click)="modificaPartenza.emit(index); $event.stopPropagation()">-->
+<!--                                    <i class="fa fa-cog mr-1"></i>-->
+<!--                                    Gestisci Partenza-->
+<!--                                </button>-->
+<!--                                <button class="btn btn-block btn-no-hover text-danger font-weight-bold"-->
+<!--                                        ngbDropdownItem-->
+<!--                                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">-->
+<!--                                    <i class="fa fa-trash mr-1"></i>-->
+<!--                                    Elimina-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <button class="btn btn-sm btn-info d-inline-block" ngbTooltip="Gestisci Partenza" placement="top"
+                            (click)="modificaPartenza.emit(index); $event.stopPropagation()">
+                        <i class="fa fa-cog mr-1"></i>
+                    </button>
                 </ng-template>
                 <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
                      class="d-inline-block p-2">
