@@ -24,8 +24,39 @@
                        placeholder="Inserisci descrizione della P.O.S."/>
             </div>
             <div class="form-group">
+                <label for="tipologie">
+                    Tipologie
+                    <small class="text-danger">*</small>
+                </label>
+                <ng-select id="tipologie"
+                           [items]="tipologie"
+                           bindLabel="descrizione"
+                           bindValue="codice"
+                           formControlName="codTipologie"
+                           placeholder="Seleziona una o più Tipologie"
+                           [multiple]="true"
+                           notFoundText="Nessuna Tipologia trovata..."
+                           (change)="onChangeSelectedTipologie($event)">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label for="dettagliTipologie">
+                    Dettagli Tipologie
+                    <small class="text-danger">*</small>
+                </label>
+                <ng-select id="dettagliTipologie"
+                           [items]="dettagliTipologieFiltered"
+                           bindLabel="descrizione"
+                           bindValue="codiceDettaglioTipologia"
+                           formControlName="codTipologieDettagli"
+                           placeholder="Seleziona uno o più Dettagli Tipologie"
+                           [multiple]="true"
+                           notFoundText="Nessun Dettaglio Tipologia trovato...">
+                </ng-select>
+            </div>
+            <div class="form-group">
                 <label for="file">
-                    File
+                    Carica un File
                     <small class="text-danger">*</small>
                 </label>
                 <input type="file"
@@ -45,11 +76,11 @@
             [disableTooltip]="formValid"
             [disabled]="!formValid"
             (click)="onConfirm()">
-        {{ 'Prosegui' | uppercase }}
+        {{ 'Salva' | uppercase }}
     </button>
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover"
             (click)="closeModal()">
-        {{ 'Annulla' | uppercase }}
+        {{ 'Non salvare' | uppercase }}
     </button>
 </div>

@@ -15,6 +15,12 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
 import { AddPos, ClearFormPos } from '../../shared/store/actions/pos-modal/pos-modal.actions';
 import { PosInterface } from '../../shared/interface/pos.interface';
+import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
+import { TipologieState } from '../../shared/store/states/tipologie/tipologie.state';
+import { Tipologia } from '../../shared/model/tipologia.model';
+import { GetAllDettagliTipologie, GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
+import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.interface';
 
 @Component({
     selector: 'app-pos',
@@ -23,6 +29,10 @@ import { PosInterface } from '../../shared/interface/pos.interface';
 })
 export class PosComponent implements OnInit, OnDestroy {
 
+    @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
+    tipologie: Tipologia[];
+    @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+    dettagliTipologie: DettaglioTipologia[];
     @Select(PosState.pos) pos$: Observable<PosInterface[]>;
     @Select(PosState.loadingPos) loading$: Observable<boolean>;
     @Select(RicercaPosState.ricerca) ricerca$: Observable<string>;
@@ -46,6 +56,8 @@ export class PosComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getPageSize();
         this.getPos(true);
+        this.getTipologie();
+        this.getDettagliTipologie();
     }
 
     ngOnInit(): void {
@@ -64,6 +76,32 @@ export class PosComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
+    getTipologie(): void {
+        this.store.dispatch(new GetTipologie());
+        this.subscriptions.add(
+            this.tipologie$.subscribe((tipologie: Tipologia[]) => {
+                if (tipologie) {
+                    this.tipologie = tipologie;
+                } else {
+                    this.tipologie = null;
+                }
+            })
+        );
+    }
+
+    getDettagliTipologie(): void {
+        this.store.dispatch(new GetAllDettagliTipologie());
+        this.subscriptions.add(
+            this.dettagliTipologie$.subscribe((dettagliTipologie: DettaglioTipologia[]) => {
+                if (dettagliTipologie) {
+                    this.dettagliTipologie = dettagliTipologie;
+                } else {
+                    this.dettagliTipologie = null;
+                }
+            })
+        );
+    }
+
     getPos(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
@@ -80,6 +118,8 @@ export class PosComponent implements OnInit, OnDestroy {
             centered: true,
             size: 'lg'
         });
+        addPosModal.componentInstance.tipologie = this.tipologie;
+        addPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
         addPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {

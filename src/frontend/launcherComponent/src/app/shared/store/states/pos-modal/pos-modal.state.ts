@@ -8,6 +8,8 @@ export interface PosModalStateModel {
     posForm: {
         model?: {
             descrizionePos: string;
+            codTipologie: number[];
+            codTipologieDettagli: number[];
         };
         dirty: boolean;
         status: string;
@@ -18,7 +20,9 @@ export interface PosModalStateModel {
 export const PosModalStateDefaults: PosModalStateModel = {
     posForm: {
         model: {
-            descrizionePos: undefined
+            descrizionePos: undefined,
+            codTipologie: undefined,
+            codTipologieDettagli: undefined
         },
         dirty: false,
         status: '',
@@ -46,6 +50,7 @@ export class PosModalState {
     addPos({ getState, dispatch }: StateContext<PosModalStateModel>, action: AddPos): void {
         const state = getState();
         const formValue = state.posForm.model;
+        // TODO: mappare i dati con l'interfaccia AddPosDtoInterface !!!!!!
         const listaTipologie = [
             {
                 codTipologia: 1

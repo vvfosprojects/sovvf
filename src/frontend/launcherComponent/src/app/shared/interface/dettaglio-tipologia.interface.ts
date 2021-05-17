@@ -1,5 +1,5 @@
 export interface DettaglioTipologia {
-    id:string;
+    id: string;
     codSede: string;
     codiceTipologia: number;
     codiceDettaglioTipologia: number;

@@ -5,6 +5,8 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
+import { Tipologia } from '../../model/tipologia.model';
+import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 
 @Component({
     selector: 'app-pos-modal',
@@ -16,6 +18,10 @@ export class PosModalComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(PosModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+
+    tipologie: Tipologia[];
+    dettagliTipologie: DettaglioTipologia[];
+    dettagliTipologieFiltered: DettaglioTipologia[];
 
     posForm: FormGroup;
     formData: FormData;
@@ -32,14 +38,19 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.dettagliTipologieFiltered = this.dettagliTipologie;
     }
 
     initForm(): void {
         this.posForm = new FormGroup({
-            descrizionePos: new FormControl()
+            descrizionePos: new FormControl(),
+            codTipologie: new FormControl(),
+            codTipologieDettagli: new FormControl()
         });
         this.posForm = this.fb.group({
-            descrizionePos: [null, Validators.required]
+            descrizionePos: [null, Validators.required],
+            codTipologie: [null, Validators.required],
+            codTipologieDettagli: [null, Validators.required]
         });
     }
 
@@ -57,6 +68,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
                 this.formValid = valid;
             })
         );
+    }
+
+    onChangeSelectedTipologie(event: any): void {
+        const codTipologie = event.map((tipologia: Tipologia) => +tipologia.codice);
+        this.filterDettagliTipologieByCodTipologie(codTipologie);
+    }
+
+    filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
+        this.dettagliTipologieFiltered = this.dettagliTipologie;
+        this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
     }
 
     onFileSelected(event: any): void {

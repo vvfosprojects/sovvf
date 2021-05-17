@@ -4,7 +4,7 @@ import { DetttagliTipologieService } from '../../../../core/service/dettagli-tip
 import {
     AddDettaglioTipologia,
     ClearRicercaDettagliTipologia,
-    DeleteDettaglioTipologia,
+    DeleteDettaglioTipologia, GetAllDettagliTipologie,
     GetDettagliTipologie,
     ReducerSelezioneFiltroTipologia,
     ResetFiltroTipologiaSelezionato,
@@ -78,6 +78,18 @@ export class DettagliTipologieState {
         };
 
         this.detttagliTipologieService.getDettagliTipologie(filters, pagination).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new PatchPagination(response.pagination),
+                new SetDettagliTipologie(response.dataArray),
+                new StopLoadingDettagliTipologie()
+            ]);
+        });
+    }
+
+    @Action(GetAllDettagliTipologie)
+    getAllDettagliTipologie({ dispatch }: StateContext<DettagliTipologieStateModel>): void {
+        dispatch(new StartLoadingDettagliTipologie());
+        this.detttagliTipologieService.getDettagliTipologie().subscribe((response: ResponseInterface) => {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetDettagliTipologie(response.dataArray),
