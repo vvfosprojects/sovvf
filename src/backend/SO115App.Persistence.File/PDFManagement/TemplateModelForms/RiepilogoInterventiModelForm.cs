@@ -6,7 +6,12 @@ namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {
     public sealed class RiepilogoInterventiModelForm
     {
-        public string MyProperty1 { get; set; }
-        public string MyProperty2 { get; set; }
+        public string DescComando { get; set; }
+
+        public DateTime Da { get; set; }
+        public DateTime A { get; set; }
+        public string TotInterventi { get; set; }
+
+        public List<RiepilogoIntervento> lstRiepiloghi { get; set; }
     }
 }

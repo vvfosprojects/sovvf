@@ -180,6 +180,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             size: 'lg'
         });
         dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
+        dettaglioTriageModal.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
         dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
         dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;

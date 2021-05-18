@@ -29,3 +29,7 @@
 .badge-menu:hover {
   opacity: 1 !important;
 }
+
+i {
+  font-size: 25px !important;
+}

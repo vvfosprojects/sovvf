@@ -13,6 +13,7 @@ import { TriageSummary } from '../../interface/triage-summary.interface';
 export class TriageSummaryModalComponent {
 
     codRichiesta: string;
+    titolo: string;
     tipologia: Tipologia;
     dettaglioTipologia: DettaglioTipologia;
     schedaContatto: SchedaContatto;
