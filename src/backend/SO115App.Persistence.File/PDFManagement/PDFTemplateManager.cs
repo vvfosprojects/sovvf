@@ -49,8 +49,9 @@ namespace SO115App.Persistence.File.PDFManagement
 
                 case RiepilogoInterventiModelForm model:
 
-                    //_resultPath = Path.Combine(_resultPath, "RiepiloghiInterventi", _fileName);
-                    break;
+                    _document = new PdfDocument(fileName);
+                    _resultPath += "\\RiepiloghiInterventi";
+                    generaRiepilogoInterventiPDF(model); break;
 
                 default: throw new NotImplementedException("Template non gestito");
             }
@@ -69,6 +70,20 @@ namespace SO115App.Persistence.File.PDFManagement
         }
 
         private static double AlignY(int x) => x * 1.02;
+
+        private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
+        {
+            _page = _document.AddPage();
+            _gfx = XGraphics.FromPdfPage(_page);
+
+            //IMPOSTO GLI STILI DELLE FONT
+            var titolo = new XFont("Times new roman", 18, XFontStyle.Bold);
+            var field = new XFont("Times new roman", 12);
+            double y;
+
+            //POPOLO IL PDF
+            _gfx.DrawString(model.DescComando, titolo, XBrushes.Black, 250, AlignY(40));
+        }
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)
         {

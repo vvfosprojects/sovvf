@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
+using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace SO115App.API.Controllers
             _dettaglioRichiestaQuery = dettaglioRichiestaQuery;
         }  
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<IActionResult> DettaglioRichiesta(string codice)
         {
             try
@@ -40,6 +41,33 @@ namespace SO115App.API.Controllers
             {
                 return BadRequest(new 
                 { 
+                    message = e.GetBaseException().Message,
+                    stacktrace = e.GetBaseException().StackTrace
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri)
+        {
+            try
+            {
+                //var query = new DettaglioRichiestaPathQuery()
+                //{
+                //    CodiceRichiesta = codice,
+
+                //    IdOperatore = Request.Headers["IdUtente"],
+                //    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                //};
+
+                //var result = _dettaglioRichiestaQuery.Handle(query);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
                     message = e.GetBaseException().Message,
                     stacktrace = e.GetBaseException().StackTrace
                 });
