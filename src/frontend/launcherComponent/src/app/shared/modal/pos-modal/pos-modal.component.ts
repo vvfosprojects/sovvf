@@ -44,13 +44,13 @@ export class PosModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.posForm = new FormGroup({
             descrizionePos: new FormControl(),
-            codTipologie: new FormControl(),
-            codTipologieDettagli: new FormControl()
+            tipologie: new FormControl(),
+            tipologieDettagli: new FormControl()
         });
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
-            codTipologie: [null, Validators.required],
-            codTipologieDettagli: [null, Validators.required]
+            tipologie: [null, Validators.required],
+            tipologieDettagli: [null, Validators.required]
         });
     }
 
@@ -77,7 +77,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
         this.dettagliTipologieFiltered = this.dettagliTipologie;
-        this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
+        if (this.dettagliTipologieFiltered) {
+            this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
+        }
     }
 
     onFileSelected(event: any): void {

@@ -13,12 +13,12 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
-import { AddPos, ClearFormPos } from '../../shared/store/actions/pos-modal/pos-modal.actions';
+import { AddPos, ResetPosModal } from '../../shared/store/actions/pos-modal/pos-modal.actions';
 import { PosInterface } from '../../shared/interface/pos.interface';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { TipologieState } from '../../shared/store/states/tipologie/tipologie.state';
 import { Tipologia } from '../../shared/model/tipologia.model';
-import { GetAllDettagliTipologie, GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetAllDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.interface';
 
@@ -125,12 +125,12 @@ export class PosComponent implements OnInit, OnDestroy {
                 if (result.success) {
                     this.addPos(result.formData);
                 } else if (!result.success) {
-                    this.store.dispatch(new ClearFormPos());
+                    this.store.dispatch(new ResetPosModal());
                     console.log('Modal "addPos" chiusa con val ->', result);
                 }
             },
             (err) => {
-                this.store.dispatch(new ClearFormPos());
+                this.store.dispatch(new ResetPosModal());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
