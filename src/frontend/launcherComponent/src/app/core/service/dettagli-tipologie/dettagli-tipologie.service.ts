@@ -21,7 +21,10 @@ export class DetttagliTipologieService {
     }
 
     getDettagliTipologie(filters?: FiltersInterface, pagination?: PaginationInterface): Observable<ResponseInterface> {
-        let obj = null;
+        let obj = {
+            filters: null,
+            pagination: null
+        };
         if (filters || pagination) {
             obj = {
                 filters: {
