@@ -46,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
         {
             var path = Path.Combine(_env.ContentRootPath, "wwwroot");
             _resultPath = path;
-            _resultPath += command.Pos.CodSede;
+            _resultPath += "\\" + command.Pos.CodSede;
 
             var PathCompleto = Path.Combine(_resultPath, command.Pos.FDFile.FileName);
 

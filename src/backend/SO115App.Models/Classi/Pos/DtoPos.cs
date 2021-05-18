@@ -17,6 +17,6 @@ namespace SO115App.Models.Classi.Pos
     public class TipologiaPos
     {
         public int CodTipologia { get; set; }
-        public List<int> CodDettaglioTipologia { get; set; }
+        public List<int> CodTipologiaDettaglio { get; set; }
     }
 }

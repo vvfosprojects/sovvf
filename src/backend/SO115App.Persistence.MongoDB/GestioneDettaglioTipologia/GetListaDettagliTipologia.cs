@@ -23,9 +23,11 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
         public List<TipologiaDettaglio> Get(DettaglioTipologiaQuery query)
         {
-            var text = query.Filters.Search?.ToLower() ?? "";
+            string text = query.Filters?.Search?.ToLower() ?? "";
 
-            var CodTipologia = query.Filters.codTipologia;
+            int[] CodTipologia = null;
+            if (query.Filters != null)
+                CodTipologia = query.Filters?.codTipologia;
 
             var listaPin = GetGerarchia(query.IdSede);
 
