@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Sede } from '../../model/sede.model';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
+import { RiepilogoInterventiInterface } from '../../interface/riepilogo-interventi.interface';
 
 @Component({
     selector: 'app-riepilogo-interventi-modal',
@@ -162,12 +163,17 @@ export class RiepilogoInterventiModalComponent {
                                 distaccamento: this.distaccamentoSelezionato ? this.distaccamentoSelezionato : null,
                                 turno: this.turnoSelezionato ? this.turnoSelezionato : null,
                                 squadra: this.squadraSelezionata ? this.squadraSelezionata : null,
-                                altriFiltri: {
-                                    tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
-                                    trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
-                                    soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
+                            } as RiepilogoInterventiInterface;
+                            Object.values(this.altriFiltri).forEach(x => {
+                                if (x === true) {
+                                    obj.altriFiltri = {
+                                        tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
+                                        trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
+                                        soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
+                                    };
                                 }
-                            };
+                                return;
+                            });
                             this.modal.close({
                                 status: 'ok',
                                 result: obj
