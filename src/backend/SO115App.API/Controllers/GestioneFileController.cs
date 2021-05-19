@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
@@ -40,16 +41,7 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                //return Ok(result);
-
-                var memory = new MemoryStream();
-                using (var stream = new FileStream(result.Data, FileMode.Open))
-                {
-                    await stream.CopyToAsync(memory);
-                }
-                memory.Position = 0;
-
-                return File(memory, "application/pdf", "file.pdf");
+                return File(result.Data, "application/pdf");
             }
             catch (Exception e)
             {

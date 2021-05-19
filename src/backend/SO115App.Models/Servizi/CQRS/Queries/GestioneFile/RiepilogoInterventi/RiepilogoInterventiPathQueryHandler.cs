@@ -43,12 +43,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 TotInterventi = lstInterventi.Count
             };
 
-            var path = _pdfManager.GenerateDocumentAndSave(form, filename, "RiepiloghiInterventi");
-
+            var memoryStream = _pdfManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
 
             return new RiepilogoInterventiPathResult()
             {
-                Data = path
+                Data = memoryStream
             };
         }
     }

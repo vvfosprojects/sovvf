@@ -1,7 +1,9 @@
-﻿namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
+﻿using System.IO;
+
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 {
     public class DettaglioRichiestaPathResult
     {
-        public string Data { get; set; }
+        public MemoryStream Data { get; set; }
     }
 }

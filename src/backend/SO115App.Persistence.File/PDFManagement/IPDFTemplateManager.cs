@@ -1,7 +1,9 @@
-﻿namespace SO115App.Persistence.File.PDFManagement
+﻿using System.IO;
+
+namespace SO115App.Persistence.File.PDFManagement
 {
     public interface IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        string GenerateDocumentAndSave(TemplateModelForm template, string fileName, string requestFolder);
+        MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder);
     }
 }
