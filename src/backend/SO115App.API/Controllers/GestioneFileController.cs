@@ -5,6 +5,7 @@ using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -41,7 +42,14 @@ namespace SO115App.API.Controllers
 
                 //return Ok(result);
 
-                return File(System.IO.File.OpenRead(result.Data), "application/octet-stream", "file.pdf");
+                var memory = new MemoryStream();
+                using (var stream = new FileStream(result.Data, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+
+                return File(memory, "application/pdf", "file.pdf");
             }
             catch (Exception e)
             {
