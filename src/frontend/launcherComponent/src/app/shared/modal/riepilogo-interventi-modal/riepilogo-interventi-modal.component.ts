@@ -7,6 +7,7 @@ import { Sede } from '../../model/sede.model';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 import { RiepilogoInterventiInterface } from '../../interface/riepilogo-interventi.interface';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
     selector: 'app-riepilogo-interventi-modal',
@@ -175,8 +176,24 @@ export class RiepilogoInterventiModalComponent {
                                 status: 'ok',
                                 result: obj
                             });
-                            this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((link: any) => {
-                                window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
+                            this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((data: any) => {
+                                // window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
+                                switch (data.type) {
+                                    case HttpEventType.DownloadProgress :
+                                        break;
+                                    case HttpEventType.Response :
+                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                        const a = document.createElement('a');
+                                        a.setAttribute('style', 'display:none;');
+                                        document.body.appendChild(a);
+                                        a.download = 'Riepilogo Interventi';
+                                        a.href = URL.createObjectURL(downloadedFile);
+                                        a.target = '_blank';
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        break;
+                                }
+
                             }, error => console.log('Errore Stampa Richiesta'));
                             break;
                         case 'ko':

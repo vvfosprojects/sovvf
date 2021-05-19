@@ -28,7 +28,14 @@ export class StampaRichiestaService {
             }));
     }
 
-    stampaRiepilogoInterventi(obj: RiepilogoInterventiInterface): Observable<any> {
-        return this.http.post<any>(API_STAMPA_RIEPILOGO_INTERVENTI, obj);
+    stampaRiepilogoInterventi(obj: RiepilogoInterventiInterface): Observable<HttpEvent<Blob>> {
+        return this.http.request(new HttpRequest(
+            'POST',
+            API_STAMPA_RIEPILOGO_INTERVENTI,
+            obj,
+            {
+                reportProgress: true,
+                responseType: 'blob'
+            }));
     }
 }
