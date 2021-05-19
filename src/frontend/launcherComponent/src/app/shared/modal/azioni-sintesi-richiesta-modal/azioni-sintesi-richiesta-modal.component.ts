@@ -230,7 +230,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                                     document.body.removeChild(a);
                                     break;
                             }
-                            // window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
                         }, error => console.log('Errore Stampa Richiesta'));
                         break;
                     case 'ko':
