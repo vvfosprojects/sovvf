@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
+namespace SO115App.Models.Classi.Filtri
 {
     public class FiltriRiepilogoInterventi
     {

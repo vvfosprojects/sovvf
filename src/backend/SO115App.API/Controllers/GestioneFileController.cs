@@ -1,8 +1,9 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
-using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi;
 using System;
 using System.Threading.Tasks;
 
@@ -13,12 +14,15 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneFileController : ControllerBase
     {
+        private readonly IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> _riepilogoInterventiQuery;
         private readonly IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> _dettaglioRichiestaQuery;
 
-        public GestioneFileController(IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
+        public GestioneFileController(IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> riepilogoInterventiQuery,
+            IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
         {
             _dettaglioRichiestaQuery = dettaglioRichiestaQuery;
-        }  
+            _riepilogoInterventiQuery = riepilogoInterventiQuery;
+        }
 
         [HttpGet]
         public async Task<IActionResult> DettaglioRichiesta(string codice)
@@ -30,8 +34,8 @@ namespace SO115App.API.Controllers
                     CodiceRichiesta = codice,
 
                     IdOperatore = Request.Headers["IdUtente"],
-                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)                
-                };                
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                };
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
@@ -39,8 +43,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new 
-                { 
+                return BadRequest(new
+                {
                     message = e.GetBaseException().Message,
                     stacktrace = e.GetBaseException().StackTrace
                 });
@@ -52,17 +56,17 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                //var query = new DettaglioRichiestaPathQuery()
-                //{
-                //    CodiceRichiesta = codice,
+                var query = new RiepilogoInterventiPathQuery()
+                {
+                    Filtri = filtri,
 
-                //    IdOperatore = Request.Headers["IdUtente"],
-                //    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
-                //};
+                    IdOperatore = Request.Headers["IdUtente"],
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                };
 
-                //var result = _dettaglioRichiestaQuery.Handle(query);
+                var result = _riepilogoInterventiQuery.Handle(query);
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception e)
             {

@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
@@ -34,10 +35,11 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB
 {
-    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
+    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice, IGetRiepilogoInterventi
     {
         private readonly DbContext _dbContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
@@ -277,22 +279,14 @@ namespace SO115App.Persistence.MongoDB
             return sintesi;
         }
 
-        //public string GetDettaglioByCodiceChiamata(string codiceChiamata)
-        //{
-        //    var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.Codice, codiceChiamata);
+        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
+        {
+            var lstInterventiFiltrati = _dbContext.RichiestaAssistenzaCollection.AsQueryable()
+                .Where(r => r.IstantePresaInCarico >= filtri.Da && r.IstantePresaInCarico <= filtri.A);
+                //.Where(r => r.);
 
-        //    var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
 
-        //    return result;
-        //}
-
-        //public string GetDettaglioByCodiceIntervento(string codiceIntervento)
-        //{
-        //    var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodRichiesta, codiceIntervento);
-
-        //    var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
-
-        //    return result;
-        //}
+            return lstInterventiFiltrati.ToList();
+        }
     }
 }
