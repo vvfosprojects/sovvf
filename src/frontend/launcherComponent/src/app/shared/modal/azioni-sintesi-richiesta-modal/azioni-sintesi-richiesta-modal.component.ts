@@ -25,6 +25,7 @@ import { EntiState } from '../../store/states/enti/enti.state';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -213,8 +214,23 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
                         };
-                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((link: any) => {
-                            window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
+                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+                            switch (data.type) {
+                                case HttpEventType.DownloadProgress :
+                                    break;
+                                case HttpEventType.Response :
+                                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                    const a = document.createElement('a');
+                                    a.setAttribute('style', 'display:none;');
+                                    document.body.appendChild(a);
+                                    a.download = 'Stampa:' + obj.idRichiesta;
+                                    a.href = URL.createObjectURL(downloadedFile);
+                                    a.target = '_blank';
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    break;
+                            }
+                            // window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
                         }, error => console.log('Errore Stampa Richiesta'));
                         break;
                     case 'ko':
