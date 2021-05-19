@@ -39,7 +39,9 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                return Ok(result);
+                //return Ok(result);
+
+                return File(System.IO.File.OpenRead(result.Data), "application/octet-stream", "file.pdf");
             }
             catch (Exception e)
             {

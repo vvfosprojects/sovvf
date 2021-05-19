@@ -58,7 +58,8 @@ namespace SO115App.Persistence.File.PDFManagement
 
             _document.Save(Path.Combine(_resultPath, _fileName));
 
-            return "http://localhost:31497/" + requestFolder + "/" + _fileName;
+            //return "http://localhost:31497/" + requestFolder + "/" + _fileName;
+            return "wwwroot/" + requestFolder + "/" + _fileName;
         }
 
         private void DirectoryCheck(string path)

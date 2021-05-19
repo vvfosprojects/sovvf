@@ -24,8 +24,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            string path;
-
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
@@ -45,7 +43,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 TotInterventi = lstInterventi.Count
             };
 
-            path = _pdfManager.GenerateDocumentAndSave(form, filename, "RiepiloghiInterventi");
+            var path = _pdfManager.GenerateDocumentAndSave(form, filename, "RiepiloghiInterventi");
 
 
             return new RiepilogoInterventiPathResult()
