@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using System.IO;
@@ -27,24 +28,27 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
 {
     public class AddPosCommandHandler : ICommandHandler<AddPosCommand>
     {
+        internal string _resultPath { get => ResultPath; set => DirectoryCheck(value); }
+        private string ResultPath;
+
         private readonly ISavePos _savePos;
         private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _env;
 
-        public AddPosCommandHandler(ISavePos savePos, IConfiguration config)
+        public AddPosCommandHandler(ISavePos savePos, IConfiguration config, IWebHostEnvironment env)
         {
             _savePos = savePos;
             _config = config;
+            _env = env;
         }
 
         public void Handle(AddPosCommand command)
         {
-            var PathFile = _config.GetSection("GenericSettings").GetSection("PathfilePOS").Value;
-            var PathDirectory = PathFile + "\\" + command.Pos.CodSede;
-            var PathCompleto = PathDirectory + "\\" + command.Pos.FDFile.FileName;
+            var path = Path.Combine(_env.ContentRootPath, "wwwroot");
+            _resultPath = path;
+            _resultPath += "\\" + command.Pos.CodSede;
 
-            //Creo una directory con il nome della sede qualora non esistesse
-            if (!Directory.Exists(PathDirectory))
-                Directory.CreateDirectory(PathDirectory);
+            var PathCompleto = Path.Combine(_resultPath, command.Pos.FDFile.FileName);
 
             using (var stream = File.Create(PathCompleto))
             {
@@ -54,6 +58,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
             command.Pos.FilePath = PathCompleto;
 
             _savePos.Save(command.Pos);
+        }
+
+        private void DirectoryCheck(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            ResultPath = path;
         }
     }
 }

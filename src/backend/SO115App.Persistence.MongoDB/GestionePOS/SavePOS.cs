@@ -41,8 +41,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
             var NewPos = new PosDAO()
             {
                 CodSede = pos.CodSede,
-                CodTipologia = pos.CodTipologia,
-                CodTipologiaDettaglio = pos.CodTipologiaDettaglio,
+                ListaTipologie = pos.ListaTipologie,
                 DescrizionePos = pos.DescrizionePos,
                 FileName = pos.FDFile.FileName,
                 FilePath = pos.FilePath

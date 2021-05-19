@@ -20,14 +20,20 @@ export class DetttagliTipologieService {
     constructor(private http: HttpClient) {
     }
 
-    getDettagliTipologie(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
-        const obj = {
-            filters: {
-                search: filters.search,
-                codTipologia: filters.codTipologia
-            },
-            pagination
+    getDettagliTipologie(filters?: FiltersInterface, pagination?: PaginationInterface): Observable<ResponseInterface> {
+        let obj = {
+            filters: null,
+            pagination: null
         };
+        if (filters || pagination) {
+            obj = {
+                filters: {
+                    search: filters.search,
+                    codTipologia: filters.codTipologia
+                },
+                pagination
+            };
+        }
         return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Get', obj);
     }
 

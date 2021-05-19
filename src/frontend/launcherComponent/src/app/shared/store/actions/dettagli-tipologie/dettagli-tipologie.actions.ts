@@ -7,6 +7,10 @@ export class GetDettagliTipologie {
     }
 }
 
+export class GetAllDettagliTipologie {
+    static readonly type = '[DettagliTipologie] Get All Dettagli Tipologie';
+}
+
 export class SetDettagliTipologie {
     static readonly type = '[DettagliTipologie] Set Dettagli Tipologie';
 
