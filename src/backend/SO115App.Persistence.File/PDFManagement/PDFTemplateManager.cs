@@ -29,9 +29,13 @@ namespace SO115App.Persistence.File.PDFManagement
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        public string GenerateDocumentAndSave(TemplateModelForm template, string fileName, string requestFolder)
+        public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
             _fileName = fileName;
+
+            var memoryStream = new MemoryStream();
+
+            //_document = new PdfDocument(memoryStream);
 
             switch (template)
             {
@@ -56,10 +60,16 @@ namespace SO115App.Persistence.File.PDFManagement
                 default: throw new NotImplementedException("Template non gestito");
             }
 
-            _document.Save(Path.Combine(_resultPath, _fileName));
+            _document.Save(memoryStream);
 
             //return "http://localhost:31497/" + requestFolder + "/" + _fileName;
-            return "wwwroot/" + requestFolder + "/" + _fileName;
+            //return "wwwroot/" + requestFolder + "/" + _fileName;
+
+
+
+            memoryStream.Position = 0;
+
+            return memoryStream;
         }
 
         private void DirectoryCheck(string path)

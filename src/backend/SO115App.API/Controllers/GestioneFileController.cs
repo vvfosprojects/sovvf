@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
@@ -40,7 +41,7 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                return File(System.IO.File.OpenRead(result.Data), "application/pdf");
+                return File(result.Data, "application/pdf");
             }
             catch (Exception e)
             {
