@@ -68,7 +68,7 @@ namespace SO115App.API.Controllers
 
                 var result = _riepilogoInterventiQuery.Handle(query);
 
-                return Ok(result);
+                return File(result.Data, "application/pdf");
             }
             catch (Exception e)
             {

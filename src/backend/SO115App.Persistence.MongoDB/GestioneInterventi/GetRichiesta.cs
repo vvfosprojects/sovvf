@@ -21,6 +21,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -281,12 +282,12 @@ namespace SO115App.Persistence.MongoDB
 
         public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
         {
-            var lstInterventiFiltrati = _dbContext.RichiestaAssistenzaCollection.AsQueryable()
-                .Where(r => r.IstantePresaInCarico >= filtri.Da && r.IstantePresaInCarico <= filtri.A);
-                //.Where(r => r.);
+            //var filters = Builders<RichiestaAssistenza>.Filter;
 
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+                //.AsQueryable().Where(r => r.Eventi.OfType<Telefonata>().First().DataOraInserimento >= filtri.Da && r.Eventi.OfType<Telefonata>().First().DataOraInserimento <= filtri.A);
 
-            return lstInterventiFiltrati.ToList();
+            return result.ToList();
         }
     }
 }

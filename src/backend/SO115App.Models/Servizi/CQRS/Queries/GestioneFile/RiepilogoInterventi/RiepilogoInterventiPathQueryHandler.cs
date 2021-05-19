@@ -3,6 +3,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
+using System;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
@@ -28,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
 
-            var filename = "Riepilogo_interventi_" + query.Filtri.Distaccamento.Replace(' ', '_') + ".pdf";
+            var filename = "Riepilogo_interventi_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf";
 
             var form = new RiepilogoInterventiModelForm()
             {

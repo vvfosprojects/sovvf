@@ -11,23 +11,14 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        internal string _resultPath { get => ResultPath; set => DirectoryCheck(value); }
-        internal readonly string _templateBasePath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
+        internal readonly string _templateFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
         internal PdfPage _page;
         internal XGraphics _gfx;
         internal string _fileName;
 
-        private string ResultPath;
-
         private PdfDocument _document;
 
-        public PDFTemplateManager(IHostingEnvironment env)
-        {
-            var path = Path.Combine(env.ContentRootPath, "wwwroot");
-            _resultPath = path;
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        }
+        public PDFTemplateManager() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
@@ -35,26 +26,21 @@ namespace SO115App.Persistence.File.PDFManagement
 
             var memoryStream = new MemoryStream();
 
-            //_document = new PdfDocument(memoryStream);
-
             switch (template)
             {
                 case DettaglioChiamataModelForm model:
 
-                    _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
-                    _resultPath += "\\DettagliChiamate";
+                    _document = PdfReader.Open($"{_templateFolder}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
 
-                    _document = PdfReader.Open($"{_templateBasePath}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
-                    _resultPath += "\\DettagliInterventi";
+                    _document = PdfReader.Open($"{_templateFolder}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioInterventoPDF(model); break;
 
                 case RiepilogoInterventiModelForm model:
 
-                    _document = new PdfDocument(fileName);
-                    _resultPath += "\\RiepiloghiInterventi";
+                    _document = new PdfDocument();
                     generaRiepilogoInterventiPDF(model); break;
 
                 default: throw new NotImplementedException("Template non gestito");
@@ -62,22 +48,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             _document.Save(memoryStream);
 
-            //return "http://localhost:31497/" + requestFolder + "/" + _fileName;
-            //return "wwwroot/" + requestFolder + "/" + _fileName;
-
-
-
-            memoryStream.Position = 0;
-
             return memoryStream;
-        }
-
-        private void DirectoryCheck(string path)
-        {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            ResultPath = path;
         }
 
         private static double AlignY(int x) => x * 1.02;
