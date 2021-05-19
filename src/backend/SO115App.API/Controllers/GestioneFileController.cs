@@ -40,16 +40,7 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                //return Ok(result);
-
-                var memory = new MemoryStream();
-                using (var stream = new FileStream(result.Data, FileMode.Open))
-                {
-                    await stream.CopyToAsync(memory);
-                }
-                memory.Position = 0;
-
-                return File(memory, "application/pdf", "file.pdf");
+                return File(System.IO.File.OpenRead(result.Data), "application/pdf");
             }
             catch (Exception e)
             {
