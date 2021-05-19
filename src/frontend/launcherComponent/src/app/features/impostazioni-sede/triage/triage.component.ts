@@ -561,10 +561,7 @@ export class TriageComponent implements OnDestroy {
         removeTriageItemModal.componentInstance.titolo = 'Eliminazione "' + item.text + '"';
         removeTriageItemModal.componentInstance.messaggio = 'Sei sicuro di voler rimuovere "' + item.text + '" ?';
         removeTriageItemModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i nodi sottostanti verranno eliminati.';
-        removeTriageItemModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         removeTriageItemModal.result.then(
             (val: string) => {
                 switch (val) {
@@ -663,10 +660,7 @@ export class TriageComponent implements OnDestroy {
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
-        removeTriageModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         removeTriageModal.result.then(
             (val: string) => {
                 switch (val) {
@@ -701,10 +695,7 @@ export class TriageComponent implements OnDestroy {
         resetTriageModal.componentInstance.titolo = 'Reset Triage di "' + this.dettaglioTipologia.descrizione + '"';
         resetTriageModal.componentInstance.messaggio = 'Stai effettuando il reset delle modifiche al Triage di "' + this.dettaglioTipologia.descrizione + '"';
         resetTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati non salvati verranno persi';
-        resetTriageModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         resetTriageModal.result.then(
             (val: string) => {
                 switch (val) {

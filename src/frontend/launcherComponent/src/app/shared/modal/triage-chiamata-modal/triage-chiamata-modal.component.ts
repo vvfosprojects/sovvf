@@ -256,10 +256,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         dismissTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         dismissTriageModal.componentInstance.titolo = 'Chiusura Triage';
         dismissTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Le eventuali risposte del triage non verrano salvate.';
-        dismissTriageModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         dismissTriageModal.result.then(
             (val: string) => {
                 switch (val) {

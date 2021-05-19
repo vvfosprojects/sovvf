@@ -45,7 +45,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     statoRichiestaString: Array<StatoRichiestaActions>;
 
 
-    constructor(private modal: NgbActiveModal, private store: Store, private modalService: NgbModal, private stampaRichiestaService: StampaRichiestaService) {
+    constructor(private modal: NgbActiveModal,
+                private store: Store,
+                private modalService: NgbModal,
+                private stampaRichiestaService: StampaRichiestaService) {
         this.getUtente();
     }
 
@@ -202,10 +205,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
-        modalConfermaReset.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         modalConfermaReset.result.then(
             (val) => {
                 switch (val) {

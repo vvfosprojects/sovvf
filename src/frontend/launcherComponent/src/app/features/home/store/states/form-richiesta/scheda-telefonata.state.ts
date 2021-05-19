@@ -420,10 +420,6 @@ export class SchedaTelefonataState {
             modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
             modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
             modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-            ];
 
             modalConfermaAnnulla.result.then(
                 (val) => {

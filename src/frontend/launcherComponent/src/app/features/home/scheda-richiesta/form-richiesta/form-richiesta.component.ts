@@ -564,10 +564,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti verranno eliminati.';
-        modalConfermaReset.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
 
         modalConfermaReset.result.then(
             (val) => {

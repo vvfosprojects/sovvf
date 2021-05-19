@@ -145,10 +145,7 @@ export class DettagliTipologieComponent implements OnDestroy {
         modalConfermaEliminazione.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
-        modalConfermaEliminazione.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         modalConfermaEliminazione.result.then(
             (val) => {
                 switch (val) {
