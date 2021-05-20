@@ -65,7 +65,7 @@ export class MezzoComponent {
             data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
-            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento:  action.azioneIntervento };
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento };
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }
