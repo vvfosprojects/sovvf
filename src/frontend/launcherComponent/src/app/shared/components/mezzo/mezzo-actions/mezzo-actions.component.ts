@@ -6,6 +6,7 @@ import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
 import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface';
 import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function-mezzo';
+import { EventoMezzo } from '../../../interface/evento-mezzo.interface';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -18,11 +19,19 @@ export class MezzoActionsComponent implements OnInit {
     @Input() mezzo: Mezzo;
     @Input() doubleMonitor: Mezzo;
     @Input() listaEventi: any;
+    @Input() listaEventiMezzo: any;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
     statoMezzoActions: StatoMezzoActions;
     statoMezzoString: Array<string>;
+    listaEventiMezzoUnique: EventoMezzo[] =
+        [StatoMezzo.InViaggio, StatoMezzo.SulPosto, StatoMezzo.InRientro, StatoMezzo.Rientrato].map(e => ({
+            codiceMezzo: '',
+            note: '',
+            ora: '',
+            stato: e,
+        }));
 
     constructor(
         dropdownConfig: NgbDropdownConfig,
@@ -37,6 +46,7 @@ export class MezzoActionsComponent implements OnInit {
 
     ngOnInit(): void {
         this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
+        this.getListaEventiMezzo();
     }
 
     onClick(action?: string, event?: MouseEvent): void {
@@ -76,14 +86,18 @@ export class MezzoActionsComponent implements OnInit {
         });
     }
 
-    calcolaActionSuggeritaMezzo(stato: StatoMezzo, event?: MouseEvent): StatoMezzoActions {
-        if (event) {
-            event.stopPropagation();
-        }
-        return calcolaActionSuggeritaMezzo(stato);
+    getListaEventiMezzo(): void {
+        this.listaEventiMezzoUnique.forEach(x => x.codiceMezzo = this.listaEventiMezzo[0].codiceMezzo);
+        this.listaEventiMezzoUnique.forEach(x => this.listaEventiMezzo.forEach(y => {
+            if (x.stato === y.stato) {
+                x.stato = y.stato ? y.stato : x.stato;
+                x.ora = y.ora ? y.ora : null;
+                x.note = y.note ? y.note : null;
+            }
+        }));
     }
 
-    getBtnColor(stato: StatoMezzo): string {
-        return statoMezzoActionColor(calcolaActionSuggeritaMezzo(stato));
+    getBtnColor(stato: any): string {
+        return statoMezzoActionColor(stato);
     }
 }

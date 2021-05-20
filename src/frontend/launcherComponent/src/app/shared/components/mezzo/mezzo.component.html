@@ -11,12 +11,6 @@
     </div>
 </div>
 
-<div *ngFor="let s of listaEventiMezzo; let index = index"
-     class="d-inline-block mr-2">
-    <div class="d-inline-block btn chevron-stato bg-{{statoMezzoColor(s.stato)}} pl-1" style="opacity: 0.8; cursor: default; color: #ffffff"
-    >{{ s.stato === 'In Viaggio' ? 'Uscita' : s.stato }}: {{ s.ora | date : 'HH:mm' }}</div>
-</div>
-
 <!-- indicatori -->
 <div *ngIf="mostraIndicatori" class="d-inline-block pl-2 mr-1">
     <button class="btn btn-light border py-0 px-0"
@@ -83,6 +77,7 @@
 
 <app-mezzo-actions *ngIf="actionsAttive && !mezzoInServizioPage" [mezzo]="mezzo"
                    [listaEventi]="listaEventi"
+                   [listaEventiMezzo]="listaEventiMezzo"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
