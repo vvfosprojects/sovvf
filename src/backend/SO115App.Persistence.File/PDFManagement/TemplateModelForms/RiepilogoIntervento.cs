@@ -8,6 +8,7 @@ namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
         public char Stato { get; set; }
         public DateTime Data { get; set; }
         public string Turno { get; set; }
+        public string Tipologie { get; set; }
 
         public string Indirizzo { get; set; }
         public string Richiedente { get; set; }
@@ -22,8 +23,8 @@ namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
         public string CapoPartenza { get; set; }
 
         public DateTime MezzoInUscita { get; set; }
-        public DateTime MezzoSulPosto { get; set; }
-        public DateTime MezzoInRientro { get; set; }
-        public DateTime MezzoRientrato { get; set; }
+        public DateTime? MezzoSulPosto { get; set; }
+        public DateTime? MezzoInRientro { get; set; }
+        public DateTime? MezzoRientrato { get; set; }
     }
 }

@@ -21,6 +21,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -284,8 +285,13 @@ namespace SO115App.Persistence.MongoDB
         {
             //var filters = Builders<RichiestaAssistenza>.Filter;
 
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
-                //.AsQueryable().Where(r => r.Eventi.OfType<Telefonata>().First().DataOraInserimento >= filtri.Da && r.Eventi.OfType<Telefonata>().First().DataOraInserimento <= filtri.A);
+            var soloInterventi = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C");
+
+            //var soloMovimenti = Builders<RichiestaAssistenza>.Filter.Where(r => r.eve.Any());
+
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi /*& soloMovimenti*/);
+
+            //.AsQueryable().Where(r => r.Eventi.OfType<Telefonata>().First().DataOraInserimento >= filtri.Da && r.Eventi.OfType<Telefonata>().First().DataOraInserimento <= filtri.A);
 
             return result.ToList();
         }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using PdfSharp.Drawing;
+﻿using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
@@ -53,6 +52,11 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private static double AlignY(int x) => x * 1.02;
 
+        static private class XTitles
+        {
+            public const int NumeroIntervento = 20;
+        }
+
         private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
         {
             _page = _document.AddPage();
@@ -65,6 +69,29 @@ namespace SO115App.Persistence.File.PDFManagement
 
             //POPOLO IL PDF
             _gfx.DrawString(model.DescComando, titolo, XBrushes.Black, 250, AlignY(40));
+
+
+            y = AlignY(100);
+            model.lstRiepiloghi.ForEach(riepilogo =>
+            {
+                y = AlignY((int)y + 20);
+
+                _gfx.DrawString(riepilogo.NumeroIntervento.ToString(), field, XBrushes.Black, XTitles.NumeroIntervento, y);
+                _gfx.DrawString(riepilogo.Stato.ToString(), field, XBrushes.Black, 40, y);
+                _gfx.DrawString(riepilogo.Data.ToString("dd/MM/yyyy HH:mm"), field, XBrushes.Black, 50, y);
+                _gfx.DrawString(riepilogo.Turno, field, XBrushes.Black, 90, y);
+                //_gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 120, y);
+                //_gfx.DrawString(riepilogo.Indirizzo, field, XBrushes.Black, 220, y);
+                _gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 150, y);
+                _gfx.DrawString(riepilogo.Indirizzo.Split(',')[0], field, XBrushes.Black, 200, y);
+                _gfx.DrawString(riepilogo.KmCiv, field, XBrushes.Black, 300, y);
+                //_gfx.DrawString(riepilogo.Comune, field, XBrushes.Black, 350, y);
+
+                _gfx.DrawString(riepilogo.MezzoInUscita.ToString("(HH:mm)"), field, XBrushes.Black, 440, y);
+                _gfx.DrawString(riepilogo.MezzoSulPosto?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 480, y);
+                _gfx.DrawString(riepilogo.MezzoRientrato?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 520, y);
+                _gfx.DrawString(riepilogo.MezzoInRientro?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 560, y);
+            });
         }
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)
