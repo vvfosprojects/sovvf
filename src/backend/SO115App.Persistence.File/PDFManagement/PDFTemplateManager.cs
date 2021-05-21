@@ -1,4 +1,5 @@
-﻿using PdfSharp.Drawing;
+﻿using PdfSharp;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
@@ -10,12 +11,18 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        internal readonly string _templateFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
-        internal PdfPage _page;
-        internal XGraphics _gfx;
-        internal string _fileName;
+        private static readonly string _templateFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
+        private static PdfPage _page;
+        private static XGraphics _gfx;
+        private static string _fileName;
+        private const int _fieldHeight = 50;
 
-        private PdfDocument _document;
+        //IMPOSTO GLI STILI
+        private static XFont titolo = new XFont("Arial", 18, XFontStyle.Bold);
+        private static XFont field = new XFont("Arial", 10);
+        private static XPen _pen = new XPen(XColors.Black, 0.5);
+
+        private static PdfDocument _document;
 
         public PDFTemplateManager() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -50,45 +57,71 @@ namespace SO115App.Persistence.File.PDFManagement
             return memoryStream;
         }
 
-        private static double AlignY(int x) => x * 1.02;
+        private static double AlignY(int x) => x/* * 1.02*/;
 
         static private class XTitles
         {
             public const int NumeroIntervento = 20;
         }
 
-        private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
+        private static void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
         {
             _page = _document.AddPage();
+            //A4 FORMATO
+            _page.Width = XUnit.FromInch(8.3);
+            _page.Height = XUnit.FromInch(11.7);
+            _page.Orientation = PageOrientation.Landscape;
+
             _gfx = XGraphics.FromPdfPage(_page);
 
-            //IMPOSTO GLI STILI DELLE FONT
-            var titolo = new XFont("Times new roman", 18, XFontStyle.Bold);
-            var field = new XFont("Times new roman", 12);
-            double y;
+            double stringsY;
 
             //POPOLO IL PDF
             _gfx.DrawString(model.DescComando, titolo, XBrushes.Black, 250, AlignY(40));
 
-
-            y = AlignY(100);
+            stringsY = AlignY(100);
             model.lstRiepiloghi.ForEach(riepilogo =>
             {
-                y = AlignY((int)y + 20);
+                //VADO A CAPO
+                stringsY = AlignY((int)stringsY + _fieldHeight);
 
-                _gfx.DrawString(riepilogo.NumeroIntervento.ToString(), field, XBrushes.Black, XTitles.NumeroIntervento, y);
-                _gfx.DrawString(riepilogo.Stato.ToString(), field, XBrushes.Black, 40, y);
-                _gfx.DrawString(riepilogo.Data.ToString("dd/MM/yyyy HH:mm"), field, XBrushes.Black, 50, y);
-                _gfx.DrawString(riepilogo.Turno, field, XBrushes.Black, 140, y);
-                _gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 180, y);
-                _gfx.DrawString(riepilogo.Indirizzo.Split(',')[0], field, XBrushes.Black, 230, y);
-                _gfx.DrawString(riepilogo.KmCiv, field, XBrushes.Black, 350, y);
+                //RIGHE TABELLA
+                CreaRiga((int)stringsY - 20);
+
+                //POPOLO LA TABELLA
+                _gfx.DrawString(riepilogo.NumeroIntervento.ToString(), field, XBrushes.Black, XTitles.NumeroIntervento, stringsY);
+                _gfx.DrawString(riepilogo.Stato.ToString(), field, XBrushes.Black, 40, stringsY);
+                _gfx.DrawString(riepilogo.Data.ToString("dd/MM/yyyy HH:mm"), field, XBrushes.Black, 50, stringsY);
+                _gfx.DrawString(riepilogo.Turno, field, XBrushes.Black, 160, stringsY);
+                _gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 180, stringsY);
+                _gfx.DrawString(riepilogo.Indirizzo.Split(',')[0], field, XBrushes.Black, 230, stringsY);
+                _gfx.DrawString(riepilogo.KmCiv, field, XBrushes.Black, 350, stringsY);
                 //_gfx.DrawString(riepilogo.Comune, field, XBrushes.Black, 350, y);
+                _gfx.DrawString(riepilogo.MezzoInUscita.ToString("(HH:mm)"), field, XBrushes.Black, 420, stringsY);
+                _gfx.DrawString(riepilogo.MezzoSulPosto?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 480, stringsY);
+                _gfx.DrawString(riepilogo.MezzoRientrato?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 520, stringsY);
+                _gfx.DrawString(riepilogo.MezzoInRientro?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 560, stringsY);
 
-                _gfx.DrawString(riepilogo.MezzoInUscita.ToString("(HH:mm)"), field, XBrushes.Black, 440, y);
-                _gfx.DrawString(riepilogo.MezzoSulPosto?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 480, y);
-                _gfx.DrawString(riepilogo.MezzoRientrato?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 520, y);
-                _gfx.DrawString(riepilogo.MezzoInRientro?.ToString("(HH:mm)") ?? "", field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+                //_gfx.DrawString(riepilogo, field, XBrushes.Black, 560, y);
+
+                static void CreaRiga(int y)
+                {
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 10, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 30, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 50, y, 100, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 150, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 170, y, 200, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 370, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 280, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 320, y, 20, _fieldHeight);
+                    _gfx.DrawRectangle(_pen, XBrushes.Transparent, 360, y, 500, _fieldHeight);
+                }
             });
         }
 
