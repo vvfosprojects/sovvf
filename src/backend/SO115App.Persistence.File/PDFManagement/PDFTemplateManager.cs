@@ -79,12 +79,10 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawString(riepilogo.NumeroIntervento.ToString(), field, XBrushes.Black, XTitles.NumeroIntervento, y);
                 _gfx.DrawString(riepilogo.Stato.ToString(), field, XBrushes.Black, 40, y);
                 _gfx.DrawString(riepilogo.Data.ToString("dd/MM/yyyy HH:mm"), field, XBrushes.Black, 50, y);
-                _gfx.DrawString(riepilogo.Turno, field, XBrushes.Black, 90, y);
-                //_gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 120, y);
-                //_gfx.DrawString(riepilogo.Indirizzo, field, XBrushes.Black, 220, y);
-                _gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 150, y);
-                _gfx.DrawString(riepilogo.Indirizzo.Split(',')[0], field, XBrushes.Black, 200, y);
-                _gfx.DrawString(riepilogo.KmCiv, field, XBrushes.Black, 300, y);
+                _gfx.DrawString(riepilogo.Turno, field, XBrushes.Black, 140, y);
+                _gfx.DrawString(riepilogo.Tipologie, field, XBrushes.Black, 180, y);
+                _gfx.DrawString(riepilogo.Indirizzo.Split(',')[0], field, XBrushes.Black, 230, y);
+                _gfx.DrawString(riepilogo.KmCiv, field, XBrushes.Black, 350, y);
                 //_gfx.DrawString(riepilogo.Comune, field, XBrushes.Black, 350, y);
 
                 _gfx.DrawString(riepilogo.MezzoInUscita.ToString("(HH:mm)"), field, XBrushes.Black, 440, y);
