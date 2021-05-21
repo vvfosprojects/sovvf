@@ -22,6 +22,8 @@ import { DettaglioSoccorsoAereoModalComponent } from '../../modal/dettaglio-socc
 import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
+import { defineChiamataIntervento } from '../../helper/function-richieste';
+
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -167,6 +169,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }
+    }
+
+    defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+        return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
     complessitaClass(richiesta: SintesiRichiesta): any {

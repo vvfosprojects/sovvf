@@ -225,7 +225,7 @@
                             <div class="h6 m-0 nowrap mt-1">
                                 <button *ngIf="boxAzioni"
                                         class="btn btn-light border py-0 px-0 mr-1"
-                                        [ngbTooltip]="'Visualizza azioni per Richiesta: ' + richiesta.codice"
+                                        [ngbTooltip]="'Visualizza azioni per ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta?.codiceRichiesta) + ' : ' + richiesta.codice"
                                         [disabled]="disabledAzioniRichiesta"
                                         [ngClass]="{'cursor-not-allowed': disabledAzioniRichiesta}"
                                         (click)="onShowAzioniRichiesta()">

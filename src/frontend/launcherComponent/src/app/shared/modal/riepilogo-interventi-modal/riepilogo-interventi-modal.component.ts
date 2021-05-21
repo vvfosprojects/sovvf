@@ -149,7 +149,7 @@ export class RiepilogoInterventiModalComponent {
             modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
             modalConfermaReset.componentInstance.titolo = 'STAMPA RIEPILOGO INTERVENTI';
             modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
-            modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
+            modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà effettuato il download automatico.';
 
             modalConfermaReset.result.then(
                 (val) => {
