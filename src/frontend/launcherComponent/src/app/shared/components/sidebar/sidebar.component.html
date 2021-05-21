@@ -26,7 +26,11 @@
             [class.btn-nav-selected]="url === '/pos'"
             [routerLinkActive]="['btn-light-nav', 'text-dark']">
         <i class="fa fa-files-o mr-1"></i>
-        P.O.S.
+        Gestione P.O.S.
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover" (click)="onRiepilogoInterventi()">
+        <i class="fa fa-print"></i>
+        Riepilogo Interventi
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.Changelog]"
@@ -34,10 +38,6 @@
             [routerLinkActive]="['text-dark']">
         <i class="fa fa-newspaper-o mr-1"></i>
         Aggiornamenti
-    </button>
-    <button class="btn border-secondary btn-light btn-block btn-no-hover" (click)="onRiepilogoInterventi()">
-        <i class="fa fa-print"></i>
-        Riepilogo Interventi
     </button>
     <hr class="mt-5">
     <button class="btn btn-danger btn-block btn-no-hover"
