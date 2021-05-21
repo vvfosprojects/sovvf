@@ -76,24 +76,6 @@ export class CodaChiamateState {
     }
 
     @Selector()
-    static valoreMassimo(state: CodaChiamateStateModel): number {
-        let val = 0;
-        state.data.forEach((d: ItemGraficoCodaChiamate) => {
-            const numRichieste = d.numRichieste;
-            const squadreLibere = d.squadreLibere;
-            const squadreOccupate = d.squadreOccupate;
-            if ((numRichieste > squadreLibere && numRichieste > val) && (numRichieste > squadreOccupate && numRichieste > val)) {
-                val = numRichieste;
-            } else if ((squadreLibere > numRichieste && squadreLibere > val) && (squadreLibere > squadreOccupate && squadreLibere > val)) {
-                val = squadreLibere;
-            } else if ((squadreOccupate > numRichieste && squadreOccupate > val) && (squadreOccupate > numRichieste && squadreOccupate > val)) {
-                val = squadreOccupate;
-            }
-        });
-        return val;
-    }
-
-    @Selector()
     static loading(state: CodaChiamateStateModel): boolean {
         return state.loading;
     }
