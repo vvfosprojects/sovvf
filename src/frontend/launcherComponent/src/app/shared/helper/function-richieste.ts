@@ -2,6 +2,7 @@ import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
+import { Partenza } from '../model/partenza.model';
 
 export function makeIDChiamata(): string {
     let text = '';
@@ -94,4 +95,16 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boo
     }
     count <= 0 ? visualizza = false : visualizza = true;
     return visualizza;
+}
+
+export function checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+    let count = 0;
+    if (partenze && partenze.length > 0) {
+        partenze.forEach((p: Partenza) => {
+            if (!p.sganciata && !p.partenzaAnnullata && !p.terminata) {
+                count++;
+            }
+        });
+    }
+    return count;
 }
