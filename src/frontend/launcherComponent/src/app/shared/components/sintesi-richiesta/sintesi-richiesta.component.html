@@ -277,7 +277,7 @@
 
                     <!-- box note localita e zone emergenza -->
                     <div *ngIf="inGestione" [class.d-none]="partenza" class="col-md-12 default-cursor pl-5">
-                        <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza || richiesta?.tags"
+                        <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length"
                              class="col-md-12">
                             <div class="row card bt-0 note-localita mt-1">
                                 <div class="col-md-12 bg_diagonal_grey">
@@ -427,7 +427,18 @@
                                 </div>
                             </div>
                             <!-- II colonna -->
-                            <div class="col-8 px-0 border"
+                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) <= 0"
+                                 class="col-8 px-0 border"
+                                 [ngClass]="{'shadow border-danger rounded': inGestione}"
+                                 [class.border-light]="!inGestione">
+                                <div class="scroll-y px-2"
+                                     [class.m-h-160]="inGestione"
+                                     [class.m-h-100]="!inGestione">
+                                    TRIAGE
+                                </div>
+                            </div>
+                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) > 0"
+                                 class="col-8 px-0 border"
                                  [ngClass]="{'shadow border-info rounded': inGestione}"
                                  [class.border-light]="!inGestione">
                                 <div class="scroll-y px-2"

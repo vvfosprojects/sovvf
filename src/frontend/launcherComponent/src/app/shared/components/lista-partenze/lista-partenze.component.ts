@@ -8,6 +8,7 @@ import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/act
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { Observable } from 'rxjs';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
+import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -39,16 +40,8 @@ export class ListaPartenzeComponent {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    checkNumeroPartenze(partenze: Partenza[]): number {
-        let count = 0;
-        if (partenze && partenze.length > 0) {
-            partenze.forEach((p: Partenza) => {
-                if (!p.sganciata && !p.partenzaAnnullata && !p.terminata) {
-                    count++;
-                }
-            });
-        }
-        return count;
+    checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+        return checkNumeroPartenzeAttive(partenze);
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
