@@ -7,7 +7,7 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height pt-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
             <label for="sede">Quale Comando vuoi allertare?
@@ -33,7 +33,7 @@
                     </ng-template>
                 </ng-select>
         </div>
-        <div class="mb-4 alert alert-warning">
+        <div class="alert alert-warning">
             <span class="mr-4">Scegli motivazione:</span>
             <div class="form-check-inline">
                 <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza" [checked]="checkbox.conoscenza"
