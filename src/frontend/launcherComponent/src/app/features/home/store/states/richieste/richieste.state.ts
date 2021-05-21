@@ -362,8 +362,10 @@ export class RichiesteState {
         action.event.sedi.forEach(x => codSediAllertate.push(x.codice));
         const obj = {
             codiceRichiesta: action.event.codRichiesta,
-            codSediAllertate
+            codSediAllertate,
+            motivazione: action.event.motivazione,
         };
+        console.log('***obj BE ', obj);
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });
     }

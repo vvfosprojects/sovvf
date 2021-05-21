@@ -1,7 +1,7 @@
-<div *ngIf="checkNumeroPartenze(partenze) <= 0">
+<div *ngIf="checkNumeroPartenzeAttive(partenze) <= 0">
     <div class="mt-1">Non sono presenti partenze</div>
 </div>
-<ul *ngIf="checkNumeroPartenze(partenze) > 0" class="list-unstyled">
+<ul *ngIf="checkNumeroPartenzeAttive(partenze) > 0" class="list-unstyled">
     <div *ngFor="let p of partenze; let index = index">
         <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
             <app-partial-loader

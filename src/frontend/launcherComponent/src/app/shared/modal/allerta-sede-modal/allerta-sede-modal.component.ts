@@ -29,6 +29,12 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     allertaSedeForm: FormGroup;
     submitted: boolean;
     sediSelezionate: string[] = [];
+    checkbox: { conoscenza: boolean, allerta: boolean} = {
+        conoscenza: false,
+        allerta: true,
+    };
+    motivazione = 'allerta';
+
 
     codRichiesta: string;
 
@@ -114,12 +120,13 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     onConferma(): void {
         this.submitted = true;
-
+        const obj = this.allertaSedeForm.value;
+        obj.motivazione = this.motivazione;
         if (!this.allertaSedeForm.valid) {
             return;
         }
 
-        this.modal.close({ status: 'ok', result: this.allertaSedeForm.value });
+        this.modal.close({ status: 'ok', result: obj });
     }
 
     onDismiss(): void {
@@ -128,5 +135,15 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     closeModal(type: string): void {
         this.modal.close(type);
+    }
+
+    onCheck(key: string): void {
+        if (this.checkbox[key]) {
+            this.checkbox[key] = false;
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x !== key);
+        } else {
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
+        }
+        this.motivazione = key;
     }
 }
