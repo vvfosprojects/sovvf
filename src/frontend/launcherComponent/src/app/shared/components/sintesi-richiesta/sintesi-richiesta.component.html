@@ -277,6 +277,7 @@
 
                     <!-- box note localita e zone emergenza -->
                     <div *ngIf="inGestione" [class.d-none]="partenza" class="col-md-12 default-cursor pl-5">
+
                         <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length"
                              class="col-md-12">
                             <div class="row card bt-0 note-localita mt-1">
@@ -310,11 +311,12 @@
 
                         <!-- II livello di dettaglio -->
                         <div class="row mt-3">
+
                             <!-- I colonna -->
                             <div class="col-2">
                                 <div class="clearfix">
                                     <!-- presa in carico -->
-                                    <div>
+                                    <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico)">
                                         <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                            placement="right"></i>
                                         <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
@@ -353,7 +355,7 @@
                                     </div>
 
                                     <!-- in lavorazione -->
-                                    <div>
+                                    <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione)">
                                         <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                            placement="right"></i>
                                         <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
@@ -382,12 +384,18 @@
                                     </div>
 
                                     <!-- scheda nue -->
-                                    <div>
-                                        <i class="guida fa fa-id-card-o fa-fw" ngbTooltip="Codice scheda NUE"
-                                           placement="right"></i>
-                                        <a *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
-                                            {{ richiesta?.codiceSchedaNue }}
-                                        </a>
+                                    <div *ngIf="richiesta?.codiceSchedaNue">
+                                        <i class="guida fa fa-id-card-o fa-fw mr-2"
+                                           ngbTooltip="Codice scheda NUE"
+                                           placement="right">
+                                        </i>
+                                        <div *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
+                                             class="d-inline-block">
+                                            S. NUE
+                                            <div class="d-inline-block font-weight-bold">
+                                                {{ richiesta?.codiceSchedaNue }}
+                                            </div>
+                                        </div>
                                         <ng-template #nessunCodiceNue>
                                             <span>
                                                 Nessuna scheda NUE
@@ -396,7 +404,7 @@
                                     </div>
 
                                     <!-- Sedi allertate -->
-                                    <div>
+                                    <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate)">
                                         <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata"
                                              class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
                                              [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
@@ -426,17 +434,18 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- II colonna -->
+                            <!-- No Partenze (TRIAGE) -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) <= 0"
-                                 class="col-8 px-0 border"
-                                 [ngClass]="{'shadow border-danger rounded': inGestione}"
-                                 [class.border-light]="!inGestione">
-                                <div class="scroll-y px-2"
-                                     [class.m-h-160]="inGestione"
-                                     [class.m-h-100]="!inGestione">
-                                    TRIAGE
-                                </div>
+                                 class="col-8 border border-light text-center">
+                                <button *ngIf="richiesta?.triageSummary"
+                                        class="btn btn-danger my-2"
+                                        (click)="openDettaglioTriage()">
+                                    Visualizza Triage
+                                </button>
                             </div>
+                            <!-- Lista Partenze -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) > 0"
                                  class="col-8 px-0 border"
                                  [ngClass]="{'shadow border-info rounded': inGestione}"
@@ -458,15 +467,16 @@
                                     </app-lista-partenze>
                                 </div>
                             </div>
-                            <!-- III colonna-->
+
+                            <!-- III colonna -->
                             <div class="col-2">
                                 <div class="clearfix">
                                     <!-- turno intervento -->
                                     <div class="text-right">
-                                <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
-                                    {{richiesta?.trnInsChiamata}}
-                                    <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
-                                </span>
+                                        <div *ngIf="richiesta?.trnInsChiamata; else nessunTurno" class="d-inline-block">
+                                            {{richiesta?.trnInsChiamata}}
+                                            <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
+                                        </div>
                                         <ng-template #nessunTurno>
                                             <a>-</a>
                                             <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente"
@@ -475,11 +485,11 @@
                                     </div>
 
                                     <!-- tipo terreno -->
-                                    <div class="text-right">
-                                <span *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
-                                      class="m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
-                                    {{ tipoTerrenoValue?.terrenoHa }}
-                                </span>
+                                    <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno)" class="text-right">
+                                        <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
+                                             class="d-inline-block m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
+                                            {{ tipoTerrenoValue?.terrenoHa }}
+                                        </div>
                                         <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
                                                 class="btn btn-light border big_font py-0 px-1" [ngbPopover]="terreni"
                                                 (click)="$event.stopPropagation()">
@@ -501,8 +511,9 @@
                                     <!-- complessità -->
                                     <div class="text-right">
                                         <a><b>{{ richiesta?.complessita?.indice }}</b></a>
-                                        <span class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
-                                            richiesta?.complessita?.descrizione }}</span>
+                                        <span class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
+                                            {{ richiesta?.complessita?.descrizione }}
+                                        </span>
                                         <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
                                            placement="left"></i>
                                     </div>
