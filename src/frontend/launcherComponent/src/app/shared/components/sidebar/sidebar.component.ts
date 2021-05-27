@@ -3,6 +3,9 @@ import { RoutesPath } from '../../enum/routes-path.enum';
 import { Ruolo, Utente } from '../../model/utente.model';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { RiepilogoInterventiModalComponent } from '../../modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
+import { NavbarState } from '../../../features/navbar/store/states/navbar.state';
+import { ToggleSidebarOpened } from '../../../features/navbar/store/actions/navbar.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-sidebar',
@@ -15,12 +18,11 @@ export class SidebarComponent implements OnInit {
     @Input() ruoliUtenteLoggato: Ruolo[];
     @Input() url: string;
 
-    @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() logout = new EventEmitter();
 
     RoutesPath = RoutesPath;
 
-    constructor(private modalService: NgbModal) {
+    constructor(private modalService: NgbModal, private store: Store) {
     }
 
     ngOnInit(): void {
@@ -47,6 +49,11 @@ export class SidebarComponent implements OnInit {
                     break;
             }
         });
+    }
+
+    onToggleSidebar(): void {
+        const sidebarOpened = this.store.selectSnapshot(NavbarState.sidebarOpened);
+        this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
     }
 
     onLogout(): void {
