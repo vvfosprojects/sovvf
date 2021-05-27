@@ -246,6 +246,17 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: $SO-white $SO-i;
   }
 
+  .table-striped>tbody>tr:nth-child(odd)>td,
+  .table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: $SO-dark $SO-i;
+  }
+
+  .table-striped>tbody>tr:nth-child(even)>td,
+  .table-striped>tbody>tr:nth-child(even)>th {
+    background-color: $SO-dark-light $SO-i;
+  }
+
+
   .n-li-box a {
     color: $SO-white $SO-i;
     font-weight: $SO-weight $SO-i;
