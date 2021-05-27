@@ -7,7 +7,6 @@
         <app-sidebar [user]="user"
                      [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                      [url]="url"
-                     (toggleSidebar)="toggleSidebar()"
                      (logout)="onLogout()">
         </app-sidebar>
     </ng-sidebar>
@@ -21,8 +20,7 @@
                             [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                             [colorButtonView]="colorButton$ | async"
                             [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"
-                            [sidebarOpened]="sidebarOpened"
-                            (toggleSidebar)="toggleSidebar()">
+                            [sidebarOpened]="sidebarOpened">
                 </app-navbar>
                 <router-outlet></router-outlet>
                 <app-footer></app-footer>
