@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
@@ -59,6 +59,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledMezziInServizio: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
     @Input() sidebarOpened: boolean;
+
+    @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     clock$: Observable<Date>;
     time: Date;
@@ -179,6 +181,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     onToggleSidebar(): void {
         const sidebarOpened = this.store.selectSnapshot(NavbarState.sidebarOpened);
+        this.toggleSidebar.emit();
         this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
     }
 

@@ -147,11 +147,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     getSidebarOpened(): void {
         this.subscription.add(
             this.sidebarOpened$.subscribe((sidebarOpened: boolean) => {
-                if (sidebarOpened) {
-                    this.sidebarOpened = sidebarOpened;
-                } else {
-                    this.sidebarOpened = false;
-                }
+                this.sidebarOpened = sidebarOpened;
             })
         );
     }
