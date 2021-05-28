@@ -364,8 +364,8 @@ export class RichiesteState {
             codiceRichiesta: action.event.codRichiesta,
             codSediAllertate,
             motivazione: action.event.motivazione,
+            generiMezzi: action.event.generiMezzi,
         };
-        console.log('***obj BE ', obj);
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });
     }

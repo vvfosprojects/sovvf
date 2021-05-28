@@ -33,7 +33,29 @@
                     </ng-template>
                 </ng-select>
         </div>
-        <div class="alert alert-warning">
+        <label for="genereMezzo" class="mt-2">Genere mezzo necessario?
+        </label>
+        <ng-select class="align-self-center custom"
+                   style="max-height: 45px; overflow: auto"
+                   id="genereMezzo"
+                   [items]="generiMezzi"
+                   bindLabel="descrizione"
+                   bindValue="descrizione"
+                   [clearSearchOnAdd]="true"
+                   [multiple]="true"
+                   [closeOnSelect]="false"
+                   [hideSelected]="false"
+                   [ngModelOptions]="{standalone: true}"
+                   [appendTo]="'body'"
+                   [(ngModel)]="generiMezzoSelezionati"
+                   [loading]="!generiMezzi"
+                   placeholder="Seleziona Genere Mezzo">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <input type="checkbox" [checked]="generiMezzoSelezionati && generiMezzoSelezionati?.includes(item.descrizione)"/>
+                {{item.descrizione}}
+            </ng-template>
+        </ng-select>
+        <div class="alert alert-warning mt-5">
             <span class="mr-4">Scegli motivazione:</span>
             <div class="form-check-inline">
                 <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza" [checked]="checkbox.conoscenza"
