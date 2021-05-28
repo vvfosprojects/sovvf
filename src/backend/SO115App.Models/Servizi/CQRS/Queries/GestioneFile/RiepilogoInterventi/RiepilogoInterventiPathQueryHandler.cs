@@ -66,7 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                     Servizio = "",
                     TpSch = "N" + p.CodicePartenza
                 }).ToList()
-            }).ToList();
+            }).OrderByDescending(r => r.NumeroIntervento).ToList();
 
             var form = new RiepilogoInterventiModelForm()
             {
