@@ -40,31 +40,33 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             var filename = "Riepilogo_interventi_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf";
 
             var defString = new string[] { "" };
-            var lstRiepiloghi = lstInterventi.Result?
-                .SelectMany(i => i.Eventi.OfType<AbstractPartenza>()
-                .Select(partenza => new RiepilogoIntervento()
+            var lstRiepiloghi = lstInterventi.Result?.Select(i => new RiepilogoIntervento()
+            {
+                Stato = char.Parse(i.TestoStatoRichiesta),
+                Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
+                Turno = string.Concat(i.Partenze.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)),
+                Indirizzo = i.Localita.Indirizzo.Split(',')[0],
+                X = "X: " + i.Localita.Coordinate.Latitudine,
+                Y = "Y: " + i.Localita.Coordinate.Longitudine,
+                Richiedente = i.Richiedente.Nominativo,
+                Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
+                NumeroIntervento = int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).Last()),
+                Comune = string.Concat(i.Localita.Indirizzo.Split(',')[2].Split(' ')),
+                KmCiv = i.Localita.Indirizzo.Split(',')[1],
+                
+                lstPartenze = i.Partenze.Select(p => new RiepilogoPartenza()
                 {
-                    Stato = char.Parse(i.TestoStatoRichiesta),
-                    Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
-
-                    Turno = string.Concat(i.Partenze.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)),
-                    SiglaSquadra = string.Concat(i.Partenze.LastOrDefault()?.Partenza.Squadre.Select(s => $"{s.Codice}, ")),
-                    CapoPartenza = i.Partenze.FirstOrDefault(p => p.CodicePartenza.Equals(partenza.CodicePartenza))?.Partenza.Squadre.SelectMany(s => s.Componenti).FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
-                    Richiedente = i.Richiedente.Telefono,
-                    MezzoInUscita = i.Partenze.LastOrDefault().DataOraInserimento,
-                    MezzoSulPosto = i.lstPartenze.OfType<ArrivoSulPosto>().LastOrDefault()?.DataOraInserimento,
-                    MezzoInRientro = i.lstPartenze.OfType<PartenzaInRientro>().LastOrDefault()?.DataOraInserimento,
-                    MezzoRientrato = i.lstPartenze.OfType<PartenzaRientrata>().LastOrDefault()?.DataOraInserimento,
-                    Comune = i.Localita.Citta,
-                    Indirizzo = i.Localita.Indirizzo,
-                    X = i.Localita.Coordinate.Latitudine,
-                    Y = i.Localita.Coordinate.Longitudine,
-                    Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
-                    KmCiv = i.Localita.Indirizzo.Split(',')[1].Substring(1, 5),
-                    NumeroIntervento = int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).Last()),
+                    SiglaSquadra = string.Concat(p.Partenza.Squadre.SelectMany(s => s.Codice + " ")),
+                    CodMezzo = p.CodiceMezzo,
+                    CapoPartenza = p.CodiceFiscaleCapopartenza,//p.Partenza.Squadre.SelectMany(s => s.Componenti).FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
+                    MezzoInUscita = p.DataOraInserimento,
+                    MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
+                    MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
+                    MezzoRientrato = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaRientrata)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     Servizio = "",
-                    TpSch = "",
-                })).ToList();
+                    TpSch = "N" + p.CodicePartenza
+                }).ToList()
+            }).OrderByDescending(r => r.NumeroIntervento).ToList();
 
             var form = new RiepilogoInterventiModelForm()
             {

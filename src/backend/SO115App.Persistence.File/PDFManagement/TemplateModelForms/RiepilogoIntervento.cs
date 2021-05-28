@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {
@@ -12,19 +13,11 @@ namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 
         public string Indirizzo { get; set; } = "";
         public string Richiedente { get; set; } = "";
-        public double X { get; set; }
-        public double Y { get; set; }
-
+        public string X { get; set; }
+        public string Y { get; set; }
         public string KmCiv { get; set; } = "";
         public string Comune { get; set; } = "";
-        public string TpSch { get; set; } = "";
-        public string SiglaSquadra { get; set; } = "";
-        public string Servizio { get; set; } = "";
-        public string CapoPartenza { get; set; } = "";
 
-        public DateTime MezzoInUscita { get; set; }
-        public DateTime? MezzoSulPosto { get; set; } = null;
-        public DateTime? MezzoInRientro { get; set; } = null;
-        public DateTime? MezzoRientrato { get; set; } = null;
+        public List<RiepilogoPartenza> lstPartenze { get; set; }
     }
 }
