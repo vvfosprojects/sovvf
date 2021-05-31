@@ -6,6 +6,7 @@ namespace SO115App.Models.Classi.Pos
 {
     public class DtoPos
     {
+        public string Id { get; set; }
         public string CodSede { get; set; }
         public List<TipologiaPos> listaTipologie { get; set; }
         public string DescrizionePos { get; set; }
