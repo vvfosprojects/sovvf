@@ -16,10 +16,10 @@ import {
     StopLoadingCodaChiamate
 } from '../../actions/coda-chiamate/coda-chiamate.actions';
 import { ItemChart } from '../../../../../shared/interface/item-chart.interface';
-import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/data-grafico-coda-chiamate-dto.interface';
+import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/coda-chiamate/data-grafico-coda-chiamate-dto.interface';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioDistaccamentoModalComponent } from '../../../coda-chiamate/dettaglio-distaccamento-modal/dettaglio-distaccamento-modal.component';
-import { DettaglioSedeCodaChiamateDto } from '../../../../../shared/interface/dto/dettaglio-sede-coda-chiamate-dto.interface';
+import { DettaglioSedeCodaChiamateDto } from '../../../../../shared/interface/dto/coda-chiamate/dettaglio-sede-coda-chiamate-dto.interface';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';

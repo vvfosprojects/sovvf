@@ -7,6 +7,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
+import { PosInterface } from '../../interface/pos.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-pos-modal',
@@ -23,6 +25,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
     dettagliTipologie: DettaglioTipologia[];
     dettagliTipologieFiltered: DettaglioTipologia[];
 
+    editPos: boolean;
+    pos: PosInterface;
+
     posForm: FormGroup;
     formData: FormData;
 
@@ -38,7 +43,14 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        if (this.editPos) {
+            this.updatePosForm(this.pos);
+        }
         this.dettagliTipologieFiltered = this.dettagliTipologie;
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     initForm(): void {
@@ -50,7 +62,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
-            tipologieDettagli: [null, Validators.required]
+            tipologieDettagli: [null]
         });
     }
 
@@ -58,8 +70,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
         return this.posForm.controls;
     }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+    updatePosForm(editPos: PosInterface): void {
+        console.log('updatePosForm', editPos);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                descrizionePos: editPos.descrizionePos,
+                // tipologie: editPos.listaTipologie, // TODO: da rivedere
+                // tipologieDettagli: editPos.listaTipologie // TODO: da rivedere
+            },
+            path: 'posModal.posForm'
+        }));
     }
 
     getFormValid(): void {

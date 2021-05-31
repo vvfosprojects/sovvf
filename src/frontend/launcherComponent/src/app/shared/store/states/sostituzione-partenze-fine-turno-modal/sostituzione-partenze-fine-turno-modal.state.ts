@@ -11,7 +11,7 @@ import {
 } from '../../actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { Partenza } from '../../../model/partenza.model';
 import { Squadra } from '../../../model/squadra.model';
-import { SostituzionePartenzaFineTurnoDto } from '../../../interface/dto/sostituzione-partenza-fine-turno-dto.interface';
+import { SostituzionePartenzaFineTurnoDto } from '../../../interface/dto/partenze/sostituzione-partenza-fine-turno-dto.interface';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { ModificaPartenzaService } from '../../../../core/service/modifica-partenza/modifica-partenza.service';
 

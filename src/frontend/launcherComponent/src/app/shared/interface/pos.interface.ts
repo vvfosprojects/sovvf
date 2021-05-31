@@ -1,7 +1,7 @@
 export interface PosInterface {
+    id: string;
     descrizionePos: string;
-    fileName: string;
-    filePath: string;
+    codSede: string;
     listaTipologie: TipologiaPos[];
 }
 

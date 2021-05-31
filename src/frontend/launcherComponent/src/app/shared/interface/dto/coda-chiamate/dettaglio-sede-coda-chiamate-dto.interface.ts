@@ -1,5 +1,5 @@
-import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import { Squadra } from '../../model/squadra.model';
+import { SintesiRichiesta } from '../../../model/sintesi-richiesta.model';
+import { Squadra } from '../../../model/squadra.model';
 
 export interface DettaglioSedeCodaChiamateDto {
     infoDistaccamento: InfoDistaccamento;

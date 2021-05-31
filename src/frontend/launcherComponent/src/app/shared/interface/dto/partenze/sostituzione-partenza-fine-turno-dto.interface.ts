@@ -1,4 +1,4 @@
-import { SostituzioneInterface } from '../sostituzione.interface';
+import { SostituzioneInterface } from '../../sostituzione.interface';
 
 export interface SostituzionePartenzaFineTurnoDto {
     idRichiesta: string;

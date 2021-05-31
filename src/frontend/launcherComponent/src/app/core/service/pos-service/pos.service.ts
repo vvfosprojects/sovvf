@@ -29,4 +29,12 @@ export class PosService {
     add(formData: FormData): Observable<any> {
         return this.http.post<any>(API_POS + '/Add', formData);
     }
+
+    edit(formData: FormData): Observable<any> {
+        return this.http.post<any>(API_POS + '/Edit', formData);
+    }
+
+    delete(id: string): Observable<any> {
+        return this.http.post<any>(API_POS + '/Delete', id);
+    }
 }

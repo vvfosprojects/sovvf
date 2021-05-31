@@ -12,7 +12,7 @@ import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearTriageChiamata
 } from '../../actions/triage-modal/triage-modal.actions';
-import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
+import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';

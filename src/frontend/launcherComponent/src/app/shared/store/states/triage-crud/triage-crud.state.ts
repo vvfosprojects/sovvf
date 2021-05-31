@@ -21,7 +21,7 @@ import {
 } from '../../actions/triage-crud/triage-crud.actions';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
-import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettaglio-tipologia-dto.interface';
+import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';

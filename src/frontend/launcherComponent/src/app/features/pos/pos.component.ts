@@ -13,7 +13,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
-import { AddPos, ResetPosModal } from '../../shared/store/actions/pos-modal/pos-modal.actions';
+import { AddPos, DeletePos, EditPos, ResetPosModal } from '../../shared/store/actions/pos-modal/pos-modal.actions';
 import { PosInterface } from '../../shared/interface/pos.interface';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { TipologieState } from '../../shared/store/states/tipologie/tipologie.state';
@@ -21,6 +21,7 @@ import { Tipologia } from '../../shared/model/tipologia.model';
 import { GetAllDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.interface';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-pos',
@@ -120,6 +121,7 @@ export class PosComponent implements OnInit, OnDestroy {
         });
         addPosModal.componentInstance.tipologie = this.tipologie;
         addPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+        addPosModal.componentInstance.editPos = false;
         addPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
@@ -131,13 +133,75 @@ export class PosComponent implements OnInit, OnDestroy {
             },
             (err) => {
                 this.store.dispatch(new ResetPosModal());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
+                console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    onEditPos(pos: PosInterface): void {
+        let editPosModal;
+        editPosModal = this.modalService.open(PosModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        editPosModal.componentInstance.tipologie = this.tipologie;
+        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+        editPosModal.componentInstance.editPos = true;
+        editPosModal.componentInstance.pos = pos;
+        editPosModal.result.then(
+            (result: { success: boolean, formData: FormData }) => {
+                if (result.success) {
+                    this.editPos(result.formData);
+                } else if (!result.success) {
+                    this.store.dispatch(new ResetPosModal());
+                    console.log('Modal "editPos" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ResetPosModal());
+                console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    onDeletePos(): void {
+        let editPosModal;
+        editPosModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        editPosModal.componentInstance.tipologie = this.tipologie;
+        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+        editPosModal.result.then(
+            (result: { success: boolean, id: string }) => {
+                if (result.success) {
+                    this.deletePos(result.id);
+                } else if (!result.success) {
+                    this.store.dispatch(new ResetPosModal());
+                    console.log('Modal "deletePos" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ResetPosModal());
+                console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
             }
         );
     }
 
     addPos(formData: FormData): void {
         this.store.dispatch(new AddPos(formData));
+    }
+
+    editPos(formData: FormData): void {
+        this.store.dispatch(new EditPos(formData));
+    }
+
+    deletePos(id: string): void {
+        this.store.dispatch(new DeletePos(id));
     }
 
     onRicercaPos(ricerca: string): void {

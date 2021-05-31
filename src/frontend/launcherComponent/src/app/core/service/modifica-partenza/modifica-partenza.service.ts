@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ModificaPartenzaDto } from 'src/app/shared/interface/dto/modifica-partenza-dto.interface';
-import { SostituzionePartenzaFineTurnoDto } from '../../../shared/interface/dto/sostituzione-partenza-fine-turno-dto.interface';
+import { ModificaPartenzaDto } from 'src/app/shared/interface/dto/partenze/modifica-partenza-dto.interface';
+import { SostituzionePartenzaFineTurnoDto } from '../../../shared/interface/dto/partenze/sostituzione-partenza-fine-turno-dto.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_MODIFICA_PARTENZA = BASE_URL + environment.apiUrl.modificaPartenza;
