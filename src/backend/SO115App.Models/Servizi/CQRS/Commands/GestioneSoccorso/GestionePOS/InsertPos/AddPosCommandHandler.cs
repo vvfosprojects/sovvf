@@ -44,18 +44,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
 
         public void Handle(AddPosCommand command)
         {
-            var path = Path.Combine(_env.ContentRootPath, "wwwroot");
-            _resultPath = path;
-            _resultPath += "\\" + command.Pos.CodSede;
+            //var path = Path.Combine(_env.ContentRootPath, "wwwroot");
+            //_resultPath = path;
+            //_resultPath += "\\" + command.Pos.CodSede;
 
-            var PathCompleto = Path.Combine(_resultPath, command.Pos.FDFile.FileName);
+            //var PathCompleto = Path.Combine(_resultPath, command.Pos.FDFile.FileName);
 
-            using (var stream = File.Create(PathCompleto))
-            {
-                command.Pos.FDFile.CopyTo(stream);
-            }
+            //using (var stream = File.Create(PathCompleto))
+            //{
+            //    command.Pos.FDFile.CopyTo(stream);
+            //}
 
-            command.Pos.FilePath = PathCompleto;
+            //command.Pos.FilePath = PathCompleto;
 
             _savePos.Save(command.Pos);
         }

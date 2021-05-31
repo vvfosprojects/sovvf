@@ -38,16 +38,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
 
         public void Save(DtoPos pos)
         {
-            var NewPos = new PosDAO()
-            {
-                CodSede = pos.CodSede,
-                ListaTipologie = pos.ListaTipologie,
-                DescrizionePos = pos.DescrizionePos,
-                FileName = pos.FDFile.FileName,
-                FilePath = pos.FilePath
-            };
-
-            _dbcontex.DtoPosCollection.InsertOne(NewPos);
+            _dbcontex.DtoPosCollection.InsertOne(pos);
         }
     }
 }

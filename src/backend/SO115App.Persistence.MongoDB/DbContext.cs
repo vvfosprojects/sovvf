@@ -123,14 +123,14 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
-            BsonClassMap.RegisterClassMap<PosDAO>();
+            BsonClassMap.RegisterClassMap<DtoPos>();
         }
 
-        public IMongoCollection<PosDAO> DtoPosCollection
+        public IMongoCollection<DtoPos> DtoPosCollection
         {
             get
             {
-                return database.GetCollection<PosDAO>("pos");
+                return database.GetCollection<DtoPos>("pos");
             }
         }
 
