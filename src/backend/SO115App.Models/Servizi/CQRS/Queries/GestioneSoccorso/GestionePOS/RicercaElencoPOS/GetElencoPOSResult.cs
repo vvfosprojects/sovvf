@@ -31,7 +31,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.Rice
         /// <summary>
         ///   La lista delle POS in uscita dalla query.
         /// </summary>
-        public List<DtoPos> DataArray { get; set; }
+        public List<PosDAO> DataArray { get; set; }
 
         public Paginazione Pagination { get; set; }
     }

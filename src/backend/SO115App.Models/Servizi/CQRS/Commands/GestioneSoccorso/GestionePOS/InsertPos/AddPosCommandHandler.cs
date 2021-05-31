@@ -20,7 +20,10 @@
 using CQRS.Commands;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -44,18 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
 
         public void Handle(AddPosCommand command)
         {
-            //var path = Path.Combine(_env.ContentRootPath, "wwwroot");
-            //_resultPath = path;
-            //_resultPath += "\\" + command.Pos.CodSede;
-
-            //var PathCompleto = Path.Combine(_resultPath, command.Pos.FDFile.FileName);
-
-            //using (var stream = File.Create(PathCompleto))
-            //{
-            //    command.Pos.FDFile.CopyTo(stream);
-            //}
-
-            //command.Pos.FilePath = PathCompleto;
+            command.Pos.ListaTipologieConvert = JsonConvert.DeserializeObject<List<TipologiaPos>>(command.Pos.ListaTipologie);
 
             _savePos.Save(command.Pos);
         }

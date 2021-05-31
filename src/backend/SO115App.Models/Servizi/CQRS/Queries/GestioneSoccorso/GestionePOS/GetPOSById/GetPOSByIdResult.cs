@@ -29,6 +29,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetP
         /// <summary>
         ///   La lista delle POS in uscita dalla query.
         /// </summary>
-        public DtoPos Pos { get; set; }
+        public PosDAO Pos { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
             _dbContext = dbContext;
         }
 
-        public List<DtoPos> Get(GetElencoPOSQuery filtri)
+        public List<PosDAO> Get(GetElencoPOSQuery filtri)
         {
             var text = filtri.Filters.Search?.ToLower() ?? "";
 
@@ -33,23 +33,23 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
 
                 if (filtri.Filters.idDettaglioTipologia != 0)
                 {
-                    Tipologia.CodTipologiaDettaglio = new int[1];
-                    Tipologia.CodTipologiaDettaglio[0] = filtri.Filters.idDettaglioTipologia;
+                    Tipologia.CodTipologiaDettaglio.Add(filtri.Filters.idDettaglioTipologia);
                 }
             }
 
             var lstPOS = _dbContext.DtoPosCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
-                && (c.DescrizionePos.ToLower().Contains(text)
-                    || c.listaTipologie.Contains(Tipologia))).Project("{FDFile: 0}").ToList();
+                && (c.DescrizionePos.ToLower().Contains(text)))
+                //|| c.ListaTipologie.Contains(Tipologia)))
+                .Project("{fDFile: 0}").ToList();
 
-            var lstDes = new List<DtoPos>();
+            var lstDes = new List<PosDAO>();
             foreach (BsonDocument pos in lstPOS)
-                lstDes.Add(BsonSerializer.Deserialize<DtoPos>(pos));
+                lstDes.Add(BsonSerializer.Deserialize<PosDAO>(pos));
 
             return lstDes;
         }
 
-        public DtoPos GetPosById(string id)
+        public PosDAO GetPosById(string id)
         {
             return _dbContext.DtoPosCollection.Find(c => c.Id.Equals(id)).FirstOrDefault();
         }

@@ -6,8 +6,8 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestionePOS
 {
     public interface IGetPOS
     {
-        public List<DtoPos> Get(GetElencoPOSQuery search);
+        public List<PosDAO> Get(GetElencoPOSQuery search);
 
-        public DtoPos GetPosById(string id);
+        public PosDAO GetPosById(string id);
     }
 }

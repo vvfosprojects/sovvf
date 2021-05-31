@@ -51,7 +51,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.Rice
         {
             var lstPOS = _getPOS.Get(query);
 
-            List<DtoPos> lstPOSPaginata = null;
+            List<PosDAO> lstPOSPaginata = null;
 
             if (query.Pagination != default)
             {
