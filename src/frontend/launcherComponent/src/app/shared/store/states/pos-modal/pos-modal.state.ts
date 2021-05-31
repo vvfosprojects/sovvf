@@ -59,12 +59,9 @@ export class PosModalState {
             let tempTipologiaPos = null as TipologiaPos;
             tempTipologiaPos = {
                 codTipologia: +t.codice,
-                codTipologiaDettaglio: null
+                codTipologiaDettaglio: []
             };
             if (tipologieDettagli) {
-                if (!tempTipologiaPos?.codTipologiaDettaglio) {
-                    tempTipologiaPos.codTipologiaDettaglio = [];
-                }
                 tipologieDettagli.forEach((dT: DettaglioTipologia) => {
                     if (dT.codiceTipologia === +t.codice) {
                         tempTipologiaPos.codTipologiaDettaglio.push(+dT.codiceDettaglioTipologia);
