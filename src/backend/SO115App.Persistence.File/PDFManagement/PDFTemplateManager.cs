@@ -16,7 +16,8 @@ namespace SO115App.Persistence.File.PDFManagement
         private PdfPage _page;
         private XGraphics _gfx;
         private const int _fieldHeight = 35;
-        private double y = 75;
+        private const double _minY = 75;
+        private double _y = _minY;
 
         //IMPOSTO GLI STILI
         private static readonly XFont _titolo = new XFont("Arial", 18);
@@ -59,34 +60,22 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
         {
-            _page = _document.AddPage();
-            _gfx = XGraphics.FromPdfPage(_page);
-            //A4 FORMATO
-            _page.Width = XUnit.FromInch(8.3);
-            _page.Height = XUnit.FromInch(11.7);
-            _page.Orientation = PageOrientation.Landscape;
-
-            //POPOLO IL PDF
-            _gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, 40);
-            //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
-            //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
-            //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
-
             Func<int, double> altezza = partenze => _fieldHeight + 20 * (partenze - 1);
 
             model.lstRiepiloghi.ForEach(async riepilogo =>
             {
-                CreaRigaTabella(y, riepilogo.lstPartenze.Count);
-                PopolaRigaTabella(riepilogo, y);
-                y += altezza(riepilogo.lstPartenze.Count);
+                double h = altezza(riepilogo.lstPartenze.Count);
+
+                checkNewPage(model, _y + h);
+
+                CreaRigaTabella(_y, h);
+                PopolaRigaTabella(riepilogo, _y);
+
+                _y += h;
             });
 
-            async void CreaRigaTabella(double y, int partenze)
+            async void CreaRigaTabella(double y, double h)
             {
-                double h = altezza(partenze);
-
-                //TODO CHECK NUOVA PAGINA
-
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 10, y, 50, h);
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 60, y, 15, h);
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 75, y, 100, h);
@@ -101,8 +90,6 @@ namespace SO115App.Persistence.File.PDFManagement
             async void PopolaRigaTabella(RiepilogoIntervento riepilogo, double y)
             {
                 y += 10;
-
-                //TODO CHECK NUOVA PAGINA
 
                 _gfx.DrawString(riepilogo.NumeroIntervento.ToString(), _field, XBrushes.Black, 20, y);
                 _gfx.DrawString(riepilogo.Stato.ToString(), _field, XBrushes.Black, 40, y);
@@ -142,33 +129,33 @@ namespace SO115App.Persistence.File.PDFManagement
             //POPOLO IL PDF
             _gfx.DrawString(model.Chiamata.TitoloDistaccamento, titolo, XBrushes.Black, 250, AlignY(40));
 
-            y = AlignY(80);
-            _gfx.DrawString(model.Chiamata.NumeroChiamata ?? "", field, XBrushes.Black, 180, y);
-            _gfx.DrawString(model.Chiamata.DataOraChiamata.ToString("dd/MM/yyyy") ?? "", field, XBrushes.Black, 450, y);
+            _y = AlignY(80);
+            _gfx.DrawString(model.Chiamata.NumeroChiamata ?? "", field, XBrushes.Black, 180, _y);
+            _gfx.DrawString(model.Chiamata.DataOraChiamata.ToString("dd/MM/yyyy") ?? "", field, XBrushes.Black, 450, _y);
 
             _gfx.DrawString(model.Chiamata.DataOraChiamata.ToString("HH:mm") ?? "", field, XBrushes.Black, 450, AlignY(100));
 
-            y = AlignY(150);
-            _gfx.DrawString(model.Chiamata.Tipologia ?? "", field, XBrushes.Black, 100, y);
-            _gfx.DrawString(model.Chiamata.Dettaglio?.Substring(0, 10) ?? "", field, XBrushes.Black, 350, y);
+            _y = AlignY(150);
+            _gfx.DrawString(model.Chiamata.Tipologia ?? "", field, XBrushes.Black, 100, _y);
+            _gfx.DrawString(model.Chiamata.Dettaglio?.Substring(0, 10) ?? "", field, XBrushes.Black, 350, _y);
 
-            y = AlignY(180);
-            _gfx.DrawString(model.Chiamata.Dettaglio?.Substring(10) ?? "", field, XBrushes.Black, 180, y);
-            _gfx.DrawString(model.Chiamata.Civ_Km ?? "", field, XBrushes.Black, 500, y);
+            _y = AlignY(180);
+            _gfx.DrawString(model.Chiamata.Dettaglio?.Substring(10) ?? "", field, XBrushes.Black, 180, _y);
+            _gfx.DrawString(model.Chiamata.Civ_Km ?? "", field, XBrushes.Black, 500, _y);
 
-            y = AlignY(216);
-            _gfx.DrawString(model.Chiamata.Palazzo ?? "", field, XBrushes.Black, 80, y);
-            _gfx.DrawString(model.Chiamata.Scala ?? "", field, XBrushes.Black, 220, y);
-            _gfx.DrawString(model.Chiamata.Piano ?? "", field, XBrushes.Black, 360, y);
-            _gfx.DrawString(model.Chiamata.Interno ?? "", field, XBrushes.Black, 520, y);
+            _y = AlignY(216);
+            _gfx.DrawString(model.Chiamata.Palazzo ?? "", field, XBrushes.Black, 80, _y);
+            _gfx.DrawString(model.Chiamata.Scala ?? "", field, XBrushes.Black, 220, _y);
+            _gfx.DrawString(model.Chiamata.Piano ?? "", field, XBrushes.Black, 360, _y);
+            _gfx.DrawString(model.Chiamata.Interno ?? "", field, XBrushes.Black, 520, _y);
 
-            y = AlignY(246);
-            _gfx.DrawString(model.Chiamata.Comune ?? "", field, XBrushes.Black, 100, y);
-            _gfx.DrawString(model.Chiamata.Prov ?? "", field, XBrushes.Black, 500, y);
+            _y = AlignY(246);
+            _gfx.DrawString(model.Chiamata.Comune ?? "", field, XBrushes.Black, 100, _y);
+            _gfx.DrawString(model.Chiamata.Prov ?? "", field, XBrushes.Black, 500, _y);
 
-            y = AlignY(285);
-            _gfx.DrawString(model.Chiamata.Richiedente ?? "", field, XBrushes.Black, 110, y);
-            _gfx.DrawString(model.Chiamata.RichiedenteTelefono ?? "", field, XBrushes.Black, 450, y);
+            _y = AlignY(285);
+            _gfx.DrawString(model.Chiamata.Richiedente ?? "", field, XBrushes.Black, 110, _y);
+            _gfx.DrawString(model.Chiamata.RichiedenteTelefono ?? "", field, XBrushes.Black, 450, _y);
 
             _gfx.DrawString(model.Chiamata.NoteChiamata ?? "", field, XBrushes.Black, 130, AlignY(340));
 
@@ -186,17 +173,40 @@ namespace SO115App.Persistence.File.PDFManagement
 
             generaDettaglioCihamataPDF(chiamata);
 
-            y = AlignY(400);
+            _y = AlignY(400);
             model.lstPartenze.ForEach(partenza =>
             {
-                y = AlignY((int)y + 20);
-                _gfx.DrawString(partenza.SiglaMezzo ?? "", field, XBrushes.Black, 50, y);
-                _gfx.DrawString(partenza.TargaMezzo ?? "", field, XBrushes.Black, 150, y);
-                _gfx.DrawString(partenza.SiglaSquadra ?? "", field, XBrushes.Black, 250, y);
-                _gfx.DrawString(partenza.SchedaCapoPartenza ?? "", field, XBrushes.Black, 350, y);
-                _gfx.DrawString(partenza.OraAss.ToString("HH:mm") ?? "", field, XBrushes.Black, 450, y);
+                _y = AlignY((int)_y + 20);
+                _gfx.DrawString(partenza.SiglaMezzo ?? "", field, XBrushes.Black, 50, _y);
+                _gfx.DrawString(partenza.TargaMezzo ?? "", field, XBrushes.Black, 150, _y);
+                _gfx.DrawString(partenza.SiglaSquadra ?? "", field, XBrushes.Black, 250, _y);
+                _gfx.DrawString(partenza.SchedaCapoPartenza ?? "", field, XBrushes.Black, 350, _y);
+                _gfx.DrawString(partenza.OraAss.ToString("HH:mm") ?? "", field, XBrushes.Black, 450, _y);
             });
         }
+
+        private void checkNewPage(RiepilogoInterventiModelForm model, double limiter)
+        {
+            if (limiter > 500) //TODO impostare limite esatto per nuova pagina
+                _y = _minY;
+
+            if (_y == _minY)
+            {
+                //CREO NUOVA PAGINA
+                _page = _document.AddPage();
+                _page.Width = XUnit.FromInch(8.3);
+                _page.Height = XUnit.FromInch(11.7);
+                _page.Orientation = PageOrientation.Landscape;
+                _gfx = XGraphics.FromPdfPage(_page);
+
+                //CREO L'INTESTAZIONE
+                _gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, 40);
+                //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
+                //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
+                //_gfx.DrawString(model.DescComando, _titolo, XBrushes.Black, 250, AlignY(40));
+            }
+        }
+
 
         private double AlignY(int x) => x;
     }

@@ -31,6 +31,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
+            //TODO FILTRI QUERY
+            //TODO PAGINE
+            //TODO DRIZZARE NEI FIELDS
+
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri);
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
