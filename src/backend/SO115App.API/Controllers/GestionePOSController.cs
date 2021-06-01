@@ -94,7 +94,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                return Ok(_getPosByIdHandler.Handle(getQuery));
+                return File(_getPosByIdHandler.Handle(getQuery).FdFile, "application/pdf"); //Ok(_getPosByIdHandler.Handle(getQuery));
             }
             catch (Exception ex)
             {
