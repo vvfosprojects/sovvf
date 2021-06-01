@@ -86,6 +86,7 @@ namespace Persistence.MongoDB
             TriageMap.Map();
             TriageDataMap.Map();
             TrasferimentiChiamateMap.Map();
+            PosMap.Map();
 
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
@@ -123,7 +124,6 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
-            BsonClassMap.RegisterClassMap<PosDAO>();
         }
 
         public IMongoCollection<PosDAO> DtoPosCollection
