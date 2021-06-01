@@ -291,6 +291,7 @@ namespace SO115App.CompositionRoot
             container.Register<ISavePos, SavePOS>();
             container.Register<IDeletePos, DeletePOS>();
             container.Register<IGetPOS, GetPOS>();
+            container.Register<IEditPos, EditPOS>();
 
             #endregion POS
         }
