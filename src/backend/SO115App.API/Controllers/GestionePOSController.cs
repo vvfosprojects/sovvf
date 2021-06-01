@@ -104,7 +104,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("{IdPos}")]
+        [HttpGet("Delete")]
         public async Task<IActionResult> Delete(string IdPos)
         {
             var command = new DeletePosCommand()
