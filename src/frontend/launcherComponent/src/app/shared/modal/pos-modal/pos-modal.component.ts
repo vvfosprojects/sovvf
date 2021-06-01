@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { PosInterface } from '../../interface/pos.interface';
+import { PosInterface, TipologiaPos } from '../../interface/pos.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
@@ -75,11 +75,37 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new UpdateFormValue({
             value: {
                 descrizionePos: editPos.descrizionePos,
-                // tipologie: editPos.listaTipologie, // TODO: da rivedere
-                // tipologieDettagli: editPos.listaTipologie // TODO: da rivedere
+                tipologie: this.getTipologieFromListaTipologie(editPos),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos)
             },
             path: 'posModal.posForm'
         }));
+    }
+
+    getTipologieFromListaTipologie(pos: PosInterface): Tipologia[] {
+        const tipologie = [];
+        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
+            const tipologiaTrovata = tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
+            if (!tipologiaTrovata) {
+                const tipologia = this.tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
+                tipologie.push(tipologia);
+            }
+        });
+        return tipologie;
+    }
+
+    getDettagliTipologieFromListaTipologie(pos: PosInterface): DettaglioTipologia[] {
+        const dettagliTipologie = [];
+        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
+            tipologiaPos?.codTipologiaDettaglio?.forEach((codTipologiaDettaglio: number) => {
+                const dettaglioTipologiaTrovato = dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceDettaglioTipologia === tipologiaPos?.codTipologia)[0];
+                if (!dettaglioTipologiaTrovato) {
+                    const dettaglioTipologia = this.dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceTipologia === tipologiaPos?.codTipologia && dT?.codiceDettaglioTipologia === codTipologiaDettaglio)[0];
+                    dettagliTipologie.push(dettaglioTipologia);
+                }
+            });
+        });
+        return dettagliTipologie;
     }
 
     getFormValid(): void {
