@@ -235,6 +235,14 @@ export class PosComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRicercaPos(ricerca));
     }
 
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetPos(page));
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.store.dispatch(new SetPageSize(pageSize));
+    }
+
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
