@@ -1,13 +1,14 @@
 <ng-progress [spinner]="false"></ng-progress>
 <ng-sidebar-container>
     <!-- Sidebar -->
-    <ng-sidebar [(opened)]="sidebarOpened"
+    <ng-sidebar [(opened)]="sidebarOpened" #sidebar
+                [animate]="true"
                 [closeOnClickOutside]="true"
+                (onOpened)="sidebar.open()"
                 (onClosed)="toggleSidebar(false)">
         <app-sidebar [user]="user"
                      [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                      [url]="url"
-                     (toggleSidebar)="toggleSidebar()"
                      (logout)="onLogout()">
         </app-sidebar>
     </ng-sidebar>
@@ -21,8 +22,7 @@
                             [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                             [colorButtonView]="colorButton$ | async"
                             [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"
-                            [sidebarOpened]="sidebarOpened"
-                            (toggleSidebar)="toggleSidebar()">
+                            (toggleSidebar)="getSidebarOpened()">
                 </app-navbar>
                 <router-outlet></router-outlet>
                 <app-footer></app-footer>

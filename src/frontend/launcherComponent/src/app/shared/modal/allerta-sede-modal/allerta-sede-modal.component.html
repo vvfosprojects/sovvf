@@ -7,11 +7,10 @@
         <i class="fa fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height pt-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
             <label for="sede">Quale Comando vuoi allertare?
-                <small class="text-danger">*</small>
             </label>
                 <ng-select class="align-self-center"
                            id="sede"
@@ -34,8 +33,46 @@
                     </ng-template>
                 </ng-select>
         </div>
+        <label for="genereMezzo" class="mt-2">Genere mezzo necessario?
+        </label>
+        <ng-select class="align-self-center custom"
+                   style="max-height: 45px; overflow: auto"
+                   id="genereMezzo"
+                   [items]="generiMezzi"
+                   bindLabel="descrizione"
+                   bindValue="descrizione"
+                   [clearSearchOnAdd]="true"
+                   [multiple]="true"
+                   [closeOnSelect]="false"
+                   [hideSelected]="false"
+                   [ngModelOptions]="{standalone: true}"
+                   [appendTo]="'body'"
+                   [(ngModel)]="generiMezzoSelezionati"
+                   [loading]="!generiMezzi"
+                   placeholder="Seleziona Genere Mezzo">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <input type="checkbox" [checked]="generiMezzoSelezionati && generiMezzoSelezionati?.includes(item.descrizione)"/>
+                {{item.descrizione}}
+            </ng-template>
+        </ng-select>
+        <div class="alert alert-warning mt-5">
+            <span class="mr-4">Scegli motivazione:</span>
+            <div class="form-check-inline">
+                <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza" [checked]="checkbox.conoscenza"
+                       (click)="onCheck('conoscenza')">
+                <label class="form-check-label" for="conoscenza">
+                    Per conoscenza
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <input class="form-check-input radio-custom" type="radio" id="allerta" name="allerta" [checked]="checkbox.allerta"
+                       (click)="onCheck('allerta')">
+                <label class="form-check-label" for="allerta">
+                    Per allerta
+                </label>
+            </div>
+        </div>
     </form>
-    <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
     <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!formValid" (click)="onConferma()">

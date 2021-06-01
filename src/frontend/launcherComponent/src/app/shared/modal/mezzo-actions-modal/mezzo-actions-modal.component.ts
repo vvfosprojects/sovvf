@@ -50,9 +50,7 @@ export class MezzoActionsModalComponent implements OnInit {
     }
 
     onCheck(key: string): void {
-        if (this.checkbox[key]) {
-            this.checkbox[key] = false;
-        } else {
+        if (!this.checkbox[key]) {
             Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
         }
         this.azioneIntervento = key;
