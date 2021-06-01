@@ -6,12 +6,15 @@ namespace SO115App.Models.Classi.Pos
 {
     public class DtoPos
     {
+        public string Id { get; set; }
         public string CodSede { get; set; }
-        public List<TipologiaPos> ListaTipologie { get; set; }
+
+        public string ListaTipologie { get; set; }
+
+        public List<TipologiaPos> ListaTipologieConvert { get; set; }
         public string DescrizionePos { get; set; }
+
         public IFormFile FDFile { get; set; }
-        public string FileName { get; set; }
-        public string FilePath { get; set; }
     }
 
     public class TipologiaPos

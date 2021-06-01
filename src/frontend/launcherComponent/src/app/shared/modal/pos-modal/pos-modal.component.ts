@@ -7,6 +7,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
+import { PosInterface } from '../../interface/pos.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
+import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
 
 @Component({
     selector: 'app-pos-modal',
@@ -23,6 +26,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
     dettagliTipologie: DettaglioTipologia[];
     dettagliTipologieFiltered: DettaglioTipologia[];
 
+    editPos: boolean;
+    pos: PosInterface;
+
     posForm: FormGroup;
     formData: FormData;
 
@@ -38,7 +44,14 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        if (this.editPos) {
+            this.updatePosForm(this.pos);
+        }
         this.dettagliTipologieFiltered = this.dettagliTipologie;
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     initForm(): void {
@@ -50,7 +63,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
-            tipologieDettagli: [null, Validators.required]
+            tipologieDettagli: [null]
         });
     }
 
@@ -58,8 +71,24 @@ export class PosModalComponent implements OnInit, OnDestroy {
         return this.posForm.controls;
     }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+    updatePosForm(editPos: PosInterface): void {
+        console.log('updatePosForm', editPos);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                descrizionePos: editPos.descrizionePos,
+                tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
+            },
+            path: 'posModal.posForm'
+        }));
+    }
+
+    getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
+        return getTipologieFromListaTipologie(pos, tipologie);
+    }
+
+    getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 
     getFormValid(): void {
@@ -104,5 +133,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     closeModal(): void {
         this.modal.close({ success: false });
+    }
+
+    getTitle(): string {
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
     }
 }

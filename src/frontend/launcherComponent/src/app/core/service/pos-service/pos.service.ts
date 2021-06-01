@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
@@ -26,7 +26,26 @@ export class PosService {
         return this.http.post(API_POS, obj);
     }
 
+    getPosById(id: string): Observable<HttpEvent<Blob>> {
+        return this.http.request(new HttpRequest(
+            'GET',
+            API_POS + '/GetPosById?Id=' + id,
+            null,
+            {
+                reportProgress: true,
+                responseType: 'blob'
+            }));
+    }
+
     add(formData: FormData): Observable<any> {
         return this.http.post<any>(API_POS + '/Add', formData);
+    }
+
+    edit(formData: FormData): Observable<any> {
+        return this.http.post<any>(API_POS + '/Edit', formData);
+    }
+
+    delete(id: string): Observable<any> {
+        return this.http.get<any>(API_POS + '/Delete/' + id);
     }
 }

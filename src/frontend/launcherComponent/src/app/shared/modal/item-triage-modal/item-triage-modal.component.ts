@@ -32,6 +32,12 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     domandaSeguente: string;
     disableDomanda: boolean;
 
+    risposte = [
+        'Si',
+        'No',
+        'Non lo so'
+    ];
+
     item: TreeviewItem;
 
     addItemTriageForm: FormGroup;
@@ -79,6 +85,11 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             noteOperatore: new FormControl(),
             noteUtente: new FormControl(),
             domandaSeguente: new FormControl(),
+            rispostePersonalizzate: new FormControl(),
+            risposta1: new FormControl(),
+            risposta2: new FormControl(),
+            risposta3: new FormControl(),
+            risposta4: new FormControl(),
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
@@ -86,7 +97,11 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             prioritaConsigliata: [null],
             noteOperatore: [null],
             noteUtente: [null],
-            domandaSeguente: [null]
+            domandaSeguente: [null],
+            rispostePersonalizzate: [false],
+            risposta1: [this.risposte[0]],
+            risposta2: [this.risposte[1]],
+            risposta3: [this.risposte[2]]
         });
     }
 
@@ -114,7 +129,21 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
         return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value && !this.f.noteUtente.value;
     }
 
+    onCheckRispostePersonalizzate(event: any): void {
+        this.f.rispostePersonalizzate.patchValue(event.status);
+    }
+
+    addRisposta(): void {
+        this.risposte.push('');
+        this.addItemTriageForm.addControl('risposta' + this.risposte.length, new FormControl(''));
+    }
+
     onConferma(): void {
+        const risposte = [];
+        this.risposte.forEach((risposta: string, index: number) => {
+            risposte.push(this.f['risposta' + (index + 1)].value);
+        });
+
         if (this.item && !this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs())) {
             const item = {
                 value: this.item.value,
@@ -123,7 +152,8 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
                 noteOperatore: this.f.noteOperatore.value,
                 noteUtente: this.f.noteUtente.value,
                 prioritaConsigliata: this.f.prioritaConsigliata.value,
-                domandaSeguente: this.f.domandaSeguente.value
+                domandaSeguente: this.f.domandaSeguente.value,
+                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
             };
             this.modal.close({ success: true, data: item });
         } else if (this.item && !this.parentItemData || (this.parentItemData && !this.getParentItemDataDiffs())) {
@@ -134,12 +164,14 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
                 noteOperatore: null,
                 noteUtente: null,
                 prioritaConsigliata: null,
-                domandaSeguente: this.f.domandaSeguente.value
+                domandaSeguente: this.f.domandaSeguente.value,
+                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
             };
             this.modal.close({ success: true, data: item });
         } else {
             const item = {
-                domandaSeguente: this.f.domandaSeguente.value
+                domandaSeguente: this.f.domandaSeguente.value,
+                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
             };
             this.modal.close({ success: true, data: item });
         }

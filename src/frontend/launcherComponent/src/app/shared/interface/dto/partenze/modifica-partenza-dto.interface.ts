@@ -1,6 +1,6 @@
-import { SequenzaValoriSelezionati } from '../sequenza-modifica-partenza.interface';
-import { MezzoComposizione } from '../mezzo-composizione-interface';
-import { SquadraComposizione } from '../squadra-composizione-interface';
+import { SequenzaValoriSelezionati } from '../../sequenza-modifica-partenza.interface';
+import { MezzoComposizione } from '../../mezzo-composizione-interface';
+import { SquadraComposizione } from '../../squadra-composizione-interface';
 
 export interface ModificaPartenzaDto {
     codRichiesta: string;

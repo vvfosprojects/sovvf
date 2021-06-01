@@ -13,7 +13,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { PosModalComponent } from '../../shared/modal/pos-modal/pos-modal.component';
-import { AddPos, ResetPosModal } from '../../shared/store/actions/pos-modal/pos-modal.actions';
+import { AddPos, DeletePos, EditPos, ResetPosModal } from '../../shared/store/actions/pos-modal/pos-modal.actions';
 import { PosInterface } from '../../shared/interface/pos.interface';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { TipologieState } from '../../shared/store/states/tipologie/tipologie.state';
@@ -21,6 +21,9 @@ import { Tipologia } from '../../shared/model/tipologia.model';
 import { GetAllDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.interface';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { HttpEventType } from '@angular/common/http';
+import { PosService } from '../../core/service/pos-service/pos.service';
 
 @Component({
     selector: 'app-pos',
@@ -48,7 +51,8 @@ export class PosComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-                private store: Store) {
+                private store: Store,
+                private posService: PosService) {
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
@@ -120,6 +124,7 @@ export class PosComponent implements OnInit, OnDestroy {
         });
         addPosModal.componentInstance.tipologie = this.tipologie;
         addPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+        addPosModal.componentInstance.editPos = false;
         addPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
@@ -131,7 +136,85 @@ export class PosComponent implements OnInit, OnDestroy {
             },
             (err) => {
                 this.store.dispatch(new ResetPosModal());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
+                console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    onDownloadPos(pos: PosInterface): void {
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress :
+                    break;
+                case HttpEventType.Response :
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = 'StampaPos:' + pos.descrizionePos;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore Stampa POS'));
+    }
+
+    onEditPos(pos: PosInterface): void {
+        let editPosModal;
+        editPosModal = this.modalService.open(PosModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        editPosModal.componentInstance.tipologie = this.tipologie;
+        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+        editPosModal.componentInstance.editPos = true;
+        editPosModal.componentInstance.pos = pos;
+        editPosModal.result.then(
+            (result: { success: boolean, formData: FormData }) => {
+                if (result.success) {
+                    this.editPos(pos.id, result.formData);
+                } else if (!result.success) {
+                    this.store.dispatch(new ResetPosModal());
+                    console.log('Modal "editPos" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ResetPosModal());
+                console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    onDeletePos(event: { idPos, descrizionePos }): void {
+        let confirmDeletePosModal;
+        confirmDeletePosModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'md'
+        });
+        confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        confirmDeletePosModal.componentInstance.titolo = 'Eliminazione POS ' + event.descrizionePos;
+        confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizionePos + '?';
+        confirmDeletePosModal.result.then(
+            (result: string) => {
+                switch (result) {
+                    case 'ok':
+                        this.deletePos(event.idPos);
+                        break;
+                    case 'ko':
+                        this.store.dispatch(new ResetPosModal());
+                        console.log('Modal "deletePos" chiusa con val ->', result);
+                        break;
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ResetPosModal());
+                console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -140,8 +223,24 @@ export class PosComponent implements OnInit, OnDestroy {
         this.store.dispatch(new AddPos(formData));
     }
 
+    editPos(id: string, formData: FormData): void {
+        this.store.dispatch(new EditPos(id, formData));
+    }
+
+    deletePos(id: string): void {
+        this.store.dispatch(new DeletePos(id));
+    }
+
     onRicercaPos(ricerca: string): void {
         this.store.dispatch(new SetRicercaPos(ricerca));
+    }
+
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetPos(page));
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.store.dispatch(new SetPageSize(pageSize));
     }
 
     getRicerca(): void {

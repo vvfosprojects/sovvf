@@ -1,4 +1,4 @@
-import { TipologiaPos } from '../pos.interface';
+import { TipologiaPos } from '../../pos.interface';
 
 export interface AddPosDtoInterface {
     descrizionePos: string;

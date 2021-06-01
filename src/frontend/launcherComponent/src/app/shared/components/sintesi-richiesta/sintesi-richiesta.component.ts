@@ -24,6 +24,7 @@ import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../feat
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
 import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
+import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -210,6 +211,22 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
         return checkNumeroPartenzeAttive(partenze);
+    }
+
+    openDettaglioTriage(): void {
+        let dettaglioTriageModal: any;
+        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
+        dettaglioTriageModal.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
+        dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
+        dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
+        dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
+        dettaglioTriageModal.componentInstance.triageSummary = this.richiesta.triageSummary;
     }
 
     onListaEnti(): void {
