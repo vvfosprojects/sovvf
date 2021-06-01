@@ -13,8 +13,8 @@
     <div class="col-7" style="text-align: center">
       <span style="font-size: 130%" >Seleziona le Azioni Richieste</span>
       <div class="row"></div>
-      <div *ngIf="azioniRichiesta.length <= 0" class="card card-shadow mx-auto px-3">
-        <div class="clearfix ml-2"><i class="fa fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
+      <div *ngIf="!azioniRichiesta.length" class="card card-shadow mx-auto px-3">
+        <div class="clearfix ml-2 text-secondary"><i class="fa fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
       </div>
       <div  *ngIf="azioniRichiesta.length > 0" class="card card-shadow mx-auto px-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
         <div *ngFor="let a of azioniRichiesta; let index = index" class="row my-1">

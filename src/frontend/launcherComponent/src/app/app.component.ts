@@ -147,11 +147,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     getSidebarOpened(): void {
         this.subscription.add(
             this.sidebarOpened$.subscribe((sidebarOpened: boolean) => {
-                if (sidebarOpened) {
-                    this.sidebarOpened = sidebarOpened;
-                } else {
-                    this.sidebarOpened = false;
-                }
+                this.sidebarOpened = sidebarOpened;
             })
         );
     }
@@ -197,8 +193,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     toggleSidebar(value?: boolean): void {
-        const val = value === false || value === true ? value : null;
-        this.store.dispatch(new ToggleSidebarOpened(val));
+        this.store.dispatch(new ToggleSidebarOpened(value));
     }
 
     onLogout(): void {

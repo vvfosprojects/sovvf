@@ -8,6 +8,10 @@ import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component'
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 import { RiepilogoInterventiInterface } from '../../interface/riepilogo-interventi.interface';
 import { HttpEventType } from '@angular/common/http';
+import { TurnoState } from '../../../features/navbar/store/states/turno.state';
+import { TurnoCalendario } from '../../../features/navbar/turno/model/turno-calendario.model';
+import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-riepilogo-interventi-modal',
@@ -18,8 +22,12 @@ export class RiepilogoInterventiModalComponent {
 
     @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
+    @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
+    turnoCalendario: TurnoCalendario;
+    @Select(SquadreComposizioneState.squadreComposizione) squadreComposizione$: Observable<SquadraComposizione[]>;
+    squadreComposizione: SquadraComposizione[];
 
-    turno = [{ id: 'test 1', descrizione: 'test 1' }, { id: 'test 2', descrizione: 'test 2' }];
+    turno = [];
     squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }];
 
     prefix: {} = {
@@ -30,10 +38,6 @@ export class RiepilogoInterventiModalComponent {
         trasmessi: false,
         interventi: false,
     };
-    periodoChiuseToShow: any = {
-        daA: null,
-    };
-    outsideDays: 'visible';
     hoveredDate: NgbDate | null = null;
     fromDate: NgbDate;
     toDate: NgbDate | null = null;
@@ -53,6 +57,8 @@ export class RiepilogoInterventiModalComponent {
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
         this.todayDate = calendar.getToday();
         this.getDistaccamenti();
+        this.getTurnoCalendario();
+        this.getSquadreComposizione();
     }
 
     formatDate(date: any): any {
@@ -64,23 +70,40 @@ export class RiepilogoInterventiModalComponent {
         return dateFormatted;
     }
 
-    formatDatetoShow(): any {
-        this.periodoChiuseToShow = {
-            daA: null,
-            data: null,
-            turno: null,
-        };
-        let da;
-        let a;
-        da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
-        a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
-        this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
-    }
+    // formatDatetoShow(): any {
+    //     this.periodoChiuseToShow = {
+    //         daA: null,
+    //         data: null,
+    //         turno: null,
+    //     };
+    //     let da;
+    //     let a;
+    //     da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
+    //     a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
+    //     this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
+    // }
 
     getDistaccamenti(): void {
         this.subscription.add(
             this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
                 this.distaccamenti = distaccamenti;
+            })
+        );
+    }
+
+    getTurnoCalendario(): void {
+        this.subscription.add(
+            this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
+                this.turnoCalendario = turnoC;
+                this.turno = Object.values(this.turnoCalendario);
+            })
+        );
+    }
+
+    getSquadreComposizione(): void {
+        this.subscription.add(
+            this.squadreComposizione$.subscribe((squadreComposizione: SquadraComposizione[]) => {
+                console.log('this.squadreComposizione ', squadreComposizione);
             })
         );
     }
@@ -106,12 +129,6 @@ export class RiepilogoInterventiModalComponent {
     }
 
     onCheckAltriFiltri(key: string): void {
-        // LOGICA CHECKBOX CON SELEZIONE ALTERNATA
-        // if (this.altriFiltri[key]) {
-        //     this.altriFiltri[key] = false;
-        // } else {
-        //     Object.keys(this.altriFiltri).forEach(x => this.altriFiltri[x] = x === key);
-        // }
         switch (key) {
             case 'tipologia':
                 this.altriFiltri.tipologia = !this.altriFiltri.tipologia;
@@ -177,7 +194,6 @@ export class RiepilogoInterventiModalComponent {
                                 result: obj
                             });
                             this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((data: any) => {
-                                // window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
                                 switch (data.type) {
                                     case HttpEventType.DownloadProgress :
                                         break;
@@ -209,7 +225,6 @@ export class RiepilogoInterventiModalComponent {
     }
 
     onPatchFiltriSquadre(event: any, tipologia: string): void {
-        // console.log('***onPatchFiltriSquadre ', event);
         switch (tipologia) {
             case 'distaccamenti':
                 if (event) {
@@ -219,7 +234,7 @@ export class RiepilogoInterventiModalComponent {
 
             case 'turno':
                 if (event) {
-                    this.turnoSelezionato = event.id;
+                    this.turnoSelezionato = event;
                 }
                 break;
 

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
@@ -10,6 +10,10 @@ import { Sede } from '../../model/sede.model';
 import { AuthState } from '../../../features/auth/store/auth.state';
 import { Utente } from '../../model/utente.model';
 import { makeCopy } from '../../helper/function-generiche';
+import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
+import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -25,21 +29,32 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     distaccamenti: Sede[];
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     codiceSedeUser: any;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
+    generiMezzi: TipologicaComposizionePartenza[];
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
     sediSelezionate: string[] = [];
+    checkbox: { conoscenza: boolean, allerta: boolean } = {
+        conoscenza: false,
+        allerta: true,
+    };
+    motivazione = 'allerta';
+    generiMezzoSelezionati: string[] = [];
+
 
     codRichiesta: string;
 
     subscriptions: Subscription = new Subscription();
 
     constructor(private fb: FormBuilder,
-                private modal: NgbActiveModal) {
+                private modal: NgbActiveModal,
+                private store: Store) {
         this.initForm();
         this.getFormValid();
         this.getSedi();
         this.getCodiceSedeUser();
+        this.getGenereMezzo();
     }
 
     initForm(): void {
@@ -55,6 +70,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
+        this.store.dispatch(new GetFiltriComposizione());
         this.removeSedeUser();
     }
 
@@ -79,6 +95,14 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.distaccamenti$.subscribe((sedi: Sede[]) => {
                 this.distaccamenti = sedi;
+            })
+        );
+    }
+
+    getGenereMezzo(): void {
+        this.subscriptions.add(
+            this.filtri$.subscribe((filtri: ListaTipologicheMezzi) => {
+                this.generiMezzi = filtri.generiMezzi;
             })
         );
     }
@@ -114,12 +138,13 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     onConferma(): void {
         this.submitted = true;
-
+        const obj = this.allertaSedeForm.value;
+        obj.motivazione = this.motivazione;
+        obj.generiMezzi = this.generiMezzoSelezionati;
         if (!this.allertaSedeForm.valid) {
             return;
         }
-
-        this.modal.close({ status: 'ok', result: this.allertaSedeForm.value });
+        this.modal.close({ status: 'ok', result: obj });
     }
 
     onDismiss(): void {
@@ -128,5 +153,15 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     closeModal(type: string): void {
         this.modal.close(type);
+    }
+
+    onCheck(key: string): void {
+        if (this.checkbox[key]) {
+            this.checkbox[key] = false;
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x !== key);
+        } else {
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
+        }
+        this.motivazione = key;
     }
 }

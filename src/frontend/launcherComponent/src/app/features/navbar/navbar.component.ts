@@ -17,7 +17,6 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
-import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
@@ -25,6 +24,7 @@ import { AnnullaChiamata } from '../home/store/actions/form-richiesta/scheda-tel
 import { NotificheState } from '../../shared/store/states/notifiche/notifiche.state';
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { NavbarState } from './store/states/navbar.state';
 
 @Component({
     selector: 'app-navbar',
@@ -108,10 +108,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.time = new Date();
     }
 
-    onSwitchSunMode(): void {
-        this.store.dispatch(new SunMode());
-    }
-
     getTurnoCalendario(): void {
         this.subscription.add(
             this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
@@ -181,6 +177,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         } else if (composizioneStatus) {
             this.turnOffComposizionePartenza();
         }
+    }
+
+    onToggleSidebar(): void {
+        const sidebarOpened = this.store.selectSnapshot(NavbarState.sidebarOpened);
+        this.toggleSidebar.emit();
+        this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
     }
 
     toggleMezziInSerivizo(): void {
