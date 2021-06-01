@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { PosInterface, TipologiaPos } from '../../../shared/interface/pos.interface';
+import { PosInterface } from '../../../shared/interface/pos.interface';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
+import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from 'src/app/shared/helper/function-pos';
 
 @Component({
     selector: 'app-tabella-pos',
@@ -41,29 +42,11 @@ export class TabellaPosComponent {
         this.deletePos.emit({ idPos, descrizionePos });
     }
 
-    getTipologieFromListaTipologie(pos: PosInterface): Tipologia[] {
-        const tipologie = [];
-        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
-            const tipologiaTrovata = tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
-            if (!tipologiaTrovata) {
-                const tipologia = this.tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
-                tipologie.push(tipologia);
-            }
-        });
-        return tipologie;
+    getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
+        return getTipologieFromListaTipologie(pos, tipologie);
     }
 
-    getDettagliTipologieFromListaTipologie(pos: PosInterface): DettaglioTipologia[] {
-        const dettagliTipologie = [];
-        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
-            tipologiaPos?.codTipologiaDettaglio?.forEach((codTipologiaDettaglio: number) => {
-                const dettaglioTipologiaTrovato = dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceDettaglioTipologia === tipologiaPos?.codTipologia)[0];
-                if (!dettaglioTipologiaTrovato) {
-                    const dettaglioTipologia = this.dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceTipologia === tipologiaPos?.codTipologia && dT?.codiceDettaglioTipologia === codTipologiaDettaglio)[0];
-                    dettagliTipologie.push(dettaglioTipologia);
-                }
-            });
-        });
-        return dettagliTipologie;
+    getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 }
