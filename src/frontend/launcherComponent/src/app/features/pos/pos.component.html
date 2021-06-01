@@ -28,6 +28,8 @@
         </div>
         <div class="col-12 col-md-9 mx-auto">
             <app-tabella-pos [pos]="pos$ | async"
+                             [tipologie]="tipologie"
+                             [dettagliTipologie]="dettagliTipologie"
                              (download)="onDownloadPos($event)"
                              (editPos)="onEditPos($event)"
                              (deletePos)="onDeletePos($event)">

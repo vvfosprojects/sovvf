@@ -32,10 +32,18 @@
             </div>
         </td>
         <td style="width:25%">
-
+            <ul class="mb-0">
+                <li *ngFor="let t of getTipologieFromListaTipologie(p)">
+                    {{ t?.descrizione }}
+                </li>
+            </ul>
         </td>
         <td style="width:35%">
-
+            <ul class="mb-0">
+                <li *ngFor="let t of getDettagliTipologieFromListaTipologie(p)">
+                    {{ t?.descrizione }}
+                </li>
+            </ul>
         </td>
     </tr>
     <tr *ngIf="pos?.length <= 0">
