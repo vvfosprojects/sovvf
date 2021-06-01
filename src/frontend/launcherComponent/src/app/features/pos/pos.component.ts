@@ -195,7 +195,7 @@ export class PosComponent implements OnInit, OnDestroy {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg'
+            size: 'md'
         });
         confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         confirmDeletePosModal.componentInstance.titolo = 'Eliminazione POS ' + event.descrizionePos;
