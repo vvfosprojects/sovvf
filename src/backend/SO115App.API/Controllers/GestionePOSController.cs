@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.DeletePos;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.EditPos;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.InsertPos;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetPOSById;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
@@ -23,17 +24,20 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetElencoPOSQuery, GetElencoPOSResult> _getHandler;
         private readonly IQueryHandler<GetPOSByIdQuery, GetPOSByIdResult> _getPosByIdHandler;
         private readonly ICommandHandler<DeletePosCommand> _deletehandler;
+        private readonly ICommandHandler<EditPosCommand> _edithandler;
 
         public GestionePOSController(
 
             ICommandHandler<AddPosCommand> Addhandler,
             IQueryHandler<GetElencoPOSQuery, GetElencoPOSResult> GetHandler,
             IQueryHandler<GetPOSByIdQuery, GetPOSByIdResult> GetPosByIdHandler,
-            ICommandHandler<DeletePosCommand> Deletehandler)
+            ICommandHandler<DeletePosCommand> Deletehandler,
+            ICommandHandler<EditPosCommand> Edithandler)
 
         {
             _addhandler = Addhandler;
             _deletehandler = Deletehandler;
+            _edithandler = Edithandler;
             _getHandler = GetHandler;
             _getPosByIdHandler = GetPosByIdHandler;
         }
@@ -115,6 +119,30 @@ namespace SO115App.API.Controllers
             try
             {
                 _deletehandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("Edit")]
+        public async Task<IActionResult> Edit([FromForm] DtoPos pos)
+        {
+            var codiceSede = Request.Headers["codicesede"];
+
+            pos.CodSede = codiceSede;
+            var command = new EditPosCommand()
+            {
+                Pos = pos
+            };
+
+            try
+            {
+                _edithandler.Handle(command);
                 return Ok();
             }
             catch (Exception ex)
