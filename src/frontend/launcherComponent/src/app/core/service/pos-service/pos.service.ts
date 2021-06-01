@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
+import { PosInterface } from '../../../shared/interface/pos.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_POS = BASE_URL + environment.apiUrl.pos;
@@ -26,6 +27,10 @@ export class PosService {
         return this.http.post(API_POS, obj);
     }
 
+    getPosById(id: string): Observable<PosInterface> {
+        return this.http.get<PosInterface>(API_POS + '/GetPosById/' + id);
+    }
+
     add(formData: FormData): Observable<any> {
         return this.http.post<any>(API_POS + '/Add', formData);
     }
@@ -35,6 +40,6 @@ export class PosService {
     }
 
     delete(id: string): Observable<any> {
-        return this.http.post<any>(API_POS + '/Delete', id);
+        return this.http.get<any>(API_POS + '/Delete/' + id);
     }
 }

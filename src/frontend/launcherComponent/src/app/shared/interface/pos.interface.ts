@@ -3,6 +3,7 @@ export interface PosInterface {
     descrizionePos: string;
     codSede: string;
     listaTipologie: TipologiaPos[];
+    FDFile: any;
 }
 
 export interface TipologiaPos {

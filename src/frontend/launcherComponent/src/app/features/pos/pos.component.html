@@ -27,7 +27,10 @@
             </app-risultati-ricerca>
         </div>
         <div class="col-12 col-md-9 mx-auto">
-            <app-tabella-pos [pos]="pos$ | async">
+            <app-tabella-pos [pos]="pos$ | async"
+                             (download)="onDownloadPos($event)"
+                             (editPos)="onEditPos($event)"
+                             (deletePos)="onDeletePos($event)">
             </app-tabella-pos>
         </div>
     </div>

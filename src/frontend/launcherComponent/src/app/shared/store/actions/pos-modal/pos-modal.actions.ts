@@ -8,7 +8,7 @@ export class AddPos {
 export class EditPos {
     static readonly type = '[PosModal] Edit Pos';
 
-    constructor(public formData: FormData) {
+    constructor(public id: string, public formData: FormData) {
     }
 }
 

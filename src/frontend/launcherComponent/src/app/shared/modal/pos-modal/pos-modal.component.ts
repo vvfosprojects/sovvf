@@ -125,4 +125,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
     closeModal(): void {
         this.modal.close({ success: false });
     }
+
+    getTitle(): string {
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
+    }
 }

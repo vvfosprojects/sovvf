@@ -138,6 +138,10 @@ export class PosComponent implements OnInit, OnDestroy {
         );
     }
 
+    onDownloadPos(pos: PosInterface): void {
+        // TODO: logica che scarica la POS
+    }
+
     onEditPos(pos: PosInterface): void {
         let editPosModal;
         editPosModal = this.modalService.open(PosModalComponent, {
@@ -153,7 +157,7 @@ export class PosComponent implements OnInit, OnDestroy {
         editPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
-                    this.editPos(result.formData);
+                    this.editPos(pos.id, result.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ResetPosModal());
                     console.log('Modal "editPos" chiusa con val ->', result);
@@ -166,23 +170,27 @@ export class PosComponent implements OnInit, OnDestroy {
         );
     }
 
-    onDeletePos(): void {
-        let editPosModal;
-        editPosModal = this.modalService.open(ConfirmModalComponent, {
+    onDeletePos(event: { idPos, descrizionePos }): void {
+        let confirmDeletePosModal;
+        confirmDeletePosModal = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
         });
-        editPosModal.componentInstance.tipologie = this.tipologie;
-        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
-        editPosModal.result.then(
-            (result: { success: boolean, id: string }) => {
-                if (result.success) {
-                    this.deletePos(result.id);
-                } else if (!result.success) {
-                    this.store.dispatch(new ResetPosModal());
-                    console.log('Modal "deletePos" chiusa con val ->', result);
+        confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        confirmDeletePosModal.componentInstance.titolo = 'Eliminazione POS ' + event.descrizionePos;
+        confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizionePos + '?';
+        confirmDeletePosModal.result.then(
+            (result: string) => {
+                switch (result) {
+                    case 'ok':
+                        this.deletePos(event.idPos);
+                        break;
+                    case 'ko':
+                        this.store.dispatch(new ResetPosModal());
+                        console.log('Modal "deletePos" chiusa con val ->', result);
+                        break;
                 }
             },
             (err) => {
@@ -196,8 +204,8 @@ export class PosComponent implements OnInit, OnDestroy {
         this.store.dispatch(new AddPos(formData));
     }
 
-    editPos(formData: FormData): void {
-        this.store.dispatch(new EditPos(formData));
+    editPos(id: string, formData: FormData): void {
+        this.store.dispatch(new EditPos(id, formData));
     }
 
     deletePos(id: string): void {

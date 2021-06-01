@@ -8,14 +8,25 @@
     <tbody>
     <tr *ngFor="let p of pos | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
         <td style="width:20%" class="align-middle">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                    placement="bottom" (click)="onDeletePos(p?.id, p?.descrizione)">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                    ngbTooltip="Rimuovi POS"
+                    placement="bottom"
+                    (click)="onDeletePos(p?.id, p?.descrizionePos)">
                 <i class="fa fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-info font-weight-bold float-left"
+                    ngbTooltip="Modifica POS"
+                    placement="bottom"
+                    (click)="onEditPos(p)">
+                <i class="fa fa-edit"></i>
             </button>
         </td>
         <td style="width:80%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span>{{p?.descrizione}}</span>
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+                 style="max-width: 400px;">
+                <a href="javascript:void(0)"(click)="onDownloadPos(p)">
+                    {{ p?.descrizionePos }}
+                </a>
             </div>
         </td>
     </tr>

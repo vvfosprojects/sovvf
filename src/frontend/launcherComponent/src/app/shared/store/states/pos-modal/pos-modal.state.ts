@@ -5,6 +5,7 @@ import { AddPos, DeletePos, EditPos, ResetPosModal } from '../../actions/pos-mod
 import { PosInterface, TipologiaPos } from '../../../interface/pos.interface';
 import { Tipologia } from '../../../model/tipologia.model';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
+import { GetPos } from '../../../../features/pos/store/actions/pos/pos.actions';
 
 export interface PosModalStateModel {
     posForm: {
@@ -74,7 +75,10 @@ export class PosModalState {
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
         this.posService.add(formData).subscribe((response: PosInterface) => {
-            dispatch(new ResetPosModal());
+            dispatch([
+                new ResetPosModal(),
+                new GetPos()
+            ]);
         }, (err => dispatch(new ResetPosModal())));
     }
 
@@ -99,18 +103,24 @@ export class PosModalState {
             listaTipologiePos.push(tempTipologiaPos);
         });
         const formData = action.formData;
+        formData.append('id', action.id);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
         this.posService.edit(formData).subscribe((response: PosInterface) => {
-            dispatch(new ResetPosModal());
+            dispatch([
+                new ResetPosModal(),
+                new GetPos()
+            ]);
         }, (err => dispatch(new ResetPosModal())));
     }
 
     @Action(DeletePos)
     deletePos({ getState, dispatch }: StateContext<PosModalStateModel>, action: DeletePos): void {
-        const id = action.id;
-        this.posService.delete(id).subscribe((response: PosInterface) => {
-            dispatch(new ResetPosModal());
+        this.posService.delete(action.id).subscribe(() => {
+            dispatch([
+                new ResetPosModal(),
+                new GetPos()
+            ]);
         }, (err => dispatch(new ResetPosModal())));
     }
 
