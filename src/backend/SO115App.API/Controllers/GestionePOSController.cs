@@ -82,11 +82,15 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("GetPosById")]
-        public async Task<IActionResult> GetPosById(GetPOSByIdQuery getQuery)
+        public async Task<IActionResult> GetPosById(string Id)
         {
             var codiceSede = Request.Headers["codicesede"];
 
-            getQuery.CodiceSede = codiceSede;
+            var getQuery = new GetPOSByIdQuery()
+            {
+                CodiceSede = codiceSede,
+                IdPos = Id
+            };
 
             try
             {
