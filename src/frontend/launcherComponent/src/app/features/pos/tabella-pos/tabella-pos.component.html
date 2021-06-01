@@ -2,7 +2,9 @@
     <thead>
     <tr>
         <th scope="col" style="width:20%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" style="width:80%"><i class="fa fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:20%"><i class="fa fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:25%"><i class="fa fa-file mr-2"></i>Tipologie</th>
+        <th scope="col" style="width:35%"><i class="fa fa-file mr-2"></i>Dettagli Tipologie</th>
     </tr>
     </thead>
     <tbody>
@@ -21,13 +23,19 @@
                 <i class="fa fa-edit"></i>
             </button>
         </td>
-        <td style="width:80%" class="align-middle">
+        <td style="width:20%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
                  style="max-width: 400px;">
-                <a href="javascript:void(0)"(click)="onDownloadPos(p)">
+                <a href="javascript:void(0)" (click)="onDownloadPos(p)">
                     {{ p?.descrizionePos }}
                 </a>
             </div>
+        </td>
+        <td style="width:25%">
+
+        </td>
+        <td style="width:35%">
+
         </td>
     </tr>
     <tr *ngIf="pos?.length <= 0">

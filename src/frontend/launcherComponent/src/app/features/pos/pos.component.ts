@@ -22,6 +22,8 @@ import { GetAllDettagliTipologie } from '../../shared/store/actions/dettagli-tip
 import { DettagliTipologieState } from '../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.interface';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { HttpEventType } from '@angular/common/http';
+import { PosService } from '../../core/service/pos-service/pos.service';
 
 @Component({
     selector: 'app-pos',
@@ -49,7 +51,8 @@ export class PosComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-                private store: Store) {
+                private store: Store,
+                private posService: PosService) {
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
@@ -139,7 +142,23 @@ export class PosComponent implements OnInit, OnDestroy {
     }
 
     onDownloadPos(pos: PosInterface): void {
-        // TODO: logica che scarica la POS
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress :
+                    break;
+                case HttpEventType.Response :
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = 'StampaPos:' + pos.descrizionePos;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore Stampa POS'));
     }
 
     onEditPos(pos: PosInterface): void {
