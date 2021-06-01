@@ -32,8 +32,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
             //TODO FILTRI QUERY
-            //TODO PAGINE
-            //TODO DRIZZARE NEI FIELDS
 
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri);
 
@@ -43,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
             var filename = "Riepilogo_interventi_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf";
 
-            var defString = new string[] { "" };
+            //var defString = new string[] { "" };
             var lstRiepiloghi = lstInterventi.Result?.Select(i => new RiepilogoIntervento()
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
@@ -55,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Richiedente = i.Richiedente.Nominativo,
                 Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
                 NumeroIntervento = int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).Last()),
-                Comune = string.Concat(i.Localita.Indirizzo.Split(',')[2].Split(' ')),
+                Comune = i.Localita.Indirizzo.Split(',')[2].Substring(7).Replace(' ', '-'),
                 KmCiv = i.Localita.Indirizzo.Split(',')[1],
                 
                 lstPartenze = i.Partenze.Select(p => new RiepilogoPartenza()
@@ -68,7 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                     MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     MezzoRientrato = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaRientrata)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     Servizio = "",
-                    TpSch = "N" + p.CodicePartenza
+                    TpSch = "N " + p.CodicePartenza
                 }).ToList()
             }).OrderByDescending(r => r.NumeroIntervento).ToList();
 
