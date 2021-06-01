@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.Pos;
+using System.IO;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetPOSById
 {
@@ -29,6 +30,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetP
         /// <summary>
         ///   La lista delle POS in uscita dalla query.
         /// </summary>
-        public PosDAO Pos { get; set; }
+        public MemoryStream FdFile { get; set; }
     }
 }

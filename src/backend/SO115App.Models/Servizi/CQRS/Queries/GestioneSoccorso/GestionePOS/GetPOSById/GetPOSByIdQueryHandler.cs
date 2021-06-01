@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using System.IO;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetPOSById
 {
@@ -46,9 +47,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetP
         {
             var Pos = _getPOS.GetPosById(query.IdPos);
 
+            MemoryStream ms = new MemoryStream(Pos.FDFile);
+
             return new GetPOSByIdResult()
             {
-                Pos = Pos
+                FdFile = ms
             };
         }
     }
