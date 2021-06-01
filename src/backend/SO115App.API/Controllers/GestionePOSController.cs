@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.DeletePos;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.InsertPos;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.GetPOSById;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
@@ -21,16 +22,18 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AddPosCommand> _addhandler;
         private readonly IQueryHandler<GetElencoPOSQuery, GetElencoPOSResult> _getHandler;
         private readonly IQueryHandler<GetPOSByIdQuery, GetPOSByIdResult> _getPosByIdHandler;
+        private readonly ICommandHandler<DeletePosCommand> _deletehandler;
 
         public GestionePOSController(
 
             ICommandHandler<AddPosCommand> Addhandler,
             IQueryHandler<GetElencoPOSQuery, GetElencoPOSResult> GetHandler,
-            IQueryHandler<GetPOSByIdQuery, GetPOSByIdResult> GetPosByIdHandler)
+            IQueryHandler<GetPOSByIdQuery, GetPOSByIdResult> GetPosByIdHandler,
+            ICommandHandler<DeletePosCommand> Deletehandler)
 
         {
             _addhandler = Addhandler;
-
+            _deletehandler = Deletehandler;
             _getHandler = GetHandler;
             _getPosByIdHandler = GetPosByIdHandler;
         }
@@ -88,6 +91,27 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_getPosByIdHandler.Handle(getQuery));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(string IdPos)
+        {
+            var command = new DeletePosCommand()
+            {
+                Id = IdPos
+            };
+
+            try
+            {
+                _deletehandler.Handle(command);
+                return Ok();
             }
             catch (Exception ex)
             {
