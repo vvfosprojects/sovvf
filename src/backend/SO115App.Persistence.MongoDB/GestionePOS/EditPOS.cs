@@ -39,6 +39,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
         {
             var posNew = new PosDAO()
             {
+                Id = pos.Id,
                 CodSede = pos.CodSede,
                 DescrizionePos = pos.DescrizionePos,
                 FDFile = ByteArrayConvert(pos.FDFile),
