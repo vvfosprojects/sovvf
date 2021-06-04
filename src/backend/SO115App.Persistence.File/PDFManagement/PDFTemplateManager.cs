@@ -64,6 +64,9 @@ namespace SO115App.Persistence.File.PDFManagement
         {
             Func<int, double> altezza = partenze => _fieldHeight + 25 * (partenze - 1);
 
+            if(model.lstRiepiloghi.Count == 0)
+                checkNewPage(model, _y);
+
             model.lstRiepiloghi.ForEach(async riepilogo =>
             {
                 double h = altezza(riepilogo.lstPartenze.Count);
