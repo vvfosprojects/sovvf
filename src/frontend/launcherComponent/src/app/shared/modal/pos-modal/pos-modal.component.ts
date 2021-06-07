@@ -105,9 +105,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
-        this.dettagliTipologieFiltered = this.dettagliTipologie;
+        this.dettagliTipologieFiltered = [];
         if (this.dettagliTipologieFiltered) {
-            this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
+            codTipologie.forEach((codTipologia: number) => {
+                this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {
+                    const exists = this.dettagliTipologieFiltered.indexOf(dettaglioTipologia) !== -1;
+                    if (!exists && dettaglioTipologia.codiceTipologia === codTipologia) {
+                        this.dettagliTipologieFiltered.push(dettaglioTipologia);
+                    }
+                });
+            });
         }
     }
 
@@ -124,7 +131,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true, formData: this.formData });
+        this.modal.close({ success: true, formData: this.formData, edit: !!this.editPos });
     }
 
     onDismiss(): void {
