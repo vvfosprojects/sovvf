@@ -176,7 +176,7 @@ export class PosComponent implements OnInit, OnDestroy {
         editPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
-                    this.editPos(pos.id, result.formData);
+                    this.editPos(pos.id, result?.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ResetPosModal());
                     console.log('Modal "editPos" chiusa con val ->', result);

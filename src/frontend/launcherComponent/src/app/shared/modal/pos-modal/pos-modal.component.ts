@@ -131,7 +131,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true, formData: this.formData, edit: !!this.editPos });
+        this.modal.close({ success: true, formData: this.formData });
     }
 
     onDismiss(): void {
