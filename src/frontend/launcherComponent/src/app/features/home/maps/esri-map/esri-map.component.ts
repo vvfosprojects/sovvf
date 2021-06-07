@@ -56,15 +56,53 @@ export class EsriMapComponent implements OnInit {
         return this._basemap;
     }
 
-    markerDaStampare = {
-        id: '1',
-        descrizioneOperatore: 'Mario Rossi',
-        codiceSedeOperatore: 'RM.1000',
-        localita: {
-            coordinate: [12.53, 41.893],
-            indirizzo: 'Via di Prova'
-        }
-    };
+    markersDaStampare = [
+        {
+            id: '1',
+            descrizioneOperatore: 'Mario Rossi',
+            codiceSedeOperatore: 'RM.1000',
+            localita: {
+                coordinate: [12.53, 41.893],
+                indirizzo: 'Via di Prova'
+            }
+        },
+        {
+            id: '2',
+            descrizioneOperatore: 'Mario Verdi',
+            codiceSedeOperatore: 'RM.1000',
+            localita: {
+                coordinate: [12.52, 41.897],
+                indirizzo: 'Via di Prova 2'
+            }
+        },
+        {
+            id: '3',
+            descrizioneOperatore: 'Francesco Rossi',
+            codiceSedeOperatore: 'RM.1000',
+            localita: {
+                coordinate: [12.51, 41.8939],
+                indirizzo: 'Via di Prova 3'
+            }
+        },
+        {
+            id: '4',
+            descrizioneOperatore: 'Francesco Maria',
+            codiceSedeOperatore: 'RM.1000',
+            localita: {
+                coordinate: [12.515, 41.897],
+                indirizzo: 'Via di Prova 4'
+            }
+        },
+        {
+            id: '5',
+            descrizioneOperatore: 'Maria Verde',
+            codiceSedeOperatore: 'RM.1000',
+            localita: {
+                coordinate: [12.524, 41.892],
+                indirizzo: 'Via di Prova 5'
+            }
+        },
+    ];
 
     constructor() {
     }
@@ -150,25 +188,75 @@ export class EsriMapComponent implements OnInit {
     async displayMarker(): Promise<any> {
         try {
 
-            const [GraphicsLayer, SimpleMarkerSymbol, Point, Graphic] = await loadModules(['esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', 'esri/geometry/Point', 'esri/Graphic']);
-            const long = this.markerDaStampare.localita.coordinate[0];
-            const lat = this.markerDaStampare.localita.coordinate[1];
-            const mp = new Point(long, lat);
-            const symbol = {
-                type: 'simple-marker',  // autocasts as new SimpleMarkerSymbol()
-                style: 'square',
-                color: 'blue',
-                size: '8px',  // pixels
-                outline: {  // autocasts as new SimpleLineSymbol()
-                    color: [255, 255, 0],
-                    width: 3  // points
-                },
-                geometry: mp
-            };
-            const graphicsLayer = new GraphicsLayer({
-                graphics: [symbol]
+            const [FeatureLayer, GraphicsLayer, SimpleMarkerSymbol, Point, Graphic, PopupTemplate] = await loadModules(['esri/layers/FeatureLayer', 'esri/layers/GraphicsLayer', 'esri/symbols/SimpleMarkerSymbol', 'esri/geometry/Point', 'esri/Graphic', 'esri/PopupTemplate']);
+            const layer = new FeatureLayer({
+                source: [],  // autocast as a Collection of new Graphic()
+                objectIdField: 'ObjectID'
             });
-            this.map.add(graphicsLayer);
+
+
+            const clusterConfig = {
+                type: 'cluster',
+                clusterRadius: '100px',
+                // {cluster_count} is an aggregate field containing
+                // the number of features comprised by the cluster
+                popupTemplate: {
+                    title: 'Cluster summary',
+                    content: 'Test',
+                },
+                clusterMinSize: '24px',
+                clusterMaxSize: '60px',
+                labelingInfo: [{
+                    deconflictionStrategy: 'none',
+                    labelExpressionInfo: {
+                        expression: 'Text($feature.cluster_count, \'#,###\')'
+                    },
+                    symbol: [],
+                    labelPlacement: 'center-center',
+                }]
+            };
+
+
+            for (const markerDaStampare of this.markersDaStampare) {
+                const long = markerDaStampare.localita.coordinate[0];
+                const lat = markerDaStampare.localita.coordinate[1];
+                const mp = new Point(long, lat);
+                const symbol = {
+                    type: 'picture-marker',  // autocasts as new PictureMarkerSymbol()
+                    url: '/assets/img/icone-markers/richieste/ns/chiamata.png',
+                    width: '46px',
+                    height: '64px'  // pixels
+                    // geometry: mp
+                };
+
+                const graphic = new Graphic({
+                    geometry: mp,
+                    symbol
+                });
+
+                layer.source.push(graphic);
+                clusterConfig.labelingInfo[0].symbol.push(symbol);
+            }
+
+
+            /*const features = [
+                {
+                    attributes: {
+                        ObjectID: 1,
+                        DepArpt: 'KATL',
+                        MsgTime: Date.now(),
+                        FltId: 'UAL1'
+                    }
+                },
+
+            ];*/
+
+
+            layer.featureReduction = clusterConfig;
+            // graphicsLayer.add(graphic);
+            // this.map.add(graphicsLayer);
+            this.map.add(layer);
+
         } catch (error) {
             console.error('Error in "displayMarker"', error);
         }

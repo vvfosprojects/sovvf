@@ -58,7 +58,7 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
 import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { FiltriScComponent } from './maps-ui/filtri-markers/filtri-sc/filtri-sc.component';
 import { FormsModule } from '@angular/forms';
-import { EsriMapComponent } from '../../esri-map/esri-map.component';
+import { EsriMapComponent } from './esri-map/esri-map.component';
 import { AppModule } from '../../../app.module';
 
 @NgModule({

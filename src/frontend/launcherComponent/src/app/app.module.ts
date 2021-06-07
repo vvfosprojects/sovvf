@@ -73,7 +73,7 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { EsriMapComponent } from './features/esri-map/esri-map.component';
+import { EsriMapComponent } from './features/home/maps/esri-map/esri-map.component';
 
 @NgModule({
     declarations: [
