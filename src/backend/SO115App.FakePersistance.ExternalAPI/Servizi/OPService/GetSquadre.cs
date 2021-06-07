@@ -24,7 +24,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
             var url = new Uri(baseurl, "api/v1/so-workshift/current" + "?id_sede=" + Codice);
 
-            var result = _service.GetAsync(url, "");
+            var result = _service.GetAsync(url);
 
             return await result;
         }

@@ -37,10 +37,12 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -52,6 +54,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         #region Servizi
 
+        private readonly IGetSquadre _getSquadre;
         private readonly IGetListaSquadre _getListaSquadre;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoSquadra _getStatoSquadre;
@@ -67,6 +70,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         #endregion Servizi
 
         public ComposizionePartenzaAvanzataQueryHandler(
+            IGetSquadre getSquadre,
             IGetListaSquadre getListaSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetStatoMezzi getMezziPrenotati,
@@ -79,6 +83,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
+            _getSquadre = getSquadre;
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
@@ -96,6 +101,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
             DateTime adesso = DateTime.Now;
+
+            var lstSquadre = new ConcurrentQueue<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+            Parallel.ForEach(query.CodiceSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async s => lstSquadre.Enqueue(s)));
 
             //Prendo tutte le sedi al disotto della sede indicata nel filtro
 

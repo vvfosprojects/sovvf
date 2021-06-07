@@ -29,6 +29,7 @@ using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.OPService;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
@@ -40,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
@@ -68,6 +70,12 @@ namespace SO115App.CompositionRoot
             container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
 
             container.Register<IGetToken, GetToken>();
+
+            #region OPService
+
+            container.Register<IGetSquadre, GetSquadre>();
+
+            #endregion
 
             #region Qualifiche
 
