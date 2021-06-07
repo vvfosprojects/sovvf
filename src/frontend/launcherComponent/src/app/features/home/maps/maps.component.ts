@@ -45,6 +45,12 @@ export class MapsComponent implements OnInit, OnDestroy {
     mapsFullyLoaded = false;
     centroMappa: CentroMappa;
 
+    // ESRI
+    // Set our map properties
+    mapCenter = [12.49104, 41.89996];
+    basemapType = 'streets-navigation-vector';
+    mapZoomLevel = 12;
+
     private subscription: Subscription = new Subscription();
 
     constructor() {
@@ -62,15 +68,20 @@ export class MapsComponent implements OnInit, OnDestroy {
         console.log('Componente Maps distrutto');
     }
 
-    mapIsLoaded(event): void {
-        if (event) {
-            this.mapsFullyLoaded = true;
-            if (this.mapsFullyLoaded) {
-                setTimeout(() => {
-                    this.mapFullLoaded.emit(this.mapsFullyLoaded);
-                }, 2000);
-            }
-        }
+    // ESRI
+    mapLoadedEvent(status: boolean): void {
+        console.log('The map has loaded: ' + status);
     }
+
+    // mapIsLoaded(event): void {
+    //     if (event) {
+    //         this.mapsFullyLoaded = true;
+    //         if (this.mapsFullyLoaded) {
+    //             setTimeout(() => {
+    //                 this.mapFullLoaded.emit(this.mapsFullyLoaded);
+    //             }, 2000);
+    //         }
+    //     }
+    // }
 
 }

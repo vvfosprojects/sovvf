@@ -73,6 +73,7 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
+import { EsriMapComponent } from './features/esri-map/esri-map.component';
 
 @NgModule({
     declarations: [
@@ -137,7 +138,7 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
-        NgxsFormPluginModule.forRoot()
+        NgxsFormPluginModule.forRoot(),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -145,6 +146,8 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         I18n,
+    ],
+    exports: [
     ],
     bootstrap: [AppComponent]
 })
