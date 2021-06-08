@@ -25,7 +25,6 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
@@ -102,9 +101,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             DateTime adesso = DateTime.Now;
 
-            var lstSquadre = new ConcurrentQueue<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
-            Parallel.ForEach(query.CodiceSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async s => lstSquadre.Enqueue(s)));
-
             //Prendo tutte le sedi al disotto della sede indicata nel filtro
 
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -151,24 +147,35 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 return p;
             });
 
-            //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
-            var lstSquadreComposizione = _getListaSquadre.Get(query.CodiceSede.ToList())
-                //MAPPING
-                .ContinueWith(lstsquadre => lstsquadre.Result.Select(squadra =>
+            var lstSquadreComposizione = Task.Factory.StartNew(() =>
+            {
+                var lstSquadre = new ConcurrentQueue<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+                Parallel.ForEach(query.CodiceSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async s => lstSquadre.Enqueue(s)));
+                return lstSquadre;
+            }).ContinueWith(squadre => squadre.Result.Select(squadra => 
+            {
+                var squadraComposizione = new Squadra()
                 {
-                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Id))?.StatoSquadra ?? Costanti.MezzoInSede);
-                    squadra.PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == squadra.Codice)?.PreAccoppiato ?? false;
-                    squadra.IndiceOrdinamento = GetIndiceOrdinamento(squadra, query.Richiesta);
+                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Id))?.StatoSquadra ?? Costanti.MezzoInSede),
+                    PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == s.Codice)?.PreAccoppiato ?? false,
+                    Codice = squadra.Codice,
+                    ListaCodiciFiscaliComponentiSquadra = squadra.Membri.Select(m => m.CodiceFiscale).ToList(),
+                    Id = squadra.Id,
+                    Turno = squadra.TurnoAttuale,
+                    Nome = squadra.Codice,
+                    Componenti = squadra.Membri.Select(m => new Componente(m.Ruolo, "", "", false, false, false)).ToList()
+                };
 
-                    return new Classi.Composizione.ComposizioneSquadre()
-                    {
-                        Id = squadra.Id,
-                        Squadra = squadra,
-                        MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(s => s.Id).Contains(squadra.Id))?.MezzoComposizione
-                    };
-                }))
-                //FILTRI E ORDINAMENTI
-                .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
+                return new Classi.Composizione.ComposizioneSquadre()
+                {
+                    Id = squadra.Id,
+                    Squadra = squadraComposizione,
+                    MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(ss => ss.Id).Contains(squadra.Id))?.MezzoComposizione,
+                    //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
+                };
+            }))
+            //FILTRI E ORDINAMENTI
+            .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
             var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
                 //MAPPING
@@ -392,22 +399,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.RicercaSquadre))
                     return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
                 return true;
-            }).Where(s =>
-            {
-                if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                    return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
-                return true;
-            }).Where(s =>
-            {
-                if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
-                    return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
-                return true;
-            }).Where(s =>
-            {
-                if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                    return s.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                return true;
-            }).Where(s => s.Squadra.DiEmergenza == query.Filtro.SquadreDiEmergenza)
+            })//.Where(s =>
+            //{
+            //    if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+            //        return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
+            //    return true;
+            //}).Where(s =>
+            //{
+            //    if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+            //        return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+            //    return true;
+            //}).Where(s =>
+            //{
+            //    if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+            //        return s.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+            //    return true;
+            /*})*/.Where(s => s.Squadra.DiEmergenza == query.Filtro.SquadreDiEmergenza)
             .Where(s =>
             {
                 if (!query.Richiesta.Tipologie.Contains(tipologia90.Codice))
