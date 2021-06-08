@@ -102,7 +102,10 @@ export class PosModalState {
             });
             listaTipologiePos.push(tempTipologiaPos);
         });
-        const formData = action.formData;
+        let formData = action?.formData;
+        if (!formData) {
+            formData = new FormData();
+        }
         formData.append('id', action.id);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));

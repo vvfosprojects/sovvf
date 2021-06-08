@@ -7,8 +7,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { PosInterface, TipologiaPos } from '../../interface/pos.interface';
+import { PosInterface } from '../../interface/pos.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
 
 @Component({
     selector: 'app-pos-modal',
@@ -75,37 +76,19 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new UpdateFormValue({
             value: {
                 descrizionePos: editPos.descrizionePos,
-                tipologie: this.getTipologieFromListaTipologie(editPos),
-                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos)
+                tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
             },
             path: 'posModal.posForm'
         }));
     }
 
-    getTipologieFromListaTipologie(pos: PosInterface): Tipologia[] {
-        const tipologie = [];
-        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
-            const tipologiaTrovata = tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
-            if (!tipologiaTrovata) {
-                const tipologia = this.tipologie?.filter((t: Tipologia) => t?.codice === '' + tipologiaPos?.codTipologia)[0];
-                tipologie.push(tipologia);
-            }
-        });
-        return tipologie;
+    getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
+        return getTipologieFromListaTipologie(pos, tipologie);
     }
 
-    getDettagliTipologieFromListaTipologie(pos: PosInterface): DettaglioTipologia[] {
-        const dettagliTipologie = [];
-        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
-            tipologiaPos?.codTipologiaDettaglio?.forEach((codTipologiaDettaglio: number) => {
-                const dettaglioTipologiaTrovato = dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceDettaglioTipologia === tipologiaPos?.codTipologia)[0];
-                if (!dettaglioTipologiaTrovato) {
-                    const dettaglioTipologia = this.dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceTipologia === tipologiaPos?.codTipologia && dT?.codiceDettaglioTipologia === codTipologiaDettaglio)[0];
-                    dettagliTipologie.push(dettaglioTipologia);
-                }
-            });
-        });
-        return dettagliTipologie;
+    getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 
     getFormValid(): void {
@@ -122,9 +105,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
-        this.dettagliTipologieFiltered = this.dettagliTipologie;
+        this.dettagliTipologieFiltered = [];
         if (this.dettagliTipologieFiltered) {
-            this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
+            codTipologie.forEach((codTipologia: number) => {
+                this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {
+                    const exists = this.dettagliTipologieFiltered.indexOf(dettaglioTipologia) !== -1;
+                    if (!exists && dettaglioTipologia.codiceTipologia === codTipologia) {
+                        this.dettagliTipologieFiltered.push(dettaglioTipologia);
+                    }
+                });
+            });
         }
     }
 
@@ -153,6 +143,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica ' + this.pos.descrizionePos;
     }
 }

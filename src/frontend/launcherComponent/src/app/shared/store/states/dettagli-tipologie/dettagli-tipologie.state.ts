@@ -91,7 +91,6 @@ export class DettagliTipologieState {
         dispatch(new StartLoadingDettagliTipologie());
         this.detttagliTipologieService.getDettagliTipologie().subscribe((response: ResponseInterface) => {
             dispatch([
-                new PatchPagination(response.pagination),
                 new SetDettagliTipologie(response.dataArray),
                 new StopLoadingDettagliTipologie()
             ]);

@@ -10,7 +10,6 @@ import { PatchPagination } from '../../../../../shared/store/actions/pagination/
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PosService } from '../../../../../core/service/pos-service/pos.service';
 import { RicercaPosState } from '../ricerca-pos/ricerca-pos.state';
-import { RicercaRubricaState } from '../../../../rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface PosStateModel {
@@ -48,7 +47,7 @@ export class PosState {
     @Action(GetPos)
     getPos({ dispatch }: StateContext<PosStateModel>, action: GetPos): void {
         dispatch(new StartLoadingPos());
-        const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
+        const ricerca = this.store.selectSnapshot(RicercaPosState.ricerca);
         const filters = {
             search: ricerca
         };

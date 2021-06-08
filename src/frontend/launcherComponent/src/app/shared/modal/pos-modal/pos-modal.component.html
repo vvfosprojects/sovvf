@@ -51,17 +51,19 @@
                            notFoundText="Nessun Dettaglio Tipologia trovato...">
                 </ng-select>
             </div>
-            <div class="form-group">
-                <label for="file">
-                    Carica un File
-                    <small class="text-danger">*</small>
-                </label>
-                <input type="file"
-                       id="file"
-                       class="w-100"
-                       accept=".docx, .doc, .pdf"
-                       (change)="onFileSelected($event)"/>
-            </div>
+            <ng-template [ngIf]="!editPos">
+                <div class="form-group">
+                    <label for="file">
+                        Carica un File
+                        <small class="text-danger">*</small>
+                    </label>
+                    <input type="file"
+                           id="file"
+                           class="w-100"
+                           accept=".docx, .doc, .pdf"
+                           (change)="onFileSelected($event)"/>
+                </div>
+            </ng-template>
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>

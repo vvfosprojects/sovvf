@@ -176,7 +176,7 @@ export class PosComponent implements OnInit, OnDestroy {
         editPosModal.result.then(
             (result: { success: boolean, formData: FormData }) => {
                 if (result.success) {
-                    this.editPos(pos.id, result.formData);
+                    this.editPos(pos.id, result?.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ResetPosModal());
                     console.log('Modal "editPos" chiusa con val ->', result);
@@ -195,10 +195,10 @@ export class PosComponent implements OnInit, OnDestroy {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg'
+            size: 'md'
         });
         confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        confirmDeletePosModal.componentInstance.titolo = 'Eliminazione POS ' + event.descrizionePos;
+        confirmDeletePosModal.componentInstance.titolo = 'Eliminazione ' + event.descrizionePos;
         confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizionePos + '?';
         confirmDeletePosModal.result.then(
             (result: string) => {
@@ -233,6 +233,14 @@ export class PosComponent implements OnInit, OnDestroy {
 
     onRicercaPos(ricerca: string): void {
         this.store.dispatch(new SetRicercaPos(ricerca));
+    }
+
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetPos(page));
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.store.dispatch(new SetPageSize(pageSize));
     }
 
     getRicerca(): void {
