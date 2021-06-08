@@ -28,17 +28,17 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Pre
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Concurrent;
@@ -54,12 +54,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         #region Servizi
 
         private readonly IGetSquadre _getSquadre;
-        private readonly IGetListaSquadre _getListaSquadre;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly IGetPosizioneFlotta _getPosizioneFlotta;
-        private readonly IGetPreAccoppiati _getPreAccoppiati;
+        //private readonly IGetPreAccoppiati _getPreAccoppiati;
+        private readonly IGetPersonaleByCF _getPersonaleByCF;
 
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly IGetTurno _getTurno;
@@ -69,26 +68,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         #endregion Servizi
 
         public ComposizionePartenzaAvanzataQueryHandler(
+            IGetPersonaleByCF getPersonaleByCF,
             IGetSquadre getSquadre,
-            IGetListaSquadre getListaSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetStatoMezzi getMezziPrenotati,
             IGetMezziUtilizzabili getMezziUtilizzabili,
-            IGetPosizioneFlotta getPosizioneFlotta,
-            IGetPreAccoppiati getPreAccoppiati,
+            //IGetPreAccoppiati getPreAccoppiati,
 
             IGetTipologieByCodice getTipologieByCodice,
             IGetTurno getTurno,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
+            _getPersonaleByCF = getPersonaleByCF;
             _getSquadre = getSquadre;
-            _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getStatoSquadre = getStatoSquadre;
-            _getPosizioneFlotta = getPosizioneFlotta;
-            _getPreAccoppiati = getPreAccoppiati;
+            //_getPreAccoppiati = getPreAccoppiati;
             _getTipologieByCodice = getTipologieByCodice;
             _getTurno = getTurno;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
@@ -117,13 +114,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
             //PREPARO I DATI CHE MI SERVONO
-            IEnumerable<string> lstSediPreaccoppiati;
+            List<Distaccamento> lstSedi = null;
             if (query.CodiceSede[0].Equals("CON"))
-                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList()).Select(x => x.Id.ToString());
+                lstSedi = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
             else
-                lstSediPreaccoppiati = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti).Select(x => x.Id.ToString());
-
-            var lstPosizioneFlotta = _getPosizioneFlotta.Get(0);
+                lstSedi = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
             var tipologia90 = _getTipologieByCodice.Get(new List<string> { "90" }).First();
 
@@ -134,93 +129,93 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiceSede);
             var statiOperativiSquadre = _getStatoSquadre.Get(query.CodiceSede.ToList());
 
-            var lstPreaccoppiati = _getPreAccoppiati.GetFake(new PreAccoppiatiQuery() { CodiceSede = lstSediPreaccoppiati.ToArray(), Filtri = new FiltriPreaccoppiati() }).Select(p =>
-            {
-                p.SquadreComposizione = p.SquadreComposizione.Select(comp =>
-                {
-                    comp.Squadra.PreAccoppiato = true;
-                    comp.MezzoPreaccoppiato = p.MezzoComposizione;
-                    comp.MezzoPreaccoppiato.Mezzo.Stato = statiOperativiMezzi?.FirstOrDefault(m => m.CodiceMezzo.Equals(p.MezzoComposizione.Mezzo.Codice))?.StatoOperativo ?? Costanti.MezzoInSede ?? Costanti.MezzoInSede;
-                    return comp;
-                }).ToList();
-
-                return p;
-            });
+            ConcurrentDictionary<string, string> lstPreaccoppiati = null;
+            var lstPersonale = new ConcurrentBag<PersonaleVVF>();
 
             var lstSquadreComposizione = Task.Factory.StartNew(() =>
             {
-                var lstSquadre = new ConcurrentQueue<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
-                Parallel.ForEach(query.CodiceSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async s => lstSquadre.Enqueue(s)));
-                return lstSquadre;
-            }).ContinueWith(squadre => squadre.Result.Select(squadra => 
-            {
-                var squadraComposizione = new Squadra()
+                var lstSquadre = new ConcurrentBag<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+                Parallel.ForEach(query.CodiceSede, async codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async squadra =>
                 {
-                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Id))?.StatoSquadra ?? Costanti.MezzoInSede),
-                    PreAccoppiato = lstPreaccoppiati.SelectMany(p => p.SquadreComposizione).Select(cc => cc.Squadra).FirstOrDefault(s => s.Codice == s.Codice)?.PreAccoppiato ?? false,
+                    lstSquadre.Add(squadra);
+                    squadra.Membri.ToList().ForEach(async m => lstPersonale.Add(_getPersonaleByCF.Get(m.CodiceFiscale).Result));
+                    squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(c => lstPreaccoppiati.TryAdd(squadra.Codice, c));
+                }));
+
+                return lstSquadre;
+            })
+            //MAPPING
+            .ContinueWith(squadre => squadre.Result.Select(squadra => new Classi.Composizione.ComposizioneSquadre()
+            {
+                Id = squadra.Id,
+                Squadra = new Squadra()
+                {
+                    Id = squadra.Id,
+                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativiSquadre.Find(x => x.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
+                    PreAccoppiato = squadra.CodiciMezziPreaccoppiati?.Count() > 0,
                     Codice = squadra.Codice,
                     ListaCodiciFiscaliComponentiSquadra = squadra.Membri.Select(m => m.CodiceFiscale).ToList(),
-                    Id = squadra.Id,
                     Turno = squadra.TurnoAttuale,
-                    Nome = squadra.Codice,
-                    Componenti = squadra.Membri.Select(m => new Componente(m.Ruolo, "", "", false, false, false)).ToList()
-                };
-
-                return new Classi.Composizione.ComposizioneSquadre()
-                {
-                    Id = squadra.Id,
-                    Squadra = squadraComposizione,
-                    MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(ss => ss.Id).Contains(squadra.Id))?.MezzoComposizione,
+                    Nome = squadra.Descrizione,
+                    Distaccamento = lstSedi.Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(s => s.Equals(squadra.Distaccamento)),
+                    DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
+                    IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
                     //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
-                };
+                    Componenti = lstPersonale.Where(p => squadra.Membri.Select(m => m.CodiceFiscale).Contains(p.codiceFiscale))
+                        .Select(p => new Componente(p.qualifica.descrizione, $"{p.nome} {p.cognome}", "", false, false, false)).Distinct().ToList()
+                },
+                //MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(ss => ss.Id).Contains(squadra.Id))?.MezzoComposizione
             }))
             //FILTRI E ORDINAMENTI
             .ContinueWith(lstCompSquadre => FiltraOrdina(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
-            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList(), posizioneFlotta: lstPosizioneFlotta.Result)
-                //MAPPING
-                .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
+
+            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiceSede.ToList())
+            //MAPPING
+            .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
+            {
+                //m.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Mezzo.Codice == m.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+
+                var mc = new Classi.Composizione.ComposizioneMezzi()
                 {
-                    m.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Mezzo.Codice == m.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+                    Id = m.Codice,
+                    Mezzo = m,
+                    Km = new Random().Next(1, 60).ToString(),
+                    TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
+                    //SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == m.Codice)?.SquadreComposizione
+                };
 
-                    var mc = new Classi.Composizione.ComposizioneMezzi()
-                    {
-                        Id = m.Codice,
-                        Mezzo = m,
-                        Km = new Random().Next(1, 60).ToString(),
-                        TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
-                        SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == m.Codice)?.SquadreComposizione
-                    };
+                var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                if (statoMezzo != null) switch (mc.Mezzo.Stato)
+                {
+                    case Costanti.MezzoInSede:
+                        mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
+                        break;
 
-                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
-                    if (statoMezzo != null) switch (mc.Mezzo.Stato)
-                    {
-                        case Costanti.MezzoInSede:
-                            mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
-                            break;
+                    case Costanti.MezzoInViaggio:
+                        mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                        break;
 
-                        case Costanti.MezzoInViaggio:
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
+                    case Costanti.MezzoSulPosto: 
+                        mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
+                        mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                        break;
 
-                        case Costanti.MezzoSulPosto: 
-                            mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
+                    case Costanti.MezzoInRientro:
+                        mc.ListaSquadre = lstSquadreComposizione.Result.FindAll(x => statiOperativiSquadre.FindAll(x => 
+                            x.CodMezzo.Equals(mc.Mezzo.Codice)).Select(x => x.IdSquadra).Any(s => s.Equals(x.Squadra.Codice)));
 
-                        case Costanti.MezzoInRientro:
-                            mc.ListaSquadre = lstSquadreComposizione.Result.FindAll(x => statiOperativiSquadre.FindAll(x => 
-                                x.CodMezzo.Equals(mc.Mezzo.Codice)).Select(x => x.IdSquadra).Any(s => s.Equals(x.Squadra.Codice)));
+                        mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                        break;
+                }
 
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
-                    }
+                return mc;
+            }))
+            //FILTRI E ORDINAMENTI
+            .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
 
-                    return mc;
-                }))
-                //FILTRI E ORDINAMENTI
-                .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
 
+            //GESTIONE MEZZI ASSOCIATI
             Parallel.ForEach(lstSquadreComposizione.Result, composizione =>
             {
                 if (composizione.Squadra.Stato.Equals(Squadra.StatoSquadra.InRientro))
@@ -244,6 +239,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .ToList();
                 }
             });
+
+            #region Paginazione
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             var result = new ComposizionePartenzaAvanzataResult()
@@ -340,6 +337,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 PageSize = query.Filtro.SquadrePagination.PageSize,
                 TotalItems = lstSquadreComposizione.Result.Count
             };
+
+            #endregion
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
 

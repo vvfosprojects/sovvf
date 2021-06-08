@@ -203,13 +203,13 @@ namespace SO115App.CompositionRoot
 
             #region Mezzi
 
-            container.Register<
-               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            //container.Register<
+            //   SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+            //   SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
-                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
             container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
             container.Register<
