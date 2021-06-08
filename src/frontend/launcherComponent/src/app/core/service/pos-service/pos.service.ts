@@ -46,6 +46,6 @@ export class PosService {
     }
 
     delete(id: string): Observable<any> {
-        return this.http.get<any>(API_POS + '/Delete/' + id);
+        return this.http.get<any>(API_POS + '/Delete?Id=' + id);
     }
 }
