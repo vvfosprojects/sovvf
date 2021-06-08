@@ -18,7 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using Newtonsoft.Json;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.EditPos
@@ -34,6 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Edi
 
         public void Handle(EditPosCommand command)
         {
+            command.Pos.ListaTipologieConvert = JsonConvert.DeserializeObject<List<TipologiaPos>>(command.Pos.ListaTipologie);
             _editPos.Edit(command.Pos);
         }
 
