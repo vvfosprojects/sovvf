@@ -28,6 +28,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     editPos: boolean;
     pos: PosInterface;
+    posFdFile: Blob;
+    modifyFDFile: boolean;
 
     posForm: FormGroup;
     formData: FormData;
@@ -71,6 +73,10 @@ export class PosModalComponent implements OnInit, OnDestroy {
         return this.posForm.controls;
     }
 
+    toggleModifyFDFile(): void {
+        this.modifyFDFile = !this.modifyFDFile;
+    }
+
     updatePosForm(editPos: PosInterface): void {
         console.log('updatePosForm', editPos);
         this.store.dispatch(new UpdateFormValue({
@@ -81,6 +87,11 @@ export class PosModalComponent implements OnInit, OnDestroy {
             },
             path: 'posModal.posForm'
         }));
+
+        if (!this.formData) {
+            this.formData = new FormData();
+            this.formData.append('FDFile', this.posFdFile);
+        }
     }
 
     getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {

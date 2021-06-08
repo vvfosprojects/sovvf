@@ -163,30 +163,40 @@ export class PosComponent implements OnInit, OnDestroy {
 
     onEditPos(pos: PosInterface): void {
         let editPosModal;
-        editPosModal = this.modalService.open(PosModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
-        editPosModal.componentInstance.tipologie = this.tipologie;
-        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
-        editPosModal.componentInstance.editPos = true;
-        editPosModal.componentInstance.pos = pos;
-        editPosModal.result.then(
-            (result: { success: boolean, formData: FormData }) => {
-                if (result.success) {
-                    this.editPos(pos.id, result?.formData);
-                } else if (!result.success) {
-                    this.store.dispatch(new ResetPosModal());
-                    console.log('Modal "editPos" chiusa con val ->', result);
-                }
-            },
-            (err) => {
-                this.store.dispatch(new ResetPosModal());
-                console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress :
+                    break;
+                case HttpEventType.Response :
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    editPosModal = this.modalService.open(PosModalComponent, {
+                        windowClass: 'modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true,
+                        size: 'lg'
+                    });
+                    editPosModal.componentInstance.tipologie = this.tipologie;
+                    editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+                    editPosModal.componentInstance.editPos = true;
+                    editPosModal.componentInstance.pos = pos;
+                    editPosModal.componentInstance.posFdFile = downloadedFile;
+                    editPosModal.result.then(
+                        (result: { success: boolean, formData: FormData }) => {
+                            if (result.success) {
+                                this.editPos(pos.id, result?.formData);
+                            } else if (!result.success) {
+                                this.store.dispatch(new ResetPosModal());
+                                console.log('Modal "editPos" chiusa con val ->', result);
+                            }
+                        },
+                        (err) => {
+                            this.store.dispatch(new ResetPosModal());
+                            console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
+                        }
+                    );
+                    break;
             }
-        );
+        }, error => console.log('Errore Stampa POS'));
     }
 
     onDeletePos(event: { idPos, descrizionePos }): void {

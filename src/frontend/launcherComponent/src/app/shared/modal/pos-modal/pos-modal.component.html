@@ -51,6 +51,35 @@
                            notFoundText="Nessun Dettaglio Tipologia trovato...">
                 </ng-select>
             </div>
+            <ng-template [ngIf]="editPos">
+                <div class="clearfix mt-4"
+                     [class.mb-4]="!modifyFDFile">
+                    <div *ngIf="!modifyFDFile" class="float-left pt-1">
+                        {{ pos?.descrizionePos + '.pdf' }}
+                    </div>
+                    <div class="float-right">
+                        <button class="btn"
+                                [class.btn-primary]="!modifyFDFile"
+                                [class.btn-danger]="modifyFDFile"
+                                (click)="toggleModifyFDFile()">
+                            <span *ngIf="!modifyFDFile">Modifica</span>
+                            <span *ngIf="modifyFDFile">Annulla Modifica File</span>
+                        </button>
+                    </div>
+                </div>
+                <ng-template [ngIf]="modifyFDFile" class="mb-4">
+                    <div class="form-group">
+                        <label for="fileUpdate">
+                            Modifica File
+                        </label>
+                        <input type="file"
+                               id="fileUpdate"
+                               class="w-100"
+                               accept=".docx, .doc, .pdf"
+                               (change)="onFileSelected($event)"/>
+                    </div>
+                </ng-template>
+            </ng-template>
             <ng-template [ngIf]="!editPos">
                 <div class="form-group">
                     <label for="file">
