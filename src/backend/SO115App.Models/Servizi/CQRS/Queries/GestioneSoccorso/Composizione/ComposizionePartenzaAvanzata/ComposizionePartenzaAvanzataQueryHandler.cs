@@ -157,12 +157,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     ListaCodiciFiscaliComponentiSquadra = squadra.Membri.Select(m => m.CodiceFiscale).ToList(),
                     Turno = squadra.TurnoAttuale,
                     Nome = squadra.Descrizione,
-                    Distaccamento = lstSedi.Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(s => s.Equals(squadra.Distaccamento)),
+                    Distaccamento = lstSedi.Where(s => s.Id.Equals(squadra.Distaccamento)).Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(),
                     DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
                     IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
                     //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
                     Componenti = lstPersonale.Where(p => squadra.Membri.Select(m => m.CodiceFiscale).Contains(p.codiceFiscale))
-                        .Select(p => new Componente(p.qualifica.descrizione, $"{p.nome} {p.cognome}", "", false, false, false)).Distinct().ToList()
+                        .Select(p => new Componente(p.qualifica.descrizione, $"{p.nome} {p.cognome}", "", false, false, false)).ToList()
                 },
                 //MezzoPreaccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.SquadreComposizione.Select(ss => ss.Id).Contains(squadra.Id))?.MezzoComposizione
             }))
