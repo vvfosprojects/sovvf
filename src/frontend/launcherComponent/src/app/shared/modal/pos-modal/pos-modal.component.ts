@@ -143,6 +143,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica ' + this.pos.descrizionePos;
     }
 }
