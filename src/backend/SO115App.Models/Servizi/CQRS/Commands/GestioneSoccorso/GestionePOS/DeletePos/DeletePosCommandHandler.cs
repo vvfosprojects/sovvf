@@ -25,7 +25,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Del
 {
     public class DeletePosCommandHandler : ICommandHandler<DeletePosCommand>
     {
-        internal string _resultPath { get => ResultPath; set => DirectoryCheck(value); }
         private string ResultPath;
 
         private readonly IDeletePos _deletePos;
@@ -37,12 +36,5 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Del
             _deletePos.Delete(command.Id);
         }
 
-        private void DirectoryCheck(string path)
-        {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            ResultPath = path;
-        }
     }
 }

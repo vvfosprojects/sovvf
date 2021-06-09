@@ -109,11 +109,11 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Delete")]
-        public async Task<IActionResult> Delete(string IdPos)
+        public async Task<IActionResult> Delete(string Id)
         {
             var command = new DeletePosCommand()
             {
-                Id = IdPos
+                Id = Id
             };
 
             try
