@@ -51,8 +51,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSede.ToList()));
-
-            var lstSquadreComposizione = Task.Run(() =>
+            
+            var lstSquadreComposizione = Task.Run(() => //OTTENGO I DATI
             {
                 var lstSquadre = new ConcurrentBag<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
 
@@ -60,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 return lstSquadre;
             })
-            .ContinueWith(squadre =>
+            .ContinueWith(squadre => //MAPPING DATI
             {
                 var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
@@ -104,9 +104,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return lstSquadre;
             });
 
-            var x = lstSquadreComposizione.Result.ToList();
-
-            return x;
+            return lstSquadreComposizione.Result.ToList();
         }
     }
 }

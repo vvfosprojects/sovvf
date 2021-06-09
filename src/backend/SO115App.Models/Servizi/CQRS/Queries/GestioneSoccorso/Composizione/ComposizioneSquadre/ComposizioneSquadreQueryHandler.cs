@@ -47,16 +47,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            List<ComposizioneSquadra> composizioneSquadre = _iGetComposizioneSquadre.Get(query)
-                //.Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
-                //.Take(query.Filtro.SquadrePagination.PageSize)
-                .ToList();
-
+            var composizioneSquadre = _iGetComposizioneSquadre.Get(query);
+                
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 
             return new ComposizioneSquadreResult()
             {
-                ComposizioneSquadre = composizioneSquadre
+                DataArray = composizioneSquadre
+                    .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
+                    .Take(query.Filtro.SquadrePagination.PageSize)
+                    .ToList(),
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Filtro.SquadrePagination.Page,
+                    PageSize = query.Filtro.SquadrePagination.PageSize,
+                    TotalItems = composizioneSquadre.Count
+                }
             };
         }
     }

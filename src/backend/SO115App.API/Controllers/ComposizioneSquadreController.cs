@@ -78,13 +78,12 @@ namespace SO115App.API.Controllers
             {
                 try
                 {
-                    var composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
-                    return Ok(composizioneSquadre);
+                    var result = handler.Handle(query);
+
+                    return Ok(result);
                 }
                 catch (Exception ex)
                 {
-                    //ex = ex.GetBaseException();
-
                     if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                         return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                     else if (ex.Message.Contains("404"))

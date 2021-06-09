@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -30,6 +31,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Json Navbar Richieste
         /// </summary>
-        public List<ComposizioneSquadra> ComposizioneSquadre { get; set; }
+        public List<ComposizioneSquadra> DataArray { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }
