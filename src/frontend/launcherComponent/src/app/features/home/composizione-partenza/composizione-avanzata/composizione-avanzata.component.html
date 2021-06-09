@@ -34,9 +34,13 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!squadreComposizione?.length"
+                    <li *ngIf="!squadreComposizione?.length && !loadingListe"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <li *ngIf="!squadreComposizione?.length && loadingListe"
+                        class="list-group-item border">
+                        <span class="text-muted">Caricamento risultati...</span>
                     </li>
                     <ng-template [ngIf]="squadreComposizione?.length">
                         <app-squadra-composizione
@@ -103,9 +107,13 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!mezziComposizione?.length"
+                    <li *ngIf="!mezziComposizione?.length && !loadingListe"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <li *ngIf="!mezziComposizione?.length && loadingListe"
+                        class="list-group-item border">
+                        <span class="text-muted">Caricamento risultati...</span>
                     </li>
                     <ng-template [ngIf]="mezziComposizione?.length">
                         <div *ngFor="let mC of mezziComposizione">
