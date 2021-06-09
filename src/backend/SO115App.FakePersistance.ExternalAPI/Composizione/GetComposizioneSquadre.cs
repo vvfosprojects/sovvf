@@ -18,14 +18,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,16 +44,39 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetSquadre _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
 
-        public GetComposizioneSquadre(IGetSquadre getSquadre, IGetStatoSquadra getStatoSquadre, IGetMezziUtilizzabili getMezzi, IGetAnagraficaComponente getAnagrafica)
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
+
+        public GetComposizioneSquadre(IGetSquadre getSquadre, IGetStatoSquadra getStatoSquadre, IGetMezziUtilizzabili getMezzi, IGetAnagraficaComponente getAnagrafica,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
             _getMezzi = getMezzi;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
             _getAnagrafica = getAnagrafica;
+
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getDistaccamenti = getDistaccamenti;
         }
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
+            var lstDistaccamenti = Task.Run(() =>
+            {
+                var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+                var pinNodi = new List<PinNodo>();
+                foreach (var sede in query.CodiciSede)
+                    pinNodi.Add(new PinNodo(sede, true));
+
+                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+                    pinNodi.Add(new PinNodo(figlio.Codice, true));
+
+                var result = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
+
+                return result;
+            });
+            
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSede.ToList()));
             
             var lstSquadreComposizione = Task.Run(() => //OTTENGO I DATI
@@ -74,7 +101,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         ListaCodiciFiscaliComponentiSquadra = squadra.Membri.Select(m => m.CodiceFiscale).ToList(),
                         Turno = squadra.TurnoAttuale,
                         Nome = squadra.Descrizione,
-                        //Distaccamento = lstSedi.Where(s => s.Id.Equals(squadra.Distaccamento)).Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(),
+                        Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento, //TODO TOGLIERE NULLABLE
                         DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
                         //IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
                         //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
