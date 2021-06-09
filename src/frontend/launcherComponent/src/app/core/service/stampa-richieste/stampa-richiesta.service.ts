@@ -28,6 +28,10 @@ export class StampaRichiestaService {
             }));
     }
 
+    getDataRiepilogoInterventi(): Observable<any> {
+        return this.http.get<any>(`${API_STAMPA_RIEPILOGO_INTERVENTI}/Get`);
+    }
+
     stampaRiepilogoInterventi(obj: RiepilogoInterventiInterface): Observable<HttpEvent<Blob>> {
         return this.http.request(new HttpRequest(
             'POST',

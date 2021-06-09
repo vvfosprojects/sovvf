@@ -28,7 +28,7 @@ export class RiepilogoInterventiModalComponent {
     squadreComposizione: SquadraComposizione[];
 
     turno = [];
-    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }];
+    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, { id: 'test 7', descrizione: 'test 7' }];
 
     prefix: {} = {
         DaA: true,
@@ -46,9 +46,9 @@ export class RiepilogoInterventiModalComponent {
     showFiltriInterventi = true;
     showFiltriSquadre = true;
     showAltriFiltri = true;
-    distaccamentoSelezionato: string;
-    squadraSelezionata: string;
-    turnoSelezionato: string;
+    distaccamentoSelezionati: string[];
+    squadraSelezionate: string[];
+    turnoSelezionati: string[];
 
     subscription: Subscription = new Subscription();
 
@@ -56,9 +56,7 @@ export class RiepilogoInterventiModalComponent {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
         this.todayDate = calendar.getToday();
-        this.getDistaccamenti();
-        this.getTurnoCalendario();
-        this.getSquadreComposizione();
+        this.getDataRiepilogoInterventi();
     }
 
     formatDate(date: any): any {
@@ -70,40 +68,21 @@ export class RiepilogoInterventiModalComponent {
         return dateFormatted;
     }
 
-    // formatDatetoShow(): any {
-    //     this.periodoChiuseToShow = {
-    //         daA: null,
-    //         data: null,
-    //         turno: null,
-    //     };
-    //     let da;
-    //     let a;
-    //     da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
-    //     a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
-    //     this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
-    // }
+    getDataRiepilogoInterventi(): void {
+        this.stampaRichiestaService.getDataRiepilogoInterventi().subscribe((data: any) => {
+            console.log('***getDataRiepilogoInterventi ', data);
+        }, error => console.log('Errore Get Data Riepilogo Interventi'));
 
-    getDistaccamenti(): void {
-        this.subscription.add(
-            this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
-                this.distaccamenti = distaccamenti;
-            })
-        );
-    }
-
-    getTurnoCalendario(): void {
         this.subscription.add(
             this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
                 this.turnoCalendario = turnoC;
                 this.turno = Object.values(this.turnoCalendario);
             })
         );
-    }
 
-    getSquadreComposizione(): void {
         this.subscription.add(
-            this.squadreComposizione$.subscribe((squadreComposizione: SquadraComposizione[]) => {
-                console.log('this.squadreComposizione ', squadreComposizione);
+            this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
+                this.distaccamenti = distaccamenti;
             })
         );
     }
@@ -175,9 +154,9 @@ export class RiepilogoInterventiModalComponent {
                             const obj = {
                                 da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
                                 a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
-                                distaccamento: this.distaccamentoSelezionato ? this.distaccamentoSelezionato : null,
-                                turno: this.turnoSelezionato ? this.turnoSelezionato : null,
-                                squadra: this.squadraSelezionata ? this.squadraSelezionata : null,
+                                distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
+                                turni: this.turnoSelezionati ? this.turnoSelezionati : null,
+                                squadre: this.squadraSelezionate ? this.squadraSelezionate : null,
                             } as RiepilogoInterventiInterface;
                             Object.values(this.altriFiltri).forEach(x => {
                                 if (x === true) {
@@ -228,19 +207,19 @@ export class RiepilogoInterventiModalComponent {
         switch (tipologia) {
             case 'distaccamenti':
                 if (event) {
-                    this.distaccamentoSelezionato = event.codice;
+                    event.forEach(x => !this.distaccamentoSelezionati.includes(x.codice) && x.codice ? this.distaccamentoSelezionati.push(x.codice) : null);
                 }
                 break;
 
             case 'turno':
                 if (event) {
-                    this.turnoSelezionato = event;
+                    event.forEach(x => !this.turnoSelezionati.includes(x.id) && x.id ? this.turnoSelezionati.push(x.id) : null);
                 }
                 break;
 
             case 'squadra':
                 if (event) {
-                    this.squadraSelezionata = event.id;
+                    event.forEach(x => !this.squadraSelezionate.includes(x.id) && x.id ? this.squadraSelezionate.push(x.id) : null);
                 }
                 break;
         }
