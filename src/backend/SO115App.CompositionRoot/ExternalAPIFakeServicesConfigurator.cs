@@ -71,6 +71,12 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetToken, GetToken>();
 
+            #region IdentityManagement
+
+            container.Register<IGetAnagraficaComponente, GetAnagraficaComponente>();
+
+            #endregion
+
             #region OPService
 
             container.Register<IGetSquadre, GetSquadre>();

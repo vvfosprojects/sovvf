@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             Parallel.ForEach(codiciSede, Codsede =>
             {
-                var query = new ComposizioneSquadreQuery() { CodiceSede = Codsede };
+                var query = new ComposizioneSquadreQuery() { CodiciSede = new string[] { Codsede } };
 
                 _getComposizioneSquadre.Get(query).ForEach(cs => listaSquadreComposizione.Enqueue(cs));
             });

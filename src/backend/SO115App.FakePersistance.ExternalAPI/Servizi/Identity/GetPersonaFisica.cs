@@ -40,7 +40,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Identity
             this._configuration = configuration;
         }
 
-        public async Task<List<Dati>> Get(List<string> codiceFiscale)
+        public async Task<List<DatiComponente>> Get(List<string> codiceFiscale)
         {
             var stringContent = new StringContent(JsonConvert.SerializeObject(new { codiciFiscali = codiceFiscale }), Encoding.UTF8, "application/json");
 

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -29,7 +30,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Json Navbar Richieste
         /// </summary>
-        public List<Classi.Composizione.ComposizioneSquadre> ComposizioneSquadre
-        { get; set; }
+        public List<ComposizioneSquadra> ComposizioneSquadre { get; set; }
     }
 }

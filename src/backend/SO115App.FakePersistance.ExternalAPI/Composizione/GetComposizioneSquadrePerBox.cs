@@ -45,11 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
         {
-            var listaSedi = new List<string>
-            {
-                query.CodiceSede
-            };
-            var listaSquadre = _getSquadre.Get(listaSedi);
+            var listaSquadre = _getSquadre.Get(query.CodiciSede.ToList());
             var statiOperativi = _getStatoSquadre.Get().Where(x => x.IdSquadra != null).ToList();
 
             var composizioneSquadre = new ConcurrentQueue<ComposizioneSquadre>();

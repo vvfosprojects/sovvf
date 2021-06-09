@@ -31,8 +31,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
         /// </summary>
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        public FiltriComposizionePartenza Filtro { get; set; }
+        //public FiltriComposizionePartenza Filtro { get; set; }
 
-        public string CodiceSede { get; set; }
+        public FiltriComposizioneSquadra Filtro { get; set; }
+
+        public string[] CodiciSede { get; set; }
     }
 }

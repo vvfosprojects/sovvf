@@ -53,10 +53,12 @@ namespace SO115App.ExternalAPI.Client
 
         public async Task<ResponseObject> GetAsync(Uri url, string token = null)
         {
-            if(token != null)
+            if (token != null)
                 _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            else
+                _client.DefaultRequestHeaders.Authorization = null;
 
-            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
+           var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return manageResponse(response);
         }

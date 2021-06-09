@@ -17,61 +17,96 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneSquadre : IGetComposizioneSquadre
     {
-        private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetAnagraficaComponente _getAnagrafica;
+        private readonly IGetMezziUtilizzabili _getMezzi;
+        private readonly IGetSquadre _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
 
-        public GetComposizioneSquadre(IGetListaSquadre getSquadre,
-                                      IGetStatoSquadra getStatoSquadre)
+        public GetComposizioneSquadre(IGetSquadre getSquadre, IGetStatoSquadra getStatoSquadre, IGetMezziUtilizzabili getMezzi, IGetAnagraficaComponente getAnagrafica)
         {
+            _getMezzi = getMezzi;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+            _getAnagrafica = getAnagrafica;
         }
 
-        public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
+        public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var listaSedi = new List<string>
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSede.ToList()));
+
+            var lstSquadreComposizione = Task.Run(() =>
             {
-                query.CodiceSede
-            };
-            var listaSquadre = _getSquadre.Get(listaSedi).Result;
-            var statiOperativi = _getStatoSquadre.Get(listaSedi);
-            var composizioneSquadre = new List<ComposizioneSquadre>();
+                var lstSquadre = new ConcurrentBag<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
 
-            foreach (Squadra s in listaSquadre)
+                Parallel.ForEach(query.CodiciSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(squadra => lstSquadre.Add(squadra)));
+
+                return lstSquadre;
+            })
+            .ContinueWith(squadre =>
             {
-                if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
-                {
-                    s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
-                    s.IndiceOrdinamento = -200;
-                }
-                else
-                {
-                    s.Stato = Squadra.StatoSquadra.InSede;
-                }
+                var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
-                var c = new ComposizioneSquadre
+                Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
-                    Squadra = s,
-                    Id = s.Id
-                };
-                composizioneSquadre.Add(c);
-            }
+                    Squadra = new SquadraComposizione()
+                    {
+                        Id = squadra.Id,
+                        Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                        Codice = squadra.Codice,
+                        ListaCodiciFiscaliComponentiSquadra = squadra.Membri.Select(m => m.CodiceFiscale).ToList(),
+                        Turno = squadra.TurnoAttuale,
+                        Nome = squadra.Descrizione,
+                        //Distaccamento = lstSedi.Where(s => s.Id.Equals(squadra.Distaccamento)).Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(),
+                        DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
+                        //IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
+                        //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
+                        Componenti = squadra.Membri.Select(m =>
+                        {
+                            var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
 
-            return composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
+                            return new Componente()
+                            {
+                                OrarioFine = m.Presenze.Max(p => p.A),
+                                OrarioInizio = m.Presenze.Min(p => p.Da),
+                                DescrizioneQualifica = m.Ruolo,
+                                Nominativo = $"{a.Result.Nome} {a.Result.Cognome}",
+                                CodiceFiscale = a.Result.CodFiscale,
+                            };
+                        }).ToList()
+                    },
+                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.SelectMany(codice => _getMezzi.Get(query.CodiciSede.ToList(), null, codice).Result.Select(mezzo => new MezzoPreaccoppiato()
+                    {
+                        Codice = mezzo.Codice,
+                        Stato = mezzo.Stato,
+                        Tipo = mezzo.Genere
+                    })).ToList()
+
+                }));
+
+                return lstSquadre;
+            });
+
+            var x = lstSquadreComposizione.Result.ToList();
+
+            return x;
         }
     }
 }

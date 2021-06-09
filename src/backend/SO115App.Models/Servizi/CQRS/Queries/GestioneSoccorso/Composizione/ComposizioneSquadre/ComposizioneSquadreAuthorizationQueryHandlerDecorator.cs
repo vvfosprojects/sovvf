@@ -49,7 +49,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
+            //var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
 
             if (this._currentUser.Identity.IsAuthenticated)
             {
@@ -57,24 +57,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    bool abilitato = false;
-                    foreach (var competenza in richiesta.CodUOCompetenza)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+                    //bool abilitato = false;
+                    //foreach (var competenza in richiesta.CodUOCompetenza)
+                    //{
+                    //    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                    //        abilitato = true;
+                    //}
 
-                    if (richiesta.CodSOAllertate != null)
-                    {
-                        foreach (var competenza in richiesta.CodSOAllertate)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
-                    }
+                    //if (richiesta.CodSOAllertate != null)
+                    //{
+                    //    foreach (var competenza in richiesta.CodSOAllertate)
+                    //    {
+                    //        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                    //            abilitato = true;
+                    //    }
+                    //}
 
-                    if (!abilitato)
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                    //if (!abilitato)
+                    //    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
             else

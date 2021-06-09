@@ -66,28 +66,31 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
-        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
+        public async Task<IActionResult> Post(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()
             {
-                Filtro = filtri
+                Filtro = filtri,
+                CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
             };
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    List<ComposizioneSquadre> composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
-                    return Ok();
+                    var composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
+                    return Ok(composizioneSquadre);
                 }
                 catch (Exception ex)
                 {
+                    //ex = ex.GetBaseException();
+
                     if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                         return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                     else if (ex.Message.Contains("404"))
                         return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                     else
-                        return BadRequest(new { message = ex.Message });
+                        return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
                 }
             }
             else
@@ -97,7 +100,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("{filtro}")]
-        public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizionePartenza filtri)
+        public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()
             {
