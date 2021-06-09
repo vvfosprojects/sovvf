@@ -58,10 +58,13 @@
         </td>
     </tr>
     <tr *ngIf="pos?.length <= 0">
-        <td class="align-middle" style="width:80%">
+        <td></td>
+        <td class="align-middle" style="width:22%">
             <ng-template [ngIf]="!loading">Nessuna Pos trovata</ng-template>
             <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
+        <td></td>
+        <td></td>
     </tr>
     </tbody>
 </table>

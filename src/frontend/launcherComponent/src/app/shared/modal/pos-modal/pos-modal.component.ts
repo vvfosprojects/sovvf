@@ -90,7 +90,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
         if (!this.formData) {
             this.formData = new FormData();
-            this.formData.append('FDFile', this.posFdFile);
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
         }
     }
 
