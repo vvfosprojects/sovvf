@@ -28,10 +28,6 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.DescrizioneQualifica = DescrizioneQualifica;
             this.Nominativo = Nominativo;
-            //this.Tooltip = Tooltip;
-            //this.CapoPartenza = CapoPartenza;
-            //this.Autista = Autista;
-            //this.Rimpiazzo = Rimpiazzo;
         }
 
         public Componente()
@@ -47,18 +43,6 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Descrizione breve qualifica Componente
         /// </summary>
         public string DescrizioneQualifica { get; set; }
-
-        /// <summary>
-        ///   Descrizione lunga qualifica Componente
-        /// </summary>
-        //public string DescrizioneQualificaLunga { get; set; }
-
-        /// <summary>
-        ///   Ruolo ricoperto dall'operatore nel turno indicato
-        /// </summary>
-        public string Ruolo { get; set; }
-
-        //public Turno CodiceTurno { get; set; }
 
         /// <summary>
         ///   Nominativo Componente
