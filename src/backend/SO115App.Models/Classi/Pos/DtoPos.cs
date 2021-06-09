@@ -15,6 +15,8 @@ namespace SO115App.Models.Classi.Pos
         public string DescrizionePos { get; set; }
 
         public IFormFile FDFile { get; set; }
+
+        public string FileName { get; set; }
     }
 
     public class TipologiaPos

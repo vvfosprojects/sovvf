@@ -37,6 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Edi
 
         public void Handle(EditPosCommand command)
         {
+            command.Pos.FileName = command.Pos.FDFile.FileName;
             command.Pos.ListaTipologieConvert = JsonConvert.DeserializeObject<List<TipologiaPos>>(command.Pos.ListaTipologie);
             _editPos.Edit(command.Pos);
         }
