@@ -5,6 +5,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
+using System.IO;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
@@ -32,7 +33,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
         public DettaglioRichiestaPathResult Handle(DettaglioRichiestaPathQuery query)
         {
-            string path;
+            MemoryStream stream;
 
             var richiesta = _getRichiesta.GetByCodice(query.CodiceRichiesta) ?? _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
@@ -66,7 +67,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     Chiamata = chiamata
                 };
 
-                path = _dettChiamataManagr.GenerateDocumentAndSave(form, filename, "DettagliChiamate");
+                stream = _dettChiamataManagr.GenerateAndDownload(form, filename, "DettagliChiamate");
             }
             else // INTERVENTO
             {
@@ -85,12 +86,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     })).ToList()
                 };
 
-                path = _dettInterventoManagr.GenerateDocumentAndSave(form, filename, "DettagliInterventi");
+                stream = _dettInterventoManagr.GenerateAndDownload(form, filename, "DettagliInterventi");
             }
 
             return new DettaglioRichiestaPathResult()
             {
-                Data = path
+                Data = stream
             };
         }
     }

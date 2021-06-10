@@ -18,8 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -27,33 +31,34 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Ins
 {
     public class AddPosCommandHandler : ICommandHandler<AddPosCommand>
     {
+        internal string _resultPath { get => ResultPath; set => DirectoryCheck(value); }
+        private string ResultPath;
+
         private readonly ISavePos _savePos;
         private readonly IConfiguration _config;
+        private readonly IWebHostEnvironment _env;
 
-        public AddPosCommandHandler(ISavePos savePos, IConfiguration config)
+        public AddPosCommandHandler(ISavePos savePos, IConfiguration config, IWebHostEnvironment env)
         {
             _savePos = savePos;
             _config = config;
+            _env = env;
         }
 
         public void Handle(AddPosCommand command)
         {
-            var PathFile = _config.GetSection("GenericSettings").GetSection("PathfilePOS").Value;
-            var PathDirectory = PathFile + "\\" + command.Pos.CodSede;
-            var PathCompleto = PathDirectory + "\\" + command.Pos.FDFile.FileName;
-
-            //Creo una directory con il nome della sede qualora non esistesse
-            if (!Directory.Exists(PathDirectory))
-                Directory.CreateDirectory(PathDirectory);
-
-            using (var stream = File.Create(PathCompleto))
-            {
-                command.Pos.FDFile.CopyTo(stream);
-            }
-
-            command.Pos.FilePath = PathCompleto;
+            command.Pos.FileName = command.Pos.FDFile.FileName;
+            command.Pos.ListaTipologieConvert = JsonConvert.DeserializeObject<List<TipologiaPos>>(command.Pos.ListaTipologie);
 
             _savePos.Save(command.Pos);
+        }
+
+        private void DirectoryCheck(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            ResultPath = path;
         }
     }
 }

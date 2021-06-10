@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
@@ -34,10 +35,11 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB
 {
-    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
+    public class GetRichiesta : IGetRichiesta, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice, IGetRiepilogoInterventi
     {
         private readonly DbContext _dbContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
@@ -277,22 +279,25 @@ namespace SO115App.Persistence.MongoDB
             return sintesi;
         }
 
-        //public string GetDettaglioByCodiceChiamata(string codiceChiamata)
-        //{
-        //    var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.Codice, codiceChiamata);
+        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
+        {
+            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
 
-        //    var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
+            var soloInterventi = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C"); //OK
 
-        //    return result;
-        //}
+            var distaccamento = string.IsNullOrEmpty(filtri.Distaccamento) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.CodSOCompetente, filtri.Distaccamento); //OK
 
-        //public string GetDettaglioByCodiceIntervento(string codiceIntervento)
-        //{
-        //    var filtroRichiesta = Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodRichiesta, codiceIntervento);
+            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno); //OK
 
-        //    var result = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesta).FirstOrDefault()?.PathDettaglio;
+            var lstsq = new List<string> { filtri.Squadra };
+            var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
 
-        //    return result;
-        //}
+            var periodoDa = Builders<RichiestaAssistenza>.Filter.Gte(r => r.dataOraInserimento, filtri.Da);
+            var periodoA = Builders<RichiestaAssistenza>.Filter.Lte(r => r.dataOraInserimento, filtri.A);
+
+            var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
+
+            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre /*& trasmessi & periodoDa & periodoA*/).ToList();
+        }
     }
 }

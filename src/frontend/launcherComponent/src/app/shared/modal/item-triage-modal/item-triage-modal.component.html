@@ -17,7 +17,7 @@
         </ng-template>
         <!-- Generi Mezzo / Priorita / Intervento Aereo -->
         <ng-template [ngIf]="!primaDomanda">
-            <div class="card card-shadow p-4" [class.mt-3]="rispostaTitle">
+            <div class="card bg-dark-light p-4" [class.mt-3]="rispostaTitle">
                 <div>
                     <label for="mezzi">
                         <i class="fa fa-truck mr-1"></i>
@@ -84,22 +84,51 @@
             </div>
         </ng-template>
         <!-- Domanda -->
-        <div class="card card-shadow pt-3 pb-4 px-4"
+        <div class="card bg-dark-light pt-3 pb-4 px-4"
              [class.mt-3]="!primaDomanda">
-            <ng-template [ngIf]="primaDomanda">
-                <label for="domandaSeguente">Inserisci il testo della Prima Domanda</label>
-            </ng-template>
-            <ng-template [ngIf]="!primaDomanda">
-                <label for="domandaSeguente">
-                    <i class="fa fa-forward mr-1"></i>
-                    Domanda Seguente
-                </label>
-            </ng-template>
-            <input id="domandaSeguente"
-                   [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
-                   formControlName="domandaSeguente"
-                   type="text"
-                   class="form-control form-control-lg">
+            <div [class.mb-2]="f.domandaSeguente.value">
+                <ng-template [ngIf]="primaDomanda">
+                    <label for="domandaSeguente">Inserisci il testo della Prima Domanda</label>
+                </ng-template>
+                <ng-template [ngIf]="!primaDomanda">
+                    <label for="domandaSeguente">
+                        <i class="fa fa-forward mr-1"></i>
+                        Domanda Seguente
+                    </label>
+                </ng-template>
+                <input id="domandaSeguente"
+                       [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
+                       formControlName="domandaSeguente"
+                       type="text"
+                       class="form-control form-control-lg">
+            </div>
+            <hr *ngIf="f.domandaSeguente.value">
+            <div *ngIf="f.domandaSeguente.value">
+                <div class="mt-2 mb-3">
+                    <app-checkbox
+                            [checkboxState]="{id: 'rispostePersonalizzate', descrizione: 'rispostePersonalizzate', status: f?.rispostePersonalizzate?.value, label: 'Imposta Risposte Personalizzate', disabled: false}"
+                            (checkbox)="onCheckRispostePersonalizzate($event)">
+                    </app-checkbox>
+                </div>
+                <div class="w-50 mt-2"
+                     [class.opacity-50]="!f?.rispostePersonalizzate?.value">
+                    <div *ngFor="let risposta of risposte, let i = index" class="mb-2">
+                        <label [for]="'risposta' +  (i + 1)">Risposta {{ i + 1 }}</label>
+                        <input [id]="'risposta' +  (i + 1)"
+                               type="text"
+                               class="form-control form-control-lg"
+                               [formControlName]="'risposta' + (i + 1)"
+                               [disabled]="!f.rispostePersonalizzate?.value">
+                    </div>
+                    <ng-template [ngIf]="f.rispostePersonalizzate?.value && f['risposta' + (this.risposte.length)]?.value">
+                        <button class="btn btn-primary mt-2"
+                                (click)="addRisposta()">
+                            <i class="fa fa-plus"></i>
+                            Aggiungi Risposta
+                        </button>
+                    </ng-template>
+                </div>
+            </div>
         </div>
     </form>
 </div>

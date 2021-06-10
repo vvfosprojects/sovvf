@@ -80,13 +80,13 @@ export function statoMezzoActionColor(stato: StatoMezzoActions): string {
             mezzoActionColor = 'secondary';
             break;
         case StatoMezzoActions.InViaggio:
-            mezzoActionColor = 'warning';
+            mezzoActionColor = 'danger';
             break;
         case StatoMezzoActions.SulPosto:
             mezzoActionColor = 'danger';
             break;
         case StatoMezzoActions.InRientro:
-            mezzoActionColor = 'verdemela';
+            mezzoActionColor = 'success';
             break;
     }
     return mezzoActionColor;

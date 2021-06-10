@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response/response.interface';
-import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, GetDettaglioTipologiaByCodTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
-import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, GetDettaglioTipologiaByCodTipologiaDto } from '../../../shared/interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
+import { UpdateDettaglioTipologiaDto } from '../../../shared/interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;
@@ -20,14 +20,20 @@ export class DetttagliTipologieService {
     constructor(private http: HttpClient) {
     }
 
-    getDettagliTipologie(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
-        const obj = {
-            filters: {
-                search: filters.search,
-                codTipologia: filters.codTipologia
-            },
-            pagination
+    getDettagliTipologie(filters?: FiltersInterface, pagination?: PaginationInterface): Observable<ResponseInterface> {
+        let obj = {
+            filters: null,
+            pagination: null
         };
+        if (filters || pagination) {
+            obj = {
+                filters: {
+                    search: filters.search,
+                    codTipologia: filters.codTipologia
+                },
+                pagination
+            };
+        }
         return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Get', obj);
     }
 

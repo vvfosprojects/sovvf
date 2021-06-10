@@ -1,8 +1,12 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -12,14 +16,17 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneFileController : ControllerBase
     {
+        private readonly IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> _riepilogoInterventiQuery;
         private readonly IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> _dettaglioRichiestaQuery;
 
-        public GestioneFileController(IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
+        public GestioneFileController(IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> riepilogoInterventiQuery,
+            IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
         {
             _dettaglioRichiestaQuery = dettaglioRichiestaQuery;
-        }  
+            _riepilogoInterventiQuery = riepilogoInterventiQuery;
+        }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<IActionResult> DettaglioRichiesta(string codice)
         {
             try
@@ -29,17 +36,44 @@ namespace SO115App.API.Controllers
                     CodiceRichiesta = codice,
 
                     IdOperatore = Request.Headers["IdUtente"],
-                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)                
-                };                
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                };
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                return Ok(result);
+                return File(result.Data, "application/pdf");
             }
             catch (Exception e)
             {
-                return BadRequest(new 
-                { 
+                return BadRequest(new
+                {
+                    message = e.GetBaseException().Message,
+                    stacktrace = e.GetBaseException().StackTrace
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri)
+        {
+            try
+            {
+                var query = new RiepilogoInterventiPathQuery()
+                {
+                    Filtri = filtri,
+
+                    IdOperatore = Request.Headers["IdUtente"],
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                };
+
+                var result = _riepilogoInterventiQuery.Handle(query);
+
+                return File(result.Data, "application/pdf");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
                     message = e.GetBaseException().Message,
                     stacktrace = e.GetBaseException().StackTrace
                 });

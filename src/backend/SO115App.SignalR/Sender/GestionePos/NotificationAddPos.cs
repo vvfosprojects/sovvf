@@ -21,14 +21,16 @@ namespace SO115App.SignalR.Sender.GestionePos
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-
         public async Task SendNotification(AddPosCommand command)
         {
             var SediDaNotificare = _getGerarchiaToSend.Get(command.Pos.CodSede);
 
             await Task.Factory.StartNew(() => Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} per la tipologia {command.Pos.CodTipologia}");
+                foreach (var tipologia in command.Pos.ListaTipologie)
+                {
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ");
+                }
             }));
         }
     }

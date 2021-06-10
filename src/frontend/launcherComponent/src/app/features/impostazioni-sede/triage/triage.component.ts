@@ -54,7 +54,7 @@ export class TriageComponent implements OnDestroy {
     dettaglioTipologia: DettaglioTipologia;
 
     @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeviewItem>;
-    tItems: TreeviewItem[];
+    tItems: TreeItem[];
     @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
     @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
@@ -269,11 +269,11 @@ export class TriageComponent implements OnDestroy {
                 if (res.success) {
                     if (this.tItems) {
                         if (res.data.domandaSeguente) {
-                            this.addDomandaSeguente(item, res.data.domandaSeguente);
+                            this.addDomandaSeguente(item, res.data.domandaSeguente, res.data.rispostePersonalizzate);
                         }
                         this.addOtherData(res, item);
                     } else {
-                        this.addPrimaDomanda(res.data.domandaSeguente);
+                        this.addPrimaDomanda(res.data.domandaSeguente, res.data.rispostePersonalizzate);
                     }
                 }
             });
@@ -318,46 +318,56 @@ export class TriageComponent implements OnDestroy {
         }
     }
 
-    addPrimaDomanda(domanda: string): void {
+    addPrimaDomanda(domanda: string, rispostePersonalizzate?: string[]): void {
         this.tItems = [
             new TreeviewItem({
                 text: addQuestionMark(capitalize(domanda)),
-                value: '1',
-                children: [
-                    {
-                        text: 'Si',
-                        value: '1-1',
-                        disabled: true
-                    },
-                    {
-                        text: 'No',
-                        value: '2-1',
-                        disabled: true
-                    },
-                    {
-                        text: 'Non lo so',
-                        value: '3-1',
-                        disabled: true
-                    }
-                ]
+                value: '1'
             })
         ];
+        if (rispostePersonalizzate?.length) {
+            rispostePersonalizzate.forEach((rispostaPersonalizzata: string, index: number) => {
+                const risposta = { text: rispostaPersonalizzata, value: (index + 1) + '-' + this.tItems[0].value + '-1', disabled: true };
+                if (!this.tItems[0].children?.length) {
+                    this.tItems[0].children = [risposta];
+                } else {
+                    this.tItems[0].children.push(risposta);
+                }
+            });
+        } else {
+            this.tItems[0].children = [
+                { text: 'Si', value: '1-' + this.tItems[0].value + '-1', disabled: true },
+                { text: 'No', value: '2-' + this.tItems[0].value + '-1', disabled: true },
+                { text: 'Non lo so', value: '3-' + this.tItems[0].value + '-1', disabled: true }
+            ];
+        }
         this.updateTriage(this.tItems[0]);
         this.toggleViewEditButtons();
     }
 
-    addDomandaSeguente(item: TreeItem, domandaSeguente: string): void {
+    addDomandaSeguente(item: TreeItem, domandaSeguente: string, rispostePersonalizzate?: string[]): void {
         item.children = [
             new TreeviewItem({
                 text: addQuestionMark(capitalize(domandaSeguente)),
-                value: item.value + '-1',
-                children: [
-                    { text: 'Si', value: '1-' + item.value + '-1', disabled: true },
-                    { text: 'No', value: '2-' + item.value + '-1', disabled: true },
-                    { text: 'Non lo so', value: '3-' + item.value + '-1', disabled: true }
-                ]
+                value: item.value + '-1'
             })
         ];
+        if (rispostePersonalizzate?.length) {
+            rispostePersonalizzate.forEach((rispostaPersonalizzata: string, index: number) => {
+                const risposta = { text: rispostaPersonalizzata, value: (index + 1) + '-' + item.value + '-1', disabled: true };
+                if (!item.children[0].children?.length) {
+                    item.children[0].children = [risposta];
+                } else {
+                    item.children[0].children.push(risposta);
+                }
+            });
+        } else {
+            item.children[0].children = [
+                { text: 'Si', value: '1-' + item.value + '-1', disabled: true },
+                { text: 'No', value: '2-' + item.value + '-1', disabled: true },
+                { text: 'Non lo so', value: '3-' + item.value + '-1', disabled: true }
+            ];
+        }
         this.updateTriage(this.tItems[0]);
     }
 
@@ -422,7 +432,7 @@ export class TriageComponent implements OnDestroy {
         editItemTriageModal.result.then((res: { success: boolean, data: any }) => {
             if (res.success) {
                 if (!item.children && res.data.domandaSeguente) {
-                    this.addDomandaSeguente(item, res.data.domandaSeguente);
+                    this.addDomandaSeguente(item, res.data.domandaSeguente, res.data.rispostePersonalizzate);
                 }
 
                 let iItemDataFound = 0;
@@ -561,10 +571,7 @@ export class TriageComponent implements OnDestroy {
         removeTriageItemModal.componentInstance.titolo = 'Eliminazione "' + item.text + '"';
         removeTriageItemModal.componentInstance.messaggio = 'Sei sicuro di voler rimuovere "' + item.text + '" ?';
         removeTriageItemModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i nodi sottostanti verranno eliminati.';
-        removeTriageItemModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         removeTriageItemModal.result.then(
             (val: string) => {
                 switch (val) {
@@ -612,7 +619,7 @@ export class TriageComponent implements OnDestroy {
             }
         }
 
-        function removeDataRecursively(tItemsData: ItemTriageData[], element: TreeItem, value: string): void {
+        function removeDataRecursively(tItemsData: ItemTriageData[], element: TreeItem, value: string): any {
             removeData(tItemsData, element);
             if (element.children != null) {
                 let i: number;
@@ -663,10 +670,7 @@ export class TriageComponent implements OnDestroy {
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
-        removeTriageModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         removeTriageModal.result.then(
             (val: string) => {
                 switch (val) {
@@ -701,10 +705,7 @@ export class TriageComponent implements OnDestroy {
         resetTriageModal.componentInstance.titolo = 'Reset Triage di "' + this.dettaglioTipologia.descrizione + '"';
         resetTriageModal.componentInstance.messaggio = 'Stai effettuando il reset delle modifiche al Triage di "' + this.dettaglioTipologia.descrizione + '"';
         resetTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati non salvati verranno persi';
-        resetTriageModal.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         resetTriageModal.result.then(
             (val: string) => {
                 switch (val) {

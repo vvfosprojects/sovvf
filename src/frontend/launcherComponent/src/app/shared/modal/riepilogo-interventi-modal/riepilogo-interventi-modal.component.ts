@@ -6,6 +6,12 @@ import { Observable, Subscription } from 'rxjs';
 import { Sede } from '../../model/sede.model';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
+import { RiepilogoInterventiInterface } from '../../interface/riepilogo-interventi.interface';
+import { HttpEventType } from '@angular/common/http';
+import { TurnoState } from '../../../features/navbar/store/states/turno.state';
+import { TurnoCalendario } from '../../../features/navbar/turno/model/turno-calendario.model';
+import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-riepilogo-interventi-modal',
@@ -16,9 +22,13 @@ export class RiepilogoInterventiModalComponent {
 
     @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
+    @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
+    turnoCalendario: TurnoCalendario;
+    @Select(SquadreComposizioneState.squadreComposizione) squadreComposizione$: Observable<SquadraComposizione[]>;
+    squadreComposizione: SquadraComposizione[];
 
-    turno = [{ id: 'test 1', descrizione: 'test 1' }, { id: 'test 2', descrizione: 'test 2' }];
-    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }];
+    turno = [];
+    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, { id: 'test 7', descrizione: 'test 7' }];
 
     prefix: {} = {
         DaA: true,
@@ -28,10 +38,6 @@ export class RiepilogoInterventiModalComponent {
         trasmessi: false,
         interventi: false,
     };
-    periodoChiuseToShow: any = {
-        daA: null,
-    };
-    outsideDays: 'visible';
     hoveredDate: NgbDate | null = null;
     fromDate: NgbDate;
     toDate: NgbDate | null = null;
@@ -40,9 +46,9 @@ export class RiepilogoInterventiModalComponent {
     showFiltriInterventi = true;
     showFiltriSquadre = true;
     showAltriFiltri = true;
-    distaccamentoSelezionato: string;
-    squadraSelezionata: string;
-    turnoSelezionato: string;
+    distaccamentoSelezionati: string[];
+    squadraSelezionate: string[];
+    turnoSelezionati: string[];
 
     subscription: Subscription = new Subscription();
 
@@ -50,7 +56,7 @@ export class RiepilogoInterventiModalComponent {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
         this.todayDate = calendar.getToday();
-        this.getDistaccamenti();
+        this.getDataRiepilogoInterventi();
     }
 
     formatDate(date: any): any {
@@ -62,20 +68,18 @@ export class RiepilogoInterventiModalComponent {
         return dateFormatted;
     }
 
-    formatDatetoShow(): any {
-        this.periodoChiuseToShow = {
-            daA: null,
-            data: null,
-            turno: null,
-        };
-        let da;
-        let a;
-        da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
-        a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
-        this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
-    }
+    getDataRiepilogoInterventi(): void {
+        this.stampaRichiestaService.getDataRiepilogoInterventi().subscribe((data: any) => {
+            console.log('***getDataRiepilogoInterventi ', data);
+        }, error => console.log('Errore Get Data Riepilogo Interventi'));
 
-    getDistaccamenti(): void {
+        this.subscription.add(
+            this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
+                this.turnoCalendario = turnoC;
+                this.turno = Object.values(this.turnoCalendario);
+            })
+        );
+
         this.subscription.add(
             this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
                 this.distaccamenti = distaccamenti;
@@ -104,12 +108,6 @@ export class RiepilogoInterventiModalComponent {
     }
 
     onCheckAltriFiltri(key: string): void {
-        // LOGICA CHECKBOX CON SELEZIONE ALTERNATA
-        // if (this.altriFiltri[key]) {
-        //     this.altriFiltri[key] = false;
-        // } else {
-        //     Object.keys(this.altriFiltri).forEach(x => this.altriFiltri[x] = x === key);
-        // }
         switch (key) {
             case 'tipologia':
                 this.altriFiltri.tipologia = !this.altriFiltri.tipologia;
@@ -147,11 +145,8 @@ export class RiepilogoInterventiModalComponent {
             modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
             modalConfermaReset.componentInstance.titolo = 'STAMPA RIEPILOGO INTERVENTI';
             modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
-            modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà aperta la pagina di stampa.';
-            modalConfermaReset.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-            ];
+            modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà effettuato il download automatico.';
+
             modalConfermaReset.result.then(
                 (val) => {
                     switch (val) {
@@ -159,21 +154,41 @@ export class RiepilogoInterventiModalComponent {
                             const obj = {
                                 da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
                                 a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
-                                distaccamento: this.distaccamentoSelezionato ? this.distaccamentoSelezionato : null,
-                                turno: this.turnoSelezionato ? this.turnoSelezionato : null,
-                                squadra: this.squadraSelezionata ? this.squadraSelezionata : null,
-                                altriFiltri: {
-                                    tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
-                                    trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
-                                    soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
+                                distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
+                                turni: this.turnoSelezionati ? this.turnoSelezionati : null,
+                                squadre: this.squadraSelezionate ? this.squadraSelezionate : null,
+                            } as RiepilogoInterventiInterface;
+                            Object.values(this.altriFiltri).forEach(x => {
+                                if (x === true) {
+                                    obj.altriFiltri = {
+                                        tipologiaIntervento: this.altriFiltri.tipologia ? this.altriFiltri.tipologia : null,
+                                        trasmessi: this.altriFiltri.trasmessi ? this.altriFiltri.trasmessi : null,
+                                        soloInterventi: this.altriFiltri.interventi ? this.altriFiltri.interventi : null,
+                                    };
                                 }
-                            };
+                                return;
+                            });
                             this.modal.close({
                                 status: 'ok',
                                 result: obj
                             });
-                            this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((link: any) => {
-                                window.open(link.data, '_blank', 'toolbar=0,location=0,menubar=0');
+                            this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((data: any) => {
+                                switch (data.type) {
+                                    case HttpEventType.DownloadProgress :
+                                        break;
+                                    case HttpEventType.Response :
+                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                        const a = document.createElement('a');
+                                        a.setAttribute('style', 'display:none;');
+                                        document.body.appendChild(a);
+                                        a.download = 'Riepilogo Interventi';
+                                        a.href = URL.createObjectURL(downloadedFile);
+                                        a.target = '_blank';
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        break;
+                                }
+
                             }, error => console.log('Errore Stampa Richiesta'));
                             break;
                         case 'ko':
@@ -189,23 +204,22 @@ export class RiepilogoInterventiModalComponent {
     }
 
     onPatchFiltriSquadre(event: any, tipologia: string): void {
-        // console.log('***onPatchFiltriSquadre ', event);
         switch (tipologia) {
             case 'distaccamenti':
                 if (event) {
-                    this.distaccamentoSelezionato = event.codice;
+                    event.forEach(x => !this.distaccamentoSelezionati.includes(x.codice) && x.codice ? this.distaccamentoSelezionati.push(x.codice) : null);
                 }
                 break;
 
             case 'turno':
                 if (event) {
-                    this.turnoSelezionato = event.id;
+                    event.forEach(x => !this.turnoSelezionati.includes(x.id) && x.id ? this.turnoSelezionati.push(x.id) : null);
                 }
                 break;
 
             case 'squadra':
                 if (event) {
-                    this.squadraSelezionata = event.id;
+                    event.forEach(x => !this.squadraSelezionate.includes(x.id) && x.id ? this.squadraSelezionate.push(x.id) : null);
                 }
                 break;
         }

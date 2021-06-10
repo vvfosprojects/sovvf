@@ -48,6 +48,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetRichiesta, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
+            container.Register<IGetRiepilogoInterventi, GetRichiesta>();
 
             container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,
                 Persistence.MongoDB.GestioneInterventi.GestioneTipologie.GetTipologieByCodice>();
@@ -288,6 +289,9 @@ namespace SO115App.CompositionRoot
             #region POS
 
             container.Register<ISavePos, SavePOS>();
+            container.Register<IDeletePos, DeletePOS>();
+            container.Register<IGetPOS, GetPOS>();
+            container.Register<IEditPos, EditPOS>();
 
             #endregion POS
         }

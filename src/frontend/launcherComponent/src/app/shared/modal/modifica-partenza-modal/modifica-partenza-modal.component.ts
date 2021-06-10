@@ -14,7 +14,7 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
 import { makeCopy } from '../../helper/function-generiche';
-import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
+import { ModificaPartenzaDto } from '../../interface/dto/partenze/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';

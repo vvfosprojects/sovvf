@@ -1,4 +1,4 @@
-import { DettaglioTipologia } from '../dettaglio-tipologia.interface';
+import { DettaglioTipologia } from '../../dettaglio-tipologia.interface';
 
 export interface DettaglioTipologiaDto {
     codiceTipologia: number;

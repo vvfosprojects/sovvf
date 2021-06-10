@@ -1,20 +1,4 @@
-<!--<button type="button" class="btn btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" style="color: #fff"-->
-<!--        (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))"-->
-<!--        ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">-->
-<!--  <i class="fa fa-forward"></i>-->
-<!--  <span class="font-xlarge ml-1">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</span>-->
-<!--</button>-->
-<a (click)="onClick(calcolaActionSuggeritaMezzo(mezzo.stato, $event))" ngbTooltip="Cambia Stato: {{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
-    <div class="btn chevron-stato bg-{{getBtnColor(mezzo.stato)}} pl-2" style="color: #ffffff">{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</div>
+<a *ngFor="let s of listaEventiMezzoUnique; let index = index" (click)="onClick(s.stato)" class="mr-1">
+    <div class="btn chevron-stato bg-{{ s.ora ? getBtnColor(s.stato) : 'secondary'}}" [class.no-hover]="s.ora" [class.pl-2]="s.ora"
+         style="color: #ffffff; margin-bottom: 5px;">{{s.stato}}{{ s.ora ? ': ' + (s.ora | date : 'HH:mm' ) : '' }}</div>
 </a>
-<!--
-<div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-    <button class="btn btn-sm btn-{{getBtnColor(mezzo.stato)}} text-light p-1 dropdown-toggle-split"
-            ngbTooltip="Altro" ngbDropdownToggle>
-        <small><i class="fa fa-fw fa-arrow-up"></i></small>
-    </button>
-    <div class="dropdown-menu" ngbDropdownMenu>
-        <button *ngFor="let stato of statoMezzoString" ngbDropdownItem (click)="onClick(stato)">{{stato}}</button>
-    </div>
-</div>
--->

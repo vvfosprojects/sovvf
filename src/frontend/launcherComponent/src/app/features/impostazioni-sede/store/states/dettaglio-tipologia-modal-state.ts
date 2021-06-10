@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
-import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettaglio-tipologia-dto.interface';
+import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import {
     ClearFormDettaglioTipologia,
     RequestAddDettaglioTipologia,

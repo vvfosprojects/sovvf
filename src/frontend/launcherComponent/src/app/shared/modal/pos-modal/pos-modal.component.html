@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ 'Aggiungi nuova P.O.S.' | uppercase }}
+        {{ getTitle() | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
@@ -24,16 +24,75 @@
                        placeholder="Inserisci descrizione della P.O.S."/>
             </div>
             <div class="form-group">
-                <label for="file">
-                    File
+                <label for="tipologie">
+                    Tipologie
                     <small class="text-danger">*</small>
                 </label>
-                <input type="file"
-                       id="file"
-                       class="w-100"
-                       accept=".docx, .doc, .pdf"
-                       (change)="onFileSelected($event)"/>
+                <ng-select id="tipologie"
+                           [items]="tipologie"
+                           bindLabel="descrizione"
+                           formControlName="tipologie"
+                           placeholder="Seleziona una o più Tipologie"
+                           [multiple]="true"
+                           notFoundText="Nessuna Tipologia trovata..."
+                           (change)="onChangeSelectedTipologie($event)">
+                </ng-select>
             </div>
+            <div class="form-group">
+                <label for="dettagliTipologie">
+                    Dettagli Tipologie
+                </label>
+                <ng-select id="dettagliTipologie"
+                           [items]="dettagliTipologieFiltered"
+                           bindLabel="descrizione"
+                           formControlName="tipologieDettagli"
+                           placeholder="Seleziona uno o più Dettagli Tipologie"
+                           [multiple]="true"
+                           notFoundText="Nessun Dettaglio Tipologia trovato...">
+                </ng-select>
+            </div>
+            <ng-template [ngIf]="editPos">
+                <div class="clearfix mt-4"
+                     [class.mb-4]="!modifyFDFile">
+                    <div *ngIf="!modifyFDFile" class="float-left pt-1">
+                        {{ pos?.fileName }}
+                    </div>
+                    <div class="float-right">
+                        <button class="btn"
+                                [class.btn-primary]="!modifyFDFile"
+                                [class.btn-danger]="modifyFDFile"
+                                (click)="toggleModifyFDFile()">
+                            <span *ngIf="!modifyFDFile">Modifica</span>
+                            <span *ngIf="modifyFDFile">Annulla Modifica File</span>
+                        </button>
+                    </div>
+                </div>
+                <ng-template [ngIf]="modifyFDFile" class="mb-4">
+                    <div class="form-group">
+                        <label for="fileUpdate">
+                            Modifica File
+                        </label>
+                        <input type="file"
+                               id="fileUpdate"
+                               class="w-100"
+                               accept=".docx, .doc, .pdf"
+                               (change)="onFileSelected($event)"/>
+                    </div>
+                </ng-template>
+            </ng-template>
+            <ng-template [ngIf]="!editPos">
+                <div class="form-group">
+                    <label for="file">
+                        Carica un File
+                        <small class="text-danger">*</small>
+                    </label>
+                    <input type="file"
+                           id="file"
+                           class="w-100"
+                           accept=".docx, .doc, .pdf"
+                           (change)="onFileSelected($event)"/>
+                </div>
+            </ng-template>
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
@@ -45,11 +104,11 @@
             [disableTooltip]="formValid"
             [disabled]="!formValid"
             (click)="onConfirm()">
-        {{ 'Prosegui' | uppercase }}
+        {{ 'Salva' | uppercase }}
     </button>
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover"
             (click)="closeModal()">
-        {{ 'Annulla' | uppercase }}
+        {{ 'Non salvare' | uppercase }}
     </button>
 </div>

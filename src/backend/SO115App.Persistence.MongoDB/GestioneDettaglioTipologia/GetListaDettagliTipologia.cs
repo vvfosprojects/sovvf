@@ -23,18 +23,20 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
         public List<TipologiaDettaglio> Get(DettaglioTipologiaQuery query)
         {
-            var text = query.Filters.Search?.ToLower() ?? "";
+            string text = query.Filters?.Search?.ToLower() ?? "";
 
-            var CodTipologia = query.Filters.codTipologia;
+            int[] CodTipologia = null;
+            if (query.Filters != null)
+                CodTipologia = query.Filters?.codTipologia;
 
             var listaPin = GetGerarchia(query.IdSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
             var lstEnti = new List<TipologiaDettaglio>();
 
-            if (CodTipologia != null && CodTipologia > 0)
+            if (CodTipologia != null)
                 lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
-                && (c.Descrizione.ToLower().Contains(text)) && (c.CodiceTipologia.Equals(CodTipologia))).ToList();
+                && (c.Descrizione.ToLower().Contains(text)) && (CodTipologia.Contains(c.CodiceTipologia))).ToList();
             else
                 lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
                 && (c.Descrizione.ToLower().Contains(text))).ToList();

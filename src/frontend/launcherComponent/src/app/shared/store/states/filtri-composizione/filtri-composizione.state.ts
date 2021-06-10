@@ -106,12 +106,14 @@ export class FiltriComposizioneState {
             dispatch(new GetListaComposizioneVeloce());
         }
         const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
-        filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {
-            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
-            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
-            return d;
-        });
-        filtri.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+        if (filtri) {
+            filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {
+                d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
+                d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
+                return d;
+            });
+            filtri.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+        }
         patchState({
             filtri
         });

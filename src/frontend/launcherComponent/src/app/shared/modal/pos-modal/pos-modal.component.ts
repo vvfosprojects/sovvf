@@ -5,6 +5,11 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
+import { Tipologia } from '../../model/tipologia.model';
+import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
+import { PosInterface } from '../../interface/pos.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
+import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
 
 @Component({
     selector: 'app-pos-modal',
@@ -16,6 +21,15 @@ export class PosModalComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(PosModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+
+    tipologie: Tipologia[];
+    dettagliTipologie: DettaglioTipologia[];
+    dettagliTipologieFiltered: DettaglioTipologia[];
+
+    editPos: boolean;
+    pos: PosInterface;
+    posFdFile: Blob;
+    modifyFDFile: boolean;
 
     posForm: FormGroup;
     formData: FormData;
@@ -32,14 +46,26 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        if (this.editPos) {
+            this.updatePosForm(this.pos);
+        }
+        this.dettagliTipologieFiltered = this.dettagliTipologie;
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     initForm(): void {
         this.posForm = new FormGroup({
-            descrizionePos: new FormControl()
+            descrizionePos: new FormControl(),
+            tipologie: new FormControl(),
+            tipologieDettagli: new FormControl()
         });
         this.posForm = this.fb.group({
-            descrizionePos: [null, Validators.required]
+            descrizionePos: [null, Validators.required],
+            tipologie: [null, Validators.required],
+            tipologieDettagli: [null]
         });
     }
 
@@ -47,8 +73,34 @@ export class PosModalComponent implements OnInit, OnDestroy {
         return this.posForm.controls;
     }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+    toggleModifyFDFile(): void {
+        this.modifyFDFile = !this.modifyFDFile;
+    }
+
+    updatePosForm(editPos: PosInterface): void {
+        console.log('updatePosForm', editPos);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                descrizionePos: editPos.descrizionePos,
+                tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
+            },
+            path: 'posModal.posForm'
+        }));
+
+        if (!this.formData) {
+            this.formData = new FormData();
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+        }
+    }
+
+    getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
+        return getTipologieFromListaTipologie(pos, tipologie);
+    }
+
+    getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 
     getFormValid(): void {
@@ -57,6 +109,25 @@ export class PosModalComponent implements OnInit, OnDestroy {
                 this.formValid = valid;
             })
         );
+    }
+
+    onChangeSelectedTipologie(event: any): void {
+        const codTipologie = event.map((tipologia: Tipologia) => +tipologia.codice);
+        this.filterDettagliTipologieByCodTipologie(codTipologie);
+    }
+
+    filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
+        this.dettagliTipologieFiltered = [];
+        if (this.dettagliTipologieFiltered) {
+            codTipologie.forEach((codTipologia: number) => {
+                this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {
+                    const exists = this.dettagliTipologieFiltered.indexOf(dettaglioTipologia) !== -1;
+                    if (!exists && dettaglioTipologia.codiceTipologia === codTipologia) {
+                        this.dettagliTipologieFiltered.push(dettaglioTipologia);
+                    }
+                });
+            });
+        }
     }
 
     onFileSelected(event: any): void {
@@ -81,5 +152,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     closeModal(): void {
         this.modal.close({ success: false });
+    }
+
+    getTitle(): string {
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica ' + this.pos.descrizionePos;
     }
 }

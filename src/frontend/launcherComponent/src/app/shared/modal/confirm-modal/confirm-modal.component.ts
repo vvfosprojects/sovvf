@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -8,13 +8,12 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ConfirmModalComponent {
 
-    @Input() icona: any;
-    @Input() titolo: string;
-    @Input() messaggio: string;
-    @Input() messaggioAttenzione: string;
-    @Input() bottoni: any[];
-
+    icona: any;
+    titolo: string;
+    messaggio: string;
+    messaggioAttenzione: string;
 
     constructor(public modal: NgbActiveModal) {
     }
+
 }

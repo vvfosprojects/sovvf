@@ -87,7 +87,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = command.Chiamata.Codice,
-                TrnInsChiamata = $"Turno {_getTurno.Get().Codice.Substring(0, 1)}",
+                TrnInsChiamata = _getTurno.Get().Codice,
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
                 UtInLavorazione = utentiInLavorazione,

@@ -31,7 +31,7 @@
     <div *ngIf="richieste?.length" class="px-2">
         <div class="card bg-dark-light">
             <div class="border-bottom font-xxlarge px-3 pt-1 pb-2">
-                <span class="font-weight-bold">{{ richieste?.length }}</span> Richieste
+                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ richieste?.length > 1 ? 'Interventi' : 'Intervento' }}
             </div>
             <div class="scroll-y"
                  style="max-height: 350px">

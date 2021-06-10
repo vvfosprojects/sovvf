@@ -58,6 +58,7 @@ export class PaginationState {
 
     @Action(PatchPagination)
     patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination): void {
+        console.log('PatchPagination', action.pagination);
         patchState({
             pagination: action.pagination
         });

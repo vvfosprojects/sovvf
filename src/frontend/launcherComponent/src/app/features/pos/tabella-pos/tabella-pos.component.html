@@ -1,30 +1,70 @@
 <table class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:20%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" style="width:80%"><i class="fa fa-university mr-2"></i>Nome</th>
+        <th scope="col" style="width:12%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:22%"><i class="fa fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:33%"><i class="fa fa-cog mr-2"></i>Tipologie</th>
+        <th scope="col" style="width:33%"><i class="fa fa-cogs mr-2"></i>Dettagli Tipologie</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let p of pos | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td style="width:20%" class="align-middle">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                    placement="bottom" (click)="onDeletePos(p?.id, p?.descrizione)">
+        <td style="width:12%" class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                    ngbTooltip="Rimuovi POS"
+                    placement="bottom"
+                    (click)="onDeletePos(p?.id, p?.descrizionePos)">
                 <i class="fa fa-trash"></i>
             </button>
+            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                    ngbTooltip="Modifica POS"
+                    placement="bottom"
+                    (click)="onEditPos(p)">
+                <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-success font-weight-bold float-left"
+                    ngbTooltip="Scarica POS"
+                    placement="bottom"
+                    (click)="onDownloadPos(p)">
+                <i class="fa fa-download"></i>
+            </button>
         </td>
-        <td style="width:80%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span>{{p?.descrizione}}</span>
+        <td style="width:22%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+                 style="max-width: 400px;">
+                {{ p?.descrizionePos }}
             </div>
+        </td>
+        <td style="width:33%" class="align-middle">
+            <ul class="mb-0">
+                <li *ngFor="let t of getTipologieFromListaTipologie(p, tipologie)">
+                    {{ t?.descrizione }}
+                </li>
+            </ul>
+        </td>
+        <td style="width:33%" class="align-middle">
+            <ng-template [ngIf]="getDettagliTipologieFromListaTipologie(p, dettagliTipologie)?.length">
+                <ul class="mb-0">
+                    <li *ngFor="let t of getDettagliTipologieFromListaTipologie(p, dettagliTipologie)">
+                        {{ t?.descrizione }}
+                    </li>
+                </ul>
+            </ng-template>
+            <ng-template [ngIf]="!getDettagliTipologieFromListaTipologie(p, dettagliTipologie)?.length">
+                <div class="text-danger font-weight-bold">
+                    {{ 'Nessun Dettaglio Tipologia associato' | uppercase }}
+                </div>
+            </ng-template>
         </td>
     </tr>
     <tr *ngIf="pos?.length <= 0">
-        <td style="width:20%">
-        <td style="width:80%">
+        <td></td>
+        <td class="align-middle" style="width:22%">
             <ng-template [ngIf]="!loading">Nessuna Pos trovata</ng-template>
             <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
+        <td></td>
+        <td></td>
     </tr>
     </tbody>
 </table>

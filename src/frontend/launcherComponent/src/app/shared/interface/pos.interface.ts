@@ -1,8 +1,10 @@
 export interface PosInterface {
+    id: string;
     descrizionePos: string;
+    codSede: string;
     fileName: string;
-    filePath: string;
     listaTipologie: TipologiaPos[];
+    FDFile: any;
 }
 
 export interface TipologiaPos {

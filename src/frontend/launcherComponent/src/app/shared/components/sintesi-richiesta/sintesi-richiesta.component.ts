@@ -22,6 +22,9 @@ import { DettaglioSoccorsoAereoModalComponent } from '../../modal/dettaglio-socc
 import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
+import { defineChiamataIntervento } from '../../helper/function-richieste';
+import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
+import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -169,6 +172,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
+    defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+        return defineChiamataIntervento(codice, codiceRichiesta);
+    }
+
     complessitaClass(richiesta: SintesiRichiesta): any {
         return this.methods.complessitaClass(richiesta);
     }
@@ -200,6 +207,26 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         if (partenze?.length > 0) {
             return partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
         }
+    }
+
+    checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+        return checkNumeroPartenzeAttive(partenze);
+    }
+
+    openDettaglioTriage(): void {
+        let dettaglioTriageModal: any;
+        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
+        dettaglioTriageModal.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
+        dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
+        dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
+        dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
+        dettaglioTriageModal.componentInstance.triageSummary = this.richiesta.triageSummary;
     }
 
     onListaEnti(): void {

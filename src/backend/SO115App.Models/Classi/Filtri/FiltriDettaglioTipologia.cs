@@ -4,6 +4,6 @@
     {
         public string Search { get; set; }
 
-        public int? codTipologia { get; set; } = -1;
+        public int[]? codTipologia { get; set; }
     }
 }

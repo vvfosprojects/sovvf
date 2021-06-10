@@ -17,12 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.AspNetCore.Http;
 using MongoDB.Driver.GridFS;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestionePOS
@@ -38,17 +40,23 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
 
         public void Save(DtoPos pos)
         {
-            var NewPos = new PosDAO()
+            var posNew = new PosDAO()
             {
                 CodSede = pos.CodSede,
-                CodTipologia = pos.CodTipologia,
-                CodTipologiaDettaglio = pos.CodTipologiaDettaglio,
                 DescrizionePos = pos.DescrizionePos,
-                FileName = pos.FDFile.FileName,
-                FilePath = pos.FilePath
+                FDFile = ByteArrayConvert(pos.FDFile),
+                ListaTipologie = pos.ListaTipologieConvert,
+                FileName = pos.FileName
             };
 
-            _dbcontex.DtoPosCollection.InsertOne(NewPos);
+            _dbcontex.DtoPosCollection.InsertOne(posNew);
+        }
+
+        private byte[] ByteArrayConvert(IFormFile fDFile)
+        {
+            MemoryStream ms = new MemoryStream();
+            fDFile.CopyTo(ms);
+            return ms.ToArray();
         }
     }
 }

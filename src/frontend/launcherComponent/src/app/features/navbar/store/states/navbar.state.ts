@@ -73,10 +73,8 @@ export class NavbarState {
 
     @Action(ToggleSidebarOpened)
     toggleSidebarOpened({ getState, patchState }: StateContext<NavbarStateModel>, action: ToggleSidebarOpened): void {
-        const state = getState();
-        const sidebarOpened = state.sidebarOpened;
         patchState({
-            sidebarOpened: action.value === false || action.value === true ? action.value : !sidebarOpened
+            sidebarOpened: action.value
         });
     }
 

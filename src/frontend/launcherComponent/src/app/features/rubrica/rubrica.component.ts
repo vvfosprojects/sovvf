@@ -141,10 +141,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         modalConfermaAnnulla.result.then(
             (val) => {
                 switch (val) {

@@ -37,7 +37,7 @@
                     <div class="col-4 text-center">
                         <h5 class="mb-3">Squadra Montante</h5>
                         <h5>
-                            <i class="fa fa-users mr-1"></i>
+                            <i class="fa fa-users guida mr-1"></i>
                             {{ s?.nome }}
                         </h5>
                         <h5>
@@ -57,16 +57,14 @@
                         </ng-template>
                         <div *ngFor="let p of getPartenzeSostituzione()">
                             <div *ngFor="let sS of p.squadre" class="mb-1"
-                                 [class.bg-lightgrey]="getSquadraSmontanteBySquadraMontante(s?.nome) && getSquadraSmontanteBySquadraMontante(s?.nome) === sS?.nome">
+                                 [class.alert-warning]="getSquadraSmontanteBySquadraMontante(s?.nome) && getSquadraSmontanteBySquadraMontante(s?.nome) === sS?.nome">
                                 <div class="clearfix">
                                     <div class="float-left pt-1 pl-2">
                                         <h5>
                                             <i class="fa fa-users guida mr-1"></i>
                                             {{ sS?.nome }}
-                                            <small>
-                                                <i class="fa fa-truck guida mr-1"></i>
-                                                {{ p?.mezzo?.codice }}
-                                            </small>
+                                            <i class="fa fa-truck guida mr-1"></i>
+                                            {{ p?.mezzo?.codice }}
                                         </h5>
                                     </div>
                                     <div class="float-right">
