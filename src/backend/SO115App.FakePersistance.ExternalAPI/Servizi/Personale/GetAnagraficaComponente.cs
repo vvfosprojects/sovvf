@@ -19,22 +19,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
         public async Task<DatiComponente> GetByCodFiscale(string CodFiscale)
         {
-            try
-            {
-                _service.SetCache($"Dati_{CodFiscale}");
+            _service.SetCache($"Dati_{CodFiscale}");
 
-                var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("IdentityManagement").Value);
-                var url = new Uri(baseurl, "CertificazioneAnagrafica/RecuperaAnagrafica" + "?codiceFiscale=" + CodFiscale);
+            var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("IdentityManagement").Value);
+            var url = new Uri(baseurl, "CertificazioneAnagrafica/RecuperaAnagrafica" + "?codiceFiscale=" + CodFiscale);
 
-                var result = _service.GetAsync(url);
+            var result = _service.GetAsync(url);
 
-                return await result;
-            }
-            catch (Exception e)
-            {
-
-                throw new Exception("Servizio esterno 'IdentityManagement' non disponibile");
-            }
+            return await result;
         }
     }
 }
