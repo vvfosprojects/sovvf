@@ -28,6 +28,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     editPos: boolean;
     pos: PosInterface;
+    posFdFile: Blob;
+    modifyFDFile: boolean;
 
     posForm: FormGroup;
     formData: FormData;
@@ -71,6 +73,10 @@ export class PosModalComponent implements OnInit, OnDestroy {
         return this.posForm.controls;
     }
 
+    toggleModifyFDFile(): void {
+        this.modifyFDFile = !this.modifyFDFile;
+    }
+
     updatePosForm(editPos: PosInterface): void {
         console.log('updatePosForm', editPos);
         this.store.dispatch(new UpdateFormValue({
@@ -81,6 +87,12 @@ export class PosModalComponent implements OnInit, OnDestroy {
             },
             path: 'posModal.posForm'
         }));
+
+        if (!this.formData) {
+            this.formData = new FormData();
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+        }
     }
 
     getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
@@ -105,9 +117,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
-        this.dettagliTipologieFiltered = this.dettagliTipologie;
+        this.dettagliTipologieFiltered = [];
         if (this.dettagliTipologieFiltered) {
-            this.dettagliTipologieFiltered = this.dettagliTipologieFiltered.filter((dettaglioTipologia: DettaglioTipologia) => dettaglioTipologia.codiceTipologia === codTipologie[0]);
+            codTipologie.forEach((codTipologia: number) => {
+                this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {
+                    const exists = this.dettagliTipologieFiltered.indexOf(dettaglioTipologia) !== -1;
+                    if (!exists && dettaglioTipologia.codiceTipologia === codTipologia) {
+                        this.dettagliTipologieFiltered.push(dettaglioTipologia);
+                    }
+                });
+            });
         }
     }
 
@@ -136,6 +155,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica ' + this.pos.descrizionePos;
     }
 }

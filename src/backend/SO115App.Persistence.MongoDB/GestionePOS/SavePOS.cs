@@ -45,7 +45,8 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
                 CodSede = pos.CodSede,
                 DescrizionePos = pos.DescrizionePos,
                 FDFile = ByteArrayConvert(pos.FDFile),
-                ListaTipologie = pos.ListaTipologieConvert
+                ListaTipologie = pos.ListaTipologieConvert,
+                FileName = pos.FileName
             };
 
             _dbcontex.DtoPosCollection.InsertOne(posNew);
