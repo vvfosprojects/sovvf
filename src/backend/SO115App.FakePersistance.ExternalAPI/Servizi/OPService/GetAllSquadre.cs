@@ -84,7 +84,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 Id = squadra.Id,
                 Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                 Codice = squadra.Codice,
-                ListaCodiciFiscaliComponentiSquadra = null,
                 Turno = squadra.TurnoAttuale,
                 Nome = squadra.Descrizione,
                 Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento,
