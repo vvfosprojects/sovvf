@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre
 {
     public class GetAllSquadreResult
     {
-        public List<SquadraComposizione> DataArray { get; set; }
+        public List<ComposizioneSquadra> DataArray { get; set; }
     }
 }

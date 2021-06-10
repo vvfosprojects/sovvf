@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService
 {
     public interface IGetAllSquadre
     {
-        List<SquadraComposizione> GetByCodiceSede(string[] Codice);
+        List<ComposizioneSquadra> GetByCodiceSede(string[] Codice);
     }
 }

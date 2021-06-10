@@ -39,11 +39,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             _getDistaccamenti = getDistaccamenti;
         }
 
-        public List<SquadraComposizione> GetByCodiceSede(string[] CodiciSede)
+        public List<ComposizioneSquadra> GetByCodiceSede(string[] CodiciSede)
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
 
-            List<SquadraComposizione> lstSquadre = new List<SquadraComposizione>();
+            List<ComposizioneSquadra> lstSquadre = new List<ComposizioneSquadra>();
 
             foreach (string codice in CodiciSede)
             {
@@ -55,12 +55,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             return lstSquadre;
         }
 
-        private List<SquadraComposizione> MappaOPSquadreSuSOSquadre(Task<List<Squadra>> lstOPSquadre, string codice)
+        private List<ComposizioneSquadra> MappaOPSquadreSuSOSquadre(Task<List<Squadra>> lstOPSquadre, string codice)
         {
             List<string> listaSedi = new List<string>();
             listaSedi.Add(codice);
 
-            var lstSquadre = new ConcurrentBag<SquadraComposizione>();
+            var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(listaSedi));
 
@@ -79,12 +79,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 return result;
             });
 
-            Parallel.ForEach(lstOPSquadre.Result, squadra => lstSquadre.Add(new SquadraComposizione()
+            Parallel.ForEach(lstOPSquadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
             {
                 Id = squadra.Id,
                 Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                 Codice = squadra.Codice,
-                ListaCodiciFiscaliComponentiSquadra = null,
                 Turno = squadra.TurnoAttuale,
                 Nome = squadra.Descrizione,
                 Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento,
