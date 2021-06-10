@@ -54,13 +54,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             return new ComposizioneSquadreResult()
             {
                 DataArray = composizioneSquadre
-                    .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
-                    .Take(query.Filtro.SquadrePagination.PageSize)
+                    .Skip(query.Filtro.Pagination.Page * query.Filtro.Pagination.PageSize)
+                    .Take(query.Filtro.Pagination.PageSize)
                     .ToList(),
                 Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
                 {
-                    Page = query.Filtro.SquadrePagination.Page,
-                    PageSize = query.Filtro.SquadrePagination.PageSize,
+                    Page = query.Filtro.Pagination.Page,
+                    PageSize = query.Filtro.Pagination.PageSize,
                     TotalItems = composizioneSquadre.Count
                 }
             };

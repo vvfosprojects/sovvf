@@ -21,7 +21,6 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -129,7 +128,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }));
 
                 return lstSquadre;
-            });
+            })
+            .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO DATI
+            {
+                //squadra.
+
+                return true;
+            }));
 
             return lstSquadreComposizione.Result.ToList();
         }
