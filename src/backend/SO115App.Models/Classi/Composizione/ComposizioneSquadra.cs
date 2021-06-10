@@ -6,7 +6,7 @@ namespace SO115App.Models.Classi.Composizione
 {
     public class ComposizioneSquadra
     {
-        public string Id { get; set; }
+        //public string Id { get; set; }
         public SquadraComposizione Squadra { get; set; }
         public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; }
         public DateTime IstanteScadenzaSelezione { get; set; }
@@ -31,7 +31,7 @@ namespace SO115App.Models.Classi.Composizione
         public string Distaccamento { get; set; }
         //public DateTime? IstanteTermineImpegno { get; set; }
 
-        public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
+        //public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
 
         public decimal IndiceOrdinamento { get; set; }
 

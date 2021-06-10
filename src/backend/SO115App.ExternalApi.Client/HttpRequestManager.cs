@@ -125,9 +125,16 @@ namespace SO115App.ExternalAPI.Client
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
-            var result = JsonSerializer.Deserialize<ResponseObject>(data);
+            try
+            {
+                var result = JsonSerializer.Deserialize<ResponseObject>(data); 
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         AuthenticationHeaderValue getBearerAuthorization(string token)

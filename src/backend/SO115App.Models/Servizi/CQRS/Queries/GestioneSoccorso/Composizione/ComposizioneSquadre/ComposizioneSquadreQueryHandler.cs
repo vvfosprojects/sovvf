@@ -54,7 +54,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             return new ComposizioneSquadreResult()
             {
                 DataArray = composizioneSquadre
-                    .Skip(query.Filtro.Pagination.Page * query.Filtro.Pagination.PageSize)
+                    .Skip(query.Filtro.Pagination.Page - 1 * query.Filtro.Pagination.PageSize)
                     .Take(query.Filtro.Pagination.PageSize)
                     .ToList(),
                 Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
