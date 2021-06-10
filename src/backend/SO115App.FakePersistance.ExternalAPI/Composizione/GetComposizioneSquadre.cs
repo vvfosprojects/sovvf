@@ -92,29 +92,26 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
-                    Squadra = new SquadraComposizione()
+                    Id = squadra.Id,
+                    Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                    Codice = squadra.Codice,
+                    Turno = squadra.TurnoAttuale,
+                    Nome = squadra.Descrizione,
+                    Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.Id, //TODO TOGLIERE NULLABLE
+                    DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
+                    Componenti = squadra.Membri.Select(m =>
                     {
-                        Id = squadra.Id,
-                        Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
-                        Codice = squadra.Codice,
-                        Turno = squadra.TurnoAttuale,
-                        Nome = squadra.Descrizione,
-                        Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.Id, //TODO TOGLIERE NULLABLE
-                        DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
-                        Componenti = squadra.Membri.Select(m =>
-                        {
-                            var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
+                        var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
 
-                            return new Componente()
-                            {
-                                OrarioFine = m.Presenze.Max(p => p.A),
-                                OrarioInizio = m.Presenze.Min(p => p.Da),
-                                DescrizioneQualifica = m.Ruolo,
-                                Nominativo = $"{a.Result?.Nome} {a.Result?.Cognome}",
-                                CodiceFiscale = a.Result?.CodFiscale,
-                            };
-                        }).ToList()
-                    },
+                        return new Componente()
+                        {
+                            OrarioFine = m.Presenze.Max(p => p.A),
+                            OrarioInizio = m.Presenze.Min(p => p.Da),
+                            DescrizioneQualifica = m.Ruolo,
+                            Nominativo = $"{a.Result?.Nome} {a.Result?.Cognome}",
+                            CodiceFiscale = a.Result?.CodFiscale,
+                        };
+                    }).ToList(),
                     MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.SelectMany(codice => _getMezzi.Get(query.CodiciSede.ToList(), null, codice).Result.Select(mezzo => new MezzoPreaccoppiato()
                     {
                         Codice = mezzo.Codice,
@@ -127,25 +124,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
-                bool distaccamento = query.Filtro.CodiciDistaccamenti.Contains(squadra.Squadra.Distaccamento);
+                bool distaccamento = query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento);
 
-                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) ? true : squadra.Squadra.Nome.Contains(query.Filtro.Ricerca);
+                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) ? true : squadra.Nome.Contains(query.Filtro.Ricerca);
 
                 return distaccamento & ricerca;
-            }));
-            //.ContinueWith(lstSquadre => //ORDINAMENTO
-            //{
-            //    return lstSquadre.Result.OrderByDescending(c =>
-            //    {
-            //        //if (query.Filtro.Mezzo?.PreAccoppiato ?? false)
-            //        //    return c.Squadra.PreAccoppiato;
-            //        return false;
-            //    })
-            //    .OrderByDescending(c => c.Squadra.Stato == Costanti.MezzoInSede)
-            //    .ThenByDescending(c => c.Squadra.Stato == Costanti.MezzoInRientro)
-            //    .ThenByDescending(c => c.Squadra.Stato == Costanti.MezzoInViaggio)
-            //    .ThenByDescending(c => c.Squadra.Stato == Costanti.MezzoSulPosto);
-            //});
+            }))
+            .ContinueWith(lstSquadre => //ORDINAMENTO
+            {
+                return lstSquadre.Result 
+                    .OrderByDescending(squadra => squadra.Stato == Costanti.MezzoInSede)
+                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoInRientro)
+                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoInViaggio)
+                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoSulPosto);
+            });
 
             var result = lstSquadreComposizione.Result.ToList();
 
