@@ -75,20 +75,21 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetAnagraficaComponente, GetAnagraficaComponente>();
 
-            #endregion
+            #endregion IdentityManagement
 
             #region OPService
 
             container.Register<IGetSquadre, GetSquadre>();
+            container.Register<IGetAllSquadre, GetAllSquadre>();
 
-            #endregion
+            #endregion OPService
 
             #region Qualifiche
 
             container.Register<IGetPercorsoByIdQualifica, GetPercorsoByIdQualifica>();
             container.Register<IGetDettaglioQualificaByIdDipendenteByDate, GetDettaglioQualificaByIdDipendenteByDate>();
 
-            #endregion
+            #endregion Qualifiche
 
             #region NUE
 
