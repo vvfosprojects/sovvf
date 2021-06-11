@@ -17,10 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -29,6 +30,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,9 +82,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreComposizione = Task.Run(() => //GET
             {
-                var lstSquadre = new ConcurrentBag<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+                var lstSquadre = new ConcurrentBag<Squadra>();
 
-                Parallel.ForEach(query.CodiciSede, codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(squadra => lstSquadre.Add(squadra)));
+                Parallel.ForEach(query.CodiciSede, codice =>
+                {
+                    var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
+
+                    switch (query.Filtro.Turno)
+                    {
+                        case TurnoRelativo.Attuale: lstSquadre.Union(workshift.Attuale); break;
+
+                        case TurnoRelativo.Precedente: lstSquadre.Union(workshift.Precedente); break;
+
+                        case TurnoRelativo.Successivo: lstSquadre.Union(workshift.Successivo); break;
+
+                        case null: 
+                            Parallel.ForEach(new List<Squadra[]>() { workshift.Attuale, workshift.Precedente, workshift.Successivo}.SelectMany(w => w), squadra => 
+                                lstSquadre.Add(squadra)); break;
+                    }
+                });
 
                 return lstSquadre;
             })
@@ -93,31 +111,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
                     Id = squadra.Id,
-                    Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                    //Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                     Codice = squadra.Codice,
-                    Turno = squadra.TurnoAttuale,
+                    Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
                     Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.Id, //TODO TOGLIERE NULLABLE
-                    DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
-                    Componenti = squadra.Membri.Select(m =>
+                    Membri = squadra.Membri.Select(m =>
                     {
                         var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
 
-                        return new Componente()
+                        return new MembroComposizione()
                         {
-                            OrarioFine = m.Presenze.Max(p => p.A),
-                            OrarioInizio = m.Presenze.Min(p => p.Da),
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{a.Result?.Nome} {a.Result?.Cognome}",
                             CodiceFiscale = a.Result?.CodFiscale,
                         };
                     }).ToList(),
-                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.SelectMany(codice => _getMezzi.Get(query.CodiciSede.ToList(), null, codice).Result.Select(mezzo => new MezzoPreaccoppiato()
+                    MezzoPreaccoppiato = squadra.CodiciMezziPreaccoppiati?.SelectMany(codice => _getMezzi.Get(query.CodiciSede.ToList(), null, codice).Result.Select(mezzo => new MezzoPreaccoppiato()
                     {
                         Codice = mezzo.Codice,
                         Stato = mezzo.Stato,
-                        Tipo = mezzo.Genere
-                    })).ToList()
+                        Genere = mezzo.Genere,
+                        Descrizione = mezzo.Descrizione
+                    })).FirstOrDefault() //TODO VERIFICARE SE SERVE ARRAY
                 }));
 
                 return lstSquadre;
@@ -133,10 +149,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result 
-                    .OrderByDescending(squadra => squadra.Stato == Costanti.MezzoInSede)
-                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoInRientro)
-                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoInViaggio)
-                    .ThenByDescending(squadra => squadra.Stato == Costanti.MezzoSulPosto);
+                    .OrderByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInSede))
+                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
+                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
+                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoSulPosto));
             });
 
             var result = lstSquadreComposizione.Result.ToList();

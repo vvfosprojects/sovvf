@@ -19,9 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre

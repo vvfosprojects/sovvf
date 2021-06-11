@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
@@ -41,18 +40,18 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         [JsonPropertyName("role")]
         public string Ruolo { get; set; }
 
-        [JsonPropertyName("presences")]
-        public Presenza[] Presenze { get; set; }
+        //[JsonPropertyName("presences")]
+        //public Presenza[] Presenze { get; set; }
     }
 
-    public class Presenza
-    {
-        [JsonPropertyName("from")]
-        public DateTime Da { get; set; }
+    //public class Presenza
+    //{
+    //    [JsonPropertyName("from")]
+    //    public DateTime Da { get; set; }
 
-        [JsonPropertyName("to")]
-        public DateTime A { get; set; }
-    }
+    //    [JsonPropertyName("to")]
+    //    public DateTime A { get; set; }
+    //}
 }
 
 

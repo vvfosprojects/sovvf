@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
-using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.Composizione;
-using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
@@ -14,7 +11,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static SO115App.API.Models.Classi.Condivise.Squadra;
 using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.Squadra;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.OPService
@@ -82,13 +78,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             Parallel.ForEach(lstOPSquadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
             {
                 Id = squadra.Id,
-                Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                //Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                 Codice = squadra.Codice,
-                Turno = squadra.TurnoAttuale,
+                Turno = squadra.TurnoAttuale.ToCharArray()[0],
                 Nome = squadra.Descrizione,
                 Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento,
-                DataInServizio = DateTime.MinValue,
-                Componenti = null
+                DataInServizio = DateTime.MinValue
             }
             ));
 

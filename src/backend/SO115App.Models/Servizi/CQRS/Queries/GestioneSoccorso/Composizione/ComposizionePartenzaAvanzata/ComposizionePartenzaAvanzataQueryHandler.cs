@@ -135,12 +135,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSquadreComposizione = Task.Factory.StartNew(() =>
             {
                 var lstSquadre = new ConcurrentBag<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
-                Parallel.ForEach(query.CodiceSede, async codice => _getSquadre.GetByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async squadra =>
-                {
-                    lstSquadre.Add(squadra);
-                    squadra.Membri.ToList().ForEach(async m => lstPersonale.Add(_getPersonaleByCF.Get(m.CodiceFiscale).Result));
-                    squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(c => lstPreaccoppiati.TryAdd(squadra.Codice, c));
-                }));
+                //Parallel.ForEach(query.CodiceSede, async codice => _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.ForEach(async squadra =>
+                //{
+                //    lstSquadre.Add(squadra);
+                //    squadra.Membri.ToList().ForEach(async m => lstPersonale.Add(_getPersonaleByCF.Get(m.CodiceFiscale).Result));
+                //    squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(c => lstPreaccoppiati.TryAdd(squadra.Codice, c));
+                //}));
 
                 return lstSquadre;
             })
@@ -158,8 +158,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     Turno = squadra.TurnoAttuale,
                     Nome = squadra.Descrizione,
                     Distaccamento = lstSedi.Where(s => s.Id.Equals(squadra.Distaccamento)).Select(s => new Sede(s.CodSede, s.DescDistaccamento, s.Indirizzo, s.Coordinate, "", "", "", "", "")).FirstOrDefault(),
-                    DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
-                    IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
+                    //DataInServizio = squadra.Membri.Min(m => m.Presenze.Min(p => p.Da)),
+                    //IstanteTermineImpegno = squadra.Membri.Max(m => m.Presenze.Max(p => p.A)),
                     //IndiceOrdinamento = GetIndiceOrdinamento(s, query.Richiesta),
                     Componenti = lstPersonale.Where(p => squadra.Membri.Select(m => m.CodiceFiscale).Contains(p.codiceFiscale))
                         .Select(p => new Componente(p.qualifica.descrizione, $"{p.nome} {p.cognome}", "", false, false, false)).ToList()
