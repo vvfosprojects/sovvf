@@ -17,12 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -35,50 +36,74 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.Squadra;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneSquadre : IGetComposizioneSquadre
     {
-        private readonly IGetAnagraficaComponente _getAnagrafica;
         private readonly IGetMezziUtilizzabili _getMezzi;
+        private readonly IGetStatoMezzi _getStatoMezzi;
+
         private readonly IGetSquadre _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
+        private readonly IGetAnagraficaComponente _getAnagrafica;
 
+        private readonly IGetSedi _getSedi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
 
-        public GetComposizioneSquadre(IGetSquadre getSquadre, IGetStatoSquadra getStatoSquadre, IGetMezziUtilizzabili getMezzi, IGetAnagraficaComponente getAnagrafica,
+        public GetComposizioneSquadre(IGetSquadre getSquadre, 
+            IGetStatoSquadra getStatoSquadre,
+            IGetMezziUtilizzabili getMezzi,
+            IGetAnagraficaComponente getAnagrafica,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
+            IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
+            IGetStatoMezzi getStatoMezzi,
+            IGetSedi getSedi)
         {
+            _getStatoMezzi = getStatoMezzi;
             _getMezzi = getMezzi;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
             _getAnagrafica = getAnagrafica;
-
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getDistaccamenti = getDistaccamenti;
+            _getSedi = getSedi;
         }
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstDistaccamenti = Task.Run(() =>
-            {
-                var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-                var pinNodi = new List<PinNodo>();
-                foreach (var sede in query.CodiciSede)
-                    pinNodi.Add(new PinNodo(sede, true));
+            //TODO QUERY DISTACCAMENTI MONGODB
+            var lstSedi = Task.Run(() => _getSedi.GetAll()
+                .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
+                .Select(s => new DistaccamentoComposizione() 
+                { 
+                    Codice = $"{s.codProv}.{s.codFiglio_TC}",
+                    Coordinate = new Coordinate(s.latitudine, s.longitudine),
+                    Descrizione = s.sede,
+                    Provincia = s.codProv
+                }));
 
-                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
-                    pinNodi.Add(new PinNodo(figlio.Codice, true));
+            //var lstDistaccamenti = Task.Run(() =>
+            //{
+            //    var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //    var pinNodi = new List<PinNodo>();
+            //    foreach (var sede in query.CodiciSede)
+            //        pinNodi.Add(new PinNodo(sede, true));
 
-                var result = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
+            //    foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            //        pinNodi.Add(new PinNodo(figlio.Codice, true));
 
-                return result;
-            });
-            
+            //    var result = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
+
+            //    return result;
+            //});
+
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti.ToList()));
+            var lstStatiMezzi = Task.Run(()=> _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti));
+
+            Task<List<string>> lstMezziPreaccoppiati = null;
 
             var lstSquadreComposizione = Task.Run(() => //GET
             {
@@ -88,7 +113,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
 
-                    switch (query.Filtro.Turno)
+                    switch (query.Filtro.Turno) //FILTRO PER TURNO
                     {
                         case TurnoRelativo.Attuale: lstSquadre.Union(workshift.Attuale); break;
 
@@ -96,11 +121,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                         case TurnoRelativo.Successivo: lstSquadre.Union(workshift.Successivo); break;
 
-                        case null: 
-                            Parallel.ForEach(new List<Squadra[]>() { workshift.Attuale, workshift.Precedente, workshift.Successivo}.SelectMany(w => w), squadra => 
-                                lstSquadre.Add(squadra)); break;
+                        case null: Parallel.ForEach(new List<Squadra[]>() 
+                        { 
+                            workshift.Attuale, workshift.Precedente, workshift.Successivo
+                        }.SelectMany(w => w), squadra =>  lstSquadre.Add(squadra)); break;
                     }
                 });
+
+                lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()).Result.Select(m => m.CodiceMezzo).ToList());
 
                 return lstSquadre;
             })
@@ -110,12 +138,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
-                    Id = squadra.Id,
                     //Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                     Codice = squadra.Codice,
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
-                    Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.Id, //TODO TOGLIERE NULLABLE
+                    DiEmergenza = squadra.Emergenza,
+                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)),
                     Membri = squadra.Membri.Select(m =>
                     {
                         var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
@@ -124,27 +152,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{a.Result?.Nome} {a.Result?.Cognome}",
-                            CodiceFiscale = a.Result?.CodFiscale,
+                            CodiceFiscale = a.Result?.CodFiscale
                         };
                     }).ToList(),
-                    MezzoPreaccoppiato = squadra.CodiciMezziPreaccoppiati?.SelectMany(codice => _getMezzi.Get(query.CodiciSede.ToList(), null, codice).Result.Select(mezzo => new MezzoPreaccoppiato()
-                    {
-                        Codice = mezzo.Codice,
-                        Stato = mezzo.Stato,
-                        Genere = mezzo.Genere,
-                        Descrizione = mezzo.Descrizione
-                    })).FirstOrDefault() //TODO VERIFICARE SE SERVE ARRAY
+                    MezziPreaccoppiati = lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
                 }));
 
                 return lstSquadre;
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
-                bool distaccamento = query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento);
+                //bool distaccamento = query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento.Codice);
 
-                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) ? true : squadra.Nome.Contains(query.Filtro.Ricerca);
+                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
-                return distaccamento & ricerca;
+                return /*distaccamento &*/ ricerca;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {

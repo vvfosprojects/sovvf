@@ -77,13 +77,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
             Parallel.ForEach(lstOPSquadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
             {
-                Id = squadra.Id,
+                //Id = squadra.Id,
                 //Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
                 Codice = squadra.Codice,
                 Turno = squadra.TurnoAttuale.ToCharArray()[0],
                 Nome = squadra.Descrizione,
-                Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento,
-                DataInServizio = DateTime.MinValue
+                //Distaccamento = lstDistaccamenti.Result.Find(d => d.Id.Contains(squadra.Distaccamento))?.DescDistaccamento,
+                //DataInServizio = DateTime.MinValue
             }
             ));
 

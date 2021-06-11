@@ -30,6 +30,11 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 
         [JsonPropertyName("enabled")]
         public bool Attiva { get; set; }
+
+        [JsonPropertyName("dne")]
+        private string dne { get; set; }
+
+        public bool Emergenza => dne == "EMERGENZA";
     }
 
     public class Membro

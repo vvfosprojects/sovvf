@@ -241,5 +241,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             return stato;
         }
+
+        public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
+        {
+            var token = _getToken.GeneraToken();
+
+            var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
+
+            _clientMezzi.SetCache("Mezzi_" + codiciMezzi);
+
+            string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
+
+            var resultApi = _clientMezzi.GetAsync(url);
+
+            resultApi.Result?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
+
+            return lstMezziDto.ToList();
+        }
     }
 }
