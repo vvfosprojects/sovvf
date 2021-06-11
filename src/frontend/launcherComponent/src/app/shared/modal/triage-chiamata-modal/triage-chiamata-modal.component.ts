@@ -192,7 +192,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     getDomandaByRispostaValue(rispostaValue: string): TreeviewItem {
-        const parentValue = rispostaValue.slice(2);
+        const parentValue = rispostaValue.length === 5 ? rispostaValue.slice(4) : rispostaValue.slice(2);
         return findItem(this.triage, parentValue);
 
         function findItem(element: any, value: string): TreeviewItem {
