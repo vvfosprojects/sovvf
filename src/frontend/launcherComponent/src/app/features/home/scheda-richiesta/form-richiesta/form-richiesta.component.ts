@@ -409,7 +409,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             }));
           }
           if (res?.triageSummary?.length) {
-            console.log('res.triageSummary', res.triageSummary);
             saveTriageSummary(this.store, res.triageSummary);
           }
           clearTriageChiamataModalData(this.store);
