@@ -21,8 +21,6 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
-using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -49,19 +47,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetSquadre _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
-        private readonly IGetAnagraficaComponente _getAnagrafica;
         private readonly IGetPersonaFisica _getAnagrafiche;
 
         private readonly IGetSedi _getSedi;
-        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
 
         public GetComposizioneSquadre(IGetSquadre getSquadre, 
             IGetStatoSquadra getStatoSquadre,
             IGetMezziUtilizzabili getMezzi,
-            IGetAnagraficaComponente getAnagrafica,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetStatoMezzi getStatoMezzi,
             IGetSedi getSedi,
             IGetPersonaFisica getAnagrafiche)
@@ -70,9 +62,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getMezzi = getMezzi;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            _getAnagrafica = getAnagrafica;
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getDistaccamenti = getDistaccamenti;
             _getSedi = getSedi;
             _getAnagrafiche = getAnagrafiche;
         }
@@ -120,7 +109,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()).Result.Select(m => m.CodiceMezzo).ToList());
                 lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(lstSquadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
                 {
-                    //DescrizioneQualifica = m.Ruolo,
                     Nominativo = $"{a?.Nome} {a?.Cognome}",
                     CodiceFiscale = a?.CodFiscale
                 }).ToList());
@@ -138,7 +126,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
-                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)), //TODO USARE FIRST (NON CI SONO TUTTE LE SEDI)
+                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)), 
                     Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale))?.Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,
@@ -152,18 +140,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
-                //bool distaccamento = query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento.Codice);
+                bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
+
+                bool distaccamento = query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true;
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
-                return /*distaccamento &*/ ricerca;
+                return distaccamento && ricerca && diEmergenza;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result 
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[0].Equals(squadra.Distaccamento?.Codice)) //TODO TOGLIERE IL NULLABLE
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[1].Equals(squadra.Distaccamento?.Codice)) //TODO TOGLIERE IL NULLABLE
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[2].Equals(squadra.Distaccamento?.Codice)) //TODO TOGLIERE IL NULLABLE
+                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[0].Equals(squadra.Distaccamento?.Codice)) 
+                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[1].Equals(squadra.Distaccamento?.Codice)) 
+                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[2].Equals(squadra.Distaccamento?.Codice)) 
                     .OrderByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInSede))
                     .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
                     .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
