@@ -5,6 +5,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.IdentityManagement
 {
     public class PersonaFisica
     {
+        [JsonPropertyName("dati")]
         public List<DatiComponente> Dati { get; set; }
     }
 

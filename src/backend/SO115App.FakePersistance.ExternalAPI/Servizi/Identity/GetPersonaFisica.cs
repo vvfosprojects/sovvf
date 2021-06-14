@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -30,25 +32,33 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Identity
 {
     public class GetPersonaFisica : IGetPersonaFisica
     {
-        private readonly HttpClient _client;
+        private readonly IHttpRequestManager<PersonaFisica> _client;
         private readonly IConfiguration _configuration;
 
-        public GetPersonaFisica(HttpClient client, IConfiguration configuration)
+        public GetPersonaFisica(IHttpRequestManager<PersonaFisica> client, IConfiguration configuration)
 
         {
             _client = client;
-            this._configuration = configuration;
+            _configuration = configuration;
         }
 
-        public async Task<List<DatiComponente>> Get(List<string> codiceFiscale)
+        public async Task<PersonaFisica> Get(List<string> codiceFiscale)
         {
-            var stringContent = new StringContent(JsonConvert.SerializeObject(new { codiciFiscali = codiceFiscale }), Encoding.UTF8, "application/json");
+            var stringContent = new StringContent(JsonConvert.SerializeObject(new { codiciFiscali = codiceFiscale }));
 
-            var response = await _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("IdentityManagementApi").Value, stringContent).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<PersonaFisica>(data).Dati;
+            _client.SetCache($"Identity_{codiceFiscale}");
+
+            try
+            {
+                var url = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("IdentityManagement").Value + "RicercaPerElencoCodiciFiscali");
+                var result = await _client.PostAsync(url, stringContent);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Servizio esterno non raggiungibile.");
+            }
         }
     }
 }

@@ -25,6 +25,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManageme
 {
     public interface IGetPersonaFisica
     {
-        Task<List<DatiComponente>> Get(List<string> codiceFiscale);
+        Task<PersonaFisica> Get(List<string> codiceFiscale);
     }
 }

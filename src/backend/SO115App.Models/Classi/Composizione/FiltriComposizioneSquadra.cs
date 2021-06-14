@@ -10,5 +10,7 @@ namespace SO115App.Models.Classi.Composizione
         public TurnoRelativo? Turno { get; set; }
         public bool DiEmergenza { get; set; }
         public bool ColonnaMobile { get; set; }
+        public string CodiceChiamata { get; set; }
+        public string[] CodiciCompetenze { get; set; }
     }
 }

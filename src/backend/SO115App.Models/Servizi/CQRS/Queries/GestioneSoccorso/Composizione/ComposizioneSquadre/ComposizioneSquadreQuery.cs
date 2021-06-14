@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Composizione;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -27,14 +28,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneSquadreQuery : IQuery<ComposizioneSquadreResult>
     {
-        /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
-        /// </summary>
-        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        //public FiltriComposizionePartenza Filtro { get; set; }
-
         public FiltriComposizioneSquadra Filtro { get; set; }
-
         public string[] CodiciSede { get; set; }
     }
 }
