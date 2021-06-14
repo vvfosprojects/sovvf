@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -84,47 +83,36 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             InfoIstogramma info = new InfoIstogramma();
             info.ListaCodaChiamate = new List<Istogramma>();
 
-            var listaSquadre = _iGetComposizioneSquadre.Get(new ComposizioneSquadreQuery()
+            var listaSquadre = Task.Run(() => _iGetComposizioneSquadre.Get(new ComposizioneSquadreQuery()
             {
                 Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
                 {
-                    CodiciDistaccamenti = listaSedi.Select(s => s.Codice).ToArray(),
-                    
+                    CodiciDistaccamenti = listaSedi.Select(s => s.Codice).ToArray()
                 }
-            });
+            }));
 
             Parallel.ForEach(listaSedi, unita =>
-             {
-                 ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
-                 {
-                     CodiciSede = new string[] { unita.Codice },
-                     Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
-                     {
-                         CodiciDistaccamenti = new string[] { unita.Codice }
-                     }
-                 };
+            {
+                var composizioneSquadreQuery = new ComposizioneSquadreQuery()
+                {
+                    CodiciSede = new string[] { unita.Codice },
+                    Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
+                    {
+                        CodiciDistaccamenti = new string[] { unita.Codice }
+                    }
+                };
 
-                 try
-                 {
+                var infoDistaccamento = new Istogramma()
+                {
+                    codDistaccamento = unita.Codice,
+                    descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
+                    numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
+                    squadreLibere = listaSquadre.Result.Count > 0 ? listaSquadre.Result.FindAll(x => x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0,
+                    squadreOccupate = listaSquadre.Result.Count > 0 ? listaSquadre.Result.FindAll(x => !x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0
+                };
 
-                     var infoDistaccamento = new Istogramma()
-                     {
-                         codDistaccamento = unita.Codice,
-                         descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
-                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
-                         squadreLibere = listaSquadre.Count > 0 ? listaSquadre.FindAll(x => x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0,
-                         squadreOccupate = listaSquadre.Count > 0 ? listaSquadre.FindAll(x => !x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0
-                     };
-
-                     info.ListaCodaChiamate.Add(infoDistaccamento);
-
-                 }
-                 catch (System.Exception e)
-                 {
-
-                     throw;
-                 }
-             });
+                info.ListaCodaChiamate.Add(infoDistaccamento);
+            });
 
             return new CodaChiamateResult()
             {
