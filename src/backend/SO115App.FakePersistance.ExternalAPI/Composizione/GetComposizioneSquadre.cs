@@ -82,6 +82,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             //TODO QUERY DISTACCAMENTI MONGODB
             var lstSedi = Task.Run(() => _getSedi.GetAll()
                 .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
+                .Distinct()
                 .Select(s => new DistaccamentoComposizione() 
                 { 
                     Codice = $"{s.codProv}.{s.codFiglio_TC}",
@@ -89,21 +90,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Descrizione = s.sede,
                     Provincia = s.codProv
                 }));
-
-            //var lstDistaccamenti = Task.Run(() =>
-            //{
-            //    var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            //    var pinNodi = new List<PinNodo>();
-            //    foreach (var sede in query.CodiciSede)
-            //        pinNodi.Add(new PinNodo(sede, true));
-
-            //    foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
-            //        pinNodi.Add(new PinNodo(figlio.Codice, true));
-
-            //    var result = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
-
-            //    return result;
-            //});
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(()=> _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
@@ -119,22 +105,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
 
-                    if (workshift == null) //TODO togliere per errore srevizio esterno
-                        return;
-
                     switch (query.Filtro.Turno) //FILTRO PER TURNO
                     {
-                        case TurnoRelativo.Attuale: lstSquadre.Union(workshift.Attuale); break;
+                        case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Attuale, squadra => lstSquadre.Add(squadra)); break;
 
-                        case TurnoRelativo.Precedente: lstSquadre.Union(workshift.Precedente); break;
+                        case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Precedente, squadra => lstSquadre.Add(squadra)); break;
 
-                        case TurnoRelativo.Successivo: lstSquadre.Union(workshift.Successivo); break;
+                        case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo, squadra => lstSquadre.Add(squadra)); break;
 
-                        case null: Parallel.ForEach(new List<Squadra[]>() 
-                        { 
-                            workshift?.Attuale, workshift?.Precedente, workshift?.Successivo
-                        }.SelectMany(w => w), squadra => 
-                        lstSquadre.Add(squadra)); break;
+                        case null: Parallel.ForEach(workshift.All, squadra => lstSquadre.Add(squadra)); break;
                     }
                 });
 
@@ -160,18 +139,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
                     Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)), //TODO USARE FIRST (NON CI SONO TUTTE LE SEDI)
-                    //Membri = squadra.Membri.Select(m =>
-                    //{
-                    //    var a = _getAnagrafica.GetByCodFiscale(m.CodiceFiscale);
-
-                    //    return new MembroComposizione()
-                    //    {
-                    //        DescrizioneQualifica = m.Ruolo,
-                    //        Nominativo = $"{a.Result?.Nome} {a.Result?.Cognome}",
-                    //        CodiceFiscale = a.Result?.CodFiscale
-                    //    };
-                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale)),
-                    //}).ToList(),
+                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale))?.Select(a => new MembroComposizione()
+                    {
+                        CodiceFiscale = a.CodiceFiscale,
+                        Nominativo = a.Nominativo,
+                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
+                    }).ToList(),
                     MezziPreaccoppiati = lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
                 }));
 

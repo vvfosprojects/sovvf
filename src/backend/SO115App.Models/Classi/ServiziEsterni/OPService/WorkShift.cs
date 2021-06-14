@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
@@ -12,5 +14,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 
         [JsonPropertyName("current")]
         public Squadra[] Attuale { get; set; }
+
+        public Squadra[] All => new List<Squadra[]> { Attuale, Precedente, Successivo }.SelectMany(l => l.Select(s => s)).ToArray();
     }
 }
