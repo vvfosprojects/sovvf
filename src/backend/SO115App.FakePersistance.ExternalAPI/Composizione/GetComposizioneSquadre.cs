@@ -29,8 +29,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -68,7 +66,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            //TODO QUERY DISTACCAMENTI MONGODB
             var lstSedi = Task.Run(() => _getSedi.GetAll()
                 .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
                 .Distinct()
@@ -121,7 +118,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
-                    //Stato = lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                    Stato = MappaStato(lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
                     Codice = squadra.Codice,
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
@@ -163,6 +160,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var result = lstSquadreComposizione.Result.ToList();
 
             return result;
+        }
+
+        private StatoSquadraComposizione MappaStato(string statoMezzo)
+        {
+            switch (statoMezzo)
+            {
+                case Costanti.MezzoInUscita: return StatoSquadraComposizione.InUscita;
+                case Costanti.MezzoInViaggio: return StatoSquadraComposizione.InViaggio;
+                case Costanti.MezzoSulPosto: return StatoSquadraComposizione.SulPosto;
+                case Costanti.MezzoInRientro: return StatoSquadraComposizione.InRientro;
+            }
+
+            return StatoSquadraComposizione.InSede;
         }
     }
 }

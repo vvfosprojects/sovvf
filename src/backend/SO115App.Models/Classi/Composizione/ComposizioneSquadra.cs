@@ -50,5 +50,5 @@ namespace SO115App.Models.Classi.Composizione
     /// <summary>
     /// In questa enum non è presente lo stato "In uscita"
     /// </summary>
-    public enum StatoSquadraComposizione { InSede, InRientro, InViaggio, SulPosto, Istituto, }
+    public enum StatoSquadraComposizione { InUscita, InSede, InRientro, InViaggio, SulPosto, Istituto, }
 }
