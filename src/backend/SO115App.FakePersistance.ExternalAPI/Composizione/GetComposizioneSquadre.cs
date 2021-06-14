@@ -148,9 +148,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result 
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[0].Equals(squadra.Distaccamento?.Codice)) 
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[1].Equals(squadra.Distaccamento?.Codice)) 
-                    .OrderBy(squadra => query.Filtro.CodiciCompetenze[2].Equals(squadra.Distaccamento?.Codice)) 
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[0].Equals(squadra.Distaccamento.Codice) ?? false) 
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false) 
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false) 
                     .OrderByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInSede))
                     .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
                     .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
