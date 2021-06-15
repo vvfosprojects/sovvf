@@ -145,7 +145,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
-                bool stato = squadra.Stato == query.Filtro?.Stato;
+                bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
                 return distaccamento && ricerca && diEmergenza && stato;
             }))

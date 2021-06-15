@@ -93,11 +93,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                 return mc;
-            }))
-            //FILTRI E ORDINAMENTI
-            .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
+            }));
 
-            return lstMezziComposizione.Result;
+            //TODO FILTRI E ORDINAMENTI
+            //.ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
+
+            return lstMezziComposizione.Result.ToList();
         }
 
         private List<ComposizioneMezzi> FiltraOrdina(ComposizioneMezziQuery query, IEnumerable<ComposizioneMezzi> lstCompMezzi)
