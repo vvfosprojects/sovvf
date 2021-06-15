@@ -1,11 +1,12 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,140 +16,134 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
-        private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-        private readonly ISetMezzoPrenotato _setMezzoPrenotato;
-        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenza;
+        private readonly IGetStatoMezzi _getMezziPrenotati;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi,
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly IGetTurno _getTurno;
+        //private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        //private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
+
+        public GetComposizioneMezzi(//IGetPersonaleByCF getPersonaleByCF,
+            //IGetSquadre getSquadre,
+            //IGetStatoSquadra getStatoSquadre,
+            IGetStatoMezzi getMezziPrenotati,
             IGetMezziUtilizzabili getMezziUtilizzabili,
-            ISetMezzoPrenotato setMezzoPrenotato,
-            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenza)
+            //IGetPreAccoppiati getPreAccoppiati,
+
+            IGetTipologieByCodice getTipologieByCodice,
+            IGetTurno getTurno//,
+            //IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            /*IGetListaDistaccamentiByPinListaSedi getDistaccamenti*/)
 
         {
-            _getMezziUtilizzabili = getMezziUtilizzabili;
+            //_getPersonaleByCF = getPersonaleByCF;
+            //_getSquadre = getSquadre;
             _getMezziPrenotati = getMezziPrenotati;
-            _ordinamentoMezzi = ordinamentoMezzi;
-            _setMezzoPrenotato = setMezzoPrenotato;
-            _getSintesiRichiestaAssistenza = getSintesiRichiestaAssistenza;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+            //_getStatoSquadre = getStatoSquadre;
+            //_getPreAccoppiati = getPreAccoppiati;
+            _getTipologieByCodice = getTipologieByCodice;
+            _getTurno = getTurno;
+            //_getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            //_getDistaccamenti = getDistaccamenti;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            List<string> ListaSedi = new List<string>();
-            ListaSedi.Add(query.CodiceSede);
-            List<Mezzo> ListaMezzi = _getMezziUtilizzabili.Get(ListaSedi).Result;
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            var composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
-            string[] generiMezzi;
-            string[] statiMezzi;
-            string codiceDistaccamento;
-
-            foreach (var composizione in composizioneMezzi)
+            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiciSedi.ToList())
+            //MAPPING
+            .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
             {
-                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                composizione.Id = composizione.Mezzo.Codice;
+                //m.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Mezzo.Codice == m.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
 
-                if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                var mc = new ComposizioneMezzi()
                 {
-                    composizione.IstanteScadenzaSelezione = null;
-                }
-            }
+                    Id = m.Codice,
+                    Mezzo = m,
+                    Km = new Random().Next(1, 60).ToString(),
+                    TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
+                    //SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == m.Codice)?.SquadreComposizione
+                };
 
-            var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-            //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
-            decimal totaleKM = 0;
-            decimal totaleTempoPercorrenza = 0;
+                var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                if (statoMezzo != null) switch (mc.Mezzo.Stato)
+                    {
+                        case Costanti.MezzoInSede:
+                            mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
+                            break;
 
-            foreach (var composizione in composizioneMezziPrenotati)
-            {
-                totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
-                totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
-            }
+                        case Costanti.MezzoInViaggio:
+                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                            break;
 
-            string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
-            string mediaTempoPercorrenza = Math.Round((totaleTempoPercorrenza / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
+                        case Costanti.MezzoSulPosto:
+                            mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
+                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                            break;
 
-            foreach (var composizione in composizioneMezziPrenotati)
-            {
-                if (composizione.Mezzo.CoordinateFake)
-                {
-                    composizione.Km = mediaDistanza;
-                    composizione.TempoPercorrenza = mediaTempoPercorrenza;
-                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                    composizione.Km = null;
-                    composizione.TempoPercorrenza = null;
-                }
-            }
-            return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                        case Costanti.MezzoInRientro:
+                            //mc.ListaSquadre = lstSquadreComposizione.Result.FindAll(x => statiOperativiSquadre.FindAll(x =>
+                            //    x.CodMezzo.Equals(mc.Mezzo.Codice)).Select(x => x.IdSquadra).Any(s => s.Equals(x.Squadra.Codice)));
+
+                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                            break;
+                    }
+
+                return mc;
+            }))
+            //FILTRI E ORDINAMENTI
+            .ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
+
+            return lstMezziComposizione.Result;
         }
 
-        private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
+        private List<ComposizioneMezzi> FiltraOrdina(ComposizioneMezziQuery query, IEnumerable<ComposizioneMezzi> lstCompMezzi)
         {
-            SetMezzoPrenotatoCommand command = new SetMezzoPrenotatoCommand();
-            var mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
-            bool AggiornaListaMezziPrenotati = false;
-            foreach (var mezzo in mezziPrenotati)
-            {
-                if (mezzo.IstantePrenotazione != null)
-                {
-                    var differenza = DateTime.Now - mezzo.IstantePrenotazione;
-                    if (differenza.Value.TotalSeconds > 15)
-                    {
-                        command.MezzoPrenotato = mezzo;
-                        command.MezzoPrenotato.SbloccaMezzo = true;
-                        _setMezzoPrenotato.Set(command);
-                        AggiornaListaMezziPrenotati = true;
-                    }
-                }
-            }
-
-            if (AggiornaListaMezziPrenotati)
-                mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
-
-            foreach (var composizione in composizioneMezzi)
-            {
-                if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
-                {
-                    composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
-
-                    if (composizione.Mezzo.Stato.Equals("In Sede"))
-                    {
-                        composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
-                    }
-                    composizione.Mezzo.IdRichiesta = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).CodiceRichiesta;
-
-                    if (composizione.Mezzo.Stato.Equals("Sul Posto"))
-                    {
-                        composizione.IndirizzoIntervento = GetIndirizzoIntervento(composizione.Mezzo.IdRichiesta);
-                    }
-                }
-            }
-            return composizioneMezzi;
-        }
-
-        private string GetIndirizzoIntervento(string idRichiesta)
-        {
-            var sintesi = _getSintesiRichiestaAssistenza.GetSintesi(idRichiesta);
-
-            return sintesi.Localita.Indirizzo;
-        }
-
-        private static List<ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)
-        {
-            var random = new Random();
-
-            return (from mezzo in listaMezzi
-                    let kmGen = random.Next(1, 60).ToString()
-                    let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
-                    select new ComposizioneMezzi()
-                    {
-                        Id = mezzo.Codice,
-                        Mezzo = mezzo,
-                        Km = kmGen,
-                        TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
-                    }).ToList();
+            return lstCompMezzi.ToList();
+                //.Where(m => query.Filtro.StatoMezzo?.Contains(m.Mezzo.Stato.ToString()) ?? true)
+                //.Where(m =>
+                //{
+                //    if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi))
+                //        return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
+                //    return true;
+                //})
+                //.Where(m =>
+                //{
+                //    if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                //        return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
+                //    return true;
+                //})
+                //.Where(m =>
+                //{
+                //    if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
+                //        return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
+                //    return true;
+                //}).Where(m =>
+                //{
+                //    if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
+                //        return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
+                //    return true;
+                //}).Where(s =>
+                //{
+                //    if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                //        return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+                //    return true;
+                //})
+                //.OrderByDescending(c =>
+                //{
+                //    if (query.Filtro.Squadre?.Any(s => s.PreAccoppiato) ?? false)
+                //        return c.Mezzo.PreAccoppiato;
+                //    return false;
+                //})
+                //.OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
+                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
+                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
+                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
+                ////.ThenByDescending(m => m.IndiceOrdinamento)
+                //.ToList();
         }
     }
 }
