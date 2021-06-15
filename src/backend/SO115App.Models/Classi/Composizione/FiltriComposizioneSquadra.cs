@@ -1,4 +1,5 @@
 ﻿using SO115App.Models.Classi.Condivise;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.Composizione
 {
@@ -11,5 +12,9 @@ namespace SO115App.Models.Classi.Composizione
         public bool DiEmergenza { get; set; }
         public string CodiceChiamata { get; set; }
         public string[] CodiciCompetenze { get; set; }
+        public string Stato { get; set; }
+
+        [JsonPropertyName("codDistaccamentoSelezionato")]
+        public string DistaccamentoSquadra { get; set; }
     }
 }
