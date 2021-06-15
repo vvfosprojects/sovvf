@@ -5,7 +5,6 @@ namespace SO115App.Models.Classi.Composizione
 {
     public class ComposizioneSquadra
     {
-        //public string Id { get; set; }
         public string Codice { get; set; }
         public string Nome { get; set; }
         public StatoSquadraComposizione Stato { get; set; }
@@ -14,8 +13,6 @@ namespace SO115App.Models.Classi.Composizione
         public char Turno { get; set; }
         public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; }
         public bool DiEmergenza { get; set; } = false;
-
-        //public string[] MezziInRientro { get; set; }
     }
     
     public class MezzoPreaccoppiato
@@ -47,8 +44,5 @@ namespace SO115App.Models.Classi.Composizione
         public string Provincia { get; set; }
     }
 
-    /// <summary>
-    /// In questa enum non è presente lo stato "In uscita"
-    /// </summary>
     public enum StatoSquadraComposizione { InUscita, InSede, InRientro, InViaggio, SulPosto, Istituto, }
 }
