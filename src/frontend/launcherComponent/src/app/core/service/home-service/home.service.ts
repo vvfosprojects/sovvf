@@ -12,7 +12,7 @@ const API_WELCOME = BASE_URL + environment.apiUrl.welcome;
 export class HomeService {
 
     jwt = sessionStorage.getItem(LSNAME.token);
-    idUtente = JSON.parse(sessionStorage.getItem(LSNAME.currentUser)).id;
+    idUtente = JSON.parse(sessionStorage.getItem(LSNAME.currentUser))?.id;
     codiceSede = JSON.parse(sessionStorage.getItem(LSNAME.cacheSedi));
     a = 'Bearer ' + this.jwt;
     headers: any;
@@ -22,7 +22,7 @@ export class HomeService {
         this.headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: this.a, CodiceSede: this.codiceSede, IdUtente: this.idUtente });
     }
 
-    getHome(): Observable<Welcome> {
-        return this.http.get<Welcome>(API_WELCOME);
-    }
+  getHome(): Observable<Welcome> {
+    return this.http.get<Welcome>(API_WELCOME);
+  }
 }
