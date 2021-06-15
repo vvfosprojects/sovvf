@@ -139,15 +139,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.DistaccamentoSquadra) ? 
-                    (query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true) :
-                    (query.Filtro.DistaccamentoSquadra?.Equals(squadra.Distaccamento?.Codice) ?? true);
+                //bool distaccamento = string.IsNullOrEmpty(query.Filtro.DistaccamentoSquadra) ? 
+                //    (query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true) :
+                //    (query.Filtro.DistaccamentoSquadra?.Equals(squadra.Distaccamento?.Codice) ?? true);
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
-                return distaccamento && ricerca && diEmergenza && stato;
+                return /*distaccamento &&*/ ricerca && diEmergenza && stato;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
