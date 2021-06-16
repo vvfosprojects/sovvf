@@ -18,7 +18,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre
         {
             var lstSquadre = _service.GetByCodiceSede(query.CodiciSede);
 
-            return new GetAllSquadreResult() { DataArray = lstSquadre };
+            return new GetAllSquadreResult() { DataArray = lstSquadre.Result };
         }
     }
 }
