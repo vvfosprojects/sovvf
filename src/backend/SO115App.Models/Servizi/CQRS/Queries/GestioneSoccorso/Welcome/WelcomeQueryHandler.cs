@@ -96,8 +96,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
             var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
-            var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
-            var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
+            var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(pinNodi.Select(p => p.Codice).ToArray()));
+            var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(pinNodi.Select(p => p.Codice).ToArray()));
 
             var filtri = _filtriHandler.Get();
 

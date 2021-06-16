@@ -19,15 +19,12 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Box
 {
@@ -42,44 +39,37 @@ namespace SO115App.ExternalAPI.Fake.Box
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            var numeroComponenti = 0;
+            var query = new ComposizioneSquadreQuery() 
+            { 
+                CodiciSede = codiciSede, 
+                Filtro = new FiltriComposizioneSquadra()
+                {
+                    CodiciDistaccamenti = codiciSede
+                }
+            };
 
-            var listaSquadreComposizione = new ConcurrentQueue<ComposizioneSquadre>();
-
-            Parallel.ForEach(codiciSede, Codsede =>
-            {
-                var query = new ComposizioneSquadreQuery() { CodiciSede = new string[] { Codsede } };
-
-                _getComposizioneSquadre.Get(query).ForEach(cs => listaSquadreComposizione.Enqueue(cs));
-            });
+            var listaSquadreComposizione = _getComposizioneSquadre.Get(query);
 
             var result = new BoxPersonale();
 
             result.SquadreAssegnate =
-                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
-                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InUscita) +
-                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
-                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
-            result.SquadreServizio =
-                listaSquadreComposizione.Count;
+                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InViaggio)) +
+                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InUscita)) +
+                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.SulPosto)) +
+                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InRientro));
 
-            var listaFunzionari = new ConcurrentQueue<Componente>();
+            result.SquadreServizio = listaSquadreComposizione.Count;
+            result.PersonaleTotale = listaSquadreComposizione.SelectMany(s => s.Membri).Count();
 
-            foreach (var partenza in listaSquadreComposizione)
-            {
-                numeroComponenti += partenza.Squadra.Componenti.Count;
-                foreach (var componente in partenza.Squadra.Componenti)
-                {
-                    if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
-                        componente.FunGuardia)
-                    {
-                        listaFunzionari.Enqueue(componente);
-                    }
-                }
-            }
-
-            result.PersonaleTotale = numeroComponenti;
-            result.Funzionari = listaFunzionari.ToList();
+            result.Funzionari = listaSquadreComposizione.SelectMany(s => s.Membri).Where(m => m.CapoPartenza).Select(m => new Componente() 
+            { 
+                CapoTurno = m.CapoPartenza,
+                CodiceFiscale = m.CodiceFiscale,
+                DescrizioneQualifica = m.DescrizioneQualifica,
+                Nominativo = m.Nominativo,
+                Rimpiazzo = m.Rimpiazzo,
+                Ruolo = m.DescrizioneQualifica
+            }).ToList();
 
             return result;
         }
