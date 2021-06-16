@@ -2,6 +2,7 @@
 {
     public class FiltriComposizioneMezzo
     {
-
+        public string Stato { get; set; }
+        public string[] CodiciDistaccamenti { get; set; }
     }
 }

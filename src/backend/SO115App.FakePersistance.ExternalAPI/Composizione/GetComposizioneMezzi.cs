@@ -2,10 +2,8 @@
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,34 +16,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
 
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
-        private readonly IGetTurno _getTurno;
-        //private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        //private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
-
-        public GetComposizioneMezzi(//IGetPersonaleByCF getPersonaleByCF,
-            //IGetSquadre getSquadre,
-            //IGetStatoSquadra getStatoSquadre,
-            IGetStatoMezzi getMezziPrenotati,
-            IGetMezziUtilizzabili getMezziUtilizzabili,
-            //IGetPreAccoppiati getPreAccoppiati,
-
-            IGetTipologieByCodice getTipologieByCodice,
-            IGetTurno getTurno//,
-            //IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            /*IGetListaDistaccamentiByPinListaSedi getDistaccamenti*/)
-
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili)
         {
-            //_getPersonaleByCF = getPersonaleByCF;
-            //_getSquadre = getSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
-            //_getStatoSquadre = getStatoSquadre;
-            //_getPreAccoppiati = getPreAccoppiati;
-            _getTipologieByCodice = getTipologieByCodice;
-            _getTurno = getTurno;
-            //_getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            //_getDistaccamenti = getDistaccamenti;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -95,7 +69,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }));
 
             //TODO FILTRI E ORDINAMENTI
-            //.ContinueWith(lstCompMezzi => FiltraOrdina(query, lstCompMezzi.Result));
+
 
             return lstMezziComposizione.Result.ToList();
         }

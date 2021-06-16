@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -28,13 +27,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
     /// </summary>
     public interface IGetMezziUtilizzabiliPerBox
     {
-        /// <summary>
-        ///   Restituisce la lista dei mezzi
-        /// </summary>
-        /// <param name="sedi">una lista di codici sede</param>
-        /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
-        /// <param name="codiceMezzo">la sigla del mezzo (opzionale)</param>
-        /// <returns>una lista mezzi</returns>
-        Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null);
+        Task<Dictionary<string, string>> Get(string[] CodiciSedi);
     }
 }
