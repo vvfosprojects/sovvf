@@ -28,7 +28,10 @@ export class RiepilogoInterventiModalComponent {
     squadreComposizione: SquadraComposizione[];
 
     turno = [];
-    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, { id: 'test 7', descrizione: 'test 7' }];
+    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, {
+        id: 'test 7',
+        descrizione: 'test 7'
+    }];
 
     prefix: {} = {
         DaA: true,
@@ -69,9 +72,13 @@ export class RiepilogoInterventiModalComponent {
     }
 
     getDataRiepilogoInterventi(): void {
-        this.stampaRichiestaService.getDataRiepilogoInterventi().subscribe((data: any) => {
-            console.log('***getDataRiepilogoInterventi ', data);
-        }, error => console.log('Errore Get Data Riepilogo Interventi'));
+        this.stampaRichiestaService.getSquadreRiepilogoIntervento().subscribe((data: any) => {
+            console.log('***getSquadreRiepilogoInterventi ', data);
+        }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
+
+        this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((data: any) => {
+            console.log('***getDistaccamentiRiepilogoInterventi ', data);
+        }, error => console.log('Errore Get Distaccamenti Riepilogo Interventi'));
 
         this.subscription.add(
             this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
