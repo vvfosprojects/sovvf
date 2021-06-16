@@ -31,7 +31,6 @@ export class StampaRichiestaService {
     }
 
     getSquadreRiepilogoIntervento(codiciSede?: string[]): Observable<any> {
-        console.log('***codiciSede ', codiciSede);
         if (codiciSede) {
             return this.http.get<any>(`${API_SQUADRE_RIEPILOGO_INTERVENTI}/?codiciSede=` + codiciSede);
         }
