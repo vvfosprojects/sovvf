@@ -91,8 +91,9 @@ export class ComposizioneVeloceState {
             turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno : null,
             codiceDistaccamento: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
+            // tslint:disable-next-line:max-line-length
             tipoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
-        } as FiltriComposizione;
+        } as any;
         this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
             response.composizionePreaccoppiatiDataArray.forEach((preaccoppiato: BoxPartenza) => {
@@ -128,12 +129,12 @@ export class ComposizioneVeloceState {
 
     @Action(SelectPreAccoppiatoComposizione)
     selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SelectPreAccoppiatoComposizione): void {
-            setState(
-                patch({
-                    idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
-                    idPreAccoppiatoSelezionato: action.preAcc.id
-                })
-            );
+        setState(
+            patch({
+                idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
+                idPreAccoppiatoSelezionato: action.preAcc.id
+            })
+        );
     }
 
     @Action(UnselectPreAccoppiatoComposizione)

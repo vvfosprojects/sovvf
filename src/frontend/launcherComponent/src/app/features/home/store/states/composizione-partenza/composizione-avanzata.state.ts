@@ -3,7 +3,6 @@ import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/
 import {
     ClearComposizioneAvanzata,
     GetListeComposizioneAvanzata,
-    SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
@@ -17,9 +16,6 @@ import {
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
-import { ViewComponentState } from '../view/view.state';
-import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
@@ -136,17 +132,6 @@ export class ComposizioneAvanzataState {
             dispatch(new StopListaComposizioneLoading());
             console.log('***getSquadreComposizioneAvanzata failed');
         });
-    }
-
-    @Action(SetListeComposizioneAvanzata)
-    setListeComposizioneAvanzata({ patchState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: SetListeComposizioneAvanzata): void {
-        patchState({
-            listaMezziSquadre: action.listaMezziSquadre
-        });
-        const compMode = this.store.selectSnapshot(ViewComponentState.composizioneMode);
-        if (compMode === Composizione.Veloce) {
-            dispatch(new GetListaComposizioneVeloce());
-        }
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
