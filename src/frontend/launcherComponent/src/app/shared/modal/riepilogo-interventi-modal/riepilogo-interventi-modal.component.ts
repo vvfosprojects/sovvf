@@ -22,11 +22,7 @@ export class RiepilogoInterventiModalComponent {
 
     distaccamenti: Sede[];
     turno = ['A', 'B', 'C', 'D'];
-    squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, {
-        id: 'test 7',
-        descrizione: 'test 7'
-    }];
-
+    squadre: any;
     prefix: { DaA: boolean } = {
         DaA: true,
     };
@@ -44,7 +40,7 @@ export class RiepilogoInterventiModalComponent {
     showFiltriSquadre = true;
     showAltriFiltri = true;
     distaccamentoSelezionati: string[];
-    squadraSelezionate: string[];
+    squadreSelezionate: string[];
     turnoSelezionati: string[];
 
     subscription: Subscription = new Subscription();
@@ -67,7 +63,7 @@ export class RiepilogoInterventiModalComponent {
 
     getDataRiepilogoInterventi(): void {
         this.stampaRichiestaService.getSquadreRiepilogoIntervento().subscribe((data: any) => {
-            console.log('***getSquadreRiepilogoInterventi ', data);
+            this.squadre = data.dataArray;
         }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
 
         this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((distaccamenti: Sede[]) => {
@@ -144,7 +140,7 @@ export class RiepilogoInterventiModalComponent {
                                 a: this.prefix.DaA ? this.formatDate(this.toDate) : null,
                                 distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
                                 turni: this.turnoSelezionati ? this.turnoSelezionati : null,
-                                squadre: this.squadraSelezionate ? this.squadraSelezionate : null,
+                                squadre: this.squadreSelezionate ? this.squadreSelezionate : null,
                             } as RiepilogoInterventiInterface;
                             Object.values(this.altriFiltri).forEach(x => {
                                 if (x === true) {
@@ -197,7 +193,8 @@ export class RiepilogoInterventiModalComponent {
                 if (event) {
                     event.forEach(x => !this.distaccamentoSelezionati.includes(x.codice) && x.codice ? this.distaccamentoSelezionati.push(x.codice) : null);
                     this.stampaRichiestaService.getSquadreRiepilogoIntervento(this.distaccamentoSelezionati).subscribe((data: any) => {
-                        this.squadra = data;
+                        this.squadre = data.dataArray;
+                        this.squadreSelezionate = [];
                     }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
                 }
                 break;
@@ -210,7 +207,7 @@ export class RiepilogoInterventiModalComponent {
 
             case 'squadra':
                 if (event) {
-                    event.forEach(x => !this.squadraSelezionate.includes(x.id) && x.id ? this.squadraSelezionate.push(x.id) : null);
+                    event.forEach(x => !this.squadreSelezionate.includes(x.codice) && x.id ? this.squadreSelezionate.push(x.codice) : null);
                 }
                 break;
         }
