@@ -51,22 +51,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 if (result == null)
                     result = JsonSerializer.Deserialize<WorkShift>(mock);
 
-                lstSquadre.AddRange(MappaOPSquadreSuSOSquadre(result, codice));
+                lstSquadre.AddRange(MappaOPSquadreSuSOSquadre(result, codice).Result);
             }
 
             return lstSquadre;
         }
 
-        private List<ComposizioneSquadra> MappaOPSquadreSuSOSquadre(WorkShift lstOPSquadre, string codice)
+        private async Task<List<ComposizioneSquadra>> MappaOPSquadreSuSOSquadre(WorkShift lstOPSquadre, string codice)
         {
             List<string> listaSedi = new List<string>();
             listaSedi.Add(codice);
 
             var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(listaSedi));
+            //var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(listaSedi));
 
-            var lstDistaccamenti = Task.Run(() =>
+            var lstDistaccamenti = await Task.Run(() =>
             {
                 var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
                 var pinNodi = new List<PinNodo>();
@@ -81,13 +81,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 return result;
             });
 
-            Parallel.ForEach(lstOPSquadre.All, squadra => lstSquadre.Add(new ComposizioneSquadra()
-            {
-                Codice = squadra.Codice,
-                Turno = squadra.TurnoAttuale.ToCharArray()[0],
-                Nome = squadra.Descrizione
-            }
-            ));
+            Parallel.ForEach(lstOPSquadre.All.ToList().FindAll(x => lstDistaccamenti.FindAll(d => d.Id.Contains(x.Distaccamento)).Count > 0), squadra =>
+                 lstSquadre.Add(new ComposizioneSquadra()
+                 {
+                     Codice = squadra.Codice,
+                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
+                     Nome = squadra.Descrizione,
+                     Distaccamento = new DistaccamentoComposizione()
+                     {
+                         Codice = squadra.Distaccamento
+                     }
+                 }
+                 ));
 
             return lstSquadre.ToList();
         }
