@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal, NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select } from '@ngxs/store';
-import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Observable, Subscription } from 'rxjs';
 import { Sede } from '../../model/sede.model';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 import { RiepilogoInterventiInterface } from '../../interface/riepilogo-interventi.interface';
 import { HttpEventType } from '@angular/common/http';
-import { TurnoState } from '../../../features/navbar/store/states/turno.state';
-import { TurnoCalendario } from '../../../features/navbar/turno/model/turno-calendario.model';
 import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
@@ -20,20 +17,17 @@ import { SquadraComposizione } from '../../interface/squadra-composizione-interf
 })
 export class RiepilogoInterventiModalComponent {
 
-    @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
-    distaccamenti: Sede[];
-    @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
-    turnoCalendario: TurnoCalendario;
     @Select(SquadreComposizioneState.squadreComposizione) squadreComposizione$: Observable<SquadraComposizione[]>;
     squadreComposizione: SquadraComposizione[];
 
-    turno = [];
+    distaccamenti: Sede[];
+    turno = ['A', 'B', 'C', 'D'];
     squadra = [{ id: 'test 3', descrizione: 'test 3' }, { id: 'test 4', descrizione: 'test 4' }, { id: 'test 5', descrizione: 'test 5' }, { id: 'test 6', descrizione: 'test 6' }, {
         id: 'test 7',
         descrizione: 'test 7'
     }];
 
-    prefix: {} = {
+    prefix: { DaA: boolean } = {
         DaA: true,
     };
     altriFiltri = {
@@ -76,22 +70,9 @@ export class RiepilogoInterventiModalComponent {
             console.log('***getSquadreRiepilogoInterventi ', data);
         }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
 
-        this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((data: any) => {
-            console.log('***getDistaccamentiRiepilogoInterventi ', data);
+        this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((distaccamenti: Sede[]) => {
+            this.distaccamenti = distaccamenti;
         }, error => console.log('Errore Get Distaccamenti Riepilogo Interventi'));
-
-        this.subscription.add(
-            this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
-                this.turnoCalendario = turnoC;
-                this.turno = Object.values(this.turnoCalendario);
-            })
-        );
-
-        this.subscription.add(
-            this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
-                this.distaccamenti = distaccamenti;
-            })
-        );
     }
 
     onShowFiltriInterventi(): void {
@@ -159,8 +140,8 @@ export class RiepilogoInterventiModalComponent {
                     switch (val) {
                         case 'ok':
                             const obj = {
-                                da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
-                                a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
+                                da: this.prefix.DaA ? this.formatDate(this.fromDate) : null,
+                                a: this.prefix.DaA ? this.formatDate(this.toDate) : null,
                                 distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
                                 turni: this.turnoSelezionati ? this.turnoSelezionati : null,
                                 squadre: this.squadraSelezionate ? this.squadraSelezionate : null,
@@ -215,6 +196,9 @@ export class RiepilogoInterventiModalComponent {
             case 'distaccamenti':
                 if (event) {
                     event.forEach(x => !this.distaccamentoSelezionati.includes(x.codice) && x.codice ? this.distaccamentoSelezionati.push(x.codice) : null);
+                    this.stampaRichiestaService.getSquadreRiepilogoIntervento(this.distaccamentoSelezionati).subscribe((data: any) => {
+                        this.squadra = data;
+                    }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
                 }
                 break;
 
