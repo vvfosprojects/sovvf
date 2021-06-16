@@ -7,21 +7,21 @@
     <div class="row px-3">
         <div class="clearfix"
              style="width: 70%">
-          <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp.squadra.stato)"></app-icona-stato>
+          <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
           <div class="badge badge-info mx-1 py-1"
                  [ngbPopover]="componenti"
                  placement="right"
                  triggers="mouseenter:mouseleave"
                   style="vertical-align: text-bottom;">
                 <i class="fa fa-user mr-1"></i>
-                <ng-template [ngIf]="squadraComp.squadra.componenti?.length">
+                <ng-template [ngIf]="squadraComp?.componenti?.length">
                     <div class="d-inline-block">
-                        {{ squadraComp.squadra.componenti.length }}
+                        {{ squadraComp.componenti.length }}
                     </div>
                 </ng-template>
             </div>
             <ng-template #componenti>
-                <div *ngFor="let c of squadraComp.squadra.componenti">
+                <div *ngFor="let c of squadraComp?.componenti">
                     <div class="badge badge-secondary mr-1">
                         {{ c.descrizioneQualifica | truncate: 18 }}
                     </div>
@@ -30,15 +30,15 @@
                     </div>
                 </div>
             </ng-template>
-            <div class="d-inline-block font-weight-bolder mr-1">{{ squadraComp.squadra.nome }}</div>
-            <div class="d-inline-block">({{ squadraComp.squadra.turno }})</div>
+            <div class="d-inline-block font-weight-bolder mr-1">{{ squadraComp?.nome }}</div>
+            <div class="d-inline-block">({{ squadraComp?.turno }})</div>
             <!-- Mezzo Preaccoppiato -->
-            <ng-template [ngIf]="squadraComp.squadra?.preAccoppiato">
+            <ng-template [ngIf]="squadraComp.mezziPreaccoppiati">
                 <div class="d-inline-block ml-2">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popMezzi"
-                                [popoverTitle]="'Mezzo di ' + squadraComp.squadra?.nome"
+                                [popoverTitle]="'Mezzo di ' + squadraComp?.nome"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
@@ -54,13 +54,13 @@
                         <ng-template #popMezzi>
                             <div class="h6 text-center">
                                 <div class="d-inline-block font-weight-bold mr-1">
-                                    {{ squadraComp.mezzoPreaccoppiato?.mezzo?.descrizione }}
+                                    {{ squadraComp.mezziPreaccoppiati[0]?.descrizione }}
                                 </div>
                                 <div class="d-inline-block">
-                                    {{ squadraComp.mezzoPreaccoppiato?.mezzo?.genere }}
+                                    {{ squadraComp.mezziPreaccoppiati[0]?.genere }}
                                 </div>
                                 <div class="d-inline">
-                                  - {{ squadraComp.mezzoPreaccoppiato?.mezzo?.stato }}
+                                  - {{ squadraComp.mezziPreaccoppiati[0]?.stato }}
                                 </div>
                             </div>
                         </ng-template>
@@ -73,7 +73,7 @@
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
                                 [ngbPopover]="popMezziIntervento"
-                                [popoverTitle]="'Mezzi su cui è ' + squadraComp.squadra?.nome + ' per Intervento'"
+                                [popoverTitle]="'Mezzi su cui è ' + squadraComp?.nome + ' per Intervento'"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
@@ -100,16 +100,16 @@
              style="width: 30%;">
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">
-                {{ squadraComp.squadra.distaccamento.descrizione | competenzaFormat }}
+                 [ngbTooltip]="squadraComp?.distaccamento.descrizione">
+                {{ squadraComp?.distaccamento.descrizione | competenzaFormat }}
             </div>
         </div>
         <div *ngIf="!viewState?.composizione?.active"
              class="col-2 pl-0">
             <div class="d-inline-block"
                  [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">
-                {{ squadraComp.squadra.distaccamento.descrizione | slice:0:3 }}
+                 [ngbTooltip]="squadraComp?.distaccamento.descrizione">
+                {{ squadraComp?.distaccamento.descrizione | slice:0:3 }}
             </div>
         </div>
     </div>

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
@@ -54,6 +53,7 @@ import { TriageSummary } from '../../../../shared/interface/triage-summary.inter
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -379,7 +379,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             }
             if (obj.squadreComposizione.length > 0) {
                 rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
+                    return squadraComp;
                 });
             } else {
                 rObj.squadre = [];

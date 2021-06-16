@@ -14,7 +14,6 @@ import {
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
 import { makeCopy } from '../../../../shared/helper/function-generiche';
-import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
@@ -27,6 +26,7 @@ import { TriageSummary } from '../../../../shared/interface/triage-summary.inter
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -144,7 +144,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
             }
             if (obj.squadreComposizione.length > 0) {
                 rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
+                    return squadraComp;
                 });
             } else {
                 rObj.squadre = [];

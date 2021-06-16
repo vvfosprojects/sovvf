@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import {
     AddSquadraComposizione,
     ClearIdSquadreSelezionate,
@@ -30,6 +29,7 @@ import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -139,7 +139,7 @@ export class SquadreComposizioneState {
         const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
         const squadraComp = action.squadraComp;
-        const squadra = action.squadraComp.squadra;
+        const squadra = action.squadraComp;
 
         if (action.dividiSquadra) {
             // Ripulisco lo store se sto dividendo squadra tramite shortcut
@@ -171,7 +171,7 @@ export class SquadreComposizioneState {
     selectSquadraComposizioneInRientro({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizioneInRientro): void {
         const state = getState();
         const squadraComp = action.squadraComp;
-        const squadra = action.squadraComp.squadra;
+        const squadra = action.squadraComp;
         const noAddBox = action.noAddBox;
         setState(
             patch({
@@ -188,7 +188,7 @@ export class SquadreComposizioneState {
     selectSquadraComposizionePreAccoppiati({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizioneInRientro): void {
         const state = getState();
         const squadraComp = action.squadraComp;
-        const squadra = action.squadraComp.squadra;
+        const squadra = action.squadraComp;
         const noAddBox = action.noAddBox;
 
         setState(
@@ -221,7 +221,7 @@ export class SquadreComposizioneState {
               setState(
                 patch({
                   idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id),
-                  idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.squadra.id),
+                  idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id),
                 })
               );
               if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -231,7 +231,7 @@ export class SquadreComposizioneState {
               setState(
                 patch({
                   idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id)),
-                  idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.squadra.id)) : state.idSquadreSelezionate,
+                  idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id)) : state.idSquadreSelezionate,
                 })
               );
               if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -259,7 +259,7 @@ export class SquadreComposizioneState {
         setState(
             patch({
                 idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
             })
         );
     }
@@ -282,7 +282,7 @@ export class SquadreComposizioneState {
         setState(
             patch({
                 idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
             })
         );
     }
@@ -306,7 +306,7 @@ export class SquadreComposizioneState {
         setState(
             patch({
                 idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
             })
         );
     }

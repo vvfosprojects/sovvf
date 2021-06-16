@@ -113,6 +113,7 @@ export class ComposizionePartenzaState {
         const compMode = state.composizioneMode;
 
         if (compMode === Composizione.Avanzata) {
+            // TODO: PRIMA CHIAMATA PER COMPOSIZIONE AVANZATA
             dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());

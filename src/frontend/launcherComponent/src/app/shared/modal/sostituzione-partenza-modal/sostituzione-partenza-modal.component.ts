@@ -12,7 +12,6 @@ import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-
 import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
-import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { makeCopy } from '../../helper/function-generiche';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {
@@ -50,6 +49,7 @@ import { PaginationComposizionePartenzaState } from '../../store/states/paginati
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SganciamentoInterface } from '../../interface/sganciamento.interface';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -356,8 +356,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             this.store.dispatch(new AddBoxPartenza());
         }
         if (squadraComposizione) {
-            if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
-                this.nuoveSquadre.push(squadraComposizione.squadra);
+            if (!this.nuoveSquadre.includes(squadraComposizione)) {
+                this.nuoveSquadre.push(squadraComposizione);
                 this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
             }
         }
@@ -366,7 +366,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
             new UnselectSquadraComposizione(squadraComposizione)]);
-        const r = squadraComposizione.squadra;
+        const r = squadraComposizione;
         const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
         if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {

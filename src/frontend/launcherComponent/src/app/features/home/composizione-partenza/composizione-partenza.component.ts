@@ -41,8 +41,8 @@ import { PaginationComposizionePartenzaState } from '../../../shared/store/state
 import { MezziComposizioneState } from '../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { MezzoComposizione } from '../../../shared/interface/mezzo-composizione-interface';
 import { SquadreComposizioneState } from '../../../shared/store/states/squadre-composizione/squadre-composizione.state';
-import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
+import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-composizione-partenza',

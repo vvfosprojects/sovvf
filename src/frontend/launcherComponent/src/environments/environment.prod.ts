@@ -25,6 +25,8 @@ export const environment = {
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
+            squadre: '/api/ComposizioneSquadre',
+            mezzi: '/api/ComposizioneMezzi',
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: '/api/PrenotazioneMezzo'
         },
