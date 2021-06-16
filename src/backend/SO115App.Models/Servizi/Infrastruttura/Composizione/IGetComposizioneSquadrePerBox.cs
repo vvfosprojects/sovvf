@@ -17,14 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre
 {
     public interface IGetComposizioneSquadrePerBox
     {
-        List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query);
+        List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query);
     }
 }
