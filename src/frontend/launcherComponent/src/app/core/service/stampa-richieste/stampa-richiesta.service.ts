@@ -30,11 +30,9 @@ export class StampaRichiestaService {
             }));
     }
 
-    getSquadreRiepilogoIntervento(codiciSede?: string[]): Observable<any> {
-        if (codiciSede) {
-            return this.http.get<any>(`${API_SQUADRE_RIEPILOGO_INTERVENTI}/?codiciSede=` + codiciSede);
-        }
-        return this.http.get<any>(`${API_SQUADRE_RIEPILOGO_INTERVENTI}/?codiciSede=`);
+    getSquadreRiepilogoIntervento(data?: string[]): Observable<any> {
+         const codiciSede = data && data.length ? data : null;
+         return this.http.post<any>(`${API_SQUADRE_RIEPILOGO_INTERVENTI}`, { codiciSede });
     }
 
     getDistaccamentiRiepilogoIntervento(): Observable<any> {

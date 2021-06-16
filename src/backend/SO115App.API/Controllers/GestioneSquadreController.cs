@@ -22,14 +22,14 @@ namespace SO115App.API.Controllers
             _getAllSquadreHandler = getAllSquadreHandler;
         }
 
-        [HttpGet("GetAllSquadre")]
-        public async Task<IActionResult> GetAllSquadre(string[] codiciSede)
+        [HttpPost("GetAllSquadre")]
+        public async Task<IActionResult> GetAllSquadre([FromBody] GetAllSquadreQuery par)
         {
-            if (codiciSede != null)
+            if (par.CodiciSede != null)
             {
                 var query = new GetAllSquadreQuery()
                 {
-                    CodiciSede = codiciSede
+                    CodiciSede = par.CodiciSede
                 };
 
                 var result = _getAllSquadreHandler.Handle(query);
