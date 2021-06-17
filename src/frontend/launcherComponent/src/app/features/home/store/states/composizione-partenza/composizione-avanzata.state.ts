@@ -106,7 +106,7 @@ export class ComposizioneAvanzataState {
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
         if (!skipGetMezzi ) {
-            console.log('***RUNNING MEZZI');
+            console.log('***Obj getMezzi: ', objGetMezzi);
             dispatch(new StartListaComposizioneLoading());
             this.compPartenzaService.getMezziComposizioneAvanzata(objGetMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
                 if (listaMezziComposizioneAvanzata) {
@@ -143,7 +143,7 @@ export class ComposizioneAvanzataState {
         }
 
         if (!skipGetSquadre ) {
-            console.log('***RUNNING SQUADRE');
+            console.log('***Obj getSquadre: ', objGetSquadre);
             dispatch(new StartListaComposizioneLoading());
             this.compPartenzaService.getSquadreComposizioneAvanzata(objGetSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
                 if (listaSquadreComposizioneAvanzata) {
