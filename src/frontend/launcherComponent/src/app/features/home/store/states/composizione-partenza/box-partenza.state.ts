@@ -289,7 +289,7 @@ export class BoxPartenzaState {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         let index = null;
                         box.squadreComposizione.forEach((squadra: SquadraComposizione, i) => {
-                            if (action.idSquadra === squadra.id) {
+                            if (action.idSquadra === squadra.codice) {
                                 index = i;
                             }
                         });
@@ -308,7 +308,7 @@ export class BoxPartenzaState {
                 if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
                     if (box.squadreComposizione && box.squadreComposizione.length > 0) {
                         box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                            dispatch(new RemoveSquadraBoxPartenza(squadra.id));
+                            dispatch(new RemoveSquadraBoxPartenza(squadra.codice));
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
                     }

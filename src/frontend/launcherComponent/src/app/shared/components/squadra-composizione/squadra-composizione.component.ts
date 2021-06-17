@@ -50,7 +50,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
       if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi) {
         boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
       }
-      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati) {
+      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
         boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].codice) ? this.disableBtnFeature = true : null);
       }
     }
@@ -66,7 +66,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
         if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
             if (!this.itemSelezionato) {
-              this.selezionata.emit(this.squadraComp);
+                this.selezionata.emit(this.squadraComp);
             } else {
                 this.deselezionata.emit(this.squadraComp);
             }

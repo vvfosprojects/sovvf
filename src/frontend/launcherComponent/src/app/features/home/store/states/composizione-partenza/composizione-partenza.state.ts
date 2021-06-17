@@ -108,13 +108,18 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ReducerFilterListeComposizione)
-    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
+    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: any): void {
         const state = getState();
         const compMode = state.composizioneMode;
 
         if (compMode === Composizione.Avanzata) {
-            // TODO: PRIMA CHIAMATA PER COMPOSIZIONE AVANZATA
-            dispatch(new GetListeComposizioneAvanzata());
+            if (action.tipo === 'tipoMezzo') {
+                dispatch(new GetListeComposizioneAvanzata(null, true));
+            } else if (action.tipo === 'turno') {
+                dispatch(new GetListeComposizioneAvanzata(null, false, true));
+            } else {
+                dispatch(new GetListeComposizioneAvanzata());
+            }
         } else if (compMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());
         }

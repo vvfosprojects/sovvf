@@ -173,7 +173,7 @@ export class ComposizioneSoccorsoAereoState {
   @Action(AddAzioniRichiesta)
   setRichieste({ patchState }: StateContext<ComposizioneSoccorsoAereoStateModel>, azioniRichiesta: any): void {
     patchState({
-      azioniRichiesta: azioniRichiesta.richieste.map(x => ({codice : x.categoryCode, descrizione: x.categoryName})),
+      azioniRichiesta: azioniRichiesta && azioniRichiesta.richieste ? azioniRichiesta.richieste.map(x => ({codice : x.categoryCode, descrizione: x.categoryName})) : null,
     });
   }
 

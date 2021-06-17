@@ -53,7 +53,10 @@ export class ComposizioneAvanzataState {
 
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata): void {
-        dispatch(new StartListaComposizioneLoading());
+        const triggerPageSquadre = !!(action && action.options && action.options.page && action.options.page.pageMezzi);
+        const triggerPageMezzi = !!(action && action.options && action.options.page && action.options.page.pageSquadre);
+        const skipGetMezzi = triggerPageMezzi || action.filtroSquadre;
+        const skipGetSquadre = triggerPageSquadre || action.filtroMezzi;
         const paginationMezzi = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
         const paginationSquadre = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
         const mezzoSelezionato = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato)?.mezzo;
@@ -72,6 +75,23 @@ export class ComposizioneAvanzataState {
             tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
         } as FiltriComposizione;
+        let statoSquadra;
+        switch (this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo[0]) {
+            case 'In Sede':
+                statoSquadra = 0;
+                break;
+            case 'In Rientro':
+                statoSquadra = 1;
+                break;
+            case 'In Viaggio':
+                statoSquadra = 2;
+                break;
+            case 'Sul Posto':
+                statoSquadra = 3;
+                break;
+            default:
+                statoSquadra = null;
+        }
         const objGetSquadre = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
             diEmergenza: false,
@@ -81,57 +101,63 @@ export class ComposizioneAvanzataState {
             },
             turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno,
             codDistaccamentoSelezionato: squadreSelezionate && squadreSelezionate[0] ? squadreSelezionate[0].distaccamento.codice : null,
+            stato: statoSquadra,
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
-        console.log('***PAYLOAD MEZZI ', objGetMezzi);
-        console.log('***PAYLOAD SQUADRE ', objGetSquadre);
+        if (!skipGetMezzi ) {
+            console.log('***RUNNING MEZZI');
+            dispatch(new StartListaComposizioneLoading());
+            this.compPartenzaService.getMezziComposizioneAvanzata(objGetMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
+                if (listaMezziComposizioneAvanzata) {
+                    const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+                    if (listaMezziComposizioneAvanzata.dataArray) {
+                        dispatch(new SetListaMezziComposizione(listaMezziComposizioneAvanzata.dataArray));
+                    }
+                    dispatch(new PatchPaginationComposizionePartenza('mezzi', listaMezziComposizioneAvanzata.pagination));
 
-        this.compPartenzaService.getMezziComposizioneAvanzata(objGetMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
-            if (listaMezziComposizioneAvanzata) {
-                const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
-                if (listaMezziComposizioneAvanzata.dataArray) {
-                    dispatch(new SetListaMezziComposizione(listaMezziComposizioneAvanzata.dataArray));
-                }
-                dispatch(new PatchPaginationComposizionePartenza('mezzi', listaMezziComposizioneAvanzata.pagination));
-
-                if (listaBoxPartenza?.length) {
-                    const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
-                    if (listaBoxMezzi?.length) {
-                        const mezziOccupati = [];
-                        listaMezziComposizioneAvanzata.dataArray.forEach(mezzo => {
-                            if (mezzoComposizioneBusy(mezzo.mezzo.stato)) {
-                                mezziOccupati.push(mezzo.id);
-                            }
-                        });
-                        if (mezziOccupati?.length) {
-                            listaBoxPartenza.forEach(box => {
-                                if (box.mezzoComposizione && box.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && mezziOccupati.includes(box.mezzoComposizione.id)) {
-                                    dispatch(new RemoveBoxPartenza(box));
+                    if (listaBoxPartenza?.length) {
+                        const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
+                        if (listaBoxMezzi?.length) {
+                            const mezziOccupati = [];
+                            listaMezziComposizioneAvanzata.dataArray.forEach(mezzo => {
+                                if (mezzoComposizioneBusy(mezzo.mezzo.stato)) {
+                                    mezziOccupati.push(mezzo.id);
                                 }
                             });
+                            if (mezziOccupati?.length) {
+                                listaBoxPartenza.forEach(box => {
+                                    if (box.mezzoComposizione && box.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && mezziOccupati.includes(box.mezzoComposizione.id)) {
+                                        dispatch(new RemoveBoxPartenza(box));
+                                    }
+                                });
+                            }
                         }
                     }
                 }
                 dispatch(new StopListaComposizioneLoading());
-            }
-        }, () => {
-            dispatch(new StopListaComposizioneLoading());
-            console.log('***getMezziComposizioneAvanzata failed');
-        });
+            }, () => {
+                dispatch(new StopListaComposizioneLoading());
+                console.log('Get Mezzi Composizione Avanzata failed');
+            });
+        }
 
-        this.compPartenzaService.getSquadreComposizioneAvanzata(objGetSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
-            if (listaSquadreComposizioneAvanzata) {
-                if (listaSquadreComposizioneAvanzata.dataArray) {
-                    dispatch(new SetListaSquadreComposizione(listaSquadreComposizioneAvanzata.dataArray));
+        if (!skipGetSquadre ) {
+            console.log('***RUNNING SQUADRE');
+            dispatch(new StartListaComposizioneLoading());
+            this.compPartenzaService.getSquadreComposizioneAvanzata(objGetSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
+                if (listaSquadreComposizioneAvanzata) {
+                    if (listaSquadreComposizioneAvanzata.dataArray) {
+                        dispatch(new SetListaSquadreComposizione(listaSquadreComposizioneAvanzata.dataArray));
+                    }
+                    dispatch(new PatchPaginationComposizionePartenza('squadre', listaSquadreComposizioneAvanzata.pagination));
                 }
-                dispatch(new PatchPaginationComposizionePartenza('squadre', listaSquadreComposizioneAvanzata.pagination));
-            }
-            dispatch(new StopListaComposizioneLoading());
-        }, () => {
-            dispatch(new StopListaComposizioneLoading());
-            console.log('***getSquadreComposizioneAvanzata failed');
-        });
+                dispatch(new StopListaComposizioneLoading());
+            }, () => {
+                dispatch(new StopListaComposizioneLoading());
+                console.log('Get Squadre Composizione Avanzata failed');
+            });
+        }
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)

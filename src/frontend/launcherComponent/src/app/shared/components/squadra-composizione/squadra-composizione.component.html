@@ -14,14 +14,14 @@
                  triggers="mouseenter:mouseleave"
                   style="vertical-align: text-bottom;">
                 <i class="fa fa-user mr-1"></i>
-                <ng-template [ngIf]="squadraComp?.componenti?.length">
+                <ng-template [ngIf]="squadraComp?.membri?.length">
                     <div class="d-inline-block">
-                        {{ squadraComp.componenti.length }}
+                        {{ squadraComp.membri.length }}
                     </div>
                 </ng-template>
             </div>
             <ng-template #componenti>
-                <div *ngFor="let c of squadraComp?.componenti">
+                <div *ngFor="let c of squadraComp?.membri">
                     <div class="badge badge-secondary mr-1">
                         {{ c.descrizioneQualifica | truncate: 18 }}
                     </div>
@@ -30,7 +30,9 @@
                     </div>
                 </div>
             </ng-template>
-            <div class="d-inline-block font-weight-bolder mr-1">{{ squadraComp?.nome }}</div>
+            <div class="d-inline-block font-weight-bolder mr-1"
+                 [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
+                {{ squadraComp?.nome | truncate: 10 }}</div>
             <div class="d-inline-block">({{ squadraComp?.turno }})</div>
             <!-- Mezzo Preaccoppiato -->
             <ng-template [ngIf]="squadraComp.mezziPreaccoppiati">

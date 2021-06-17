@@ -168,7 +168,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     checkDoubleDividi(box: BoxPartenza): boolean {
         if (box.squadreComposizione && box.squadreComposizione.length === 1) {
-            const id = box.squadreComposizione[0].id;
+            const id = box.squadreComposizione[0].codice;
             let inputVec = [];
             inputVec = this.boxPartenzaList.slice().reverse();
             const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
@@ -289,25 +289,25 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
     }
 
     onSearchSquadre(): void {

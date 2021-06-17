@@ -43,7 +43,6 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
 import { Mezzo } from '../../model/mezzo.model';
-import { Squadra } from '../../model/squadra.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { PaginationComposizionePartenzaState } from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -127,7 +126,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         distaccamento: null,
         coordinate: null,
     };
-    nuoveSquadre: Squadra[] = [];
+    nuoveSquadre: SquadraComposizione[] = [];
     public time = { hour: 13, minute: 30, second: 30 };
 
     subscription: Subscription = new Subscription();
@@ -376,11 +375,11 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
     }
 
     checkSquadraSelezione(idSquadra: string): boolean {
@@ -454,7 +453,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const squadreUnique = [];
         const uniqueObject = {};
         for (const i in squadre) {
-            const objTitle = squadre[i].id;
+            const objTitle = squadre[i].codice;
             uniqueObject[objTitle] = squadre[i];
         }
         for (const i in uniqueObject) {
