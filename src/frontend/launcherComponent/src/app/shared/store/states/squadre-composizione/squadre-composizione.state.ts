@@ -69,9 +69,9 @@ export class SquadreComposizioneState {
         const squadreSelez = [];
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
             state.idSquadreSelezionate.forEach((idS: string) => {
-                if (s.id === idS) {
+                if (s.codice === idS) {
                     let duplicate = false;
-                    squadreSelez.forEach(x => x.id === s.id ? duplicate = true : null);
+                    squadreSelez.forEach(x => x.id === s.codice ? duplicate = true : null);
                     if (!duplicate) {
                         squadreSelez.push(s);
                     }
@@ -157,11 +157,10 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([squadraComp.id]),
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.id) ? append([squadra.id]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
             })
         );
-        console.log('squadraComposizione', action.squadraComp);
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(squadraComp)) {
             this.store.dispatch(new AddSquadreBoxPartenza([squadraComp]));
         }
@@ -175,8 +174,8 @@ export class SquadreComposizioneState {
         const noAddBox = action.noAddBox;
         setState(
             patch({
-                idSquadreComposizioneSelezionate: [squadraComp.id],
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.id) ? append([squadra.id]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: [squadraComp.codice],
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
             })
         );
         if (!noAddBox) {
@@ -193,8 +192,8 @@ export class SquadreComposizioneState {
 
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([squadraComp.id]),
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.id) ? append([squadra.id]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
             })
         );
 
@@ -220,8 +219,8 @@ export class SquadreComposizioneState {
             if (action.preAccoppiato) {
               setState(
                 patch({
-                  idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id),
-                  idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id),
+                  idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                  idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
                 })
               );
               if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -230,8 +229,8 @@ export class SquadreComposizioneState {
             } else {
               setState(
                 patch({
-                  idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id)),
-                  idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.id)) : state.idSquadreSelezionate,
+                  idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)),
+                  idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)) : state.idSquadreSelezionate,
                 })
               );
               if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -258,8 +257,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }
@@ -281,8 +280,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }
@@ -305,8 +304,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.id)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }

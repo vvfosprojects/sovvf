@@ -12,6 +12,9 @@ export class UpdateListeComposizione {
 
 export class ReducerFilterListeComposizione {
     static readonly type = '[ComposizionePartenza] Reducer Filter Liste Composizione';
+
+    constructor(public tipo: string) {
+    }
 }
 
 export class ToggleComposizioneMode {
