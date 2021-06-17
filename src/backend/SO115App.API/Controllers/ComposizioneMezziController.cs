@@ -47,7 +47,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                var result = _handler.Handle(query).DataArray;
+                var result = _handler.Handle(query);
 
                 return Ok(result);
             }
