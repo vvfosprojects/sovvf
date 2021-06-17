@@ -53,11 +53,11 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var mezzi = new BoxMezzi()
             {
-                InSede = listaMezzi.Where(x => x.Value == Costanti.MezzoInSede || x.Value == Costanti.MezzoInUscita || x.Value == Costanti.MezzoRientrato || x.Value == Costanti.MezzoOperativoPreaccoppiato).Count(),
-                InViaggio = listaMezzi.Where(x => x.Value == Costanti.MezzoInViaggio).Count(),
-                InRientro = listaMezzi.Where(x => x.Value == Costanti.MezzoInRientro).Count(),
-                SulPosto = listaMezzi.Where(x => x.Value == Costanti.MezzoSulPosto).Count(),
-                Istituto = listaMezzi.Where(x => x.Value == Costanti.MezzoIstituto).Count(),
+                InSede = listaMezzi?.Where(x => x.Value == Costanti.MezzoInSede || x.Value == Costanti.MezzoInUscita || x.Value == Costanti.MezzoRientrato || x.Value == Costanti.MezzoOperativoPreaccoppiato).Count() ?? 0,
+                InViaggio = listaMezzi?.Where(x => x.Value == Costanti.MezzoInViaggio).Count() ?? 0,
+                InRientro = listaMezzi?.Where(x => x.Value == Costanti.MezzoInRientro).Count() ?? 0,
+                SulPosto = listaMezzi?.Where(x => x.Value == Costanti.MezzoSulPosto).Count() ?? 0,
+                Istituto = listaMezzi?.Where(x => x.Value == Costanti.MezzoIstituto).Count() ?? 0,
                 //InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio
             };
 
