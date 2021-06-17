@@ -41,7 +41,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var lstMezzi = _clientMezzi.GetAsync(url, token).Result;
 
-            var result = lstMezzi.Select(mezzo => 
+            var result = lstMezzi?.Select(mezzo => 
             new KeyValuePair<string, string>(mezzo.CodiceMezzo, lstStatiMezzi.Result.FirstOrDefault(stato => stato.CodiceMezzo.Equals(mezzo.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede))
                 .ToDictionary(mezzo => mezzo.Key, mezzo => mezzo.Value);
 
