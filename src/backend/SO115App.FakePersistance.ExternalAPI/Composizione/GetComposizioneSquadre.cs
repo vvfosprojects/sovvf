@@ -133,7 +133,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
                     }).ToList(),
-                    MezziPreaccoppiati = lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
+                    MezziPreaccoppiati = null//lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
                 }));
 
                 return lstSquadre;
