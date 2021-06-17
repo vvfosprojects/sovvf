@@ -110,7 +110,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     CodiceFiscale = a?.CodFiscale
                 }).ToList());
 
-                return lstSquadre;
+                //TODO RIVEDERE DISTINCT CODICE
+                var result = lstSquadre.GroupBy(s => s.Codice).Select(s => s.FirstOrDefault());
+
+                return result;
             })
             .ContinueWith(squadre => //MAPPING
             {
