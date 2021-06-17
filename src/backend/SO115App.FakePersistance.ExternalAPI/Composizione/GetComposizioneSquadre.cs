@@ -87,7 +87,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var lstSquadre = new ConcurrentBag<Squadra>();
 
-                Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
+                Parallel.ForEach(query.Filtro.CodiciDistaccamenti.Distinct() ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
                 {
                     var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
 
@@ -133,7 +133,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
                     }).ToList(),
-                    MezziPreaccoppiati = lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
+                    MezziPreaccoppiati = null//lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
                 }));
 
                 return lstSquadre;
