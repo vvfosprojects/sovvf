@@ -19,6 +19,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             _config = config;
         }
 
+        /// <summary>
+        /// SE TORNA 204 VA BENE, IL SERVIZIO FUNZIONA, MA NON TONRA NULLA.
+        /// </summary>
+        /// <param name="Codice"></param>
+        /// <returns></returns>
         public async Task<WorkShift> GetAllByCodiceDistaccamento(string Codice)
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);

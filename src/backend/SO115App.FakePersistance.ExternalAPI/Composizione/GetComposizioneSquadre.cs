@@ -87,7 +87,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var lstSquadre = new ConcurrentBag<Squadra>();
 
-                Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
+                Parallel.ForEach(query.Filtro.CodiciDistaccamenti.Distinct() ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
                 {
                     var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
 
