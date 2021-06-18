@@ -21,6 +21,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -86,22 +87,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstSquadreComposizione = Task.Run(() => //GET
             {
                 var lstSquadre = new ConcurrentBag<Squadra>();
+                Task<WorkShift> workshift = null;
 
-                Parallel.ForEach(query.Filtro.CodiciDistaccamenti.Distinct() ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
+                if(string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
                 {
-                    var workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result;
+                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice), 
+                        codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]));
+                }
+                else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.codDistaccamentoSelezionato);
 
-                    switch (query.Filtro.Turno) //FILTRO PER TURNO
-                    {
-                        case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Attuale, squadra => lstSquadre.Add(squadra)); break;
+                switch (query.Filtro.Turno) //FILTRO PER TURNO
+                {
+                    case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Result.Attuale, squadra => lstSquadre.Add(squadra)); break;
 
-                        case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Precedente, squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Result.Precedente, squadra => lstSquadre.Add(squadra)); break;
 
-                        case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo, squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Result.Successivo, squadra => lstSquadre.Add(squadra)); break;
 
-                        case null: Parallel.ForEach(workshift.All, squadra => lstSquadre.Add(squadra)); break;
-                    }
-                });
+                    case null: Parallel.ForEach(workshift.Result.All, squadra => lstSquadre.Add(squadra)); break;
+                }
 
                 lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()).Result.Select(m => m.CodiceMezzo).ToList());
                 lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(lstSquadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
@@ -133,6 +137,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
                     }).ToList(),
+                    //TODO Filtrare mezzi preaccoppiati
                     MezziPreaccoppiati = null//lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
                 }));
 
@@ -142,9 +147,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.DistaccamentoSquadra) ?
-                    (query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true) :
-                    (query.Filtro.DistaccamentoSquadra?.Equals(squadra.Distaccamento?.Codice) ?? true);
+                bool distaccamento = string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato) ?
+                    query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento?.Codice) :
+                    query.Filtro.codDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 

@@ -124,9 +124,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.DistaccamentoSquadra) ?
+                bool distaccamento = string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato) ?
                     (query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true) :
-                    (query.Filtro.DistaccamentoSquadra?.Equals(squadra.Distaccamento?.Codice) ?? true);
+                    (query.Filtro.codDistaccamentoSelezionato?.Equals(squadra.Distaccamento?.Codice) ?? true);
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
