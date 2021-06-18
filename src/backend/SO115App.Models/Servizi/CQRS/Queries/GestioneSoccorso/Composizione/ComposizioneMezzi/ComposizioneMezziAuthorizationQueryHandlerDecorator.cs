@@ -51,6 +51,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var user = _findUserByUsername.FindUserByUs(username);
             var richiesta = _getRichiestaAssistenzaById.GetByCodice(query.CodiceChiamata);
 
+            query.Richiesta = richiesta;
+
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
