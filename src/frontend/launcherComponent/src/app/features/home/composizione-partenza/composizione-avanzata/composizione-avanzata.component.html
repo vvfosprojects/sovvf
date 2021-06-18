@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
         <div class="card min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-users mr-2"></i>
@@ -79,7 +79,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
         <div class="card mx-auto min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-truck mr-2"></i>

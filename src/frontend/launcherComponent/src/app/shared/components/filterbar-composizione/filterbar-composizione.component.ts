@@ -144,7 +144,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
-        this.update();
+        this.update(tipo);
     }
 
     // resetFiltri(): void {

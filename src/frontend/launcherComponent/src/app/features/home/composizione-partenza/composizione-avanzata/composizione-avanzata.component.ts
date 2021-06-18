@@ -85,6 +85,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Loading Liste Mezzi e Squadre
     @Input() loadingListe: boolean;
+    @Input() loadingSquadre: boolean;
+    @Input() loadingMezzi: boolean;
 
     // Paginazione Mezzi
     @Input() currentPageMezzi: number;

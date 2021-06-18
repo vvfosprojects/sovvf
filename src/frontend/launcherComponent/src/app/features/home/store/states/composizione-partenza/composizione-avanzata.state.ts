@@ -16,7 +16,12 @@ import {
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
-import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import {
+    StartListaMezziComposizioneLoading,
+    StartListaSquadreComposizioneLoading,
+    StopListaMezziComposizioneLoading,
+    StopListaSquadreComposizioneLoading
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
@@ -105,9 +110,9 @@ export class ComposizioneAvanzataState {
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
-        if (!skipGetMezzi ) {
-            console.log('***RUNNING MEZZI');
-            dispatch(new StartListaComposizioneLoading());
+        if (!skipGetMezzi) {
+            console.log('***Obj getMezzi: ', objGetMezzi);
+            dispatch(new StartListaMezziComposizioneLoading());
             this.compPartenzaService.getMezziComposizioneAvanzata(objGetMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
                 if (listaMezziComposizioneAvanzata) {
                     const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
@@ -135,16 +140,16 @@ export class ComposizioneAvanzataState {
                         }
                     }
                 }
-                dispatch(new StopListaComposizioneLoading());
+                dispatch(new StopListaMezziComposizioneLoading());
             }, () => {
-                dispatch(new StopListaComposizioneLoading());
+                dispatch(new StopListaMezziComposizioneLoading());
                 console.log('Get Mezzi Composizione Avanzata failed');
             });
         }
 
-        if (!skipGetSquadre ) {
-            console.log('***RUNNING SQUADRE');
-            dispatch(new StartListaComposizioneLoading());
+        if (!skipGetSquadre) {
+            console.log('***Obj getSquadre: ', objGetSquadre);
+            dispatch(new StartListaSquadreComposizioneLoading());
             this.compPartenzaService.getSquadreComposizioneAvanzata(objGetSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
                 if (listaSquadreComposizioneAvanzata) {
                     if (listaSquadreComposizioneAvanzata.dataArray) {
@@ -152,9 +157,9 @@ export class ComposizioneAvanzataState {
                     }
                     dispatch(new PatchPaginationComposizionePartenza('squadre', listaSquadreComposizioneAvanzata.pagination));
                 }
-                dispatch(new StopListaComposizioneLoading());
+                dispatch(new StopListaSquadreComposizioneLoading());
             }, () => {
-                dispatch(new StopListaComposizioneLoading());
+                dispatch(new StopListaSquadreComposizioneLoading());
                 console.log('Get Squadre Composizione Avanzata failed');
             });
         }
