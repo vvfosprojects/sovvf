@@ -62,6 +62,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     // Loading
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
     loadingListe: boolean;
 
     // Filterbar

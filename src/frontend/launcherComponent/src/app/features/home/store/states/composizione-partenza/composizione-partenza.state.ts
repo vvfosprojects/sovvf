@@ -12,7 +12,7 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListeComposizione,
-    UpdateRichiestaComposizione
+    UpdateRichiestaComposizione, StartListaSquadreComposizioneLoading, StartListaMezziComposizioneLoading, StopListaSquadreComposizioneLoading, StopListaMezziComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
@@ -38,6 +38,8 @@ export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
     loadingListe: boolean;
+    loadingSquadre: boolean;
+    loadingMezzi: boolean;
     loadingInvioPartenza: boolean;
     loaded: boolean;
 }
@@ -46,6 +48,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     loadingListe: false,
+    loadingSquadre: false,
+    loadingMezzi: false,
     loadingInvioPartenza: false,
     loaded: null
 };
@@ -86,6 +90,16 @@ export class ComposizionePartenzaState {
     @Selector()
     static loadingListe(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingListe;
+    }
+
+    @Selector()
+    static loadingSquadre(state: ComposizionePartenzaStateModel): boolean {
+        return state.loadingSquadre;
+    }
+
+    @Selector()
+    static loadingMezzi(state: ComposizionePartenzaStateModel): boolean {
+        return state.loadingMezzi;
     }
 
     @Selector()
@@ -258,10 +272,56 @@ export class ComposizionePartenzaState {
         dispatch(new StartLoadingAreaMappa());
     }
 
+    @Action(StartListaSquadreComposizioneLoading)
+    startListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingSquadre: true,
+            loaded: false
+        });
+
+        dispatch(new StartLoadingAreaMappa());
+    }
+
+    @Action(StartListaMezziComposizioneLoading)
+    startListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingMezzi: true,
+            loaded: false
+        });
+
+        dispatch(new StartLoadingAreaMappa());
+    }
+
     @Action(StopListaComposizioneLoading)
     stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingListe: false,
+            loaded: true
+        });
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
+    }
+
+    @Action(StopListaSquadreComposizioneLoading)
+    stopListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingSquadre: false,
+            loaded: true
+        });
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
+    }
+
+    @Action(StopListaMezziComposizioneLoading)
+    stopListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingMezzi: false,
             loaded: true
         });
 

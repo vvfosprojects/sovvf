@@ -61,8 +61,24 @@ export class StartListaComposizioneLoading {
     static readonly type = '[ComposizionePartenza] Start Lista Composizione Loading';
 }
 
+export class StartListaSquadreComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Start Lista Squadre Composizione Loading';
+}
+
+export class StartListaMezziComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Start Lista Mezzi Composizione Loading';
+}
+
 export class StopListaComposizioneLoading {
     static readonly type = '[ComposizionePartenza] Stop Lista Composizione Loading';
+}
+
+export class StopListaSquadreComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Stop Lista Squadre Composizione Loading';
+}
+
+export class StopListaMezziComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Stop Lista Mezzi Composizione Loading';
 }
 
 export class StartInvioPartenzaLoading {
