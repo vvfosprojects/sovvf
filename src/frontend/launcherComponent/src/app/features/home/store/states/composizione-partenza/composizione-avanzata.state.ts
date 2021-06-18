@@ -67,19 +67,14 @@ export class ComposizioneAvanzataState {
         const mezzoSelezionato = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato)?.mezzo;
         const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s);
         const codiceChiamata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)?.codice;
-        const objGetMezzi = {
-            codiceChiamata: codiceChiamata ? codiceChiamata : null,
-            pagination: {
-                page: action && action.options && action.options.page && action.options.page.pageMezzi ? action.options.page.pageMezzi : paginationMezzi.page,
-                pageSize: paginationMezzi.pageSize
-            },
-            codDistaccamentoSelezionato: mezzoSelezionato ? mezzoSelezionato.distaccamento.codice : null,
-            codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
-            stato: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
-            // tslint:disable-next-line:max-line-length
-            tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
-            ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
-        } as FiltriComposizione;
+        let codDistaccamentoSelezionato;
+        if (squadreSelezionate && squadreSelezionate[0]) {
+            codDistaccamentoSelezionato = squadreSelezionate[0].distaccamento.codice;
+        } else if (mezzoSelezionato) {
+            codDistaccamentoSelezionato = mezzoSelezionato.distaccamento.codice;
+        } else {
+            codDistaccamentoSelezionato = null;
+        }
         let statoSquadra;
         switch (this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo[0]) {
             case 'In Sede':
@@ -97,6 +92,20 @@ export class ComposizioneAvanzataState {
             default:
                 statoSquadra = null;
         }
+
+        const objGetMezzi = {
+            codiceChiamata: codiceChiamata ? codiceChiamata : null,
+            pagination: {
+                page: action && action.options && action.options.page && action.options.page.pageMezzi ? action.options.page.pageMezzi : paginationMezzi.page,
+                pageSize: paginationMezzi.pageSize
+            },
+            codDistaccamentoSelezionato,
+            codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
+            stato: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
+            // tslint:disable-next-line:max-line-length
+            tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
+            ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
+        } as FiltriComposizione;
         const objGetSquadre = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
             diEmergenza: false,
@@ -105,11 +114,12 @@ export class ComposizioneAvanzataState {
                 pageSize: paginationSquadre.pageSize
             },
             turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno,
-            codDistaccamentoSelezionato: squadreSelezionate && squadreSelezionate[0] ? squadreSelezionate[0].distaccamento.codice : null,
+            codDistaccamentoSelezionato,
             stato: statoSquadra,
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
+
         if (!skipGetMezzi) {
             console.log('***Obj getMezzi: ', objGetMezzi);
             dispatch(new StartListaMezziComposizioneLoading());
