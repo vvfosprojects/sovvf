@@ -1,4 +1,6 @@
-﻿namespace SO115App.Models.Classi.Condivise
+﻿using SO115App.Models.Classi.Pos;
+
+namespace SO115App.Models.Classi.Condivise
 {
     public class TipologiaDettaglio
     {
@@ -8,5 +10,6 @@
         public int CodiceDettaglioTipologia { get; set; }
         public string Descrizione { get; set; }
         public bool Ricorsivo { get; set; }
+        public PosDAO? Pos { get; set; }
     }
 }
