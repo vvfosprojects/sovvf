@@ -61,16 +61,5 @@ namespace SO115App.API.Controllers
                     return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
             }
         }
-
-        //[HttpGet("{filtro}")]
-        //public ComposizioneMezziResult GetMarkerFromId(FiltriComposizionePartenza filtro)
-        //{
-        //    var query = new ComposizioneMezziQuery()
-        //    {
-        //        Filtro = filtro
-        //    };
-
-        //    return handler.Handle(query);
-        //}
     }
 }

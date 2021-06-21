@@ -49,6 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
                     };
 
+                    //TODO OTTIMIZZARE INDICE ORDINAMENTO
                     //mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
@@ -79,19 +80,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return lstMezzi;
             }).ContinueWith(lstmezzi => lstmezzi.Result.Where(mezzo => //FILTRAGGIO
             {
-                var ricerca = query.Filtro?.Ricerca.Contains(mezzo.Mezzo.Codice) ?? true;
+                var ricerca = query.Filtro?.Ricerca?.Contains(mezzo.Mezzo.Codice) ?? true;
 
-                var distaccamento = query.Filtro?.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice) ?? true;
+                bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
+                    query.Filtro.CodiciDistaccamenti.Contains(mezzo.Mezzo.Distaccamento.Codice ) :
+                    query.Filtro.CodDistaccamentoSelezionato.Equals(mezzo.Mezzo.Distaccamento?.Codice);
 
                 var genere = mezzo.Mezzo.Genere.Contains(query.Filtro?.Tipo ?? mezzo.Mezzo.Genere);
 
-                var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato);
+                var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato ?? mezzo.Mezzo.Stato);
 
-                return ricerca && distaccamento && genere;
+                return ricerca && distaccamento && genere && stato;
             }));
 
             return lstMezziComposizione.Result
-                .OrderByDescending(mezzo  => mezzo.IndiceOrdinamento)
+                .OrderBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                .OrderBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                .OrderBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
+                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoStatoSconosciuto))
+                //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
                 .ToList();
         }
     }
