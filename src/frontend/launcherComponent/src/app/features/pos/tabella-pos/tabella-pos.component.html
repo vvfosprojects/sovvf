@@ -30,10 +30,12 @@
             </button>
         </td>
         <td style="width:22%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
-                 style="max-width: 400px;">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;"
+               (click)="onViewPos(p)">
                 {{ p?.descrizionePos }}
-            </div>
+            </a>
         </td>
         <td style="width:33%" class="align-middle">
             <ul class="mb-0">
