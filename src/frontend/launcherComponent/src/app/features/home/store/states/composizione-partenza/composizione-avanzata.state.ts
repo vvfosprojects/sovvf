@@ -107,7 +107,7 @@ export class ComposizioneAvanzataState {
                 tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
                 ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
             }
-        } as any;
+        } as FiltriComposizione;
         const objGetSquadre = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
             diEmergenza: false,
