@@ -29,7 +29,8 @@
                 <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadreComposizione[0].stato))"
                     ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadreComposizione[0].stato) }}"
                     class="fa fa-group mr-1 font-weight-bold"></i>
-                <span>{{ partenza.squadreComposizione[0].nome }}</span>
+                <span [ngbTooltip]=" partenza.squadreComposizione[0].nome.length >= 10 ?  partenza.squadreComposizione[0].nome : null">
+                    {{ partenza.squadreComposizione[0].nome | truncate: 10 }}</span>
                 <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1 && partenza.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && !disableDividi"
                         class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
                         [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
