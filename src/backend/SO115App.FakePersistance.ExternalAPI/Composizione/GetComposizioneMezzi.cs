@@ -1,13 +1,17 @@
-﻿using SO115App.API.Models.Classi.Composizione;
+﻿using Microsoft.Extensions.Configuration;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -15,34 +19,41 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     {
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly IGetTipologieByCodice _getTipologieCodice;
+        private readonly IConfiguration _config;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config)
         {
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
+            _config = config;
+            _getTipologieCodice = getTipologieCodice;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi); //OTTENGO I DATI
 
             var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiciSedi.ToList())
-            //MAPPING
-            .ContinueWith(lstMezzi => lstMezzi.Result.Select(m =>
+            .ContinueWith(mezzi => //MAPPING
             {
-                //m.PreAccoppiato = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Mezzo.Codice == m.Codice)?.MezzoComposizione.Mezzo.PreAccoppiato ?? false;
+                var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
-                var mc = new ComposizioneMezzi()
+                Parallel.ForEach(mezzi.Result, m =>
                 {
-                    Id = m.Codice,
-                    Mezzo = m,
-                    Km = new Random().Next(1, 60).ToString(),
-                    TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
-                    //SquadrePreaccoppiate = lstPreaccoppiati.FirstOrDefault(p => p.MezzoComposizione.Id == m.Codice)?.SquadreComposizione
-                };
+                    var mc = new ComposizioneMezzi()
+                    {
+                        Id = m.Codice,
+                        Mezzo = m,
+                        Km = new Random().Next(1, 60).ToString(),
+                        TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
+                    };
 
-                var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
-                if (statoMezzo != null) switch (mc.Mezzo.Stato)
+                    //mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
+
+                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+
+                    if (statoMezzo != null) switch (mc.Mezzo.Stato)
                     {
                         case Costanti.MezzoInSede:
                             mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
@@ -58,66 +69,30 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             break;
 
                         case Costanti.MezzoInRientro:
-                            //mc.ListaSquadre = lstSquadreComposizione.Result.FindAll(x => statiOperativiSquadre.FindAll(x =>
-                            //    x.CodMezzo.Equals(mc.Mezzo.Codice)).Select(x => x.IdSquadra).Any(s => s.Equals(x.Squadra.Codice)));
-
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
                     }
 
-                return mc;
+                    lstMezzi.Add(mc);
+                });
+
+                return lstMezzi;
+            }).ContinueWith(lstmezzi => lstmezzi.Result.Where(mezzo => //FILTRAGGIO
+            {
+                var ricerca = query.Filtro?.Ricerca.Contains(mezzo.Mezzo.Codice) ?? true;
+
+                var distaccamento = query.Filtro?.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice) ?? true;
+
+                var genere = mezzo.Mezzo.Genere.Contains(query.Filtro?.Tipo ?? mezzo.Mezzo.Genere);
+
+                var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato);
+
+                return ricerca && distaccamento && genere;
             }));
 
-            //TODO FILTRI E ORDINAMENTI
-
-
-            return lstMezziComposizione.Result.ToList();
-        }
-
-        private List<ComposizioneMezzi> FiltraOrdina(ComposizioneMezziQuery query, IEnumerable<ComposizioneMezzi> lstCompMezzi)
-        {
-            return lstCompMezzi.ToList();
-                //.Where(m => query.Filtro.StatoMezzo?.Contains(m.Mezzo.Stato.ToString()) ?? true)
-                //.Where(m =>
-                //{
-                //    if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi))
-                //        return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
-                //    return true;
-                //})
-                //.Where(m =>
-                //{
-                //    if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                //        return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
-                //    return true;
-                //})
-                //.Where(m =>
-                //{
-                //    if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
-                //        return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
-                //    return true;
-                //}).Where(m =>
-                //{
-                //    if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
-                //        return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
-                //    return true;
-                //}).Where(s =>
-                //{
-                //    if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
-                //        return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
-                //    return true;
-                //})
-                //.OrderByDescending(c =>
-                //{
-                //    if (query.Filtro.Squadre?.Any(s => s.PreAccoppiato) ?? false)
-                //        return c.Mezzo.PreAccoppiato;
-                //    return false;
-                //})
-                //.OrderByDescending(m => m.Mezzo.Stato == Costanti.MezzoInSede)
-                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInRientro)
-                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoInViaggio)
-                //.ThenByDescending(m => m.Mezzo.Stato == Costanti.MezzoSulPosto)
-                ////.ThenByDescending(m => m.IndiceOrdinamento)
-                //.ToList();
+            return lstMezziComposizione.Result
+                .OrderByDescending(mezzo  => mezzo.IndiceOrdinamento)
+                .ToList();
         }
     }
 }

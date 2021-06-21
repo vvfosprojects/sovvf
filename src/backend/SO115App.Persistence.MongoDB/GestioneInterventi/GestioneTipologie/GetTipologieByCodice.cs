@@ -45,7 +45,6 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.GestioneTipologie
         {
             foreach (var item in lst)
             {
-
                 _dbContext.TipologieCollection.ReplaceOne(Builders<Tipologia>.Filter.Eq(c => c.Codice, item.Codice), item);
             }
         }
