@@ -121,7 +121,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(squadre => //MAPPING
             {
-                var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
+                ConcurrentBag<ComposizioneSquadra> lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
@@ -159,14 +159,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
-                return lstSquadre.Result 
-                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[0].Equals(squadra.Distaccamento.Codice) ?? false) 
-                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false) 
-                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false) 
-                    .OrderByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInSede))
-                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
-                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
-                    .ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoSulPosto));
+                return lstSquadre.Result //Enum.GetName(typeof(enum), 3)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[0].Equals(squadra.Distaccamento.Codice) ?? false)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .OrderByDescending(squadra => query.Filtro?.Stato != null ? Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(query.Filtro.Stato) : false)
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoSulPosto))
+                    .ToList();
             });
 
             var result = lstSquadreComposizione.Result.ToList();
@@ -174,17 +175,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             return result;
         }
 
-        private StatoSquadraComposizione MappaStato(string statoMezzo)
+        private static StatoSquadraComposizione MappaStato(string statoMezzo) => statoMezzo switch
         {
-            switch (statoMezzo)
-            {
-                case Costanti.MezzoInUscita: return StatoSquadraComposizione.InUscita;
-                case Costanti.MezzoInViaggio: return StatoSquadraComposizione.InViaggio;
-                case Costanti.MezzoSulPosto: return StatoSquadraComposizione.SulPosto;
-                case Costanti.MezzoInRientro: return StatoSquadraComposizione.InRientro;
-            }
-
-            return StatoSquadraComposizione.InSede;
-        }
+            Costanti.MezzoInUscita => StatoSquadraComposizione.InUscita,
+            Costanti.MezzoInViaggio => StatoSquadraComposizione.InViaggio,
+            Costanti.MezzoSulPosto => StatoSquadraComposizione.SulPosto,
+            Costanti.MezzoInRientro => StatoSquadraComposizione.InRientro,
+            _ => StatoSquadraComposizione.InSede,
+        };
     }
 }

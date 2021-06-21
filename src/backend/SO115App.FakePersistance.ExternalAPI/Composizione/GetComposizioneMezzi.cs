@@ -97,11 +97,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .OrderBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                 .OrderBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                 .OrderBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
-                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                //.ThenBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoStatoSconosciuto))
+                //.ThenByDescending(mezzo => mezzo.Mezzo.PreAccoppiato ... ) //TODO PRIORITA PREACCOPPIATI
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoStatoSconosciuto))
                 //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
                 .ToList();
         }
