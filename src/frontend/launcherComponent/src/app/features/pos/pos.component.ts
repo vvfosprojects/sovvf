@@ -162,6 +162,26 @@ export class PosComponent implements OnInit, OnDestroy {
         }, error => console.log('Errore Stampa POS'));
     }
 
+    onViewPos(pos: PosInterface): void {
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress :
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response :
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore Stampa POS'));
+    }
+
     onEditPos(pos: PosInterface): void {
         let editPosModal;
         this.posService.getPosById(pos.id).subscribe((data: any) => {

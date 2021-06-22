@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    ViewEncapsulation
+} from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,7 +38,11 @@ import { InterventiProssimitaModalComponent } from '../../../../shared/modal/int
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
-import { ChiudiRichiestaModifica, ClearRichiestaModifica, ModificaIndirizzo } from '../../store/actions/form-richiesta/richiesta-modifica.actions';
+import {
+    ChiudiRichiestaModifica,
+    ClearRichiestaModifica,
+    ModificaIndirizzo
+} from '../../store/actions/form-richiesta/richiesta-modifica.actions';
 import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearDettagliTipologie,
