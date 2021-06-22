@@ -6,10 +6,16 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import { getContatoreGeneriMezzo, getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
+import {
+    getContatoreGeneriMezzo,
+    getGeneriMezzoTriageSummary,
+    getNoteOperatoreTriageSummary
+} from '../../helper/function-triage';
 import { SetSchedaContattoTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { PosInterface } from '../../interface/pos.interface';
+import { HttpEventType } from "@angular/common/http";
+import { PosService } from "../../../core/service/pos-service/pos.service";
 
 @Component({
     selector: 'app-triage-summary',
@@ -40,7 +46,8 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
 
     private subscription: Subscription = new Subscription();
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private posService: PosService) {
     }
 
     ngOnInit(): void {
@@ -66,7 +73,44 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    onViewPos(pos: PosInterface): void {
+    onDownloadPos(pos: PosInterface): void {
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = pos.fileName;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore Stampa POS'));
+    }
 
+    onViewPos(pos: PosInterface): void {
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore visualizzazione POS'));
     }
 }

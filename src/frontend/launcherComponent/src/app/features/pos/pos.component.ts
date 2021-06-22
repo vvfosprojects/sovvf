@@ -144,10 +144,10 @@ export class PosComponent implements OnInit, OnDestroy {
     onDownloadPos(pos: PosInterface): void {
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
-                case HttpEventType.DownloadProgress :
+                case HttpEventType.DownloadProgress:
                     console.error('Errore nel download del file (' + pos.fileName + ')');
                     break;
-                case HttpEventType.Response :
+                case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
                     const a = document.createElement('a');
                     a.setAttribute('style', 'display:none;');
@@ -165,10 +165,10 @@ export class PosComponent implements OnInit, OnDestroy {
     onViewPos(pos: PosInterface): void {
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
-                case HttpEventType.DownloadProgress :
+                case HttpEventType.DownloadProgress:
                     console.error('Errore nel download del file (' + pos.fileName + ')');
                     break;
-                case HttpEventType.Response :
+                case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
                     const a = document.createElement('a');
                     a.setAttribute('style', 'display:none;');
@@ -179,7 +179,7 @@ export class PosComponent implements OnInit, OnDestroy {
                     document.body.removeChild(a);
                     break;
             }
-        }, error => console.log('Errore Stampa POS'));
+        }, error => console.log('Errore visualizzazione POS'));
     }
 
     onEditPos(pos: PosInterface): void {
