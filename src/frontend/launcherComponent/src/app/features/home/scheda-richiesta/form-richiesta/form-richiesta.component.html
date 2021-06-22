@@ -328,7 +328,7 @@
                                 (click)="setUrgenza()">
                         </app-checkbox>
                     </div>
-                    <div *ngIf="!modifica" class="wrapper-grid mt-1">
+                    <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata" class="wrapper-grid mt-1">
                         <span class="mb-0 h5">Priorità</span>
                         <span class="pl-2"
                               style="font-size: 18px;">

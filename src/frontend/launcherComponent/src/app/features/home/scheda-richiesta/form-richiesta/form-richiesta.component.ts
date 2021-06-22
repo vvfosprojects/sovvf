@@ -104,6 +104,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     chiamataMarker: ChiamataMarker;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
+    StatoRichiesta = StatoRichiesta;
 
     scorciatoieTelefono = {
         112: false,
