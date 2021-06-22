@@ -22,6 +22,7 @@ import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
+import { PosInterface } from "../../interface/pos.interface";
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -40,6 +41,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     tipologiaSelezionata: Tipologia;
     dettaglioTipologiaSelezionato: DettaglioTipologia;
+    pos: PosInterface[];
 
     chiamataMarker: ChiamataMarker;
 
@@ -147,8 +149,9 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     setDettaglioTipologiaSelezionato(codDettaglioTipologia?: number): void {
         if (codDettaglioTipologia) {
             this.dettaglioTipologiaSelezionato = this.dettagliTipologia?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
+            this.pos = [this.dettaglioTipologiaSelezionato?.pos];
         }
-        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia));
+        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia, this.pos));
     }
 
     onResetDettaglioTipologiaSelezionato(): void {
@@ -241,7 +244,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         if (this.dettaglioTipologiaSelezionato && !this.triageSummary?.length) {
             return this.dismissModal('dismiss');
         }
-        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary };
+        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary, pos: this.pos };
         this.modal.close(obj);
     }
 
@@ -261,7 +264,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             (val: string) => {
                 switch (val) {
                     case 'ok':
-                        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato };
+                        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, pos: this.pos };
                         this.modal.close(obj);
                         break;
                     case 'ko':

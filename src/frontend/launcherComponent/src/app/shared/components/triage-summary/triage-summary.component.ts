@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { getContatoreGeneriMezzo, getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
 import { SetSchedaContattoTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
+import { PosInterface } from '../../interface/pos.interface';
 
 @Component({
     selector: 'app-triage-summary',
@@ -28,6 +29,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() countInterventiChiusiStessoIndirizzo: number;
     @Input() interventiChiusiStessoIndirizzo: SintesiRichiesta[];
     @Input() triageSummary: TriageSummary[];
+    @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
 
     contatoreGeneriMezzo: number;
@@ -39,8 +41,6 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     private subscription: Subscription = new Subscription();
 
     constructor(private store: Store) {
-        // this.getSummary();
-        // this.getSchedaContatto();
     }
 
     ngOnInit(): void {
@@ -64,5 +64,9 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    onViewPos(pos: PosInterface): void {
+
     }
 }
