@@ -164,6 +164,18 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color:$SO-white $SO-i;
   }
 
+  .bg-navbar {
+    background-color:$SO-white $SO-i;
+  }
+
+  .bg-filterbar {
+    background-color:$SO-white $SO-i;
+  }
+
+  .bg-form-richiesta {
+    background-color:$SO-white $SO-i;
+  }
+
   .border-top-richiesta {
     border-top: solid thin #e0e0e0;
   }
@@ -378,6 +390,18 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-navbar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-filterbar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-form-richiesta {
     background-color:$SO-dark-darker $SO-i;
   }
 

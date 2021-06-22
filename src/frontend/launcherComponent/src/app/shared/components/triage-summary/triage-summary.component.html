@@ -17,14 +17,13 @@
             <ng-template ngbPanelContent>
                 <div *ngFor="let p of pos" class="clearfix">
                     <div class="float-left pt-2">
-                        <h4 class="mb-0">{{ p.descrizionePos }}</h4>
+                        <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
                     </div>
                     <div class="float-right">
                         <button class="btn btn-primary mr-2"
                                 ngbTooltip="Visulizza File"
                                 (click)="onViewPos(p)">
                             <i class="fa fa-eye"></i>
-                            Visualizza
                         </button>
                         <button class="btn btn-info"
                                 ngbTooltip="Scarica File"

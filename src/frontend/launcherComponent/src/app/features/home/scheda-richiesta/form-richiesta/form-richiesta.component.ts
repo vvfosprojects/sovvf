@@ -193,6 +193,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             new DelChiamataMarker(this.idChiamata)
         ]);
         clearSummaryData(this.store);
+        clearPosTriageSummary(this.store);
         this.reducerSchedaTelefonata('reset');
     }
 

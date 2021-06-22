@@ -1,9 +1,9 @@
 <div class="w-100">
-    <div class="clearfix mt-1 mb-2">
+    <div class="clearfix">
         <div class="float-left w-50">
             <div class="clearfix h-100">
                 <!-- box interventi -->
-                <div class="float-left w-50 px-2">
+                <div class="float-left w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-interventi [interventi]="(richieste$ | async)"
                                             [boxClick]="(boxClick$ | async)"
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <!-- box personale -->
-                <div class="float-left w-50 px-2">
+                <div class="float-left w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-personale [personaleQty]="(personaleQty$ | async)"
                                            [personalePresenze]="(presenze$ | async)"
@@ -25,13 +25,13 @@
         <div class="float-left w-50">
             <div class="clearfix">
                 <!-- box meteo -->
-                <div class="float-right w-50 px-2">
+                <div class="float-right w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-meteo [datimeteo]="datimeteo"></app-box-meteo>
                     </div>
                 </div>
                 <!-- box mezzi -->
-                <div class="float-right w-50 px-2">
+                <div class="float-right w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
                                        (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>

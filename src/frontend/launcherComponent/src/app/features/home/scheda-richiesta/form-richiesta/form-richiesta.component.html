@@ -1,4 +1,4 @@
-<div class="row mt-2 h-100 shadow-lg">
+<div class="row mt-2 h-100 bg-form-richiesta shadow-lg mt-3">
     <!-- FORM RICHIESTA -->
     <div class="col-8 mx-auto">
         <form [formGroup]="richiestaForm"
@@ -328,7 +328,7 @@
                                 (click)="setUrgenza()">
                         </app-checkbox>
                     </div>
-                    <div class="wrapper-grid mt-1">
+                    <div *ngIf="!modifica" class="wrapper-grid mt-1">
                         <span class="mb-0 h5">Priorità</span>
                         <span class="pl-2"
                               style="font-size: 18px;">
