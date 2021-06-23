@@ -34,10 +34,10 @@
             </thead>
             <tbody class="bg-dark-light">
             <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-                <th scope="row" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
-                <td style="width:15%">{{ dettaglioTipologia.codSede }}</td>
-                <td style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
-                <td style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
+                <th scope="row" class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
+                <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codSede }}</td>
+                <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
+                <td class="align-middle" style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
                 <td style="width:35%">
                     <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
                             (click)="onEditDettaglioTipologia(dettaglioTipologia)">

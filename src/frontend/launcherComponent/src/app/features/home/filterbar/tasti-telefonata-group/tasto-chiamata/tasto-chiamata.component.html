@@ -10,10 +10,10 @@
 </ng-template>
 <ng-template [ngIf]="!richiestaModifica && getActive()">
     <div class="pl-2">
-        <span class="d-inline-block mr-2 mb-0">
+        <h4 class="d-inline-block mt-2 mb-0">
             <i class="fa fa-phone mr-1"></i>
-            Stai inserendo una nuova chiamata
-        </span>
+            {{ 'Stai inserendo una nuova chiamata' | uppercase }}
+        </h4>
     </div>
 </ng-template>
 <ng-template [ngIf]="!!richiestaModifica">

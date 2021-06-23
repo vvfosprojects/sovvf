@@ -23,11 +23,16 @@ export class TabellaPosComponent {
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() view: EventEmitter<PosInterface> = new EventEmitter<PosInterface>();
     @Output() download: EventEmitter<PosInterface> = new EventEmitter<PosInterface>();
     @Output() editPos: EventEmitter<PosInterface> = new EventEmitter<PosInterface>();
     @Output() deletePos: EventEmitter<{ idPos: string, descrizionePos: string }> = new EventEmitter<{ idPos: string, descrizionePos: string }>();
 
     constructor() {
+    }
+
+    onViewPos(pos: PosInterface): void {
+        this.view.emit(pos);
     }
 
     onDownloadPos(pos: PosInterface): void {

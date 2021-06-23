@@ -1,7 +1,8 @@
 <ng-progress [spinner]="false"></ng-progress>
 <ng-sidebar-container>
     <!-- Sidebar -->
-    <ng-sidebar [(opened)]="sidebarOpened" #sidebar
+    <ng-sidebar #sidebar
+                [(opened)]="sidebarOpened"
                 [animate]="true"
                 [closeOnClickOutside]="true"
                 (onOpened)="sidebar.open()"

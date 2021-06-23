@@ -1,4 +1,4 @@
-<div class="row mt-1">
+<div class="row">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
     <div class="col-12 px-0 py-1"
@@ -9,7 +9,8 @@
                  class="col-12 scale-sintesi-richiesta">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"
-                     class="w-100 rounded" [class.card-shadow]="!nightMode"
+                     class="w-100 rounded"
+                     [class.card-shadow]="!nightMode"
                      [ngClass]="cardClasses(r)">
                     <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
                     <app-sintesi-richiesta class="non-fissata"

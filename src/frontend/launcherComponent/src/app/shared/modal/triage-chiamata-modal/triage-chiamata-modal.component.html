@@ -1,88 +1,88 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ getTitle() | uppercase }}
-    </h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-            (click)="dismissModal('dismiss')">
-        <i class="fa fa-times text-danger"></i>
-    </button>
+  <h4 class="modal-title font-weight-bold">
+    {{ getTitle() | uppercase }}
+  </h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+          (click)="dismissModal('dismiss')">
+    <i class="fa fa-times text-danger"></i>
+  </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <h5>Tipologia Selezionata:</h5>
-    <h5 class="font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
-    <ng-template [ngIf]="dettaglioTipologiaSelezionato">
-        <hr class="my-3">
-        <h5 class="mr-1">Dettaglio Tipologia Selezionato:</h5>
-        <h5 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
-        <button class="btn btn-danger btn-no-hover" (click)="onResetDettaglioTipologiaSelezionato()">
-            <i class="fa fa-refresh mr-1"></i>
-            Cambia Dettaglio Tipologia
-        </button>
-    </ng-template>
-    <ng-template [ngIf]="dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
-        <hr class="mt-3 mb-0">
-        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologia"
-                                      (changeDettaglioTipologia)="setDettaglioTipologiaSelezionato($event)">
-        </app-step-dettaglio-tipologia>
-    </ng-template>
-    <ng-template [ngIf]="!dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessun Dettaglio Tipologia presente per "{{ tipologiaSelezionata?.descrizione }}".
-            <small class="d-block">Puoi gestire i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
+  <h5>Tipologia Selezionata:</h5>
+  <h5 class="font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
+  <ng-template [ngIf]="dettaglioTipologiaSelezionato">
+    <hr class="my-3">
+    <h5 class="mr-1">Dettaglio Tipologia Selezionato:</h5>
+    <h5 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
+    <button class="btn btn-danger btn-no-hover" (click)="onResetDettaglioTipologiaSelezionato()">
+      <i class="fa fa-refresh mr-1"></i>
+      Cambia Dettaglio Tipologia
+    </button>
+  </ng-template>
+  <ng-template [ngIf]="dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
+    <hr class="mt-3 mb-0">
+    <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologia"
+                                  (changeDettaglioTipologia)="setDettaglioTipologiaSelezionato($event)">
+    </app-step-dettaglio-tipologia>
+  </ng-template>
+  <ng-template [ngIf]="!dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
+    <div class="alert alert-danger font-weight-bold mt-3 mb-0">
+      Nessun Dettaglio Tipologia presente per "{{ tipologiaSelezionata?.descrizione }}".
+      <small class="d-block">Puoi gestire i Dettagli Tipologia nella pagina "Impostazioni
+        Sede".</small>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato">
+    <div class="alert alert-danger font-weight-bold mt-3 mb-0">
+      Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
+      <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
+        Sede".</small>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="triageSummary?.length || triage">
+    <hr class="my-3">
+  </ng-template>
+  <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
+    <div *ngFor="let summary of triageSummary; let i = index">
+      <div class="alert alert-info"
+           [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
+        <h5>
+          {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
+          <span class="font-weight-bolder">{{ summary.risposta }}</span>
+        </h5>
+      </div>
+      <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
+        <div class="alert alert-primary"
+             [class.mb-0]="i === triageSummary?.length - 1">
+          <h5 class="mb-0 font-weight-bolder">
+            <i class="fa fa-user mr-1"></i>
+            {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
+          </h5>
         </div>
-    </ng-template>
-    <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
-            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="triageSummary?.length || triage">
-        <hr class="my-3">
-    </ng-template>
-    <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
-        <div *ngFor="let summary of triageSummary; let i = index">
-            <div class="alert alert-info"
-                 [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                <h5>
-                    {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
-                    <span class="font-weight-bolder">{{ summary.risposta }}</span>
-                </h5>
-            </div>
-            <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                <div class="alert alert-primary"
-                     [class.mb-0]="i === triageSummary?.length - 1">
-                    <h5 class="mb-0 font-weight-bolder">
-                        <i class="fa fa-user mr-1"></i>
-                        {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
-                    </h5>
-                </div>
-            </ng-template>
-        </div>
-        <div class="mt-2">
-            <app-step-domande [triage]="triage"
-                              (risposta)="setRisposta($event)">
-            </app-step-domande>
-        </div>
-    </ng-template>
+      </ng-template>
+    </div>
+    <div class="mt-2">
+      <app-step-domande [triage]="triage"
+                        (risposta)="setRisposta($event)">
+      </app-step-domande>
+    </div>
+  </ng-template>
 </div>
 <div class="modal-footer">
-    <div class="clearfix w-100">
-        <div class="float-left mt-2"
-             ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-             [disableTooltip]="!disableUrgenza || checkedUrgenza">
-            <app-checkbox
-                    [checkboxState]="getCheckboxUrgenzaState()"
-                    (click)="setUrgenza()">
-            </app-checkbox>
-        </div>
-        <div class="float-right">
-            <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
-                <i class="fa fa-check mr-1"></i>
-                {{ 'Chiudi e Salva Triage' | uppercase }}
-            </button>
-        </div>
+  <div class="clearfix w-100">
+    <div class="float-left mt-2"
+         ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+         [disableTooltip]="!disableUrgenza || checkedUrgenza">
+      <app-checkbox
+        [checkboxState]="getCheckboxUrgenzaState()"
+        (click)="setUrgenza()">
+      </app-checkbox>
     </div>
+    <div class="float-right">
+      <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
+        <i class="fa fa-check mr-1"></i>
+        {{ 'Chiudi e Salva Triage' | uppercase }}
+      </button>
+    </div>
+  </div>
 </div>

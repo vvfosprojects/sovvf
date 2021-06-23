@@ -65,7 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     clock$: Observable<Date>;
     time: Date;
 
-    colorButton = 'btn-dark';
+    colorButtonUnitaOperativa = 'btn-dark';
     permessiFeature = PermissionFeatures;
     RoutesPath = RoutesPath;
 
@@ -121,7 +121,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.turnoExtra$.subscribe((turnoExtra: TurnoExtra) => {
                 this.turnoExtra = turnoExtra;
                 if (turnoExtra) {
-                    this.colorButton = 'btn-danger';
+                    this.colorButtonUnitaOperativa = 'btn-danger';
                 }
             })
         );

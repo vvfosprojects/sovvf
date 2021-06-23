@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+    ViewEncapsulation
+} from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,7 +38,11 @@ import { InterventiProssimitaModalComponent } from '../../../../shared/modal/int
 import { Sede } from '../../../../shared/model/sede.model';
 import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
-import { ChiudiRichiestaModifica, ClearRichiestaModifica, ModificaIndirizzo } from '../../store/actions/form-richiesta/richiesta-modifica.actions';
+import {
+    ChiudiRichiestaModifica,
+    ClearRichiestaModifica,
+    ModificaIndirizzo
+} from '../../store/actions/form-richiesta/richiesta-modifica.actions';
 import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearDettagliTipologie,
@@ -40,13 +52,19 @@ import {
 } from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
-import { ClearTriageSummary, SetTriageSummary } from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import {
+    ClearPosTriageSummary,
+    ClearTriageSummary,
+    SetPosTriageSummary,
+    SetTriageSummary
+} from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
 import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
 import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contatto/schede-contatto.actions';
+import { PosInterface } from '../../../../shared/interface/pos.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -78,11 +96,15 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     // Triage Summary
     @Input() triageSummary: TriageSummary[];
 
+    // Pos
+    @Input() pos: PosInterface[];
+
     ngxGooglePlacesOptions: Options;
 
     chiamataMarker: ChiamataMarker;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
+    StatoRichiesta = StatoRichiesta;
 
     scorciatoieTelefono = {
         112: false,
@@ -172,6 +194,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             new DelChiamataMarker(this.idChiamata)
         ]);
         clearSummaryData(this.store);
+        clearPosTriageSummary(this.store);
         this.reducerSchedaTelefonata('reset');
     }
 
@@ -396,6 +419,9 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     if (res?.triageSummary?.length) {
                         saveTriageSummary(this.store, res.triageSummary);
                     }
+                    if (res?.pos?.length) {
+                        savePosTriageSummary(this.store, res.pos);
+                    }
                     clearTriageChiamataModalData(this.store);
                     break;
                 case 'dismiss':
@@ -408,6 +434,9 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                                 dettaglioTipologia: res.dettaglio
                             }
                         }));
+                        if (res?.pos?.length) {
+                            savePosTriageSummary(this.store, res.pos);
+                        }
                     } else {
                         this.f.dettaglioTipologia.patchValue(null);
                         this.store.dispatch(new UpdateFormValue({
@@ -416,6 +445,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                                 dettaglioTipologia: null
                             }
                         }));
+                        clearPosTriageSummary(this.store);
                     }
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
@@ -423,10 +453,11 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                     break;
                 default:
                     console.log('TriageModalResult: default');
-                    this.f.dettaglioTipologia.patchValue(null);
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
+                    this.f.dettaglioTipologia.patchValue(null);
+                    clearPosTriageSummary(this.store);
                     break;
             }
         });
@@ -435,6 +466,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             type: string;
             dettaglio: DettaglioTipologia;
             triageSummary: TriageSummary[];
+            pos: PosInterface[];
         }
     }
 
@@ -659,6 +691,18 @@ function resetPrioritaRichiesta(formControls: any): void {
 function saveTriageSummary(store: Store, triageSummary: TriageSummary[]): void {
     store.dispatch([
         new SetTriageSummary(triageSummary)
+    ]);
+}
+
+function savePosTriageSummary(store: Store, pos: PosInterface[]): void {
+    store.dispatch([
+        new SetPosTriageSummary(pos)
+    ]);
+}
+
+function clearPosTriageSummary(store: Store): void {
+    store.dispatch([
+        new ClearPosTriageSummary()
     ]);
 }
 

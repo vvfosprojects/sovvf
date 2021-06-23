@@ -34,11 +34,11 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!squadreComposizione?.length && !loadingListe"
+                    <li *ngIf="!squadreComposizione?.length && !loadingSquadre"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
                     </li>
-                    <li *ngIf="!squadreComposizione?.length && loadingListe"
+                    <li *ngIf="!squadreComposizione?.length && loadingSquadre"
                         class="list-group-item border">
                         <span class="text-muted">Caricamento risultati...</span>
                     </li>
@@ -107,11 +107,11 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!mezziComposizione?.length && !loadingListe"
+                    <li *ngIf="!mezziComposizione?.length && !loadingMezzi"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
                     </li>
-                    <li *ngIf="!mezziComposizione?.length && loadingListe"
+                    <li *ngIf="!mezziComposizione?.length && loadingMezzi"
                         class="list-group-item border">
                         <span class="text-muted">Caricamento risultati...</span>
                     </li>
