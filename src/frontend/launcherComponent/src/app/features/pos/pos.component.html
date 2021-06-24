@@ -36,6 +36,7 @@
                              [totalItems]="totalItems$ | async"
                              [loading]="loading$ | async"
                              (download)="onDownloadPos($event)"
+                             (view)="onViewPos($event)"
                              (editPos)="onEditPos($event)"
                              (deletePos)="onDeletePos($event)"
                              (pageChange)="onPageChange($event)"

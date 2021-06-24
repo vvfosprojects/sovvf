@@ -1,6 +1,6 @@
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 export class AddBoxPartenza {
     static readonly type = '[BoxPartenza] Add Box Partenza';

@@ -134,7 +134,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 }
             } else if (preAccoppiato && !mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
                 let skip = false;
-                this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.squadra.stato) !== 'In Sede' ? skip = true : null);
+                this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.stato) !== 'In Sede' ? skip = true : null);
                 if (!skip) {
                     if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
                         this.selezionatoPreAccoppiati.emit(this.mezzoComp);

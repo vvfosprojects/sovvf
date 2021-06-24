@@ -7,6 +7,8 @@ import { RiepilogoInterventiInterface } from '../../../shared/interface/riepilog
 const BASE_URL = environment.baseUrl;
 const API_STAMPA_RICHIESTA = BASE_URL + environment.apiUrl.stampaRichiesta;
 const API_STAMPA_RIEPILOGO_INTERVENTI = BASE_URL + environment.apiUrl.stampaRiepilogoInterventi;
+const API_SQUADRE_RIEPILOGO_INTERVENTI = BASE_URL + environment.apiUrl.squadreRiepilogoInterventi;
+const API_DISTACCAMENTI_RIEPILOGO_INTERVENTI = BASE_URL + environment.apiUrl.distaccamentiRiepilogoInterventi;
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +28,15 @@ export class StampaRichiestaService {
                 reportProgress: true,
                 responseType: 'blob'
             }));
+    }
+
+    getSquadreRiepilogoIntervento(data?: string[]): Observable<any> {
+         const codiciSede = data && data.length ? data : null;
+         return this.http.post<any>(`${API_SQUADRE_RIEPILOGO_INTERVENTI}`, { codiciSede });
+    }
+
+    getDistaccamentiRiepilogoIntervento(): Observable<any> {
+        return this.http.get<any>(`${API_DISTACCAMENTI_RIEPILOGO_INTERVENTI}`);
     }
 
     stampaRiepilogoInterventi(obj: RiepilogoInterventiInterface): Observable<HttpEvent<Blob>> {

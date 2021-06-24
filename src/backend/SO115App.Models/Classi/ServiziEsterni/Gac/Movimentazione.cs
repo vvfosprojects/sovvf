@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.Gac
 {
@@ -35,6 +36,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   indica se lo stato del mezzo è disponibile o no al gac
         /// </summary>
+        [JsonPropertyName("statoOperativo")]
         public string StatoOperativo { get; set; }
 
         /// <summary>

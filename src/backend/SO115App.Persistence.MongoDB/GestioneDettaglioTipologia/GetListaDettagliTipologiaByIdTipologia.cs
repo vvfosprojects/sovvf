@@ -2,8 +2,12 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia.GetDettagliTipoligiaByIdTipologia;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +18,13 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
     {
         private readonly DbContext _dbContext;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetPOS _getPOS;
 
-        public GetListaDettagliTipologiaByIdTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetListaDettagliTipologiaByIdTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPOS getPOS)
         {
             _dbContext = dbContext;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getPOS = getPOS;
         }
 
         public List<TipologiaDettaglio> Get(GetDettagliTipoligiaByIdTipologiaQuery query)
@@ -43,8 +49,31 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 CodSede = c.CodSede,
                 Descrizione = c.Descrizione,
                 Ricorsivo = c.Ricorsivo,
-                Id = c.Id
+                Id = c.Id,
+                Pos = GetPosByTipologia(c.CodiceTipologia, c.CodiceDettaglioTipologia, c.CodSede)
             }).OrderByDescending(c => c.Descrizione).ToList();
+        }
+
+        private PosDAO GetPosByTipologia(int codiceTipologia, int codiceDettaglioTipologia, string CodSede)
+        {
+            var filtriPos = new FiltriPOS()
+            {
+                idTipologia = codiceTipologia,
+                idDettaglioTipologia = codiceDettaglioTipologia
+            };
+
+            var query = new GetElencoPOSQuery()
+            {
+                CodiceSede = CodSede,
+                Filters = filtriPos
+            };
+
+            var Pos = _getPOS.GetPosByCodTipologiaCodDettaglio(query);
+
+            if (Pos != null)
+                return Pos;
+            else
+                return null;
         }
 
         private List<PinNodo> GetGerarchia(string[] CodSede)

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
-import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/function-composizione';
 import { Sede } from '../../model/sede.model';
@@ -8,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import {BoxPartenza} from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -50,8 +50,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
       if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi) {
         boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
       }
-      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezzoPreaccoppiato) {
-        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezzoPreaccoppiato.id) ? this.disableBtnFeature = true : null);
+      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
+        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].codice) ? this.disableBtnFeature = true : null);
       }
     }
 
@@ -66,7 +66,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
         if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
             if (!this.itemSelezionato) {
-              this.selezionata.emit(this.squadraComp);
+                this.selezionata.emit(this.squadraComp);
             } else {
                 this.deselezionata.emit(this.squadraComp);
             }
@@ -77,7 +77,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
               this.deselezionataInRientro.emit(this.squadraComp);
             }
         } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-          if (this.squadraComp.mezzoPreaccoppiato?.mezzo?.stato === 'In Sede') {
+          if (this.squadraComp.mezziPreaccoppiati[0]?.stato === 'In Sede') {
             if (!this.itemSelezionato) {
               this.selezionataPreAccoppiati.emit(this.squadraComp);
             } else {
@@ -124,8 +124,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     }
 
     squadraComposizioneBusy(): boolean {
-        if (this.squadraComp?.squadra) {
-            return squadraComposizioneBusy(this.squadraComp.squadra.stato);
+        if (this.squadraComp) {
+            return squadraComposizioneBusy(this.squadraComp.stato);
         } else {
             return true;
         }
@@ -134,8 +134,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
     badgeDistaccamentoClass(): string {
         let result = 'badge-terza-competenza';
 
-        if (this.richiesta && this.squadraComp) {
-            const distaccamentoSquadra = this.squadraComp.squadra.distaccamento.descrizione;
+        if (this.richiesta && this.squadraComp && this.squadraComp) {
+            const distaccamentoSquadra = this.squadraComp.distaccamento.descrizione;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {

@@ -31,7 +31,7 @@ export class StepDomandeComponent implements OnChanges {
     setRisposta(risposta: TreeviewItem): void {
         this.nextDomanda(risposta);
 
-        const parentValue = risposta.value.slice(2);
+        const parentValue = risposta.value.length === 5 ? risposta.value.slice(4) : risposta.value.slice(2);
         const domanda = findItem(this.triage, parentValue)?.text;
         this.risposta.emit({ rispostaValue: risposta.value, domanda, risposta: risposta.text });
 

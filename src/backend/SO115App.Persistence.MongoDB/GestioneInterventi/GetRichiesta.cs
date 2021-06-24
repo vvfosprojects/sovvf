@@ -21,8 +21,6 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -283,17 +281,23 @@ namespace SO115App.Persistence.MongoDB
 
         public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
         {
-            //var filters = Builders<RichiestaAssistenza>.Filter;
+            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
 
-            var soloInterventi = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C");
+            var soloInterventi = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C"); //OK
 
-            //var soloMovimenti = Builders<RichiestaAssistenza>.Filter.Where(r => r.eve.Any());
+            var distaccamento = string.IsNullOrEmpty(filtri.Distaccamento) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.CodSOCompetente, filtri.Distaccamento); //OK
 
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi /*& soloMovimenti*/);
+            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno); //OK
 
-            //.AsQueryable().Where(r => r.Eventi.OfType<Telefonata>().First().DataOraInserimento >= filtri.Da && r.Eventi.OfType<Telefonata>().First().DataOraInserimento <= filtri.A);
+            var lstsq = new List<string> { filtri.Squadra };
+            var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
 
-            return result.ToList();
+            var periodoDa = Builders<RichiestaAssistenza>.Filter.Gte(r => r.dataOraInserimento, filtri.Da);
+            var periodoA = Builders<RichiestaAssistenza>.Filter.Lte(r => r.dataOraInserimento, filtri.A);
+
+            var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
+
+            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre /*& trasmessi & periodoDa & periodoA*/).ToList();
         }
     }
 }

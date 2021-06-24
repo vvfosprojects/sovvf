@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System.Text.Json.Serialization;
+
 namespace SO115App.Models.Classi.ServiziEsterni.Gac
 {
     public class MezzoDTO
@@ -25,12 +27,14 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   Codice del mezzo
         /// </summary>
+        [JsonPropertyName("codiceMezzo")]
         public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   Codice del radio trasmittente
         /// </summary>
         /// 
+        [JsonPropertyName("idRadio")]
         public string IdRadio { get; set; }
 
         /// <summary>
@@ -41,37 +45,43 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   Descrizione del mezzo
         /// </summary>
+        [JsonPropertyName("descrizione")]
         public string Descrizione { get; set; }
 
         /// <summary>
         ///   Genere del mezzo
         /// </summary>
+        [JsonPropertyName("genere")]
         public string Genere { get; set; }
 
         /// <summary>
         ///   Stato del mezzo
         /// </summary>
+        [JsonPropertyName("movimentazione")]
         public Movimentazione Movimentazione { get; set; }
 
         /// <summary>
         ///   Appartenenza del mezzo
         /// </summary>
+        //[JsonPropertyName("appartenenza")]
         public string Appartenenza { get; set; }
 
         /// <summary>
         ///   Indica codice distaccamento del mezzo
         /// </summary>
+        [JsonPropertyName("codiceDistaccamento")]
         public string CodiceDistaccamento { get; set; }
 
         /// <summary>
         ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
+        [JsonPropertyName("descrizioneAppartenenza")]
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
         ///   Descrizione dello stato del mezzo
         /// </summary>
-        public string DescrizioneStato { get; set; }
+        //public string DescrizioneStato { get; set; }
 
         /// <summary>
         ///   Stato efficenza del mezzo
@@ -81,31 +91,31 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   Descrizione dello Stato efficenza del mezzo
         /// </summary>
-        public string DescrizioneStatoEfficenza { get; set; }
+        //public string DescrizioneStatoEfficenza { get; set; }
 
-        /// <summary>
-        ///   Indica il livello del carburante del mezzo
-        /// </summary>
-        public int LivelloCarburante { get; set; }
+        ///// <summary>
+        /////   Indica il livello del carburante del mezzo
+        ///// </summary>
+        //public int LivelloCarburante { get; set; }
 
-        /// <summary>
-        ///   descrive il livello del carburante del mezzo
-        /// </summary>
-        public string DescrizioneLivelloCarburante { get; set; }
+        ///// <summary>
+        /////   descrive il livello del carburante del mezzo
+        ///// </summary>
+        //public string DescrizioneLivelloCarburante { get; set; }
 
-        /// <summary>
-        ///   Indica il livello dell'estinguente del mezzo
-        /// </summary>
-        public int LivelloEstinguente { get; set; }
+        ///// <summary>
+        /////   Indica il livello dell'estinguente del mezzo
+        ///// </summary>
+        //public int LivelloEstinguente { get; set; }
 
-        /// <summary>
-        ///   descrive il livello dell'estinguente del mezzo
-        /// </summary>
-        public string DescrizioneLivelloEstinguente { get; set; }
+        ///// <summary>
+        /////   descrive il livello dell'estinguente del mezzo
+        ///// </summary>
+        //public string DescrizioneLivelloEstinguente { get; set; }
 
-        /// <summary>
-        /// Indica se un mezzo è in servzio di istituto o meno
-        /// </summary>
-        public bool Istituto { get; set; }
+        ///// <summary>
+        ///// Indica se un mezzo è in servzio di istituto o meno
+        ///// </summary>
+        //public bool Istituto { get; set; }
     }
 }

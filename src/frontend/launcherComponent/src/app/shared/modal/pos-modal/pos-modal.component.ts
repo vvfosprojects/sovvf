@@ -28,6 +28,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     editPos: boolean;
     pos: PosInterface;
+    posFdFile: Blob;
+    modifyFDFile: boolean;
 
     posForm: FormGroup;
     formData: FormData;
@@ -63,12 +65,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
-            tipologieDettagli: [null]
+            tipologieDettagli: [null, Validators.required]
         });
     }
 
     get f(): any {
         return this.posForm.controls;
+    }
+
+    toggleModifyFDFile(): void {
+        this.modifyFDFile = !this.modifyFDFile;
     }
 
     updatePosForm(editPos: PosInterface): void {
@@ -81,6 +87,11 @@ export class PosModalComponent implements OnInit, OnDestroy {
             },
             path: 'posModal.posForm'
         }));
+
+        if (!this.formData) {
+            this.formData = new FormData();
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
+        }
     }
 
     getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tipologia[]): Tipologia[] {
@@ -131,7 +142,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true, formData: this.formData, edit: !!this.editPos });
+        this.modal.close({ success: true, formData: this.formData });
     }
 
     onDismiss(): void {
@@ -143,6 +154,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica P.O.S.';
+        return !this.editPos ? 'Aggiungi nuova P.O.S.' : 'Modifica ' + this.pos.descrizionePos;
     }
 }

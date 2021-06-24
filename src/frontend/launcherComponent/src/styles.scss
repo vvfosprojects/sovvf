@@ -36,6 +36,7 @@ $SO-white: #ffffff;
 $SO-white-variation: #f3f3f3;
 $SO-black: #000000;
 $SO-dark: #343a40;
+$SO-dark-darker: #2c3134;
 $SO-dark-light: #464e56;
 $SO-muted: #6c757d;
 $SO-light: #f8f9fa;
@@ -160,6 +161,18 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
+    background-color:$SO-white $SO-i;
+  }
+
+  .bg-navbar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-filterbar {
+    background-color:$SO-white $SO-i;
+  }
+
+  .bg-form-richiesta {
     background-color:$SO-white $SO-i;
   }
 
@@ -377,7 +390,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
-    background-color:$SO-dark $SO-i;
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-navbar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-filterbar {
+    background-color:$SO-dark-darker $SO-i;
+  }
+
+  .bg-form-richiesta {
+    background-color:$SO-dark-darker $SO-i;
   }
 
   .bg-scheda-contatto {

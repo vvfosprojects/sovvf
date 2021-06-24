@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using Polly;
 using Polly.Caching;
 using Polly.Caching.Memory;
@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Client
@@ -50,11 +51,14 @@ namespace SO115App.ExternalAPI.Client
             policies = Policy.WrapAsync(cachePolicy, retryPolicy, timeoutPolicy);
         }
 
-        public async Task<ResponseObject> GetAsync(Uri url, string token)
+        public async Task<ResponseObject> GetAsync(Uri url, string token = null)
         {
-            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            if (token != null)
+                _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            else
+                _client.DefaultRequestHeaders.Authorization = null;
 
-            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
+           var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return manageResponse(response);
         }
@@ -68,11 +72,12 @@ namespace SO115App.ExternalAPI.Client
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token)
+        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token = null)
         {
             content.Headers.ContentType = getMediaType();
 
-            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            if (token != null)
+                _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
@@ -90,11 +95,12 @@ namespace SO115App.ExternalAPI.Client
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token)
+        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token = null)
         {
             content.Headers.ContentType = getMediaType();
 
-            _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            if (token != null)
+                _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
@@ -119,7 +125,16 @@ namespace SO115App.ExternalAPI.Client
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
-            return JsonConvert.DeserializeObject<ResponseObject>(data);
+            try
+            {
+                var result = JsonSerializer.Deserialize<ResponseObject>(data); 
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         AuthenticationHeaderValue getBearerAuthorization(string token)

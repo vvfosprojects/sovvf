@@ -63,7 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
             if (!_memoryCache.TryGetValue($"Distaccamenti_{CodComando}", out listaDistaccamenti))
             {
                 List<Distaccamento> listaDistaccamentiAppo = new List<Distaccamento>();
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var responsePadre = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetInfoSede?codSede={CodComando}").ConfigureAwait(false);
                 responsePadre.EnsureSuccessStatusCode();
                 using HttpContent contentPadre = responsePadre.Content;
@@ -79,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
                     listaDistaccamentiAppo.Add(distaccamento);
                 }
 
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetChildSede?codSede={CodComando}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 using HttpContent content = response.Content;

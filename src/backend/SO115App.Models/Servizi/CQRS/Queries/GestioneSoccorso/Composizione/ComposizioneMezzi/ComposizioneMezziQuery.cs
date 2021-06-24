@@ -18,21 +18,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
-    /// <summary>
-    ///   DTO che alimenta il Navbar presente in Home Page
-    /// </summary>
     public class ComposizioneMezziQuery : IQuery<ComposizioneMezziResult>
     {
-        /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
-        /// </summary>
-        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        public FiltriComposizionePartenza Filtro { get; set; }
-
-        public string CodiceSede { get; set; }
+        public FiltriComposizioneMezzo Filtro { get; set; }
+        public RichiestaAssistenza Richiesta { get; set; }
+        public Paginazione Pagination { get; set; }
+        public string[] CodiciSedi { get; set; }
+        public string IdOperatore { get; set; }
+        public string CodiceChiamata { get; set; }
     }
 }

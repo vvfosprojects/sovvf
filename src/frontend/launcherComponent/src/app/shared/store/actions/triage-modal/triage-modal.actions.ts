@@ -1,3 +1,5 @@
+import { PosInterface } from "../../../interface/pos.interface";
+
 export class GetDettagliTipologieByCodTipologia {
     static readonly type = '[TriageChiamataModal] Get Dettagli Tipologie by CodTipologia';
 
@@ -23,7 +25,7 @@ export class ClearTipologiaTriageChiamata {
 export class SetDettaglioTipologiaTriageChiamata {
     static readonly type = '[TriageChiamataModal] Set Dettaglio Tipologia Triage Chiamata';
 
-    constructor(public codDettaglioTipologia: number) {
+    constructor(public codDettaglioTipologia: number, public pos: PosInterface[]) {
     }
 }
 

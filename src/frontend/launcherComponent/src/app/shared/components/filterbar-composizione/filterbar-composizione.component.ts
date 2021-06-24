@@ -128,7 +128,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
                 this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
             }
             this.nuovaPartenza(this.richiesta);
-            this.update();
+            this.update(tipo);
         }
     }
 
@@ -144,7 +144,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
-        this.update();
+        this.update(tipo);
     }
 
     // resetFiltri(): void {
@@ -152,9 +152,9 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     //     this.update();
     // }
 
-    update(): void {
+    update(tipo?: string): void {
         if (this.composizionePartenza) {
-            this.store.dispatch(new ReducerFilterListeComposizione());
+            this.store.dispatch(new ReducerFilterListeComposizione(tipo));
         } else if (this.sostituzionePartenza) {
             this.store.dispatch(new GetListaMezziSquadre());
         }

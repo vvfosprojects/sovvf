@@ -35,9 +35,9 @@
                         </button>
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s.squadra?.nome}}</div>
-                                <div *ngIf="s.squadra.turno" class="d-inline-block"> ({{ s.squadra?.turno }})</div>
-                                <div class="d-inline"> - {{ _nomeStatiSquadra(s.squadra?.stato) }}</div>
+                                <div class="d-inline-block font-weight-bold">{{ s?.nome}}</div>
+                                <div *ngIf="s.turno" class="d-inline-block"> ({{ s?.turno }})</div>
+                                <div class="d-inline"> - {{ _nomeStatiSquadra(s?.stato) }}</div>
                             </div>
                         </ng-template>
                     </ng-container>
@@ -57,9 +57,10 @@
                 <div class="d-inline-block"
                      [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
                      [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
-                    <i class="fa fa-map-marker text-success mr-2" ngbTooltip="Posizione Attuale"></i>
-                    <div class="d-inline-block font-weight-bold">
-                        {{ mezzoComp.indirizzoIntervento | truncate:30 }}
+                    <i class="fa fa-map-marker text-success mr-2"></i>
+                    <div class="d-inline-block font-weight-bold"
+                         [ngbTooltip]="'Posizione Attuale: ' + mezzoComp.indirizzoIntervento">
+                        {{ mezzoComp.indirizzoIntervento | truncate:10 }}
                     </div>
                 </div>
             </ng-template>
@@ -83,9 +84,9 @@
                         </button>
                         <ng-template #popSquadreIntervento>
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
-                                <div class="d-inline font-weight-bold">{{ s.squadra.nome }}</div>
-                                <div *ngIf="s.squadra.turno" class="d-inline">({{ s.squadra.turno }})</div>
-                                <div class="d-inline"> - {{_nomeStatiSquadra(s.squadra?.stato) }}</div>
+                                <div class="d-inline font-weight-bold">{{ s?.nome }}</div>
+                                <div *ngIf="s?.turno" class="d-inline">({{ s?.turno }})</div>
+                                <div class="d-inline"> - {{_nomeStatiSquadra(s?.stato) }}</div>
                             </div>
                         </ng-template>
                     </ng-container>

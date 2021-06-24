@@ -27,7 +27,6 @@ import {
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function-generiche';
 import produce from 'immer';
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -35,6 +34,7 @@ import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 export interface BoxPartenzaStateModel {
     boxPartenzaList: BoxPartenza[];
@@ -289,7 +289,7 @@ export class BoxPartenzaState {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         let index = null;
                         box.squadreComposizione.forEach((squadra: SquadraComposizione, i) => {
-                            if (action.idSquadra === squadra.id) {
+                            if (action.idSquadra === squadra.codice) {
                                 index = i;
                             }
                         });
@@ -308,7 +308,7 @@ export class BoxPartenzaState {
                 if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
                     if (box.squadreComposizione && box.squadreComposizione.length > 0) {
                         box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                            dispatch(new RemoveSquadraBoxPartenza(squadra.id));
+                            dispatch(new RemoveSquadraBoxPartenza(squadra.codice));
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
                     }
@@ -417,7 +417,7 @@ export class BoxPartenzaState {
 
         let skip = false;
         // controllo se il mezzo pre accoppiato è gia presente in un box lista partenza
-        state.boxPartenzaList.forEach(x => x.mezzoComposizione?.id === squadraComp.mezzoPreaccoppiato.id ? skip = true : null);
+        state.boxPartenzaList.forEach(x => x.mezzoComposizione?.id === squadraComp.mezziPreaccoppiati[0].codice ? skip = true : null);
         if (!skip) {
             if (!validateBoxPartenza(boxPartenzaSelezionato)) {
                 setState(
@@ -429,7 +429,7 @@ export class BoxPartenzaState {
 
             const newBoxes = [];
             // creo boxes
-            for (const mezzoComp of [squadraComp.mezzoPreaccoppiato]) {
+            for (const mezzoComp of [squadraComp.mezziPreaccoppiati[0]]) {
                 const id = makeID();
                 newBoxes.push({
                     id,

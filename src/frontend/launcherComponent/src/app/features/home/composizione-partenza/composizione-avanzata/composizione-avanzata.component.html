@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
         <div class="card min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-users mr-2"></i>
@@ -34,9 +34,13 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!squadreComposizione?.length"
+                    <li *ngIf="!squadreComposizione?.length && !loadingSquadre"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <li *ngIf="!squadreComposizione?.length && loadingSquadre"
+                        class="list-group-item border">
+                        <span class="text-muted">Caricamento risultati...</span>
                     </li>
                     <ng-template [ngIf]="squadreComposizione?.length">
                         <app-squadra-composizione
@@ -44,8 +48,8 @@
                                 [nightMode]="nightMode"
                                 [squadraComp]="sC"
                                 [boxPartenzaList]="boxPartenzaList"
-                                [itemSelezionato]="checkSquadraSelezione(sC.id)"
-                                [itemHover]="checkSquadraHover(sC.id)"
+                                [itemSelezionato]="checkSquadraSelezione(sC.codice)"
+                                [itemHover]="checkSquadraHover(sC.codice)"
                                 [richiesta]="richiesta"
                                 (selezionata)="squadraSelezionata($event)"
                                 (selezionataInRientro)="squadraSelezionataInRientro($event)"
@@ -75,7 +79,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
         <div class="card mx-auto min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fa fa-truck mr-2"></i>
@@ -103,9 +107,13 @@
             </div>
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!mezziComposizione?.length"
+                    <li *ngIf="!mezziComposizione?.length && !loadingMezzi"
                         class="list-group-item border">
                         <span class="text-muted">Nessun risultato...</span>
+                    </li>
+                    <li *ngIf="!mezziComposizione?.length && loadingMezzi"
+                        class="list-group-item border">
+                        <span class="text-muted">Caricamento risultati...</span>
                     </li>
                     <ng-template [ngIf]="mezziComposizione?.length">
                         <div *ngFor="let mC of mezziComposizione">

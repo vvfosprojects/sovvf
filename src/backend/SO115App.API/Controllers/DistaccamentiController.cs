@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetDistaccamentiByCodSede;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSedi;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSediAllerta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSediTrasferimenti;
@@ -17,14 +18,17 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetSediQuery, GetSediResult> _handler;
         private readonly IQueryHandler<GetSediAllertaQuery, GetSediAllertaResult> _handlerAllerta;
         private readonly IQueryHandler<GetSediTrasferimentiQuery, GetSediTrasferimentiResult> _handlerTrasferimenti;
+        private readonly IQueryHandler<GetDistaccamentiByCodSedeQuery, GetDistaccamentiByCodSedeResult> _handlerGetDistaccamentiBycodSede;
 
         public DistaccamentiController(IQueryHandler<GetSediQuery, GetSediResult> handler,
             IQueryHandler<GetSediAllertaQuery, GetSediAllertaResult> handlerAllerta,
-            IQueryHandler<GetSediTrasferimentiQuery, GetSediTrasferimentiResult> handlerTrasferimenti)
+            IQueryHandler<GetSediTrasferimentiQuery, GetSediTrasferimentiResult> handlerTrasferimenti,
+            IQueryHandler<GetDistaccamentiByCodSedeQuery, GetDistaccamentiByCodSedeResult> handlerGetDistaccamentiBycodSede)
         {
             _handler = handler;
             _handlerAllerta = handlerAllerta;
             _handlerTrasferimenti = handlerTrasferimenti;
+            _handlerGetDistaccamentiBycodSede = handlerGetDistaccamentiBycodSede;
         }
 
         [HttpGet("Get")]
@@ -39,6 +43,29 @@ namespace SO115App.API.Controllers
             try
             {
                 var result = _handler.Handle(query);
+
+                return Ok(result.DataArray);
+            }
+            catch (Exception e)
+            {
+                var ex = e.GetBaseException();
+
+                return BadRequest(ex.Message + ex.StackTrace);
+            }
+        }
+
+        [HttpGet("GetDistaccamentiByCodSede")]
+        public async Task<IActionResult> GetDistaccamentiByCodSede()
+        {
+            var query = new GetDistaccamentiByCodSedeQuery()
+            {
+                CodiciSede = Request.Headers["CodiceSede"].ToArray(),
+                IdUtente = Request.Headers["IdUtente"]
+            };
+
+            try
+            {
+                var result = _handlerGetDistaccamentiBycodSede.Handle(query);
 
                 return Ok(result.DataArray);
             }

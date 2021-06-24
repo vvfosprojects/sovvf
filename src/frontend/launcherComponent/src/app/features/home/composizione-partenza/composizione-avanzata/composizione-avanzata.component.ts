@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
@@ -54,6 +53,7 @@ import { TriageSummary } from '../../../../shared/interface/triage-summary.inter
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -85,6 +85,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Loading Liste Mezzi e Squadre
     @Input() loadingListe: boolean;
+    @Input() loadingSquadre: boolean;
+    @Input() loadingMezzi: boolean;
 
     // Paginazione Mezzi
     @Input() currentPageMezzi: number;
@@ -168,7 +170,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     checkDoubleDividi(box: BoxPartenza): boolean {
         if (box.squadreComposizione && box.squadreComposizione.length === 1) {
-            const id = box.squadreComposizione[0].id;
+            const id = box.squadreComposizione[0].codice;
             let inputVec = [];
             inputVec = this.boxPartenzaList.slice().reverse();
             const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
@@ -289,25 +291,25 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
     }
 
     onSearchSquadre(): void {
@@ -379,7 +381,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             }
             if (obj.squadreComposizione.length > 0) {
                 rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
+                    return squadraComp;
                 });
             } else {
                 rObj.squadre = [];

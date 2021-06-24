@@ -118,6 +118,7 @@
                                type="text"
                                class="form-control form-control-lg"
                                [formControlName]="'risposta' + (i + 1)"
+                               placeholder="Scrivi qui la risposta {{ i + 1 }}"
                                [disabled]="!f.rispostePersonalizzate?.value">
                     </div>
                     <ng-template [ngIf]="f.rispostePersonalizzate?.value && f['risposta' + (this.risposte.length)]?.value">
