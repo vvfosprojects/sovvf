@@ -435,8 +435,7 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-    <div class="col-4 h-100 bg-resoconto-triage scroll-y"
-         [class.pt-3]="f.dettaglioTipologia?.value">
+    <div class="col-4 h-100 bg-resoconto-triage scroll-y pt-3">
         <div class="px-3">
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
