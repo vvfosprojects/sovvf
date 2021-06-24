@@ -1,8 +1,6 @@
 <ng-template [ngIf]="dettaglioTipologia">
-    <div class="text-center mb-4">
-        <h4 class="font-weight-bold">
-            {{ dettaglioTipologia?.descrizione }}
-        </h4>
+    <div class="h3 font-weight-bolder text-center mb-4">
+        {{ dettaglioTipologia?.descrizione | uppercase }}
     </div>
 </ng-template>
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
@@ -11,22 +9,24 @@
         <ngb-panel id="pos" [disabled]="!pos?.length">
             <ng-template ngbPanelTitle>
                 <div class="font-weight-bold text-white">
-                    P.O.S.
+                    P.O.S. ({{ pos?.length }})
                 </div>
             </ng-template>
             <ng-template ngbPanelContent>
-                <div *ngFor="let p of pos" class="clearfix">
+                <div *ngFor="let p of pos; let i = index"
+                     class="clearfix"
+                     [class.mb-2]="(i + 1) <= pos.length">
                     <div class="float-left pt-2">
                         <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
                     </div>
                     <div class="float-right">
                         <button class="btn btn-primary mr-2"
-                                ngbTooltip="Visulizza File"
+                                [ngbTooltip]="'Visulizza ' + p.descrizionePos"
                                 (click)="onViewPos(p)">
                             <i class="fa fa-eye"></i>
                         </button>
                         <button class="btn btn-info"
-                                ngbTooltip="Scarica File"
+                                [ngbTooltip]="'Scarica ' + p.descrizionePos"
                                 (click)="onDownloadPos(p)">
                             <i class="fa fa-download"></i>
                         </button>
@@ -50,12 +50,12 @@
                     <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
                 </h5>
                 <ul class="list-group px-3">
-                    <li *ngFor="let s of triageSummary, let i = index">
+                    <li *ngFor="let s of triageSummary, let i = index" class="font-weight-bold">
                         <div>
-                            <b>{{ s.domanda }}</b>
+                            {{ s.domanda }}
                         </div>
-                        <div>
-                            Risposta: <b>{{ s.risposta }}</b>
+                        <div class="font-weight-bolder">
+                            {{ s.risposta }}
                         </div>
                     </li>
                 </ul>
