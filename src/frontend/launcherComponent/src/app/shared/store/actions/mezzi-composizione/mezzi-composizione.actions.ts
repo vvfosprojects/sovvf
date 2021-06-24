@@ -1,8 +1,8 @@
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { Mezzo } from '../../../model/mezzo.model';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';

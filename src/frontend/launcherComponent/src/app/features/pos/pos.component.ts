@@ -144,14 +144,15 @@ export class PosComponent implements OnInit, OnDestroy {
     onDownloadPos(pos: PosInterface): void {
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
-                case HttpEventType.DownloadProgress :
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
                     break;
-                case HttpEventType.Response :
+                case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
                     const a = document.createElement('a');
                     a.setAttribute('style', 'display:none;');
                     document.body.appendChild(a);
-                    a.download = 'StampaPos:' + pos.descrizionePos;
+                    a.download = pos.fileName;
                     a.href = URL.createObjectURL(downloadedFile);
                     a.target = '_blank';
                     a.click();
@@ -161,14 +162,34 @@ export class PosComponent implements OnInit, OnDestroy {
         }, error => console.log('Errore Stampa POS'));
     }
 
+    onViewPos(pos: PosInterface): void {
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, error => console.log('Errore visualizzazione POS'));
+    }
+
     onEditPos(pos: PosInterface): void {
         let editPosModal;
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
-                case HttpEventType.DownloadProgress :
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
                     break;
-                case HttpEventType.Response :
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                case HttpEventType.Response:
                     editPosModal = this.modalService.open(PosModalComponent, {
                         windowClass: 'modal-holder',
                         backdropClass: 'light-blue-backdrop',
@@ -179,7 +200,7 @@ export class PosComponent implements OnInit, OnDestroy {
                     editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
                     editPosModal.componentInstance.editPos = true;
                     editPosModal.componentInstance.pos = pos;
-                    editPosModal.componentInstance.posFdFile = downloadedFile;
+                    editPosModal.componentInstance.posFdFile = data.body;
                     editPosModal.result.then(
                         (result: { success: boolean, formData: FormData }) => {
                             if (result.success) {

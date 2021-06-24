@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
 using System.Collections.Generic;
@@ -14,36 +13,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class OrdinamentoMezzi
     {
-        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
-        public OrdinamentoMezzi(IGetRichiesta getRichiestaById, IGetTipologieByCodice getTipologieByCodice, HttpClient client, IConfiguration configuration)
+        public OrdinamentoMezzi(IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration)
         {
-            _getRichiestaById = getRichiestaById;
             _getTipologieByCodice = getTipologieByCodice;
-            this._client = client;
-            this._configuration = configuration;
+            _client = new HttpClient();
+            _configuration = configuration;
         }
 
-        public decimal GetIndiceOrdinamento(string IdRichiesta, ComposizioneMezzi composizione, bool CoordinateFake, string IdRichiestaOrigine = null)
+        public decimal GetIndiceOrdinamento(RichiestaAssistenza Richiesta, ComposizioneMezzi composizione)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
 
-            var richiestaDestinazione = _getRichiestaById.GetById(IdRichiesta);
+            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
-            if (IdRichiestaOrigine != null)
-            {
-                var richiestaOrigine = _getRichiestaById.GetByCodice(IdRichiestaOrigine);
-                ValoreIntOriginePerSganciamento = -200; // Hard Coded perchè le tipologie verranno prese da un servizio Esterno e questo valore è sempre uguale
-            }
-
-            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
-
-            if (!CoordinateFake)
-                composizione = GetDistanceByGoogle(composizione, richiestaDestinazione).Result;
+            composizione = GetDistanceByGoogle(composizione, Richiesta).Result;
 
             return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
         }
@@ -80,7 +68,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private decimal GeneraValoreAdeguatezzaMezzo(List<string> codiciTipologie, string genere)
         {
-            foreach (var tipologia in _getTipologieByCodice.Get(codiciTipologie))
+            var tipologie = _getTipologieByCodice.Get(codiciTipologie);
+
+            if(tipologie != null) foreach (var tipologia in tipologie)
             {
                 if (tipologia != null)
                 {

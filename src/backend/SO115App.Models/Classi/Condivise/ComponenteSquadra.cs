@@ -28,10 +28,14 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.DescrizioneQualifica = DescrizioneQualifica;
             this.Nominativo = Nominativo;
-            this.Tooltip = Tooltip;
-            this.CapoPartenza = CapoPartenza;
-            this.Autista = Autista;
-            this.Rimpiazzo = Rimpiazzo;
+            //this.Tooltip = Tooltip;
+            //this.CapoPartenza = CapoPartenza;
+            //this.Autista = Autista;
+            //this.Rimpiazzo = Rimpiazzo;
+        }
+
+        public Componente()
+        {
         }
 
         /// <summary>
@@ -47,14 +51,14 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Descrizione lunga qualifica Componente
         /// </summary>
-        public string DescrizioneQualificaLunga { get; set; }
+        //public string DescrizioneQualificaLunga { get; set; }
 
         /// <summary>
         ///   Ruolo ricoperto dall'operatore nel turno indicato
         /// </summary>
         public string Ruolo { get; set; }
 
-        public Turno CodiceTurno { get; set; }
+        //public Turno CodiceTurno { get; set; }
 
         /// <summary>
         ///   Nominativo Componente
@@ -68,17 +72,17 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   ToolTip Componente
         /// </summary>
-        public string Tooltip { get; set; }
+        //public string Tooltip { get; set; }
 
         /// <summary>
         ///   Indica se il Componente è un capo Partenza
         /// </summary>
-        public bool CapoPartenza { get; set; }
+        public bool CapoPartenza => DescrizioneQualifica == "TEAM_LEADER";
 
         /// <summary>
         ///   Indica se è un autista
         /// </summary>
-        public bool Autista { get; set; }
+        public bool Autista => DescrizioneQualifica == "DRIVER";
 
         /// <summary>
         ///   Indica se il componente è un rimpiazzo

@@ -77,6 +77,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
 
         public static string GacGetToken = "/SO115/AnagraficaMezzi/GenerazioneToken";
         public static string GacGetMezziUtilizzabili = "/SO115/AnagraficaMezzi/MezziUtilizzabili";
+        public static string GacGetAnagraficaMezzi = "/SO115/AnagraficaMezzi/CodiceMezzo";
         public static string GacGetMezziFuoriServizio = "MezziFuoriServizio";
         public static string GacGetID = "ID";
         public static string GacGetICCID = "ICCID";

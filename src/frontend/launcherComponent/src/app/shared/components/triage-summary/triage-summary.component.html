@@ -1,18 +1,40 @@
 <ng-template [ngIf]="dettaglioTipologia">
-    <div class="text-center">
+    <div class="text-center mb-4">
         <h4 class="font-weight-bold">
             {{ dettaglioTipologia?.descrizione }}
         </h4>
     </div>
 </ng-template>
-<div class="p-3">
-    <ng-template [ngIf]="tipologia">
-        <button class="btn btn-block btn-no-hover btn-lg btn-danger">
-            Visualizza P.O.S.
-        </button>
-    </ng-template>
-</div>
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
+    <!-- POS -->
+    <ng-template [ngIf]="pos?.length">
+        <ngb-panel id="pos" [disabled]="!pos?.length">
+            <ng-template ngbPanelTitle>
+                <div class="font-weight-bold text-white">
+                    P.O.S.
+                </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+                <div *ngFor="let p of pos" class="clearfix">
+                    <div class="float-left pt-2">
+                        <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn-primary mr-2"
+                                ngbTooltip="Visulizza File"
+                                (click)="onViewPos(p)">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                        <button class="btn btn-info"
+                                ngbTooltip="Scarica File"
+                                (click)="onDownloadPos(p)">
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-panel>
+    </ng-template>
     <!-- RIEPILOGO TRIAGE -->
     <ng-template [ngIf]="triageSummary?.length">
         <ngb-panel id="riepilogo-triage" [disabled]="!triageSummary">
@@ -111,27 +133,31 @@
             <ng-template ngbPanelContent>
                 <div class="px-3">
                     <ul class="list-group">
-                        <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2" style="display: list-item">
+                        <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2"
+                            style="display: list-item">
                             <div>
-                                <b class="mr-2" style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
+                                <b class="mr-2"
+                                   style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
                                     interventoProssimita?.codice }}</b>
                                 -
                                 <i class="fa fa-clock-o mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
-                                    <span timeago [date]="methods._dateNumber(interventoProssimita.istanteRicezioneRichiesta)"
+                                    <span timeago
+                                          [date]="methods._dateNumber(interventoProssimita.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
                                 </a>
                             </div>
                             <div>
-                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoProssimita?.tipologie" [triage]="true"
+                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoProssimita?.tipologie"
+                                                                 [triage]="true"
                                                                  [descrizioneRichiesta]="interventoProssimita?.descrizione">
                                 </app-tipologia-sintesi-richiesta>
                             </div>
                             <div>
-                                {{ interventoProssimita?.dettaglioTipologia ?'Dettaglio tipologia: '+ interventoProssimita?.dettaglioTipologia?.descrizione : null}}
+                                {{ interventoProssimita?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoProssimita?.dettaglioTipologia?.descrizione : null}}
                             </div>
                             <div>
                                 <i class="fa fa-user mr-1"></i>
@@ -157,27 +183,31 @@
             <ng-template ngbPanelContent>
                 <div class="px-3">
                     <ul class="list-group">
-                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2" style="display: list-item">
+                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2"
+                            style="display: list-item">
                             <div>
-                                <b class="mr-2" style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
+                                <b class="mr-2"
+                                   style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
                                     interventoStessaVia?.codice }}</b>
                                 -
                                 <i class="fa fa-clock-o mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
-                                    <span timeago [date]="methods._dateNumber(interventoStessaVia.istanteRicezioneRichiesta)"
+                                    <span timeago
+                                          [date]="methods._dateNumber(interventoStessaVia.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
                                 </a>
                             </div>
                             <div>
-                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoStessaVia?.tipologie" [triage]="true"
+                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoStessaVia?.tipologie"
+                                                                 [triage]="true"
                                                                  [descrizioneRichiesta]="interventoStessaVia?.descrizione">
                                 </app-tipologia-sintesi-richiesta>
                             </div>
                             <div>
-                                {{ interventoStessaVia?.dettaglioTipologia ?'Dettaglio tipologia: '+ interventoStessaVia?.dettaglioTipologia?.descrizione : null}}
+                                {{ interventoStessaVia?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoStessaVia?.dettaglioTipologia?.descrizione : null}}
                             </div>
                             <div>
                                 <i class="fa fa-user mr-1"></i>

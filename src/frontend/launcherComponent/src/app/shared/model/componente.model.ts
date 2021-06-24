@@ -12,10 +12,6 @@ export class Componente {
          */
         public nominativo: string,
         /**
-         * Il tooltip, utile specialmente per sanare problemi di omonimia
-         */
-        public tooltip: string,
-        /**
          * Indicazione del ruolo di capopartenza
          */
         public capoPartenza: boolean,
@@ -30,7 +26,11 @@ export class Componente {
         /**
          * Codice Fiscale del componente
          */
-        public codiceFiscale?: string
+        public codiceFiscale?: string,
+        /**
+         * Il tooltip, utile specialmente per sanare problemi di omonimia
+         */
+        public tooltip?: string,
     ) {
     }
 }

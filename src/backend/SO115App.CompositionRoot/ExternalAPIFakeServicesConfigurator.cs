@@ -29,6 +29,7 @@ using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.OPService;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
@@ -40,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
@@ -69,12 +71,25 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetToken, GetToken>();
 
+            #region IdentityManagement
+
+            container.Register<IGetAnagraficaComponente, GetAnagraficaComponente>();
+
+            #endregion IdentityManagement
+
+            #region OPService
+
+            container.Register<IGetSquadre, GetSquadre>();
+            container.Register<IGetAllSquadre, GetAllSquadre>();
+
+            #endregion OPService
+
             #region Qualifiche
 
             container.Register<IGetPercorsoByIdQualifica, GetPercorsoByIdQualifica>();
             container.Register<IGetDettaglioQualificaByIdDipendenteByDate, GetDettaglioQualificaByIdDipendenteByDate>();
 
-            #endregion
+            #endregion Qualifiche
 
             #region NUE
 
@@ -195,13 +210,13 @@ namespace SO115App.CompositionRoot
 
             #region Mezzi
 
-            container.Register<
-               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            //container.Register<
+            //   SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+            //   SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
-                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
             container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
             container.Register<

@@ -1,6 +1,6 @@
 import { StatoSquadra } from '../enum/stato-squadra.enum';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 
 export function squadraComposizioneBusy(stato: StatoSquadra): boolean {
     switch (stato) {
@@ -36,7 +36,7 @@ export function mezzoComposizioneBusy(stato: StatoMezzo): boolean {
 
 export function checkSquadraOccupata(squadreComposizione: SquadraComposizione[]): boolean {
     for (const squadra of squadreComposizione) {
-        if (squadraComposizioneBusy(squadra.squadra.stato)) {
+        if (squadraComposizioneBusy(squadra.stato)) {
             return true;
         }
     }

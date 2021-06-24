@@ -6,11 +6,12 @@
                  [class.mt-1]="viewState.composizione.active">
                 <!-- Info Aggregate -->
                 <div class="col-12"
+                     [class.py-1]="boxAttivi || !viewState.chiamata.active || !viewState.modifica.active || !viewState.composizione.active"
                      [class.d-none]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active">
                     <app-info-aggregate [nightMode]="(nightMode$ | async)"></app-info-aggregate>
                 </div>
                 <!-- Filterbar -->
-                <div class="col-12"
+                <div class="col-12 bg-filterbar py-2"
                      [class.mt-3]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
                      [class.d-none]="viewState.composizione.active">
                     <app-filterbar [colorButton]="(colorButton$ | async)"

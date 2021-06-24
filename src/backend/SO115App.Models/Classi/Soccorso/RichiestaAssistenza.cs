@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
@@ -1019,5 +1020,21 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
         /// </summary>
         public bool Esercitazione { get; set; } = false;
+
+        [BsonIgnore]
+        //[JsonIgnore]
+        public List<string> lstSquadre
+        {
+            get => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
+            set { }
+        }
+
+        [BsonIgnore]
+        //[JsonIgnore]
+        public DateTime dataOraInserimento
+        {
+            get => Telefonate.First().DataOraInserimento;
+            set { }
+        }
     }
 }

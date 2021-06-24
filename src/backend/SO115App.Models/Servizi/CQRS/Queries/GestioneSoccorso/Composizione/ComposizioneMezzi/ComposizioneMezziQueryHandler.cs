@@ -33,7 +33,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi)
         {
-            this._iGetComposizioneMezzi = iGetComposizioneMezzi;
+            _iGetComposizioneMezzi = iGetComposizioneMezzi;
         }
 
         /// <summary>
@@ -44,17 +44,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public ComposizioneMezziResult Handle(ComposizioneMezziQuery query)
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
-            // preparazione del DTO
-            var composizioneMezzi = _iGetComposizioneMezzi.Get(query)
-                .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
-                .Take(query.Filtro.SquadrePagination.PageSize)
-                .ToList();
+
+            var composizioneMezzi = _iGetComposizioneMezzi.Get(query).ToList();;
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
 
             return new ComposizioneMezziResult()
             {
-                ComposizioneMezzi = composizioneMezzi
+                DataArray = composizioneMezzi
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList(),
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = composizioneMezzi.Count
+                }
             };
         }
     }

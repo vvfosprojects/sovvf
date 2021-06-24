@@ -39,7 +39,7 @@ namespace SO115App.ExternalAPI.Fake.Personale
 
                         foreach (var componente in squadra.Componenti)
                         {
-                            foreach (var persona in listaComponentiSquadra)
+                            foreach (var persona in listaComponentiSquadra.Dati)
                             {
                                 if (persona.CodFiscale.Equals(componente.CodiceFiscale))
                                 {

@@ -65,7 +65,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
-            tipologieDettagli: [null]
+            tipologieDettagli: [null, Validators.required]
         });
     }
 
@@ -90,7 +90,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
         if (!this.formData) {
             this.formData = new FormData();
-            this.formData.append('FDFile', this.posFdFile);
+            this.formData.append('FDFile', this.posFdFile, this.pos.fileName);
         }
     }
 

@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public ComposizioneMezziAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni, IGetRichiesta getRichiestaAssistenzaById)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
@@ -47,11 +47,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         public IEnumerable<AuthorizationResult> Authorize(ComposizioneMezziQuery query)
         {
-            string username = this._currentUser.Identity.Name;
-            Utente user = _findUserByUsername.FindUserByUs(username);
-            var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
+            string username = _currentUser.Identity.Name;
+            var user = _findUserByUsername.FindUserByUs(username);
+            var richiesta = _getRichiestaAssistenzaById.GetByCodice(query.CodiceChiamata);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            query.Richiesta = richiesta;
+
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

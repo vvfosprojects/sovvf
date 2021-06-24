@@ -41,6 +41,7 @@
             <div class="form-group">
                 <label for="dettagliTipologie">
                     Dettagli Tipologie
+                    <small class="text-danger">*</small>
                 </label>
                 <ng-select id="dettagliTipologie"
                            [items]="dettagliTipologieFiltered"
@@ -55,7 +56,7 @@
                 <div class="clearfix mt-4"
                      [class.mb-4]="!modifyFDFile">
                     <div *ngIf="!modifyFDFile" class="float-left pt-1">
-                        {{ pos?.descrizionePos + '.pdf' }}
+                        {{ pos?.fileName }}
                     </div>
                     <div class="float-right">
                         <button class="btn"

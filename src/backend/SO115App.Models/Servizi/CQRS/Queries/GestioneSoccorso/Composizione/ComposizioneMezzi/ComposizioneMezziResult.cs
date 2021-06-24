@@ -17,19 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
-    /// <summary>
-    ///   DTO di output
-    /// </summary>
     public class ComposizioneMezziResult
     {
-        /// <summary>
-        ///   Json Navbar Richieste
-        /// </summary>
-        public List<Classi.Composizione.ComposizioneMezzi> ComposizioneMezzi
-        { get; set; }
+        public List<Classi.Composizione.ComposizioneMezzi> DataArray { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }

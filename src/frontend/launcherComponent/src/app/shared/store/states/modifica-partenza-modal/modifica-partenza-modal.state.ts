@@ -1,8 +1,8 @@
 import { Selector, State } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
 import { Injectable } from '@angular/core';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {

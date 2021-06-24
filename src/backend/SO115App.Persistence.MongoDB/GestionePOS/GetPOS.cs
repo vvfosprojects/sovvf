@@ -33,6 +33,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
 
                 if (filtri.Filters.idDettaglioTipologia != 0)
                 {
+                    Tipologia.CodTipologiaDettaglio = new List<int>();
                     Tipologia.CodTipologiaDettaglio.Add(filtri.Filters.idDettaglioTipologia);
                 }
             }

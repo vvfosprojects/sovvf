@@ -30,10 +30,12 @@
             </button>
         </td>
         <td style="width:22%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
-                 style="max-width: 400px;">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;"
+               (click)="onViewPos(p)">
                 {{ p?.descrizionePos }}
-            </div>
+            </a>
         </td>
         <td style="width:33%" class="align-middle">
             <ul class="mb-0">
@@ -58,10 +60,13 @@
         </td>
     </tr>
     <tr *ngIf="pos?.length <= 0">
-        <td class="align-middle" style="width:80%">
+        <td></td>
+        <td class="align-middle" style="width:22%">
             <ng-template [ngIf]="!loading">Nessuna Pos trovata</ng-template>
             <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
+        <td></td>
+        <td></td>
     </tr>
     </tbody>
 </table>

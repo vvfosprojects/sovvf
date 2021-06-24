@@ -53,7 +53,7 @@
         <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fa fa-chevron-up"></i></span>
     </div>
     <div *ngIf="showFiltriSquadre" class="row px-4 pt-2 pb">
-        <div class="col" style="justify-content: center; font-size: x-large">
+        <div class="col-4" style="justify-content: center; font-size: x-large">
             <label for="distaccamenti">Distaccamento
             </label>
         </div>
@@ -62,17 +62,24 @@
                        id="distaccamenti"
                        [items]="distaccamenti"
                        bindLabel="descrizione"
-                       bindValue="id"
-                       [closeOnSelect]="true"
+                       bindValue="codice"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
                        [hideSelected]="false"
+                       [(ngModel)]="distaccamentoSelezionati"
+                       [ngModelOptions]="{standalone: true}"
                        [loading]="!distaccamenti"
                        (change)="onPatchFiltriSquadre($event, 'distaccamenti')"
                        placeholder="Seleziona Distaccamento">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="distaccamentoSelezionati && distaccamentoSelezionati?.includes(item.codice)"/>
+                    {{item.descrizione}}
+                </ng-template>
             </ng-select>
         </div>
     </div>
     <div *ngIf="showFiltriSquadre" class="row px-4 py-2">
-        <div class="col" style="justify-content: center; font-size: x-large">
+        <div class="col-4" style="justify-content: center; font-size: x-large">
             <label for="turno">Turno
             </label>
         </div>
@@ -80,34 +87,46 @@
             <ng-select class="align-self-center"
                        id="turno"
                        [items]="turno"
-                       [(ngModel)]="turnoSelezionato"
                        bindLabel="descrizione"
                        bindValue="id"
-                       [closeOnSelect]="true"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
                        [hideSelected]="false"
                        [loading]="!turno"
+                       [(ngModel)]="turnoSelezionati"
+                       [ngModelOptions]="{standalone: true}"
                        (change)="onPatchFiltriSquadre($event, 'turno')"
                        placeholder="Seleziona Turno">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="turnoSelezionati && turnoSelezionati?.includes(item)"/>
+                    {{item}}
+                </ng-template>
             </ng-select>
         </div>
     </div>
     <div *ngIf="showFiltriSquadre" class="row px-4 pb-3">
-        <div class="col" style="justify-content: center; font-size: x-large">
-            <label for="squadra">Squadra
+        <div class="col-4" style="justify-content: center; font-size: x-large">
+            <label for="squadre">Squadra
             </label>
         </div>
         <div class="col" style="justify-content: center;">
             <ng-select class="align-self-center"
-                       id="squadra"
-                       [items]="squadra"
-                       bindLabel="descrizione"
-                       bindValue="id"
-                       [(ngModel)]="squadraSelezionata"
-                       [closeOnSelect]="true"
+                       id="squadre"
+                       [items]="squadre"
+                       bindLabel="nome"
+                       bindValue="codice"
+                       [(ngModel)]="squadreSelezionate"
+                       [ngModelOptions]="{standalone: true}"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
                        [hideSelected]="false"
-                       [loading]="!distaccamenti"
+                       [loading]="!squadre"
                        (change)="onPatchFiltriSquadre($event, 'squadra')"
                        placeholder="Seleziona Squadra">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="squadreSelezionate && squadreSelezionate?.includes(item.codice)"/>
+                    {{item.nome}}
+                </ng-template>
             </ng-select>
         </div>
     </div>

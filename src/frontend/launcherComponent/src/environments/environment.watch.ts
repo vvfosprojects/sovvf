@@ -25,6 +25,8 @@ export const environment = {
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
+            squadre: '/api/ComposizioneSquadre',
+            mezzi: '/api/ComposizioneMezzi',
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: '/api/PrenotazioneMezzo'
         },
@@ -43,6 +45,8 @@ export const environment = {
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
         stampaRichiesta: '/api/GestioneFile/DettaglioRichiesta',
         stampaRiepilogoInterventi: '/api/GestioneFile/RiepilogoInterventi',
+        squadreRiepilogoInterventi: '/api/GestioneSquadre/GetAllSquadre',
+        distaccamentiRiepilogoInterventi: '/api/Distaccamenti/GetDistaccamentiByCodSede',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
         sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
         distaccamenti: '/api/Distaccamenti',

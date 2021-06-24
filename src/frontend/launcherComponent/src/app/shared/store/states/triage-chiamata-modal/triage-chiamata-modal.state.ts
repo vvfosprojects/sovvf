@@ -16,6 +16,7 @@ import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/d
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
+import { PosInterface } from '../../../interface/pos.interface';
 
 export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
@@ -24,6 +25,7 @@ export interface TriageChiamataModalStateModel {
     triage: TreeviewItem;
     triageData: ItemTriageData[];
     idTriage: string;
+    pos: PosInterface[];
 }
 
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
@@ -32,7 +34,8 @@ export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
     codDettaglioTipologiaSelezionato: undefined,
     triage: undefined,
     triageData: undefined,
-    idTriage: undefined
+    idTriage: undefined,
+    pos: undefined
 };
 
 @Injectable()
@@ -93,9 +96,10 @@ export class TriageChiamataModalState {
     }
 
     @Action(SetDettaglioTipologiaTriageChiamata)
-    setDettaglioTipologiaTriageChiamata({ patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: SetDettaglioTipologiaTriageChiamata): void {
+    setDettaglioTipologiaTriageChiamata({patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: SetDettaglioTipologiaTriageChiamata): void {
         patchState({
-            codDettaglioTipologiaSelezionato: action.codDettaglioTipologia
+            codDettaglioTipologiaSelezionato: action.codDettaglioTipologia,
+            pos: action.pos
         });
         dispatch(new SetTriageChiamata());
     }
@@ -126,7 +130,8 @@ export class TriageChiamataModalState {
         patchState({
             idTriage: TriageChiamataModalStateDefaults.idTriage,
             triage: TriageChiamataModalStateDefaults.triage,
-            triageData: TriageChiamataModalStateDefaults.triageData
+            triageData: TriageChiamataModalStateDefaults.triageData,
+            pos: TriageChiamataModalStateDefaults.pos
         });
     }
 }

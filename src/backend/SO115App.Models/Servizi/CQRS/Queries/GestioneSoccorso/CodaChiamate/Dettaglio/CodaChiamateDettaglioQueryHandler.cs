@@ -84,7 +84,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = new string[] { query.CodiceSede }
             };
 
             var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
@@ -94,7 +94,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                 codDistaccamento = query.CodiceSede,
                 descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? "Sede Centrale" : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
                 listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Sospesa)) : null,
-                listaSquadre = listaSquadre.FindAll(x => x.Squadra.Distaccamento.Codice.Equals(query.CodiceSede) && x.Squadra.Turno.Equals(turnoCorrente)).Select(x => x.Squadra).ToList()
+                //listaSquadre = listaSquadre.FindAll(x => x.Squadra.Distaccamento.Equals(query.CodiceSede) && x.Squadra.Turno.Equals(turnoCorrente)).Select(x => x.Squadra).ToList()
             };
 
             return new CodaChiamateDettaglioResult()

@@ -6,11 +6,11 @@ import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
 import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-box-nuova-partenza',

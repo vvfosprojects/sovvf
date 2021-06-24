@@ -49,17 +49,15 @@ namespace SO115App.ExternalAPI.Fake.Box
         /// <returns>BoxMezzi</returns>
         public BoxMezzi Get(string[] codiciSede)
         {
-            var listaCodici = codiciSede.ToList();
-
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
+            var listaMezzi = _getMezziUtilizzabili.Get(codiciSede).Result;
 
             var mezzi = new BoxMezzi()
             {
-                InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoInUscita || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato).Count(),
-                InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio).Count(),
-                InRientro = listaMezzi.Where(x => x.Stato == Costanti.MezzoInRientro).Count(),
-                SulPosto = listaMezzi.Where(x => x.Stato == Costanti.MezzoSulPosto).Count(),
-                Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto).Count(),
+                InSede = listaMezzi?.Where(x => x.Value == Costanti.MezzoInSede || x.Value == Costanti.MezzoInUscita || x.Value == Costanti.MezzoRientrato || x.Value == Costanti.MezzoOperativoPreaccoppiato).Count() ?? 0,
+                InViaggio = listaMezzi?.Where(x => x.Value == Costanti.MezzoInViaggio).Count() ?? 0,
+                InRientro = listaMezzi?.Where(x => x.Value == Costanti.MezzoInRientro).Count() ?? 0,
+                SulPosto = listaMezzi?.Where(x => x.Value == Costanti.MezzoSulPosto).Count() ?? 0,
+                Istituto = listaMezzi?.Where(x => x.Value == Costanti.MezzoIstituto).Count() ?? 0,
                 //InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio
             };
 

@@ -17,61 +17,171 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.Squadra;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneSquadre : IGetComposizioneSquadre
     {
-        private readonly IGetListaSquadre _getSquadre;
-        private readonly IGetStatoSquadra _getStatoSquadre;
+        private readonly IGetMezziUtilizzabili _getMezzi;
+        private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetComposizioneSquadre(IGetListaSquadre getSquadre,
-                                      IGetStatoSquadra getStatoSquadre)
+        private readonly IGetSquadre _getSquadre;
+        private readonly IGetStatoSquadra _getStatoSquadre;
+        private readonly IGetPersonaFisica _getAnagrafiche;
+
+        private readonly IGetSedi _getSedi;
+
+        public GetComposizioneSquadre(IGetSquadre getSquadre, 
+            IGetStatoSquadra getStatoSquadre,
+            IGetMezziUtilizzabili getMezzi,
+            IGetStatoMezzi getStatoMezzi,
+            IGetSedi getSedi,
+            IGetPersonaFisica getAnagrafiche)
         {
+            _getStatoMezzi = getStatoMezzi;
+            _getMezzi = getMezzi;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+            _getSedi = getSedi;
+            _getAnagrafiche = getAnagrafiche;
         }
 
-        public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
+        public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var listaSedi = new List<string>
+            var lstSedi = Task.Run(() => _getSedi.GetAll()
+                .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
+                .Distinct()
+                .Select(s => new DistaccamentoComposizione() 
+                { 
+                    Codice = $"{s.codProv}.{s.codFiglio_TC}",
+                    Coordinate = new Coordinate(s.latitudine, s.longitudine),
+                    Descrizione = s.sede,
+                    Provincia = s.codProv
+                }));
+
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
+            var lstStatiMezzi = Task.Run(()=> _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
+
+            Task<List<string>> lstMezziPreaccoppiati = null;
+            Task<List<MembroComposizione>> lstAnagrafiche = null;
+
+            var lstSquadreComposizione = Task.Run(() => //GET
             {
-                query.CodiceSede
-            };
-            var listaSquadre = _getSquadre.Get(listaSedi).Result;
-            var statiOperativi = _getStatoSquadre.Get(listaSedi);
-            var composizioneSquadre = new List<ComposizioneSquadre>();
+                var lstSquadre = new ConcurrentBag<Squadra>();
+                Task<WorkShift> workshift = null;
 
-            foreach (Squadra s in listaSquadre)
+                if(string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
+                {
+                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice), 
+                        codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]));
+                }
+                else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.codDistaccamentoSelezionato);
+
+                switch (query.Filtro.Turno) //FILTRO PER TURNO
+                {
+                    case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Result.Attuale, squadra => lstSquadre.Add(squadra)); break;
+
+                    case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Result.Precedente, squadra => lstSquadre.Add(squadra)); break;
+
+                    case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Result.Successivo, squadra => lstSquadre.Add(squadra)); break;
+
+                    case null: Parallel.ForEach(workshift.Result.All, squadra => lstSquadre.Add(squadra)); break;
+                }
+
+                lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()).Result.Select(m => m.CodiceMezzo).ToList());
+                lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(lstSquadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
+                {
+                    Nominativo = $"{a?.Nome} {a?.Cognome}",
+                    CodiceFiscale = a?.CodFiscale
+                }).ToList());
+
+                //TODO RIVEDERE DISTINCT CODICE
+                var result = lstSquadre.GroupBy(s => s.Codice).Select(s => s.FirstOrDefault());
+
+                return result;
+            })
+            .ContinueWith(squadre => //MAPPING
             {
-                if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
-                {
-                    s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
-                    s.IndiceOrdinamento = -200;
-                }
-                else
-                {
-                    s.Stato = Squadra.StatoSquadra.InSede;
-                }
+                ConcurrentBag<ComposizioneSquadra> lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
-                var c = new ComposizioneSquadre
+                Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
-                    Squadra = s,
-                    Id = s.Id
-                };
-                composizioneSquadre.Add(c);
-            }
+                    Stato = MappaStato(lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
+                    Codice = squadra.Codice,
+                    Turno = squadra.TurnoAttuale.ToCharArray()[0],
+                    Nome = squadra.Descrizione,
+                    DiEmergenza = squadra.Emergenza,
+                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)), 
+                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale))?.Select(a => new MembroComposizione()
+                    {
+                        CodiceFiscale = a.CodiceFiscale,
+                        Nominativo = a.Nominativo,
+                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
+                    }).ToList(),
+                    //TODO Filtrare mezzi preaccoppiati
+                    MezziPreaccoppiati = null//lstMezziPreaccoppiati.Result.Select(m => new MezzoPreaccoppiato() { Codice = m }).ToList()
+                }));
 
-            return composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
+                return lstSquadre;
+            })
+            .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
+            {
+                bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
+
+                bool distaccamento = string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato) ?
+                    query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento?.Codice) :
+                    query.Filtro.codDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
+
+                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
+
+                bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
+
+                return distaccamento && ricerca && diEmergenza && stato;
+            }))
+            .ContinueWith(lstSquadre => //ORDINAMENTO
+            {
+                return lstSquadre.Result //Enum.GetName(typeof(enum), 3)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[0].Equals(squadra.Distaccamento.Codice) ?? false)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .OrderByDescending(squadra => query.Filtro?.Stato != null ? Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(query.Filtro.Stato) : false)
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInRientro))
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoInViaggio))
+                    //.ThenByDescending(squadra => squadra.Stato.Equals(Costanti.MezzoSulPosto))
+                    .ToList();
+            });
+
+            var result = lstSquadreComposizione.Result.ToList();
+
+            return result;
         }
+
+        private static StatoSquadraComposizione MappaStato(string statoMezzo) => statoMezzo switch
+        {
+            Costanti.MezzoInUscita => StatoSquadraComposizione.InUscita,
+            Costanti.MezzoInViaggio => StatoSquadraComposizione.InViaggio,
+            Costanti.MezzoSulPosto => StatoSquadraComposizione.SulPosto,
+            Costanti.MezzoInRientro => StatoSquadraComposizione.InRientro,
+            _ => StatoSquadraComposizione.InSede,
+        };
     }
 }

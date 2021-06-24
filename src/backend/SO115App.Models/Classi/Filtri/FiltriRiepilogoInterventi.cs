@@ -16,6 +16,9 @@ namespace SO115App.Models.Classi.Filtri
     public class AltriFiltri
     {
         public bool SoloInterventi { get; set; } = false;
+        /// <summary>
+        /// Raggruppa per tipologie
+        /// </summary>
         public bool TipologiaIntervento { get; set; } = false;
         public bool Trasmessi { get; set; } = false;
     }
