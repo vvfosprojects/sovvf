@@ -53,5 +53,33 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
         {
             return _dbContext.DtoPosCollection.Find(c => c.Id.Equals(id)).FirstOrDefault();
         }
+
+        public List<PosDAO> GetPosByCodTipologiaCodDettaglio(GetElencoPOSQuery filtri)
+        {
+            var Tipologia = new TipologiaPos();
+            if (filtri.Filters.idTipologia != 0)
+            {
+                Tipologia = new TipologiaPos()
+                {
+                    CodTipologia = filtri.Filters.idTipologia
+                };
+
+                if (filtri.Filters.idDettaglioTipologia != 0)
+                {
+                    Tipologia.CodTipologiaDettaglio = new List<int>();
+                    Tipologia.CodTipologiaDettaglio.Add(filtri.Filters.idDettaglioTipologia);
+                }
+            }
+
+            var lstPOS = _dbContext.DtoPosCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
+                && (c.ListaTipologie.Contains(Tipologia)))
+                .Project("{fDFile: 0}").ToList();
+
+            var lstDes = new List<PosDAO>();
+            foreach (BsonDocument pos in lstPOS)
+                lstDes.Add(BsonSerializer.Deserialize<PosDAO>(pos));
+
+            return lstDes;
+        }
     }
 }

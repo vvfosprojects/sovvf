@@ -9,5 +9,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestionePOS
         public List<PosDAO> Get(GetElencoPOSQuery search);
 
         public PosDAO GetPosById(string id);
+
+        public List<PosDAO> GetPosByCodTipologiaCodDettaglio(GetElencoPOSQuery search);
     }
 }
