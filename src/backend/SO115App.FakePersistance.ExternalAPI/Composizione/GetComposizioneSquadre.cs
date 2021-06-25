@@ -92,8 +92,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 if(string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
                 {
-                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice), 
-                        codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]));
+                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(), 
+                        codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
                 }
                 else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.codDistaccamentoSelezionato);
 
@@ -132,15 +132,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
-                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)), 
+                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)),
                     Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale))?.Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
                     }).ToList(),
-                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati != null ? lstMezziPreaccoppiati.Result.FindAll(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato() 
-                    { 
+                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati != null ? lstMezziPreaccoppiati.Result.FindAll(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
+                    {
                         Codice = m.CodiceMezzo,
                         Descrizione = m.Descrizione,
                         Genere = m.Genere,
@@ -155,7 +155,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti.Contains(squadra.Distaccamento?.Codice) :
+                    query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
                     query.Filtro.codDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
@@ -167,7 +167,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result
-                    .OrderByDescending(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento.Codice) ?? false)
+                    .OrderByDescending(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
                     .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false)
                     .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false)
                     .ThenBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInSede))
