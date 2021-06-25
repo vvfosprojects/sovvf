@@ -102,7 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                 .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                 .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoStatoSconosciuto))
+                .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
                 //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
                 .ToList();
         }
