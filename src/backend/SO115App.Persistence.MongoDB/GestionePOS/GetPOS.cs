@@ -55,7 +55,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
             return _dbContext.DtoPosCollection.Find(c => c.Id.Equals(id)).FirstOrDefault();
         }
 
-        public PosDAO GetPosByCodTipologiaCodDettaglio(GetElencoPOSQuery filtri)
+        public List<PosDAO> GetPosByCodTipologiaCodDettaglio(GetElencoPOSQuery filtri)
         {
             var Tipologia = new TipologiaPos();
             if (filtri.Filters.idTipologia != 0)
@@ -80,7 +80,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
             foreach (BsonDocument pos in lstPOS)
                 lstDes.Add(BsonSerializer.Deserialize<PosDAO>(pos));
 
-            return lstDes[0];
+            return lstDes;
         }
     }
 }

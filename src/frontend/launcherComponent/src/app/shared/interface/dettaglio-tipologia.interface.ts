@@ -6,5 +6,5 @@ export interface DettaglioTipologia {
     codiceTipologia: number;
     codiceDettaglioTipologia: number;
     descrizione: string;
-    pos: PosInterface;
+    pos: PosInterface[];
 }

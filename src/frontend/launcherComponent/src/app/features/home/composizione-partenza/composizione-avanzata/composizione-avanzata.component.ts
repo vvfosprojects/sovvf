@@ -99,8 +99,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() pageSizeSquadre: number;
 
     // Bottoni Composizione
-    @Input() disableNuovaPartenza: number;
-    @Input() disableConfirmPartenza: number;
+    @Input() disableNuovaPartenza: boolean;
+    @Input() disableConfirmPartenza: boolean;
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;

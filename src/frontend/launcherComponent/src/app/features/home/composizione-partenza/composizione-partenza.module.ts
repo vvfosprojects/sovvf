@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
@@ -33,7 +33,9 @@ import { ComposizioneSoccorsoAereoState } from '../store/states/composizione-par
         NgSelectModule,
         NgxsModule.forFeature(
             [
+                // Comp Partenza Generico
                 ComposizionePartenzaState,
+                // Box Partenza
                 BoxPartenzaState,
                 // Comp Rapida
                 ComposizioneVeloceState,

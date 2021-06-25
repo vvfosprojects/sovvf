@@ -1,4 +1,5 @@
 ﻿using SO115App.Models.Classi.Pos;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Condivise
 {
@@ -10,6 +11,6 @@ namespace SO115App.Models.Classi.Condivise
         public int CodiceDettaglioTipologia { get; set; }
         public string Descrizione { get; set; }
         public bool Ricorsivo { get; set; }
-        public PosDAO? Pos { get; set; }
+        public List<PosDAO>? Pos { get; set; }
     }
 }

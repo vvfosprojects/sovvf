@@ -18,13 +18,13 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
     {
         private readonly DbContext _dbContext;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetPOS _getPOS;
+        private readonly IGetPOS _getPos;
 
-        public GetListaDettagliTipologiaByIdTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPOS getPOS)
+        public GetListaDettagliTipologiaByIdTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPOS getPos)
         {
             _dbContext = dbContext;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getPOS = getPOS;
+            _getPos = getPos;
         }
 
         public List<TipologiaDettaglio> Get(GetDettagliTipoligiaByIdTipologiaQuery query)
@@ -54,7 +54,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             }).OrderByDescending(c => c.Descrizione).ToList();
         }
 
-        private PosDAO GetPosByTipologia(int codiceTipologia, int codiceDettaglioTipologia, string CodSede)
+        private List<PosDAO> GetPosByTipologia(int codiceTipologia, int codiceDettaglioTipologia, string CodSede)
         {
             var filtriPos = new FiltriPOS()
             {
@@ -68,7 +68,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 Filters = filtriPos
             };
 
-            var Pos = _getPOS.GetPosByCodTipologiaCodDettaglio(query);
+            var Pos = _getPos.GetPosByCodTipologiaCodDettaglio(query);
 
             if (Pos != null)
                 return Pos;
