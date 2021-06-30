@@ -268,6 +268,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         });
         this.f.codTipologia.disable();
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
+        savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
     }
 
     get f(): any {
