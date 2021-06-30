@@ -140,7 +140,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             return result;
         }
 
-        private StatoSquadraComposizione MappaStato(string statoMezzo)
+        private static StatoSquadraComposizione MappaStato(string statoMezzo)
         {
             switch (statoMezzo)
             {

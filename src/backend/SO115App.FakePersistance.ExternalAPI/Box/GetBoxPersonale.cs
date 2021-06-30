@@ -48,7 +48,9 @@ namespace SO115App.ExternalAPI.Fake.Box
                 }
             };
 
-            var listaSquadreComposizione = _getComposizioneSquadre.Get(query);
+            var listaSquadreComposizione = _getComposizioneSquadre.Get(query)
+                .GroupBy(s => s.Codice)
+                .Select(s => s.First());
 
             var result = new BoxPersonale();
 
@@ -58,8 +60,13 @@ namespace SO115App.ExternalAPI.Fake.Box
                 listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.SulPosto)) +
                 listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InRientro));
 
-            result.SquadreServizio = listaSquadreComposizione.Count;
-            result.PersonaleTotale = listaSquadreComposizione.SelectMany(s => s.Membri).Count();
+            result.SquadreServizio = listaSquadreComposizione.Count();
+
+            result.PersonaleTotale = listaSquadreComposizione
+                .SelectMany(s => s.Membri)
+                .GroupBy(m => m.CodiceFiscale)
+                .Select(m => m.First())
+                .Count();
 
             result.Funzionari = listaSquadreComposizione.SelectMany(s => s.Membri).Where(m => m.CapoPartenza).Select(m => new Componente() 
             { 
