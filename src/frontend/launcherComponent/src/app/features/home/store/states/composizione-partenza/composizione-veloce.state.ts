@@ -23,7 +23,6 @@ import { PaginationComposizionePartenzaState } from '../../../../../shared/store
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ListaComposizioneVeloce } from '../../../../../shared/interface/lista-composizione-veloce-interface';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface ComposizioneVeloceStateModel {
     allPreAccoppiati: BoxPartenzaPreAccoppiati[];
@@ -96,13 +95,14 @@ export class ComposizioneVeloceState {
         } as any;
         this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
-            response.composizionePreaccoppiatiDataArray.forEach((preaccoppiato: BoxPartenzaPreAccoppiati) => {
+            console.log('***response ', response);
+            response.dataArray.forEach((preaccoppiato: BoxPartenzaPreAccoppiati) => {
                 if (mezzoComposizioneBusy(preaccoppiato.statoMezzo) || checkSquadraOccupata(preaccoppiato.squadre as any)) {
                     preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
             dispatch([
-                new SetListaPreaccoppiati(response.composizionePreaccoppiatiDataArray),
+                new SetListaPreaccoppiati(response.dataArray),
                 new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
             ]);
         });
