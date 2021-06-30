@@ -45,7 +45,7 @@ import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.acti
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
-import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenzaPreAccoppiati } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import {
     AddChiamateDistaccamentoCodaChiamate,
@@ -300,7 +300,7 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenzaPreAccoppiati[]) => {
             this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });

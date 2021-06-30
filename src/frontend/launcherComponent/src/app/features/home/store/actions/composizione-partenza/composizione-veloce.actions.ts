@@ -1,4 +1,4 @@
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenzaPreAccoppiati } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
@@ -12,7 +12,7 @@ export class GetListaComposizioneVeloce {
 export class SetListaPreaccoppiati {
     static readonly type = '[ComposizioneVeloce] Set PreAccoppiati';
 
-    constructor(public preAccoppiati: BoxPartenza[]) {
+    constructor(public preAccoppiati: BoxPartenzaPreAccoppiati[]) {
     }
 }
 
@@ -23,14 +23,14 @@ export class ClearPreaccoppiati {
 export class SelectPreAccoppiatoComposizione {
     static readonly type = '[PreAccoppiati] Select PreAccoppiato Composizione';
 
-    constructor(public preAcc: BoxPartenza) {
+    constructor(public preAcc: BoxPartenzaPreAccoppiati) {
     }
 }
 
 export class UnselectPreAccoppiatoComposizione {
     static readonly type = '[PreAccoppiati] Unselect PreAccoppiato Composizione';
 
-    constructor(public preAcc: BoxPartenza) {
+    constructor(public preAcc: BoxPartenzaPreAccoppiati) {
     }
 }
 

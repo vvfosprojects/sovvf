@@ -25,7 +25,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 {
     public class PreAccoppiatiResult
     {
-        public List<PreAccoppiatiFakeJson> ComposizionePreaccoppiatiDataArray { get; set; }
+        public List<PreAccoppiato> DataArray { get; set; }
         public Paginazione Pagination { get; set; }
     }
 }

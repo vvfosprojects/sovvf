@@ -23,7 +23,7 @@
                    class="fa fa-group mr-2"></i>
                 <div class="d-inline-block"
                      [ngbTooltip]="partenza.squadre[0].nome"
-                     [disableTooltip]="partenza.squadre[0].nome.length <= 6">
+                     [disableTooltip]="partenza.squadre[0].nome && partenza.squadre[0].nome.length <= 6">
                     {{ partenza.squadre[0].nome | truncate: 6 }}
                 </div>
                 <div *ngIf="partenza.squadre[0].turno"

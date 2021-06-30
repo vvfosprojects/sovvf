@@ -42,15 +42,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            var ListapreAccoppiati = _GetPreAccoppiati.GetFake(query)
-                .Skip(query.Filtri.Pagination.PageSize * (query.Filtri.Pagination.Page - 1))
-                .Take(query.Filtri.Pagination.PageSize).ToList();
+            var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 
             return new PreAccoppiatiResult()
             {
-                ComposizionePreaccoppiatiDataArray = ListapreAccoppiati,
+                DataArray = ListapreAccoppiati
+                    .Skip(query.Filtri.Pagination.PageSize * (query.Filtri.Pagination.Page - 1))
+                    .Take(query.Filtri.Pagination.PageSize).ToList(),
                 Pagination = new Paginazione()
                 {
                     Page = query.Filtri.Pagination.Page,

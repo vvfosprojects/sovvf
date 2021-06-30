@@ -17,32 +17,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
-    public class PreAccoppiati
+    public class PreAccoppiato
     {
-        public string Id { get; set; }
-        public string CodiceSede { get; set; }
-
-        public string Mezzo { get; set; }
-        public string[] Squadre { get; set; }
+        public string CodiceMezzo { get; set; }
+        public string GenereMezzo { get; set; }
+        public string StatoMezzo { get; set; }
+        public string DescrizioneMezzo { get; set; }
+        public string Distaccamento { get; set; }
+        public string Km { get; set; }
+        public string TempoPercorrenza { get; set; }
+        public List<Squadra> Squadre { get; set; }
     }
 
-    public class PreAccoppiatiFakeJson
+    /// <summary>
+    /// Squadra del preaccoppiato
+    /// </summary>
+    public class Squadra
     {
-        public PreAccoppiatiFakeJson()
-        {
-            MezzoComposizione = new ComposizioneMezzi() { Mezzo = new Mezzo() { PreAccoppiato = true } };
-            //SquadreComposizione = new List<ComposizioneSquadre>() { new ComposizioneSquadre() { Squadra = new Squadra() { PreAccoppiato = true } } };
-        }
+        public Squadra(string codice, string nome, string stato) =>
+            (Codice, Nome, Stato) = (codice, nome, stato);
 
-        public string Id { get; set; }
-        public string CodiceSede { get; set; }
+        public Squadra() { }
 
-        public ComposizioneMezzi MezzoComposizione { get; set; }
-        public List<ComposizioneSquadre> SquadreComposizione { get; set; }
+        public string Codice { get; set; }
+        public string Stato { get; set; }
+        public string Nome { get; set; }
     }
 }
