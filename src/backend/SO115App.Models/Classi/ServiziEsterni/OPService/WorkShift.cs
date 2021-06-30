@@ -15,6 +15,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         [JsonPropertyName("current")]
         public Squadra[] Attuale { get; set; }
 
-        public Squadra[] All => new List<Squadra[]> { Attuale, Precedente, Successivo }.SelectMany(l => l.Select(s => s)).ToArray();
+        public Squadra[] All => new List<Squadra[]> { Attuale, Precedente, Successivo }
+            .SelectMany(l => l.Select(s => s))
+            .GroupBy(s => s.Codice)
+            .Select(s => s.First())
+            .ToArray();
     }
 }

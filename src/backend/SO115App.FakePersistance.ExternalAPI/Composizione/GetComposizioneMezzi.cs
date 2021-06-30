@@ -94,15 +94,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                   .OrderBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .OrderBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .OrderBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                    //.ThenByDescending(mezzo => mezzo.Mezzo.PreAccoppiato ... ) //TODO PRIORITA PREACCOPPIATI
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
                    //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
                    .ToList();
             });

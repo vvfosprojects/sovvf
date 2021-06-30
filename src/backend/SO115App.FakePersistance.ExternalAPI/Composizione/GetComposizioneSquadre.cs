@@ -117,13 +117,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }).ToList());
 
                 //TODO RIVEDERE DISTINCT CODICE
-                var result = lstSquadre.GroupBy(s => s.Codice).Select(s => s.FirstOrDefault());
+                var result = lstSquadre.ToList();
 
                 return result;
             })
             .ContinueWith(squadre => //MAPPING
             {
-                ConcurrentBag<ComposizioneSquadra> lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
+                var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
