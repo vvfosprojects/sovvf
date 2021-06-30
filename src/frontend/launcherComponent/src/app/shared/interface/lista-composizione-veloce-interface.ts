@@ -1,7 +1,7 @@
 import { PaginationInterface } from './pagination.interface';
-import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenzaPreAccoppiati } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 export interface ListaComposizioneVeloce {
-    composizionePreaccoppiatiDataArray: BoxPartenza[];
+    composizionePreaccoppiatiDataArray: BoxPartenzaPreAccoppiati[];
     pagination: PaginationInterface;
 }

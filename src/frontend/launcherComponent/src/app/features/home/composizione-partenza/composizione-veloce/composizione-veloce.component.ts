@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
-import { BoxPartenza } from '../interface/box-partenza-interface';
+import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
@@ -42,7 +42,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     @Input() nightMode: boolean;
     @Input() triageSummary: TriageSummary[];
 
-    @Input() preAccoppiati: BoxPartenza[];
+    @Input() preAccoppiati: BoxPartenzaPreAccoppiati[];
     @Input() idPreAccoppiatoSelezionato: string;
     @Input() idPreAccoppiatiSelezionati: string[];
     @Input() idPreAccoppiatiOccupati: string[];
@@ -86,16 +86,17 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
         return getSoccorsoAereoTriage(triageSummary);
     }
 
-    selezionaPreaccoppiato(preAcc: BoxPartenza): void {
-        if (!preAcc.mezzoComposizione.mezzo.coordinateFake) {
-            this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
-        }
-        if (preAcc && preAcc.mezzoComposizione && preAcc.mezzoComposizione.mezzo && preAcc.mezzoComposizione.mezzo.stato === 'In Sede') {
+    selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
+        // TODO: Verificare condizione
+        // if (!preAcc.coordinateFake) {
+        //     this.mezzoCoordinate(preAcc.coordinate);
+        // }
+        if (preAcc && preAcc.statoMezzo === 'In Sede') {
             this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
         }
     }
 
-    deselezionaPreaccoppiato(preAcc: BoxPartenza): void {
+    deselezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
         this.onClearDirection();
         this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
@@ -124,26 +125,38 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     confermaPartenzeInViaggio(): void {
-        const boxPartenzaList: BoxPartenza[] = [];
+        const boxPartenzaList: BoxPartenzaPreAccoppiati[] = [];
         this.preAccoppiati.forEach(result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
                 boxPartenzaList.push(result);
             }
         });
         const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
+        const partenzeMappedArray = partenze.map((obj: BoxPartenzaPreAccoppiati) => {
             const rObj = {
-                mezzo: null,
+                mezzo: {
+                    codice: null,
+                    descrizione: null,
+                    stato: null,
+                    genere: null,
+                    distaccamento: {
+                        descrizione: null,
+                    },
+                },
                 squadre: null
             };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
+            if (obj.codiceMezzo) {
+                obj.statoMezzo = StatoMezzo.InViaggio;
+                rObj.mezzo.codice = obj.codiceMezzo;
+                rObj.mezzo.descrizione = obj.descrizioneMezzo;
+                rObj.mezzo.stato = obj.statoMezzo;
+                rObj.mezzo.genere = obj.genereMezzo;
+                rObj.mezzo.distaccamento.descrizione = obj.distaccamento;
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadre.length > 0) {
+                rObj.squadre = obj.squadre.map((squadraComp: SquadraComposizione) => {
                     return squadraComp;
                 });
             } else {
@@ -156,7 +169,6 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
-        // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 
