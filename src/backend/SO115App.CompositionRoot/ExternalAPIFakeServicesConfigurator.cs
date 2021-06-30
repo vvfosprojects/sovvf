@@ -81,6 +81,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<IGetSquadre, GetSquadre>();
             container.Register<IGetAllSquadre, GetAllSquadre>();
+            container.Register<ISetStatoSquadra, SetStatoSquadra>();
 
             #endregion OPService
 

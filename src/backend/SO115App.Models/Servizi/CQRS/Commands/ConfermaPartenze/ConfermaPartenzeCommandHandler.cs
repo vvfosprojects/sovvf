@@ -27,6 +27,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoMezzi _getStatoMezzi;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
-            IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza, IGetStatoMezzi getStatoMezzi)
+            IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
+            IGetStatoMezzi getStatoMezzi)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -66,13 +68,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var dataAdesso = DateTime.UtcNow;
 
-
             //GENERAZIONE CODICE INTERVENTO
             var sedeRichiesta = command.Richiesta.CodSOCompetente;
 
             if (command.Richiesta.CodRichiesta == null)
                 command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, dataAdesso.Year);
-
 
             #region SGANCIAMENTO
 

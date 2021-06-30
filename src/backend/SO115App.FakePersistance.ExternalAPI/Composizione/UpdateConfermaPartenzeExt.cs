@@ -44,17 +44,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly ISetUscitaMezzo _setUscitaMezzo;
         private readonly ISetRientroMezzo _setRientroMezzo;
+        private readonly Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra _setStatoSquadraOPService;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo,
+            ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo,
+            SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra setStatoSquadraOPService)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _setUscitaMezzo = setUscitaMezzo;
             _setRientroMezzo = setRientroMezzo;
+            _setStatoSquadraOPService = setStatoSquadraOPService;
         }
 
         /// <summary>
@@ -79,6 +83,49 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 foreach (var squadra in partenza.Squadre)
                 {
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
+
+                    //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
+                    if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    {
+                        if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                        {
+                            var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
+                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                            {
+                                actionType = "ALLOCATE",
+                                createdAt = DateTime.Now,
+                                Id = squadra.IdOPService,
+                                id_chiamata = command.ConfermaPartenze.IdRichiesta,
+                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
+                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
+                                id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
+                                spotId = squadra.spotId,
+                                spotType = squadra.spotType,
+                                version = squadra.version,
+                                workshiftId = squadra.workshiftId
+                            }
+                            );
+                        }
+                    }
+                    else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                    {
+                        var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
+                        _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                        {
+                            actionType = "DEALLOCATE",
+                            createdAt = DateTime.Now,
+                            Id = squadra.IdOPService,
+                            id_chiamata = command.ConfermaPartenze.IdRichiesta,
+                            id_mezzi = new string[1] { partenza.Mezzo.Codice },
+                            id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
+                            id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
+                            spotId = squadra.spotId,
+                            spotType = squadra.spotType,
+                            version = squadra.version,
+                            workshiftId = squadra.workshiftId
+                        }
+                        );
+                    }
                 }
 
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;

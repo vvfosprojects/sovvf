@@ -69,7 +69,9 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Turno = Turno;
         }
 
-        public Squadra() { }
+        public Squadra()
+        {
+        }
 
         public string Id { get; set; }
 
@@ -112,8 +114,21 @@ namespace SO115App.API.Models.Classi.Condivise
         public DateTime DataInServizio { get; set; }
 
         /// <summary>
-        /// Definisce se la squadra è preaccoppiata con un mezzo
+        ///   Definisce se la squadra è preaccoppiata con un mezzo
         /// </summary>
         public bool PreAccoppiato { get; set; } = false;
+
+        #region Info per OPService
+
+        public string IdOPService { get; set; }
+        public string spotId { get; set; }
+
+        public string spotType { get; set; }
+
+        public int version { get; set; }
+
+        public string workshiftId { get; set; }
+
+        #endregion Info per OPService
     }
 }
