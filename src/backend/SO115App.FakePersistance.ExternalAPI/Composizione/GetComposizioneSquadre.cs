@@ -51,7 +51,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetSedi _getSedi;
 
-        public GetComposizioneSquadre(IGetSquadre getSquadre, 
+        public GetComposizioneSquadre(IGetSquadre getSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetMezziUtilizzabili getMezzi,
             IGetStatoMezzi getStatoMezzi,
@@ -71,16 +71,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstSedi = Task.Run(() => _getSedi.GetAll()
                 .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
                 .Distinct()
-                .Select(s => new DistaccamentoComposizione() 
-                { 
+                .Select(s => new DistaccamentoComposizione()
+                {
                     Codice = $"{s.codProv}.{s.codFiglio_TC}",
                     Coordinate = new Coordinate(s.latitudine, s.longitudine),
-                    Descrizione = s.sede,
+                    Descrizione = s.sede.Replace("Comando VV.F. di", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
                     Provincia = s.codProv
                 }));
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
-            var lstStatiMezzi = Task.Run(()=> _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
+            var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
 
             Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
             Task<List<MembroComposizione>> lstAnagrafiche = null;
@@ -90,9 +90,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var lstSquadre = new ConcurrentBag<Squadra>();
                 Task<WorkShift> workshift = null;
 
-                if(string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
+                if (string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
                 {
-                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(), 
+                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
                         codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
                 }
                 else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.codDistaccamentoSelezionato);
