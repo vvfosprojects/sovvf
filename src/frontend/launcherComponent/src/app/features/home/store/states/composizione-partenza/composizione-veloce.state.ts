@@ -95,7 +95,6 @@ export class ComposizioneVeloceState {
         } as any;
         this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
-            console.log('***response ', response);
             response.dataArray.forEach((preaccoppiato: BoxPartenzaPreAccoppiati) => {
                 if (mezzoComposizioneBusy(preaccoppiato.statoMezzo) || checkSquadraOccupata(preaccoppiato.squadre as any)) {
                     preaccoppiatiOccupati.push(preaccoppiato.id);

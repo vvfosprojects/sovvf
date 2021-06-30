@@ -13,6 +13,11 @@ export interface SquadraComposizione {
     turno: string;
     mezziPreaccoppiati: MezzoPreaccoppiato[];
     listaMezzi?: MezzoComposizione[];
+    idOpService?: string;
+    spotId?: string;
+    spotType?: string;
+    workshiftId?: string;
+    version?: number;
 }
 
 export interface MezzoPreaccoppiato {
