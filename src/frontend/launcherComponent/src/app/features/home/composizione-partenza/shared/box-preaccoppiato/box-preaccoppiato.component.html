@@ -90,7 +90,7 @@
             <i class="guida fa fa-map-marker mr-2 ml-1"></i>
             <span class="badge" [ngbTooltip]="partenzaPreAccopiati.distaccamento"
                   [disableTooltip]="partenzaPreAccopiati.distaccamento.length <= 12"
-                  [ngClass]="badgeDistaccamentoClass()">{{partenzaPreAccopiati.distaccamento | slice: 0:12}}</span>
+                  [ngClass]="badgeDistaccamentoClass()">{{partenzaPreAccopiati.distaccamento | slice: 0:20}}</span>
         </div>
         <div *ngIf="!partenzaPreAccopiati.distaccamento" class="col text-danger">
             <i class="fa fa-map-marker mr-2 ml-1"></i>
