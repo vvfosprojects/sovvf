@@ -17,6 +17,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
+        private readonly OrdinamentoMezzi _ordinamento; 
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetTipologieByCodice _getTipologieCodice;
@@ -45,12 +46,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Id = m.Codice,
                         Mezzo = m,
-                        Km = new Random().Next(1, 60).ToString(),
-                        TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
                     };
 
                     //TODO OTTIMIZZARE INDICE ORDINAMENTO
-                    //mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
+                    mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
