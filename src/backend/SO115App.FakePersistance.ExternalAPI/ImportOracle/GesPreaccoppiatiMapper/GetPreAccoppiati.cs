@@ -27,84 +27,81 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
             _memoryCache = memoryCache;
         }
 
-        public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
+        public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
         {
-            return GetAsync(query).Result;
+            //List<PreAccoppiato> ListaPreAccoppiati = new List<PreAccoppiato>();
+
+            //string CodSede = query.CodiceSede.FirstOrDefault().Substring(0, 2);
+            //if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
+            //{
+            //    _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            //    var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaGesPreaccoppiati?CodSede={CodSede}").ConfigureAwait(false);
+            //    response.EnsureSuccessStatusCode();
+            //    using HttpContent content = response.Content;
+            //    string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            //    List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle = JsonConvert.DeserializeObject<List<ORAGesPreaccoppiati>>(data);
+            //    ListaPreAccoppiati = MapListaPreAccoppiatiOraInMongoDB(ListaPreAccoppiatiOracle);
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+            //    _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
+            //}
+            //return ListaPreAccoppiati;
+
+            return null;
         }
 
-        public async Task<List<PreAccoppiati>> GetAsync(PreAccoppiatiQuery query)
-        {
-            List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
+        //public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
+        //{
+        //    var preAccoppiati = new List<PreAccoppiatiFakeJson>();
+        //    string filepath = "Fake/PreAccoppiatiComposizione.json";
+        //    string json;
+        //    using (var r = new StreamReader(filepath))
+        //    {
+        //        json = r.ReadToEnd();
+        //    }
 
-            string CodSede = query.CodiceSede.FirstOrDefault().Substring(0, 2);
-            if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
-            {
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaGesPreaccoppiati?CodSede={CodSede}").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle = JsonConvert.DeserializeObject<List<ORAGesPreaccoppiati>>(data);
-                ListaPreAccoppiati = MapListaPreAccoppiatiOraInMongoDB(ListaPreAccoppiatiOracle);
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
-                _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
-            }
-            return ListaPreAccoppiati;
-        }
+        //    preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
 
-        public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
-        {
-            var preAccoppiati = new List<PreAccoppiatiFakeJson>();
-            string filepath = "Fake/PreAccoppiatiComposizione.json";
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
+        //    return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
+        //}
 
-            preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
+        //private List<PreAccoppiato> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)
+        //{
+        //    List<string> sList = new List<string>();
+        //    var ListaPreAccoppiatigroupBy = ListaPreAccoppiatiOracle.GroupBy
+        //        (x => new { x.COD_DISTACCAMENTO, x.COD_AUTOMEZZO, x.TIPO_MEZZO, x.TARGA_MEZZO, x.COD_COMANDO })
+        //    .Select(y => new ORAGesPreaccoppiati()
+        //    {
+        //        COD_DISTACCAMENTO = y.Key.COD_DISTACCAMENTO,
+        //        COD_COMANDO = y.Key.COD_COMANDO,
+        //        TIPO_MEZZO = y.Key.TIPO_MEZZO,
+        //        TARGA_MEZZO = y.Key.TARGA_MEZZO
+        //    });
 
-            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
-        }
+        //    List<PreAccoppiato> ListaPreAccoppiati = new List<PreAccoppiato>();
+        //    foreach (ORAGesPreaccoppiati OraP in ListaPreAccoppiatigroupBy)
+        //    {
+        //        PreAccoppiato preAccoppiati = new PreAccoppiato
+        //        {
+        //            Id = Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString() + "-" + OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
+        //            Mezzo = OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
+        //            CodiceSede = OraP.COD_COMANDO + "." + Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString()
+        //        };
 
-        private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)
-        {
-            List<string> sList = new List<string>();
-            var ListaPreAccoppiatigroupBy = ListaPreAccoppiatiOracle.GroupBy
-                (x => new { x.COD_DISTACCAMENTO, x.COD_AUTOMEZZO, x.TIPO_MEZZO, x.TARGA_MEZZO, x.COD_COMANDO })
-            .Select(y => new ORAGesPreaccoppiati()
-            {
-                COD_DISTACCAMENTO = y.Key.COD_DISTACCAMENTO,
-                COD_COMANDO = y.Key.COD_COMANDO,
-                TIPO_MEZZO = y.Key.TIPO_MEZZO,
-                TARGA_MEZZO = y.Key.TARGA_MEZZO
-            });
+        //        foreach (ORAGesPreaccoppiati ORAGesPreaccoppiati in ListaPreAccoppiatiOracle)
+        //        {
+        //            if (ORAGesPreaccoppiati.TARGA_MEZZO.Equals(OraP.TARGA_MEZZO))
+        //            {
+        //                sList.Add(ORAGesPreaccoppiati.COD_SQUADRA.ToString());
+        //            }
+        //        }
 
-            List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
-            foreach (ORAGesPreaccoppiati OraP in ListaPreAccoppiatigroupBy)
-            {
-                PreAccoppiati preAccoppiati = new PreAccoppiati
-                {
-                    Id = Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString() + "-" + OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
-                    Mezzo = OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
-                    CodiceSede = OraP.COD_COMANDO + "." + Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString()
-                };
+        //        string[] Squadre = sList.ToArray();
+        //        preAccoppiati.Squadre = Squadre;
 
-                foreach (ORAGesPreaccoppiati ORAGesPreaccoppiati in ListaPreAccoppiatiOracle)
-                {
-                    if (ORAGesPreaccoppiati.TARGA_MEZZO.Equals(OraP.TARGA_MEZZO))
-                    {
-                        sList.Add(ORAGesPreaccoppiati.COD_SQUADRA.ToString());
-                    }
-                }
+        //        ListaPreAccoppiati.Add(preAccoppiati);
+        //    }
 
-                string[] Squadre = sList.ToArray();
-                preAccoppiati.Squadre = Squadre;
-
-                ListaPreAccoppiati.Add(preAccoppiati);
-            }
-
-            return ListaPreAccoppiati;
-        }
+        //    return ListaPreAccoppiati;
+        //}
     }
 }

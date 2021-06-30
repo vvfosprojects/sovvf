@@ -21,7 +21,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
             _configuration = configuration;
         }
 
-        public async Task<List<PreAccoppiati>> Get(string CodSede)
+        public async Task<List<PreAccoppiato>> Get(string CodSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
 
@@ -34,26 +34,26 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
             return MapListaPreAccoppiatiOraInMongoDB(ListaPreAccoppiatiOracle);
         }
 
-        private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)
+        private List<PreAccoppiato> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)
         {
-            List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
+            List<PreAccoppiato> ListaPreAccoppiati = new List<PreAccoppiato>();
 
-            foreach (ORAGesPreaccoppiati OraP in ListaPreAccoppiatiOracle)
-            {
-                List<string> sList = new List<string>();
-                PreAccoppiati p = new PreAccoppiati
-                {
-                    Id = Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString() + "-" + Decimal.ToInt32(OraP.COD_AUTOMEZZO).ToString() + "-" + Decimal.ToInt32(OraP.COD_SQUADRA).ToString(), //OraP.COD_SQUADRA.ToString(),
-                    Mezzo = OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
-                    CodiceSede = OraP.COD_COMANDO + "." + Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString()
-                };
+            //foreach (ORAGesPreaccoppiati OraP in ListaPreAccoppiatiOracle)
+            //{
+            //    List<string> sList = new List<string>();
+            //    PreAccoppiato p = new PreAccoppiato
+            //    {
+            //        Id = Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString() + "-" + Decimal.ToInt32(OraP.COD_AUTOMEZZO).ToString() + "-" + Decimal.ToInt32(OraP.COD_SQUADRA).ToString(), //OraP.COD_SQUADRA.ToString(),
+            //        Mezzo = OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
+            //        CodiceSede = OraP.COD_COMANDO + "." + Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString()
+            //    };
 
-                sList.Add(OraP.COD_SQUADRA.ToString());
-                string[] Squadre = sList.ToArray();
-                p.Squadre = Squadre;
+            //    sList.Add(OraP.COD_SQUADRA.ToString());
+            //    string[] Squadre = sList.ToArray();
+            //    p.Squadre = Squadre;
 
-                ListaPreAccoppiati.Add(p);
-            }
+            //    ListaPreAccoppiati.Add(p);
+            //}
 
             return ListaPreAccoppiati;
         }

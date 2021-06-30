@@ -25,13 +25,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
             var composizioneSquadre = new List<ComposizioneSquadre>();
 
-            foreach (Squadra s in ListaSquadre)
-            {
-                ComposizioneSquadre c = new ComposizioneSquadre();
-                c.Squadra = s;
-                c.Id = s.Id;
-                composizioneSquadre.Add(c);
-            }
+            //foreach (Squadra s in ListaSquadre)
+            //{
+            //    ComposizioneSquadre c = new ComposizioneSquadre();
+            //    c.Squadra = s;
+            //    c.Id = s.Id;
+            //    composizioneSquadre.Add(c);
+            //}
 
             return null;
         }
