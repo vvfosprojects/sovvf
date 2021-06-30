@@ -18,14 +18,12 @@
 </ng-template>
 <ng-template [ngIf]="!!richiestaModifica">
     <div class="pl-2">
-        <span class="d-inline-block mr-2 mb-0">
+        <h4 class="d-inline-block mt-2 mb-0">
             <i class="fa fa-edit mr-1"></i>
             Stai modificando la richiesta
             <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>
-        </span>
-        <span class="d-inline-block mb-0">
             del giorno <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'dd-MM-yyyy' }}</b>
             alle <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'HH:mm:ss' }}</b>
-        </span>
+        </h4>
     </div>
 </ng-template>

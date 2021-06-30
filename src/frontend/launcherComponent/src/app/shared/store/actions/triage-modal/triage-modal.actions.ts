@@ -41,4 +41,12 @@ export class ClearTriageChiamata {
     static readonly type = '[TriageChiamataModal] Clear Triage Chiamata';
 }
 
+export class StartLoadingTriageChiamata {
+    static readonly type = '[TriageChiamataModal] Start Loading';
+}
+
+export class StopLoadingTriageChiamata {
+    static readonly type = '[TriageChiamataModal] Stop Loading';
+}
+
 

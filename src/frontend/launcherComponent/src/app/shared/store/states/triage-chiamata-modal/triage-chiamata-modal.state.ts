@@ -10,7 +10,7 @@ import {
     SetTriageChiamata,
     ClearTipologiaTriageChiamata,
     ClearDettaglioTipologiaTriageChiamata,
-    ClearTriageChiamata
+    ClearTriageChiamata, StartLoadingTriageChiamata, StopLoadingTriageChiamata
 } from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
@@ -26,6 +26,7 @@ export interface TriageChiamataModalStateModel {
     triageData: ItemTriageData[];
     idTriage: string;
     pos: PosInterface[];
+    loadingTriageChiamata: boolean;
 }
 
 export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
@@ -35,7 +36,8 @@ export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
     triage: undefined,
     triageData: undefined,
     idTriage: undefined,
-    pos: undefined
+    pos: undefined,
+    loadingTriageChiamata: undefined
 };
 
 @Injectable()
@@ -65,12 +67,19 @@ export class TriageChiamataModalState {
         return state.triageData;
     }
 
+    @Selector()
+    static loadingTriageChiamata(state: TriageChiamataModalStateModel): boolean {
+        return state.loadingTriageChiamata;
+    }
+
     @Action(GetDettagliTipologieByCodTipologia)
-    getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageChiamataModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
+    getDettagliTipologieByCodTipologia({ patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
+        dispatch(new StartLoadingTriageChiamata());
         this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
             patchState({
                 dettagliTipologia: response.listaDettaglioTipologie
             });
+            dispatch(new StopLoadingTriageChiamata());
         });
     }
 
@@ -112,16 +121,18 @@ export class TriageChiamataModalState {
     }
 
     @Action(SetTriageChiamata)
-    setTriageChiamata({ getState, patchState }: StateContext<TriageChiamataModalStateModel>): void {
+    setTriageChiamata({ getState, patchState, dispatch }: StateContext<TriageChiamataModalStateModel>): void {
         const state = getState();
         const codTipologiaSelezionata = state.codTipologiaSelezionata;
         const codDettaglioTipologiaSelezionata = state.codDettaglioTipologiaSelezionato;
+        dispatch(new StartLoadingTriageChiamata());
         this.triageService.get(codTipologiaSelezionata, codDettaglioTipologiaSelezionata).subscribe((res: { triage: { id: string, data: TreeviewItem }, triageData: ItemTriageData[] }) => {
             patchState({
                 idTriage: res?.triage?.id,
                 triage: res?.triage?.data,
                 triageData: res?.triageData
             });
+            dispatch(new StopLoadingTriageChiamata());
         });
     }
 
@@ -132,6 +143,20 @@ export class TriageChiamataModalState {
             triage: TriageChiamataModalStateDefaults.triage,
             triageData: TriageChiamataModalStateDefaults.triageData,
             pos: TriageChiamataModalStateDefaults.pos
+        });
+    }
+
+    @Action(StartLoadingTriageChiamata)
+    startLoadingTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        patchState({
+            loadingTriageChiamata: true
+        });
+    }
+
+    @Action(StopLoadingTriageChiamata)
+    stopLoadingTriageChiamata({ patchState }: StateContext<TriageChiamataModalStateModel>): void {
+        patchState({
+            loadingTriageChiamata: false
         });
     }
 }

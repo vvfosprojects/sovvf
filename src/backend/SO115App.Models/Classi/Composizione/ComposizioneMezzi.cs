@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Composizione;
 using System;
 using System.Collections.Generic;
 
@@ -31,7 +32,7 @@ namespace SO115App.API.Models.Classi.Composizione
         /// <summary>
         ///   Squadre preaccoppiate
         /// </summary>
-        //public List<ComposizioneSquadre> SquadrePreaccoppiate { get; set; } = null;
+        public List<ComposizioneSquadra> SquadrePreaccoppiate { get; set; } = null;
 
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }

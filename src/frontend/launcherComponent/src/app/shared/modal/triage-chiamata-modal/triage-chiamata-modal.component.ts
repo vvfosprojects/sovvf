@@ -22,7 +22,7 @@ import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import { PosInterface } from "../../interface/pos.interface";
+import { PosInterface } from '../../interface/pos.interface';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -33,6 +33,8 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
+    @Select(TriageChiamataModalState.loadingTriageChiamata) loadingTriageChiamata$: Observable<boolean>;
+    loadingTriageChiamata: boolean;
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
@@ -55,6 +57,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     constructor(private modal: NgbActiveModal,
                 private store: Store,
                 private modalService: NgbModal) {
+        this.getLoadingTriageChiamata();
         this.getTriage();
         this.getTriageData();
     }
@@ -69,6 +72,14 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
+    }
+
+    getLoadingTriageChiamata(): void {
+        this.subscriptions.add(
+            this.loadingTriageChiamata$.subscribe((loadingTriageChiamata: boolean) => {
+                this.loadingTriageChiamata = loadingTriageChiamata;
+            })
+        );
     }
 
     getDettagliTipologia(): void {
@@ -149,7 +160,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     setDettaglioTipologiaSelezionato(codDettaglioTipologia?: number): void {
         if (codDettaglioTipologia) {
             this.dettaglioTipologiaSelezionato = this.dettagliTipologia?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
-            this.pos = [this.dettaglioTipologiaSelezionato?.pos];
+            this.pos = this.dettaglioTipologiaSelezionato?.pos;
         }
         this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia, this.pos));
     }
@@ -244,7 +255,12 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         if (this.dettaglioTipologiaSelezionato && !this.triageSummary?.length) {
             return this.dismissModal('dismiss');
         }
-        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, triageSummary: this.triageSummary, pos: this.pos };
+        const obj = {
+            type,
+            dettaglio: this.dettaglioTipologiaSelezionato,
+            triageSummary: this.triageSummary,
+            pos: this.pos
+        };
         this.modal.close(obj);
     }
 

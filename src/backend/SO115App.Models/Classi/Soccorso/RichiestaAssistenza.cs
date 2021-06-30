@@ -938,21 +938,21 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            const string messaggio = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
+            //const string messaggio = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
 
-            if (_eventi.Count > 0)
-            {
-                if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
-                {
-                    var eventiPartenza = _eventi.OfType<AbstractPartenza>()
-                        .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
-                        .Where(e => Aperta)
-                        .ToList();
+            //if (_eventi.Count > 0)
+            //{
+            //    if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
+            //    {
+            //        var eventiPartenza = _eventi.OfType<AbstractPartenza>()
+            //            .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+            //            .Where(e => Aperta)
+            //            .ToList();
 
-                    if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
-                        throw new Exception(messaggio);
-                }
-            }
+            //        if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
+            //            throw new Exception(messaggio);
+            //    }
+            //}
 
             _eventi.Add(evento);
         }

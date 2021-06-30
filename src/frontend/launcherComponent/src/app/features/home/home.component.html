@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="(navbarLoaded | async)">
+<div *ngIf="(navbarLoaded | async)" class="container-fluid">
     <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="(doubleMonitor$ | async)">
@@ -12,7 +12,7 @@
                 </div>
                 <!-- Filterbar -->
                 <div class="col-12 bg-filterbar py-2"
-                     [class.mt-3]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
+                     [class.mt-1]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
                      [class.d-none]="viewState.composizione.active">
                     <app-filterbar [colorButton]="(colorButton$ | async)"
                                    [doubleMonitor]="(doubleMonitor$ | async)"
@@ -20,8 +20,8 @@
                                    [nightMode]="(nightMode$ | async)">
                     </app-filterbar>
                 </div>
+                <!-- Richieste -->
                 <div class="col-12">
-                    <!-- Richieste -->
                     <app-richieste *ngIf="viewState.richieste.active"
                                    [nightMode]="(nightMode$ | async)"
                                    [boxAttivi]="boxAttivi">
@@ -36,23 +36,33 @@
                             </app-maps>
                         </div>
                     </div>
-                    <!-- Scheda Richiesta -->
+                </div>
+                <!-- Scheda Richiesta -->
+                <div class="col-12">
                     <app-scheda-richiesta
                             *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
-                    <!-- Coda Chiamate -->
+                </div>
+                <!-- Coda Chiamate -->
+                <div class="col-12">
                     <app-coda-chiamate *ngIf="viewState.codaChiamate.active"></app-coda-chiamate>
-                    <!-- Composizione Partenza -->
+                </div>
+                <!-- Composizione Partenza -->
+                <div class="col-12">
                     <app-composizione-partenza *ngIf="viewState.composizione.active"
                                                [nightMode]="(nightMode$ | async)"
                                                [boxAttivi]="boxAttivi"
                                                [compPartenzaMode]="(composizioneMode$ | async)">
                     </app-composizione-partenza>
-                    <!-- Mezzi in Servizio -->
+                </div>
+                <!-- Mezzi in Servizio -->
+                <div class="col-12">
                     <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"
                                            [nightMode]="(nightMode$ | async)"
                                            [boxAttivi]="boxAttivi">
                     </app-mezzi-in-servizio>
-                    <!-- Schede Contatto -->
+                </div>
+                <!-- Schede Contatto -->
+                <div class="col-12">
                     <app-schede-contatto *ngIf="viewState.schedeContatto.active"
                                          [nightMode]="(nightMode$ | async)"
                                          [boxAttivi]="boxAttivi">
@@ -62,8 +72,8 @@
         </div>
         <!-- Mappa -->
         <div *ngIf="(doubleMonitor$ | async)"
-             style="height: 925px"
-             class="col-6">
+             class="col-6"
+             style="height: 925px">
             <div class="row h-100"
                  [class.mt-1]="!boxAttivi && !viewState.chiamata.active && !viewState.modifica.active"
                  [class.mt-2]="viewState.chiamata.active || viewState.composizione.active || viewState.modifica.active">
