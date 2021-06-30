@@ -78,14 +78,6 @@
     color: darkred;
 }
 
-.m-h-160 {
-    max-height: 160px;
-}
-
-.m-h-100 {
-    max-height: 100px;
-}
-
 .double-monitor .font-double-monitor {
     font-size: 130% !important;
 }

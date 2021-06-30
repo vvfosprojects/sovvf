@@ -9,19 +9,16 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-12">
-
                     <!-- Icona Richiesta Sospesa -->
                     <div *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
                          class="d-inline-block text-danger font-weight-bolder h4"
                          style="position: absolute; left: 0; top:22px">S
                     </div>
-
                     <!-- Icona Richiesta Esercitazione -->
                     <div *ngIf="richiesta?.esercitazione"
                          class="d-inline-block text-primary font-weight-bolder h4"
                          style="position: absolute; left: 0; top:22px">E
                     </div>
-
                     <!-- PRIMA RIGA -->
                     <div class="row">
                         <!-- Priorità -->
@@ -276,7 +273,9 @@
                     </div>
 
                     <!-- box note localita e zone emergenza -->
-                    <div *ngIf="inGestione" [class.d-none]="partenza" class="col-md-12 default-cursor pl-5">
+                    <div *ngIf="inGestione"
+                         class="col-md-12 default-cursor pl-5"
+                         [class.d-none]="partenza">
 
                         <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length"
                              class="col-md-12">
@@ -311,28 +310,40 @@
 
                         <!-- II livello di dettaglio -->
                         <div class="row mt-3">
-
                             <!-- I colonna -->
                             <div class="col-2">
                                 <div class="clearfix">
-                                    <!-- presa in carico -->
+                                    <!-- Operatore chiamata -->
+                                    <div *ngIf="richiesta?.operatore as op">
+                                        <h4 [ngbTooltip]="utentePresaInCarico" class="mb-0">
+                                            <i class="guida fa fa-user fa-fw"></i>
+                                            <i class="guida fa fa-phone fa-fw mr-1"></i>
+                                            {{ op?.nome + ' ' + op?.cognome | truncate: 14 }}
+                                            <ng-template #utentePresaInCarico>
+                                                <div>
+                                                    {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
+                                                </div>
+                                            </ng-template>
+                                        </h4>
+                                    </div>
+
+                                    <!-- Presa in carico -->
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico)">
-                                        <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
-                                           placement="right"></i>
-                                        <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
-                                             class="d-inline-block m-0 mr-1"
-                                             [ngbTooltip]="utentePresaInCarico">
+                                        <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
+                                            class="d-inline-block m-0 mr-1"
+                                            [ngbTooltip]="utentePresaInCarico">
+                                            <i class="guida fa fa-calendar-check-o fa-fw mr-1"
+                                               ngbTooltip="Presa in carico"
+                                               placement="right"></i>
                                             {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
                                             <ng-template #utentePresaInCarico>
                                                 <div>
-                                                    {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.nominativo}}
-                                                </div>
-                                                <div>
-                                                    {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyDate}}
-                                                    {{getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyHour: true}}
+                                                    {{ utentiPresaInCaricoValue?.nominativo }} ha preso in carico
+                                                    {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyDate }}
+                                                    {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyHour: true }}
                                                 </div>
                                             </ng-template>
-                                        </div>
+                                        </h4>
                                         <div *ngIf="richiesta?.listaUtentiPresaInCarico && richiesta?.listaUtentiPresaInCarico?.length > 1"
                                              ngbDropdown class="d-inline-block" placement="bottom">
                                             <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
@@ -350,20 +361,20 @@
                                             </div>
                                         </div>
                                         <ng-template #nonPresaInCarico>
-                                            <a>Non Presa in Carico</a>
+                                            <h4>Nhon Presa in Carico</h4>
                                         </ng-template>
                                     </div>
 
-                                    <!-- in lavorazione -->
+                                    <!-- In lavorazione -->
                                     <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione)">
-                                        <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
-                                           placement="right"></i>
-                                        <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                             class="d-inline-block m-0 mr-1"
-                                             [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
-                                             [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
+                                        <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
+                                            class="d-inline-block m-0 mr-1"
+                                            [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
+                                            [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
+                                            <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
+                                               placement="right"></i>
                                             {{ utentiInLavorazioneValue?.nominativo | truncate: 15 }}
-                                        </div>
+                                        </h4>
                                         <div *ngIf="richiesta?.listaUtentiInLavorazione && richiesta?.listaUtentiInLavorazione?.length > 1"
                                              ngbDropdown class="d-inline-block" placement="bottom">
                                             <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
@@ -379,27 +390,25 @@
                                             </div>
                                         </div>
                                         <ng-template #nonInLavorazione>
-                                            <a>Non in lavorazione</a>
+                                            <h4>Non in lavorazione</h4>
                                         </ng-template>
                                     </div>
 
-                                    <!-- scheda nue -->
+                                    <!-- Scheda NUE -->
                                     <div *ngIf="richiesta?.codiceSchedaNue">
-                                        <i class="guida fa fa-id-card-o fa-fw mr-2"
-                                           ngbTooltip="Codice scheda NUE"
-                                           placement="right">
-                                        </i>
-                                        <div *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
-                                             class="d-inline-block">
+                                        <h4 *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
+                                            class="d-inline-block">
+                                            <i class="guida fa fa-id-card-o fa-fw mr-1"
+                                               ngbTooltip="Codice scheda NUE"
+                                               placement="right">
+                                            </i>
                                             S. NUE
                                             <div class="d-inline-block font-weight-bold">
                                                 {{ richiesta?.codiceSchedaNue }}
                                             </div>
-                                        </div>
+                                        </h4>
                                         <ng-template #nessunCodiceNue>
-                                            <span>
-                                                Nessuna scheda NUE
-                                            </span>
+                                            <h4>Nessuna scheda NUE</h4>
                                         </ng-template>
                                     </div>
 
@@ -435,24 +444,19 @@
                                 </div>
                             </div>
 
-                            <!-- II colonna -->
-                            <!-- No Partenze (TRIAGE) -->
+                            <!-- II colonna Triage -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) <= 0"
-                                 class="col-8 border border-light text-center">
-                                <button *ngIf="richiesta?.triageSummary"
-                                        class="btn btn-danger my-2"
-                                        (click)="openDettaglioTriage()">
-                                    Visualizza Triage
-                                </button>
+                                 class="col-8">
+                                <div *ngIf="richiesta?.triageSummary?.length">
+                                    <app-triage-summary-sintesi-richiesta [triageSummary]="richiesta?.triageSummary"
+                                                                          [pos]="richiesta?.dettaglioTipologia?.pos">
+                                    </app-triage-summary-sintesi-richiesta>
+                                </div>
                             </div>
-                            <!-- Lista Partenze -->
+                            <!-- II colonna Lista Partenze -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) > 0"
-                                 class="col-8 px-0 border"
-                                 [ngClass]="{'shadow border-info rounded': inGestione}"
-                                 [class.border-light]="!inGestione">
-                                <div class="scroll-y px-2"
-                                     [class.m-h-160]="inGestione"
-                                     [class.m-h-100]="!inGestione">
+                                 class="col-8 px-0 border border-light">
+                                <div class="scroll-y px-2 py-1">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
                                                         [listaEventi]="richiesta?.eventi"
@@ -473,14 +477,20 @@
                                 <div class="clearfix">
                                     <!-- turno intervento -->
                                     <div class="text-right">
-                                        <div *ngIf="richiesta?.trnInsChiamata; else nessunTurno" class="d-inline-block">
-                                            {{richiesta?.trnInsChiamata}}
-                                            <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
-                                        </div>
+                                        <h4 *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
+                                            {{ richiesta?.trnInsChiamata }}
+                                            <i class="fa fa-fw fa-calendar-check-o guida ml-1"
+                                               ngbTooltip="Turno Inserimento"
+                                               placement="left">
+                                            </i>
+                                        </h4>
                                         <ng-template #nessunTurno>
-                                            <a>-</a>
-                                            <i class="guida fa fa-clock-o fa-fw ml-1" ngbTooltip="Turno non presente"
-                                               placement="right"></i>
+                                            <h4>
+                                                <span class="d-inline-block mr-1">-</span>
+                                                <i class="guida fa fa-clock-o fa-fw ml-1"
+                                                   ngbTooltip="Turno non presente"
+                                                   placement="left"></i>
+                                            </h4>
                                         </ng-template>
                                     </div>
 
@@ -509,14 +519,18 @@
                                     </div>
 
                                     <!-- complessità -->
-                                    <div class="text-right">
-                                        <a><b>{{ richiesta?.complessita?.indice }}</b></a>
-                                        <span class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
-                                            {{ richiesta?.complessita?.descrizione }}
-                                        </span>
-                                        <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
-                                           placement="left"></i>
-                                    </div>
+                                    <ng-template [ngIf]="richiesta?.complessita?.indice !== '0'">
+                                        <div class="text-right">
+                                            <h4>
+                                                <b>{{ richiesta?.complessita?.indice }}</b>
+                                                <div class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
+                                                    {{ richiesta?.complessita?.descrizione }}
+                                                </div>
+                                                <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
+                                                   placement="left"></i>
+                                            </h4>
+                                        </div>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>
