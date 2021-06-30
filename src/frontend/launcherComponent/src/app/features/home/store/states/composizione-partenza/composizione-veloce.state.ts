@@ -101,27 +101,6 @@ export class ComposizioneVeloceState {
                     preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
-            response.composizionePreaccoppiatiDataArray = [{
-                id: '6',
-                codiceMezzo: 'O.21901',
-                genereMezzo: 'APS',
-                squadre: [{
-                    codice: '57',
-                    stato: 0,
-                    nome: 'RM57',
-                    membri: null,
-                    distaccamento: null,
-                    diEmergenza: null,
-                    turno: null,
-                    mezziPreaccoppiati: null,
-                }],
-                statoMezzo: StatoMezzo.InSede,
-                descrizioneMezzo: '21901',
-                km: '7.79',
-                tempoPercorrenza: '4.45',
-                distaccamento: 'CIAMPINO (AEROPORTUALE)'
-            }];
-            console.log('***composizionePreaccoppiatiDataArray FAKE: ', response.composizionePreaccoppiatiDataArray);
             dispatch([
                 new SetListaPreaccoppiati(response.composizionePreaccoppiatiDataArray),
                 new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
