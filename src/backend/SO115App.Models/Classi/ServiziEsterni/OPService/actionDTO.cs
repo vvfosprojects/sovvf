@@ -5,8 +5,23 @@ using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
-    public class actionDTO : Squadra
+    public class actionDTO
     {
+        [JsonPropertyName("id")]
+        public string id { get; set; }
+
+        [JsonPropertyName("spotId")]
+        public string spotId { get; set; }
+
+        [JsonPropertyName("spotType")]
+        public string spotType { get; set; }
+
+        [JsonPropertyName("version")]
+        public int version { get; set; }
+
+        [JsonPropertyName("workshiftId")]
+        public string workshiftId { get; set; }
+
         [JsonPropertyName("actionType")]
         public string actionType { get; set; }
 

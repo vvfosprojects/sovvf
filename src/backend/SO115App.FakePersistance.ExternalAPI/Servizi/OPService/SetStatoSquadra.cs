@@ -27,10 +27,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             var content = new StringContent(json);
 
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
-            //var url = new Uri(baseurl, "/api/v1/so-workshift/action");
 
+            var url = new Uri(baseurl, "/api/v1/so-workshift/action");
             //var result = await _client.PostAsync(url, content);
             //return result;
+
             return null;
         }
     }

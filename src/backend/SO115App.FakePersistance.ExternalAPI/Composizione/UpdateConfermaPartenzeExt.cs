@@ -94,7 +94,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             {
                                 actionType = "ALLOCATE",
                                 createdAt = DateTime.Now,
-                                Id = squadra.IdOPService,
+                                id = squadra.IdOPService,
                                 id_chiamata = command.ConfermaPartenze.IdRichiesta,
                                 id_mezzi = new string[1] { partenza.Mezzo.Codice },
                                 id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
@@ -106,25 +106,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             }
                             );
                         }
-                    }
-                    else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                    {
-                        var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
-                        _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                        else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                         {
-                            actionType = "DEALLOCATE",
-                            createdAt = DateTime.Now,
-                            Id = squadra.IdOPService,
-                            id_chiamata = command.ConfermaPartenze.IdRichiesta,
-                            id_mezzi = new string[1] { partenza.Mezzo.Codice },
-                            id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
-                            id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
-                            spotId = squadra.spotId,
-                            spotType = squadra.spotType,
-                            version = squadra.version,
-                            workshiftId = squadra.workshiftId
+                            var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
+                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                            {
+                                actionType = "DEALLOCATE",
+                                createdAt = DateTime.Now,
+                                id = squadra.IdOPService,
+                                id_chiamata = command.ConfermaPartenze.richiesta.Id,
+                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
+                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
+                                id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
+                                spotId = squadra.spotId,
+                                spotType = squadra.spotType,
+                                version = squadra.version,
+                                workshiftId = squadra.workshiftId
+                            }
+                            );
                         }
-                        );
                     }
                 }
 
