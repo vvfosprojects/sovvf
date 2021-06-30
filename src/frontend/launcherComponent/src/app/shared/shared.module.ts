@@ -74,6 +74,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
+import { TriageSummarySintesiRichiestaComponent } from "./components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component";
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -141,7 +142,8 @@ const COMPONENTS = [
     SidebarComponent,
     TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent,
-    PosModalComponent
+    PosModalComponent,
+    TriageSummarySintesiRichiestaComponent
 ];
 const MODULES = [
     PipeModule
