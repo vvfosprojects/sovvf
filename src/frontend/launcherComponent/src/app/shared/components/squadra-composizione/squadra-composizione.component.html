@@ -32,7 +32,7 @@
             </ng-template>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
-                {{ squadraComp?.nome | truncate: 10 }}</div>
+                {{ squadraComp?.nome | truncate: 7 }}</div>
             <div class="d-inline-block">({{ squadraComp?.turno }})</div>
             <!-- Mezzo Preaccoppiato -->
             <ng-template [ngIf]="squadraComp.mezziPreaccoppiati">

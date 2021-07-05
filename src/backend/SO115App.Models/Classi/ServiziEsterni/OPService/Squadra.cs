@@ -31,6 +31,18 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         [JsonPropertyName("enabled")]
         public bool Attiva { get; set; }
 
+        [JsonPropertyName("spotId")]
+        public string spotId { get; set; }
+
+        [JsonPropertyName("spotType")]
+        public string spotType { get; set; }
+
+        [JsonPropertyName("version")]
+        public int version { get; set; }
+
+        [JsonPropertyName("workshiftId")]
+        public string workshiftId { get; set; }
+
         [JsonPropertyName("dne")]
         private string dne { get; set; }
 
@@ -41,7 +53,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
     {
         [JsonPropertyName("userId")]
         public string CodiceFiscale { get; set; }
-        
+
         [JsonPropertyName("role")]
         public string Ruolo { get; set; }
 
@@ -58,8 +70,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
     //    public DateTime A { get; set; }
     //}
 }
-
-
 
 //"id": "60bdde7a49b4ee70cf546392",
 //"spotId": "b2a70906-d35f-4135-a380-532c6b7a1fc0",

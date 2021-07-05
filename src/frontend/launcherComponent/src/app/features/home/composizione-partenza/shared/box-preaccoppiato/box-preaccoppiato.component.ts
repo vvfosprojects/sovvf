@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { BoxPartenza } from '../../interface/box-partenza-interface';
+import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
@@ -13,11 +13,11 @@ import { BoxPartenzaState } from '../../../store/states/composizione-partenza/bo
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
-    selector: 'app-box-nuova-partenza',
-    templateUrl: './box-nuova-partenza.component.html',
-    styleUrls: ['./box-nuova-partenza.component.css']
+    selector: 'app-box-preaccoppiato',
+    templateUrl: './box-preaccoppiato.component.html',
+    styleUrls: ['./box-preaccoppiato.component.css']
 })
-export class BoxNuovaPartenzaComponent implements OnDestroy {
+export class BoxPreaccoppiatoComponent implements OnDestroy {
 
     // BoxPartenza Composizione
     @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
@@ -25,7 +25,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
 
     @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
 
-    @Input() partenza: BoxPartenza;
+    @Input() partenzaPreAccopiati: BoxPartenzaPreAccoppiati;
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
     @Input() itemSelezionato: boolean;
@@ -38,9 +38,9 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     @Input() elimina: boolean;
     @Input() alert: boolean;
 
-    @Output() selezionato = new EventEmitter<any>();
-    @Output() deselezionato = new EventEmitter<any>();
-    @Output() eliminato = new EventEmitter<BoxPartenza>();
+    @Output() selezionato = new EventEmitter<BoxPartenzaPreAccoppiati>();
+    @Output() deselezionato = new EventEmitter<BoxPartenzaPreAccoppiati>();
+    @Output() eliminato = new EventEmitter<BoxPartenzaPreAccoppiati>();
     @Output() squadraShortcut = new EventEmitter<SquadraComposizione>();
 
     @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
@@ -68,20 +68,20 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     onClick(): void {
         if (!this.itemOccupato) {
             if (!this.itemSelezionato) {
-                this.selezionato.emit(this.partenza);
+                this.selezionato.emit(this.partenzaPreAccopiati);
             } else {
-                this.deselezionato.emit(this.partenza);
+                this.deselezionato.emit(this.partenzaPreAccopiati);
             }
-        } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
-        } else if (this._checkSquadraOccupata(this.partenza.squadreComposizione)) {
+        } else if (mezzoComposizioneBusy(this.partenzaPreAccopiati.statoMezzo)) {
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenzaPreAccopiati.statoMezzo + ' ed è impegnato in un\'altra richiesta', null, null, true));
+        } else if (this._checkSquadraOccupata(this.partenzaPreAccopiati.squadre)) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
         }
     }
 
     onElimina(e: MouseEvent): void {
         e.stopPropagation();
-        this.eliminato.emit(this.partenza);
+        this.eliminato.emit(this.partenzaPreAccopiati);
     }
 
     ngClass(): string {
@@ -100,8 +100,8 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         } else if (this.compPartenzaMode === Composizione.Avanzata) {
             /* Se è attiva la modalità avanzata */
             if (this.itemSelezionato) {
-                const squadra = this.partenza.squadreComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
-                const mezzo = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
+                const squadra = this.partenzaPreAccopiati.squadre.length > 0 ? 'squadra-si' : 'squadra-no';
+                const mezzo = this.partenzaPreAccopiati.codiceMezzo ? 'mezzo-si' : 'mezzo-no';
 
                 if (!this.nightMode) {
                     returnClass = 'bg-light ';
@@ -134,8 +134,8 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     badgeDistaccamentoClass(): string {
         let result = 'badge-terza-competenza';
 
-        if (this.richiesta && this.partenza.mezzoComposizione) {
-            const distaccamentoMezzo = this.partenza.mezzoComposizione.mezzo.distaccamento.descrizione;
+        if (this.richiesta && this.partenzaPreAccopiati.codiceMezzo) {
+            const distaccamentoMezzo = this.partenzaPreAccopiati.distaccamento;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
@@ -152,10 +152,10 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     boxValidationClass(): { result: string, tooltip: string } {
         let result = 'text-danger';
         let tooltip = 'Errore sconosciuto';
-        const prefix = 'fas ';
+        const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
-        const squadra2 = this.partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';
-        const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
+        const squadra2 = this.partenzaPreAccopiati.squadre.length ? 'squadra-si' : 'squadra-no';
+        const mezzo2 = this.partenzaPreAccopiati.codiceMezzo && (this.partenzaPreAccopiati.statoMezzo === StatoMezzo.InSede || this.partenzaPreAccopiati.codiceMezzo === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
             case 'mezzo-si|squadra-no':
@@ -185,8 +185,8 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     onHoverIn(): void {
         if (this.compPartenzaMode === Composizione.Veloce) {
             this.hoverIn.emit({
-                idBoxPartenza: this.partenza.id,
-                idMezzo: this.partenza.mezzoComposizione.mezzo ? this.partenza.mezzoComposizione.mezzo.codice : null,
+                idBoxPartenza: this.partenzaPreAccopiati.id,
+                idMezzo: this.partenzaPreAccopiati.codiceMezzo,
             });
         }
     }
@@ -198,7 +198,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
     }
 
     squadraShortcutEvent(): void {
-        this.squadraShortcut.emit(this.partenza.squadreComposizione[0]);
+        this.squadraShortcut.emit(this.partenzaPreAccopiati.squadre[0]);
     }
 
     _iconaStatiClass(statoMezzo: any): string {

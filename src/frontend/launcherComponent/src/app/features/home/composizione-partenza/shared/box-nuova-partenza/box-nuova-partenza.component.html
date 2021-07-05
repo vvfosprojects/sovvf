@@ -29,7 +29,7 @@
                 <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadreComposizione[0].stato))"
                     ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadreComposizione[0].stato) }}"
                     class="fas fa-group mr-1 font-weight-bold"></i>
-                <span [ngbTooltip]=" partenza.squadreComposizione[0].nome.length >= 10 ?  partenza.squadreComposizione[0].nome : null">
+                <span [ngbTooltip]=" partenza.squadreComposizione[0].nome && partenza.squadreComposizione[0].nome.length >= 10 ?  partenza.squadreComposizione[0].nome : null">
                     {{ partenza.squadreComposizione[0].nome | truncate: 10 }}</span>
                 <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1 && partenza.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && !disableDividi"
                         class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
@@ -90,7 +90,7 @@
             <i class="guida fas fa-map-marker mr-2 ml-1"></i>
             <span class="badge" [ngbTooltip]="partenza.mezzoComposizione.mezzo.distaccamento.descrizione"
                   [disableTooltip]="partenza.mezzoComposizione.mezzo.distaccamento.descrizione.length <= 12"
-                  [ngClass]="badgeDistaccamentoClass()">{{partenza.mezzoComposizione.mezzo.distaccamento.descrizione | slice: 0:12}}</span>
+                  [ngClass]="badgeDistaccamentoClass()">{{partenza.mezzoComposizione.mezzo.distaccamento.descrizione | slice: 0:20}}</span>
         </div>
         <div *ngIf="!partenza.mezzoComposizione?.mezzo.distaccamento" class="col text-danger">
             <i class="fas fa-map-marker mr-2 ml-1"></i>

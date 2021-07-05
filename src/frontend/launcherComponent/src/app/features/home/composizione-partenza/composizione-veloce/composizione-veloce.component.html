@@ -12,7 +12,7 @@
             <div class="card-body p-0">
                 <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
                     <div class="col-6" *ngFor="let preAcc of preAccoppiati">
-                        <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
+                        <app-box-preaccoppiato [partenzaPreAccopiati]="preAcc" [richiesta]="richiesta"
                                                 [nightMode]="nightMode"
                                                 [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
                                                 [itemHover]="preAcc.id === idPreaccoppiatoHover"
@@ -22,7 +22,7 @@
                                                 (deselezionato)="deselezionaPreaccoppiato($event)"
                                                 (hoverIn)="onHoverIn($event)"
                                                 (hoverOut)="onHoverOut()">
-                        </app-box-nuova-partenza>
+                        </app-box-preaccoppiato>
                     </div>
                     <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
                          style="display: flex; place-content: center; margin-top: 10px;">

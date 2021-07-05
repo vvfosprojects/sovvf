@@ -117,13 +117,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }).ToList());
 
                 //TODO RIVEDERE DISTINCT CODICE
-                var result = lstSquadre.GroupBy(s => s.Codice).Select(s => s.FirstOrDefault());
+                var result = lstSquadre.ToList();
 
                 return result;
             })
             .ContinueWith(squadre => //MAPPING
             {
-                ConcurrentBag<ComposizioneSquadra> lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
+                var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
 
                 Parallel.ForEach(squadre.Result, squadra => lstSquadre.Add(new ComposizioneSquadra()
                 {
@@ -145,7 +145,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Descrizione = m.Descrizione,
                         Genere = m.Genere,
                         Stato = lstStatiMezzi.Result.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
-                    }).ToList() : null
+                    }).ToList() : null,
+                    spotId = squadra.spotId,
+                    spotType = squadra.spotType,
+                    version = squadra.version,
+                    workshiftId = squadra.workshiftId,
+                    IdOpService = squadra.Id
                 }));
 
                 return lstSquadre;
@@ -167,18 +172,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result
-                    .OrderByDescending(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
-                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false)
-                    .OrderBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false)
-                    .ThenBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInSede))
-                    .ThenBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInRientro))
-                    //.ThenByDescending(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInViaggio))
-                    //.ThenByDescending(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoSulPosto))
-                    //.ThenByDescending(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoOccupato))
-                    .ToList();
+                    .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInSede))
+                    .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInRientro))
+                    .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInViaggio))
+                    .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoSulPosto))
+                    .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoOccupato))
+                    .ThenBy(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .ThenBy(squadra => query.Filtro?.CodiciCompetenze?[1].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .ThenBy(squadra => query.Filtro?.CodiciCompetenze?[2].Equals(squadra.Distaccamento?.Codice) ?? false);
             });
 
-            var result = lstSquadreComposizione.Result;
+            var result = lstSquadreComposizione.Result.ToList();
 
             return result;
         }

@@ -2,17 +2,17 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    GetListaComposizioneVeloce,
-    SelectPreAccoppiatoComposizione,
-    SetListaPreaccoppiati,
-    UnselectPreAccoppiatoComposizione,
-    UpdateMezzoPreAccoppiatoComposizione,
     ClearPreAccoppiatiSelezionatiComposizione,
+    GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
     HoverOutPreAccoppiatoComposizione,
-    SetIdPreAccoppiatiOccupati
+    SelectPreAccoppiatoComposizione,
+    SetIdPreAccoppiatiOccupati,
+    SetListaPreaccoppiati,
+    UnselectPreAccoppiatoComposizione,
+    UpdateMezzoPreAccoppiatoComposizione
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
@@ -22,12 +22,11 @@ import { Injectable } from '@angular/core';
 import { PaginationComposizionePartenzaState } from '../../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ListaComposizioneVeloce } from '../../../../../shared/interface/lista-composizione-veloce-interface';
 
 export interface ComposizioneVeloceStateModel {
-    allPreAccoppiati: BoxPartenza[];
-    preAccoppiati: BoxPartenza[];
+    allPreAccoppiati: BoxPartenzaPreAccoppiati[];
+    preAccoppiati: BoxPartenzaPreAccoppiati[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
     idPreAccoppiatiOccupati: string[];
@@ -51,7 +50,7 @@ export const ComposizioneVeloceStateDefaults: ComposizioneVeloceStateModel = {
 export class ComposizioneVeloceState {
 
     @Selector()
-    static preAccoppiati(state: ComposizioneVeloceStateModel): BoxPartenza[] {
+    static preAccoppiati(state: ComposizioneVeloceStateModel): BoxPartenzaPreAccoppiati[] {
         return state.preAccoppiati;
     }
 
@@ -96,13 +95,13 @@ export class ComposizioneVeloceState {
         } as any;
         this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
-            response.composizionePreaccoppiatiDataArray.forEach((preaccoppiato: BoxPartenza) => {
-                if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadreComposizione)) {
+            response.dataArray.forEach((preaccoppiato: BoxPartenzaPreAccoppiati) => {
+                if (mezzoComposizioneBusy(preaccoppiato.statoMezzo) || checkSquadraOccupata(preaccoppiato.squadre as any)) {
                     preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
             dispatch([
-                new SetListaPreaccoppiati(response.composizionePreaccoppiatiDataArray),
+                new SetListaPreaccoppiati(response.dataArray),
                 new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
             ]);
         });
@@ -160,8 +159,8 @@ export class ComposizioneVeloceState {
     updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UpdateMezzoPreAccoppiatoComposizione): void {
         const state = getState();
         let preAccoppiato = null;
-        state.preAccoppiati.forEach((preAcc: BoxPartenza) => {
-            if (preAcc.mezzoComposizione.mezzo.codice === action.codiceMezzo) {
+        state.preAccoppiati.forEach((preAcc: BoxPartenzaPreAccoppiati) => {
+            if (preAcc.codiceMezzo === action.codiceMezzo) {
                 preAccoppiato = makeCopy(preAcc);
                 preAccoppiato.mezzoComposizione = action.codiceMezzo;
             }

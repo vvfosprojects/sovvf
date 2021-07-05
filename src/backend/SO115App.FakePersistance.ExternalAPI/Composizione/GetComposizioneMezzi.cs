@@ -17,6 +17,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
+        private readonly OrdinamentoMezzi _ordinamento; 
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetTipologieByCodice _getTipologieCodice;
@@ -45,12 +46,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Id = m.Codice,
                         Mezzo = m,
-                        Km = new Random().Next(1, 60).ToString(),
-                        TempoPercorrenza = Math.Round(Convert.ToDouble(new Random().Next(1, 60).ToString().Replace(".", ",")) / 1.75, 2).ToString(CultureInfo.InvariantCulture),
                     };
 
                     //TODO OTTIMIZZARE INDICE ORDINAMENTO
-                    //mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
+                    mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -94,20 +93,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                   .OrderBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .OrderBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .OrderBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
+                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
                    //.ThenByDescending(mezzo => mezzo.Mezzo.PreAccoppiato ... ) //TODO PRIORITA PREACCOPPIATI
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                   .ThenByDescending(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
                    //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
-                   .ToList();
             });
 
-            var result = lstMezziComposizione.Result;
+            var result = lstMezziComposizione.Result.ToList();
 
             return result;
         }

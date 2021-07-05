@@ -327,6 +327,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     padding: $SO-badge-padding;
   }
 
+  .input-file-update {
+    color: $SO-black $SO-i;
+  }
+
   .gestita {
     background: $SO-dark-light $SO-i;
   }
@@ -1286,5 +1290,5 @@ tag-input {
 }
 
 .selected-composizione {
-  background-color: $SO-light $SO-i;
+  background-color: $SO-grey-light $SO-i;
 }
