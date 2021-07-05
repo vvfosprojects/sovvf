@@ -135,7 +135,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
         let result = 'badge-terza-competenza';
 
         if (this.richiesta && this.squadraComp && this.squadraComp) {
-            const distaccamentoSquadra = this.squadraComp.distaccamento.descrizione;
+            const distaccamentoSquadra = this.squadraComp.distaccamento.descrizione.replace(/\s+/g, ' ').trim();
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
