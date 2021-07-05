@@ -10,7 +10,6 @@ import {
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
@@ -27,9 +26,6 @@ import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.act
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { HomeState } from '../../store/states/home.state';
-import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
-import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
-import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
@@ -99,8 +95,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     // Pos
     @Input() pos: PosInterface[];
 
-    ngxGooglePlacesOptions: Options;
-
     chiamataMarker: ChiamataMarker;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
@@ -116,16 +110,14 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     richiestaForm: FormGroup;
     submitted = false;
 
+    addressSuggested: any;
+
     private subscription = new Subscription();
 
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
-        this.ngxGooglePlacesOptions = new Options({
-            bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
-            componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
-        });
         this.richiestaForm = this.createAndGetForm();
     }
 
@@ -297,16 +289,25 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('copiaCoordinate');
     }
 
-    onCercaIndirizzo(result: Address): void {
-        if (!this.richiestaModifica) {
-            this.onSetIndirizzo(result);
-        } else {
-            this.onModificaIndirizzo(result);
-        }
+    onCercaIndirizzo(indirizzoCercato: string): void {
+        console.log('indirizzoCercato', indirizzoCercato);
+
+        // const locator = new Locator('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest');
+        //
+        // locator.addressToLocations({ address: indirizzoCercato }).then(async (response) => {
+        //     this.addressSuggested = response;
+        //     console.log('addressSuggested', this.addressSuggested);
+        // });
+
+        // if (!this.richiestaModifica) {
+        //     this.onSetIndirizzo(result);
+        // } else {
+        //     this.onModificaIndirizzo(result);
+        // }
     }
 
-    onSetIndirizzo(result: Address): void {
-        const lat = roundToDecimal(result.geometry.location.lat(), 6);
+    onSetIndirizzo(result: string): void {
+        /* const lat = roundToDecimal(result.geometry.location.lat(), 6);
         const lng = roundToDecimal(result.geometry.location.lng(), 6);
         const coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
@@ -315,16 +316,16 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(result.formatted_address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
-        this.reducerSchedaTelefonata('cerca');
+        this.reducerSchedaTelefonata('cerca'); */
     }
 
-    onModificaIndirizzo(result: Address): void {
-        const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
+    onModificaIndirizzo(result: string): void {
+        /* const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(result.formatted_address);
         const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, result.formatted_address);
-        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
+        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo)); */
     }
 
     modificaIndirizzo(): void {

@@ -1,10 +1,10 @@
 <table class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:12%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" style="width:22%"><i class="fa fa-file mr-2"></i>Nome</th>
-        <th scope="col" style="width:33%"><i class="fa fa-cog mr-2"></i>Tipologie</th>
-        <th scope="col" style="width:33%"><i class="fa fa-cogs mr-2"></i>Dettagli Tipologie</th>
+        <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:33%"><i class="fas fa-cog mr-2"></i>Tipologie</th>
+        <th scope="col" style="width:33%"><i class="fas fa-cogs mr-2"></i>Dettagli Tipologie</th>
     </tr>
     </thead>
     <tbody>
@@ -14,19 +14,19 @@
                     ngbTooltip="Rimuovi POS"
                     placement="bottom"
                     (click)="onDeletePos(p?.id, p?.descrizionePos)">
-                <i class="fa fa-trash"></i>
+                <i class="fas fa-trash"></i>
             </button>
             <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
                     ngbTooltip="Modifica POS"
                     placement="bottom"
                     (click)="onEditPos(p)">
-                <i class="fa fa-edit"></i>
+                <i class="fas fa-edit"></i>
             </button>
             <button class="btn btn-sm btn-success font-weight-bold float-left"
                     ngbTooltip="Scarica POS"
                     placement="bottom"
                     (click)="onDownloadPos(p)">
-                <i class="fa fa-download"></i>
+                <i class="fas fa-download"></i>
             </button>
         </td>
         <td style="width:22%" class="align-middle">

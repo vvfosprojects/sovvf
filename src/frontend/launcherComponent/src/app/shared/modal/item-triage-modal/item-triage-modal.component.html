@@ -5,7 +5,7 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="closeModal('ko')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height bg-light py-4 px-5">
@@ -20,7 +20,7 @@
             <div class="card bg-dark-light p-4" [class.mt-3]="rispostaTitle">
                 <div>
                     <label for="mezzi">
-                        <i class="fa fa-truck mr-1"></i>
+                        <i class="fas fa-truck mr-1"></i>
                         Generi Mezzo Appropriati
                     </label>
                     <ng-select id="mezzi"
@@ -35,7 +35,7 @@
                 </div>
                 <div class="mt-3">
                     <label for="soccorsoAereo">
-                        <i class="fa fa-plane mr-1"></i>
+                        <i class="fas fa-plane mr-1"></i>
                         Richiesta Soccorso Aereo
                     </label>
                     <ng-select id="soccorsoAereo"
@@ -48,7 +48,7 @@
                 </div>
                 <div class="mt-3">
                     <label for="prioritaConsigliata">
-                        <i class="fa fa-thermometer mr-1"></i>
+                        <i class="fas fa-thermometer mr-1"></i>
                         Priorità Intervento
                     </label>
                     <ng-select id="prioritaConsigliata"
@@ -61,7 +61,7 @@
                 </div>
                 <div class="mt-3">
                     <label for="noteOperatore">
-                        <i class="fa fa-sticky-note-o mr-1"></i>
+                        <i class="fas fa-sticky-note-o mr-1"></i>
                         Suggerimenti Utili per l'Operatore
                     </label>
                     <textarea id="noteOperatore"
@@ -72,7 +72,7 @@
                 </div>
                 <div class="mt-3">
                     <label for="noteUtente">
-                        <i class="fa fa-sticky-note-o mr-1"></i>
+                        <i class="fas fa-sticky-note-o mr-1"></i>
                         Indicazioni all'Utente
                     </label>
                     <textarea id="noteUtente"
@@ -92,7 +92,7 @@
                 </ng-template>
                 <ng-template [ngIf]="!primaDomanda">
                     <label for="domandaSeguente">
-                        <i class="fa fa-forward mr-1"></i>
+                        <i class="fas fa-forward mr-1"></i>
                         Domanda Seguente
                     </label>
                 </ng-template>
@@ -124,7 +124,7 @@
                     <ng-template [ngIf]="f.rispostePersonalizzate?.value && f['risposta' + (this.risposte.length)]?.value">
                         <button class="btn btn-primary mt-2"
                                 (click)="addRisposta()">
-                            <i class="fa fa-plus"></i>
+                            <i class="fas fa-plus"></i>
                             Aggiungi Risposta
                         </button>
                     </ng-template>

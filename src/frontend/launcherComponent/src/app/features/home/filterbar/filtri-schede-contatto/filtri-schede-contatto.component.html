@@ -5,7 +5,7 @@
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 [disabled]="disableFilters">
-            <i class="fa fa-filter"></i>
+            <i class="fas fa-filter"></i>
             {{ 'Filtri' | uppercase }}
             <span class="badge badge-success text-light">
               {{ filtriSelezionati?.length }}
@@ -38,6 +38,6 @@
     </div>
     <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
             [disabled]="disableFilters">
-        <i class="fa fa-undo text-dark px-1" [class.text-moon]="nightMode"></i>
+        <i class="fas fa-undo text-dark px-1" [class.text-moon]="nightMode"></i>
     </button>
 </div>

@@ -60,11 +60,7 @@
                                type="text"
                                formControlName="indirizzo"
                                placeholder="Ricerca indirizzo"
-                               role="presentation"
-                               ngx-google-places-autocomplete
-                               [options]="ngxGooglePlacesOptions"
-                               (onAddressChange)="onCercaIndirizzo($event)"
-                               (keyup)="modificaIndirizzo()">
+                               (ngModelChange)="onCercaIndirizzo($event)">
                         <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                              class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
@@ -108,7 +104,7 @@
                                     placement="bottom"
                                     (click)="onCopiaCoordinate()"
                                     [disabled]="!(f.latitudine.value && f.longitudine.value)">
-                                <i class="fa fa-clipboard"></i>
+                                <i class="fas fa-clipboard"></i>
                             </button>
                             <ng-template #coordsTooltip>
                                 Copia: {{ f.latitudine.value }}
@@ -342,7 +338,7 @@
                           <span class="circle"
                                 [class.filled]="fill === 100"
                                 [class.bad]="index > 2 && fill === 100">
-                            <i class="fa fa-circle mr-1"></i>
+                            <i class="fas fa-circle mr-1"></i>
                           </span>
                           </ng-template>
                           <div style="width: max-content; display: inline-grid; margin-left: 8px">
@@ -386,7 +382,7 @@
                                 type="button"
                                 [disabled]="formIsInvalid()"
                                 (click)="onInAttesa()">
-                            <i class="fa fa-pause mr-1"></i>
+                            <i class="fas fa-pause mr-1"></i>
                             In Attesa
                         </button>
                     </ng-template>
@@ -415,7 +411,7 @@
                         <button class="btn btn-outline-secondary mr-2 btn-no-hover btn-xlarge mx-3"
                                 type="button"
                                 (click)="onResetChiamata()">
-                            <i class="fa fa-recycle mr-1"></i>
+                            <i class="fas fa-recycle mr-1"></i>
                             Ripulisci Campi
                         </button>
                         <!-- <div class="btn-group"> -->

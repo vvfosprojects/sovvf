@@ -1,17 +1,17 @@
 <div class="modal-header" [ngClass]="{'gestita': schedaContatto.gestita}">
     <h4 class="mb-0">
         <span class="d-inline-block mr-3">
-            <i class="fa fa-info-circle mr-1"></i>
+            <i class="fas fa-info-circle mr-1"></i>
             Scheda Contatto
         </span>
         <span *ngIf="schedaContatto?.priorita === priorita.Altissima"
               class="badge badge-danger font-weight-bold h5 mb-0">
-            <i class="fa fa-exclamation-triangle"></i>
+            <i class="fas fa-exclamation-triangle"></i>
             Priorità alta
         </span>
         <span *ngIf="schedaContatto?.priorita !== priorita.Altissima"
               class="badge badge-secondary h5 mb-0">
-            <i class="fa fa-exclamation-circle"></i>
+            <i class="fas fa-exclamation-circle"></i>
             Priorità bassa
         </span>
     </h4>
@@ -20,13 +20,13 @@
     <!-- Prima riga -->
     <div class="row">
         <div class="col-2 mb-3">
-            <i class="fa fa-hashtag mr-2 guida"></i>
+            <i class="fas fa-hashtag mr-2 guida"></i>
             <span>N.Scheda</span>
             <hr class="my-1">
             {{schedaContatto.codiceScheda}}
         </div>
         <div class="col-3 mb-3">
-            <i class="fa fa-calendar mr-2 guida"></i>
+            <i class="fas fa-calendar mr-2 guida"></i>
             <span>Data Inserimento</span>
             <hr class="my-1">
             {{schedaContatto.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
@@ -36,19 +36,19 @@
     <!-- Seconda riga -->
     <div class="row">
         <div class="col-5 mb-3">
-            <i class="fa fa-user mr-2 guida"></i>
+            <i class="fas fa-user mr-2 guida"></i>
             <span>Richiedente</span>
             <hr class="my-1">
             {{schedaContatto.richiedente.nominativo}}
         </div>
         <div class="col-2 mb-3">
-            <i class="fa fa-phone mr-2 guida"></i>
+            <i class="fas fa-phone mr-2 guida"></i>
             <span>Telefono</span>
             <hr class="my-1">
             {{schedaContatto.richiedente.telefono}}
         </div>
         <div class="col-5 mb-3">
-            <i class="fa fa-info mr-2 guida"></i>
+            <i class="fas fa-info mr-2 guida"></i>
             <span>Info Addizionali</span>
             <hr class="my-1">
             {{schedaContatto.localita.note}}
@@ -57,19 +57,19 @@
     <!-- Terza riga -->
     <div class="row">
         <div class="col-8 mb-3">
-            <i class="fa fa-map-marker mr-2 guida"></i>
+            <i class="fas fa-map-marker mr-2 guida"></i>
             <span>Indirizzo</span>
             <hr class="my-1">
             {{schedaContatto.localita.indirizzo}}
         </div>
         <div class="col-2 mb-3">
-            <i class="fa fa-map-pin mr-2 guida"></i>
+            <i class="fas fa-map-pin mr-2 guida"></i>
             <span>Latitudine</span>
             <hr class="my-1 mb-2">
             {{schedaContatto.localita.coordinate.latitudine}}
         </div>
         <div class="col-2 mb-3">
-            <i class="fa fa-map-pin mr-2 guida"></i>
+            <i class="fas fa-map-pin mr-2 guida"></i>
             <span>Longitudine</span>
             <hr class="my-1 mb-2">
             {{schedaContatto.localita.coordinate.longitudine}}
@@ -78,19 +78,19 @@
     <!-- Quarta riga -->
     <div class="row">
         <div class="col-4 mb-3">
-            <i class="fa fa-list mr-2 guida"></i>
+            <i class="fas fa-list mr-2 guida"></i>
             <span>Classificazione del NUE</span>
             <hr class="my-1">
             {{schedaContatto.classificazioneEvento}}
         </div>
         <div class="col-4 mb-3">
-            <i class="fa fa-indent mr-2 guida"></i>
+            <i class="fas fa-indent mr-2 guida"></i>
             <span>Attributi di classificazione</span>
             <hr class="my-1 mb-2">
             {{schedaContatto.categoria}}
         </div>
         <div class="col-4 mb-3">
-            <i class="fa fa-university mr-2 guida"></i>
+            <i class="fas fa-university mr-2 guida"></i>
             <span>Competenza</span>
             <hr class="my-1 mb-2">
             {{schedaContatto.enteCompetenza}}
@@ -99,7 +99,7 @@
     <!-- Quinta riga -->
     <div class="row">
         <div *ngIf="schedaContatto.dettaglio" class="col-8 mb-3">
-            <i class="fa fa-file-text-o mr-2 guida"></i>
+            <i class="fas fa-file-text-o mr-2 guida"></i>
             <span>Note</span>
             <hr class="my-1">
             {{schedaContatto.dettaglio}}

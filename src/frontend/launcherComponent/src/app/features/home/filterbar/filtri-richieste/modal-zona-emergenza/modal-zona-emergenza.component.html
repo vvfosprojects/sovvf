@@ -4,14 +4,14 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="chiudiModalFiltriTipologia('ko')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
 <div class="modal-body">
     <button (click)="onResetZoneEmergenza()" class="btn btn-no-hover btn-secondary btn-reset-filtri"
             ngbTooltip="Reset filtri zona emergenza" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
-        <i class="fa fa-undo px-1"></i>
+        <i class="fas fa-undo px-1"></i>
     </button>
     <span [class.box-selected]="nessunaZonaSelected" [class.box-locked]="nessunaZonaLocked"
           class="card row row_text box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona"

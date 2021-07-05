@@ -41,11 +41,11 @@
                 <td style="width:35%">
                     <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
                             (click)="onEditDettaglioTipologia(dettaglioTipologia)">
-                        <i class="fa fa-edit"></i>
+                        <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-sm btn-danger" ngbTooltip="Elimina Dettaglio Tipologia"
                             (click)="onDeleteDettaglioTipologia({ codDettaglioTipologia: dettaglioTipologia.codiceDettaglioTipologia, descrizioneDettaglioTipologia: dettaglioTipologia.descrizione })">
-                        <i class="fa fa-trash"></i>
+                        <i class="fas fa-trash"></i>
                     </button>
                 </td>
             </tr>
@@ -55,7 +55,7 @@
 
     <div *ngIf="!dettagliTipologie?.length" class="col-12 mt-2">
         <div class="alert alert-danger mb-0">
-            <i class="fa fa-exclamation-triangle"></i>
+            <i class="fas fa-exclamation-triangle"></i>
             Nessun Dettaglio Tipologia presente
         </div>
     </div>
@@ -63,7 +63,7 @@
         <div class="clearfix">
             <div class="float-left mt-2">
                 <button class="btn btn-lg btn-primary btn-no-hover" (click)="onAddDettaglioTipologia()">
-                    <i class="fa fa-plus"></i>
+                    <i class="fas fa-plus"></i>
                     Aggiungi Dettaglio
                 </button>
             </div>

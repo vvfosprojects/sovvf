@@ -30,18 +30,18 @@ export class AppLoadService {
         return new Promise((resolve) => {
             if (!SIGNALR_BYPASS) {
                 if (this.checkConnectionSignalR) {
-                    resolve();
+                    resolve(true);
                 } else {
                     const interval = setInterval(() => {
                         if (this.checkConnectionSignalR) {
-                            resolve();
+                            resolve(true);
                             clearInterval(interval);
                         }
                     }, 3000);
                 }
             } else {
                 this.signalR.byPassSignalR();
-                resolve();
+                resolve(true);
             }
         });
     }

@@ -115,35 +115,35 @@ export class HelperSintesiRichiesta {
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(tipologia: Tipologia): string {
         if (!tipologia) {
-            return 'fa fa-exclamation-triangle text-warning';
+            return 'fas fa-exclamation-triangle text-warning';
         }
         const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {
-                    icon: 'fa fa-fire',
+                    icon: 'fas fa-fire',
                     color: 'text-danger'
                 },
                 {
-                    icon: 'fa fa-exclamation-triangle',
+                    icon: 'fas fa-exclamation-triangle',
                     color: 'text-warning'
                 },
                 {
-                    icon: 'fa fa-medkit',
+                    icon: 'fas fa-medkit',
                     color: 'text-primary'
                 }
             ];
 
             const colore = nome ? colori.find(x => x.icon === nome) : undefined;
             if (!nome || nome === '') {
-                return 'fa fa-exclamation-triangle text-warning';
+                return 'fas fa-exclamation-triangle text-warning';
             } else if (colore !== undefined) {
                 return nome + ' ' + colore.color;
             } else {
                 return nome + ' guida';
             }
         } else {
-            return 'fa fa-exclamation-triangle text-warning';
+            return 'fas fa-exclamation-triangle text-warning';
         }
     }
 

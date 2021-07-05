@@ -23,7 +23,7 @@
                     <div class="float-right pt-1">
                         <div *ngIf="mezzoInServizio?.squadre?.length"
                              class="d-inline-block text-right mb-0 font-weight-bold">
-                            <i class="fa fa-group guida mr-1"></i>
+                            <i class="fas fa-group guida mr-1"></i>
                             <div class="d-inline-block"
                                  ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
                                  [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">
@@ -33,7 +33,7 @@
                                     (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                                 <div *ngIf="mezzoInServizio.squadre?.length"
                                      class="d-inline-block">
-                                    <i class="fa fa-search"
+                                    <i class="fas fa-search"
                                        [class.mr-1]="mezzoInServizio.squadre.length > 1"></i>
                                     <div *ngIf="mezzoInServizio.squadre.length > 1"
                                          class="d-inline-block">
@@ -48,7 +48,7 @@
             <!-- Indirizzo -->
             <div class="col-3 pt-1">
                 <div *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
-                    <i class="fa fa-map-marker guida"></i>
+                    <i class="fas fa-map-marker guida"></i>
                     {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: 28 }}
                 </div>
             </div>
@@ -59,7 +59,7 @@
                         <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
                                 class="btn btn-block btn-light font-weight-bold"
                                 (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
-                            <i class="fa fa-hashtag"></i>
+                            <i class="fas fa-hashtag"></i>
                             {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
                         </button>
                     </div>
@@ -68,7 +68,7 @@
                         <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta"
                                 class="btn btn-block btn-light"
                                 (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
-                            <i class="fa fa-list"></i>
+                            <i class="fas fa-list"></i>
                             Eventi
                         </button>
                     </div>

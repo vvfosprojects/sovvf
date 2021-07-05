@@ -1,8 +1,8 @@
 <table class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width: 25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
-        <th scope="col" style="width: 40%"><i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
+        <th scope="col" style="width: 25%"><i class="fas fa-user mr-2"></i>Nominativo</th>
+        <th scope="col" style="width: 40%"><i class="fas fa-wrench mr-2"></i>Ruoli Assegnati</th>
     </tr>
     </thead>
     <tbody>
@@ -12,7 +12,7 @@
                     placement="bottom" [disabled]="utente.id === idUtenteLoggato"
                     [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
                     (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
-                <i class="fa fa-trash"></i>
+                <i class="fas fa-trash"></i>
             </button>
             <div class="h5 font-weight-bold mt-1 pt-1">
                 <span [ngbTooltip]="utente?.codiceFiscale">{{utente.cognome | uppercase}} {{utente.nome | uppercase}}</span>
@@ -23,7 +23,7 @@
                 <div class="col-1" style="display: flex; align-items: center;">
                     <button class="btn btn-primary btn-sm font-weight-bold"
                             (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
-                        <i class="fa fa-plus"></i>
+                        <i class="fas fa-plus"></i>
                     </button>
                 </div>
                 <div class="col-11">
@@ -43,7 +43,7 @@
                                 <div class="float-right">
                                     <button class="btn btn-danger btn-sm float-right ml-3"
                                             (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
-                                        <i class="fa fa-sm fa-sm fa-trash"></i>
+                                        <i class="fas fa-sm fa-sm fa-trash"></i>
                                     </button>
                                 </div>
                             </div>

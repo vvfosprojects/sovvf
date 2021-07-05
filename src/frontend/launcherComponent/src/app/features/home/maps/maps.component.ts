@@ -45,12 +45,6 @@ export class MapsComponent implements OnInit, OnDestroy {
     mapsFullyLoaded = false;
     centroMappa: CentroMappa;
 
-    // ESRI
-    // Set our map properties
-    mapCenter = [12.49104, 41.89996];
-    basemapType = 'streets-navigation-vector';
-    mapZoomLevel = 12;
-
     private subscription: Subscription = new Subscription();
 
     constructor() {

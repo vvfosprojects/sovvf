@@ -2,19 +2,19 @@
     <h4 class="modal-title" id="modal-basic-title">Dettaglio Intervento</h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('Cross click')">
-        <span class="text-white-50"><i class="fa fa-times"></i></span>
+        <span class="text-white-50"><i class="fas fa-times"></i></span>
     </button>
 </div>
 <div *ngIf="sintesiRichiesta" class="modal-body p-0">
-    <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta"
-                           [fissata]="false"
-                           [fissabile]="false"
-                           [inGestione]="true"
-                           [gestibile]="false"
-                           [modificabile]="false"
-                           [boxAzioni]="false"
-                           [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)">
-    </app-sintesi-richiesta>
+    <!--    <app-sintesi-richiesta class="rounded" [richiesta]="sintesiRichiesta"   -->
+    <!--                           [fissata]="false"    -->
+    <!--                           [fissabile]="false"  -->
+    <!--                           [inGestione]="true"  -->
+    <!--                           [gestibile]="false"  -->
+    <!--                           [modificabile]="false"   -->
+    <!--                           [boxAzioni]="false"  -->
+    <!--                           [composizionePartenza]="false" (actionMezzo)="onActionMezzo($event)">    -->
+    <!--    </app-sintesi-richiesta>    -->
 </div>
 <div *ngIf="!sintesiRichiesta" class="modal-body">
     <div class="position-relative m-h-300">

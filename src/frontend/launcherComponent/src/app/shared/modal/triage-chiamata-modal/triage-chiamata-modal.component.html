@@ -4,7 +4,7 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="dismissModal('dismiss')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
@@ -15,7 +15,7 @@
         <h5 class="mr-1">Dettaglio Tipologia Selezionato:</h5>
         <h5 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
         <button class="btn btn-danger btn-no-hover" (click)="onResetDettaglioTipologiaSelezionato()">
-            <i class="fa fa-refresh mr-1"></i>
+            <i class="fas fa-refresh mr-1"></i>
             Cambia Dettaglio Tipologia
         </button>
     </ng-template>
@@ -34,7 +34,7 @@
     </ng-template>
     <ng-template [ngIf]="!dettaglioTipologiaSelezionato && loadingTriageChiamata">
         <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fa fa-spinner fa-spin mr-1"></i>
+            <i class="fas fa-spinner fa-spin mr-1"></i>
             Caricamento Dettagli Tipologia
         </div>
     </ng-template>
@@ -47,7 +47,7 @@
     </ng-template>
     <ng-template [ngIf]="dettaglioTipologiaSelezionato && loadingTriageChiamata">
         <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fa fa-spinner fa-spin mr-1"></i>
+            <i class="fas fa-spinner fa-spin mr-1"></i>
             Caricamento Domande
         </div>
     </ng-template>
@@ -67,7 +67,7 @@
                 <div class="alert alert-primary"
                      [class.mb-0]="i === triageSummary?.length - 1">
                     <h5 class="mb-0 font-weight-bolder">
-                        <i class="fa fa-user mr-1"></i>
+                        <i class="fas fa-user mr-1"></i>
                         {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
                     </h5>
                 </div>
@@ -92,7 +92,7 @@
         </div>
         <div class="float-right">
             <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
-                <i class="fa fa-check mr-1"></i>
+                <i class="fas fa-check mr-1"></i>
                 {{ 'Chiudi e Salva Triage' | uppercase }}
             </button>
         </div>

@@ -4,7 +4,7 @@
     </h4>
     <button type="button" class="btn btn-light close font-xxlarge" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
@@ -16,11 +16,11 @@
             <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
                     style="margin-left: 0 !important;"
                     ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
-                <i class="fa fa-user"></i>
+                <i class="fas fa-user"></i>
             </button>
             <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user"
                     ngbTooltip="Visualizza Sede" [ngbPopover]="sede">
-                <i class="fa fa-building-o"></i>
+                <i class="fas fa-building-o"></i>
             </button>
         </div>
         <ng-template #operatore>
@@ -67,12 +67,12 @@
             <button class="btn btn-sm btn-info btn-no-hover ml-2" (click)="onAddSequenza()"
                     [disabled]="!sequenzeValid"
                     ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
-                <i class="fa fa-plus"></i>
+                <i class="fas fa-plus"></i>
             </button>
             <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
                     [disabled]="sequenze?.length === 0" placement="right"
                     ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
-                <i class="fa fa-minus"></i>
+                <i class="fas fa-minus"></i>
             </button>
         </div>
         <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 35.5rem; margin-left: 250px;">
@@ -84,7 +84,7 @@
                     <div class="md-form md-outline" id="default-picker" style="display: flex;">
                         <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
                                         style="margin-left: 25px;"></ngb-timepicker>
-                        <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
+                        <i class="fas fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
                         <small class="text-muted"
                                style="display: flex; position: absolute; transform: translate(-305px, 110px); min-width: fit-content; display: ruby">
@@ -108,7 +108,7 @@
       {{ 'Salva Modifiche' | uppercase }}
     </button>
     <button *ngIf="submitted" type="button" class="btn btn-success btn-no-hover font-xxlarge" [disabled]="true">
-      <i class="fa fa-spin fa-spinner mr-1"></i>
+      <i class="fas fa-spin fa-spinner mr-1"></i>
       {{ 'Salvataggio Modifiche' | uppercase }}
     </button>
     <button *ngIf="!submitted" type="button" class="btn btn-secondary btn-no-hover font-xxlarge" (click)="closeModal('ko')">

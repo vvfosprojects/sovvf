@@ -4,7 +4,7 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
             (click)="chiudiModalAzioniSintesi('ko')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
@@ -15,7 +15,7 @@
         <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-list text-secondary"></i></button>
+                <i class="fas fa-fw fa-list text-secondary"></i></button>
             <div class="my-1 px-3" style="height: 30px">Lista Eventi</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Dettaglio eventi
                 {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}.
@@ -29,7 +29,7 @@
         <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
             <button class="btn btn-warning border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-exclamation-triangle"></i></button>
+                <i class="fas fa-fw fa-exclamation-triangle"></i></button>
             <div class="my-1 px-3" style="height: 30px">Allerta Comando</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Notifica {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}} ad un altro
                 Comando.
@@ -44,7 +44,7 @@
             <span *ngIf="!richiesta.codiceRichiesta">
                 <button class="btn btn-danger border py-0 px-1 btn-no-hover m-2"
                                         style="height: 50px; font-size: 25px; width: 50px;">
-                    <i class="fa fa-fw fa-send-o"></i></button>
+                    <i class="fas fa-fw fa-send-o"></i></button>
                 <div class="my-1 px-3" style="height: 30px">Trasferimento</div>
                 <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">Trasferisci {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}} ad un altro
                     Comando.
@@ -58,7 +58,7 @@
             <span *ngIf="richiesta.codiceRichiesta">
                 <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                         style="height: 50px; font-size: 25px; width: 50px;">
-                    <i class="fa fa-fw fa-print"></i></button>
+                    <i class="fas fa-fw fa-print"></i></button>
                 <div class="my-1 px-3" style="height: 30px"> Stampa {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
                 <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
                 <button class="btn btn-outline-secondary btn-no-hover"
@@ -75,7 +75,7 @@
         <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-edit"></i></button>
+                <i class="fas fa-fw fa-edit"></i></button>
             <div class="my-1 px-3" style="height: 30px">Modifica Enti Intervenuti</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
@@ -87,7 +87,7 @@
         <div class="clearfix box-azione w-25 mx-3" style="height: fit-content">
             <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-edit"></i></button>
+                <i class="fas fa-fw fa-edit"></i></button>
             <div class="my-1 px-3" style="height: 30px">Modifica Fonogramma</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
@@ -99,7 +99,7 @@
         <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Chiusa'" class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa fa-forward"></i></button>
+                <i class="fas fa-fw fas fa-forward"></i></button>
             <div class="my-1 px-3" style="height: 30px">Chiusura {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300; "></div>
             <button class="btn btn-outline-secondary btn-no-hover"
@@ -111,7 +111,7 @@
         <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'" class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-{{statoRichiestaColor(richiesta)}} border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa fa-forward"></i></button>
+                <i class="fas fa-fw fas fa-forward"></i></button>
             <div class="my-1 px-3" style="height: 30px">Riapri {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"
@@ -126,7 +126,7 @@
         <div class="clearfix box-azione w-25" style="height: fit-content">
             <button class="btn btn-info border py-0 px-1 btn-no-hover m-2"
                     style="height: 50px; font-size: 25px; width: 50px;">
-                <i class="fa fa-fw fa-print"></i></button>
+                <i class="fas fa-fw fa-print"></i></button>
             <div class="my-1 px-3" style="height: 30px"> Stampa {{defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta)}}</div>
             <div class="my-1 px-3" style="height: 60px; font-weight: 300;"></div>
             <button class="btn btn-outline-secondary btn-no-hover"

@@ -4,14 +4,14 @@
             [class.btn-no-hover]="getActive()"
             [disabled]="disabled"
             (click)="chiamata()">
-        <i class="fa fa-phone mr-1"></i>
+        <i class="fas fa-phone mr-1"></i>
         {{ 'Nuova Chiamata' | uppercase }}
     </button>
 </ng-template>
 <ng-template [ngIf]="!richiestaModifica && getActive()">
     <div class="pl-2">
         <h4 class="d-inline-block mt-2 mb-0">
-            <i class="fa fa-phone mr-1"></i>
+            <i class="fas fa-phone mr-1"></i>
             {{ 'Stai inserendo una nuova chiamata' | uppercase }}
         </h4>
     </div>
@@ -19,7 +19,7 @@
 <ng-template [ngIf]="!!richiestaModifica">
     <div class="pl-2">
         <h4 class="d-inline-block mt-2 mb-0">
-            <i class="fa fa-edit mr-1"></i>
+            <i class="fas fa-edit mr-1"></i>
             Stai modificando la richiesta
             <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>
             del giorno <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'dd-MM-yyyy' }}</b>

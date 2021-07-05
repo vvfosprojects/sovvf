@@ -8,7 +8,6 @@ import { SetCentroMappa } from '../../../store/actions/maps/centro-mappa.actions
 import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
-import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/mappa/function-mappa';
 
 @Injectable()
@@ -52,7 +51,7 @@ export class MapService {
         return this.centro$.asObservable().pipe(debounceTime(MAPSOPTIONS.panDelay));
     }
 
-    setArea(latLngBounds: LatLngBounds, expRound?: number): void {
+    setArea(latLngBounds: any, expRound?: number): void {
         const area = makeAreaMappa(latLngBounds, expRound);
         if (!this.wipeTopRight || (diffCoordinate(
                 makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, expRound),

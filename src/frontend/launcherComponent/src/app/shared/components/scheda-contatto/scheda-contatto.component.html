@@ -8,9 +8,9 @@
             <span style="position: absolute; top: -4px; left: 20px; z-index: 99999"
                   (click)="onCollapse(); $event.stopPropagation()">
                 <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && !idCollapsed.includes(scheda.codiceScheda)"
-                   class="fa fa-plus-square-o"></i>
+                   class="fas fa-plus-square-o"></i>
                 <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && idCollapsed.includes(scheda.codiceScheda)"
-                   class="fa fa-minus-square-o"></i>
+                   class="fas fa-minus-square-o"></i>
             </span>
             <div class="col-1 text-right cursor-pointer py-1">
                 <i [ngClass]="scheda.priorita | contattoPriorita"
@@ -22,12 +22,12 @@
                 {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss'}}
             </div>
             <div class="col py-1">
-                <i class="fa fa-map-marker mr-1"></i>
+                <i class="fas fa-map-marker mr-1"></i>
                 {{scheda.localita.indirizzo}}
             </div>
             <div class="col-1 px-1 py-1 text-right cursor-pointer">
                 {{scheda.operatoreChiamata?.codicePostazioneOperatore || 'N/D'}}
-                <i class="fa fa-desktop ml-1" ngbTooltip="Postazione Operatore"></i>
+                <i class="fas fa-desktop ml-1" ngbTooltip="Postazione Operatore"></i>
             </div>
             <div class="col-2 pr-4">
                 <div class="clearfix">
@@ -35,13 +35,13 @@
                         <button class="btn btn-lg btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
                                 [disabled]="disableCreaRichiesta" [class.cursor-not-allowed]="disableCreaRichiesta" placement="left"
                                 (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
-                            <i class="fa fa-arrow-right"></i>
+                            <i class="fas fa-arrow-right"></i>
                         </button>
                         <button class="btn btn-lg float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
                                 ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci" placement="left"
                                 [class.cursor-not-allowed]="disableCreaRichiesta"
                                 (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
-                            <i class="fa fa-cog"></i>
+                            <i class="fas fa-cog"></i>
                         </button>
                     </ng-container>
                     <div *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length"
@@ -59,7 +59,7 @@
                                 ngbTooltip="Elimina raggruppamento"
                                 [disabled]="disableEliminaRaggruppamento"
                                 (click)="onUndoRaggruppamento(scheda?.codiceScheda); $event.stopPropagation()">
-                            <i class="fa fa-remove"></i>
+                            <i class="fas fa-remove"></i>
                         </button>
                     </ng-container>
                 </div>
