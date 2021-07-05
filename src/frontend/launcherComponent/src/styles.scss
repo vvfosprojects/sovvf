@@ -5,6 +5,8 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 @import "~ngx-toastr/toastr-bs4-alert";
+@import "../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
+@import "./assets/fontawesome/css/all.min.css";
 
 @font-face {
   font-family: "icon-marker";
@@ -84,26 +86,32 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .single-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
   button {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   ng-select {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   textarea {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   i {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   input {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   .toast-container {
     font-size: 1rem;
     font-weight: 400;
@@ -116,30 +124,37 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .double-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
   button {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   ng-select {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   textarea {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   i {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   input {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   .toast-container {
     font-size: 1rem;
     font-weight: 400;
   }
+
   ngb-modal-window {
     padding-right: $SO-middle $SO-i;
   }
@@ -157,19 +172,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .bg-navbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-filterbar {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .bg-form-richiesta {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .border-top-richiesta {
@@ -255,13 +270,13 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: $SO-white $SO-i;
   }
 
-  .table-striped>tbody>tr:nth-child(odd)>td,
-  .table-striped>tbody>tr:nth-child(odd)>th {
+  .table-striped > tbody > tr:nth-child(odd) > td,
+  .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: $SO-dark $SO-i;
   }
 
-  .table-striped>tbody>tr:nth-child(even)>td,
-  .table-striped>tbody>tr:nth-child(even)>th {
+  .table-striped > tbody > tr:nth-child(even) > td,
+  .table-striped > tbody > tr:nth-child(even) > th {
     background-color: $SO-dark-light $SO-i;
   }
 
@@ -390,19 +405,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-navbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-filterbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-form-richiesta {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-scheda-contatto {
