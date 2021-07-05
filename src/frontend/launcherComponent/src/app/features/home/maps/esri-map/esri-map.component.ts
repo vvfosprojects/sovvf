@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -10,8 +11,6 @@ import Search from '@arcgis/core/widgets/Search';
 import WebMap from '@arcgis/core/WebMap';
 import PortalItem from '@arcgis/core/portal/PortalItem';
 import EsriConfig from '@arcgis/core/config';
-import { HttpClient } from '@angular/common/http';
-import { resolve } from '@angular/compiler-cli/src/ngtsc/file_system';
 
 @Component({
     selector: 'app-esri-map',
@@ -50,12 +49,11 @@ export class EsriMapComponent implements OnInit, OnDestroy {
 
     // TODO: terminare login automatico
     async loginIntoESRI(): Promise<any> {
-        this.http.get('https://www.arcgis.com/sharing/rest/oauth2/authorize?client_id=' + /* TODO: inserire app id dopo registrazione */ +' &response_type=token&redirect_uri=' + 'localhost:4200').subscribe((resAuthorize: any) => {
+        await this.http.get('https://www.arcgis.com/sharing/rest/oauth2/authorize?client_id=' + /* TODO: inserire app id dopo registrazione */ +' &response_type=token&redirect_uri=' + 'localhost:4200').subscribe((resAuthorize: any) => {
             if (resAuthorize) {
                 this.http.get('https://www.arcgis.com/sharing/rest/oauth2/approval?code=' + resAuthorize).subscribe((resApproval: any) => {
                     if (resApproval) {
                         console.log('sei loggato');
-                        resolve('');
                     }
                 });
             }
