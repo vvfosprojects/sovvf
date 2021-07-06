@@ -7,12 +7,6 @@ import { SharedModule } from '../../../shared/shared.module';
  */
 import { MapsComponent } from './maps.component';
 /**
- * MAPS-UI
- */
-import { FiltriMarkersComponent } from './maps-ui/filtri-markers/filtri-markers.component';
-import { FiltriMarkersRichiesteComponent } from './maps-ui/filtri-markers/filtri-markers-richieste/filtri-markers-richieste.component';
-import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-markers-mezzi/filtri-markers-mezzi.component';
-/**
  * Provider
  */
 import {
@@ -37,14 +31,12 @@ import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
-import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
-import { FiltriScComponent } from './maps-ui/filtri-markers/filtri-sc/filtri-sc.component';
 import { EsriMapComponent } from './esri-map/esri-map.component';
 
 @NgModule({
@@ -75,11 +67,6 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
     ],
     declarations: [
         MapsComponent,
-        MapsButtonComponent,
-        FiltriMarkersComponent,
-        FiltriMarkersRichiesteComponent,
-        FiltriMarkersMezziComponent,
-        FiltriScComponent,
         EsriMapComponent
     ],
     exports: [

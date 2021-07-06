@@ -26,7 +26,7 @@ import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterb
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import { SintesiRichiestaModalComponent } from '../../../shared/modal/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 
 @Component({
     selector: 'app-mezzi-in-servizio',

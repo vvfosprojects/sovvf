@@ -18,8 +18,6 @@ export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
     @Input() listaEventi: any;
-    @Input() mostraIndicatori: boolean;
-    @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
     @Input() mezzoInServizioPage: boolean;
@@ -34,21 +32,6 @@ export class MezzoComponent {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'top';
-    }
-
-    nessunIndMezzo(mezzo): boolean {
-        if (
-            !mezzo.descrizioneStatoEfficienza &&
-            !mezzo.descrizioneLivelloCarburante &&
-            !mezzo.descrizioneLivelloEstinguente &&
-            !mezzo.descrizioneAppartenenza
-        ) {
-            return true;
-        }
-    }
-
-    dettagliMezzo(stato: string | number, tipostato: string, classe: string): string {
-        return this.stato.getColor(stato, tipostato, classe);
     }
 
     onActionMezzo(action?: MezzoActionEmit): void {

@@ -12,8 +12,6 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
-import { MapService } from './service/map-service/map-service.service';
-import { MarkerService } from './service/marker-service/marker-service.service';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
@@ -23,8 +21,7 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
-    styleUrls: ['./maps.component.css'],
-    providers: [MapService, MarkerService]
+    styleUrls: ['./maps.component.css']
 })
 export class MapsComponent implements OnInit, OnDestroy {
 
@@ -67,15 +64,15 @@ export class MapsComponent implements OnInit, OnDestroy {
         console.log('The map has loaded: ' + status);
     }
 
-    // mapIsLoaded(event): void {
-    //     if (event) {
-    //         this.mapsFullyLoaded = true;
-    //         if (this.mapsFullyLoaded) {
-    //             setTimeout(() => {
-    //                 this.mapFullLoaded.emit(this.mapsFullyLoaded);
-    //             }, 2000);
-    //         }
-    //     }
-    // }
+    mapIsLoaded(event): void {
+        if (event) {
+            this.mapsFullyLoaded = true;
+            if (this.mapsFullyLoaded) {
+                setTimeout(() => {
+                    this.mapFullLoaded.emit(this.mapsFullyLoaded);
+                }, 2000);
+            }
+        }
+    }
 
 }

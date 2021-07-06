@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -23,6 +23,8 @@ export class EsriMapComponent implements OnInit, OnDestroy {
     view: any = null;
     pointFound: any[];
 
+    @Output() mapIsLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
     private pCenter: Array<number> = [12.495, 41.901];
@@ -33,11 +35,13 @@ export class EsriMapComponent implements OnInit, OnDestroy {
     ngOnInit(): any {
         // Esegue il login sul portale (da finire)
         // this.loginIntoESRI().then(() => {
-            // Inizializzazione della mappa
-            this.initializeMap().then(() => {
-                // Inizializzazione dei widget sulla mappa
-                this.initializeWidget().then();
+        // Inizializzazione della mappa
+        this.initializeMap().then(() => {
+            // Inizializzazione dei widget sulla mappa
+            this.initializeWidget().then(() => {
+                this.mapIsLoaded.emit(true);
             });
+        });
         // });
     }
 

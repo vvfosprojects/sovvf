@@ -12,9 +12,8 @@
                 <div class="clearfix">
                     <!-- Mezzo -->
                     <div class="float-left" style="height:35px">
-                        <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori"
+                        <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo"
                                    [mezzoInServizioPage]="true"
-                                   [mostraNotifiche]="true"
                                    [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
                                    (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                         </app-mezzo>

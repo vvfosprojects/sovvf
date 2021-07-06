@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MezzoActionInterface } from '../../../../../../shared/interface/mezzo-action.interface';
-import { SintesiRichiesta } from '../../../../../../shared/model/sintesi-richiesta.model';
+import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Select, Store } from '@ngxs/store';
-import { ActionMezzo, ClearRichiestaById } from '../../../../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ClearRichiestaById } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Observable, Subscription } from 'rxjs';
-import { RichiesteState } from '../../../../store/states/richieste/richieste.state';
+import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 
 @Component({
     selector: 'app-sintesi-richiesta-modal',

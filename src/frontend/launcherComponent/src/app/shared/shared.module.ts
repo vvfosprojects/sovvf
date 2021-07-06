@@ -74,7 +74,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
-import { TriageSummarySintesiRichiestaComponent } from "./components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component";
+import { TriageSummarySintesiRichiestaComponent } from './components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component';
+import { SintesiRichiestaModalComponent } from './modal/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -117,6 +118,7 @@ const COMPONENTS = [
     AllertaSedeModalComponent,
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
+    SintesiRichiestaModalComponent,
     SostituzionePartenzeFineTunoModalComponent,
     ListaSchedeContattoModalComponent,
     DettaglioSchedaContattoModalComponent,
