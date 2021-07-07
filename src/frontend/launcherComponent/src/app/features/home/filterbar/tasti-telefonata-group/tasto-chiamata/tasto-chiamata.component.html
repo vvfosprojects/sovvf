@@ -4,14 +4,14 @@
             [class.btn-no-hover]="getActive()"
             [disabled]="disabled"
             (click)="chiamata()">
-        <i class="fas fa-phone mr-1"></i>
+        <i class="fas fa-phone-alt mr-1"></i>
         {{ 'Nuova Chiamata' | uppercase }}
     </button>
 </ng-template>
 <ng-template [ngIf]="!richiestaModifica && getActive()">
     <div class="pl-2">
         <h4 class="d-inline-block mt-2 mb-0">
-            <i class="fas fa-phone mr-1"></i>
+            <i class="fas fa-phone-alt mr-1"></i>
             {{ 'Stai inserendo una nuova chiamata' | uppercase }}
         </h4>
     </div>

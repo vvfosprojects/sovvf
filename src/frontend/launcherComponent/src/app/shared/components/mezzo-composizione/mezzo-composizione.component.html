@@ -48,7 +48,7 @@
                 <div class="d-inline-block ml-2">
                     <i class="fas fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
                     <div class="d-inline-block mr-2">{{ mezzoComp.km }} km</div>
-                    <i class="fas fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
+                    <i class="far fa-clock guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
                     <div class="d-inline-block mr-2">{{ mezzoComp.tempoPercorrenza }} min</div>
                 </div>
             </ng-template>
@@ -57,7 +57,7 @@
                 <div class="d-inline-block"
                      [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
                      [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
-                    <i class="fas fa-map-marker text-success mr-2"></i>
+                    <i class="fas fa-map-marker-alt text-success mr-2"></i>
                     <div class="d-inline-block font-weight-bold"
                          [ngbTooltip]="'Posizione Attuale: ' + mezzoComp.indirizzoIntervento">
                         {{ mezzoComp.indirizzoIntervento | truncate:10 }}

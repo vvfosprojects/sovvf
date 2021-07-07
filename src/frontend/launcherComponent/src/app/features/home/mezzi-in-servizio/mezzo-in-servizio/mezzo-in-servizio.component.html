@@ -22,7 +22,7 @@
                     <div class="float-right pt-1">
                         <div *ngIf="mezzoInServizio?.squadre?.length"
                              class="d-inline-block text-right mb-0 font-weight-bold">
-                            <i class="fas fa-group guida mr-1"></i>
+                            <i class="fas fa-users guida mr-1"></i>
                             <div class="d-inline-block"
                                  ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
                                  [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">
@@ -47,7 +47,7 @@
             <!-- Indirizzo -->
             <div class="col-3 pt-1">
                 <div *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
-                    <i class="fas fa-map-marker guida"></i>
+                    <i class="fas fa-map-marker-alt guida"></i>
                     {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: 28 }}
                 </div>
             </div>

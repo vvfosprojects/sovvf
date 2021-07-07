@@ -2,7 +2,7 @@
      placement="bottom-left">
     <button class="btn mx-2" [ngbTooltip]="getTooltip()" style="position:relative;" [ngClass]="getClasses()"
             (click)="listaNotifiche?.length > 0 && myDrop.toggle()" ngbDropdownAnchor>
-        <i class="fas fa-bell-o"></i>
+        <i class="far fa-bell"></i>
         <div *ngIf="nuoveNotifiche" class="position-absolute badge badge-danger px-1" style="top:2px; right:4px;">
             {{ nuoveNotifiche }}
         </div>
@@ -21,7 +21,7 @@
                 <small class="text-muted">{{ notifica.tipo | tipoNotifica }}</small>
             </div>
             <small class="position-absolute text-muted" style="top:6px; left:14px">
-                <i class="fas fa-clock-o"></i>
+                <i class="far fa-clock"></i>
                 {{ notifica.data | date: 'dd/MM HH:mm:ss' }}
             </small>
             <small *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"

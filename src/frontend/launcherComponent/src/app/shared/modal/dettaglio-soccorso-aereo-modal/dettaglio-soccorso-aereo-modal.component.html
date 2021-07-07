@@ -63,7 +63,7 @@
     <div class="row w-100">
       <div class="clearfix input-soccorso-format mr-3" style="width: 51%; margin-left: 2.5rem">
         <label for="localita" class="d-none">Località</label>
-        <i class="fas fa-map-marker fa-fw mr-1 text-muted" ngbTooltip="Località" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-map-marker-alt fa-fw mr-1 text-muted" ngbTooltip="Località" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="localita" [(ngModel)]="richiesta.localita.indirizzo" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
       </div>
       <div class="clearfix input-soccorso-format mr-2" style="width: 20%">
@@ -90,7 +90,7 @@
       </div>
       <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
-        <i class="fas fa-phone fa-fw mx-1 text-muted" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-phone-alt fa-fw mx-1 text-muted" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
       </div>
     </div>
@@ -111,7 +111,7 @@
       </div>
       <button *ngIf="!modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
               (click)="onModificaMotivazione()" ngbTooltip="Modifica Motivazione richiesta" placement="bottom">
-        <i class="fas fa-pencil-square-o fa-fw ml-1" style="transform: translate(-20px, 0px);"></i>
+        <i class="far fa-edit fa-fw ml-1" style="transform: translate(-20px, 0px);"></i>
       </button>
       <div *ngIf="modificaMotivazione" style="display: inline-grid">
         <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"

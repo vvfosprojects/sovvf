@@ -159,9 +159,9 @@ export class HelperSintesiRichiesta {
     toggleGestioneClass(gestione: boolean): string {
         let returnClass = '';
         if (!gestione) {
-            returnClass = 'fa-long-arrow-down text-secondary';
+            returnClass = 'fa-long-arrow-alt-down text-secondary';
         } else {
-            returnClass = 'fa-long-arrow-up text-secondary';
+            returnClass = 'fa-long-arrow-alt-up text-secondary';
         }
         return returnClass;
     }
@@ -194,7 +194,7 @@ export class HelperSintesiRichiesta {
         }
     }
 
-//1px solid #dc3545
+// 1px solid #dc3545
     /* NgClass Card Fissata Status */
     cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {

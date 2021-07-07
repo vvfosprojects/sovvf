@@ -21,14 +21,14 @@
             </div>
         </div>
         <div *ngIf="!partenza.squadreComposizione?.length" class="col text-danger">
-            <i class="fas fa-group mr-1"></i>
+            <i class="fas fa-users mr-1"></i>
             <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
         </div>
         <div *ngIf="partenza.squadreComposizione?.length === 1" class="col">
             <div class="nowrap">
                 <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadreComposizione[0].stato))"
                     ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadreComposizione[0].stato) }}"
-                    class="fas fa-group mr-1 font-weight-bold"></i>
+                    class="fas fa-users mr-1 font-weight-bold"></i>
                 <span [ngbTooltip]=" partenza.squadreComposizione[0].nome && partenza.squadreComposizione[0].nome.length >= 10 ?  partenza.squadreComposizione[0].nome : null">
                     {{ partenza.squadreComposizione[0].nome | truncate: 10 }}</span>
                 <button *ngIf="partenza.mezzoComposizione && compPartenzaMode === 1 && partenza.mezzoComposizione.mezzo.stato !== StatoMezzo.InRientro && !disableDividi"
@@ -36,13 +36,13 @@
                         [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
                         (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
                     <span class="mr-1" style="font-weight: 500">Dividi</span>
-                    <i class="fas fa-files-o font-weight-bold"></i>
+                    <i class="far fa-file-alt font-weight-bold"></i>
                 </button>
             </div>
         </div>
         <div *ngIf="partenza.squadreComposizione?.length > 1" class="col">
             <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-                <i class="fas fa-group guida mr-1"></i>
+                <i class="fas fa-users guida mr-1"></i>
                 <small>{{ partenza.squadreComposizione?.length }} squadre</small>
             </span>
             <ng-template #piusquadre>
@@ -71,29 +71,29 @@
         <!-- Tempo di percorrenza -->
         <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col">
-            <i class="guida fas fa-clock-o mr-1"></i>
+            <i class="guida far fa-clock mr-1"></i>
             <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
         </div>
         <div *ngIf="partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col text-danger">
-            <i class="fas fa-clock-o mr-1 text-warning"></i>
+            <i class="far fa-clock mr-1 text-warning"></i>
             <span ngbTooltip="GPS ASSENTE"><b>-</b></span>
         </div>
         <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col text-danger">
-            <i class="fas fa-clock-o mr-1 text-danger"></i>
+            <i class="far fa-clock mr-1 text-danger"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
     </div>
     <!-- Distaccamento di appartenenza -->
     <div class="row">
         <div *ngIf="partenza.mezzoComposizione?.mezzo.distaccamento" class="col">
-            <i class="guida fas fa-map-marker mr-2 ml-1"></i>
+            <i class="guida fas fa-map-marker-alt mr-2 ml-1"></i>
             <span class="badge" [ngbTooltip]="partenza.mezzoComposizione.mezzo.distaccamento.descrizione"
                   [disableTooltip]="partenza.mezzoComposizione.mezzo.distaccamento.descrizione.length <= 12"
                   [ngClass]="badgeDistaccamentoClass()">{{partenza.mezzoComposizione.mezzo.distaccamento.descrizione | slice: 0:20}}</span>
         </div>
         <div *ngIf="!partenza.mezzoComposizione?.mezzo.distaccamento" class="col text-danger">
-            <i class="fas fa-map-marker mr-2 ml-1"></i>
+            <i class="fas fa-map-marker-alt mr-2 ml-1"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
         <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">

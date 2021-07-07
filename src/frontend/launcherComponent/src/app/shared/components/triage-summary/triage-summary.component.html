@@ -140,7 +140,7 @@
                                    style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
                                     interventoProssimita?.codice }}</b>
                                 -
-                                <i class="fas fa-clock-o mr-2 ml-2"
+                                <i class="far fa-clock mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
@@ -163,7 +163,7 @@
                                 <i class="fas fa-user mr-1"></i>
                                 {{ interventoProssimita?.richiedente?.nominativo }}
                                 -
-                                <i class="fas fa-map-marker ml-1"></i>
+                                <i class="fas fa-map-marker-alt ml-1"></i>
                                 {{ interventoProssimita?.localita?.indirizzo }}
                             </div>
                         </li>
@@ -190,7 +190,7 @@
                                    style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
                                     interventoStessaVia?.codice }}</b>
                                 -
-                                <i class="fas fa-clock-o mr-2 ml-2"
+                                <i class="far fa-clock mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
@@ -213,7 +213,7 @@
                                 <i class="fas fa-user mr-1"></i>
                                 {{ interventoStessaVia?.richiedente?.nominativo }}
                                 -
-                                <i class="fas fa-map-marker ml-1"></i>
+                                <i class="fas fa-map-marker-alt ml-1"></i>
                                 {{ interventoStessaVia?.localita?.indirizzo }}
                             </div>
                         </li>
@@ -242,7 +242,7 @@
                                     interventoChiusoStessoIndirizzo?.codice }}</b>
                             </div>
                             <div>
-                                <i class="fas fa-map-marker mr-1"></i>
+                                <i class="fas fa-map-marker-alt mr-1"></i>
                                 {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
                             </div>
                             <div>

@@ -3,7 +3,7 @@
         <span class="font-weight-bolder ml-1">
             <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fas fa-fax pr-2"></i>
             <i *ngIf="telefoni[0]?.tipo.startsWith('Tel')"
-               class="fas fa-phone pr-2"></i>
+               class="fas fa-phone-alt pr-2"></i>
             <a href="{{'tel:+39'+ telefoni[0]?.numero}}">{{telefoni[0]?.numero}}</a>
         </span>
     </li>
@@ -14,7 +14,7 @@
         <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
             <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fas fa-fax pr-2" ngbTooltip="Fax"></i>
             <i *ngIf="telefoni[0]?.tipo?.toLowerCase().startsWith('tel')"
-               class="fas fa-phone pr-2" ngbTooltip="Telefono"></i>
+               class="fas fa-phone-alt pr-2" ngbTooltip="Telefono"></i>
             <a href="{{'tel:+39'+ telefoni[0]?.numero}}">{{telefoni[0]?.numero}}</a>
         </span>
     </li>
@@ -30,7 +30,7 @@
                 <div class="float-left mt-1">
                     <span class="font-weight-bolder ml-1">
                         <i *ngIf="tel?.tipo === 'Fax'" class="fas fa-fax pr-2" ngbTooltip="Fax"></i>
-                        <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fas fa-phone pr-2"
+                        <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fas fa-phone-alt pr-2"
                            ngbTooltip="Telefono"></i>
                         <a class="numero-tel" href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
                     </span>

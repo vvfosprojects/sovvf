@@ -25,7 +25,7 @@
                         <div class="col-md-12">
                     <span *ngIf="r?.stato === StatoRichiesta.Sospesa"
                           class="d-inline-block text-danger font-weight-bolder h4"
-                          style="position: absolute; left: 0px; top:22px">S</span>
+                          style="position: absolute; left: 0; top:22px">S</span>
                             <!-- PRIMA RIGA -->
                             <div class="row">
                                 <div class="clearfix mx-3">
@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
-                                        <i class="guida fas fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
+                                        <i class="guida far fa-clock fa-fw mr-1" ngbTooltip="Ricezione richiesta"
                                            placement="right" container="body"></i>
                                         <a ngbTooltip="{{ (r.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
@@ -187,9 +187,9 @@
                                         {{ r?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
-                                        <span class="ml-1" class="font-double-monitor">
+                                        <span class="ml-1 font-double-monitor">
                                     (
-                                        <i class="guida fas fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <i class="guida fas fa-phone-alt fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
                                         <a>{{ r?.richiedente?.telefono }}</a>
                                     )
                                 </span>
@@ -236,7 +236,7 @@
                             </span>
                                 </div>
                                 <div class="clearfix" style="flex: 0 0 54.5% !important;">
-                                    <i class="guida fas fa-map-marker fa-fw mr-1 font-double-monitor"
+                                    <i class="guida fas fa-map-marker-alt fa-fw mr-1 font-double-monitor"
                                        ngbTooltip="Località"></i>
                                     <span class="font-double-monitor">
                                         <span ngbTooltip="{{ r?.localita?.indirizzo }}"
@@ -460,7 +460,7 @@
                                 </span>
                                             <ng-template #nessunTurno>
                                                 <a>-</a>
-                                                <i class="guida fas fa-clock-o fa-fw ml-1"
+                                                <i class="guida far fa-clock fa-fw ml-1"
                                                    ngbTooltip="Turno non presente"
                                                    placement="right"></i>
                                             </ng-template>

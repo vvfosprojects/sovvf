@@ -6,7 +6,6 @@
 @import "~bootstrap/scss/mixins";
 @import "~ngx-toastr/toastr-bs4-alert";
 @import "../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
-@import "./assets/fontawesome/css/all.min.css";
 
 @font-face {
   font-family: "icon-marker";
@@ -86,6 +85,12 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .single-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
+  // overwrite style FontAwesome
+  .fas {
+    font-weight: 900 !important;
+  }
+  //
 
   button {
     font-size: $SO-font-xlarge;
