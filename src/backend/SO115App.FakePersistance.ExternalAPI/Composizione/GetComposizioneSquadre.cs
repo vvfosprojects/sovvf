@@ -154,11 +154,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Genere = m.Genere,
                         Stato = lstStatiMezzi.Result.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
                     }).ToList() : null,
-                    spotId = squadra.spotId,
-                    spotType = squadra.spotType,
-                    version = squadra.version,
-                    workshiftId = squadra.workshiftId,
-                    IdOpService = squadra.Id
+                    //spotId = squadra.spotId,
+                    //spotType = squadra.spotType,
+                    //version = squadra.version,
+                    //workshiftId = squadra.workshiftId,
+                    //IdOpService = squadra.Id
                 }));
 
                 return lstSquadre;

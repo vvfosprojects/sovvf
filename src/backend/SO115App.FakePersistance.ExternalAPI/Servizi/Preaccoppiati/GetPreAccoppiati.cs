@@ -33,38 +33,42 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         {
             Task<List<MezzoDTO>> lstMezzi = null;
             var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
+            var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiceSede.ToList()));
 
-            return await Task.Run(() =>
+            return await Task.Run(() => //OTTENGO I DATI
             {
-                var lstMezziSquadra = new ConcurrentDictionary<string, Squadra[]>();
+                var lstSquadreMezzo = new ConcurrentDictionary<string, Squadra[]>();
 
                 Parallel.ForEach(query.CodiceSede, codice =>
                 {
                     var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.All.ToList();
 
                     lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
-                        lstMezziSquadra.TryAdd(m, lstSquadre.Where(s => s.Codice.Equals(squadra.Codice)).Select(s => new Squadra(s.Codice, s.Descrizione, s.Stato)).ToArray())));
+                        lstSquadreMezzo.TryAdd(m, lstSquadre
+                            .Where(s => s.Codice.Equals(squadra.Codice))
+                            .Select(s => new Squadra(s.Codice, s.Descrizione, lstStatoSquadre.Result.Find(stato => s.Codice.Equals(stato.IdSquadra))?.StatoSquadra ?? Costanti.MezzoInSede))
+                            .ToArray())));
                 });
 
-                lstMezzi = _getMezzi.GetInfo(lstMezziSquadra.Select(lst => lst.Key).ToList());
+                lstMezzi = _getMezzi.GetInfo(lstSquadreMezzo.Select(lst => lst.Key).ToList());
 
-                return lstMezziSquadra;
+                return lstSquadreMezzo;
             })
-            .ContinueWith(lstMezziSquadra => lstMezziSquadra.Result.SelectMany(squadra =>
+            .ContinueWith(lstMezziSquadra => lstMezziSquadra.Result.Select(squadreMezzo => //MAPPING
             {
-                var MezziSquadra = lstMezzi.Result.FindAll(mezzo => mezzo.CodiceMezzo.Equals(squadra.Key));
+                var MezzoSquadra = lstMezzi.Result.Find(mezzo => mezzo.CodiceMezzo.Equals(squadreMezzo.Key));
 
-                return MezziSquadra.Select(mezzo => new PreAccoppiato()
+                return new PreAccoppiato()
                 {
-                    CodiceMezzo = mezzo.CodiceMezzo,
-                    Distaccamento = mezzo.CodiceDistaccamento,
-                    DescrizioneMezzo = mezzo.Descrizione,
-                    GenereMezzo = mezzo.Genere,
-                    StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(mezzo.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
-                    Squadre = lstMezziSquadra.Result.SelectMany(s => s.Value).ToList(),
+                    CodiceMezzo = MezzoSquadra.CodiceMezzo,
+                    Distaccamento = MezzoSquadra.CodiceDistaccamento,
+                    DescrizioneMezzo = MezzoSquadra.Descrizione,
+                    GenereMezzo = MezzoSquadra.Genere,
+                    StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(MezzoSquadra.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
+                    Squadre = lstMezziSquadra.Result.Where(s => s.Key.Equals(MezzoSquadra.CodiceMezzo)).SelectMany(s => s.Value).ToList(),
                     Km = null,
                     TempoPercorrenza = null,
-                });
+                };
             }).ToList());
         }
     }
