@@ -101,8 +101,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                    .ThenBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                    .ThenBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                    .ThenBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
-                   //.ThenByDescending(mezzo => mezzo.Mezzo.PreAccoppiato ... ) //TODO PRIORITA PREACCOPPIATI
-                   //.ThenByDescending(mezzo  => mezzo.IndiceOrdinamento)
+                   //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
             var result = lstMezziComposizione.Result.ToList();
