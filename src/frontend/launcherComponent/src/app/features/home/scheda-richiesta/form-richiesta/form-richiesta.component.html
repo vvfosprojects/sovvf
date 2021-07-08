@@ -52,15 +52,11 @@
                 </div>
                 <div class="col-5">
                     <div class="form-group mb-0">
-                        <label for="indirizzo"
-                               class="d-none">Indirizzo</label>
-                        <input id="indirizzo"
-                               class="form-control required-field"
-                               [class.is-invalid]="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
-                               type="text"
-                               formControlName="indirizzo"
-                               placeholder="Ricerca indirizzo"
-                               (ngModelChange)="onCercaIndirizzo($event)">
+                        <app-ricerca-indirizzo
+                                [indirizzo]="f?.indirizzo?.value"
+                                [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
+                                (selectCandidate)="reducerIndirizzo($event)">
+                        </app-ricerca-indirizzo>
                         <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                              class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>

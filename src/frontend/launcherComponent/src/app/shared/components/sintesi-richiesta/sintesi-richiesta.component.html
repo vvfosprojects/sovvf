@@ -365,35 +365,6 @@
                                         </ng-template>
                                     </div>
 
-                                    <!-- In lavorazione -->
-                                    <div *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione)">
-                                        <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                            class="d-inline-block m-0 mr-1"
-                                            [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
-                                            [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
-                                            <i class="guida fas fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
-                                               placement="right"></i>
-                                            {{ utentiInLavorazioneValue?.nominativo | truncate: 15 }}
-                                        </h4>
-                                        <div *ngIf="richiesta?.listaUtentiInLavorazione && richiesta?.listaUtentiInLavorazione?.length > 1"
-                                             ngbDropdown class="d-inline-block" placement="bottom">
-                                            <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
-                                                    (click)="$event.stopPropagation()">
-                                                +{{ richiesta?.listaUtentiInLavorazione.length - 1 }}
-                                            </button>
-                                            <div ngbDropdownMenu class="p-2 text-center">
-                                                <div *ngIf="methods._altriUtenti(richiesta?.listaUtentiInLavorazione) as utentiTooltip">
-                                                    <div *ngFor="let utente of utentiTooltip">
-                                                        {{utente?.nominativo}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <ng-template #nonInLavorazione>
-                                            <h4>Non in lavorazione</h4>
-                                        </ng-template>
-                                    </div>
-
                                     <!-- Scheda NUE -->
                                     <div *ngIf="richiesta?.codiceSchedaNue">
                                         <h4 *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"

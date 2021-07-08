@@ -25,8 +25,6 @@ import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { HomeState } from '../../store/states/home.state';
-import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
@@ -61,6 +59,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../../../shared/interface/pos.interface';
+import AddressCandidate from "@arcgis/core/tasks/support/AddressCandidate";
 
 @Component({
     selector: 'app-form-richiesta',
@@ -109,8 +108,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     richiestaForm: FormGroup;
     submitted = false;
-
-    addressSuggested: any;
 
     private subscription = new Subscription();
 
@@ -289,37 +286,39 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('copiaCoordinate');
     }
 
-    onCercaIndirizzo(indirizzoCercato: string): void {
-        console.log('indirizzoCercato', indirizzoCercato);
+    reducerIndirizzo(candidate: AddressCandidate): void {
+        console.log('reducerIndirizzo => candidate', candidate);
 
-        // const locator = new Locator('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest');
-        //
-        // locator.addressToLocations({ address: indirizzoCercato }).then(async (response) => {
-        //     this.addressSuggested = response;
-        //     console.log('addressSuggested', this.addressSuggested);
-        // });
-
-        // if (!this.richiestaModifica) {
-        //     this.onSetIndirizzo(result);
-        // } else {
-        //     this.onModificaIndirizzo(result);
-        // }
+        if (!this.richiestaModifica) {
+            this.onSetIndirizzo(candidate);
+        } else {
+            this.onModificaIndirizzo(candidate);
+        }
     }
 
-    onSetIndirizzo(result: string): void {
-        /* const lat = roundToDecimal(result.geometry.location.lat(), 6);
-        const lng = roundToDecimal(result.geometry.location.lng(), 6);
+    onSetIndirizzo(candidate: AddressCandidate): void {
+        console.log('onSetIndirizzo => candidate', candidate);
+
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, result.formatted_address), null
+        this.chiamataMarker = new ChiamataMarker(
+            this.idChiamata,
+            `${this.operatore.nome} ${this.operatore.cognome}`,
+            `${this.operatore.sede.codice}`,
+            new Localita(coordinate ? coordinate : null, candidate.address),
+            candidate,
+            null
         );
-        this.f.indirizzo.patchValue(result.formatted_address);
+        this.f.indirizzo.patchValue(candidate.address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
-        this.reducerSchedaTelefonata('cerca'); */
+        this.reducerSchedaTelefonata('cerca');
     }
 
-    onModificaIndirizzo(result: string): void {
+    onModificaIndirizzo(candidate: AddressCandidate): void {
+        console.log('onModificaIndirizzo => candidate', candidate);
+
         /* const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);

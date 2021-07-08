@@ -4,13 +4,14 @@ import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
 import Legend from '@arcgis/core/widgets/Legend';
-import BasemapGallery from '@arcgis/core/widgets/BasemapGallery';
-import ScaleBar from '@arcgis/core/widgets/ScaleBar';
 import Expand from '@arcgis/core/widgets/Expand';
 import Search from '@arcgis/core/widgets/Search';
 import WebMap from '@arcgis/core/WebMap';
 import PortalItem from '@arcgis/core/portal/PortalItem';
 import EsriConfig from '@arcgis/core/config';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import Layer from '@arcgis/core/layers/Layer';
 
 @Component({
     selector: 'app-esri-map',
@@ -23,7 +24,7 @@ export class EsriMapComponent implements OnInit, OnDestroy {
     view: any = null;
     pointFound: any[];
 
-    @Output() mapIsLoaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() mapIsLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
@@ -39,7 +40,12 @@ export class EsriMapComponent implements OnInit, OnDestroy {
         this.initializeMap().then(() => {
             // Inizializzazione dei widget sulla mappa
             this.initializeWidget().then(() => {
-                this.mapIsLoaded.emit(true);
+                // @ts-ignore
+                this.mapIsLoaded.emit({ spatialReference: this.map.initialViewProperties.spatialReference });
+
+                this.addLayer().then();
+
+                this.toggleLayer('HERE_ITALIA');
             });
         });
         // });
@@ -48,6 +54,19 @@ export class EsriMapComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.view) {
             this.view.destroy();
+        }
+    }
+
+    // Per fare il toggle di un intero layer (se è attivato lo disattivo, se è disattivato lo attivo)
+    toggleLayer(layerTitle: string): void {
+        const map = this.map;
+        const mapLayers = map.allLayers.toArray();
+        const layerToDelete = mapLayers.filter((l: Layer) => l.title === layerTitle)[0];
+        if (layerToDelete) {
+            this.map.remove(layerToDelete);
+            const layerToDeleteToggled = layerToDelete;
+            layerToDeleteToggled.visible = !layerToDeleteToggled.visible;
+            this.map.add(layerToDeleteToggled);
         }
     }
 
@@ -110,40 +129,39 @@ export class EsriMapComponent implements OnInit, OnDestroy {
             content: legend,
         });
 
-        const basemapGallery = new BasemapGallery({
-            view: this.view,
-        });
-
-        const bgExpand = new Expand({
-            view: this.view,
-            content: basemapGallery,
-        });
-
-        const scaleBar = new ScaleBar({
-            view: this.view,
-        });
-
         const search = new Search({
             view: this.view,
         });
-
-        const bgContentCheck = new Expand({
-            expandIconClass: 'esri-icon-applications', // esempio icona https://developers.arcgis.com/javascript/latest/esri-icon-font/
-            view: this.view,
-            content: document.getElementById('idCheckBox'),
-        });
-
         // Altre possibili posizioni standard o manuale
         // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
         this.view.ui.add(llExpand, 'top-right');
         this.view.ui.add(leExpand, 'top-right');
-        this.view.ui.add(bgExpand, 'top-right');
-        this.view.ui.add(bgContentCheck, 'top-right');
-        // this.view.ui.add(drExpand, "top-right");
-        this.view.ui.add(scaleBar, 'bottom-left');
         this.view.ui.add(search, {
             position: 'top-left',
             index: 0, // cosi indico la posizione che deve avere nella ui
         });
+
+        // Widget per disegnare sulla mappa
+        // const graphicsLayer = new GraphicsLayer();
+        // this.map.add(graphicsLayer);
+        //
+        // const sketch = new Sketch({
+        //     layer: graphicsLayer,
+        //     view: this.view,
+        //     // graphic will be selected as soon as it is created
+        //     creationMode: 'update'
+        // });
+        //
+        // this.view.ui.add(sketch, 'top-right');
+    }
+
+    async addLayer(): Promise<any> {
+        const portalItem = new PortalItem({
+            id: '07241d64c1404a4e94168c93efeecbed'
+        });
+        const layerTest = new FeatureLayer({
+            portalItem
+        });
+        this.map.add(layerTest);
     }
 }

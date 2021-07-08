@@ -14,6 +14,7 @@ import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { RoutesPath } from '../../../enum/routes-path.enum';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
 import { Injectable } from '@angular/core';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 export interface AppStateModel {
     previusUrl: string;
@@ -21,6 +22,9 @@ export interface AppStateModel {
     vistaSedi: string[];
     offsetTimeSync: number;
     mapIsLoaded: boolean;
+    mapProperties: {
+        spatialReference?: SpatialReference
+    };
 }
 
 export const appStateDefaults: AppStateModel = {
@@ -28,7 +32,8 @@ export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
     vistaSedi: null,
     offsetTimeSync: 0,
-    mapIsLoaded: null
+    mapIsLoaded: null,
+    mapProperties: null
 };
 
 @Injectable()
@@ -68,6 +73,11 @@ export class AppState {
         return userLogged ? state.previusUrl : RoutesPath.Login;
     }
 
+    @Selector()
+    static mapProperties(state: AppStateModel): { spatialReference?: SpatialReference } {
+        return state.mapProperties;
+    }
+
     @Action(ReloadApp)
     reloadApp({ dispatch }: StateContext<AppStateModel>): void {
         dispatch(new Navigate([`/${RoutesPath.Logged}`]));
@@ -92,8 +102,8 @@ export class AppState {
     }
 
     @Action(SetMapLoaded)
-    setMapLoaded({ patchState }: StateContext<AppStateModel>, { mapIsLoaded }: SetMapLoaded): void {
-        patchState({ mapIsLoaded });
+    setMapLoaded({ patchState }: StateContext<AppStateModel>, { mapIsLoaded, mapProperties }: SetMapLoaded): void {
+        patchState({ mapIsLoaded, mapProperties });
     }
 
     @Action(SetCurrentUrl)

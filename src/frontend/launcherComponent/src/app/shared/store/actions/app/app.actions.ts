@@ -1,3 +1,5 @@
+import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+
 export class ReloadApp {
     static readonly type = '[App] Reload';
 }
@@ -23,7 +25,7 @@ export class SetTimeSync {
 export class SetMapLoaded {
     static readonly type = '[App] Map is fully loaded';
 
-    constructor(public mapIsLoaded: boolean) {
+    constructor(public mapIsLoaded: boolean, public mapProperties?: { spatialReference?: SpatialReference }) {
     }
 }
 

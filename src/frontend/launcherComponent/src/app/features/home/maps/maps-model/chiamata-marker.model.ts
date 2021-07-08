@@ -1,4 +1,4 @@
-import {Localita} from '../../../../shared/model/localita.model';
+import { Localita } from '../../../../shared/model/localita.model';
 
 export class ChiamataMarker {
     constructor(
@@ -18,6 +18,10 @@ export class ChiamataMarker {
          * La stringa dell'indirizzo e le relative coordinate
          */
         public localita: Localita,
+        /**
+         * Marker da visualizzare sulla mappa ESRI
+         */
+        public markerEsri: any, // TODO: sostituire "any" con il tipo corretto
         /**
          * Contiene la descrizione della label da mostrare
          */

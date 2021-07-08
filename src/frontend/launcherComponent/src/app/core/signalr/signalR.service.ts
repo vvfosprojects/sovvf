@@ -187,22 +187,23 @@ export class SignalRService {
 
         /**
          * Markers Mappa
+         * TODO: eliminare con passaggio ad ESRI (i marker saranno visualizzati dai layer dedicati sul portale)
          */
-        this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaMarker', data);
-            this.store.dispatch(new InsertRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaUpdateMarker', data);
-            this.store.dispatch(new UpdateRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
-            console.log('NotifyGetMezzoUpdateMarker', data);
-            this.store.dispatch(new UpdateMezzoMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
+        // this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
+        //     console.log('NotifyGetRichiestaMarker', data);
+        //     this.store.dispatch(new InsertRichiestaMarker(data));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        // });
+        // this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
+        //     console.log('NotifyGetRichiestaUpdateMarker', data);
+        //     this.store.dispatch(new UpdateRichiestaMarker(data));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        // });
+        // this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
+        //     console.log('NotifyGetMezzoUpdateMarker', data);
+        //     this.store.dispatch(new UpdateMezzoMarker(data));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        // });
 
         /**
          * Box
@@ -225,31 +226,27 @@ export class SignalRService {
 
         /**
          * Chiamata in Corso
+         * TODO: eliminare con passaggio ad ESRI (i marker "Chiamata in corso" saranno visualizzati dal layer dedicato sul portale)
          */
-        this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
-            console.log('NotifyChiamataInCorsoMarkerAdd', data);
-            this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
-        });
-        this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
-            console.log('NotifyChiamataInCorsoMarkerUpdate', data);
-            this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
-        });
-        this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
-            console.log('NotifyChiamataInCorsoMarkerDelete', id);
-            this.store.dispatch(new RemoveChiamataMarker(id));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3));
-        });
+        // this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
+        //     console.log('NotifyChiamataInCorsoMarkerAdd', data);
+        //     this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
+        // });
+        // this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
+        //     console.log('NotifyChiamataInCorsoMarkerUpdate', data);
+        //     this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
+        // });
+        // this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
+        //     console.log('NotifyChiamataInCorsoMarkerDelete', id);
+        //     this.store.dispatch(new RemoveChiamataMarker(id));
+        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3));
+        // });
 
         /**
          * Inserimento Chiamata
          */
-        // TODO: eliminare da BE, non più utilizzata
-        // this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
-        //     console.log('NotifyDoppioneChiamataInCorso', message);
-        //     this.store.dispatch(new ApriModaleRichiestaDuplicata(message));
-        // });
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch(new InsertChiamataSuccess(data));

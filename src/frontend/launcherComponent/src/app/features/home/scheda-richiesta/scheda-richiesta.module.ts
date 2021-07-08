@@ -16,6 +16,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { TagInputModule } from 'ngx-chips';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
+import { RicercaIndirizzoComponent } from './form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
 
 @NgModule({
     imports: [
@@ -37,7 +38,8 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
     ],
     declarations: [
         SchedaRichiestaComponent,
-        FormRichiestaComponent
+        FormRichiestaComponent,
+        RicercaIndirizzoComponent
     ],
     exports: [
         SchedaRichiestaComponent
