@@ -76,25 +76,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
 
-            Parallel.ForEach(sedi, async sede =>
+            var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+
+            try
             {
-                _clientMezzi.SetCache("Mezzi_" + sede);
+                var resultApi = _clientMezzi.GetAsync(url, token);
 
-                var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-
-                try
-                {
-                    var resultApi = _clientMezzi.GetAsync(url, token);
-
-                    foreach (var personale in resultApi.Result)
-                        lstMezziDto.Enqueue(personale);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
-                }
-            });
+                foreach (var personale in resultApi.Result)
+                    lstMezziDto.Enqueue(personale);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
+            }
 
             #endregion LEGGO DA API ESTERNA
 
@@ -136,35 +131,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 return mezzo;
             }).ToList();
 
-            //ListaMezzi.RemoveAll(x =>
-            //{
-            //    return x.Coordinate == null || (x.Coordinate.Latitudine == 0 && x.Coordinate.Longitudine == 0);
-            //});
-
             return ListaMezzi;
         }
-
-        //private List<Mezzo> GetListaMezziConStatoAggiornat(List<Mezzo> listaMezzi)
-        //{
-        //    listaMezzi = listaMezzi.Select(mezzo =>
-        //    {
-        //        //var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
-        //        //if (ListaStatoOperativoMezzo.Count > 0)
-        //        //{
-        //        //    mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
-        //        //    mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
-        //        //}
-
-        //        return mezzo;
-        //    }).ToList();
-
-        //    int i = listaMezzi.RemoveAll(x =>
-        //    {
-        //        return x.Coordinate == null || (x.Coordinate.Latitudine == 0 && x.Coordinate.Longitudine == 0);
-        //    });
-
-        //    return listaMezzi;
-        //}
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
@@ -179,38 +147,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                 distaccamento != null ? distaccamento.Coordinate : null,
                                 "", "", "", "", "");
 
-            Mezzo mezzo = new Mezzo(mezzoDto.CodiceMezzo,
+            var mezzo = new Mezzo(mezzoDto.CodiceMezzo,
                 mezzoDto.Descrizione,
                 mezzoDto.Genere,
-                GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
+                Costanti.MezzoInSede,
                mezzoDto.CodiceDistaccamento, sede, coordinate)
             {
                 DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
             };
             return mezzo;
         }
-
-        //private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
-        //{
-        //    var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
-        //    try
-        //    {
-        //        using var _client = new HttpClient();
-        //        _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-
-        // var response =
-        // _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",",
-        // ListCodComando)}").Result; response.EnsureSuccessStatusCode();
-
-        // if (response == null) throw new HttpRequestException();
-
-        // using HttpContent contentMezzo = response.Content; var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
-
-        // listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data); }
-        // catch (Exception e) { throw new Exception("Elenco dei mezzi non disponibile"); }
-
-        //    return listaAnagraficaMezzo;
-        //}
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
         {
@@ -258,6 +204,55 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             resultApi.Result?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
 
             return lstMezziDto.ToList();
+        }
+
+        public async Task<List<Mezzo>> GetBySedi(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
+        {
+            var pinNodi = sedi.Select(s => new PinNodo(s, true));
+            var ListaCodiciComandi = new List<string>();
+            var ListaCodiciSedi = new List<string>();
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                var codice = figlio.Codice;
+                string codiceE = "";
+                codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
+                if (string.IsNullOrEmpty(codiceE))
+                {
+                    if (!ListaCodiciComandi.Contains(codice.Split('.')[0]))
+                        ListaCodiciComandi.Add(codice.Split('.')[0]);
+                    ListaCodiciSedi.Add(codice);
+                }
+            }
+
+            #region LEGGO DA API ESTERNA
+
+            var token = _getToken.GeneraToken();
+
+            var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
+
+            var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+
+            try
+            {
+                var resultApi = _clientMezzi.GetAsync(url, token);
+
+                foreach (var personale in resultApi.Result)
+                    lstMezziDto.Enqueue(personale);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
+            }
+
+            #endregion LEGGO DA API ESTERNA
+
+            //MAPPING
+            var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m)).ToList();
+
+            return ListaMezzi;
         }
     }
 }

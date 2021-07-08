@@ -33,9 +33,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi); //OTTENGO I DATI
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiciSedi.ToList())
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToList()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
@@ -89,7 +89,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato ?? mezzo.Mezzo.Stato);
 
-                return ricerca && distaccamento && genere && stato;
+                return ricerca && true && genere && true;
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
