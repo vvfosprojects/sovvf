@@ -296,7 +296,7 @@
                                     <div class="col-md-3">
                                         <!-- presa in carico -->
                                         <div class="h6">
-                                            <i class="guida fas fa-calendar-check-o fa-fw mr-1"
+                                            <i class="guida far fa-calendar-check fa-fw mr-1"
                                                ngbTooltip="Presa in carico"
                                                placement="right"></i>
                                             <div *ngIf="methods._primoUtente(r?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
@@ -366,7 +366,7 @@
 
                                         <!-- scheda nue -->
                                         <div class="h6">
-                                            <i class="guida fas fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
+                                            <i class="guida far fa-id-card fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                                placement="right"></i>
                                             <a *ngIf="r?.codiceSchedaNue; else nessunCodiceNue">
                                                 {{ r?.codiceSchedaNue }}
@@ -456,7 +456,7 @@
                                         <div class="h6 text-right">
                                 <span *ngIf="r?.trnInsChiamata; else nessunTurno">
                                     {{r?.trnInsChiamata}}
-                                    <i class="fas fa-fw fa-calendar-check-o guida ml-1"></i>
+                                    <i class="fa-fw far fa-calendar-check guida ml-1"></i>
                                 </span>
                                             <ng-template #nessunTurno>
                                                 <a>-</a>
@@ -521,7 +521,7 @@
                                             <a><b>{{ r?.complessita?.indice }}</b></a>
                                             <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(r)">{{
                                                 r?.complessita?.descrizione }}</span>
-                                            <i class="guida fas fa-gears fa-fw ml-1" ngbTooltip="Complessità"
+                                            <i class="guida fas fa-cogs fa-fw ml-1" ngbTooltip="Complessità"
                                                placement="right"></i>
                                         </div>
 

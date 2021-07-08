@@ -115,7 +115,7 @@
                                                 [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
                                                 triggers="click" tabindex="0" style="cursor:pointer"
                                                 (click)="$event.stopPropagation()">
-                                            <i class="guida fas fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
+                                            <i class="guida fas fa-users fa-fw ml-2 mr-1" ngbTooltip="Numero Squadre"></i>
                                             <span>{{ squadre?.length }}</span>
                                         </button>
                                         <ng-template #popSquadre>
@@ -135,7 +135,7 @@
                                             popoverTitle="Mezzi" triggers="click" tabindex="0" style="cursor:pointer"
                                             (click)="$event.stopPropagation()"
                                             placement="bottom-right">
-                                        <i class="guida fas fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
+                                        <i class="guida fas fa-truck fa-fw ml-2 mr-1" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
                                         <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}
                                             r</span>
@@ -315,16 +315,16 @@
                                 <div class="clearfix">
                                     <!-- Operatore chiamata -->
                                     <div *ngIf="richiesta?.operatore as op">
-                                        <h4 [ngbTooltip]="utentePresaInCarico" class="mb-0">
+                                        <div [ngbTooltip]="utentePresaInCarico" class="mb-0">
                                             <i class="guida fas fa-user fa-fw"></i>
                                             <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
-                                            {{ op?.nome + ' ' + op?.cognome | truncate: 14 }}
+                                            <span class="font-xxlarge">{{ op?.nome + ' ' + op?.cognome | truncate: 14 }}</span>
                                             <ng-template #utentePresaInCarico>
                                                 <div>
                                                     {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
                                                 </div>
                                             </ng-template>
-                                        </h4>
+                                        </div>
                                     </div>
 
                                     <!-- Presa in carico -->
@@ -332,7 +332,7 @@
                                         <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
                                             class="d-inline-block m-0 mr-1"
                                             [ngbTooltip]="utentePresaInCarico">
-                                            <i class="guida fas fa-calendar-check-o fa-fw mr-1"
+                                            <i class="guida far fa-calendar-check fa-fw mr-1"
                                                ngbTooltip="Presa in carico"
                                                placement="right"></i>
                                             {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
@@ -398,7 +398,7 @@
                                     <div *ngIf="richiesta?.codiceSchedaNue">
                                         <h4 *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
                                             class="d-inline-block">
-                                            <i class="guida fas fa-id-card-o fa-fw mr-1"
+                                            <i class="guida far fa-id-card fa-fw mr-1"
                                                ngbTooltip="Codice scheda NUE"
                                                placement="right">
                                             </i>
@@ -479,7 +479,7 @@
                                     <div class="text-right">
                                         <h4 *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
                                             {{ richiesta?.trnInsChiamata }}
-                                            <i class="fas fa-fw fa-calendar-check-o guida ml-1"
+                                            <i class="fa-fw far fa-calendar-check guida ml-1"
                                                ngbTooltip="Turno Inserimento"
                                                placement="left">
                                             </i>
@@ -526,7 +526,7 @@
                                                 <div class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
                                                     {{ richiesta?.complessita?.descrizione }}
                                                 </div>
-                                                <i class="guida fas fa-gears fa-fw ml-1" ngbTooltip="Complessità"
+                                                <i class="guida fas fa-cogs fa-fw ml-1" ngbTooltip="Complessità"
                                                    placement="left"></i>
                                             </h4>
                                         </div>
