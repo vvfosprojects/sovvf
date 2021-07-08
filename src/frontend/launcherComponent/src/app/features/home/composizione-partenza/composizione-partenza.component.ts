@@ -43,6 +43,11 @@ import { MezzoComposizione } from '../../../shared/interface/mezzo-composizione-
 import { SquadreComposizioneState } from '../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
+import { GetFiltriComposizione } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { makeCopy } from '../../../shared/helper/function-generiche';
+import { TipologicaComposizionePartenza } from './interface/filtri/tipologica-composizione-partenza.interface';
+import { FiltroTurnoSquadre } from '../../../shared/enum/filtro-turno-composizione-partenza.enum';
+import { TipologicheMezziState } from '../store/states/composizione-partenza/tipologiche-mezzi.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -67,6 +72,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     loadingListe: boolean;
 
     // Filterbar
+    @Select(TipologicheMezziState.tipologiche) tipologicheMezzi$: Observable<ListaTipologicheMezzi>;
+    tipologicheMezzi: any;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(FiltriComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
     @Select(TriageSummaryState.summary) summary$: Observable<TriageSummary[]>;
@@ -137,6 +144,20 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.loadingListe$.subscribe((loading: boolean) => {
                 this.loadingListe = loading;
+            })
+        );
+        this.subscription.add(
+            this.tipologicheMezzi$.subscribe((tipologiche: any) => {
+                this.tipologicheMezzi = makeCopy(tipologiche);
+                if (this.tipologicheMezzi) {
+                    this.tipologicheMezzi.distaccamenti = this.tipologicheMezzi.distaccamenti.map((d: TipologicaComposizionePartenza) => {
+                        d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
+                        d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
+                        return d;
+                    });
+                    this.tipologicheMezzi.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+                    this.store.dispatch(new GetFiltriComposizione());
+                }
             })
         );
     }

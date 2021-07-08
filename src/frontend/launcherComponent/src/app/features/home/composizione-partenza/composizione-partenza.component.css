@@ -1,5 +1,5 @@
 .min-h-comp {
-    min-height: 654px !important;
+    min-height: 650px !important;
 }
 
 .align-center-custom {
@@ -10,7 +10,6 @@
     width: 100%;
     text-align: center;
     min-height: 100%;
-    align-items: center;
 }
 
 .circle {
