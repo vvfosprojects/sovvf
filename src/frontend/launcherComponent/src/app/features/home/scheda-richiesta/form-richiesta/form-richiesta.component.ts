@@ -307,24 +307,29 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             `${this.operatore.nome} ${this.operatore.cognome}`,
             `${this.operatore.sede.codice}`,
             new Localita(coordinate ? coordinate : null, candidate.address),
-            candidate,
             null
         );
+
         this.f.indirizzo.patchValue(candidate.address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
+
         this.reducerSchedaTelefonata('cerca');
     }
 
     onModificaIndirizzo(candidate: AddressCandidate): void {
         console.log('onModificaIndirizzo => candidate', candidate);
 
-        /* const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
+        const coordinate = new Coordinate(lat, lng);
+        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, candidate.address);
+
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
-        this.f.indirizzo.patchValue(result.formatted_address);
-        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, result.formatted_address);
-        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo)); */
+        this.f.indirizzo.patchValue(candidate.address);
+
+        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
     }
 
     modificaIndirizzo(): void {

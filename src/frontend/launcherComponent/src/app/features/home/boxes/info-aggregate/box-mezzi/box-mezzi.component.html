@@ -1,4 +1,4 @@
-<div *ngIf="mezzi" class="row px-2 pt-2 pb-0" style="height: 123px">
+<div *ngIf="mezzi" class="row px-2 pt-2 pb-0 box-mezzi">
     <div class="col-12">
         <div class="row">
             <div class="clearfix float-left ml-4">
@@ -110,8 +110,6 @@
         </div>
     </div>
 </div>
-<div *ngIf="!mezzi" class="row" style="height: 123px">
-    <div class="w-100 text-center">
-        <i class="fas fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
-    </div>
+<div *ngIf="!mezzi" class="box-mezzi">
+    <app-partial-loader></app-partial-loader>
 </div>

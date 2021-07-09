@@ -60,11 +60,6 @@ export class MapsComponent implements OnInit, OnDestroy {
         console.log('Componente Maps distrutto');
     }
 
-    // ESRI
-    mapLoadedEvent(status: boolean): void {
-        console.log('The map has loaded: ' + status);
-    }
-
     mapIsLoaded(event: { spatialReference?: SpatialReference }): void {
         if (event) {
             this.mapsFullyLoaded = true;

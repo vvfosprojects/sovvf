@@ -19,10 +19,6 @@ export class ChiamataMarker {
          */
         public localita: Localita,
         /**
-         * Marker da visualizzare sulla mappa ESRI
-         */
-        public markerEsri: any, // TODO: sostituire "any" con il tipo corretto
-        /**
          * Contiene la descrizione della label da mostrare
          */
         public label?: string,

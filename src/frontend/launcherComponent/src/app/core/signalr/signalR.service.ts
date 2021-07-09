@@ -4,7 +4,11 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import {
+    GetListaRichieste,
+    StopLoadingActionMezzo,
+    UpdateRichiesta
+} from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -13,16 +17,35 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import {
+    InsertChiamataMarker,
+    RemoveChiamataMarker,
+    UpdateItemChiamataMarker
+} from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
+import {
+    InsertRichiestaMarker,
+    UpdateRichiestaMarker
+} from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    SetMezziInServizio,
+    UpdateMezzoInServizio
+} from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
-import { GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import {
+    GetListaSchedeContatto,
+    SetContatoriSchedeContatto,
+    SetListaSchedeContatto,
+    UpdateSchedaContatto
+} from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import {
+    SuccessAddUtenteGestione,
+    SuccessRemoveUtente,
+    UpdateUtenteGestioneInLista
+} from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
@@ -36,8 +59,17 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
-import { ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface, Ente } from '../../shared/interface/ente.interface';
-import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
+import {
+    ResponseAddEnteRubricaInterface,
+    ResponseDeleteEnteRubricaInterface,
+    ResponseUpdateEnteRubricaInterface,
+    Ente
+} from '../../shared/interface/ente.interface';
+import {
+    AddVoceRubrica,
+    DeleteVoceRubrica,
+    UpdateVoceRubrica
+} from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -46,7 +78,11 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { BoxPartenzaPreAccoppiati } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
-import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import {
+    AddDettaglioTipologia,
+    DeleteDettaglioTipologia,
+    UpdateDettaglioTipologia
+} from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import {
     AddChiamateDistaccamentoCodaChiamate,
     AddSquadreLibereDistaccamentoCodaChiamate,
@@ -187,23 +223,22 @@ export class SignalRService {
 
         /**
          * Markers Mappa
-         * TODO: eliminare con passaggio ad ESRI (i marker saranno visualizzati dai layer dedicati sul portale)
          */
-        // this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
-        //     console.log('NotifyGetRichiestaMarker', data);
-        //     this.store.dispatch(new InsertRichiestaMarker(data));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        // });
-        // this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
-        //     console.log('NotifyGetRichiestaUpdateMarker', data);
-        //     this.store.dispatch(new UpdateRichiestaMarker(data));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        // });
-        // this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
-        //     console.log('NotifyGetMezzoUpdateMarker', data);
-        //     this.store.dispatch(new UpdateMezzoMarker(data));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        // });
+        this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
+            console.log('NotifyGetRichiestaMarker', data);
+            this.store.dispatch(new InsertRichiestaMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
+            console.log('NotifyGetRichiestaUpdateMarker', data);
+            this.store.dispatch(new UpdateRichiestaMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
+            console.log('NotifyGetMezzoUpdateMarker', data);
+            this.store.dispatch(new UpdateMezzoMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
 
         /**
          * Box
@@ -226,23 +261,22 @@ export class SignalRService {
 
         /**
          * Chiamata in Corso
-         * TODO: eliminare con passaggio ad ESRI (i marker "Chiamata in corso" saranno visualizzati dal layer dedicato sul portale)
          */
-        // this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
-        //     console.log('NotifyChiamataInCorsoMarkerAdd', data);
-        //     this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
-        // });
-        // this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
-        //     console.log('NotifyChiamataInCorsoMarkerUpdate', data);
-        //     this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
-        // });
-        // this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
-        //     console.log('NotifyChiamataInCorsoMarkerDelete', id);
-        //     this.store.dispatch(new RemoveChiamataMarker(id));
-        //     this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3));
-        // });
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
+            console.log('NotifyChiamataInCorsoMarkerAdd', data);
+            this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
+        });
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
+            console.log('NotifyChiamataInCorsoMarkerUpdate', data);
+            this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
+        });
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
+            console.log('NotifyChiamataInCorsoMarkerDelete', id);
+            this.store.dispatch(new RemoveChiamataMarker(id));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3));
+        });
 
         /**
          * Inserimento Chiamata

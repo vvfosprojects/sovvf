@@ -90,6 +90,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .fas {
     font-weight: 900 !important;
   }
+
   //
 
   button {
@@ -438,7 +439,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-partial-loader {
-    background-color: transparent $SO-i;
+    background-color: rgba(53, 53, 53, 0.7) $SO-i;
   }
 }
 
@@ -978,11 +979,19 @@ tag-input {
 }
 
 .bg-partial-loader {
-  background-color: rgba(255, 255, 255, .7);
+  background-color: rgba(224, 223, 223, 0.7) $SO-i;
 }
 
 .no-resize {
   resize: none;
+}
+
+.ng-sidebar__backdrop {
+  z-index: 4 !important;
+}
+
+.ng-sidebar {
+  z-index: 5 !important;
 }
 
 [class^="icon-"],

@@ -1,4 +1,3 @@
-<!-- TODO: controllare "loadingActionRichiesta" -->
 <!-- Singola Richiesta Fissata  -->
 <ng-template [ngIf]="richiestaFissata">
     <app-richiesta-fissata [nightMode]="nightMode"
@@ -7,7 +6,7 @@
                            [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate"
                            [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate"
                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate) || richiestaFissata.stato === statoRichiesta.Chiusa"
-                           [loadingActionRichiesta]="'1'"
+                           [loadingActionRichiesta]="loadingActionRichiesta$ | async"
                            (statoPartenza)="toggleComposizione()"
                            (composizionePartenza)="nuovaPartenza($event)"
                            (defissa)="onDefissa()"
@@ -32,7 +31,7 @@
                      [totalItems]="totalItems$ | async"
                      [loading]="loadingRichieste$ | async"
                      [needRefresh]="needRefresh$ | async"
-                     [loadingActionRichiesta]="['1']"
+                     [loadingActionRichiesta]="loadingActionRichiesta$ | async"
                      [loadingEliminaPartenza]="loadingEliminaPartenza$ | async"
                      (statoPartenza)="toggleComposizione()"
                      (composizionePartenza)="nuovaPartenza($event)"

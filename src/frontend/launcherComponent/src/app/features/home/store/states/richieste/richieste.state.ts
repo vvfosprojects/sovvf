@@ -30,7 +30,7 @@ import {
     VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -65,7 +65,7 @@ export interface RichiesteStateModel {
     loadingRichieste: boolean;
     loadingActionMezzo: string;
     loadingEliminaPartenza: boolean;
-    loadingActionRichiesta: string;
+    loadingActionRichiesta: string[];
     loadingModificaFonogramma: boolean;
     needRefresh: boolean;
 }
@@ -127,7 +127,7 @@ export class RichiesteState {
     }
 
     @Selector()
-    static loadingActionRichiesta(state: RichiesteStateModel): string {
+    static loadingActionRichiesta(state: RichiesteStateModel): string[] {
         return state.loadingActionRichiesta;
     }
 
@@ -234,8 +234,8 @@ export class RichiesteState {
                 dispatch(new UpdateRichiestaFissata(action.richiesta));
             }
 
-            if (state.loadingActionRichiesta && (action.richiesta.id === state.loadingActionRichiesta)) {
-                dispatch(new StopLoadingActionRichiesta());
+            if (state.loadingActionRichiesta?.includes(action.richiesta.id)) {
+                dispatch(new StopLoadingActionRichiesta(action.richiesta.id));
             }
 
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
@@ -338,7 +338,7 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('ActionRichiesta Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        }, error => dispatch(new StopLoadingActionRichiesta()));
+        }, error => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
     }
 
     @Action(ModificaStatoFonogramma)
@@ -454,17 +454,21 @@ export class RichiesteState {
     }
 
     @Action(StartLoadingActionRichiesta)
-    startLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta): void {
-        patchState({
-            loadingActionRichiesta: action.idRichiesta
-        });
+    startLoadingActionRichiesta({ setState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta): void {
+        setState(
+            patch({
+                loadingActionRichiesta: append([action.idRichiesta])
+            })
+        );
     }
 
     @Action(StopLoadingActionRichiesta)
-    stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingActionRichiesta: null
-        });
+    stopLoadingActionRichiesta({ setState }: StateContext<RichiesteStateModel>, action: StopLoadingActionRichiesta): void {
+        setState(
+            patch({
+                loadingActionRichiesta: removeItem<string>(idRichiesta => idRichiesta === action.idRichiesta)
+            })
+        );
     }
 
     @Action(StartLoadingModificaFonogramma)
