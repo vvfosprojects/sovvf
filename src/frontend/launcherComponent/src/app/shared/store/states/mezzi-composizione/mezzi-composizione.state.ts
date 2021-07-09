@@ -333,7 +333,7 @@ export class MezziComposizioneState {
 
     @Action(SelectMezzoComposizione)
     selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: any): void {
-        if (!action.preaccoppiato) {
+        if (!action.preaccoppiato && action.mezzoComp.mezzo) {
             patchState({
                 idMezzoComposizioneSelezionato: action.mezzoComp.id,
                 idMezzoSelezionato: action.mezzoComp.mezzo.codice,
