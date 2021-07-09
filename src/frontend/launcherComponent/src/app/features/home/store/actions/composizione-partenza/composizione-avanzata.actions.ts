@@ -3,7 +3,7 @@ import { FiltriComposizione } from '../../../composizione-partenza/interface/fil
 export class GetListeComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Get Liste Composizione Avanzata';
 
-    constructor(public options?: { filtri?: FiltriComposizione, page?: { pageMezzi?: number, pageSquadre?: number } }, public filtroMezzi?: boolean, public filtroSquadre?: boolean) {
+    constructor(public options?: { filtri?: FiltriComposizione, page?: { pageMezzi?: number, pageSquadre?: number } }, public filtroMezzi?: boolean, public filtroSquadre?: boolean, public preaccoppiato?: boolean) {
     }
 }
 

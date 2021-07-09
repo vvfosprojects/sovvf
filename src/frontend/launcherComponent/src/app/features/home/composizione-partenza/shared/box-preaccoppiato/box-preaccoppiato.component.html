@@ -26,8 +26,8 @@
         </div>
         <div *ngIf="partenzaPreAccopiati.squadre?.length === 1" class="col">
             <div class="nowrap">
-                <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato))"
-                    ngbTooltip="Squadra {{ _nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato) }}"
+                <i  [ngClass]="_iconaStatiClass(partenzaPreAccopiati.squadre[0].stato)"
+                    ngbTooltip="Squadra {{ partenzaPreAccopiati.squadre[0].stato }}"
                     class="fa fa-group mr-1 font-weight-bold"></i>
                 <span [ngbTooltip]="partenzaPreAccopiati.squadre[0].nome && partenzaPreAccopiati.squadre[0].nome.length >= 10 ?  partenzaPreAccopiati.squadre[0].nome : null">
                     {{ partenzaPreAccopiati.squadre[0].nome | truncate: 10 }}</span>

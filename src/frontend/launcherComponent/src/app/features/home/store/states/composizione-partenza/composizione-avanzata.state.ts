@@ -24,7 +24,6 @@ import {
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { Injectable } from '@angular/core';
 import { PatchPaginationComposizionePartenza } from '../../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { RicercaComposizioneState } from 'src/app/shared/store/states/ricerca-composizione/ricerca-composizione.state';
@@ -107,7 +106,12 @@ export class ComposizioneAvanzataState {
                 tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
                 ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
             }
-        } as FiltriComposizione;
+        } as any;
+        if (action.preaccoppiato) {
+            // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
+            objGetMezzi.filtro.codSquadraPreaccopiata  = mezzoSelezionato ? ['Test'] : null;
+        }
+
         const objGetSquadre = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
             diEmergenza: false,
@@ -120,8 +124,10 @@ export class ComposizioneAvanzataState {
             stato: statoSquadra,
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
-        } as FiltriComposizione;
-
+        } as any;
+        if (action.preaccoppiato) {
+            objGetSquadre.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
+        }
         if (!skipGetMezzi) {
             console.log('***Obj getMezzi: ', objGetMezzi);
             dispatch(new StartListaMezziComposizioneLoading());
