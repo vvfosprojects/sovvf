@@ -13,15 +13,6 @@ namespace SO115App.Models.Classi.Composizione
         public char Turno { get; set; }
         public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; } = null;
         public bool DiEmergenza { get; set; } = false;
-
-        public string IdOpService { get; set; }
-        public string spotId { get; set; }
-
-        public string spotType { get; set; }
-
-        public int version { get; set; }
-
-        public string workshiftId { get; set; }
     }
 
     public class MezzoPreaccoppiato
