@@ -356,8 +356,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 //    return Costanti.RichiestaAssegnata;
                 //}
 
-                if (Eventi.LastOrDefault().Stato.Equals("In Viaggio"))
-                    return Costanti.RichiestaAssegnata;
+                if (Eventi.Count() > 0)
+                    if (Eventi.LastOrDefault().Stato.Equals("In Viaggio"))
+                        return Costanti.RichiestaAssegnata;
 
                 if (Presidiata)
                     return Costanti.RichiestaPresidiata;
