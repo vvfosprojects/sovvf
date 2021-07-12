@@ -15,14 +15,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class OrdinamentoMezzi
     {
         private readonly IGetTipologieByCodice _getTipologieByCodice;
-        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IHttpRequestManager<DistanceMatrix> _clientMatrix;
 
         public OrdinamentoMezzi(IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration, IHttpRequestManager<DistanceMatrix> clientMatrix)
         {
             _getTipologieByCodice = getTipologieByCodice;
-            _client = new HttpClient();
             _configuration = configuration;
             _clientMatrix = clientMatrix;
         }
@@ -57,6 +55,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 //LE Value sono espresse in SECONDI
                 composizione.Km = result.Rows[0].Elements[0].Distance.Text.ToString().Substring(0, result.Rows[0].Elements[0].Distance.Text.ToString().Length - 2);
                 composizione.TempoPercorrenza = (result.Rows[0].Elements[0].Duration.Value / 60).ToString();
+            }
+            else
+            {
+                composizione.Km = "0";
+                composizione.TempoPercorrenza = "0";
             }
 
             return composizione;
