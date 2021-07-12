@@ -34,7 +34,7 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
-    "@arcgis/core": "^4.20.0",
+    "@arcgis/core": "^4.20.2",
     "@aspnet/signalr": "^1.1.4",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@ng-select/ng-select": "^7.2.0",

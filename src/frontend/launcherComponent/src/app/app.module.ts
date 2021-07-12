@@ -1,5 +1,5 @@
-import { I18n } from './i18n';
 import { environment } from '../environments/environment';
+import { I18n } from './i18n';
 /**
  * Component
  */
@@ -9,13 +9,13 @@ import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-
 /**
  * Module
  */
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -73,7 +73,6 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { EsriMapComponent } from './features/home/maps/esri-map/esri-map.component';
 
 @NgModule({
     declarations: [
@@ -82,12 +81,12 @@ import { EsriMapComponent } from './features/home/maps/esri-map/esri-map.compone
         FooterComponent
     ],
     imports: [
+        APP_ROUTING,
         BrowserModule,
         BrowserAnimationsModule,
         AppLoadModule,
         ReactiveFormsModule,
         HttpClientModule,
-        APP_ROUTING,
         NgbModule,
         FormsModule,
         FilterPipeModule,
@@ -138,16 +137,14 @@ import { EsriMapComponent } from './features/home/maps/esri-map/esri-map.compone
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
-        NgxsFormPluginModule.forRoot(),
+        NgxsFormPluginModule.forRoot()
     ],
     providers: [
+        I18n,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
-        I18n,
-    ],
-    exports: [
+        { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })

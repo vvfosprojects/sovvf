@@ -16,6 +16,7 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
 
+    @Output() changeIndirizzo: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
 
     mapProperties: { spatialReference?: SpatialReference };
@@ -30,7 +31,7 @@ export class RicercaIndirizzoComponent implements OnInit {
         this.mapProperties = this.store.selectSnapshot(AppState.mapProperties);
     }
 
-    changeIndirizzo(): void {
+    onChangeIndirizzo(): void {
         // @ts-ignore
         const locator = new Locator('http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer');
         const indirizzo = {
