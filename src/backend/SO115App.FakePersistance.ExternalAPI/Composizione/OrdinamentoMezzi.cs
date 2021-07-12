@@ -45,8 +45,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             string sensor = "sensor=false";
 
             var url = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("DistanceMatrix").Value + $"&{origine}&{destination}&{mode}&{sensor}");
-            
-            _clientMatrix.SetCache("Matrix_" + url.Query);
 
             var result = await _clientMatrix.PostAsync(url);
 
