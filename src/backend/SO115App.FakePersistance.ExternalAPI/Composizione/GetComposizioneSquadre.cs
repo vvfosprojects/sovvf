@@ -110,13 +110,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 switch (query.Filtro.Turno) //FILTRO PER TURNO
                 {
-                    case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Result.Attuale, squadra => lstSquadre.Add(squadra)); break;
-
                     case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Result.Precedente, squadra => lstSquadre.Add(squadra)); break;
 
                     case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Result.Successivo, squadra => lstSquadre.Add(squadra)); break;
 
-                    case null: Parallel.ForEach(workshift.Result.All, squadra => lstSquadre.Add(squadra)); break;
+                    case null: Parallel.ForEach(workshift.Result.Attuale, squadra => lstSquadre.Add(squadra)); break;
                 }
 
                 lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()));
@@ -203,10 +201,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private bool FiltroTurno(TurnoRelativo? filtroTurno, char turnoSquadra) => filtroTurno switch
         {
-            TurnoRelativo.Precedente => TurnoPrecedente.Codice.Contains(turnoSquadra),
-            TurnoRelativo.Successivo => TurnoSuccessivo.Codice.Contains(turnoSquadra),
-            TurnoRelativo.Attuale => TurnoAttuale.Codice.Contains(turnoSquadra),
-            null => TurnoAttuale.Codice.Contains(turnoSquadra),
+            TurnoRelativo.Precedente => TurnoPrecedente.Codice.Substring(0, 1).Equals(turnoSquadra),
+            TurnoRelativo.Successivo => TurnoSuccessivo.Codice.Substring(0, 1).Equals(turnoSquadra),
+            null => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
+            //TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
         };
     }
 }
