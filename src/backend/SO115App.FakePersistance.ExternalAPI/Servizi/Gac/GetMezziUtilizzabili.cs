@@ -187,7 +187,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                 "", "", "", "", "");
 
             return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                mezzoDto.CodiceDistaccamento, sede, new Coordinate(0, 0))
+                mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))
             {
                 DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
             };

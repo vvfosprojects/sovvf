@@ -48,9 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Id = m.Codice,
                         Mezzo = m,
                     };
-
-                    //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
-                    //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
+                    var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -73,9 +71,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
                     }
-
-                    //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
-                    //mc.IndiceOrdinamento = indice.Result;
+                    mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
                 });
@@ -102,9 +98,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
-                   .ThenBy(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .ThenBy(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .ThenBy(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
+                   .ThenByDescending(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenByDescending(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                   .ThenByDescending(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
                    //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
