@@ -50,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     };
 
                     //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
-                    var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
+                    //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -75,7 +75,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                     //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
-                    mc.IndiceOrdinamento = indice.Result;
+                    //mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
                 });
