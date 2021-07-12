@@ -3,7 +3,7 @@
     public enum TurnoRelativo
     {
         Precedente,
-        Attuale,
-        Successivo
+        Successivo,
+        //Attuale,
     }
 }
