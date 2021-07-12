@@ -11,7 +11,6 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
 import { EventiRichiestaState } from '../store/states/eventi-richiesta/eventi-richiesta.state';
 import { MezzoInServizioComponent } from './mezzo-in-servizio/mezzo-in-servizio.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     imports: [
@@ -27,7 +26,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
             ]
         ),
         FilterPipeModule,
-        NgxPaginationModule,
     ],
     declarations: [
         MezziInServizioComponent,

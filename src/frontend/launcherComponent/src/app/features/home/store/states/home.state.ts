@@ -15,14 +15,13 @@ import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologich
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
-import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 import { Injectable } from '@angular/core';
 import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
-    bounds: LatLngBoundsLiteral;
+    bounds: any;
 }
 
 export const HomeStateDefaults: HomeStateModel = {
@@ -43,7 +42,7 @@ export class HomeState {
     }
 
     @Selector()
-    static bounds(state: HomeStateModel): LatLngBoundsLiteral {
+    static bounds(state: HomeStateModel): any {
         return state.bounds;
     }
 

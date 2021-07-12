@@ -32,7 +32,7 @@ export class RpcConnectionService {
         return new Promise((resolve) => {
             const interval = setInterval(() => {
                 if (this.rcpStatus) {
-                    resolve();
+                    resolve(true);
                     clearInterval(interval);
                 }
             }, 100);

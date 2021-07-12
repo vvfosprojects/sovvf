@@ -1,4 +1,3 @@
-import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { AreaMappa } from '../../maps/maps-model/area-mappa-model';
 import { makeLatLngBounds } from '../../../../shared/helper/mappa/function-mappa';
 
@@ -12,7 +11,7 @@ export class ClearDataHome {
 
 export class SetBoundsIniziale {
     static readonly type = '[Home] Set Bounds Iniziale';
-    bounds: LatLngBoundsLiteral;
+    bounds: any;
     constructor(areaMappa: AreaMappa) {
         this.bounds = makeLatLngBounds(areaMappa);
     }

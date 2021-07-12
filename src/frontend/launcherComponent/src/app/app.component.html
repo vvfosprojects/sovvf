@@ -5,6 +5,7 @@
                 [(opened)]="sidebarOpened"
                 [animate]="true"
                 [closeOnClickOutside]="true"
+                [showBackdrop]="true"
                 (onOpened)="sidebar.open()"
                 (onClosed)="toggleSidebar(false)">
         <app-sidebar [user]="user"

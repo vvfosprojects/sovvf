@@ -187,7 +187,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnChanges {
     boxValidationClass(): { result: string, tooltip: string } {
         let result = 'text-danger';
         let tooltip = 'Errore sconosciuto';
-        const prefix = 'fa ';
+        const prefix = 'fas ';
         let icon = 'fa-exclamation-triangle';
         const partenza = this.partenza as any;
         const squadra2 = partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';

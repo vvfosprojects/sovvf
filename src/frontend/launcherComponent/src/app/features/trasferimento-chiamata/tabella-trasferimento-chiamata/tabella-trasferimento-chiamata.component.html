@@ -2,30 +2,30 @@
     <thead>
     <tr>
         <th scope="col" style="width: 24%">
-            <i class="fa fa-hashtag mr-2"></i>
+            <i class="fas fa-hashtag mr-2"></i>
             Cod.Chiamata
         </th>
         <th scope="col" style="width: 22%">
-            <i class="fa fa-circle-o" style="margin-right: 2px;"></i>
-            <i class="fa fa-ellipsis-h mr-2"></i>
+            <i class="fas fa-circle-o" style="margin-right: 2px;"></i>
+            <i class="fas fa-ellipsis-h mr-2"></i>
             Sede da
         </th>
         <th scope="col" style="width: 22%">
-            <i class="fa fa-ellipsis-h" style="margin-right: 2px;"></i>
-            <i class="fa fa-map-marker mr-2"></i>Sede a
+            <i class="fas fa-ellipsis-h" style="margin-right: 2px;"></i>
+            <i class="fas fa-map-marker-alt mr-2"></i>Sede a
         </th>
         <th scope="col" style="width: 16%">
-            <i class="fa fa-calendar mr-2"></i>
+            <i class="fas fa-calendar mr-2"></i>
             Quando
         </th>
         <th scope="col" style="width: 16%">
-            <i class="fa fa-user mr-2"></i>
+            <i class="fas fa-user mr-2"></i>
             Operatore
         </th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let trasferimento of listaTrasferimentiChiamate | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let trasferimento of listaTrasferimentiChiamate">
         <td class="align-middle" style="width: 24%">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span>{{trasferimento?.codChiamata}}</span>

@@ -11,38 +11,38 @@
             [routerLink]="['/' + RoutesPath.GestioneUtenti]"
             [class.btn-sidebar-selected]="url === '/gestione-utenti'"
             [routerLinkActive]="['text-dark']">
-        <i class="fa fa-users mr-1"></i>
+        <i class="fas fa-users mr-1"></i>
         Gestione Utenti
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
             [class.btn-sidebar-selected]="url === '/impostazioni-sede'"
             [routerLinkActive]="['text-dark']">
-        <i class="fa fa-cogs mr-1"></i>
+        <i class="fas fa-cogs mr-1"></i>
         Impostazioni Sede
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.POS]"
             [class.btn-sidebar-selected]="url === '/POS'"
             [routerLinkActive]="['btn-light-nav', 'text-dark']">
-        <i class="fa fa-files-o mr-1"></i>
+        <i class="far fa-file-alt mr-1"></i>
         Gestione P.O.S.
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover" (click)="onRiepilogoInterventi()">
-        <i class="fa fa-print"></i>
+        <i class="fas fa-print"></i>
         Riepilogo Interventi
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.Changelog]"
             [class.btn-sidebar-selected]="url === '/changelog'"
             [routerLinkActive]="['text-dark']">
-        <i class="fa fa-newspaper-o mr-1"></i>
+        <i class="far fa-newspaper mr-1"></i>
         Aggiornamenti
     </button>
     <hr class="mt-5">
     <button class="btn btn-danger btn-block btn-no-hover"
             (click)="onToggleSidebar()">
-        <i class="fa fa-arrow-left mr-1"></i>
+        <i class="fas fa-arrow-left mr-1"></i>
         Chiudi
     </button>
 </div>

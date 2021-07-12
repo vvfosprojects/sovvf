@@ -10,7 +10,6 @@ import {
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
@@ -26,11 +25,6 @@ import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { HomeState } from '../../store/states/home.state';
-import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
-import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
-import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
-import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
@@ -65,6 +59,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../../../shared/interface/pos.interface';
+import AddressCandidate from "@arcgis/core/tasks/support/AddressCandidate";
 
 @Component({
     selector: 'app-form-richiesta',
@@ -99,8 +94,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     // Pos
     @Input() pos: PosInterface[];
 
-    ngxGooglePlacesOptions: Options;
-
     chiamataMarker: ChiamataMarker;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
@@ -122,10 +115,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                 private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
-        this.ngxGooglePlacesOptions = new Options({
-            bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
-            componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
-        });
         this.richiestaForm = this.createAndGetForm();
     }
 
@@ -297,33 +286,49 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('copiaCoordinate');
     }
 
-    onCercaIndirizzo(result: Address): void {
+    reducerIndirizzo(candidate: AddressCandidate): void {
+        console.log('reducerIndirizzo => candidate', candidate);
+
         if (!this.richiestaModifica) {
-            this.onSetIndirizzo(result);
+            this.onSetIndirizzo(candidate);
         } else {
-            this.onModificaIndirizzo(result);
+            this.onModificaIndirizzo(candidate);
         }
     }
 
-    onSetIndirizzo(result: Address): void {
-        const lat = roundToDecimal(result.geometry.location.lat(), 6);
-        const lng = roundToDecimal(result.geometry.location.lng(), 6);
+    onSetIndirizzo(candidate: AddressCandidate): void {
+        console.log('onSetIndirizzo => candidate', candidate);
+
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, result.formatted_address), null
+        this.chiamataMarker = new ChiamataMarker(
+            this.idChiamata,
+            `${this.operatore.nome} ${this.operatore.cognome}`,
+            `${this.operatore.sede.codice}`,
+            new Localita(coordinate ? coordinate : null, candidate.address),
+            null
         );
-        this.f.indirizzo.patchValue(result.formatted_address);
+
+        this.f.indirizzo.patchValue(candidate.address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
+
         this.reducerSchedaTelefonata('cerca');
     }
 
-    onModificaIndirizzo(result: Address): void {
-        const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
+    onModificaIndirizzo(candidate: AddressCandidate): void {
+        console.log('onModificaIndirizzo => candidate', candidate);
+
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
+        const coordinate = new Coordinate(lat, lng);
+        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, candidate.address);
+
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
-        this.f.indirizzo.patchValue(result.formatted_address);
-        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, result.formatted_address);
+        this.f.indirizzo.patchValue(candidate.address);
+
         this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
     }
 

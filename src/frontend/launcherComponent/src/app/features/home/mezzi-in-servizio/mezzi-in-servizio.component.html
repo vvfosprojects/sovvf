@@ -7,7 +7,7 @@
         </ng-template>
         <ng-template [ngIf]="mezziInServizio">
             <div class="px-3 cursor-pointer">
-                <div *ngFor="let m of mezziInServizio | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+                <div *ngFor="let m of mezziInServizio">
                     <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
                                            [nightMode]="nightMode"
                                            [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"

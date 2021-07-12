@@ -4,7 +4,7 @@
   </h4>
   <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
           (click)="chiudiModalSoccorsoAereo('ko')">
-    <i class="fa fa-times text-danger"></i>
+    <i class="fas fa-times text-danger"></i>
   </button>
 </div>
 
@@ -23,7 +23,7 @@
   <div class="row my-4 align-items-center">
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-hashtag fa-fw mr-1 text-muted"
+        <i class="fas fa-hashtag fa-fw mr-1 text-muted"
            ngbTooltip="Identificativo richiesta" placement="bottom"></i>
           <span *ngIf="richiesta?.codiceRichiesta">{{ richiesta?.codiceRichiesta.slice(0, -5)}}
             <span style="font-weight: 700; font-size: 130%">{{ richiesta?.codiceRichiesta.slice(richiesta?.codiceRichiesta.length - 5)}}</span>
@@ -35,7 +35,7 @@
     </div>
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-rss fa-fw mr-1 text-muted"
+        <i class="fas fa-rss fa-fw mr-1 text-muted"
            ngbTooltip="Data Trasmissione" placement="bottom"></i>
           <span class=""> {{ dettaglioAFM?.datetime.substring(0, 16).split('T')}}
           </span>
@@ -43,7 +43,7 @@
     </div>
     <div class="col-4">
       <div class="h6 mb-1 nowrap font-xxlarge" style="text-align-last: center">
-        <i class="fa fa-address-book fa-fw mr-1 text-muted"
+        <i class="fas fa-address-book fa-fw mr-1 text-muted"
            ngbTooltip="Operatore SO115" placement="bottom"></i>
           <span *ngIf="richiesta?.operatore">{{ dettaglioAFM?.operatorName }} {{ dettaglioAFM?.operatorSurname }}
           </span>
@@ -55,7 +55,7 @@
   <span *ngIf="mostraAttivita">
       <div class="row">
     <div class="w-100 bg-secondary text-white font-weight-bold" style="padding-left: 15px; padding-right: 15px">Dettaglio
-      <i (click)="onShowDettaglio()" [class.fa-chevron-up]="!showDettaglio" [class.fa-chevron-down]="showDettaglio" class="fa pt-1"
+      <i (click)="onShowDettaglio()" [class.fa-chevron-up]="!showDettaglio" [class.fa-chevron-down]="showDettaglio" class="fas pt-1"
          style="cursor: pointer; float: right"></i>
     </div>
   </div>
@@ -63,7 +63,7 @@
     <div class="row w-100">
       <div class="clearfix input-soccorso-format mr-3" style="width: 51%; margin-left: 2.5rem">
         <label for="localita" class="d-none">Località</label>
-        <i class="fa fa-map-marker fa-fw mr-1 text-muted" ngbTooltip="Località" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-map-marker-alt fa-fw mr-1 text-muted" ngbTooltip="Località" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="localita" [(ngModel)]="richiesta.localita.indirizzo" type="text" placeholder="localita" class="form-control font-xlarge " disabled>
       </div>
       <div class="clearfix input-soccorso-format mr-2" style="width: 20%">
@@ -80,24 +80,24 @@
     <div class="row w-100 my-4 d-inline-flex">
       <div class="clearfix input-soccorso-format" style="width: 44%; margin-left: 2.5rem" >
         <label for="tipologia" class="d-none">Tipologia Intervento</label>
-        <i class="fa fa-exclamation-triangle fa-fw mx-1 text-muted" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-exclamation-triangle fa-fw mx-1 text-muted" [ngbTooltip]="'Tipologia Intervento: ' + richiesta.tipologie[0].descrizione" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="tipologia" [(ngModel)]="richiesta.tipologie[0].descrizione" type="text" placeholder="tipologia" class="form-control font-xlarge ml-1" disabled>
       </div>
       <div class="clearfix mx-2 input-soccorso-format" style="width: 28%" >
         <label for="richiedente" class="d-none">Richiedente</label>
-        <i class="fa fa-address-book-o fa-fw ml-3 mr-2 text-muted" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-address-book-o fa-fw ml-3 mr-2 text-muted" [ngbTooltip]="'Richiedente: ' + richiesta.richiedente.nominativo" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="richiedente" [(ngModel)]="richiesta.richiedente.nominativo" type="text" placeholder="richiedente" class="form-control font-xlarge" disabled>
       </div>
       <div class="clearfix input-soccorso-format" style="width: 20.5%" >
         <label for="telefono" class="d-none">Telefono</label>
-        <i class="fa fa-phone fa-fw mx-1 text-muted" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="padding-bottom: 5px"></i>
+        <i class="fas fa-phone-alt fa-fw mx-1 text-muted" [ngbTooltip]="'Telefono: ' + richiesta.richiedente.telefono" placement="bottom" style="padding-bottom: 5px"></i>
         <input id="telefono" [(ngModel)]="richiesta.richiedente.telefono" type="text" placeholder="telefono" class="form-control font-xlarge" disabled>
       </div>
     </div>
     <div class="row d-inline-flex w-100">
       <div class="clearfix mr-4 d-inline-flex" style="text-align: center; width: 44%; margin-left: 2.5rem">
         <label class="d-none" for="noteintervento">Note Intervento</label>
-        <i class="fa fa-sticky-note-o fa-fw mx-1 text-muted" ngbTooltip="Note Intervento" placement="left" style="padding-bottom: 5px"></i>
+        <i class="fas fa-sticky-note-o fa-fw mx-1 text-muted" ngbTooltip="Note Intervento" placement="left" style="padding-bottom: 5px"></i>
         <textarea id="noteintervento" type="text" [(ngModel)]="richiesta.notePubbliche"
                   placeholder="Nessuna Nota Pubblica disponibile"
                   class="form-control font-xlarge area-size" disabled></textarea>
@@ -111,20 +111,20 @@
       </div>
       <button *ngIf="!modificaMotivazione" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 40px"
               (click)="onModificaMotivazione()" ngbTooltip="Modifica Motivazione richiesta" placement="bottom">
-        <i class="fa fa-pencil-square-o fa-fw ml-1" style="transform: translate(-20px, 0px);"></i>
+        <i class="far fa-edit fa-fw ml-1" style="transform: translate(-20px, 0px);"></i>
       </button>
       <div *ngIf="modificaMotivazione" style="display: inline-grid">
         <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
                 (click)="onAnnullaModificaMotivazione()" ngbTooltip="Annulla Modifiche" placement="top">
-          <i class="fa fa-times fa-fw mx-1" style="font-size: 110%; transform: translate(-20px, -4px);"></i>
+          <i class="fas fa-times fa-fw mx-1" style="font-size: 110%; transform: translate(-20px, -4px);"></i>
         </button>
         <button *ngIf="!submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
                 (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="motivazione.length <= 0">
-          <i class="fa fa-check fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+          <i class="fas fa-check fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
         </button>
         <button *ngIf="submittedModifica" type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left" style="margin-left: 3px; width: 37px; height: 37px"
                 (click)="chiudiModalSoccorsoAereo('mod')" ngbTooltip="Conferma Modifiche" placement="bottom" [disabled]="true">
-          <i class="fa fa-spin fa-spinner fa-spin-mod fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
+          <i class="fas fa-spin fa-spinner fa-spin-mod fa-fw mx-1" style="font-size: 110%; transform: translate(-16px, -4px);"></i>
         </button>
       </div>
     </div>
@@ -134,7 +134,7 @@
   <span *ngIf="mostraAttivita">
   <div class="row">
     <div class="mt-2 w-100 bg-secondary text-white font-weight-bold" style="padding-left: 15px; padding-right: 15px">Attività
-    <i (click)="onShowAttivita()" [class.fa-chevron-up]="!showAttivita" [class.fa-chevron-down]="showAttivita" class="fa pt-1"
+    <i (click)="onShowAttivita()" [class.fa-chevron-up]="!showAttivita" [class.fa-chevron-down]="showAttivita" class="fas pt-1"
        style="cursor: pointer; float: right"></i>
     </div>
   </div>
@@ -232,7 +232,7 @@
         {{ 'Annulla Richiesta'.toLocaleUpperCase() }}
       </button>
       <button *ngIf="submitted" type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder float-left ml-2" [disabled]="true">
-        <i class="fa fa-spin fa-spinner mr-1"></i>
+        <i class="fas fa-spin fa-spinner mr-1"></i>
         {{ 'Annulamento In Corso' | uppercase }}
       </button>
       <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"

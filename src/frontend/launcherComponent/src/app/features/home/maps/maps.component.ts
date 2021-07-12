@@ -12,26 +12,24 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
-import { MapService } from './service/map-service/map-service.service';
-import { MarkerService } from './service/marker-service/marker-service.service';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedaContattoMarker } from './maps-model/scheda-contatto-marker.model';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
     selector: 'app-maps',
     templateUrl: './maps.component.html',
-    styleUrls: ['./maps.component.css'],
-    providers: [MapService, MarkerService]
+    styleUrls: ['./maps.component.css']
 })
 export class MapsComponent implements OnInit, OnDestroy {
 
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() boxAttivi: boolean;
 
-    @Output() mapFullLoaded = new EventEmitter<boolean>();
+    @Output() mapFullLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
@@ -62,12 +60,12 @@ export class MapsComponent implements OnInit, OnDestroy {
         console.log('Componente Maps distrutto');
     }
 
-    mapIsLoaded(event): void {
+    mapIsLoaded(event: { spatialReference?: SpatialReference }): void {
         if (event) {
             this.mapsFullyLoaded = true;
             if (this.mapsFullyLoaded) {
                 setTimeout(() => {
-                    this.mapFullLoaded.emit(this.mapsFullyLoaded);
+                    this.mapFullLoaded.emit(event);
                 }, 2000);
             }
         }

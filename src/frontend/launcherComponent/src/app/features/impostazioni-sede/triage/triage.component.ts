@@ -99,6 +99,10 @@ export class TriageComponent implements OnDestroy {
         });
     }
 
+    getTItems(): TreeviewItem[] {
+        return [new TreeviewItem(this.tItems[0])];
+    }
+
     onSetCodTipologia(codTipologia: string): void {
         this.codDettaglioTipologia = null;
         this.codTipologia = codTipologia;
@@ -327,7 +331,11 @@ export class TriageComponent implements OnDestroy {
         ];
         if (rispostePersonalizzate?.length) {
             rispostePersonalizzate.forEach((rispostaPersonalizzata: string, index: number) => {
-                const risposta = { text: rispostaPersonalizzata, value: (index + 1) + '-' + this.tItems[0].value + '-1', disabled: true };
+                const risposta = {
+                    text: rispostaPersonalizzata,
+                    value: (index + 1) + '-' + this.tItems[0].value + '-1',
+                    disabled: true
+                };
                 if (!this.tItems[0].children?.length) {
                     this.tItems[0].children = [risposta];
                 } else {
@@ -354,7 +362,11 @@ export class TriageComponent implements OnDestroy {
         ];
         if (rispostePersonalizzate?.length) {
             rispostePersonalizzate.forEach((rispostaPersonalizzata: string, index: number) => {
-                const risposta = { text: rispostaPersonalizzata, value: (index + 1) + '-' + item.value + '-1', disabled: true };
+                const risposta = {
+                    text: rispostaPersonalizzata,
+                    value: (index + 1) + '-' + item.value + '-1',
+                    disabled: true
+                };
                 if (!item.children[0].children?.length) {
                     item.children[0].children = [risposta];
                 } else {

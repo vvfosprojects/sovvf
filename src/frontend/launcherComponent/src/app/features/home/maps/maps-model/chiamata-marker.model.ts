@@ -1,4 +1,4 @@
-import {Localita} from '../../../../shared/model/localita.model';
+import { Localita } from '../../../../shared/model/localita.model';
 
 export class ChiamataMarker {
     constructor(

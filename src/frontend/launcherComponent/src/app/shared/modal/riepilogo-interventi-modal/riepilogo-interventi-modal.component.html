@@ -4,7 +4,7 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="chiudiRiepilogoInterventiModal('ko')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
@@ -12,8 +12,8 @@
     <!-- FILTRI SUGLI INTERVENTI -->
     <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri sugli interventi</span>
-        <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fa fa-chevron-down"></i></span>
-        <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fa fa-chevron-up"></i></span>
+        <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
     </div>
     <div *ngIf="showFiltriInterventi" class="row px-4 pt-1 pb-3">
         <div class="col" style="justify-content: center; font-size: x-large">
@@ -49,8 +49,8 @@
     <!-- FILTRI AGGIUNTIVI SULLA SQUADRA -->
     <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri aggiuntivi sulla squadra</span>
-        <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fa fa-chevron-down"></i></span>
-        <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fa fa-chevron-up"></i></span>
+        <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
     </div>
     <div *ngIf="showFiltriSquadre" class="row px-4 pt-2 pb">
         <div class="col-4" style="justify-content: center; font-size: x-large">
@@ -134,8 +134,8 @@
     <!-- ALTRI FILTRI -->
     <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Altri filtri</span>
-        <span *ngIf="showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fa fa-chevron-down"></i></span>
-        <span *ngIf="!showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fa fa-chevron-up"></i></span>
+        <span *ngIf="showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
     </div>
     <div *ngIf="showAltriFiltri" class="px-3 pt-2 pb-4">
         <div class="col w-100">

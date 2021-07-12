@@ -1,6 +1,6 @@
 <td>
     <div *ngIf="visualizzaIconeNomeClasseEvento">
-        <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw font-xlarge" aria-hidden="true"
+        <i *ngFor="let ii of iconeClasseEventoCorrente" class="fas {{ii}} fa-fw font-xlarge" aria-hidden="true"
            [ngbTooltip]="formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi">
         </i>
     </div>
@@ -16,7 +16,7 @@
 <td>
     <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
            ngbTooltip="Clicca qui per ricercare gli eventi">
-        <i class="fa fa-hashtag font-xlarge"></i>
+        <i class="fas fa-hashtag font-xlarge"></i>
         {{eventoRichiesta.targa}}
     </small>
 </td>

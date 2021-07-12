@@ -84,10 +84,12 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     getListaImpostazioni(): void {
         this.subscription.add(
             this.listaImpostazioni$.subscribe((listaImpostazioni: Impostazione[]) => {
-                this.listaImpostazioni = listaImpostazioni;
+                this.listaImpostazioni = makeCopy(listaImpostazioni);
                 if (this.listaImpostazioni.length) {
                     this.store.dispatch(new SunMode(!this.listaImpostazioni[2].opzioni[0].singleValue.value));
                 }
+                this.listaImpostazioni[1].tipo = TipoImpostazione.EventiRichiesta;
+                this.listaImpostazioni[2].icona = 'fa-moon';
             })
         );
     }

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 col-md-9 mx-auto mb-2">
             <h2>
-                <i class="fa fa-id-card"></i>
+                <i class="fas fa-id-card"></i>
                 Rubrica Personale VV.F.
             </h2>
         </div>
@@ -11,7 +11,7 @@
                 <div class="col-2">
                     <button class="btn btn-outline-secondary btn-no-hover mb-2 font-weight-bold" placement="right"
                             [routerLink]="['/' + RoutesPath.Rubrica]" ngbTooltip="Visualizza Rubrica">
-                        <i class="fa fa-address-book mr-1"></i>
+                        <i class="fas fa-address-book mr-1"></i>
                         Rubrica
                     </button>
                 </div>
@@ -41,7 +41,8 @@
                 </div>
                 <div class="col text-right">
                     <app-ricerca-rubrica-personale [loading]="loading$ | async"
-                                         (ricercaChange)="onRicercaRubricaPersonale($event)"></app-ricerca-rubrica-personale>
+                                                   (ricercaChange)="onRicercaRubricaPersonale($event)">
+                    </app-ricerca-rubrica-personale>
                 </div>
             </div>
         </div>
@@ -49,11 +50,14 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
         <div class="col-12 col-md-9 mx-auto">
-            <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async" [totalItems]="totalItems$ | async"
-                                 [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
-                                 [pageSizes]="pageSizes$ | async"
-                                 (pageChange)="onPageChange($event)"
-                                 (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica-personale>
+            <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async"
+                                           [totalItems]="totalItems$ | async"
+                                           [pageSize]="pageSize" [page]="page$ | async"
+                                           [loading]="loading$ | async"
+                                           [pageSizes]="pageSizes$ | async"
+                                           (pageChange)="onPageChange($event)"
+                                           (pageSizeChange)="onPageSizeChange($event)">
+            </app-tabella-rubrica-personale>
         </div>
     </div>
 </div>

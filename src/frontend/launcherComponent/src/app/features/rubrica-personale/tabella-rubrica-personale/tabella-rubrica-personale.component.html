@@ -1,18 +1,18 @@
 <table class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:15%"><i class="fa fa-user mr-2"></i>Nominativo</th>
-        <th scope="col" style="width:13%"><i class="fa fa-map-marker mr-2"></i>Sedi di Servizio</th>
-        <th scope="col" style="width:8%"><i class="fa fa-calendar mr-2"></i>Turno</th>
-        <th scope="col" style="width:9%"><i class="fa fa-bolt mr-2"></i>Qualifica</th>
-        <th scope="col" style="width:16%"><i class="fa fa-cogs mr-2"></i>Specializzazione</th>
-        <th scope="col" style="width:10%"><i class="fa fa-phone mr-2"></i>Telefono 1</th>
-        <th scope="col" style="width:10%"><i class="fa fa-phone mr-2"></i>Telefono 2</th>
-        <th scope="col" style="width:10%"><i class="fa fa-phone mr-2"></i>Telefono 3</th>
+        <th scope="col" style="width:15%"><i class="fas fa-user mr-2"></i>Nominativo</th>
+        <th scope="col" style="width:13%"><i class="fas fa-map-marker-alt mr-2"></i>Sedi di Servizio</th>
+        <th scope="col" style="width:8%"><i class="fas fa-calendar mr-2"></i>Turno</th>
+        <th scope="col" style="width:9%"><i class="fas fa-bolt mr-2"></i>Qualifica</th>
+        <th scope="col" style="width:16%"><i class="fas fa-cogs mr-2"></i>Specializzazione</th>
+        <th scope="col" style="width:10%"><i class="fas fa-phone-alt mr-2"></i>Telefono 1</th>
+        <th scope="col" style="width:10%"><i class="fas fa-phone-alt mr-2"></i>Telefono 2</th>
+        <th scope="col" style="width:10%"><i class="fas fa-phone-alt mr-2"></i>Telefono 3</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let voce of vociRubricaPersonale | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let voce of vociRubricaPersonale">
         <td style="width:15%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.nominativo" [ngbTooltip]="voce?.nominativo?.length > 20 ? voce?.nominativo : null" placement="top">

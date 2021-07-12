@@ -5,7 +5,7 @@
          [ngClass]="heightControl()"
          style="overflow-x: hidden; overflow-y: auto">
         <ng-container *ngIf="richieste?.length">
-            <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
+            <div *ngFor="let r of richieste"
                  class="col-12 scale-sintesi-richiesta">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"
@@ -75,17 +75,17 @@
                         [disabled]="!needRefresh || loading"
                         (click)="refresh.emit(true)">
                     <ng-template [ngIf]="needRefresh && !loading">
-                        <i class="fa fa-refresh mr-1"></i>
+                        <i class="fas fa-sync-alt mr-1"></i>
                         <span class="font-weight-bold">
                             Aggiornamento Richiesto
                         </span>
                     </ng-template>
                     <ng-template [ngIf]="!needRefresh && !loading">
-                        <i class="fa fa-check mr-1"></i>
+                        <i class="fas fa-check mr-1"></i>
                         La lista è aggiornata
                     </ng-template>
                     <ng-template [ngIf]="loading">
-                        <i class="fa fa-refresh fa-spin mr-1"></i>
+                        <i class="fas fa-sync-alt fa-spin mr-1"></i>
                         Caricamento...
                     </ng-template>
                 </button>

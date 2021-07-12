@@ -162,6 +162,9 @@ export class StartLoadingActionRichiesta {
 
 export class StopLoadingActionRichiesta {
     static readonly type = '[Richieste] Stop Loading Action Richiesta';
+
+    constructor(public idRichiesta: string) {
+    }
 }
 
 export class StartLoadingModificaFonogramma {

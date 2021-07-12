@@ -3,26 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 /**
- * AGM CORE
- */
-import { AgmCoreModule } from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'; // Dependency
-import { AgmDirectionModule } from 'agm-direction';
-/**
  * MAPS
  */
 import { MapsComponent } from './maps.component';
-import { AgmComponent } from './agm/agm.component';
-import { AgmContentComponent } from './agm/agm-content.component';
-/**
- * MAPS-UI
- */
-import { AgmMarkerClustererModule } from '@agm/markerclusterer';
-import { InfoWindowComponent } from './maps-ui/info-window/info-window.component';
-import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
-import { FiltriMarkersComponent } from './maps-ui/filtri-markers/filtri-markers.component';
-import { FiltriMarkersRichiesteComponent } from './maps-ui/filtri-markers/filtri-markers-richieste/filtri-markers-richieste.component';
-import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-markers-mezzi/filtri-markers-mezzi.component';
 /**
  * Provider
  */
@@ -45,28 +28,21 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
-import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
-import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
-import { FiltriScComponent } from './maps-ui/filtri-markers/filtri-sc/filtri-sc.component';
-import { FormsModule } from '@angular/forms';
+import { EsriMapComponent } from './esri-map/esri-map.component';
 
 @NgModule({
     imports: [
         CommonModule,
         NgbModule,
-        AgmCoreModule.forRoot(),
-        AgmDirectionModule,
-        AgmMarkerClustererModule,
-        AgmSnazzyInfoWindowModule,
         SharedModule,
         NgSelectModule,
         NgxsModule.forFeature(
@@ -87,21 +63,11 @@ import { FormsModule } from '@angular/forms';
                 FiltriMarkersState,
                 SchedeContattoMarkersState
             ]
-        ),
-        FormsModule
+        )
     ],
     declarations: [
         MapsComponent,
-        AgmComponent,
-        AgmContentComponent,
-        InfoWindowComponent,
-        CambioSedeModalComponent,
-        SintesiRichiestaModalComponent,
-        MapsButtonComponent,
-        FiltriMarkersComponent,
-        FiltriMarkersRichiesteComponent,
-        FiltriMarkersMezziComponent,
-        FiltriScComponent
+        EsriMapComponent
     ],
     exports: [
         MapsComponent

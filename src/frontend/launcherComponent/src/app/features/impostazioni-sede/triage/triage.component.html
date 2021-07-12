@@ -44,7 +44,7 @@
                         [class.btn-secondary]="showTriage"
                         [disabled]="!codDettaglioTipologia || showTriage"
                         (click)="onShowTriage()">
-                    <i class="fa fa-search mr-1"></i>
+                    <i class="fas fa-search mr-1"></i>
                     <ng-template [ngIf]="!dettaglioTipologia">
                         {{ 'Ricerca triage'  | uppercase }}
                     </ng-template>
@@ -59,7 +59,7 @@
                         [class.btn-secondary]="!codDettaglioTipologia || !showTriage"
                         [disabled]="!codDettaglioTipologia || !showTriage"
                         (click)="onResetRicerca()">
-                    <i class="fa fa-refresh mr-1"></i>
+                    <i class="fas fa-sync-alt mr-1"></i>
                     {{ 'Nuova Ricerca' | uppercase }}
                 </button>
             </div>
@@ -70,7 +70,7 @@
         <div class="py-3 px-2 mt-3">
             <h3 class="mt-2">
                 <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
-                <i class="fa fa-arrow-circle-right mr-3"></i>
+                <i class="fas fa-arrow-circle-right mr-3"></i>
                 <ng-template [ngIf]="tItems">
                     <span *ngIf="viewEditButtons">Modifica </span>Triage
                 </ng-template>
@@ -85,7 +85,7 @@
                 <div class="card mt-3 px-4 py-3"
                      [class.bg-light]="!(nightMode$ | async)"
                      [class.bg-dark-light]="(nightMode$ | async)">
-                    <ngx-treeview [items]="tItems"
+                    <ngx-treeview [items]="getTItems()"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">
                     </ngx-treeview>
@@ -128,12 +128,12 @@
                 <div class="text-left mt-3">
                     <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
                             (click)="initTriage()">
-                        <i class="fa fa-plus-circle mr-1"></i>
+                        <i class="fas fa-plus-circle mr-1"></i>
                         {{ 'Aggiungi la prima Domanda' | uppercase }}
                     </button>
                     <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
                             [disabled]="true">
-                        <i class="fa fa-upload mr-1"></i>
+                        <i class="fas fa-upload mr-1"></i>
                         {{ 'Importa Triage da un altro Dettaglio Tipologia' | uppercase }}
                     </button>
                 </div>
@@ -148,8 +148,8 @@
          [class.item-treeview-custom]="!viewEditButtons">
         <i *ngIf="item.children" class="mr-2 text-info cursor-pointer" (click)="onCollapseExpand()" aria-hidden="true"
            [ngSwitch]="item.collapsed">
-            <i *ngSwitchCase="true" class="fa fa-chevron-circle-down"></i>
-            <i *ngSwitchCase="false" class="fa fa-chevron-circle-up"></i>
+            <i *ngSwitchCase="true" class="fas fa-chevron-circle-down"></i>
+            <i *ngSwitchCase="false" class="fas fa-chevron-circle-up"></i>
         </i>
         <div class="form-check">
             <ng-template [ngIf]="item.value !== itemValueTitleEdit">
@@ -164,7 +164,7 @@
                         <button class="btn btn-info"
                                 ngbTooltip="Modifica Testo"
                                 (click)="setItemValueEditTitle(item)">
-                            <i class="fa fa-text-width mr-1"></i>
+                            <i class="fas fa-text-width mr-1"></i>
                             Modifica
                         </button>
                     </div>
@@ -181,23 +181,23 @@
                         ngbTooltip="Conferma Modifica"
                         [disabled]="!itemTitleEdit"
                         (click)="updateItemTitle(item)">
-                    <i class="fa fa-check"></i>
+                    <i class="fas fa-check"></i>
                 </button>
                 <button class="btn btn-danger"
                         ngbTooltip="Annulla Modifica"
                         (click)="clearItemValueEditTitle()">
-                    <i class="fa fa-close"></i>
+                    <i class="fas fa-close"></i>
                 </button>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.soccorsoAereo">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fa fa-plane mr-1"></i>
+                    <i class="fas fa-plane mr-1"></i>
                     {{ getItemData(item)?.soccorsoAereo }}
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.generiMezzo">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fa fa-truck mr-1"></i>
+                    <i class="fas fa-truck mr-1"></i>
                     <span *ngFor="let genereMezzo of getItemData(item)?.generiMezzo, let i = index"
                           class="d-inline-block">
                         {{ genereMezzo }}<span
@@ -207,19 +207,19 @@
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.prioritaConsigliata">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fa fa-thermometer mr-1"></i>
+                    <i class="fas fa-thermometer mr-1"></i>
                     {{ getItemData(item)?.prioritaConsigliata }}
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.noteOperatore">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    <i class="fas fa-sticky-note-o mr-1"></i>
                     Indicazioni Operatore Inserite
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.noteUtente">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fa fa-sticky-note-o mr-1"></i>
+                    <i class="fas fa-sticky-note-o mr-1"></i>
                     Indicazioni Utente Inserite
                 </label>
             </ng-template>
@@ -228,21 +228,21 @@
                     <button class="btn btn-primary ml-3"
                             ngbTooltip="Aggiungi"
                             (click)="addItem(item)">
-                        <i class="fa fa-plus-circle"></i>
+                        <i class="fas fa-plus-circle"></i>
                     </button>
                 </ng-template>
                 <ng-template [ngIf]="getItemData(item) && !item.children?.length">
                     <button class="btn btn-info ml-3"
                             ngbTooltip="Modifica"
                             (click)="editItem(item)">
-                        <i class="fa fa-edit"></i>
+                        <i class="fas fa-edit"></i>
                     </button>
                 </ng-template>
                 <ng-template [ngIf]="item.children?.length > 1 && item.value.length !== 1 && !itemTitleEdit">
                     <button class="btn btn-danger ml-2"
                             ngbTooltip="Rimuovi"
                             (click)="removeItem(item)">
-                        <i class="fa fa-trash-o"></i>
+                        <i class="fas fa-trash-o"></i>
                     </button>
                 </ng-template>
             </ng-template>

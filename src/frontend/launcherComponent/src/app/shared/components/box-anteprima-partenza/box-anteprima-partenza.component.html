@@ -7,21 +7,21 @@
         <div>
             <label class="mb-3">Mezzo</label>
             <div *ngIf="!boxSostitutivo">
-                <i class="fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
+                <i class="fas fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
                 <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
                 <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
+                <i class="far fa-check-circle text-success ml-3"></i>
             </div>
             <div *ngIf="boxSostitutivo && !nuovoMezzo['descrizione']" class="font-box-partenza">
                 <span class="text-muted">Nessun risultato...</span>
             </div>
             <div *ngIf="boxSostitutivo && nuovoMezzo['descrizione']">
-                <i class="fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
+                <i class="fas fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
                    ngbTooltip="Mezzo {{ nuovoMezzo['stato'] }}"></i>
                 <b class="font-box-partenza">{{ nuovoMezzo['descrizione'] }}</b>
                 <span class="badge badge-default m-0">{{ nuovoMezzo['genere'] }}</span>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
+                <i class="fas fa-check-circle text-success ml-3"></i>
             </div>
         </div>
         <span *ngIf="!boxSostitutivo">
@@ -31,16 +31,16 @@
                 <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
                         style="padding: 5px !important; line-height: 0;"
                         (click)="onListaSquadrePartenza($event)">
-                    <span><i class="fa fa-search"></i></span>
+                    <span><i class="fas fa-search"></i></span>
                 </button>
             </div>
             <div>
-                <i class="fa fa-group mr-2"
+                <i class="fas fa-users mr-2"
                     [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
                     ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
                 ></i>
                 <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }} ({{partenza?.squadre[0]?.turno}}) </b>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
+                <i class="fas fa-check-circle text-success ml-3"></i>
             </div>
         </div>
         <div *ngIf="partenza?.squadre.length > 1">
@@ -49,17 +49,17 @@
                 <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                         style="padding: 5px !important; line-height: 0;"
                         (click)="onListaSquadrePartenza($event)">
-                    <span><i class="fa fa-search"></i></span>
+                    <span><i class="fas fa-search"></i></span>
                 </button>
             </div>
             <div *ngFor="let squadre of partenza?.squadre">
-                <i class="fa fa-group mr-2"
+                <i class="fas fa-users mr-2"
                    [ngClass]="_iconaStatiClass(_nomeStatiSquadra(squadre['stato']))"
                    ngbTooltip="Squadra {{ _nomeStatiSquadra(squadre['stato']) }}"
                 ></i>
                 <b class="font-box-partenza">{{ squadre['nome'] }}</b>
                 <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
+                <i class="fas fa-check-circle text-success ml-3"></i>
             </div>
         </div>
         </span>
@@ -71,16 +71,16 @@
                             ngbTooltip="Elenco squadra"
                             style="padding: 5px !important; line-height: 0;"
                             (click)="onListaSquadrePartenza($event)">
-                        <span><i class="fa fa-search"></i></span>
+                        <span><i class="fas fa-search"></i></span>
                     </button>
                 </div>
                 <div *ngIf="!nuoveSquadre[0]" class="font-box-partenza"><span
                         class="text-muted">Nessun risultato...</span></div>
-                <div *ngIf="nuoveSquadre?.length === 1" class=""><i class="fa fa-group guida mr-2"
+                <div *ngIf="nuoveSquadre?.length === 1" class=""><i class="fas fa-users guida mr-2"
                                                                            ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
                     <b class="font-box-partenza ml-1">({{ nuoveSquadre[0]?.turno }})</b>
-                    <i class="fa fa-check-circle-o text-success ml-3"></i>
+                    <i class="fas fa-check-circle text-success ml-3"></i>
                 </div>
             </div>
             <div *ngIf="nuoveSquadre?.length > 1">
@@ -88,12 +88,12 @@
                     <button class="btn btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                             style="padding: 5px !important; line-height: 0;"
                             (click)="onListaSquadrePartenza($event)">
-                        <span><i class="fa fa-search"></i></span>
+                        <span><i class="fas fa-search"></i></span>
                     </button>
-                <div *ngFor="let squadre of nuoveSquadre"><i class="fa fa-group guida mr-2" ngbTooltip="Squadre"></i>
+                <div *ngFor="let squadre of nuoveSquadre"><i class="fas fa-users guida mr-2" ngbTooltip="Squadre"></i>
                     <b class="font-box-partenza">{{ squadre['nome'] }}</b>
                     <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
-                    <i class="fa fa-check-circle-o text-success ml-3"></i>
+                    <i class="far fa-check-circle text-success ml-3"></i>
                 </div>
             </div>
         </span>
@@ -102,7 +102,7 @@
                 <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
                             font-size: 18px;" (click)="onModificaPartenza($event)">
-                    <i class="fa fa-pencil-square-o mr-1"></i>
+                    <i class="far fa-edit mr-1"></i>
                     {{ testoModifica }}
                 </button>
             </div>
@@ -112,7 +112,7 @@
                 <button class="btn btn-xl btn-block btn-danger btn-no-hover" ngbTooltip="Annulla partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
                             font-size: 18px;" (click)="onDismissPartenza($event)">
-                    <i class="fa fa-times"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
         </ng-template>

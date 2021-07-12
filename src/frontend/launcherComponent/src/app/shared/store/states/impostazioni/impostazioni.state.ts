@@ -47,7 +47,7 @@ export const impostazioniStateDefaults: ImpostazioniStateModel = {
         },
       {
         tipo: TipoImpostazione.ModalitaNotte,
-        icona: 'fa-moon-o',
+        icona: 'fa-moon',
         opzioni: [
           {
             label: 'Attiva modalità notte',

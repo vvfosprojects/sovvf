@@ -69,24 +69,6 @@ export class SetRichiestaMarkerById {
     }
 }
 
-export class ToggleOpacitaRichiesteMarkers {
-    static readonly type = '[Richieste Marker] Toggle Opacità Richieste Marker';
-
-    constructor(public toggle: boolean, public stato?: string[]) {
-    }
-}
-
-export class SetTipoOpacitaRichiesteMarkers {
-    static readonly type = '[Richieste Marker] Set Tipo Opacità Richieste Marker';
-
-    constructor(public stato: string[]) {
-    }
-}
-
-export class OpacizzaRichiesteMarkers {
-    static readonly type = '[Richieste Marker] Opacizza Richieste Marker';
-}
-
 export class ClearRichiesteMarkers {
     static readonly type = '[Richieste Marker] Clear Richieste Marker';
 }

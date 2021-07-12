@@ -1,13 +1,11 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
-@import "../node_modules/font-awesome/css/font-awesome.css";
-@import "../node_modules/snazzy-info-window/dist/snazzy-info-window.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~ngx-ui-switch/ui-switch.component.scss";
-// if you'd like to use it without importing all of bootstrap it requires
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 @import "~ngx-toastr/toastr-bs4-alert";
+@import "../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
 
 @font-face {
   font-family: "icon-marker";
@@ -19,7 +17,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 
 body,
 html {
@@ -88,26 +85,39 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .single-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
+  // overwrite style FontAwesome
+  .fas {
+    font-weight: 900 !important;
+  }
+
+  //
+
   button {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   ng-select {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   textarea {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   i {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   input {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   .toast-container {
     font-size: 1rem;
     font-weight: 400;
@@ -120,30 +130,37 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .double-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
   button {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   ng-select {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   textarea {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   i {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   input {
     font-size: $SO-font-xlarge;
     font-weight: $SO-weight;
   }
+
   .toast-container {
     font-size: 1rem;
     font-weight: 400;
   }
+
   ngb-modal-window {
     padding-right: $SO-middle $SO-i;
   }
@@ -161,19 +178,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .bg-navbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-filterbar {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .bg-form-richiesta {
-    background-color:$SO-white $SO-i;
+    background-color: $SO-white $SO-i;
   }
 
   .border-top-richiesta {
@@ -259,13 +276,13 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: $SO-white $SO-i;
   }
 
-  .table-striped>tbody>tr:nth-child(odd)>td,
-  .table-striped>tbody>tr:nth-child(odd)>th {
+  .table-striped > tbody > tr:nth-child(odd) > td,
+  .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: $SO-dark $SO-i;
   }
 
-  .table-striped>tbody>tr:nth-child(even)>td,
-  .table-striped>tbody>tr:nth-child(even)>th {
+  .table-striped > tbody > tr:nth-child(even) > td,
+  .table-striped > tbody > tr:nth-child(even) > th {
     background-color: $SO-dark-light $SO-i;
   }
 
@@ -394,19 +411,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-sidebar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-navbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-filterbar {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-form-richiesta {
-    background-color:$SO-dark-darker $SO-i;
+    background-color: $SO-dark-darker $SO-i;
   }
 
   .bg-scheda-contatto {
@@ -422,7 +439,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   }
 
   .bg-partial-loader {
-    background-color: transparent $SO-i;
+    background-color: rgba(53, 53, 53, 0.7) $SO-i;
   }
 }
 
@@ -962,11 +979,19 @@ tag-input {
 }
 
 .bg-partial-loader {
-  background-color: rgba(255, 255, 255, .7);
+  background-color: rgba(224, 223, 223, 0.7) $SO-i;
 }
 
 .no-resize {
   resize: none;
+}
+
+.ng-sidebar__backdrop {
+  z-index: 4 !important;
+}
+
+.ng-sidebar {
+  z-index: 5 !important;
 }
 
 [class^="icon-"],
@@ -1295,4 +1320,7 @@ tag-input {
 
 .selected-composizione {
   background-color: $SO-grey-light $SO-i;
+}
+
+.fa-building-o {
 }

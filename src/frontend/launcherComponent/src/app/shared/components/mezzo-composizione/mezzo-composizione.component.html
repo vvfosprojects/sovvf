@@ -31,7 +31,7 @@
                                  style="font-weight: 500">
                                 P
                             </div>
-                            <i class="fa fa-users fa-fw ml-1"></i>
+                            <i class="fas fa-users fa-fw ml-1"></i>
                         </button>
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
@@ -46,9 +46,9 @@
             <!-- Km / Tempo Percorrenza -->
             <ng-template [ngIf]="!mezzoComp.mezzo?.coordinateFake">
                 <div class="d-inline-block ml-2">
-                    <i class="fa fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
+                    <i class="fas fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
                     <div class="d-inline-block mr-2">{{ mezzoComp.km }} km</div>
-                    <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
+                    <i class="far fa-clock guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
                     <div class="d-inline-block mr-2">{{ mezzoComp.tempoPercorrenza }} min</div>
                 </div>
             </ng-template>
@@ -57,7 +57,7 @@
                 <div class="d-inline-block"
                      [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
                      [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
-                    <i class="fa fa-map-marker text-success mr-2"></i>
+                    <i class="fas fa-map-marker-alt text-success mr-2"></i>
                     <div class="d-inline-block font-weight-bold"
                          [ngbTooltip]="'Posizione Attuale: ' + mezzoComp.indirizzoIntervento">
                         {{ mezzoComp.indirizzoIntervento | truncate:10 }}
@@ -78,9 +78,9 @@
                                 style="cursor:pointer; vertical-align: baseline"
                                 (click)="onClick(true); $event.stopPropagation()"
                                 [disabled]="disableBtnFeature">
-                            <i class="fa fa-users fa-fw"></i>
-                            <i class="fa fa-arrow-right guida fa-fw mx-1"></i>
-                            <i class="fa fa-truck fa-fw"></i>
+                            <i class="fas fa-users fa-fw"></i>
+                            <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
+                            <i class="fas fa-truck fa-fw"></i>
                         </button>
                         <ng-template #popSquadreIntervento>
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">

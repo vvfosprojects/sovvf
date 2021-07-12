@@ -3,8 +3,6 @@
     <div class="float-left font-xxlarge"
          style="display: inline-flex; align-items: center;">
         <app-mezzo [mezzo]="partenza.mezzo"
-                   [mostraIndicatori]="false"
-                   [mostraNotifiche]="false"
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="listaEventi"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
@@ -20,7 +18,7 @@
                  style="display: inline-flex; align-items: center;">
                 <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
                    ngbTooltip="{{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
-                   class="fa fa-group mr-2"></i>
+                   class="fas fa-users mr-2"></i>
                 <div class="d-inline-block"
                      [ngbTooltip]="partenza.squadre[0].nome"
                      [disableTooltip]="partenza.squadre[0].nome && partenza.squadre[0].nome.length <= 6">
@@ -36,7 +34,7 @@
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                     <div *ngIf="partenza.squadre?.length === 1"
                          class="d-inline-block">
-                        <i class="fa fa-search"></i>
+                        <i class="fas fa-search"></i>
                     </div>
                     <div *ngIf="partenza.squadre?.length > 1"
                          class="d-inline-block">
@@ -57,20 +55,20 @@
 <!--                                    ngbDropdownAnchor-->
 <!--                                    ngbTooltip="Opzioni"-->
 <!--                                    (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">-->
-<!--                                <i class="fa fa-ellipsis-v"></i>-->
+<!--                                <i class="fas fa-ellipsis-v"></i>-->
 <!--                            </button>-->
 <!--                            <div ngbDropdownMenu-->
 <!--                                 aria-labelledby="dropdownConfig">-->
 <!--                                <button class="btn btn-block btn-no-hover"-->
 <!--                                        ngbDropdownItem-->
 <!--                                        (click)="modificaPartenza.emit(index); $event.stopPropagation()">-->
-<!--                                    <i class="fa fa-cog mr-1"></i>-->
+<!--                                    <i class="fas fa-cog mr-1"></i>-->
 <!--                                    Gestisci Partenza-->
 <!--                                </button>-->
 <!--                                <button class="btn btn-block btn-no-hover text-danger font-weight-bold"-->
 <!--                                        ngbDropdownItem-->
 <!--                                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">-->
-<!--                                    <i class="fa fa-trash mr-1"></i>-->
+<!--                                    <i class="fas fa-trash mr-1"></i>-->
 <!--                                    Elimina-->
 <!--                                </button>-->
 <!--                            </div>-->
@@ -78,7 +76,7 @@
 <!--                    </div>-->
                     <button class="btn btn-sm btn-info d-inline-block" ngbTooltip="Gestisci Partenza" placement="top"
                             (click)="modificaPartenza.emit(index); $event.stopPropagation()">
-                        <i class="fa fa-cog mr-1"></i>
+                        <i class="fas fa-cog mr-1"></i>
                     </button>
                 </ng-template>
                 <div *ngIf="!partenza.squadre || !partenza.squadre?.length"

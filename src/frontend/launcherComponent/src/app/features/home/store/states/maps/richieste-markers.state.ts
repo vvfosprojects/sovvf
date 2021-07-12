@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
@@ -11,26 +10,20 @@ import {
     ClearRichiesteMarkers,
     GetRichiesteMarkers,
     InsertRichiestaMarker,
-    OpacizzaRichiesteMarkers,
     PatchRichiesteMarkers,
     RemoveRichiestaMarker,
     SetRichiestaMarkerById,
     SetRichiesteMarkers,
-    SetTipoOpacitaRichiesteMarkers,
-    ToggleOpacitaRichiesteMarkers,
     UpdateRichiestaMarker,
     UpdateRichiestaMarkerModifica
 } from '../../actions/maps/richieste-markers.actions';
 import { Injectable } from '@angular/core';
-import { wipeStatoRichiesta } from '../../../../../shared/helper/function-richieste';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
     richiestaMarkerModifica: RichiestaMarker;
     richiesteMarkersId: string[];
     richiestaMarkerById: RichiestaMarker;
-    statoOpacita: boolean;
-    tipoOpacita: string[];
 }
 
 export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
@@ -38,8 +31,6 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     richiestaMarkerModifica: null,
     richiesteMarkersId: [],
     richiestaMarkerById: null,
-    statoOpacita: false,
-    tipoOpacita: null
 };
 
 @Injectable()
@@ -128,15 +119,6 @@ export class RichiesteMarkersState {
                     dispatch(new AddRichiesteMarkers(richiesteMarkerAdd));
                 }
             }
-            // Todo logica ToggleAnimation da rivedere
-            // this.mapIsLoaded$.subscribe(isLoaded => {
-            //     if (isLoaded) {
-            //         dispatch(new ToggleAnimation());
-            //     }
-            // });
-            if (state.statoOpacita) {
-                dispatch(new OpacizzaRichiesteMarkers());
-            }
         }
     }
 
@@ -159,7 +141,10 @@ export class RichiesteMarkersState {
     }
 
     @Action(InsertRichiestaMarker)
-    insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker): void {
+    insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, {
+        payload,
+        before
+    }: InsertRichiestaMarker): void {
         setState(
             patch({
                 richiesteMarkers: insertItem(RichiesteMarkerAdapterService.adapt(payload), before),
@@ -215,54 +200,9 @@ export class RichiesteMarkersState {
         }
     }
 
-    @Action(ToggleOpacitaRichiesteMarkers)
-    toggleOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: ToggleOpacitaRichiesteMarkers): void {
-        patchState({
-            statoOpacita: action.toggle
-        });
-        if (!action.toggle) {
-            patchState({
-                tipoOpacita: RichiesteMarkersStateDefaults.tipoOpacita,
-            });
-            dispatch(new ClearMarkerOpachiRichieste());
-        } else {
-            dispatch(new SetTipoOpacitaRichiesteMarkers(action.stato));
-        }
-    }
-
-    @Action(SetTipoOpacitaRichiesteMarkers)
-    setTipoOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetTipoOpacitaRichiesteMarkers): void {
-        patchState({
-            tipoOpacita: action.stato
-        });
-        dispatch(new OpacizzaRichiesteMarkers());
-    }
-
-    @Action(OpacizzaRichiesteMarkers)
-    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>): void {
-        const state = getState();
-        if (state.statoOpacita && state.tipoOpacita) {
-            if (state.richiesteMarkers) {
-                dispatch(new SetMarkerOpachiRichieste(idRichiesteFiltrate(state.tipoOpacita, state.richiesteMarkers)));
-            }
-        }
-    }
-
     @Action(ClearRichiesteMarkers)
     clearRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>): void {
         patchState(RichiesteMarkersStateDefaults);
     }
 
-}
-
-export function idRichiesteFiltrate(stati: string[], richiesteMarkers: RichiestaMarker[]): string[] {
-    const filteredId: string[] = [];
-    richiesteMarkers.forEach(r => {
-        stati.forEach(c => {
-            if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                filteredId.push(r.id);
-            }
-        });
-    });
-    return filteredId;
 }

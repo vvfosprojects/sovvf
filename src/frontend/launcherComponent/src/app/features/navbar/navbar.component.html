@@ -7,7 +7,7 @@
                     <!-- Bottoni Sinistra -->
                     <div class="float-left mr-5">
                         <button class="btn btn-light mr-2" (click)="onToggleSidebar()">
-                            <i class="fa fa-bars"></i>
+                            <i class="fas fa-bars"></i>
                         </button>
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Vai alla lista Chiamate/Interventi"
@@ -15,7 +15,7 @@
                                 [routerLink]="['/' + RoutesPath.Home]"
                                 [class.btn-nav-selected]="!(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && !(codaChiamateStatus$ | async) && url === '/home'"
                                 (click)="onChiamateInterventi()">
-                            <i class="fa fa-home"></i>
+                            <i class="fas fa-home"></i>
                         </button>
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Mezzi in Servizio"
@@ -24,15 +24,15 @@
                                 [class.btn-nav-selected]="(mezziInServizioStatus$ | async) && url === '/home'"
                                 [disabled]="disabledMezziInServizio"
                                 (click)="toggleMezziInSerivizo()">
-                            <i class="fa fa-truck"></i>
+                            <i class="fas fa-truck"></i>
                         </button>
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Coda Chiamate"
                                 placement="right"
                                 [class.btn-nav-selected]="(codaChiamateStatus$ | async) && url === '/home'"
                                 (click)="toggleCodaChiamate()">
-                            <i class="fa fa-phone mr-1"></i>
-                            <i class="fa fa-list"></i>
+                            <i class="fas fa-phone-alt mr-1"></i>
+                            <i class="fas fa-list"></i>
                         </button>
                     </div>
                     <!-- Treeview -->
@@ -63,14 +63,14 @@
                                 [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
                                 [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-exchange"></i>
+                            <i class="fas fa-exchange-alt"></i>
                         </button>
                         <button class="btn btn-light"
                                 ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
                                 [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-address-book"></i>
+                            <i class="fas fa-address-book"></i>
                         </button>
                         <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
                                        [nuoveNotifiche]="nuoveNotifiche$ | async"

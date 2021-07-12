@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
@@ -29,7 +28,6 @@ import { ChangelogItemComponent } from './changelog-item/changelog-item.componen
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgxPaginationModule,
         NgbModule
     ]
 })

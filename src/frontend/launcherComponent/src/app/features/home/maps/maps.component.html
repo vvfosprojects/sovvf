@@ -1,15 +1,10 @@
 <div class="row h-100">
     <div *ngIf="centroMappa" class="col-12 h-100">
-        <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
-        <app-agm [viewStateMappa]="viewStateMappa"
-                 [centroMappa]="centroMappa"
-                 [richiesteMarkers]="(richiesteMarkers$ | async)"
-                 [sediMarkers]="(sediMarkers$ | async)"
-                 [mezziMarkers]="(mezziMarkers$ | async)"
-                 [chiamateMarkers]="(chiamataMarkers$ | async)"
-                 [composizioneMarkers]="(composizioneMarkers$ | async)"
-                 [schedeContattoMarkers]="(schedeContattoMarkers$ | async)"
-                 [boxAttivi]="boxAttivi"
-                 (mapFullyLoaded)="mapIsLoaded($event)"></app-agm>
+        <div class="col-12 h-100">
+            <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
+            <app-esri-map [pCenter]="centroMappa"
+                          [chiamateMarkers]="chiamataMarkers$ | async"
+                          (mapIsLoaded)="mapIsLoaded($event)"></app-esri-map>
+        </div>
     </div>
 </div>

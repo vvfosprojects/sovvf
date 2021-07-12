@@ -4,7 +4,7 @@
   </h4>
   <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
           (click)="chiudiModalSoccorsoAereo('ko')">
-    <i class="fa fa-times text-danger"></i>
+    <i class="fas fa-times text-danger"></i>
   </button>
 </div>
 
@@ -14,7 +14,7 @@
       <span style="font-size: 130%" >Seleziona le Azioni Richieste</span>
       <div class="row"></div>
       <div *ngIf="!azioniRichiesta.length" class="card card-shadow mx-auto px-3">
-        <div class="clearfix ml-2 text-secondary"><i class="fa fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
+        <div class="clearfix ml-2 text-secondary"><i class="fas fa-spin fa-spinner mr-1"></i> Azioni in caricamento, attendere qualche istante...</div>
       </div>
       <div  *ngIf="azioniRichiesta.length > 0" class="card card-shadow mx-auto px-3" [class.overflow-size]="azioniRichiesta.length >= 8" style="height: 350px">
         <div *ngFor="let a of azioniRichiesta; let index = index" class="row my-1">
@@ -65,7 +65,7 @@
         {{ 'Chiudi' | uppercase }}
       </button>
       <button *ngIf="submitted" type="button" class="btn btn-lg btn-success btn-no-hover float-left" [disabled]="true">
-        <i class="fa fa-spin fa-spinner mr-1"></i>
+        <i class="fas fa-spin fa-spinner mr-1"></i>
         {{ 'Invio Richiesta' | uppercase }}
       </button>
     </div>

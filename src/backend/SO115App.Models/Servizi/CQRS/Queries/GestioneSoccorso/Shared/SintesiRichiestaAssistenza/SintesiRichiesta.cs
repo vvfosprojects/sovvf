@@ -337,32 +337,49 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                List<ComposizionePartenze> eventoAssegnata = new List<ComposizionePartenze>();
-                List<ComposizionePartenze> PartenzeSelect = new List<ComposizionePartenze>();
-                if (this.Partenze != null)
-                {
-                    eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                    PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                }
+                //List<ComposizionePartenze> eventoAssegnata = new List<ComposizionePartenze>();
+                //List<ComposizionePartenze> PartenzeSelect = new List<ComposizionePartenze>();
+                //if (this.Partenze != null)
+                //{
+                //    eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                //    PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                //}
 
-                foreach (var partenza in PartenzeSelect)
-                {
-                    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
-                        return Costanti.RichiestaPresidiata;
-                }
+                //foreach (var partenza in PartenzeSelect)
+                //{
+                //    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
+                //        return Costanti.RichiestaPresidiata;
+                //}
 
-                if (this.Chiusa)
+                //if (eventoAssegnata.Count > 0 || (Partenze != null && Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0))
+                //{
+                //    return Costanti.RichiestaAssegnata;
+                //}
+
+                if (Eventi.LastOrDefault().Stato.Equals("In Viaggio"))
+                    return Costanti.RichiestaAssegnata;
+
+                if (Presidiata)
+                    return Costanti.RichiestaPresidiata;
+
+                if (Chiusa)
                 {
                     return Costanti.RichiestaChiusa;
-                }
-                if (eventoAssegnata.Count > 0 || (Partenze != null && Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0))
-                {
-                    return Costanti.RichiestaAssegnata;
                 }
                 if (Sospesa)
                 {
                     return Costanti.RichiestaSospesa;
                 }
+
+                if (Partenze.Count > 0)
+                {
+                    if (Partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                    {
+                        this.Sospesa = true;
+                        return Costanti.RichiestaSospesa;
+                    }
+                }
+
                 return Costanti.Chiamata;
             }
         }
