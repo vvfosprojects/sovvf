@@ -18,7 +18,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);
 
-            var result = _client.PostAsync(new Uri(Costanti.AFM + "rescueRequest/" + CodiceRichiesta + "/abort"), content, "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            //TODO SOSTOTUIRE UTENZA
+            var result = _client.PostAsync(new Uri(Costanti.AFM + "rescueRequest/" + CodiceRichiesta + "/abort"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q", content).Result;
 
             return result;
         }

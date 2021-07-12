@@ -72,48 +72,48 @@ namespace SO115App.ExternalAPI.Client
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string token = null)
+        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content = null, string token = null)
         {
             content.Headers.ContentType = getMediaType();
 
             if (token != null)
                 _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
-            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content ?? new StringContent("")));
 
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content, string username, string password)
+        public async Task<ResponseObject> PostAsync(Uri url, string username, string password, HttpContent content = null)
         {
             content.Headers.ContentType = getMediaType();
 
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
-            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content ?? new StringContent("")));
 
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string token = null)
+        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content = null, string token = null)
         {
             content.Headers.ContentType = getMediaType();
 
             if (token != null)
                 _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
 
-            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
+            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content ?? new StringContent("")));
 
             return manageResponse(response);
         }
 
-        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content, string username, string password)
+        public async Task<ResponseObject> PutAsync(Uri url, string username, string password, HttpContent content = null)
         {
             content.Headers.ContentType = getMediaType();
 
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
-            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
+            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content ?? new StringContent("")));
 
             return manageResponse(response);
         }

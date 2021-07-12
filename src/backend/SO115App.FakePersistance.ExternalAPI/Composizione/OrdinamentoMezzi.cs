@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             
             _clientMatrix.SetCache("Matrix_" + url.Query);
 
-            var result = await _clientMatrix.PostAsync(url, new StringContent(""));
+            var result = await _clientMatrix.PostAsync(url);
 
             if (result.Rows[0].Elements[0].Distance != null)
             {

@@ -15,12 +15,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public void Inserisci(NuovaRichiestaAFM richiesta)
         {
-            //_client.SetCache();
-
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);
 
-            var result = _client.PutAsync(new Uri(Costanti.AFM + "rescueRequest"), content, "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            //TODO SOSTITUIRE UTENZA
+            var result = _client.PutAsync(new Uri(Costanti.AFM + "rescueRequest"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q", content).Result;
         }
     }
 }
