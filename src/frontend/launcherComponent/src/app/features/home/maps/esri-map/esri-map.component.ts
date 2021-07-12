@@ -69,14 +69,15 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
                         // @ts-ignore
                         this.mapIsLoaded.emit({ spatialReference: this.map.initialViewProperties.spatialReference });
 
-                        this.addHereItaliaMapImageLayer().then();
+                        // TODO: togliere commento (funzionante)
+                        // this.addHereItaliaMapImageLayer().then();
 
                         this.toggleLayer('HERE_ITALIA').then();
                     });
                 });
             });
             // });
-        } else if (changes?.pCenter?.currentValue && this.map) {
+        } else if (changes?.pCenter?.currentValue && this.map && this.view?.ready) {
             const newPCenter = changes.pCenter.currentValue;
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
             this.changeCenter(center).then(() => {
@@ -84,7 +85,7 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
                 this.changeZoom(zoom).then();
             });
         }
-        // Aggiungo i Chiamate Markers
+        // Aggiungo i Chiamate Markers con "ApplyEdits"
         if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
@@ -143,12 +144,16 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
 
     // Modifica il centro della mappa
     async changeCenter(center: number[]): Promise<any> {
-        this.view.center = center;
+        if (this.view?.ready) {
+            this.view.center = center;
+        }
     }
 
     // Modifica lo zoom della mappa
     async changeZoom(zoom: number): Promise<any> {
-        this.view.zoom = zoom;
+        if (this.view?.ready) {
+            this.view.zoom = zoom;
+        }
     }
 
     // Inizializza i layer lato client delle chiamate in corso
@@ -277,11 +282,12 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         }
     }
 
+    // TODO: capire dove, e se, usarlo
     // Rimuove un intero layer dalla mappa
-    async removeLayer(layerTitle: string): Promise<any> {
-        const layerToRemoveExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
-        if (layerToRemoveExists) {
-            this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
-        }
-    }
+    // async removeLayer(layerTitle: string): Promise<any> {
+    //     const layerToRemoveExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
+    //     if (layerToRemoveExists) {
+    //         this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
+    //     }
+    // }
 }

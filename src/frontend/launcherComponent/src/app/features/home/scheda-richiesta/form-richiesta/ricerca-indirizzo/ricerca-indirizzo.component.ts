@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
 import Locator from '@arcgis/core/tasks/Locator';
@@ -22,7 +22,8 @@ export class RicercaIndirizzoComponent implements OnInit {
 
     addressCandidates: AddressCandidate[];
 
-    constructor(private store: Store) {
+    constructor(private changeDetectorRef: ChangeDetectorRef,
+                private store: Store) {
     }
 
     ngOnInit(): void {
@@ -30,7 +31,6 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     changeIndirizzo(): void {
-        console.log('changeIndirizzo debounce');
         // @ts-ignore
         const locator = new Locator('http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer');
         const indirizzo = {
@@ -43,7 +43,8 @@ export class RicercaIndirizzoComponent implements OnInit {
         };
         // @ts-ignore
         locator.addressToLocations({ address: indirizzo }).then(async (addressCandidates: AddressCandidate[]) => {
-            this.addressCandidates = addressCandidates.filter((address: AddressCandidate, index: number) => index < 10);
+            this.addressCandidates = addressCandidates.filter((address: AddressCandidate, index: number) => index < 6);
+            this.changeDetectorRef.detectChanges();
         });
     }
 
