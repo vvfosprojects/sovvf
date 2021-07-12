@@ -54,7 +54,16 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
 
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

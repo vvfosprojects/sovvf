@@ -20,6 +20,7 @@
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
@@ -52,11 +53,20 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             {
                 Utente user = _findUserByUsername.FindUserByUs(username);
                 if (user == null)
-                    yield return new AuthorizationResult("Utente non autorizzato");
+                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
 
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
-                yield return new AuthorizationResult("Utente non autorizzato");
+                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }

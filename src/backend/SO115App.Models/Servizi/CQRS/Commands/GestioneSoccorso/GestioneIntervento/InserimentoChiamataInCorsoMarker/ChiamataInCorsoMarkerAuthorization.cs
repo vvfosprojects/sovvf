@@ -69,6 +69,16 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.AddChiamataInCorso.CodiceSedeOperatore, Costanti.GestoreChiamate))
+                        abilitato = true;
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
 
                 var listaPin = _getPinNodoByCodSede.GetListaPin(Competenze.ToArray());
                 FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza()

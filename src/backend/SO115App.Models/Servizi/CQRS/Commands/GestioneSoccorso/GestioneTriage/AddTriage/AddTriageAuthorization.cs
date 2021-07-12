@@ -36,9 +36,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Triage.CodiceSede, Costanti.GestoreChiamate))
-                            abilitato = true;
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Triage.CodiceSede, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Triage.CodiceSede, Costanti.Amministratore))
                             abilitato = true;
                     }
 
