@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -9,7 +10,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,12 +23,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetTipologieByCodice _getTipologieCodice;
         private readonly IConfiguration _config;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
         {
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _config = config;
             _getTipologieCodice = getTipologieCodice;
+            _ordinamento = new OrdinamentoMezzi(_getTipologieCodice, _config, clientMatrix);
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -40,7 +41,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
-                Parallel.ForEach(mezzi.Result, async m =>
+                Parallel.ForEach(mezzi.Result, m =>
                 {
                     var mc = new ComposizioneMezzi()
                     {
@@ -48,7 +49,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                     };
 
-                    var indice = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
+                    //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
+                    var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -72,6 +74,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             break;
                     }
 
+                    //TOGLIENDO LA CHIAMATA PER L'RORDINAMENTO SI OTTIMIZZA NOTEVOLMENTE
                     mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
@@ -90,7 +93,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato ?? mezzo.Mezzo.Stato);
 
-                return ricerca && true && genere && true;
+                return ricerca && distaccamento && genere && stato;
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
