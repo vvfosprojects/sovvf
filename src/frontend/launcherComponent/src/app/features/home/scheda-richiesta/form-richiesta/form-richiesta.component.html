@@ -55,6 +55,7 @@
                         <app-ricerca-indirizzo
                                 [indirizzo]="f?.indirizzo?.value"
                                 [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
+                                (changeIndirizzo)="modificaIndirizzo()"
                                 (selectCandidate)="reducerIndirizzo($event)">
                         </app-ricerca-indirizzo>
                         <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"

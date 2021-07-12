@@ -287,8 +287,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     }
 
     reducerIndirizzo(candidate: AddressCandidate): void {
-        console.log('reducerIndirizzo => candidate', candidate);
-
         if (!this.richiestaModifica) {
             this.onSetIndirizzo(candidate);
         } else {
@@ -297,8 +295,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     }
 
     onSetIndirizzo(candidate: AddressCandidate): void {
-        console.log('onSetIndirizzo => candidate', candidate);
-
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
@@ -318,8 +314,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     }
 
     onModificaIndirizzo(candidate: AddressCandidate): void {
-        console.log('onModificaIndirizzo => candidate', candidate);
-
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
@@ -334,11 +328,8 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
 
     modificaIndirizzo(): void {
         if (this.richiestaModifica) {
-            const address = this.f.indirizzo;
-            if (address.touched || address.dirty) {
-                this.f.latitudine.patchValue(null);
-                this.f.longitudine.patchValue(null);
-            }
+            this.f.latitudine.patchValue(null);
+            this.f.longitudine.patchValue(null);
         }
     }
 

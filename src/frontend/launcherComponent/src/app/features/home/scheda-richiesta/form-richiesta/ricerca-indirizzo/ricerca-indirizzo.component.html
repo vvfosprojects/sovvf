@@ -8,7 +8,8 @@
            type="text"
            placeholder="Ricerca indirizzo"
            appDebounceKeyUp
-           (debounceKeyUp)="changeIndirizzo()">
+           (debounceKeyUp)="onChangeIndirizzo()"
+           (keyup)="changeIndirizzo.emit(true)">
     <ng-container *ngIf="addressCandidates?.length">
         <div class="position-absolute pt-1 w-100"
              style="top: 40px; left: 0; z-index: 99999">
