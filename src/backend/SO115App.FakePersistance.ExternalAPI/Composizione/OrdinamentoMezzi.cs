@@ -24,16 +24,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _configuration = configuration;
         }
 
-        public decimal GetIndiceOrdinamento(RichiestaAssistenza Richiesta, ComposizioneMezzi composizione)
+        public async Task<decimal> GetIndiceOrdinamento(RichiestaAssistenza Richiesta, ComposizioneMezzi composizione)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
 
+            var comp = GetDistanceByGoogle(composizione, Richiesta);
+
             ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
-            composizione = GetDistanceByGoogle(composizione, Richiesta).Result;
-
-            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
+            return 100 / (1 + Convert.ToDecimal(comp.Result.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
         }
 
         private async Task<ComposizioneMezzi> GetDistanceByGoogle(ComposizioneMezzi composizione, RichiestaAssistenza richiesta)

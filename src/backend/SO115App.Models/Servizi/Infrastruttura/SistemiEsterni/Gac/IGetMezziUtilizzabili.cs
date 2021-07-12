@@ -41,6 +41,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 
         Task<List<MezzoDTO>> GetInfo(List<string> sedi);
 
-        Task<List<Mezzo>> GetBySedi(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null);
+        Task<List<Mezzo>> GetBySedi(string[] sedi);
     }
 }

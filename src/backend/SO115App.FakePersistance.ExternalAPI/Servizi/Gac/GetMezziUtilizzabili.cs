@@ -136,9 +136,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
-            var coordinate = new Coordinate(0, 0);
-            //bool CoordinateFake = false;
-
             var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result;
 
             var sede = new Sede(mezzoDto.CodiceDistaccamento,
@@ -147,15 +144,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                 distaccamento != null ? distaccamento.Coordinate : null,
                                 "", "", "", "", "");
 
-            var mezzo = new Mezzo(mezzoDto.CodiceMezzo,
-                mezzoDto.Descrizione,
-                mezzoDto.Genere,
-                Costanti.MezzoInSede,
-               mezzoDto.CodiceDistaccamento, sede, coordinate)
+            return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
+                mezzoDto.CodiceDistaccamento, sede, new Coordinate(0, 0))
             {
                 DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
             };
-            return mezzo;
         }
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
@@ -206,7 +199,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             return lstMezziDto.ToList();
         }
 
-        public async Task<List<Mezzo>> GetBySedi(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
+        public async Task<List<Mezzo>> GetBySedi(string[] sedi)
         {
             var pinNodi = sedi.Select(s => new PinNodo(s, true));
             var ListaCodiciComandi = new List<string>();
@@ -230,17 +223,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var token = _getToken.GeneraToken();
 
-            var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
-
-            var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+
+            var lstMezziDto = new List<MezzoDTO>();
 
             try
             {
-                var resultApi = _clientMezzi.GetAsync(url, token);
+                _clientMezzi.SetCache("GacMezzi_" + string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct()));
 
-                foreach (var personale in resultApi.Result)
-                    lstMezziDto.Enqueue(personale);
+                lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
             }
             catch (Exception e)
             {
