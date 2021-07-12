@@ -65,6 +65,14 @@ export const PermessiStateDefaults: PermessiStateModel = {
         {
             feature: PermissionFeatures.EliminazioneRaggruppamentoSchedeContatto,
             roles: [Role.GestoreChiamate]
+        },
+        {
+            feature: PermissionFeatures.GestionePos,
+            roles: [Role.Amministratore]
+        },
+        {
+            feature: PermissionFeatures.Triage,
+            roles: [Role.Amministratore]
         }
     ]
 };

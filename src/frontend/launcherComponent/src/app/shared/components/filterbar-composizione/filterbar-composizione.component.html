@@ -15,7 +15,7 @@
                                 ngbTooltip="Esci dalla Composizione Partenza"
                                 placement="bottom-left"
                                 (click)="turnOffComposizione()">
-                            <i class="fa fa-arrow-left font-comp-xl"></i>
+                            <i class="fas fa-arrow-left font-comp-xl"></i>
                         </button>
                     </div>
                     <div class="float-left"
@@ -28,7 +28,7 @@
                                     ngbTooltip="Opzioni"
                                     placement="bottom-left"
                                     (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
-                                <i class="fa fa-ellipsis-v font-comp-xl"></i>
+                                <i class="fas fa-ellipsis-v font-comp-xl"></i>
                             </button>
                             <div ngbDropdownMenu>
                                 <div ngbDropdownItem>
@@ -44,7 +44,7 @@
                                             [ngbTooltip]="tooltipPrenota"
                                             [disabled]="disableComposizioneMode"
                                             (click)="_confirmPrenota()">
-                                        <i class="fa fa-hand-paper-o mr-1"></i>
+                                        <i class="fas fa-hand-paper-o mr-1"></i>
                                         <span *ngIf="!prenotato">
                                         Prenota
                                     </span>
@@ -67,7 +67,7 @@
                                 placement="bottom-left"
                                 (click)="openDettaglioTriage()"
                                 [disabled]="!richiesta?.triageSummary?.length">
-                            <i class="fa fa-question-circle mr-1"></i>
+                            <i class="fas fa-question-circle mr-1"></i>
                             {{ 'Triage' | uppercase }}
                         </button>
                     </div>
@@ -166,7 +166,7 @@
                                 (click)="setDistaccamentiDefault()"
                                 [disabled]="disableDefaultDistaccamenti"
                                 ngbTooltip="Imposta Distaccamenti di competenza">
-                            <i class="fa fa-filter pr-1"></i>
+                            <i class="fas fa-filter pr-1"></i>
                         </button>
                         <div class="d-inline-flex ml-2">
                             <div class="font-xxlarge" style="text-align-last: center;">

@@ -1,8 +1,6 @@
 import { Coordinate } from '../../model/coordinate.model';
 import { CentroMappa } from '../../../features/home/maps/maps-model/centro-mappa.model';
-import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { AreaMappa } from '../../../features/home/maps/maps-model/area-mappa-model';
-import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { roundToDecimal } from '../function-generiche';
 
 export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMappa {
@@ -20,20 +18,20 @@ export function makeCoordinate(lat: number, long: number, expRound?: number): Co
     return new Coordinate(roundToDecimal(lat, expRound), roundToDecimal(long, expRound));
 }
 
-export function makeAreaMappa(bounds: LatLngBounds, expRound?: number): AreaMappa {
+export function makeAreaMappa(bounds: any, expRound?: number): AreaMappa {
     return new AreaMappa(
         makeCoordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), expRound),
         makeCoordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng(), expRound)
     );
 }
 
-export function makeLatLngBounds(areaMappa: AreaMappa): LatLngBoundsLiteral {
+export function makeLatLngBounds(areaMappa: AreaMappa): any {
     return {
         east: areaMappa.topRight.longitudine,
         north: areaMappa.topRight.latitudine,
         west: areaMappa.bottomLeft.longitudine,
         south: areaMappa.bottomLeft.latitudine
-    } as LatLngBoundsLiteral;
+    } as any;
 }
 
 export function degToCompass(num: number): any {

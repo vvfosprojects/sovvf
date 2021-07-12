@@ -23,12 +23,12 @@
                         <button class="btn btn-primary mr-2"
                                 [ngbTooltip]="'Visulizza ' + p.descrizionePos"
                                 (click)="onViewPos(p)">
-                            <i class="fa fa-eye"></i>
+                            <i class="fas fa-eye"></i>
                         </button>
                         <button class="btn btn-info"
                                 [ngbTooltip]="'Scarica ' + p.descrizionePos"
                                 (click)="onDownloadPos(p)">
-                            <i class="fa fa-download"></i>
+                            <i class="fas fa-download"></i>
                         </button>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             <ng-template ngbPanelContent>
                 <!-- RISPOSTE -->
                 <h5 class="text-danger">
-                    <i class="fa fa-question-circle mr-2"></i>
+                    <i class="fas fa-question-circle mr-2"></i>
                     <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
                 </h5>
                 <ul class="list-group px-3">
@@ -63,7 +63,7 @@
                 <ng-template [ngIf]="false">
                     <div class="mt-3">
                         <h5 class="text-danger">
-                            <i class="fa fa-file-pdf-o mr-2"></i>
+                            <i class="fas fa-file-pdf-o mr-2"></i>
                             <b>Istruzioni Pre-Arrivo</b>
                         </h5>
                         <div class="px-3">
@@ -78,7 +78,7 @@
                 <ng-template [ngIf]="contatoreGeneriMezzo || generiMezzo?.length">
                     <div class="mt-3">
                         <h5 class="text-danger">
-                            <i class="fa fa-truck mr-2"></i>
+                            <i class="fas fa-truck mr-2"></i>
                             <b>MEZZI CONSIGLIATI <span class="text-danger">({{ contatoreGeneriMezzo }})</span></b>
                         </h5>
                         <div class="px-3">
@@ -94,7 +94,7 @@
                 <ng-template [ngIf]="noteOperatore?.length">
                     <div class="mt-3">
                         <h5 class="text-danger">
-                            <i class="fa fa-file mr-2"></i>
+                            <i class="fas fa-file mr-2"></i>
                             <b>Suggerimenti Operatore <span class="text-danger">({{ noteOperatore.length }})</span></b>
                         </h5>
                         <div>
@@ -140,7 +140,7 @@
                                    style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
                                     interventoProssimita?.codice }}</b>
                                 -
-                                <i class="fa fa-clock-o mr-2 ml-2"
+                                <i class="far fa-clock mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
@@ -160,10 +160,10 @@
                                 {{ interventoProssimita?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoProssimita?.dettaglioTipologia?.descrizione : null}}
                             </div>
                             <div>
-                                <i class="fa fa-user mr-1"></i>
+                                <i class="fas fa-user mr-1"></i>
                                 {{ interventoProssimita?.richiedente?.nominativo }}
                                 -
-                                <i class="fa fa-map-marker ml-1"></i>
+                                <i class="fas fa-map-marker-alt ml-1"></i>
                                 {{ interventoProssimita?.localita?.indirizzo }}
                             </div>
                         </li>
@@ -190,7 +190,7 @@
                                    style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
                                     interventoStessaVia?.codice }}</b>
                                 -
-                                <i class="fa fa-clock-o mr-2 ml-2"
+                                <i class="far fa-clock mr-2 ml-2"
                                    ngbTooltip="Ricezione richiesta"
                                    placement="bottom-left" container="body"></i>
                                 <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
@@ -210,10 +210,10 @@
                                 {{ interventoStessaVia?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoStessaVia?.dettaglioTipologia?.descrizione : null}}
                             </div>
                             <div>
-                                <i class="fa fa-user mr-1"></i>
+                                <i class="fas fa-user mr-1"></i>
                                 {{ interventoStessaVia?.richiedente?.nominativo }}
                                 -
-                                <i class="fa fa-map-marker ml-1"></i>
+                                <i class="fas fa-map-marker-alt ml-1"></i>
                                 {{ interventoStessaVia?.localita?.indirizzo }}
                             </div>
                         </li>
@@ -242,11 +242,11 @@
                                     interventoChiusoStessoIndirizzo?.codice }}</b>
                             </div>
                             <div>
-                                <i class="fa fa-map-marker mr-1"></i>
+                                <i class="fas fa-map-marker-alt mr-1"></i>
                                 {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
                             </div>
                             <div>
-                                <i class="fa fa-user mr-1"></i>
+                                <i class="fas fa-user mr-1"></i>
                                 {{ interventoChiusoStessoIndirizzo?.richiedente?.nominativo }}
                             </div>
                         </li>

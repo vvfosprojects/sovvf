@@ -6,7 +6,7 @@
                 data-toggle="dropdown"
                 [disabled]="disableFilters"
                 [ngbTooltip]="tipFiltriSelezionati">
-            <i class="fa fa-filter"></i>
+            <i class="fas fa-filter"></i>
             {{ 'Filtri' | uppercase }}
             <span class="badge text-light badge-success">
               {{ filtriSelezionati?.length }}
@@ -94,6 +94,6 @@
         </div>
     </div>
     <button class="btn btn-outline-secondary p-1" (click)="resetFiltri()" [disabled]="disableFilters">
-        <i class="fa fa-undo px-1" style="font-size: 20px"></i>
+        <i class="fas fa-undo px-1" style="font-size: 20px"></i>
     </button>
 </div>

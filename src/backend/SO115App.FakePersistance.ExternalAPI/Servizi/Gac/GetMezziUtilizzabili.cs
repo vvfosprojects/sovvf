@@ -134,53 +134,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             return ListaMezzi;
         }
 
-        private Mezzo MapMezzo(MezzoDTO mezzoDto)
-        {
-            var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result;
-
-            var sede = new Sede(mezzoDto.CodiceDistaccamento,
-                                distaccamento != null ? distaccamento.DescDistaccamento : "",
-                                distaccamento != null ? distaccamento.Indirizzo : "",
-                                distaccamento != null ? distaccamento.Coordinate : null,
-                                "", "", "", "", "");
-
-            return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                mezzoDto.CodiceDistaccamento, sede, new Coordinate(0, 0))
-            {
-                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-            };
-        }
-
-        private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
-        {
-            string stato;
-            if (StatoMezzoOra.Equals("I"))
-            {
-                stato = Costanti.MezzoSulPosto;
-            }
-            else
-            {
-                var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
-                if (ListaStatoOperativoMezzo.Count == 0)
-                {
-                    switch (StatoMezzoOra)
-                    {
-                        case "D": stato = Costanti.MezzoInSede; break;
-                        case "R": stato = Costanti.MezzoInRientro; break;
-                        case "S": stato = Costanti.MezzoOccupato; break;
-                        case "O": stato = Costanti.MezzoOperativoPreaccoppiato; break;
-                        case "A": stato = Costanti.MezzoAssegnatoPreaccoppiato; break;
-                        default: stato = Costanti.MezzoStatoSconosciuto; break;
-                    }
-                }
-                else
-                {
-                    stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
-                }
-            }
-            return stato;
-        }
-
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
             var token = _getToken.GeneraToken();
@@ -201,28 +154,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<Mezzo>> GetBySedi(string[] sedi)
         {
-            var pinNodi = sedi.Select(s => new PinNodo(s, true));
-            var ListaCodiciComandi = new List<string>();
-            var ListaCodiciSedi = new List<string>();
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
-            {
-                var codice = figlio.Codice;
-                string codiceE = "";
-                codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
-                if (string.IsNullOrEmpty(codiceE))
-                {
-                    if (!ListaCodiciComandi.Contains(codice.Split('.')[0]))
-                        ListaCodiciComandi.Add(codice.Split('.')[0]);
-                    ListaCodiciSedi.Add(codice);
-                }
-            }
-
-            #region LEGGO DA API ESTERNA
-
-            var token = _getToken.GeneraToken();
-
             var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
 
@@ -232,19 +163,34 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 _clientMezzi.SetCache("GacMezzi_" + string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct()));
 
-                lstMezziDto.AddRange(_clientMezzi.GetAsync(url, token).Result);
+                lstMezziDto.AddRange(_clientMezzi.GetAsync(url, _getToken.GeneraToken()).Result);
             }
             catch (Exception e)
             {
                 throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
             }
 
-            #endregion LEGGO DA API ESTERNA
-
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m)).ToList();
 
             return ListaMezzi;
+        }
+
+        private Mezzo MapMezzo(MezzoDTO mezzoDto)
+        {
+            var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result;
+
+            var sede = new Sede(mezzoDto.CodiceDistaccamento,
+                                distaccamento != null ? distaccamento.DescDistaccamento : "",
+                                distaccamento != null ? distaccamento.Indirizzo : "",
+                                distaccamento != null ? distaccamento.Coordinate : null,
+                                "", "", "", "", "");
+
+            return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
+                mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))
+            {
+                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+            };
         }
     }
 }

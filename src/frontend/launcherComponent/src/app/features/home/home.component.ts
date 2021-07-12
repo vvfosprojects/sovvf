@@ -14,6 +14,7 @@ import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipolo
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -78,8 +79,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetSediTrasferimenti());
     }
 
-    onMapFullLoaded(): void {
-        this.store.dispatch(new SetMapLoaded(true));
+    onMapFullLoaded(mapProperties?: { spatialReference?: SpatialReference }): void {
+        this.store.dispatch(new SetMapLoaded(true, mapProperties));
     }
 
     getDettagliTipologie(pageAttuale: boolean): void {

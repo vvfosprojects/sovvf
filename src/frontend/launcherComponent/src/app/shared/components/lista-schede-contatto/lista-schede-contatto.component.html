@@ -6,7 +6,7 @@
         <ngb-tab [id]="ClassificazioneEnum.Competenza">
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipCompetenza" placement="top-left">
-                    <i class="fa fa-square text-danger mr-2"></i>
+                    <i class="fas fa-square text-danger mr-2"></i>
                     <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipCompetenza>
@@ -27,7 +27,7 @@
         <ngb-tab [id]="ClassificazioneEnum.Differibile">
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipDifferibile" placement="top-left">
-                    <i class="fa fa-square text-secondary mr-2"></i>
+                    <i class="fas fa-square text-secondary mr-2"></i>
                     <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipDifferibile>
@@ -47,7 +47,7 @@
         <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipConoscenza" placement="top-left">
-                    <i class="fa fa-square text-warning mr-2"></i>
+                    <i class="fas fa-square text-warning mr-2"></i>
                     <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipConoscenza>
@@ -68,7 +68,7 @@
         <ngb-tab id="Tutte">
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipTutte" placement="top-left">
-                    <i class="fa fa-list mr-2"></i>
+                    <i class="fas fa-list mr-2"></i>
                     <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipTutte>
@@ -87,7 +87,7 @@
     </ngb-tabset>
     <ul class="my-2 list-unstyled">
         <app-scheda-contatto
-                *ngFor="let scheda of schedeContatto | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
+                *ngFor="let scheda of schedeContatto"
                 [scheda]="scheda"
                 [nightMode]="nightMode"
                 [idVisualizzati]="idVisualizzati"
@@ -118,7 +118,7 @@
             <ng-template [ngIf]="!hideRaggruppa">
                 <button *ngIf="statoModalita" class="btn btn-lg btn-outline-danger mr-3" [disabled]="loading"
                         (click)="onToggleModalitaMerge()">
-                    <i class="fa fa-undo mr-1"></i>
+                    <i class="fas fa-undo mr-1"></i>
                     Annulla
                 </button>
                 <button *ngIf="statoModalita"
@@ -127,13 +127,13 @@
                         [class.btn-success]="idSelezionatiMerge?.length > 1 && !loading"
                         [disabled]="idSelezionatiMerge.length <= 1 || loading"
                         (click)="onSaveMerge()">
-                    <i class="fa fa-save mr-1"></i>
+                    <i class="fas fa-save mr-1"></i>
                     Raggruppa selezionate
                 </button>
                 <button *ngIf="!statoModalita"
                         class="btn btn-lg btn-outline-primary mr-3"
                         (click)="onToggleModalitaMerge()">
-                    <i class="fa fa-object-group mr-1"></i>
+                    <i class="fas fa-object-group mr-1"></i>
                     Raggruppa
                 </button>
             </ng-template>

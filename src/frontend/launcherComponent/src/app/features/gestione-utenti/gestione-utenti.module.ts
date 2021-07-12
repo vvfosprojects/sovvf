@@ -27,10 +27,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { NgxsModule } from '@ngxs/store';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
-
 
 @NgModule({
     declarations: [
@@ -56,7 +53,6 @@ import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
                 RicercaUtentiState
             ]
         ),
-        NgxPaginationModule,
         NgxsFormPluginModule,
     ],
     providers: []

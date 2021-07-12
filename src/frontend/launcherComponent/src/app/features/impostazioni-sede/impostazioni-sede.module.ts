@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +35,6 @@ import { TriageComponent } from './triage/triage.component';
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgxPaginationModule,
         ReactiveFormsModule
     ]
 })

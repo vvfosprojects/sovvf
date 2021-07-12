@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
-import { BoxPartenza } from './interface/box-partenza-interface';
+import { BoxPartenza, BoxPartenzaPreAccoppiati } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
@@ -112,7 +112,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
 
     // Composizione Veloce
-    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
+    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenzaPreAccoppiati[]>;
     @Select(ComposizioneVeloceState.idPreAccoppiatoSelezionato) idPreAccoppiatoSelezionato$: Observable<string>;
     @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
     @Select(ComposizioneVeloceState.idPreAccoppiatiOccupati) idPreAccoppiatiOccupati$: Observable<string[]>;

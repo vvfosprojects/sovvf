@@ -6,7 +6,7 @@
             <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
             <div class="card-header"
                  [class.moon-border-bottom]="nightMode">
-                <i class="fa fa-truck mr-2"></i>
+                <i class="fas fa-truck mr-2"></i>
                 Pre-Accoppiati
             </div>
             <div class="card-body p-0">
@@ -52,7 +52,7 @@
              [class.moon-card-light]="nightMode"
              style="height: 85%">
             <div class="card-header py-2">
-                <i class="fa fa-list-ul mr-2" style="vertical-align:sub"></i>
+                <i class="fas fa-list-ul mr-2" style="vertical-align:sub"></i>
                 <span style="vertical-align:sub">
                         Partenze
                         <span *ngIf="richiesta.codiceRichiesta" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
@@ -80,7 +80,7 @@
                                 <div class="circle d-inline-block font-double-monitor"
                                      [class.filled]="fill === 100"
                                      [class.bad]="index > 2 && fill === 100">
-                                    <i class="fa fa-circle mr-1"></i>
+                                    <i class="fas fa-circle mr-1"></i>
                                 </div>
                             </ng-template>
                         </ngb-rating>

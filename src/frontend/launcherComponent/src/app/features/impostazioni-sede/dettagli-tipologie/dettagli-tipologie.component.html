@@ -16,7 +16,8 @@
     </div>
     <div class="col text-right">
         <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
-                                        (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
+                                        (ricercaChange)="onRicercaDettagliTipologie($event)">
+        </app-ricerca-dettagli-tipologie>
     </div>
     <div *ngIf="ricerca" class="col-12 pl-2">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
@@ -33,7 +34,7 @@
             </tr>
             </thead>
             <tbody class="bg-dark-light">
-            <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+            <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
                 <th scope="row" class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
                 <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codSede }}</td>
                 <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
@@ -41,11 +42,11 @@
                 <td style="width:35%">
                     <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
                             (click)="onEditDettaglioTipologia(dettaglioTipologia)">
-                        <i class="fa fa-edit"></i>
+                        <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-sm btn-danger" ngbTooltip="Elimina Dettaglio Tipologia"
                             (click)="onDeleteDettaglioTipologia({ codDettaglioTipologia: dettaglioTipologia.codiceDettaglioTipologia, descrizioneDettaglioTipologia: dettaglioTipologia.descrizione })">
-                        <i class="fa fa-trash"></i>
+                        <i class="fas fa-trash"></i>
                     </button>
                 </td>
             </tr>
@@ -55,7 +56,7 @@
 
     <div *ngIf="!dettagliTipologie?.length" class="col-12 mt-2">
         <div class="alert alert-danger mb-0">
-            <i class="fa fa-exclamation-triangle"></i>
+            <i class="fas fa-exclamation-triangle"></i>
             Nessun Dettaglio Tipologia presente
         </div>
     </div>
@@ -63,15 +64,18 @@
         <div class="clearfix">
             <div class="float-left mt-2">
                 <button class="btn btn-lg btn-primary btn-no-hover" (click)="onAddDettaglioTipologia()">
-                    <i class="fa fa-plus"></i>
+                    <i class="fas fa-plus"></i>
                     Aggiungi Dettaglio
                 </button>
             </div>
             <div class="float-right text-right mt-3">
-                <pagination-controls [previousLabel]="'Precedente'"
-                                     [nextLabel]="'Successiva'"
-                                     (pageChange)="onPageChange($event)">
-                </pagination-controls>
+                <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="totalItems"
+                        [maxSize]="5"
+                        (pageChange)="onPageChange($event)">
+                </ngb-pagination>
             </div>
         </div>
     </div>

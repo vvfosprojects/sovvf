@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
 import {
     ApplyFiltriTipologiaSelezionatiRichieste,
     ClearFiltroSenzaEsecuzione,
@@ -70,21 +69,6 @@ export class FiltriRichiesteComponent implements OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
     }
-
-    openFiltersModal(): void {
-        let modalOptions;
-        modalOptions = {
-            windowClass: 'xlModal',
-            backdrop: 'static',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            keyboard: false
-        } as NgbModalOptions;
-        const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
-        modal.result.then((res: string[]) => {
-            this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
-        });
-    } // TODO: Da rimuovere
 
     openChiusiModal(event: any): void {
         let modalOptions;

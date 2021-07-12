@@ -1,12 +1,11 @@
 <div class="row">
     <div class="col-12 mt-1 pl-0 pr-2">
         <div #richiestaContainer
-             class="col-12"
+             class="col-12 {{ cardFissataClasses() }}"
              [ngClass]="{'mt-2 pb-2': richiestaFissata}">
             <div #richiesta
-                 class="w-100 rounded bg-light"
-                 [ngClass]="cardFissataClasses(richiestaFissata)">
-                <app-partial-loader *ngIf="loadingActionRichiesta === richiestaFissata.id"></app-partial-loader>
+                 class="w-100 rounded bg-light">
+                <app-partial-loader *ngIf="loadingActionRichiesta?.includes(richiestaFissata.id)"></app-partial-loader>
                 <app-sintesi-richiesta *ngIf="richiestaFissata"
                                        [richiesta]="richiestaFissata"
                                        [fissata]="true"
@@ -21,7 +20,6 @@
                                        (fissaInAlto)="onDefissa()"
                                        (nuovaPartenza)="nuovaPartenza($event)"
                                        (modificaRichiesta)="onModificaRichiesta($event)"
-                                       (espanso)="setEspanso()"
                                        (gestioneRichiesta)="onGestioneRichiesta($event)"
                                        (actionMezzo)="actionMezzo.emit($event)"
                                        (eliminaPartenza)="eliminaPartenza.emit($event)">

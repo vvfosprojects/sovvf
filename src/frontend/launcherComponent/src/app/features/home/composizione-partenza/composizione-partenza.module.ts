@@ -15,7 +15,6 @@ import { ComposizionePartenzaState } from '../store/states/composizione-partenza
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { ComposizioneConfirmButtonComponent } from './shared/composizione-buttons/composizione-confirm-button.component';
 import { FormsModule } from '@angular/forms';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { ComposizioneSoccorsoAereoState } from '../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 import { BoxPreaccoppiatoComponent } from './shared/box-preaccoppiato/box-preaccoppiato.component';
 
@@ -47,7 +46,6 @@ import { BoxPreaccoppiatoComponent } from './shared/box-preaccoppiato/box-preacc
                 ComposizioneSoccorsoAereoState
             ]
         ),
-        NgxPaginationModule,
         FormsModule
     ],
     exports: [

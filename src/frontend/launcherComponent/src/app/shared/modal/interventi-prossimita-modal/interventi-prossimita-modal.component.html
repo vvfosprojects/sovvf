@@ -7,7 +7,7 @@
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('cross')">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body pr-0 lista-richieste-size">
@@ -25,12 +25,12 @@
                         <div class="col-md-12">
                     <span *ngIf="r?.stato === StatoRichiesta.Sospesa"
                           class="d-inline-block text-danger font-weight-bolder h4"
-                          style="position: absolute; left: 0px; top:22px">S</span>
+                          style="position: absolute; left: 0; top:22px">S</span>
                             <!-- PRIMA RIGA -->
                             <div class="row">
                                 <div class="clearfix mx-3">
                                     <!-- Priorità -->
-                                    <i class="guida fa fa-thermometer-half fa-fw font-double-monitor d-none"
+                                    <i class="guida fas fa-thermometer-half fa-fw font-double-monitor d-none"
                                        [class.high-priority]="r.prioritaRichiesta > 3"
                                        ngbTooltip="Priorità della richiesta" placement="right"></i>
                                     <ngb-rating [(rate)]="r.prioritaRichiesta" [max]="4" [readonly]="true"
@@ -38,7 +38,7 @@
                                         <ng-template let-fill="fill" let-index="index">
                                             <span class="circle font-double-monitor" [class.filled]="fill === 100"
                                                   [class.bad]="index > 2 && fill === 100">
-                                                <i class="fa fa-circle mr-1"></i>
+                                                <i class="fas fa-circle mr-1"></i>
                                             </span>
                                         </ng-template>
                                     </ngb-rating>
@@ -53,7 +53,7 @@
                                         </div>
                                     </ng-template>
                                     <div class="h6 mb-1 nowrap font-double-monitor">
-                                        <i class="guida fa fa-hashtag fa-fw mr-1"
+                                        <i class="guida fas fa-hashtag fa-fw mr-1"
                                            ngbTooltip="Identificativo richiesta assistenza" placement="right"></i>
                                         <a class="h6 cod-int" (click)="toggleEspanso(r.id)">
                                             <span *ngIf="r.codiceRichiesta"
@@ -64,8 +64,8 @@
                                         <span *ngIf="r?.rilevanteGrave || r?.rilevanteStArCu"
                                               class="d-inline-block mr-1 text-danger"
                                               [ngbTooltip]="rilevante" placement="bottom">
-                                    <i *ngIf="r?.rilevanteStArCu" class="fa fa-university mr-2"></i>
-                                    <i *ngIf="r?.rilevanteGrave" class="fa fa-exclamation"></i>
+                                    <i *ngIf="r?.rilevanteStArCu" class="fas fa-university mr-2"></i>
+                                    <i *ngIf="r?.rilevanteGrave" class="fas fa-exclamation"></i>
                                 </span>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@
                                                 triggers="click" tabindex="0"
                                                 style="cursor:pointer; font-size: 115% !important;"
                                                 (click)="$event.stopPropagation()">
-                                            <i class="guida fa fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
+                                            <i class="guida fas fa-users fa-fw ml-2" ngbTooltip="Numero Squadre"></i>
                                             <span>{{ squadre?.length }}</span>
                                         </button>
                                         <ng-template #popSquadre>
@@ -138,7 +138,7 @@
                                             popoverTitle="Mezzi" triggers="click" tabindex="0"
                                             style="cursor:pointer; font-size: 115% !important;"
                                             (click)="$event.stopPropagation()">
-                                        <i class="guida fa fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
+                                        <i class="guida fas fa-truck fa-fw ml-2" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(r) }}</span>
                                     </button>
 
@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="h6 mt-1 mb-2 nowrap default-cursor font-double-monitor">
-                                        <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
+                                        <i class="guida far fa-clock fa-fw mr-1" ngbTooltip="Ricezione richiesta"
                                            placement="right" container="body"></i>
                                         <a ngbTooltip="{{ (r.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
@@ -178,7 +178,7 @@
                                 <div class="clearfix" style="flex: 0 0 54.5% !important;">
                                     <!-- richiedente -->
                                     <div class="h6 mt-1 mb-2 nowrap default-cursor">
-                                        <i class="guida fa fa-address-book-o fa-fw mr-1 font-double-monitor"
+                                        <i class="guida fas fa-address-book-o fa-fw mr-1 font-double-monitor"
                                            ngbTooltip="Richiedente"
                                            container="body"></i>
                                         <span *ngIf="r?.richiedente?.nominativo" class="font-double-monitor">
@@ -187,9 +187,9 @@
                                         {{ r?.richiedente?.nominativo | truncate:20 }}
                                     </a>
                                 </span>
-                                        <span class="ml-1" class="font-double-monitor">
+                                        <span class="ml-1 font-double-monitor">
                                     (
-                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <i class="guida fas fa-phone-alt fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
                                         <a>{{ r?.richiedente?.telefono }}</a>
                                     )
                                 </span>
@@ -202,14 +202,14 @@
                                                 ngbTooltip="Espandi"
                                                 [ngClass]="{'btn-light': !isEspanso, 'btn-secondary': isEspanso}"
                                                 (click)="toggleEspanso(r.id); $event.stopPropagation()">
-                                            <i class="fa fa-fw"
+                                            <i class="fas fa-fw"
                                                [ngClass]="methods.toggleGestioneClass(isEspanso)"></i>
                                         </button>
                                         <button *ngIf="listaEventi"
                                                 class="btn btn-light border py-0 px-1 mr-1 font-double-monitor"
                                                 ngbTooltip="Elenco eventi"
                                                 (click)="visualizzaEventiRichiesta(r.codice); $event.stopPropagation()">
-                                            <i class="fa fa-fw fa-list text-secondary"></i>
+                                            <i class="fas fa-fw fa-list text-secondary"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@
                                 <div class="clearfix mx-3">
                                 </div>
                                 <div class="col-3">
-                                    <i class="guida fa fa-bolt fa-fw mr-1 font-double-monitor"
+                                    <i class="guida fas fa-bolt fa-fw mr-1 font-double-monitor"
                                        ngbTooltip="Prima assegnazione"
                                        placement="right"></i>
                                     <span *ngIf="r.stato !== StatoRichiesta.Chiamata"
@@ -236,7 +236,7 @@
                             </span>
                                 </div>
                                 <div class="clearfix" style="flex: 0 0 54.5% !important;">
-                                    <i class="guida fa fa-map-marker fa-fw mr-1 font-double-monitor"
+                                    <i class="guida fas fa-map-marker-alt fa-fw mr-1 font-double-monitor"
                                        ngbTooltip="Località"></i>
                                     <span class="font-double-monitor">
                                         <span ngbTooltip="{{ r?.localita?.indirizzo }}"
@@ -276,11 +276,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-12 text-right">
-                                                    <i class="guida fa fa-tags fa-fw text-left mr-1"
+                                                    <i class="guida fas fa-tags fa-fw text-left mr-1"
                                                        title="Etichette"></i>
                                                     <span *ngFor="let tag of r?.tags"
                                                           class="badge badge-secondary text-right py-2 m-1"><i
-                                                            class="fa fa-hashtag fa-fw text-left"></i>{{tag}}</span>
+                                                            class="fas fa-hashtag fa-fw text-left"></i>{{tag}}</span>
                                                     <span *ngIf="!r?.tags || (r?.tags && r?.tags?.length <= 0)">
                                             Non ci sono Tags
                                         </span>
@@ -296,7 +296,7 @@
                                     <div class="col-md-3">
                                         <!-- presa in carico -->
                                         <div class="h6">
-                                            <i class="guida fa fa-calendar-check-o fa-fw mr-1"
+                                            <i class="guida far fa-calendar-check fa-fw mr-1"
                                                ngbTooltip="Presa in carico"
                                                placement="right"></i>
                                             <div *ngIf="methods._primoUtente(r?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
@@ -337,7 +337,7 @@
 
                                         <!-- in lavorazione -->
                                         <div class="h6">
-                                            <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
+                                            <i class="guida fas fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                                placement="right"></i>
                                             <div *ngIf="methods._primoUtente(r?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
                                                  class="d-inline-block m-0 mr-1"
@@ -366,7 +366,7 @@
 
                                         <!-- scheda nue -->
                                         <div class="h6">
-                                            <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
+                                            <i class="guida far fa-id-card fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                                placement="right"></i>
                                             <a *ngIf="r?.codiceSchedaNue; else nessunCodiceNue">
                                                 {{ r?.codiceSchedaNue }}
@@ -380,7 +380,7 @@
 
                                         <!-- fonogramma -->
                                         <div class="h6">
-                                            <i class="guida fa fa-paper-plane-o fa-fw mr-1"
+                                            <i class="guida fas fa-paper-plane-o fa-fw mr-1"
                                                ngbTooltip="Stato Fonogramma"
                                                placement="right"></i>
                                             <span *ngIf="r?.fonogramma"
@@ -397,7 +397,7 @@
                                             <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
                                                     ngbTooltip="Modifica Fonogramma"
                                                     (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
-                                                <i class="fa fa-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </button>
                                         </div>
 
@@ -406,7 +406,7 @@
                                             <div *ngIf="methods._primaSedeAllertata(r?.sediAllertate) as sediAllertate; else nonAllertata"
                                                  class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
                                                  [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
-                                                <i class="guida fa fa-exclamation-triangle fa-fw mr-1 "
+                                                <i class="guida fas fa-exclamation-triangle fa-fw mr-1 "
                                                    ngbTooltip="Sedi Allertate"
                                                    placement="right"></i>
                                                 {{ sediAllertate | truncate: 13 }}
@@ -456,11 +456,11 @@
                                         <div class="h6 text-right">
                                 <span *ngIf="r?.trnInsChiamata; else nessunTurno">
                                     {{r?.trnInsChiamata}}
-                                    <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
+                                    <i class="fa-fw far fa-calendar-check guida ml-1"></i>
                                 </span>
                                             <ng-template #nessunTurno>
                                                 <a>-</a>
-                                                <i class="guida fa fa-clock-o fa-fw ml-1"
+                                                <i class="guida far fa-clock fa-fw ml-1"
                                                    ngbTooltip="Turno non presente"
                                                    placement="right"></i>
                                             </ng-template>
@@ -472,7 +472,7 @@
                                                     class="btn btn-sm btn-info mr-2"
                                                     ngbTooltip="Modifica Enti Intervenuti"
                                                     (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                                                <i class="fa fa-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </button>
                                             <button class="btn btn-light border big_font py-0 px-1"
                                                     ngbTooltip="Elenco Enti"
@@ -486,7 +486,7 @@
                                         Nessun Ente
                                     </span>
                                             </ng-template>
-                                            <i class="guida fa fa-industry fa-fw ml-1"
+                                            <i class="guida fas fa-industry fa-fw ml-1"
                                                ngbTooltip="Enti intervenuti o che hanno preso in carico la richiesta"
                                                placement="right"></i>
                                         </div>
@@ -512,7 +512,7 @@
                                             <ng-template #noterreni>
                                                 -
                                             </ng-template>
-                                            <i class="guida fa fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
+                                            <i class="guida fas fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
                                                placement="right"></i>
                                         </div>
 
@@ -521,7 +521,7 @@
                                             <a><b>{{ r?.complessita?.indice }}</b></a>
                                             <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(r)">{{
                                                 r?.complessita?.descrizione }}</span>
-                                            <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità"
+                                            <i class="guida fas fa-cogs fa-fw ml-1" ngbTooltip="Complessità"
                                                placement="right"></i>
                                         </div>
 
@@ -533,13 +533,13 @@
                                                 <button class="btn btn-sm btn-warning ml-2 mr-1"
                                                         ngbTooltip="Allerta Sede"
                                                         (click)="onAllertaSede(); $event.stopPropagation()">
-                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                    <i class="fas fa-exclamation-triangle"></i>
                                                 </button>
                                                 <button *ngIf="!r?.codiceRichiesta"
                                                         class="btn btn-sm btn-danger"
                                                         ngbTooltip="Trasferisci ad altro comando"
                                                         (click)="onAddTrasferimentoChiamata(r?.codice); $event.stopPropagation()">
-                                                    <i class="fa fa-send-o"></i>
+                                                    <i class="fas fa-send-o"></i>
                                                 </button>
                                             </div>
                                             <app-sintesi-richiesta-actions [richiesta]="r"

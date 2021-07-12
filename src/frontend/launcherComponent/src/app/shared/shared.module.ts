@@ -56,7 +56,6 @@ import { ListaSchedeContattoComponent } from './components/lista-schede-contatto
 import { SchedeContattoComponent } from '../features/home/schede-contatto/schede-contatto.component';
 import { SchedaContattoComponent } from './components/scheda-contatto/scheda-contatto.component';
 import { SchedaContattoCollegataComponent } from './components/scheda-contatto-collegata/scheda-contatto-collegata.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TriageChiamataModalComponent } from './modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { StepDettaglioTipologiaComponent } from './modal/triage-chiamata-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 import { StepDomandeComponent } from './modal/triage-chiamata-modal/step-domande/step-domande.component';
@@ -74,7 +73,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
-import { TriageSummarySintesiRichiestaComponent } from "./components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component";
+import { TriageSummarySintesiRichiestaComponent } from './components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component';
+import { SintesiRichiestaModalComponent } from './modal/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -117,6 +117,7 @@ const COMPONENTS = [
     AllertaSedeModalComponent,
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
+    SintesiRichiestaModalComponent,
     SostituzionePartenzeFineTunoModalComponent,
     ListaSchedeContattoModalComponent,
     DettaglioSchedaContattoModalComponent,
@@ -161,7 +162,6 @@ const MODULES = [
         NgSelectModule,
         NgxsFormPluginModule.forRoot(),
         FilterPipeModule,
-        NgxPaginationModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }

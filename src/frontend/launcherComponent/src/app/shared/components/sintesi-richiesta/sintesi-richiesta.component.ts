@@ -108,7 +108,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
-    /* Eventi */
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.isSingleClick = true;

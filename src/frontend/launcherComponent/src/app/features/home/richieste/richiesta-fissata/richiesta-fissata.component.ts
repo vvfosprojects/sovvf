@@ -22,7 +22,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledComposizionePartenza = false;
 
-    @Input() loadingActionRichiesta: string;
+    @Input() loadingActionRichiesta: string[];
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
@@ -152,9 +152,8 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.outEspanso.emit();
     }
 
-    /* NgClass Template */
-    cardFissataClasses(r: any): void {
-        return this.methods.cardFissataClasses(r);
+    cardFissataClasses(): any {
+        return this.methods.cardFissataClasses(this.richiestaFissata);
     }
 
 }

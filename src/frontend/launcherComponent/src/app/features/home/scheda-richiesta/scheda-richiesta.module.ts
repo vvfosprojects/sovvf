@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';  // Dependency
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +16,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { TagInputModule } from 'ngx-chips';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
+import { RicercaIndirizzoComponent } from './form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
 
 @NgModule({
     imports: [
@@ -24,7 +24,6 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
         NgSelectModule,
         FormsModule,
         TagInputModule,
-        GooglePlaceModule,
         ClipboardModule,
         ReactiveFormsModule,
         NgbModule,
@@ -39,7 +38,8 @@ import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta
     ],
     declarations: [
         SchedaRichiestaComponent,
-        FormRichiestaComponent
+        FormRichiestaComponent,
+        RicercaIndirizzoComponent
     ],
     exports: [
         SchedaRichiestaComponent

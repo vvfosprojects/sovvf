@@ -8,7 +8,7 @@
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
-                    <i class="fa fa-users mr-2"></i>
+                    <i class="fas fa-users mr-2"></i>
                     Squadre
                 </div>
                 <div class="float-right w-50">
@@ -27,7 +27,7 @@
                            (debounceKeyUp)="onSearchSquadre()"
                            (search)="onClearSearchSquadre()">
                     <i *ngIf="ricercaSquadre"
-                       class="fa fa-times text-danger clear-search-squadre"
+                       class="fas fa-times text-danger clear-search-squadre"
                        ngbTooltip="Cancella Ricerca Squadre"
                        (click)="onClearSearchSquadre()"></i>
                 </div>
@@ -82,7 +82,7 @@
             <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
-                    <i class="fa fa-truck mr-2"></i>
+                    <i class="fas fa-truck mr-2"></i>
                     Mezzi
                 </div>
                 <div class="float-right"
@@ -100,7 +100,7 @@
                            (debounceKeyUp)="onSearchMezzi()"
                            [debounceTime]="1000">
                     <i *ngIf="ricercaMezzi"
-                       class="fa fa-times text-danger clear-search-mezzi"
+                       class="fas fa-times text-danger clear-search-mezzi"
                        ngbTooltip="Cancella Ricerca Mezzi"
                        (click)="onClearSearchMezzi()"></i>
                 </div>
@@ -164,7 +164,7 @@
             <div class="card h-100"
                  [class.card-shadow]="!nightMode">
                 <div class="card-header py-2">
-                    <i class="fa fa-list-ul mr-2" style="vertical-align:sub"></i>
+                    <i class="fas fa-list-ul mr-2" style="vertical-align:sub"></i>
                     <span style="vertical-align:sub">
                         Partenze
                         <span *ngIf="richiesta.codiceRichiesta" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
@@ -190,7 +190,7 @@
                 <button class="btn btn-primary btn-no-hover"
                         (click)="nuovaPartenza()"
                         [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
-                        class="fa fa-plus mr-2"></i><span
+                        class="fas fa-plus mr-2"></i><span
                         style="vertical-align: text-bottom;">Aggiungi</span>
                 </button>
             </div>
@@ -221,7 +221,7 @@
                                 <div class="circle d-inline-block font-double-monitor"
                                      [class.filled]="fill === 100"
                                      [class.bad]="index > 2 && fill === 100">
-                                    <i class="fa fa-circle mr-1"></i>
+                                    <i class="fas fa-circle mr-1"></i>
                                 </div>
                             </ng-template>
                         </ngb-rating>

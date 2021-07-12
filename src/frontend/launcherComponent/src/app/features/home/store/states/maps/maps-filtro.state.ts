@@ -2,7 +2,6 @@ import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
 import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
-import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import {
     CheckBoxClick,
     ClearCopiaFiltroAttivo,
@@ -146,12 +145,7 @@ export class MapsFiltroState {
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
                 pushFiltro('richiesta', filtroCheckBox);
-                const richiesteState = Object.keys(boxClick.richieste).filter(key => {
-                    return boxClick.richieste[key];
-                });
-                dispatch(new ToggleOpacitaRichiesteMarkers(true, richiesteState));
             } else {
-                dispatch(new ToggleOpacitaRichiesteMarkers(false));
             }
 
             if (filtroCheckBox.length !== 0) {
