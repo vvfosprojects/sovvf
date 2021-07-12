@@ -74,7 +74,7 @@ export class SelectMezzoComposizioneFromMappa {
 export class SelectMezzoComposizione {
     static readonly type = '[MezziComposizione] Select Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzoComp: MezzoComposizione, public preaccoppiato?: boolean) {
     }
 }
 

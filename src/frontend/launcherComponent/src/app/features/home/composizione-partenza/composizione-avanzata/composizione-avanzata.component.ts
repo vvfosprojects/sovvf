@@ -374,8 +374,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 squadre: null
             };
             if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
+                if (obj.mezzoComposizione.mezzo && obj.mezzoComposizione.mezzo.stato) {
+                    obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
+                } else { obj.mezzoComposizione.stato = StatoMezzo.InViaggio; }
+                rObj.mezzo = obj.mezzoComposizione.mezzo ? obj.mezzoComposizione.mezzo : obj.mezzoComposizione;
             } else {
                 rObj.mezzo = null;
             }

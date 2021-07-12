@@ -23,7 +23,9 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
@@ -48,6 +50,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public IEnumerable<AuthorizationResult> Authorize(AddInterventoCommand command)
         {
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -55,6 +58,23 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    Boolean abilitato = false;
+                    foreach (var ruolo in user.Ruoli)
+                    {
+                        foreach (var competenza in Competenze)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
+                                abilitato = true;
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
+                    }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
