@@ -79,15 +79,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return lstMezzi;
             }).ContinueWith(lstmezzi => lstmezzi.Result.Where(mezzo => //FILTRAGGIO
             {
-                var ricerca = query.Filtro?.Ricerca?.Contains(mezzo.Mezzo.Codice) ?? true;
+                bool ricerca = query.Filtro?.Ricerca?.ToUpper()?.Contains(mezzo.Mezzo.Codice.ToUpper()) ?? true;
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
                     query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice ) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(mezzo.Mezzo.Distaccamento?.Codice);
 
-                var genere = mezzo.Mezzo.Genere.Contains(query.Filtro?.Tipo ?? mezzo.Mezzo.Genere);
+                bool genere = query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true;
 
-                var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato ?? mezzo.Mezzo.Stato);
+                bool stato = query.Filtro?.Stato?.Contains(mezzo.Mezzo.Stato) ?? true;
 
                 return ricerca && distaccamento && genere && stato;
             })).ContinueWith(lstMezzi => //ORDINAMENTO
