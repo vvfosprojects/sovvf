@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeRouting } from './home.routing';
 import { HomeComponent } from './home.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -55,9 +54,7 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
         ComposizionePartenzaModule,
         MezziInServizioModule,
         SchedeContattoModule,
-        NgxPaginationModule,
         NgSelectModule,
-        NgxPaginationModule,
         FormsModule,
         ReactiveFormsModule,
         FilterPipeModule,

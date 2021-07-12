@@ -12,5 +12,7 @@ export enum PermissionFeatures {
     GestisciSchedaContatto,
     CreaRichiestaSchedaContatto,
     RaggruppamentoSchedeContatto,
-    EliminazioneRaggruppamentoSchedeContatto
+    EliminazioneRaggruppamentoSchedeContatto,
+    GestionePos,
+    Triage
 }

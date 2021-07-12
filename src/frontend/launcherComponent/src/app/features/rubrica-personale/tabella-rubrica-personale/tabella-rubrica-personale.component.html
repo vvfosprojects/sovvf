@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let voce of vociRubricaPersonale | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let voce of vociRubricaPersonale">
         <td style="width:15%" class="align-middle">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span *ngIf="voce?.nominativo" [ngbTooltip]="voce?.nominativo?.length > 20 ? voce?.nominativo : null" placement="top">

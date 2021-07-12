@@ -87,7 +87,7 @@
     </ngb-tabset>
     <ul class="my-2 list-unstyled">
         <app-scheda-contatto
-                *ngFor="let scheda of schedeContatto | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
+                *ngFor="let scheda of schedeContatto"
                 [scheda]="scheda"
                 [nightMode]="nightMode"
                 [idVisualizzati]="idVisualizzati"

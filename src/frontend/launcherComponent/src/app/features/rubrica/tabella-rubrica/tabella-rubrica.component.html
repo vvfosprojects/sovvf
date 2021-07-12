@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let voce of vociRubrica">
         <td class="align-middle">
             <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
                     placement="bottom" (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">

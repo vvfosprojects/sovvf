@@ -8,7 +8,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let p of pos | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let p of pos">
         <td style="width:12%" class="align-middle">
             <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
                     ngbTooltip="Rimuovi POS"

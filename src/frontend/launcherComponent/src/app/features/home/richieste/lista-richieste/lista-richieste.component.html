@@ -5,7 +5,7 @@
          [ngClass]="heightControl()"
          style="overflow-x: hidden; overflow-y: auto">
         <ng-container *ngIf="richieste?.length">
-            <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
+            <div *ngFor="let r of richieste"
                  class="col-12 scale-sintesi-richiesta">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"

@@ -25,7 +25,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let trasferimento of listaTrasferimentiChiamate | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+    <tr *ngFor="let trasferimento of listaTrasferimentiChiamate">
         <td class="align-middle" style="width: 24%">
             <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                 <span>{{trasferimento?.codChiamata}}</span>

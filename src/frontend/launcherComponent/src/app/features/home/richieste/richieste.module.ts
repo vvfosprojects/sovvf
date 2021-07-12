@@ -8,7 +8,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { TagInputModule } from 'ngx-chips';
 /**
@@ -34,7 +33,6 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        NgxPaginationModule,
         FilterPipeModule,
         NgbModule,
         UiSwitchModule.forRoot(null),

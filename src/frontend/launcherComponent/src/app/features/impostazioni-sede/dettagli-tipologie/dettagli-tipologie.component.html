@@ -16,7 +16,8 @@
     </div>
     <div class="col text-right">
         <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
-                                        (ricercaChange)="onRicercaDettagliTipologie($event)"></app-ricerca-dettagli-tipologie>
+                                        (ricercaChange)="onRicercaDettagliTipologie($event)">
+        </app-ricerca-dettagli-tipologie>
     </div>
     <div *ngIf="ricerca" class="col-12 pl-2">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
@@ -33,7 +34,7 @@
             </tr>
             </thead>
             <tbody class="bg-dark-light">
-            <tr *ngFor="let dettaglioTipologia of dettagliTipologie | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+            <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
                 <th scope="row" class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
                 <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codSede }}</td>
                 <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
@@ -68,10 +69,13 @@
                 </button>
             </div>
             <div class="float-right text-right mt-3">
-                <pagination-controls [previousLabel]="'Precedente'"
-                                     [nextLabel]="'Successiva'"
-                                     (pageChange)="onPageChange($event)">
-                </pagination-controls>
+                <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="totalItems"
+                        [maxSize]="5"
+                        (pageChange)="onPageChange($event)">
+                </ngb-pagination>
             </div>
         </div>
     </div>
