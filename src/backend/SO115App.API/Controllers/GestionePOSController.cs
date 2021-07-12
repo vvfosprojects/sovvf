@@ -111,8 +111,10 @@ namespace SO115App.API.Controllers
         [HttpGet("Delete")]
         public async Task<IActionResult> Delete(string Id)
         {
+            var codiceSede = Request.Headers["codicesede"];
             var command = new DeletePosCommand()
             {
+                codSede = codiceSede,
                 Id = Id
             };
 

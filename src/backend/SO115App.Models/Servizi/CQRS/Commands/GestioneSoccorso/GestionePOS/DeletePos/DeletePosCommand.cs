@@ -23,6 +23,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Del
 {
     public class DeletePosCommand
     {
+        public string codSede { get; set; }
         public string Id { get; set; }
     }
 }
