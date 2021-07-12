@@ -36,14 +36,16 @@ import Point from '@arcgis/core/geometry/Point';
 })
 export class EsriMapComponent implements OnChanges, OnDestroy {
 
-    map: Map;
-    view: any = null;
-    chiamateInCorsoFeatureLayer: FeatureLayer;
-
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
 
     @Output() mapIsLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
+
+    map: Map;
+    view: any = null;
+
+    chiamateInCorsoFeatureLayer: FeatureLayer;
+    chiamateMarkersGraphics = [];
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
@@ -177,33 +179,47 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
                 title: 'Id: {id}',
                 content: '<h1>aaa => {id}</h1>'
             },
-            geometryType: 'point'
+            geometryType: 'point',
+            spatialReference: {
+                wkid: 3857
+            }
         });
         this.map.add(this.chiamateInCorsoFeatureLayer);
     }
 
     // Aggiunge i marker delle chiamate in corso al layer "Chiamate in Corso"
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
-        console.log('addChiamateMarkersToLayer chiamateMarkers', chiamateMarkers);
-        const graphicsToAdd = [];
+        if (this.chiamateMarkersGraphics?.length) {
+            await this.chiamateInCorsoFeatureLayer.applyEdits({ deleteFeatures: this.chiamateMarkersGraphics });
+        }
+
+        const chiamateMarkersGraphicsToAdd = [];
         for (const markerDaStampare of chiamateMarkers) {
             const long = markerDaStampare.localita.coordinate.longitudine;
             const lat = markerDaStampare.localita.coordinate.latitudine;
-            const p: any = [long, lat];
-            const mp = new Point(p);
+            const p: number[] = [long, lat];
+            const mp = new Point({
+                longitude: p[0],
+                latitude: p[1],
+                spatialReference: {
+                    wkid: 3857
+                }
+            });
             const graphic = new Graphic({
                 geometry: mp,
                 attributes: {
-                    ID: markerDaStampare.id
-                },
+                    idChiamataMarker: markerDaStampare.id
+                }
             });
-            graphicsToAdd.push(graphic);
+            chiamateMarkersGraphicsToAdd.push(graphic);
         }
         if (!applyEdits) {
-            this.chiamateInCorsoFeatureLayer.source.addMany(graphicsToAdd);
+            await this.chiamateInCorsoFeatureLayer.source.addMany(chiamateMarkersGraphicsToAdd);
         } else if (applyEdits) {
-            await this.chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: graphicsToAdd });
+            await this.chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: chiamateMarkersGraphicsToAdd });
         }
+
+        this.chiamateMarkersGraphics = chiamateMarkersGraphicsToAdd;
     }
 
     // Aggiunge i widget sulla mappa
