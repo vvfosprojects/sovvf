@@ -33,14 +33,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi); //OTTENGO I DATI
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            var lstMezziComposizione = _getMezziUtilizzabili.Get(query.CodiciSedi.ToList())
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
-                Parallel.ForEach(mezzi.Result, m =>
+                Parallel.ForEach(mezzi.Result, async m =>
                 {
                     var mc = new ComposizioneMezzi()
                     {
@@ -48,8 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                     };
 
-                    //TODO OTTIMIZZARE INDICE ORDINAMENTO
-                    mc.IndiceOrdinamento = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
+                    var indice = new OrdinamentoMezzi(_getTipologieCodice, _config).GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -73,6 +72,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             break;
                     }
 
+                    mc.IndiceOrdinamento = indice.Result;
+
                     lstMezzi.Add(mc);
                 });
 
@@ -89,7 +90,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var stato = mezzo.Mezzo.Stato.Equals(query.Filtro?.Stato ?? mezzo.Mezzo.Stato);
 
-                return ricerca && distaccamento && genere && stato;
+                return ricerca && true && genere && true;
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
