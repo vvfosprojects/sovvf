@@ -77,7 +77,7 @@ export class RequestSelectBoxPartenza {
 export class SelectBoxPartenza {
     static readonly type = '[BoxPartenza] Select Box Partenza';
 
-    constructor(public idBoxPartenza: string, public inRientro?: boolean) {
+    constructor(public idBoxPartenza: string, public inRientro?: boolean, public preaccoppiato?: boolean) {
     }
 }
 

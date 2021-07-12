@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -11,13 +11,16 @@ import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
 import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-box-nuova-partenza',
     templateUrl: './box-nuova-partenza.component.html',
     styleUrls: ['./box-nuova-partenza.component.css']
 })
-export class BoxNuovaPartenzaComponent implements OnDestroy {
+export class BoxNuovaPartenzaComponent implements OnDestroy, OnChanges {
 
     // BoxPartenza Composizione
     @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
@@ -48,6 +51,29 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
 
     itemBloccato: boolean;
     StatoMezzo = StatoMezzo;
+    nuovaPartenza: {
+        id: string;
+        mezzoComposizione: {
+            id: string;
+            mezzo: {
+                codice?: string,
+                descrizione?: string,
+                genere?: string,
+                stato?: StatoMezzo,
+                distaccamento?: Sede,
+                coordinate?: Coordinate,
+                coordinateFake?: boolean,
+            };
+            km: string;
+            coordinate?: Coordinate;
+            tempoPercorrenza: string;
+            idRichiesta?: string;
+            squadrePreaccoppiate?: SquadraComposizione[];
+            listaSquadre?: SquadraComposizione[];
+            indirizzoIntervento?: string;
+        };
+        squadreComposizione: SquadraComposizione[];
+    };
 
     private subscription = new Subscription();
 
@@ -59,6 +85,15 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
                 this.boxPartenzaList = boxPartenza;
             })
         );
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.partenza && changes.partenza.currentValue && changes.partenza.currentValue.mezzoComposizione && !changes.partenza.currentValue.mezzoComposizione.mezzo) {
+            this.nuovaPartenza = makeCopy(this.partenza);
+            this.nuovaPartenza.mezzoComposizione.mezzo = this.partenza.mezzoComposizione;
+        } else {
+            this.nuovaPartenza = makeCopy(this.partenza);
+        }
     }
 
     ngOnDestroy(): void {
@@ -154,8 +189,14 @@ export class BoxNuovaPartenzaComponent implements OnDestroy {
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fas ';
         let icon = 'fa-exclamation-triangle';
-        const squadra2 = this.partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';
-        const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
+        const partenza = this.partenza as any;
+        const squadra2 = partenza.squadreComposizione?.length ? 'squadra-si' : 'squadra-no';
+        let mezzo2;
+        if (partenza.mezzoComposizione && partenza.mezzoComposizione.mezzo) {
+            mezzo2 = partenza.mezzoComposizione && (partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
+        } else if (partenza.mezzoComposizione && !partenza.mezzoComposizione.mezzo) {
+            mezzo2 = partenza.mezzoComposizione.stato === StatoMezzo.InSede || partenza.mezzoComposizione.stato === StatoMezzo.InRientro ? 'mezzo-si' : 'mezzo-no';
+        }
 
         switch (mezzo2 + '|' + squadra2) {
             case 'mezzo-si|squadra-no':

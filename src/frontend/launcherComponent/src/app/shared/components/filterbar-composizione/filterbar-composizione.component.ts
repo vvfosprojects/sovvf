@@ -45,7 +45,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
-    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
