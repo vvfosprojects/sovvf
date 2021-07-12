@@ -153,12 +153,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Descrizione = m.Descrizione,
                         Genere = m.Genere,
                         Stato = lstStatiMezzi.Result.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
-                    }).ToList() : null,
-                    //spotId = squadra.spotId,
-                    //spotType = squadra.spotType,
-                    //version = squadra.version,
-                    //workshiftId = squadra.workshiftId,
-                    //IdOpService = squadra.Id
+                    }).ToList() : null
                 }));
 
                 return lstSquadre;
@@ -177,7 +172,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
-                return distaccamento && ricerca && diEmergenza && stato;
+                return distaccamento && ricerca && diEmergenza && stato && turno;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
