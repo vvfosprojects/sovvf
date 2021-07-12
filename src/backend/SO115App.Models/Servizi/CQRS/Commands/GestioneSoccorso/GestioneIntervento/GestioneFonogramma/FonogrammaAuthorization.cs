@@ -20,6 +20,7 @@
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -30,12 +31,14 @@ namespace DomainModel.CQRS.Commands.GestioneFonogramma
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
         public FonogrammaAuthorization(IPrincipal currentUser,
-            IFindUserByUsername findUserByUsername)
+            IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(FonogrammaCommand command)
@@ -47,6 +50,16 @@ namespace DomainModel.CQRS.Commands.GestioneFonogramma
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Chiamata.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

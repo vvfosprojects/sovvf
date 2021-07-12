@@ -47,7 +47,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
-            SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
+            //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerDelete", chiamata.ChiamataInCorso.Id);
