@@ -345,6 +345,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .LastOrDefault() is RichiestaSospesa || this._eventi
                     .LastOrDefault() is RevocaPerRiassegnazione;
             }
+            set
+            {
+            }
         }
 
         /// <summary>
@@ -360,6 +363,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                 return composizionePartenza.All(x =>
                            x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro
                            || x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato) && StatoRichiesta is InAttesa;
+            }
+            set
+            {
             }
         }
 
@@ -512,6 +518,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return false;
                 }
             }
+            set
+            {
+            }
         }
 
         /// <summary>
@@ -538,6 +547,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .ToList();
 
                 return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata && !x.Partenza.Sganciata);
+            }
+            set
+            {
             }
         }
 
@@ -697,27 +709,40 @@ namespace SO115App.API.Models.Classi.Soccorso
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
 
                 if (eventoChiusura)
+                {
+                    this.Chiusa = true;
                     return new Chiusa();
+                }
 
                 if (eventoPresidiata)
+                {
+                    this.Presidiata = true;
                     return new Presidiata();
+                }
 
                 if (eventoAssegnata)
                     return new Assegnata();
 
                 if (eventoSospesa)
+                {
+                    this.Sospesa = true;
                     return new Sospesa();
+                }
+                //if (!eventoRientrata && !eventoInRientro) return new InAttesa();
 
-                if (!eventoRientrata && !eventoInRientro) return new InAttesa();
                 if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
                     return new Assegnata();
 
                 if (composizionePartenza.Count > 0)
                 {
                     if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                    {
+                        this.Sospesa = true;
                         return new Sospesa();
+                    }
                 }
 
+                this.InAttesa = true;
                 return new InAttesa();
             }
         }
