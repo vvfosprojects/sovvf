@@ -98,10 +98,16 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         if (this.view) {
             this.view.destroy();
         }
+        if (this.map) {
+            this.map.destroy();
+        }
+        if (this.chiamateInCorsoFeatureLayer) {
+            this.chiamateInCorsoFeatureLayer.destroy();
+        }
     }
 
-    // Effettua il login automatico ad ESRI senza doverlo fare manualmente ogni volta
     // TODO: terminare login automatico
+    // Effettua il login automatico ad ESRI senza doverlo fare manualmente ogni volta
     async loginIntoESRI(): Promise<any> {
         await this.http.get('https://www.arcgis.com/sharing/rest/oauth2/authorize?client_id=' + /* TODO: inserire app id dopo registrazione */ +' &response_type=token&redirect_uri=' + 'localhost:4200').subscribe((resAuthorize: any) => {
             if (resAuthorize) {
@@ -158,7 +164,7 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         }
     }
 
-    // Inizializza i layer lato client delle chiamate in corso
+    // Inizializza i layer "Chiamate in Corso"
     async initializeChiamateInCorsoLayer(): Promise<any> {
         // creazione feature layer
         this.chiamateInCorsoFeatureLayer = new FeatureLayer({
@@ -290,7 +296,7 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         this.map.add(layerTest);
     }
 
-    // Per fare il toggle di un intero layer (se è attivato lo disattivo, se è disattivato lo attivo)
+    // Effettua il toggle di un layer
     async toggleLayer(layerTitle: string): Promise<any> {
         const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
         if (layerExists) {
