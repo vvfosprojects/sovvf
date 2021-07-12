@@ -28,7 +28,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class AggiornaStatoMezzoCommandHandler : ICommandHandler<AggiornaStatoMezzoCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private AggiornaStatoMezzoCommandHandler() { }
+
+        private AggiornaStatoMezzoCommandHandler()
+        {
+        }
+
         public AggiornaStatoMezzoCommandHandler(IUpdateStatoPartenze updateStatoPartenze) => _updateStatoPartenze = updateStatoPartenze;
 
         public void Handle(AggiornaStatoMezzoCommand command)
@@ -45,11 +49,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Stato = command.StatoMezzo
             });
 
-            if(command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
+            if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
             {
-                if(command.AzioneIntervento.Equals("Chiusa"))
+                if (command.AzioneIntervento.ToLower().Equals("chiusa"))
                     new ChiusuraRichiesta("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
-                else if (command.AzioneIntervento.Equals("Sospesa"))
+                else if (command.AzioneIntervento.ToLower().Equals("sospesa"))
                     new RichiestaSospesa("", richiesta, dataAdesso.AddSeconds(1), richiesta.CodOperatore);
             }
 
