@@ -31,10 +31,6 @@ import Point from '@arcgis/core/geometry/Point';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import FieldsContent from '@arcgis/core/popup/content/FieldsContent';
-import FieldInfo from '@arcgis/core/popup/FieldInfo';
-import FieldInfoFormat from '@arcgis/core/popup/support/FieldInfoFormat';
-import PopupTemplate from '@arcgis/core/PopupTemplate';
 
 @Component({
     selector: 'app-esri-map',
