@@ -28,6 +28,13 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import FieldsContent from '@arcgis/core/popup/content/FieldsContent';
+import FieldInfo from '@arcgis/core/popup/FieldInfo';
+import FieldInfoFormat from '@arcgis/core/popup/support/FieldInfoFormat';
+import PopupTemplate from '@arcgis/core/PopupTemplate';
 
 @Component({
     selector: 'app-esri-map',
@@ -166,30 +173,72 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
 
     // Inizializza i layer "Chiamate in Corso"
     async initializeChiamateInCorsoLayer(): Promise<any> {
+        // creazione marker Chiamata in Corso
+        const markerChiamataInCorso = new PictureMarkerSymbol({
+            url: '/assets/img/icone-markers/speciali/chiamata-marker-rosso.png',
+            width: '50px',
+            height: '50px'
+        });
+
+        // creazione renderer Chiamata in Corso
+        const rendererChiamataInCorso = new SimpleRenderer({
+            symbol: markerChiamataInCorso
+        });
+
+        // configurazione del cluster Chiamate in Corso
+        const clusterConfigChiamateInCorso = new FeatureReductionCluster({
+            clusterRadius: '100px',
+            popupTemplate: {
+                title: 'Cluster Chiamate in Corso',
+                content: 'Questo cluster contiene {cluster_count} Chiamate in Corso.',
+                fieldInfos: [
+                    {
+                        fieldName: 'cluster_count',
+                        format: {
+                            places: 0,
+                            digitSeparator: true,
+                        },
+                    }
+                ],
+            },
+            clusterMinSize: '50px',
+            clusterMaxSize: '60px',
+            labelingInfo: [
+                {
+                    deconflictionStrategy: 'none',
+                    labelExpressionInfo: {
+                        expression: 'Text($feature.cluster_count, \'#,###\')',
+                    },
+                    symbol: {
+                        type: 'text',
+                        color: 'white',
+                        font: {
+                            weight: 'bold',
+                            family: 'Noto Sans',
+                            size: '30px',
+                        },
+                    },
+                    labelPlacement: 'center-center',
+                },
+            ]
+        });
+
         // creazione feature layer
         this.chiamateInCorsoFeatureLayer = new FeatureLayer({
             title: 'Chiamate in Corso',
-            outFields: ['*'],
             source: [],
             objectIdField: 'ID',
-            popupEnabled: true,
+            featureReduction: clusterConfigChiamateInCorso,
+            popupEnabled: false, // TODO: Impostare a true dopo aver risolvo con il popupTemplate
             labelsVisible: true,
-            fields: [
-                {
-                    name: 'id',
-                    alias: 'ID',
-                    type: 'string',
-                }
-            ],
-            popupTemplate: {
-                title: 'Id: {id}',
-                content: '<h1>aaa => {id}</h1>'
-            },
-            geometryType: 'point',
+            renderer: rendererChiamataInCorso,
+            // popupTemplate: null, // TODO: Risolvere visualizzazione popup
             spatialReference: {
                 wkid: 3857
-            }
+            },
+            geometryType: 'point'
         });
+
         this.map.add(this.chiamateInCorsoFeatureLayer);
     }
 
