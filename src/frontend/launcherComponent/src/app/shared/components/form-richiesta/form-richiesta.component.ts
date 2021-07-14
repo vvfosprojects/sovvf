@@ -422,6 +422,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.checkedUrgenza = !!(this.f.urgenza.value);
         triageModal.componentInstance.disableUrgenza = this.formIsInvalid() || !!(this.f.urgenza.value);
+        triageModal.componentInstance.apertoFromMappa = !!(this.apertoFromMappa);
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
@@ -686,7 +687,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             schedaTelefonata.azioneChiamata = azione;
         }
         const urgente = options?.urgente;
-        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, { urgente }));
+        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, {
+            urgente,
+            fromMappa: !!(this.apertoFromMappa)
+        }));
     }
 }
 

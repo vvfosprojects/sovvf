@@ -80,7 +80,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 this.initializeChiamateInCorsoLayer().then(() => {
                     // Abilito il click su mappa per avviare la chiamata dal punto selezionato
                     // TODO: togliere il commento per abilitare la Nuova Chiamata al click e finire logica
-                    // this.onClickNuovaChiamata().then();
+                    this.onClickNuovaChiamata().then();
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -220,6 +220,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 modalNuovaChiamata.result.then((result: any) => {
                     console.log('modalNuovaChiamata result', result);
                 });
+                this.changeCenter([lon, lat]);
             });
 
             async function addChiamataMarker(chiamateInCorsoFeatureLayer: FeatureLayer, g: Graphic): Promise<any> {

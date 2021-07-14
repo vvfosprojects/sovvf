@@ -20,6 +20,13 @@ export class ToggleChiamata {
     }
 }
 
+export class ToggleRichieste {
+    static readonly type = '[Richieste] Toggle richieste';
+
+    constructor(public toggle?: boolean) {
+    }
+}
+
 export class ToggleComposizione {
     static readonly type = '[Composizione] Toggle composizione';
 

@@ -82,14 +82,16 @@
 </div>
 <div class="modal-footer">
     <div class="clearfix w-100">
-        <div class="float-left mt-2"
-             ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-             [disableTooltip]="!disableUrgenza || checkedUrgenza">
-            <app-checkbox
-                    [checkboxState]="getCheckboxUrgenzaState()"
-                    (click)="setUrgenza()">
-            </app-checkbox>
-        </div>
+        <ng-container *ngIf="!apertoFromMappa">
+            <div class="float-left mt-2"
+                 ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                 [disableTooltip]="!disableUrgenza || checkedUrgenza">
+                <app-checkbox
+                        [checkboxState]="getCheckboxUrgenzaState()"
+                        (click)="setUrgenza()">
+                </app-checkbox>
+            </div>
+        </ng-container>
         <div class="float-right">
             <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
                 <i class="fas fa-check mr-1"></i>
