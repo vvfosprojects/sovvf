@@ -1,5 +1,7 @@
 <ng-template [ngIf]="!richiestaModifica && !getActive()">
-    <button type="button" class="btn font-weight-bolder btn-success"
+    <button id="buttonNuovaChiamata"
+            type="button"
+            class="btn font-weight-bolder btn-success"
             [ngClass]="getClasses()"
             [class.btn-no-hover]="getActive()"
             [disabled]="disabled"
