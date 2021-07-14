@@ -67,6 +67,10 @@ export const PermessiStateDefaults: PermessiStateModel = {
             roles: [Role.GestoreChiamate]
         },
         {
+            feature: PermissionFeatures.ListaTrasferimentiChiamate,
+            roles: [Role.GestoreRichieste]
+        },
+        {
             feature: PermissionFeatures.GestionePos,
             roles: [Role.Amministratore]
         },

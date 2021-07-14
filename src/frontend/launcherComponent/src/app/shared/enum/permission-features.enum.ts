@@ -13,6 +13,7 @@ export enum PermissionFeatures {
     CreaRichiestaSchedaContatto,
     RaggruppamentoSchedeContatto,
     EliminazioneRaggruppamentoSchedeContatto,
+    ListaTrasferimentiChiamate,
     GestionePos,
     Triage
 }

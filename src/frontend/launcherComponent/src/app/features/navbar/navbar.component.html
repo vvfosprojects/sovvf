@@ -62,7 +62,9 @@
                                 ngbTooltip="Visualizza Trasferimenti Chiamate"
                                 [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
                                 [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="permessiFeature.ListaTrasferimentiChiamate | checkPermission"
+                                [disabled]="permessiFeature.ListaTrasferimentiChiamate | checkPermission">
                             <i class="fas fa-exchange-alt"></i>
                         </button>
                         <button class="btn btn-light"
