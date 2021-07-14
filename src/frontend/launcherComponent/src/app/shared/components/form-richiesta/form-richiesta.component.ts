@@ -1,65 +1,69 @@
 import {
     ChangeDetectionStrategy,
-    Component,
+    Component, EventEmitter,
     Input,
     OnChanges,
-    OnDestroy,
+    OnDestroy, OnInit, Output,
     SimpleChanges,
     ViewEncapsulation
 } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
-import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
+import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
+import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
+import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Utente } from '../../../../shared/model/utente.model';
-import { ClearClipboard } from '../../store/actions/form-richiesta/clipboard.actions';
-import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/form-richiesta/scheda-telefonata.actions';
-import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Utente } from '../../model/utente.model';
+import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
+import {
+    ReducerSchedaTelefonata,
+    StartChiamata
+} from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
+import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Subscription } from 'rxjs';
-import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
-import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { DelChiamataMarker } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
+import { Tipologia } from '../../model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { Ente } from 'src/app/shared/interface/ente.interface';
-import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
-import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
-import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
-import { Sede } from '../../../../shared/model/sede.model';
-import { TriageChiamataModalComponent } from '../../../../shared/modal/triage-chiamata-modal/triage-chiamata-modal.component';
-import { ToggleModifica } from '../../store/actions/view/view.actions';
+import { ConfirmModalComponent } from '../../modal/confirm-modal/confirm-modal.component';
+import { ListaSchedeContattoModalComponent } from '../../modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
+import { InterventiProssimitaModalComponent } from '../../modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
+import { Sede } from '../../model/sede.model';
+import { TriageChiamataModalComponent } from '../../modal/triage-chiamata-modal/triage-chiamata-modal.component';
+import { ToggleModifica } from '../../../features/home/store/actions/view/view.actions';
 import {
     ChiudiRichiestaModifica,
     ClearRichiestaModifica,
     ModificaIndirizzo
-} from '../../store/actions/form-richiesta/richiesta-modifica.actions';
+} from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearDettagliTipologie,
     ClearTipologiaTriageChiamata,
     ClearTriageChiamata,
     GetDettagliTipologieByCodTipologia
-} from '../../../../shared/store/actions/triage-modal/triage-modal.actions';
-import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+} from '../../store/actions/triage-modal/triage-modal.actions';
+import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
+import { TriageSummary } from '../../interface/triage-summary.interface';
 import {
     ClearPosTriageSummary,
     ClearTriageSummary,
     SetPosTriageSummary,
     SetTriageSummary
-} from '../../../../shared/store/actions/triage-summary/triage-summary.actions';
-import { getPrioritaTriage } from '../../../../shared/helper/function-triage';
-import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
-import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
+} from '../../store/actions/triage-summary/triage-summary.actions';
+import { getPrioritaTriage } from '../../helper/function-triage';
+import { ClearRichiestaMarkerModifica } from '../../../features/home/store/actions/maps/richieste-markers.actions';
+import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { makeID, roundToDecimal } from '../../../../shared/helper/function-generiche';
-import { ClearSchedaContattoTelefonata } from '../../store/actions/schede-contatto/schede-contatto.actions';
-import { PosInterface } from '../../../../shared/interface/pos.interface';
-import AddressCandidate from "@arcgis/core/tasks/support/AddressCandidate";
+import { roundToDecimal } from '../../helper/function-generiche';
+import { ClearSchedaContattoTelefonata } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { PosInterface } from '../../interface/pos.interface';
+import { makeIdChiamata } from '../../helper/function-richieste';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -68,7 +72,7 @@ import AddressCandidate from "@arcgis/core/tasks/support/AddressCandidate";
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormRichiestaComponent implements OnChanges, OnDestroy {
+export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
@@ -94,6 +98,13 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
     // Pos
     @Input() pos: PosInterface[];
 
+    // Aperto dalla Mappa
+    @Input() apertoFromMappa: boolean;
+    @Input() lat: number;
+    @Input() lon: number;
+
+    @Output() closeChiamataFromMappa: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     chiamataMarker: ChiamataMarker;
     idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
@@ -116,6 +127,12 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
         this.richiestaForm = this.createAndGetForm();
+    }
+
+    ngOnInit(): void {
+        if (this.apertoFromMappa) {
+            this.setIndirizzoFromMappa(this.lat, this.lon);
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -155,10 +172,6 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
                 if (triageSummary) {
                     setPrioritaByTriageSummary(this.f, triageSummary);
                 }
-            }
-
-            function makeIdChiamata(operatore: Utente): string {
-                return `${operatore.sede.codice}-${operatore.id}-${makeID(8)}`;
             }
         }
     }
@@ -313,6 +326,14 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('cerca');
     }
 
+    setIndirizzoFromMappa(lat: number, lon: number): void {
+        // TODO: formattare latitudine e longitudine
+        // const latitudine = Math.round(lat * 100) / 100;
+        // const longitudine = Math.round(lon * 100) / 100;
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lon);
+    }
+
     onModificaIndirizzo(candidate: AddressCandidate): void {
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
@@ -348,6 +369,7 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         return msg;
     }
 
+    // TODO: controllare utilizzo effettivo
     onShowInterventiProssimita(): void {
         let modalInterventiProssimita;
         modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
@@ -621,6 +643,10 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('annullata');
     }
 
+    onAnnullaChiamataFromMappa(): void {
+        this.closeChiamataFromMappa.emit(true);
+    }
+
     impostaAzioneChiamata(azioneChiamata: AzioneChiamataEnum): void {
         this.onSubmit(azioneChiamata);
     }
@@ -640,6 +666,11 @@ export class FormRichiestaComponent implements OnChanges, OnDestroy {
             if (!this.modifica) {
                 const urgente = options?.urgente;
                 this.reducerSchedaTelefonata('inserita', azione, { urgente });
+
+                if (this.apertoFromMappa) {
+                    this.onAnnullaChiamataFromMappa();
+                }
+
             } else if (this.modifica) {
                 this.reducerSchedaTelefonata('modificata', azione);
             }

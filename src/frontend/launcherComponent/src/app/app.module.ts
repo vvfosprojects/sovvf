@@ -73,6 +73,7 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
+import { SchedaTelefonataState } from "./features/home/store/states/form-richiesta/scheda-telefonata.state";
 
 @NgModule({
     declarations: [
@@ -128,7 +129,8 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
                 TriageChiamataModalState,
                 TriageSummaryState,
                 DistaccamentiState,
-                PosModalState
+                PosModalState,
+                SchedaTelefonataState
             ],
             { developmentMode: !environment.production }
         ),

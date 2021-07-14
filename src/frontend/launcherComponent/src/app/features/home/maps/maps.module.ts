@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 /**
- * MAPS
+ * Component
  */
 import { MapsComponent } from './maps.component';
+import { EsriMapComponent } from './esri-map/esri-map.component';
+import { ModalNuovaChiamataComponent } from './modal-nuova-chiamata/modal-nuova-chiamata.component';
 /**
  * Provider
  */
@@ -16,6 +19,7 @@ import {
     ChiamateMarkerService
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
+import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 /**
  * Ngxs
  */
@@ -34,10 +38,7 @@ import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.stat
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
-import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
-import { EsriMapComponent } from './esri-map/esri-map.component';
 
 @NgModule({
     imports: [
@@ -67,7 +68,8 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
     ],
     declarations: [
         MapsComponent,
-        EsriMapComponent
+        EsriMapComponent,
+        ModalNuovaChiamataComponent
     ],
     exports: [
         MapsComponent

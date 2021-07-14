@@ -7,11 +7,16 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    SimpleChanges
+    SimpleChanges, OnInit
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
+import { Utente } from '../../../../shared/model/utente.model';
+import { Store } from '@ngxs/store';
+import { AuthState } from '../../../auth/store/auth.state';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -28,21 +33,24 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
+import { makeIdChiamata } from "../../../../shared/helper/function-richieste";
 
 @Component({
     selector: 'app-esri-map',
     templateUrl: './esri-map.component.html',
     styleUrls: ['./esri-map.component.scss']
 })
-export class EsriMapComponent implements OnChanges, OnDestroy {
+export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
 
     @Output() mapIsLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
+
+    operatore: Utente;
 
     map: Map;
     view: any = null;
@@ -52,7 +60,13 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private modalService: NgbModal,
+                private store: Store) {
+    }
+
+    ngOnInit(): void {
+        this.operatore = this.store.selectSnapshot(AuthState.currentUser);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +78,9 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
             this.initializeMap().then(() => {
                 // Inizializzazione dei layer lato client delle chiamate in corso
                 this.initializeChiamateInCorsoLayer().then(() => {
+                    // Abilito il click su mappa per avviare la chiamata dal punto selezionato
+                    // TODO: togliere il commento per abilitare la Nuova Chiamata al click e finire logica
+                    // this.onClickNuovaChiamata().then();
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -165,6 +182,89 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         if (this.view?.ready) {
             this.view.zoom = zoom;
         }
+    }
+
+    async onClickNuovaChiamata(): Promise<any> {
+        this.view.on('click', (event) => {
+            const check = document.getElementById('idCheck');
+            // @ts-ignore
+            if (check && !check.checked) {
+                return;
+            }
+
+            const lat = event.mapPoint.latitude;
+            const lon = event.mapPoint.longitude;
+
+            // Inserisco il marker Chiamata in Corso
+            const p: number[] = [lon, lat];
+            const mp = new Point({
+                longitude: p[0],
+                latitude: p[1],
+                spatialReference: {
+                    wkid: 3857
+                }
+            });
+            const graphic = new Graphic({
+                geometry: mp,
+                attributes: {
+                    idChiamataMarker: makeIdChiamata(this.operatore)
+                }
+            });
+            addChiamataMarker(this.chiamateInCorsoFeatureLayer, graphic).then(() => {
+                // Apro il modale con FormChiamata
+                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                    windowClass: 'xxlModal modal-holder'
+                });
+                modalNuovaChiamata.componentInstance.lat = lat;
+                modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.result.then((result: any) => {
+                    console.log('modalNuovaChiamata result', result);
+                });
+            });
+
+            async function addChiamataMarker(chiamateInCorsoFeatureLayer: FeatureLayer, g: Graphic): Promise<any> {
+                await chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: [g] });
+            }
+
+            // TODO: trovare indirizzo tramite lat e long
+            // const locatorTask = new Locator({
+            //     url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
+            // });
+            // const params = {
+            //     location: event.mapPoint,
+            // };
+            // locatorTask
+            //     .locationToAddress(params)
+            //     .then((response) => {
+            //
+            //         const obj = response.attributes;
+            //         this.view.popup.content =
+            //             '<span class=\'controlSpan\'>AddNum:</span> ' + obj.AddNum + '<br>' +
+            //             '<span class=\'controlSpan\'>Addr_type:</span> ' + obj.Addr_type + '<br>' +
+            //             '<span class=\'controlSpan\'>Address:</span> ' + obj.Address + '<br>' +
+            //             '<span class=\'controlSpan\'>Block:</span> ' + obj.Block + '<br>' +
+            //             '<span class=\'controlSpan\'>City:</span> ' + obj.City + '<br>' +
+            //             '<span class=\'controlSpan\'>CountryCode:</span> ' + obj.CountryCode + '<br>' +
+            //             '<span class=\'controlSpan\'>District:</span> ' + obj.District + '<br>' +
+            //             '<span class=\'controlSpan\'>LongLabel:</span> ' + obj.LongLabel + '<br>' +
+            //             '<span class=\'controlSpan\'>Match_addr:</span> ' + obj.Match_addr + '<br>' +
+            //             '<span class=\'controlSpan\'>MetroArea:</span> ' + obj.MetroArea + '<br>' +
+            //             '<span class=\'controlSpan\'>Neighborhood:</span> ' + obj.Neighborhood + '<br>' +
+            //             '<span class=\'controlSpan\'>PlaceName:</span> ' + obj.PlaceName + '<br>' +
+            //             '<span class=\'controlSpan\'>Postal:</span> ' + obj.Postal + '<br>' +
+            //             '<span class=\'controlSpan\'>PostalExt:</span> ' + obj.PostalExt + '<br>' +
+            //             '<span class=\'controlSpan\'>Region:</span> ' + obj.Region + '<br>' +
+            //             '<span class=\'controlSpan\'>Sector:</span> ' + obj.Sector + '<br>' +
+            //             '<span class=\'controlSpan\'>ShortLabel:</span> ' + obj.ShortLabel + '<br>' +
+            //             '<span class=\'controlSpan\'>Subregion:</span> ' + obj.Subregion + '<br>' +
+            //             '<span class=\'controlSpan\'>Territory:</span> ' + obj.Territory + '<br>' +
+            //             '<span class=\'controlSpan\'>Type:</span> ' + obj.Type + '<br>';
+            //     })
+            //     .catch(() => {
+            //         this.view.popup.content = 'No address was found for this location';
+            //     });
+        });
+        return this.view.when();
     }
 
     // Inizializza i layer "Chiamate in Corso"

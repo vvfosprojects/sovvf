@@ -1,11 +1,13 @@
-<div class="row mt-2 h-100 bg-form-richiesta shadow-lg mt-1">
+<div class="row bg-form-richiesta"
+     [ngClass]="{ 'mt-2 h-100 shadow-lg mt-1': !apertoFromMappa }">
     <!-- FORM RICHIESTA -->
-    <div class="col-8 mx-auto">
+    <div class="col-8"
+         [ngClass]="{ 'border-right border-secondary': apertoFromMappa }">
         <form [formGroup]="richiestaForm"
               ngxsForm="schedaTelefonata.richiestaForm"
               autocomplete="off">
+            <!-- TIPOLOGIA  -->
             <div class="row">
-                <!-- TIPOLOGIA  -->
                 <div class="col-12 px-0">
                     <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">TIPOLOGIA</div>
                 </div>
@@ -52,12 +54,23 @@
                 </div>
                 <div class="col-5">
                     <div class="form-group mb-0">
-                        <app-ricerca-indirizzo
-                                [indirizzo]="f?.indirizzo?.value"
-                                [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
-                                (changeIndirizzo)="modificaIndirizzo()"
-                                (selectCandidate)="reducerIndirizzo($event)">
-                        </app-ricerca-indirizzo>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <app-ricerca-indirizzo
+                                    [indirizzo]="f?.indirizzo?.value"
+                                    [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
+                                    (changeIndirizzo)="modificaIndirizzo()"
+                                    (selectCandidate)="reducerIndirizzo($event)">
+                            </app-ricerca-indirizzo>
+                        </ng-container>
+                        <ng-container *ngIf="apertoFromMappa">
+                            <label class="d-none" for="indirizzo">Indirizzo</label>
+                            <input id="indirizzo"
+                                   class="form-control required-field"
+                                   [class.is-invalid]="submitted && f.indirizzo.errors"
+                                   type="text"
+                                   placeholder="Indirizzo"
+                                   formControlName="indirizzo"/>
+                        </ng-container>
                         <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                              class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
@@ -119,19 +132,22 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
-                    <textarea id="noteIndirizzo"
-                              class="form-control my-2"
-                              [class.is-invalid]="submitted && f.noteIndirizzo.errors"
-                              placeholder="Inserisci le Note Indirizzo"
-                              formControlName="noteIndirizzo"
-                              style="max-height: 50px; min-height: 50px;"
-                              role="presentation">
+            <!-- NOTE INDIRIZZO -->
+            <ng-container *ngIf="!apertoFromMappa">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
+                        <textarea id="noteIndirizzo"
+                                  class="form-control my-2"
+                                  [class.is-invalid]="submitted && f.noteIndirizzo.errors"
+                                  placeholder="Inserisci le Note Indirizzo"
+                                  formControlName="noteIndirizzo"
+                                  style="max-height: 50px; min-height: 50px;"
+                                  role="presentation">
                     </textarea>
+                    </div>
                 </div>
-            </div>
+            </ng-container>
             <!-- RICHIEDENTE  -->
             <div class="row">
                 <div class="col-9">
@@ -168,46 +184,48 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <div class="col-4">
-                            <label class="d-none" for="palazzo">Palazzo</label>
-                            <input id="palazzo" type="text" placeholder="Palazzo/Citofono/Info"
-                                   formControlName="palazzo"
-                                   class="form-control"/>
-                        </div>
-                        <div class="col-2 px-1">
-                            <label class="d-none" for="scala">Scala</label>
-                            <input id="scala" type="text" placeholder="Scala" formControlName="scala"
-                                   class="form-control"/>
-                        </div>
-                        <div class="col-2 px-1">
-                            <label class="d-none" for="piano">Piano</label>
-                            <input id="piano" type="text" placeholder="Piano" formControlName="piano"
-                                   class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
-                            <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
-                                <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
+                    <ng-container *ngIf="!apertoFromMappa">
+                        <div class="row mb-2">
+                            <div class="col-4">
+                                <label class="d-none" for="palazzo">Palazzo</label>
+                                <input id="palazzo" type="text" placeholder="Palazzo/Citofono/Info"
+                                       formControlName="palazzo"
+                                       class="form-control"/>
+                            </div>
+                            <div class="col-2 px-1">
+                                <label class="d-none" for="scala">Scala</label>
+                                <input id="scala" type="text" placeholder="Scala" formControlName="scala"
+                                       class="form-control"/>
+                            </div>
+                            <div class="col-2 px-1">
+                                <label class="d-none" for="piano">Piano</label>
+                                <input id="piano" type="text" placeholder="Piano" formControlName="piano"
+                                       class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
+                                <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
+                                    <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
+                                </div>
+                            </div>
+                            <div class="col-2 px-1">
+                                <label class="d-none" for="interno">Interno</label>
+                                <input id="interno" type="text" placeholder="Interno" formControlName="interno"
+                                       class="form-control"/>
+                            </div>
+                            <div class="col-2 pl-1">
+                                <ng-template [ngIf]="f?.codSchedaContatto?.value">
+                                    <label class="d-none" for="contatto">Contatto</label>
+                                    <input id="contatto" type="text" placeholder="Contatto"
+                                           formControlName="codSchedaContatto"
+                                           class="form-control"/>
+                                </ng-template>
+                                <ng-template [ngIf]="!f?.codSchedaContatto?.value">
+                                    <button class="btn btn-secondary btn-block btn-no-hover"
+                                            (click)="openModalSchedeContatto()">S. Contatto
+                                    </button>
+                                </ng-template>
                             </div>
                         </div>
-                        <div class="col-2 px-1">
-                            <label class="d-none" for="interno">Interno</label>
-                            <input id="interno" type="text" placeholder="Interno" formControlName="interno"
-                                   class="form-control"/>
-                        </div>
-                        <div class="col-2 pl-1">
-                            <ng-template [ngIf]="f?.codSchedaContatto?.value">
-                                <label class="d-none" for="contatto">Contatto</label>
-                                <input id="contatto" type="text" placeholder="Contatto"
-                                       formControlName="codSchedaContatto"
-                                       class="form-control"/>
-                            </ng-template>
-                            <ng-template [ngIf]="!f?.codSchedaContatto?.value">
-                                <button class="btn btn-secondary btn-block btn-no-hover"
-                                        (click)="openModalSchedeContatto()">S. Contatto
-                                </button>
-                            </ng-template>
-                        </div>
-                    </div>
+                    </ng-container>
                 </div>
                 <div class="col-1">
                     <!-- 112  -->
@@ -258,73 +276,76 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
-                    <div class="row my-2 bg-secondary" style="padding: 15px">
+                <ng-container *ngIf="!apertoFromMappa">
+                    <div class="col-2">
+                        <div class="row my-2 bg-secondary" style="padding: 15px">
+                        </div>
                     </div>
-                </div>
+                </ng-container>
             </div>
             <!-- NOTE  -->
-            <div class="row p-2 my-2 bg-secondary"></div>
-            <div class="row mb-5">
-                <div class="col-8">
-                    <div class="row">
-                        <div class="col mb-2">
-                            <label class="d-none" for="notePubbliche">Note Pubbliche</label>
-                            <textarea id="notePubbliche"
-                                      class="form-control area-size"
-                                      [class.is-invalid]="submitted && f.notePubbliche.errors"
-                                      placeholder="Inserisci le Note Pubbliche"
-                                      formControlName="notePubbliche">
+            <ng-container *ngIf="!apertoFromMappa">
+                <div class="row p-2 my-2 bg-secondary"></div>
+                <div class="row mb-5">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col mb-2">
+                                <label class="d-none" for="notePubbliche">Note Pubbliche</label>
+                                <textarea id="notePubbliche"
+                                          class="form-control area-size"
+                                          [class.is-invalid]="submitted && f.notePubbliche.errors"
+                                          placeholder="Inserisci le Note Pubbliche"
+                                          formControlName="notePubbliche">
                         </textarea>
-                        </div>
-                        <div class="col mb-2">
-                            <label class="d-none" for="notePrivate">Note Private</label>
-                            <textarea id="notePrivate"
-                                      [class.is-invalid]="submitted && f.notePrivate.errors"
-                                      type="text"
-                                      placeholder="Inserisci le Note Private"
-                                      formControlName="notePrivate" class="form-control area-size">
+                            </div>
+                            <div class="col mb-2">
+                                <label class="d-none" for="notePrivate">Note Private</label>
+                                <textarea id="notePrivate"
+                                          [class.is-invalid]="submitted && f.notePrivate.errors"
+                                          type="text"
+                                          placeholder="Inserisci le Note Private"
+                                          formControlName="notePrivate" class="form-control area-size">
                             </textarea>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group mb-2">
-                                <label class="d-none" for="zoneEmergenza">Codice emergenza</label>
-                                <input id="zoneEmergenza"
-                                       [class.is-invalid]="submitted && f.zoneEmergenza.errors"
-                                       type="text"
-                                       placeholder="Inserisci il Codice Emergenza"
-                                       formControlName="zoneEmergenza" class="form-control"/>
                             </div>
-                            <div class="form-group mb-2">
-                                <label class="d-none" for="etichette">Tag</label>
-                                <tag-input id="etichette"
-                                           formControlName="etichette"
-                                           [modelAsStrings]="true"
-                                           [placeholder]="'Inserisci Tag'"
-                                           [secondaryPlaceholder]="'Inserisci tag'"></tag-input>
+                            <div class="col-12">
+                                <div class="form-group mb-2">
+                                    <label class="d-none" for="zoneEmergenza">Codice emergenza</label>
+                                    <input id="zoneEmergenza"
+                                           [class.is-invalid]="submitted && f.zoneEmergenza.errors"
+                                           type="text"
+                                           placeholder="Inserisci il Codice Emergenza"
+                                           formControlName="zoneEmergenza" class="form-control"/>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label class="d-none" for="etichette">Tag</label>
+                                    <tag-input id="etichette"
+                                               formControlName="etichette"
+                                               [modelAsStrings]="true"
+                                               [placeholder]="'Inserisci Tag'"
+                                               [secondaryPlaceholder]="'Inserisci tag'"></tag-input>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="wrapper-grid mt-1">
-                        <app-checkbox
-                                [checkboxState]="getCheckboxEsercitazioneState()"
-                                (checkbox)="setEsercitazioneValue()">
-                        </app-checkbox>
-                    </div>
-                    <div class="wrapper-grid mt-1"
-                         ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-                         [disableTooltip]="!formIsInvalid()">
-                        <app-checkbox
-                                [checkboxState]="getCheckboxUrgenzaState()"
-                                (click)="setUrgenza()">
-                        </app-checkbox>
-                    </div>
-                    <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata" class="wrapper-grid mt-1">
-                        <span class="mb-0 h5">Priorità</span>
-                        <span class="pl-2"
-                              style="font-size: 18px;">
+                    <div class="col-4">
+                        <div class="wrapper-grid mt-1">
+                            <app-checkbox
+                                    [checkboxState]="getCheckboxEsercitazioneState()"
+                                    (checkbox)="setEsercitazioneValue()">
+                            </app-checkbox>
+                        </div>
+                        <div class="wrapper-grid mt-1"
+                             ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                             [disableTooltip]="!formIsInvalid()">
+                            <app-checkbox
+                                    [checkboxState]="getCheckboxUrgenzaState()"
+                                    (click)="setUrgenza()">
+                            </app-checkbox>
+                        </div>
+                        <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata" class="wrapper-grid mt-1">
+                            <span class="mb-0 h5">Priorità</span>
+                            <span class="pl-2"
+                                  style="font-size: 18px;">
                           <ngb-rating [formControl]="f.prioritaRichiesta"
                                       [starTemplate]="t"
                                       [max]="4"
@@ -345,17 +366,20 @@
                             <span>Nessuna</span>
                           </div>
                         </span>
-                        <span *ngIf="submitted && f.prioritaRichiesta.errors"
-                              class="form-text small">
+                            <span *ngIf="submitted && f.prioritaRichiesta.errors"
+                                  class="form-text small">
                             <span *ngIf="f.prioritaRichiesta.errors.required"
                                   class="text-danger">
                                 La priorità è richiesta
                             </span>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="clearfix">
+            </ng-container>
+            <!-- BOTTONI -->
+            <div class="clearfix"
+                 [class.py-3]="apertoFromMappa">
                 <div class="float-left">
                     <ng-template [ngIf]="!modifica">
                         <button class="btn btn-primary btn-no-hover btn-xlarge mr-3"
@@ -375,13 +399,15 @@
                                 placement="top">
                             Conferma
                         </button>
-                        <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
-                                type="button"
-                                [disabled]="formIsInvalid()"
-                                (click)="onInAttesa()">
-                            <i class="fas fa-pause mr-1"></i>
-                            In Attesa
-                        </button>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
+                                    type="button"
+                                    [disabled]="formIsInvalid()"
+                                    (click)="onInAttesa()">
+                                <i class="fas fa-pause mr-1"></i>
+                                In Attesa
+                            </button>
+                        </ng-container>
                     </ng-template>
                     <ng-template [ngIf]="modifica">
                         <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
@@ -405,17 +431,26 @@
                 </div>
                 <div class="float-right">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-outline-secondary mr-2 btn-no-hover btn-xlarge mx-3"
-                                type="button"
-                                (click)="onResetChiamata()">
-                            <i class="fas fa-recycle mr-1"></i>
-                            Ripulisci Campi
-                        </button>
-                        <!-- <div class="btn-group"> -->
-                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
-                                (click)="onAnnullaChiamata()">
-                            Torna Indietro
-                        </button>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <button class="btn btn-outline-secondary mr-2 btn-no-hover btn-xlarge mx-3"
+                                    type="button"
+                                    (click)="onResetChiamata()">
+                                <i class="fas fa-recycle mr-1"></i>
+                                Ripulisci Campi
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                                    (click)="onAnnullaChiamata()">
+                                Torna Indietro
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="apertoFromMappa">
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                                    (click)="onAnnullaChiamataFromMappa()">
+                                Chiudi
+                            </button>
+                        </ng-container>
                     </ng-template>
                     <ng-template [ngIf]="modifica">
                         <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
@@ -428,7 +463,8 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-    <div class="col-4 h-100 bg-resoconto-triage scroll-y pt-3">
+    <div class="col-4 h-100 scroll-y pt-3"
+         [class.bg-resoconto-triage]="!apertoFromMappa">
         <div class="px-3">
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
