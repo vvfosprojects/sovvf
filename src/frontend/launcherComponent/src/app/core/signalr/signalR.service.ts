@@ -374,11 +374,11 @@ export class SignalRService {
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
+                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
+
                 const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
                 if (idUtente === utenteAttuale.id) {
                     this.store.dispatch(new UpdateRuoliPersonali(idUtente));
-                } else {
-                    this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
                 }
             }
         });
