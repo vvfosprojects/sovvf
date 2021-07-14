@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-tasto-chiamata',
