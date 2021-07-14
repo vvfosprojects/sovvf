@@ -171,6 +171,7 @@ namespace SO115App.API.Controllers
         {
             var sintesiRichiesteAssistenzaQuery = new GetCodiciRichiesteAssistenzaQuery
             {
+                CodiciSede = Request.Headers["codiceSede"].ToString().Split(','),
                 idRichiesta = idRichiesta
             };
 

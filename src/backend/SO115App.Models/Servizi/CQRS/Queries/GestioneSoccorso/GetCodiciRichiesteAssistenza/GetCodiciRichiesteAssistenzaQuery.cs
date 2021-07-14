@@ -30,5 +30,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichies
         ///   E' l'ID della Richiesta da estrarre
         /// </summary>
         public string idRichiesta { get; set; }
+
+        public string[] CodiciSede { get; set; }
     }
 }
