@@ -14,6 +14,7 @@
                         <app-tasto-schede-contatto
                                 [active]="schedeContattoStatus$ | async"
                                 [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
+                                [disabled]="permessiFeature.SchedeContatto | checkPermission"
                                 (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
                     </div>
