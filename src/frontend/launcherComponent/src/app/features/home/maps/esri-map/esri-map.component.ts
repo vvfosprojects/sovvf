@@ -97,6 +97,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         // TODO: togliere commento (funzionante)
                         // this.addHereItaliaMapImageLayer().then();
 
+                        // Nasconde il layer HERE_ITALIA
                         this.toggleLayer('HERE_ITALIA').then();
                     });
                 });
@@ -187,6 +188,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    // Apre il modale con il Form Chiamata
     async onClickNuovaChiamata(): Promise<any> {
         this.view.on('click', (event) => {
             const check = document.getElementById('idCheck');
@@ -220,6 +222,8 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
                 modalNuovaChiamata.componentInstance.lat = lat;
                 modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.componentInstance.address = null; // TODO: trovare indirizzo tramite lat e long
+
                 modalNuovaChiamata.result.then((result: any) => {
                     console.log('modalNuovaChiamata result', result);
                 });
@@ -230,43 +234,6 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 await chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: [g] });
             }
 
-            // TODO: trovare indirizzo tramite lat e long
-            // const locatorTask = new Locator({
-            //     url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-            // });
-            // const params = {
-            //     location: event.mapPoint,
-            // };
-            // locatorTask
-            //     .locationToAddress(params)
-            //     .then((response) => {
-            //
-            //         const obj = response.attributes;
-            //         this.view.popup.content =
-            //             '<span class=\'controlSpan\'>AddNum:</span> ' + obj.AddNum + '<br>' +
-            //             '<span class=\'controlSpan\'>Addr_type:</span> ' + obj.Addr_type + '<br>' +
-            //             '<span class=\'controlSpan\'>Address:</span> ' + obj.Address + '<br>' +
-            //             '<span class=\'controlSpan\'>Block:</span> ' + obj.Block + '<br>' +
-            //             '<span class=\'controlSpan\'>City:</span> ' + obj.City + '<br>' +
-            //             '<span class=\'controlSpan\'>CountryCode:</span> ' + obj.CountryCode + '<br>' +
-            //             '<span class=\'controlSpan\'>District:</span> ' + obj.District + '<br>' +
-            //             '<span class=\'controlSpan\'>LongLabel:</span> ' + obj.LongLabel + '<br>' +
-            //             '<span class=\'controlSpan\'>Match_addr:</span> ' + obj.Match_addr + '<br>' +
-            //             '<span class=\'controlSpan\'>MetroArea:</span> ' + obj.MetroArea + '<br>' +
-            //             '<span class=\'controlSpan\'>Neighborhood:</span> ' + obj.Neighborhood + '<br>' +
-            //             '<span class=\'controlSpan\'>PlaceName:</span> ' + obj.PlaceName + '<br>' +
-            //             '<span class=\'controlSpan\'>Postal:</span> ' + obj.Postal + '<br>' +
-            //             '<span class=\'controlSpan\'>PostalExt:</span> ' + obj.PostalExt + '<br>' +
-            //             '<span class=\'controlSpan\'>Region:</span> ' + obj.Region + '<br>' +
-            //             '<span class=\'controlSpan\'>Sector:</span> ' + obj.Sector + '<br>' +
-            //             '<span class=\'controlSpan\'>ShortLabel:</span> ' + obj.ShortLabel + '<br>' +
-            //             '<span class=\'controlSpan\'>Subregion:</span> ' + obj.Subregion + '<br>' +
-            //             '<span class=\'controlSpan\'>Territory:</span> ' + obj.Territory + '<br>' +
-            //             '<span class=\'controlSpan\'>Type:</span> ' + obj.Type + '<br>';
-            //     })
-            //     .catch(() => {
-            //         this.view.popup.content = 'No address was found for this location';
-            //     });
         });
         return this.view.when();
     }
