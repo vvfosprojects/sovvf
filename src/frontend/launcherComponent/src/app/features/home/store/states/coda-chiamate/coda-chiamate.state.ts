@@ -106,7 +106,7 @@ export class CodaChiamateState {
         const dataGrafico = makeCopy(state.data);
 
         patchState({
-            data: dataGrafico.sort(sortType).filter((data: ItemGraficoCodaChiamate) => !!data.numRichieste || !!data.squadreLibere || !!data.squadreOccupate)
+            data: dataGrafico.sort(sortType)
         });
 
         function sortType(a, b): number {

@@ -12,7 +12,7 @@ export class GraficoDistaccamentiComponent {
 
     @Input() data: ItemChart[];
 
-    @Input() view: number[];
+    @Input() view: any;
 
     // options
     @Input() showXAxis: boolean;
