@@ -12,11 +12,12 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../../../auth/store/auth.state';
+import { makeIdChiamata } from '../../../../shared/helper/function-richieste';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -36,7 +37,6 @@ import Point from '@arcgis/core/geometry/Point';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
-import { makeIdChiamata } from "../../../../shared/helper/function-richieste";
 
 @Component({
     selector: 'app-esri-map',
@@ -62,7 +62,10 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(private http: HttpClient,
                 private modalService: NgbModal,
-                private store: Store) {
+                private store: Store,
+                private configModal: NgbModalConfig) {
+        configModal.backdrop = 'static';
+        configModal.keyboard = false;
     }
 
     ngOnInit(): void {
@@ -80,7 +83,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 this.initializeChiamateInCorsoLayer().then(() => {
                     // Abilito il click su mappa per avviare la chiamata dal punto selezionato
                     // TODO: togliere il commento per abilitare la Nuova Chiamata al click e finire logica
-                    this.onClickNuovaChiamata().then();
+                    // this.onClickNuovaChiamata().then();
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -213,7 +216,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             addChiamataMarker(this.chiamateInCorsoFeatureLayer, graphic).then(() => {
                 // Apro il modale con FormChiamata
                 const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                    windowClass: 'xxlModal modal-holder'
+                    windowClass: 'xxlModal modal-holder',
                 });
                 modalNuovaChiamata.componentInstance.lat = lat;
                 modalNuovaChiamata.componentInstance.lon = lon;
