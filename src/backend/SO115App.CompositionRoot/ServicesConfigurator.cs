@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
+using SO115App.Persistence.File.CSVManagement;
 
 namespace SO115App.CompositionRoot
 {
@@ -25,6 +26,7 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
+            container.Register<ICSVManager, CSVManager>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
                 API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();

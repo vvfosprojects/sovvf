@@ -76,12 +76,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                 var form = new DettaglioInterventoModelForm()
                 {
                     Chiamata = chiamata,
-                    lstPartenze = richiesta.lstPartenze.SelectMany(partenza => partenza.Squadre.Select(squadra => new DettaglioPartenza()
+                    lstPartenze = richiesta.lstPartenze?.SelectMany(partenza => partenza.Squadre.Select(squadra => new DettaglioPartenza()
                     {
                         SiglaMezzo = partenza.Mezzo.Descrizione,
                         TargaMezzo = partenza.Mezzo.Codice,
                         SiglaSquadra = squadra.Codice,
-                        SchedaCapoPartenza = squadra.Componenti.FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
+                        SchedaCapoPartenza = squadra.Componenti?.FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
                         //OraAss = DateTime.Now
                     })).ToList()
                 };
