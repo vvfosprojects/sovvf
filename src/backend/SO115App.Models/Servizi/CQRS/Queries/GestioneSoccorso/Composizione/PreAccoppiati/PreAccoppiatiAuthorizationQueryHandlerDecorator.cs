@@ -54,6 +54,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+                    foreach (var competenza in query.CodiceSede)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

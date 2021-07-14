@@ -49,6 +49,18 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+                    foreach (var competenza in query.CodiciSede)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

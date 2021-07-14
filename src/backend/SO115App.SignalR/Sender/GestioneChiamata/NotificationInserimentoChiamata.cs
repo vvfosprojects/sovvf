@@ -62,7 +62,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
-            Task.Factory.StartNew(() => Parallel.ForEach(SediDaNotificare, sede =>
+            Parallel.ForEach(SediDaNotificare, sede =>
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery
                 {
@@ -86,7 +86,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
-            }));
+            });
         }
     }
 }

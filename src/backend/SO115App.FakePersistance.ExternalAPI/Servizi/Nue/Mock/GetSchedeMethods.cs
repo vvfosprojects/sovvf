@@ -246,29 +246,34 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>una lista di schede marker</returns>
         public List<SchedaContattoMarker> GetMarkerFiltered(AreaMappa area)
         {
-            var listaSchedeContatto = GetSchedeContattoBySpatialArea(area.TopRight.Latitudine, area.TopRight.Longitudine, area.BottomLeft.Latitudine, area.BottomLeft.Longitudine);
             var listaSchedeMarker = new List<SchedaContattoMarker>();
-            foreach (var scheda in listaSchedeContatto)
+            if (area.TopRight != null)
             {
-                var schedaMarker = new SchedaContattoMarker
+                var listaSchedeContatto = GetSchedeContattoBySpatialArea(area.TopRight.Latitudine, area.TopRight.Longitudine, area.BottomLeft.Latitudine, area.BottomLeft.Longitudine);
+
+                foreach (var scheda in listaSchedeContatto)
                 {
-                    CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
-                    CodiceScheda = scheda.CodiceScheda,
-                    Localita = scheda.Localita,
-                    Priorita = scheda.Priorita,
-                    Classificazione = scheda.Classificazione,
-                    Gestita = scheda.Gestita
-                };
-                listaSchedeMarker.Add(schedaMarker);
+                    var schedaMarker = new SchedaContattoMarker
+                    {
+                        CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
+                        CodiceScheda = scheda.CodiceScheda,
+                        Localita = scheda.Localita,
+                        Priorita = scheda.Priorita,
+                        Classificazione = scheda.Classificazione,
+                        Gestita = scheda.Gestita
+                    };
+                    listaSchedeMarker.Add(schedaMarker);
+                }
+                if (area.FiltroSchedeContatto?.MostraGestite == true)
+                {
+                    return listaSchedeMarker;
+                }
+                else
+                {
+                    return listaSchedeMarker.FindAll(x => !x.Gestita);
+                }
             }
-            if (area.FiltroSchedeContatto?.MostraGestite == true)
-            {
-                return listaSchedeMarker;
-            }
-            else
-            {
-                return listaSchedeMarker.FindAll(x => !x.Gestita);
-            }
+            else return listaSchedeMarker;
         }
 
         /// <summary>

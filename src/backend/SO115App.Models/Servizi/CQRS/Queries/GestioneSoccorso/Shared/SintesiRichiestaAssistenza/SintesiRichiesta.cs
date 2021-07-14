@@ -372,12 +372,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                     return Costanti.RichiestaSospesa;
                 }
 
-                if (Partenze.Count > 0)
+                if (Partenze != null)
                 {
-                    if (Partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                    if (Partenze.Count > 0)
                     {
-                        this.Sospesa = true;
-                        return Costanti.RichiestaSospesa;
+                        if (Partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                        {
+                            this.Sospesa = true;
+                            return Costanti.RichiestaSospesa;
+                        }
                     }
                 }
 

@@ -11,13 +11,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
-        //private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
         public RiepilogoInterventiPathAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
-            //_getAutorizzazioni = getAutorizzazioni;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(RiepilogoInterventiPathQuery query)
@@ -29,10 +29,23 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+                    foreach (var competenza in query.IdSede)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }
-
