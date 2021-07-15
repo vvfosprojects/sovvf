@@ -41,26 +41,25 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
             var filename = "Riepilogo_interventi_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf";
 
-            //var defString = new string[] { "" };
             var lstRiepiloghi = lstInterventi.Result?.Select(i => new RiepilogoIntervento()
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
                 Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
-                Turno = string.Concat(i.Partenze.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)),
-                Indirizzo = i.Localita.Indirizzo.Split(',')[0],
+                Turno = (i.Partenze != null && i.Partenze.Count > 0) ? string.Concat(i?.Partenze?.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)) : "",
+                Indirizzo = i.Localita?.Indirizzo.Split(',')[0],
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
                 Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
-                NumeroIntervento = int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).Last()),
-                Comune = i.Localita.Indirizzo.Split(',')[2].Substring(7).Replace(' ', '-'),
-                KmCiv = i.Localita.Indirizzo.Split(',')[1],
-                
-                lstPartenze = i.Partenze.Select(p => new RiepilogoPartenza()
+                NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
+                Comune = i?.Localita?.Indirizzo?.Split(',')[2],
+                KmCiv = i?.Localita?.Indirizzo?.Split(',')[1],
+
+                lstPartenze = i?.Partenze?.Select(p => new RiepilogoPartenza()
                 {
                     SiglaSquadra = string.Concat(p.Partenza.Squadre.SelectMany(s => s.Codice + " ")),
                     CodMezzo = p.CodiceMezzo,
-                    CapoPartenza = p.CodiceFiscaleCapopartenza,//p.Partenza.Squadre.SelectMany(s => s.Componenti).FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
+                    CapoPartenza = p.CodiceFiscaleCapopartenza,
                     MezzoInUscita = p.DataOraInserimento,
                     MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,

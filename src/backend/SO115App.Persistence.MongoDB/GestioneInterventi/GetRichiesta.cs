@@ -283,7 +283,7 @@ namespace SO115App.Persistence.MongoDB
         {
             var empty = Builders<RichiestaAssistenza>.Filter.Empty;
 
-            var soloInterventi = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C"); //OK
+            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
             var distaccamento = string.IsNullOrEmpty(filtri.Distaccamento) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.CodSOCompetente, filtri.Distaccamento); //OK
 
@@ -297,7 +297,7 @@ namespace SO115App.Persistence.MongoDB
 
             var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
 
-            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre /*& trasmessi & periodoDa & periodoA*/).ToList();
+            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno /*& squadre & trasmessi & periodoDa & periodoA*/).ToList();
         }
     }
 }

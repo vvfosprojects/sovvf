@@ -10,15 +10,17 @@ namespace SO115App.Persistence.File.CSVManagement
     {
         public MemoryStream GenerateAndDownload(List<ChiamataInSospeso> lstChiamateInSospeso)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                var streamWriter = new StreamWriter(memoryStream);
-                var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
-                
-                csvWriter.WriteRecords(lstChiamateInSospeso);
-                
-                return memoryStream;
-            }
+            var memoryStream = new MemoryStream();
+            
+            var streamWriter = new StreamWriter(memoryStream);
+
+            var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
+            
+            csvWriter.WriteRecords(lstChiamateInSospeso);
+
+            csvWriter.Flush();
+            
+            return memoryStream;
         }
     }
 }

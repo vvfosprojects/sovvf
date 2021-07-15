@@ -97,7 +97,7 @@ namespace SO115App.API.Controllers
 
                 var result = _chiamateInSospesoQuery.Handle(query);
 
-                return File(result.Data, "application/csv");
+                return File(result.Data, "text/csv");
             }
             catch (Exception e)
             {
