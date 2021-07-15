@@ -51,6 +51,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
 
     checkedUrgenza: boolean;
     disableUrgenza: boolean;
+    apertoFromMappa: boolean;
 
     private subscriptions: Subscription = new Subscription();
 

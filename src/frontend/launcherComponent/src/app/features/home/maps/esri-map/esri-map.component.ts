@@ -7,11 +7,17 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    SimpleChanges
+    SimpleChanges, OnInit
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
+import { Utente } from '../../../../shared/model/utente.model';
+import { Store } from '@ngxs/store';
+import { AuthState } from '../../../auth/store/auth.state';
+import { makeIdChiamata } from '../../../../shared/helper/function-richieste';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -28,21 +34,23 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
+import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 
 @Component({
     selector: 'app-esri-map',
     templateUrl: './esri-map.component.html',
     styleUrls: ['./esri-map.component.scss']
 })
-export class EsriMapComponent implements OnChanges, OnDestroy {
+export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
 
     @Output() mapIsLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
+
+    operatore: Utente;
 
     map: Map;
     view: any = null;
@@ -52,7 +60,16 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private modalService: NgbModal,
+                private store: Store,
+                private configModal: NgbModalConfig) {
+        configModal.backdrop = 'static';
+        configModal.keyboard = false;
+    }
+
+    ngOnInit(): void {
+        this.operatore = this.store.selectSnapshot(AuthState.currentUser);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +81,9 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
             this.initializeMap().then(() => {
                 // Inizializzazione dei layer lato client delle chiamate in corso
                 this.initializeChiamateInCorsoLayer().then(() => {
+                    // Abilito il click su mappa per avviare la chiamata dal punto selezionato
+                    // TODO: togliere il commento per abilitare la Nuova Chiamata al click e finire logica
+                    // this.onClickNuovaChiamata().then();
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -77,6 +97,7 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
                         // TODO: togliere commento (funzionante)
                         // this.addHereItaliaMapImageLayer().then();
 
+                        // Nasconde il layer HERE_ITALIA
                         this.toggleLayer('HERE_ITALIA').then();
                     });
                 });
@@ -165,6 +186,56 @@ export class EsriMapComponent implements OnChanges, OnDestroy {
         if (this.view?.ready) {
             this.view.zoom = zoom;
         }
+    }
+
+    // Apre il modale con il Form Chiamata
+    async onClickNuovaChiamata(): Promise<any> {
+        this.view.on('click', (event) => {
+            const check = document.getElementById('idCheck');
+            // @ts-ignore
+            if (check && !check.checked) {
+                return;
+            }
+
+            const lat = event.mapPoint.latitude;
+            const lon = event.mapPoint.longitude;
+
+            // Inserisco il marker Chiamata in Corso
+            const p: number[] = [lon, lat];
+            const mp = new Point({
+                longitude: p[0],
+                latitude: p[1],
+                spatialReference: {
+                    wkid: 3857
+                }
+            });
+            const graphic = new Graphic({
+                geometry: mp,
+                attributes: {
+                    idChiamataMarker: makeIdChiamata(this.operatore)
+                }
+            });
+            addChiamataMarker(this.chiamateInCorsoFeatureLayer, graphic).then(() => {
+                // Apro il modale con FormChiamata
+                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                    windowClass: 'xxlModal modal-holder',
+                });
+                modalNuovaChiamata.componentInstance.lat = lat;
+                modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.componentInstance.address = null; // TODO: trovare indirizzo tramite lat e long
+
+                modalNuovaChiamata.result.then((result: any) => {
+                    console.log('modalNuovaChiamata result', result);
+                });
+                this.changeCenter([lon, lat]);
+            });
+
+            async function addChiamataMarker(chiamateInCorsoFeatureLayer: FeatureLayer, g: Graphic): Promise<any> {
+                await chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: [g] });
+            }
+
+        });
+        return this.view.when();
     }
 
     // Inizializza i layer "Chiamate in Corso"

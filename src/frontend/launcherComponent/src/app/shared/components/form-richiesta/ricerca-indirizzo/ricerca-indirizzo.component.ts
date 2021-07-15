@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { AppState } from '../../../../../shared/store/states/app/app.state';
+import { AppState } from '../../../store/states/app/app.state';
 import Locator from '@arcgis/core/tasks/Locator';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';

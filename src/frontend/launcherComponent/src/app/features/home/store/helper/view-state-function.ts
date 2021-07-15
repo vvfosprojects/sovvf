@@ -1,4 +1,9 @@
-import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
+import {
+    Grids,
+    ViewComponentStateModel,
+    ViewInterfaceButton,
+    ViewInterfaceMaps
+} from '../../../../shared/interface/view.interface';
 import { ChangeView } from '../actions/view/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../shared/enum/layout.enum';
@@ -51,6 +56,17 @@ export function activeChiamata(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.chiamata.active = true;
     stateDefault.view.mappa.options = [AppFeatures.Chiamata];
     stateDefault.view.filterbar.options = [Grid.Col6];
+    return stateDefault;
+}
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di richieste
+ * @param: stateDefault
+ */
+export function activeRichieste(stateDefault: any): ViewComponentStateModel {
+    stateDefault.view.richieste.active = true;
+    stateDefault.view.mappa.active = false;
+    stateDefault.view.mappa.options = [AppFeatures.Richieste];
     return stateDefault;
 }
 

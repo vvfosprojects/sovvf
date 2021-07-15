@@ -12,7 +12,7 @@ import {
     TurnOffComposizione,
     ToggleMezziInServizio,
     ToggleSchedeContatto,
-    ClearViewState, ToggleCodaChiamate
+    ClearViewState, ToggleCodaChiamate, ToggleRichieste
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -33,7 +33,7 @@ import {
     updateView,
     viewStateMaps,
     activeMezziInServizio,
-    activeSchedeContatto, activeCodaChiamate
+    activeSchedeContatto, activeCodaChiamate, activeRichieste
 } from '../../helper/view-state-function';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -253,6 +253,19 @@ export class ViewComponentState {
                 column: newState.column
             });
         }
+    }
+
+    @Action(ToggleRichieste)
+    toggleRichieste({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleRichieste): void {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        dispatch(new SaveView(makeCopy(state)));
+        const newState = activeRichieste(stateDefault);
+        patchState({
+            ...state,
+            view: newState.view,
+            column: newState.column
+        });
     }
 
     @Action(ToggleComposizione)

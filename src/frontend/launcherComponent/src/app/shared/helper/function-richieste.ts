@@ -3,6 +3,13 @@ import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
 import { Partenza } from '../model/partenza.model';
+import { Utente } from '../model/utente.model';
+import { makeID } from './function-generiche';
+
+
+export function makeIdChiamata(operatore: Utente): string {
+    return `${operatore.sede.codice}-${operatore.id}-${makeID(8)}`;
+}
 
 export function makeIDChiamata(): string {
     let text = '';

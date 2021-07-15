@@ -196,6 +196,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .border-top-richiesta {
     border-top: solid thin #e0e0e0;
   }
+
+  #buttonNuovaChiamata {
+    color: rgba(255, 255, 255, .95);
+  }
+
+  #buttonNuovaChiamata:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  #buttonNuovaChiamata:disabled,
+  #buttonNuovaChiamata[disabled] {
+    color: rgba(40, 167, 69, 0.7)
+  }
 }
 
 // END Sun Mode Styles
@@ -440,6 +453,19 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-partial-loader {
     background-color: rgba(53, 53, 53, 0.7) $SO-i;
+  }
+
+  #buttonNuovaChiamata {
+    color: rgba(255, 255, 255, .95);
+  }
+
+  #buttonNuovaChiamata:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  #buttonNuovaChiamata:disabled,
+  #buttonNuovaChiamata[disabled] {
+    color: rgba(255, 255, 255, .7);
   }
 }
 

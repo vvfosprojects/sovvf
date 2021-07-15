@@ -19,16 +19,24 @@ import {
     StopLoadingNuovaChiamata
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
-import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleModifica, ToggleRichieste } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
-import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
+import {
+    DelChiamataMarker,
+    SetChiamataMarker,
+    UpdateChiamataMarker
+} from '../../actions/maps/chiamate-markers.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
+import {
+    GetListaRichieste,
+    SetIdChiamataInviaPartenza,
+    SetNeedRefresh
+} from '../../actions/richieste/richieste.actions';
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
@@ -195,7 +203,8 @@ export class SchedaTelefonataState {
                 break;
             case 'inserita':
                 const urgente = action.options?.urgente;
-                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata, { urgente }));
+                const fromMappa = action.options?.fromMappa;
+                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata, { urgente, fromMappa }));
                 break;
             case 'modificata':
                 dispatch(new PatchRichiesta());
@@ -272,6 +281,8 @@ export class SchedaTelefonataState {
         const f = state.richiestaForm.model;
         const azioneChiamata = action.azioneChiamata;
         const urgente = action.options?.urgente;
+        const fromMappa = action.options?.fromMappa;
+
         let chiamata: SintesiRichiesta;
         let tipologia: Tipologia;
         if (f) {
@@ -366,6 +377,9 @@ export class SchedaTelefonataState {
                     new ToggleChiamata()
                 ]);
             } else {
+                if (fromMappa) {
+                    dispatch(new ToggleRichieste());
+                }
                 dispatch(new CestinaChiamata());
             }
         }, () => {

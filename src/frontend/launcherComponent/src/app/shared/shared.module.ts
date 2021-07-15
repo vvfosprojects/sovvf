@@ -75,6 +75,10 @@ import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
 import { TriageSummarySintesiRichiestaComponent } from './components/triage-summary-sintesi-richiesta/triage-summary-sintesi-richiesta.component';
 import { SintesiRichiestaModalComponent } from './modal/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import { FormRichiestaComponent } from './components/form-richiesta/form-richiesta.component';
+import { TagInputModule } from 'ngx-chips';
+import { RicercaIndirizzoComponent } from './components/form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
+import { ChiamataService } from "../core/service/chiamata-service/chiamata.service";
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -144,7 +148,9 @@ const COMPONENTS = [
     TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent,
     PosModalComponent,
-    TriageSummarySintesiRichiestaComponent
+    TriageSummarySintesiRichiestaComponent,
+    FormRichiestaComponent,
+    RicercaIndirizzoComponent
 ];
 const MODULES = [
     PipeModule
@@ -165,7 +171,8 @@ const MODULES = [
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
-        })
+        }),
+        TagInputModule
     ],
     declarations: [
         ...COMPONENTS,
@@ -173,6 +180,9 @@ const MODULES = [
     exports: [
         ...COMPONENTS,
         MODULES
+    ],
+    providers: [
+        ChiamataService
     ]
 })
 export class SharedModule {
