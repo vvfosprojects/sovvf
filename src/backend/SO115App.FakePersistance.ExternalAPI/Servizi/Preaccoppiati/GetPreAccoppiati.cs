@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static SO115App.API.Models.Classi.Condivise.Squadra;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 {
@@ -48,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                         lstSquadreMezzo.TryAdd(m, lstSquadre
                             .Where(s => s.Codice.Equals(squadra.Codice))
-                            .Select(s => new Squadra(s.Codice, s.Descrizione, Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato)))
+                            .Select(s => new Squadra(s.Codice, s.Descrizione, MappaStatoSquadraDaStatoMezzo.MappaStato(squadra.Stato)))
                             .ToArray())));
                 });
 

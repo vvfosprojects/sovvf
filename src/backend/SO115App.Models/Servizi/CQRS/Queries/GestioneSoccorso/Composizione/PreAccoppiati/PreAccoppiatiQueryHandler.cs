@@ -51,6 +51,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 DataArray = ListapreAccoppiati
                     .Skip(query.Filtri.Pagination.PageSize * (query.Filtri.Pagination.Page - 1))
                     .Take(query.Filtri.Pagination.PageSize).ToList(),
+
                 Pagination = new Paginazione()
                 {
                     Page = query.Filtri.Pagination.Page,
