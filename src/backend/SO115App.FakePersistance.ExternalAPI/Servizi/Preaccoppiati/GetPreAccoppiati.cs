@@ -1,5 +1,6 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -7,6 +8,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                         lstSquadreMezzo.TryAdd(m, lstSquadre
                             .Where(s => s.Codice.Equals(squadra.Codice))
-                            .Select(s => new Squadra(s.Codice, s.Descrizione, lstStatoSquadre.Result.Find(stato => s.Codice.Equals(stato.IdSquadra))?.StatoSquadra ?? Costanti.MezzoInSede))
+                            .Select(s => new Squadra(s.Codice, s.Descrizione, Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato)))
                             .ToArray())));
                 });
 
