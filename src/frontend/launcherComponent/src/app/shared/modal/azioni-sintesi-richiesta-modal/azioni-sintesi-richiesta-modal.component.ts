@@ -206,31 +206,37 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà effettuato il download automatico.';
+        modalConfermaReset.componentInstance.stampa = true;
 
         modalConfermaReset.result.then(
             (val) => {
-                switch (val) {
+                switch (val.slice(0, 2)) {
                     case 'ok':
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
                         };
-                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
-                            switch (data.type) {
-                                case HttpEventType.DownloadProgress :
-                                    break;
-                                case HttpEventType.Response :
-                                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                                    const a = document.createElement('a');
-                                    a.setAttribute('style', 'display:none;');
-                                    document.body.appendChild(a);
-                                    a.download = 'Stampa:' + obj.idRichiesta;
-                                    a.href = URL.createObjectURL(downloadedFile);
-                                    a.target = '_blank';
-                                    a.click();
-                                    document.body.removeChild(a);
-                                    break;
-                            }
-                        }, error => console.log('Errore Stampa Richiesta'));
+                        if (val.slice(2, 5) === 'pdf') {
+                            this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+                                switch (data.type) {
+                                    case HttpEventType.DownloadProgress :
+                                        break;
+                                    case HttpEventType.Response :
+                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                        const a = document.createElement('a');
+                                        a.setAttribute('style', 'display:none;');
+                                        document.body.appendChild(a);
+                                        a.download = 'Stampa:' + obj.idRichiesta;
+                                        a.href = URL.createObjectURL(downloadedFile);
+                                        a.target = '_blank';
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        break;
+                                }
+                            }, error => console.log('Errore Stampa Richiesta'));
+                        } else if (val.slice(2, 5) === 'csv') {
+                            // TODO: STAMPA CSV
+                            console.log('*** TODO: STAMPA CSV');
+                        }
                         break;
                     case 'ko':
                         break;

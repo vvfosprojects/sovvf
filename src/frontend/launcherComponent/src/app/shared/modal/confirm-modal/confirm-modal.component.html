@@ -8,6 +8,22 @@
     </button>
 </div>
 <div class="modal-body">
+    <div *ngIf="stampa" class="mb-4 mt-2">
+        <div class="form-check-inline">
+            <input class="form-check-input radio-custom" type="radio" id="pdf" name="pdf" [checked]="checkbox.pdf"
+                   (click)="onCheck('pdf')">
+            <label class="form-check-label" for="pdf">
+                Stampa come PDF
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <input class="form-check-input radio-custom" type="radio" id="csv" name="csv" [checked]="checkbox.csv"
+                   (click)="onCheck('csv')">
+            <label class="form-check-label" for="csv">
+                Stampa come CSV
+            </label>
+        </div>
+    </div>
     <ng-template [ngIf]="messaggio">
         <h5>{{ messaggio }}</h5>
     </ng-template>
@@ -20,11 +36,11 @@
 </div>
 <div class="modal-footer" style="place-content: space-between;">
     <button  type="button" class="btn  btn-lg btn-danger btn-no-hover"
-            style="font-weight:600" (click)="modal.close('ok')">
+            style="font-weight:600" (click)="onSubmit('ok')">
         {{ 'Conferma' | uppercase }}
     </button>
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover"
-            style="font-weight:600" (click)="modal.close('ko')">
+            style="font-weight:600" (click)="onSubmit('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
 </div>

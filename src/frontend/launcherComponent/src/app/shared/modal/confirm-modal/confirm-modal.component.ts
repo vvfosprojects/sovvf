@@ -12,8 +12,38 @@ export class ConfirmModalComponent {
     titolo: string;
     messaggio: string;
     messaggioAttenzione: string;
+    stampa = false;
+    checkbox: { pdf: boolean, csv: boolean } = {
+        pdf: true,
+        csv: false,
+    };
+    azioneStampa = 'pdf';
 
     constructor(public modal: NgbActiveModal) {
+    }
+
+    onCheck(key: string): void {
+        if (!this.checkbox[key]) {
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
+        }
+        this.azioneStampa = key;
+    }
+
+    onSubmit(key: string): void {
+        switch (key) {
+            case 'ok': {
+                let result = 'ok';
+                // tslint:disable-next-line:no-unused-expression
+                this.stampa ? result = result + this.azioneStampa : null;
+                this.modal.close(result);
+            }          break;
+            case 'ko': {
+                let result = 'ko';
+                // tslint:disable-next-line:no-unused-expression
+                this.stampa ? result = result + this.azioneStampa : null;
+                this.modal.close(result);
+            }          break;
+        }
     }
 
 }
