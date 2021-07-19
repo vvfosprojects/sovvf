@@ -31,7 +31,6 @@ import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '..
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
-import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface ComposizionePartenzaStateModel {
@@ -202,7 +201,8 @@ export class ComposizionePartenzaState {
             } else if (state.composizioneMode === Composizione.Veloce) {
                 dispatch([
                     new ClearPreAccoppiatiSelezionatiComposizione(),
-                    new ClearPreaccoppiati()
+                    new ClearPreaccoppiati(),
+                    new GetListaComposizioneVeloce()
                 ]);
             }
             dispatch([
@@ -211,11 +211,12 @@ export class ComposizionePartenzaState {
                 new ClearDirection()
             ]);
             const composizioneActive = !!(getState().richiesta);
-            if (composizioneActive) {
+            if (composizioneActive && state.composizioneMode !== Composizione.Veloce) {
                 dispatch(new GetListeComposizioneAvanzata());
-            } else {
-                dispatch(new GetListaMezziSquadre());
             }
+            /*else {
+                dispatch(new GetListaMezziSquadre());
+            }*/
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
             dispatch([
