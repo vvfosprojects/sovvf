@@ -214,6 +214,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     case 'ok':
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+                            contentType: val.slice(2, 5),
                         };
                         if (val.slice(2, 5) === 'pdf') {
                             this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
@@ -232,10 +233,25 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                                         document.body.removeChild(a);
                                         break;
                                 }
-                            }, error => console.log('Errore Stampa Richiesta'));
+                            }, error => console.log('Errore Stampa PDF'));
                         } else if (val.slice(2, 5) === 'csv') {
-                            // TODO: STAMPA CSV
-                            console.log('*** TODO: STAMPA CSV');
+                            this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+                                switch (data.type) {
+                                    case HttpEventType.DownloadProgress :
+                                        break;
+                                    case HttpEventType.Response :
+                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                        const a = document.createElement('a');
+                                        a.setAttribute('style', 'display:none;');
+                                        document.body.appendChild(a);
+                                        a.download = 'Stampa:' + obj.idRichiesta;
+                                        a.href = URL.createObjectURL(downloadedFile);
+                                        a.target = '_blank';
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        break;
+                                }
+                            }, error => console.log('Errore Stampa CSV'));
                         }
                         break;
                     case 'ko':
