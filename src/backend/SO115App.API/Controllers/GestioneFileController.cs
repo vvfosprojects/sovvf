@@ -41,7 +41,7 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                return File(result.Data, contentType);
+                return File(result.Data.ToArray(), contentType);
             }
             catch (Exception e)
             {

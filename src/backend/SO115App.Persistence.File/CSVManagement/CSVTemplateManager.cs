@@ -39,19 +39,55 @@ namespace SO115App.Persistence.File.CSVManagement
             return memoryStream;
         }
 
+        //TODO SISTEMARE MAPPING
+
         private void generaDettaglioChiamataCSV(DettaglioChiamataModelForm model)
         {
+            csvWriter.Context.RegisterClassMap<DettaglioChiamataMap>();
             csvWriter.WriteRecords(new List<DettaglioChiamataModelForm>() { model });
         }
 
         private void generaDettaglioInterventoCSV(DettaglioInterventoModelForm model)
         {
+            //csvWriter.Context.RegisterClassMap(model.GetType());
             csvWriter.WriteRecords(new List<DettaglioInterventoModelForm>() { model });
         }
 
         private void generaRiepilogoInterventoCSV(RiepilogoInterventiModelForm model)
         {
+            //csvWriter.Context.RegisterClassMap<RiepilogoInterventiMap>();
             csvWriter.WriteRecords(model.lstRiepiloghi);
+        }
+    }
+
+    internal class DettaglioChiamataMap : ClassMap<DettaglioChiamataModelForm>
+    {
+        public DettaglioChiamataMap()
+        {
+            Map(f => f.Chiamata.Civ_Km).Index(0);
+            Map(f => f.Chiamata.Comune).Index(1);
+            Map(f => f.Chiamata.DataOraChiamata).Index(2);
+            Map(f => f.Chiamata.Dettaglio).Index(3);
+            Map(f => f.Chiamata.Interno).Index(4);
+            Map(f => f.Chiamata.NoteChiamata).Index(5);
+            Map(f => f.Chiamata.NumeroChiamata).Index(6);
+            Map(f => f.Chiamata.Operatore).Index(7);
+            Map(f => f.Chiamata.Palazzo).Index(8);
+            Map(f => f.Chiamata.Piano).Index(9);
+            Map(f => f.Chiamata.Prov).Index(10);
+            Map(f => f.Chiamata.Richiedente).Index(11);
+            Map(f => f.Chiamata.RichiedenteTelefono).Index(12);
+            Map(f => f.Chiamata.Scala).Index(13);
+            Map(f => f.Chiamata.Tipologia).Index(14);
+            Map(f => f.Chiamata.TitoloDistaccamento).Index(15);
+        }
+    }
+
+    internal class RiepilogoInterventiMap : ClassMap<RiepilogoInterventiModelForm>
+    {
+        public RiepilogoInterventiMap()
+        {
+            //Map(f => f.lstRiepiloghi.);
         }
     }
 }
