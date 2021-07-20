@@ -1,6 +1,8 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -16,7 +18,7 @@ namespace SO115App.Persistence.File.CSVManagement
         {
             memoryStream = new MemoryStream();
             streamWriter = new StreamWriter(memoryStream);
-            csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
+            csvWriter = new CsvWriter(streamWriter, new CsvConfiguration(CultureInfo.InvariantCulture));
         }
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
@@ -39,17 +41,17 @@ namespace SO115App.Persistence.File.CSVManagement
 
         private void generaDettaglioChiamataCSV(DettaglioChiamataModelForm model)
         {
-            csvWriter.WriteRecord(model);
+            csvWriter.WriteRecords(new List<DettaglioChiamataModelForm>() { model });
         }
 
         private void generaDettaglioInterventoCSV(DettaglioInterventoModelForm model)
         {
-            csvWriter.WriteRecord(model);
+            csvWriter.WriteRecords(new List<DettaglioInterventoModelForm>() { model });
         }
 
         private void generaRiepilogoInterventoCSV(RiepilogoInterventiModelForm model)
         {
-            csvWriter.WriteRecord(model);
+            csvWriter.WriteRecords(model.lstRiepiloghi);
         }
     }
 }
