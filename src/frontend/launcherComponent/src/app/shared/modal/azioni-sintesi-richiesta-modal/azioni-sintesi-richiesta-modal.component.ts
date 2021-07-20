@@ -214,47 +214,25 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     case 'ok':
                         const obj = {
                             idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
-                            contentType: val.slice(2, 5),
+                            contentType: val.slice(2, 5) === 'csv' ? 'text/' + val.slice(2, 5) : 'application/' + val.slice(2, 5),
                         };
-                        if (val.slice(2, 5) === 'pdf') {
-                            obj.contentType = 'application/' + val.slice(2, 5);
-                            this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
-                                switch (data.type) {
-                                    case HttpEventType.DownloadProgress :
-                                        break;
-                                    case HttpEventType.Response :
-                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                                        const a = document.createElement('a');
-                                        a.setAttribute('style', 'display:none;');
-                                        document.body.appendChild(a);
-                                        a.download = 'Stampa:' + obj.idRichiesta;
-                                        a.href = URL.createObjectURL(downloadedFile);
-                                        a.target = '_blank';
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        break;
-                                }
-                            }, error => console.log('Errore Stampa PDF'));
-                        } else if (val.slice(2, 5) === 'csv') {
-                            obj.contentType = 'text/' + val.slice(2, 5);
-                            this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
-                                switch (data.type) {
-                                    case HttpEventType.DownloadProgress :
-                                        break;
-                                    case HttpEventType.Response :
-                                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                                        const a = document.createElement('a');
-                                        a.setAttribute('style', 'display:none;');
-                                        document.body.appendChild(a);
-                                        a.download = 'Stampa:' + obj.idRichiesta + '.csv';
-                                        a.href = URL.createObjectURL(downloadedFile);
-                                        a.target = '_blank';
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        break;
-                                }
-                            }, error => console.log('Errore Stampa CSV'));
-                        }
+                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+                            switch (data.type) {
+                                case HttpEventType.DownloadProgress :
+                                    break;
+                                case HttpEventType.Response :
+                                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                    const a = document.createElement('a');
+                                    a.setAttribute('style', 'display:none;');
+                                    document.body.appendChild(a);
+                                    a.download = val.slice(2, 5) === 'csv' ? 'Stampa:' + obj.idRichiesta + '.csv' : 'Stampa:' + obj.idRichiesta;
+                                    a.href = URL.createObjectURL(downloadedFile);
+                                    a.target = '_blank';
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    break;
+                            }
+                        }, error => console.log('Errore Stampa ' + val.slice(2, 5).toUpperCase()));
                         break;
                     case 'ko':
                         break;
