@@ -1,6 +1,5 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Filtri;
-using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 {

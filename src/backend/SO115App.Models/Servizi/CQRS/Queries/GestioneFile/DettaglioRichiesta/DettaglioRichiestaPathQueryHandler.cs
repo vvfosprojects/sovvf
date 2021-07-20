@@ -3,6 +3,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Persistence.File;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System.IO;

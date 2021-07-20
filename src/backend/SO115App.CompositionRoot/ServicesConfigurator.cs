@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using SimpleInjector;
 using SO115App.Persistence.File.CSVManagement;
+using SO115App.Persistence.File.PDFManagement;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -26,7 +28,9 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            container.Register<ICSVManager, CSVManager>();
+            container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
+            container.Register(typeof(ICSVTemplateManager<>), typeof(ICSVTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("CSVTemplateManager")).ToArray()[0]);
+
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
                 API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();

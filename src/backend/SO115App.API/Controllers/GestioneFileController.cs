@@ -31,7 +31,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DettaglioRichiesta(string codice)
+        public async Task<IActionResult> DettaglioRichiesta(string codice, string contentType = "application/pdf")
         {
             try
             {
@@ -45,7 +45,7 @@ namespace SO115App.API.Controllers
 
                 var result = _dettaglioRichiestaQuery.Handle(query);
 
-                return File(result.Data, "application/pdf");
+                return File(result.Data, contentType);
             }
             catch (Exception e)
             {
@@ -58,7 +58,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri)
+        public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri, [FromQuery] string contentType = "application/pdf")
         {
             try
             {
@@ -72,7 +72,7 @@ namespace SO115App.API.Controllers
 
                 var result = _riepilogoInterventiQuery.Handle(query);
 
-                return File(result.Data, "application/pdf");
+                return File(result.Data, contentType);
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ChiamateInSospeso()
+        public async Task<IActionResult> ChiamateInSospeso(string contentType = "application/pdf")
         {
             try
             {
@@ -97,7 +97,7 @@ namespace SO115App.API.Controllers
 
                 var result = _chiamateInSospesoQuery.Handle(query);
 
-                return File(result.Data, "text/csv");
+                return File(result.Data, contentType);
             }
             catch (Exception e)
             {

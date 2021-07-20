@@ -2,8 +2,9 @@
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Persistence.File.CSVManagement;
+using SO115App.Persistence.File;
 using SO115App.Persistence.File.CSVManagement.TemplateModelForms;
+using SO115App.Persistence.File.PDFManagement;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.ChiamateInSospeso
 {
     public class ChiamateInSospesoQueryHandler : IQueryHandler<ChiamateInSospesoQuery, ChiamateInSospesoResult>
     {
-        private readonly ICSVManager _csvManager;
+        private readonly IPDFTemplateManager<ChiamataInSospeso> _fileManager;
         private readonly IGetListaSintesi _getListaSintesi;
 
-        public ChiamateInSospesoQueryHandler(ICSVManager csvManager, IGetListaSintesi getListaSintesi)
+        public ChiamateInSospesoQueryHandler(IPDFTemplateManager<ChiamataInSospeso> fileManager, IGetListaSintesi getListaSintesi)
         {
-            _csvManager = csvManager;
+            _fileManager = fileManager;
             _getListaSintesi = getListaSintesi;
         }
 
@@ -48,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.ChiamateInSospeso
                 //TODO FINIRE MAPPING
             }).ToList();
 
-            stream = _csvManager.GenerateAndDownload(lstChiamateInSospeso);
+            //stream = _fileManager.GenerateAndDownload();
 
             return new ChiamateInSospesoResult()
             {
