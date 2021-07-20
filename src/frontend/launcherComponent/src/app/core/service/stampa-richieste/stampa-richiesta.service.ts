@@ -22,7 +22,7 @@ export class StampaRichiestaService {
     getStampaRichiesta(obj: any): Observable<HttpEvent<Blob>> {
         return this.http.request(new HttpRequest(
             'GET',
-            API_STAMPA_RICHIESTA + '/?codice=' + obj.idRichiesta,
+            API_STAMPA_RICHIESTA + '/?codice=' + obj.idRichiesta + '&contentType=' + obj.contentType,
             null,
             {
                 reportProgress: true,
