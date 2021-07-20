@@ -174,7 +174,7 @@ export class RiepilogoInterventiModalComponent {
                                         document.body.removeChild(a);
                                         break;
                                 }
-                                }, error => console.log('Errore Stampa Riepilogo Interventi'));
+                                }, error => console.log('Errore Stampa Riepilogo Interventi' + val.slice(2, 5).toUpperCase()));
                             break;
                         case 'ko':
                             break;
