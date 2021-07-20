@@ -246,7 +246,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                                         const a = document.createElement('a');
                                         a.setAttribute('style', 'display:none;');
                                         document.body.appendChild(a);
-                                        a.download = 'Stampa:' + obj.idRichiesta + '.xlsx';
+                                        a.download = 'Stampa:' + obj.idRichiesta + '.csv';
                                         a.href = URL.createObjectURL(downloadedFile);
                                         a.target = '_blank';
                                         a.click();

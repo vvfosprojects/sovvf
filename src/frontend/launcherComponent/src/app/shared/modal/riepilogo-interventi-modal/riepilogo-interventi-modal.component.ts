@@ -189,7 +189,7 @@ export class RiepilogoInterventiModalComponent {
                                             const a = document.createElement('a');
                                             a.setAttribute('style', 'display:none;');
                                             document.body.appendChild(a);
-                                            a.download = 'Riepilogo Interventi' + '.xlsx';
+                                            a.download = 'Riepilogo Interventi' + '.csv';
                                             a.href = URL.createObjectURL(downloadedFile);
                                             a.target = '_blank';
                                             a.click();
