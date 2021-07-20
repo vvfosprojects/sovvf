@@ -137,6 +137,7 @@ export class RiepilogoInterventiModalComponent {
                     switch (val.slice(0, 2)) {
                         case 'ok':
                             const obj = {
+                                contentType: val.slice(2, 5),
                                 da: this.prefix.DaA ? this.formatDate(this.fromDate) : null,
                                 a: this.prefix.DaA ? this.formatDate(this.toDate) : null,
                                 distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
@@ -158,6 +159,7 @@ export class RiepilogoInterventiModalComponent {
                                 result: obj
                             });
                             if (val.slice(2, 5) === 'pdf') {
+                                obj.contentType = 'application/' + val.slice(2, 5);
                                 this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((data: any) => {
                                     switch (data.type) {
                                         case HttpEventType.DownloadProgress :
@@ -177,8 +179,25 @@ export class RiepilogoInterventiModalComponent {
 
                                 }, error => console.log('Errore Stampa Richiesta'));
                             } else if (val.slice(2, 5) === 'csv') {
-                                // TODO: STAMPA CSV
-                                console.log('*** TODO: STAMPA CSV');
+                                obj.contentType = 'text/' + val.slice(2, 5);
+                                this.stampaRichiestaService.stampaRiepilogoInterventi(obj).subscribe((data: any) => {
+                                    switch (data.type) {
+                                        case HttpEventType.DownloadProgress :
+                                            break;
+                                        case HttpEventType.Response :
+                                            const downloadedFile = new Blob([data.body], { type: data.body.type });
+                                            const a = document.createElement('a');
+                                            a.setAttribute('style', 'display:none;');
+                                            document.body.appendChild(a);
+                                            a.download = 'Riepilogo Interventi' + '.xlsx';
+                                            a.href = URL.createObjectURL(downloadedFile);
+                                            a.target = '_blank';
+                                            a.click();
+                                            document.body.removeChild(a);
+                                            break;
+                                    }
+
+                                }, error => console.log('Errore Stampa Richiesta'));
                             }
                             break;
                         case 'ko':

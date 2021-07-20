@@ -42,7 +42,7 @@ export class StampaRichiestaService {
     stampaRiepilogoInterventi(obj: RiepilogoInterventiInterface): Observable<HttpEvent<Blob>> {
         return this.http.request(new HttpRequest(
             'POST',
-            API_STAMPA_RIEPILOGO_INTERVENTI,
+            API_STAMPA_RIEPILOGO_INTERVENTI + '?contentType=' + obj.contentType,
             obj,
             {
                 reportProgress: true,

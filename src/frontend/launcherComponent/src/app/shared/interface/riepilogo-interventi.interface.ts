@@ -1,5 +1,6 @@
 
 export interface RiepilogoInterventiInterface {
+    contentType: string;
     da: string;
     a: string;
     distaccamenti: string[];
