@@ -217,6 +217,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                             contentType: val.slice(2, 5),
                         };
                         if (val.slice(2, 5) === 'pdf') {
+                            obj.contentType = 'application/' + val.slice(2, 5);
                             this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
                                 switch (data.type) {
                                     case HttpEventType.DownloadProgress :
@@ -235,6 +236,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                                 }
                             }, error => console.log('Errore Stampa PDF'));
                         } else if (val.slice(2, 5) === 'csv') {
+                            obj.contentType = 'text/' + val.slice(2, 5);
                             this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
                                 switch (data.type) {
                                     case HttpEventType.DownloadProgress :
