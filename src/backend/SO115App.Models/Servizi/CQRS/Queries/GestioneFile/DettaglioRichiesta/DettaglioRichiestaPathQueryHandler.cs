@@ -3,7 +3,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Persistence.File;
+using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System.IO;
@@ -16,20 +16,26 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IGetRichiesta _getRichiesta;
         private readonly IGetUtenteById _getUtente;
-        private readonly IPDFTemplateManager<DettaglioChiamataModelForm> _dettChiamataManagr;
-        private readonly IPDFTemplateManager<DettaglioInterventoModelForm> _dettInterventoManagr;
+        private readonly IPDFTemplateManager<DettaglioChiamataModelForm> _PDFdettChiamataManager;
+        private readonly IPDFTemplateManager<DettaglioInterventoModelForm> _PDFdettInterventoManager;
+        private readonly ICSVTemplateManager<DettaglioChiamataModelForm> _CSVdettChiamataManager;
+        private readonly ICSVTemplateManager<DettaglioInterventoModelForm> _CSVdettInterventoManager;
 
         public DettaglioRichiestaPathQueryHandler(IGetRichiesta getRichiesta,
             IGetTipologieByCodice getTipologie,
             IGetUtenteById getUtente,
-            IPDFTemplateManager<DettaglioChiamataModelForm> dettChiamataManagr,
-            IPDFTemplateManager<DettaglioInterventoModelForm> dettInterventoManagr)
+            IPDFTemplateManager<DettaglioChiamataModelForm> dettChiamataManager,
+            IPDFTemplateManager<DettaglioInterventoModelForm> dettInterventoManager,
+            ICSVTemplateManager<DettaglioChiamataModelForm> CSVdettChiamataManager,
+            ICSVTemplateManager<DettaglioInterventoModelForm> CSVdettInterventoManager)
         {
             _getUtente = getUtente;
             _getTipologie = getTipologie;
             _getRichiesta = getRichiesta;
-            _dettChiamataManagr = dettChiamataManagr;
-            _dettInterventoManagr = dettInterventoManagr;
+            _PDFdettChiamataManager = dettChiamataManager;
+            _PDFdettInterventoManager = dettInterventoManager;
+            _CSVdettChiamataManager = CSVdettChiamataManager;
+            _CSVdettInterventoManager = CSVdettInterventoManager;
         }
 
         public DettaglioRichiestaPathResult Handle(DettaglioRichiestaPathQuery query)
@@ -68,7 +74,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     Chiamata = chiamata
                 };
 
-                stream = _dettChiamataManagr.GenerateAndDownload(form, filename, "DettagliChiamate");
+                if(query.ContentType == "application/pdf")
+                    stream = _PDFdettChiamataManager.GenerateAndDownload(form, filename, "DettagliChiamate");
+                else
+                    stream = _CSVdettChiamataManager.GenerateAndDownload(form, filename, "DettagliChiamate");
             }
             else // INTERVENTO
             {
@@ -87,7 +96,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     })).ToList()
                 };
 
-                stream = _dettInterventoManagr.GenerateAndDownload(form, filename, "DettagliInterventi");
+                if(query.ContentType == "application/pdf")
+                    stream = _PDFdettInterventoManager.GenerateAndDownload(form, filename, "DettagliInterventi");
+                else
+                    stream = _CSVdettInterventoManager.GenerateAndDownload(form, filename, "DettagliInterventi");
             }
 
             return new DettaglioRichiestaPathResult()

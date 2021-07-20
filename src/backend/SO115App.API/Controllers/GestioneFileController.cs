@@ -1,13 +1,10 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.ChiamateInSospeso;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -19,15 +16,12 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> _riepilogoInterventiQuery;
         private readonly IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> _dettaglioRichiestaQuery;
-        private readonly IQueryHandler<ChiamateInSospesoQuery, ChiamateInSospesoResult> _chiamateInSospesoQuery;
 
         public GestioneFileController(IQueryHandler<RiepilogoInterventiPathQuery, RiepilogoInterventiPathResult> riepilogoInterventiQuery,
-            IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery,
-            IQueryHandler<ChiamateInSospesoQuery, ChiamateInSospesoResult> chiamateInSospesoQuery)
+            IQueryHandler<DettaglioRichiestaPathQuery, DettaglioRichiestaPathResult> dettaglioRichiestaQuery)
         {
             _dettaglioRichiestaQuery = dettaglioRichiestaQuery;
             _riepilogoInterventiQuery = riepilogoInterventiQuery;
-            _chiamateInSospesoQuery = chiamateInSospesoQuery;
         }
 
         [HttpGet]
@@ -38,6 +32,8 @@ namespace SO115App.API.Controllers
                 var query = new DettaglioRichiestaPathQuery()
                 {
                     CodiceRichiesta = codice,
+
+                    ContentType = contentType,
 
                     IdOperatore = Request.Headers["IdUtente"],
                     IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -66,38 +62,15 @@ namespace SO115App.API.Controllers
                 {
                     Filtri = filtri,
 
+                    ContentType = contentType,
+
                     IdOperatore = Request.Headers["IdUtente"],
                     IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 };
 
                 var result = _riepilogoInterventiQuery.Handle(query);
 
-                return File(result.Data, contentType);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new
-                {
-                    message = e.GetBaseException().Message,
-                    stacktrace = e.GetBaseException().StackTrace
-                });
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ChiamateInSospeso(string contentType = "application/pdf")
-        {
-            try
-            {
-                var query = new ChiamateInSospesoQuery()
-                {
-                    IdOperatore = Request.Headers["IdUtente"],
-                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
-                };
-
-                var result = _chiamateInSospesoQuery.Handle(query);
-
-                return File(result.Data, contentType);
+                return File(result.Data.ToArray(), contentType);
             }
             catch (Exception e)
             {

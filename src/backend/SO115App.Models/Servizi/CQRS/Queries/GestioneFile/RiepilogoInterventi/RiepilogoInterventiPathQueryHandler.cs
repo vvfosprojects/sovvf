@@ -4,9 +4,11 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
@@ -17,16 +19,19 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         private readonly IGetRiepilogoInterventi _getRiepilogoInterventi;
         private readonly IGetUtenteById _getUtente;
         private readonly IPDFTemplateManager<RiepilogoInterventiModelForm> _pdfManager;
+        private readonly ICSVTemplateManager<RiepilogoInterventiModelForm> _csvManager;
 
         public RiepilogoInterventiPathQueryHandler(IGetRiepilogoInterventi getRiepilogoInterventi,
             IGetUtenteById getUtente,
             IGetTipologieByCodice getTipologie,
-            IPDFTemplateManager<RiepilogoInterventiModelForm> pdfManager)
+            IPDFTemplateManager<RiepilogoInterventiModelForm> pdfManager,
+            ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager)
         {
             _getUtente = getUtente;
             _getRiepilogoInterventi = getRiepilogoInterventi;
             _pdfManager = pdfManager;
             _getTipologie = getTipologie;
+            _csvManager = csvManager;
         }
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
@@ -78,7 +83,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 TotInterventi = lstInterventi.Result.Count
             };
 
-            var memoryStream = _pdfManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
+            MemoryStream memoryStream;
+            
+            if(query.ContentType == "application/pdf")
+                memoryStream = _pdfManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
+            else
+                memoryStream = _csvManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
 
             return new RiepilogoInterventiPathResult()
             {

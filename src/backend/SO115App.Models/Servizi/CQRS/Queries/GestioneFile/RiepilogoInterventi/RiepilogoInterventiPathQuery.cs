@@ -10,5 +10,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         public string IdOperatore { get; set; }
 
         public FiltriRiepilogoInterventi Filtri { get; set; }
+
+        public string ContentType { get; set; }
     }
 }
