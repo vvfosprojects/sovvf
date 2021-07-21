@@ -19,6 +19,8 @@ namespace SO115App.Persistence.File.CSVManagement
             memoryStream = new MemoryStream();
             streamWriter = new StreamWriter(memoryStream);
             csvWriter = new CsvWriter(streamWriter, new CsvConfiguration(CultureInfo.InvariantCulture));
+
+            csvWriter.Context.Configuration.Delimiter = ";";
         }
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
@@ -39,11 +41,12 @@ namespace SO115App.Persistence.File.CSVManagement
             return memoryStream;
         }
 
-        //TODO SISTEMARE MAPPING
+        //TODO SISTEMARE MAPPING, provare a leggere un file con header
 
         private void generaDettaglioChiamataCSV(DettaglioChiamataModelForm model)
         {
-            csvWriter.Context.RegisterClassMap<DettaglioChiamataMap>();
+            csvWriter.Context.AutoMap<DettaglioChiamataMap>();
+
             csvWriter.WriteRecords(new List<DettaglioChiamataModelForm>() { model });
         }
 

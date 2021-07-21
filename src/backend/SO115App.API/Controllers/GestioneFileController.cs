@@ -5,6 +5,7 @@ using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
