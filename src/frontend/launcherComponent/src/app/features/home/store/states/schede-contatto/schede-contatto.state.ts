@@ -457,7 +457,8 @@ export class SchedeContattoState {
                     {
                         windowClass: 'xxlModal modal-holder modal-left',
                         backdropClass: 'light-blue-backdrop',
-                        centered: true
+                        centered: true,
+                        backdrop: true,
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
@@ -473,7 +474,8 @@ export class SchedeContattoState {
                     {
                         windowClass: 'xxlModal modal-holder',
                         backdropClass: 'light-blue-backdrop',
-                        centered: true
+                        centered: true,
+                        backdrop: true,
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
