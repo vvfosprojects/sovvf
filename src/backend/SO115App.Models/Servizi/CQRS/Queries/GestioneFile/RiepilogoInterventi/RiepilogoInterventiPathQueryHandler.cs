@@ -36,8 +36,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            //TODO FILTRI QUERY
-
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri);
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
@@ -59,6 +57,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
                 Comune = i?.Localita?.Indirizzo?.Split(',')[2],
                 KmCiv = i?.Localita?.Indirizzo?.Split(',')[1],
+
+                Interno = i.Localita.Interno,
+                Piano = i.Localita.Piano,
+                Scala = i.Localita.Scala,
+                CodTipologie = string.Join(',', i?.Tipologie),
+                Descrizione = i.Descrizione,
+                Telefono = i.Richiedente.Telefono,
+                ZonaEmergenza = i?.CodZoneEmergenza?.Count() > 0 ? "true" : "false",
+
 
                 lstPartenze = i?.Partenze?.Select(p => new RiepilogoPartenza()
                 {

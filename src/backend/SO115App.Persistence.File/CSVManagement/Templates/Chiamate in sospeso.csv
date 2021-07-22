@@ -1,8 +1,0 @@
-TIPO;NUMERO;PRIORITA;DATA_CHIAMATA;ORA_CHIAMATA;DATA_INTERVENTO;COD_TIPOLOGIA;DESCRIZIONE;DETTAGLIO_TIPOLOGIA;DESC_LUOGO;COMUNE;X;Y;RIF_COORD;SCALA;PIANO;INTERNO;RICHIEDENTE;TELE_NUMERO;COMPETENZA;ZONA_EMERGENZA
-C;1;0;10/02/2021;15:31;;301;Incendio bosco, sterpaglie, colture;;Sotoportego de Ca' Dario;Venezia;12,32335275;45,4387957;Strada;;;;POLIZIA DI STATO;;---;
-C;1;2;26/02/2021;11:28;;302;Incidente con incendio di mezzo trasport. merci pericolose;;Marghera;Venezia;12,2245749;45,4639357;Strada;;;;POLIZIA DI STATO;;---;
-C;1;0;16/03/2021;11:48;;5;Incendio aeromobile;;Piazza San Marco, 1;Venezia;12,33740115;45,43406965;Punto;;;;SERVIZIO EMERGENZA TERRITORIALE 118;;---;
-C;1;0;24/03/2021;16:06;;301;Incendio bosco, sterpaglie, colture;;SP61 Via Libertà;Annone Veneto;12,6830259;45,79432915;Strada;;;;CARABINIERI;;---;
-C;1;0;26/04/2021;14:50;;305;Incidente aeromobile di altro genere;;Via Roma;Annone Veneto;12,6898789;45,792787;Strada;;;;POLIZIA DI STATO;;---;
-C;3;1;26/02/2021;14:52;;302;Incidente con incendio di mezzo trasport. merci pericolose;;Via Francesco Baracca;Arcade;12,22165854;45,78525545;Strada;;;;POLIZIA DI STATO;;---;
-C;4;0;26/02/2021;14:53;;5;Incendio aeromobile;;Via Dee Buse;Annone Veneto;12,6892555;45,7932172;Strada;;;;POLIZIA DI STATO;;---;

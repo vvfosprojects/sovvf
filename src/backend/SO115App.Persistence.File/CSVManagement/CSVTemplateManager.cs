@@ -2,7 +2,6 @@
 using CsvHelper.Configuration;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -27,10 +26,6 @@ namespace SO115App.Persistence.File.CSVManagement
         {
             switch (template)
             {
-                case DettaglioChiamataModelForm model: generaDettaglioChiamataCSV(model); break;
-
-                case DettaglioInterventoModelForm model: generaDettaglioInterventoCSV(model); break;
-
                 case RiepilogoInterventiModelForm model: generaRiepilogoInterventoCSV(model); break;
 
                 default: throw new NotImplementedException("Template non gestito");
@@ -41,56 +36,42 @@ namespace SO115App.Persistence.File.CSVManagement
             return memoryStream;
         }
 
-        //TODO SISTEMARE MAPPING, provare a leggere un file con header
-
-        private void generaDettaglioChiamataCSV(DettaglioChiamataModelForm model)
-        {
-            csvWriter.Context.AutoMap<DettaglioChiamataMap>();
-
-            csvWriter.WriteRecords(new List<DettaglioChiamataModelForm>() { model });
-        }
-
-        private void generaDettaglioInterventoCSV(DettaglioInterventoModelForm model)
-        {
-            //csvWriter.Context.RegisterClassMap(model.GetType());
-            csvWriter.WriteRecords(new List<DettaglioInterventoModelForm>() { model });
-        }
-
         private void generaRiepilogoInterventoCSV(RiepilogoInterventiModelForm model)
         {
-            //csvWriter.Context.RegisterClassMap<RiepilogoInterventiMap>();
-            csvWriter.WriteRecords(model.lstRiepiloghi);
-        }
-    }
+            string str = "TIPO;NUMERO;PRIORITA;DATA_CHIAMATA;ORA_CHIAMATA;DATA_INTERVENTO;COD_TIPOLOGIA;DESCRIZIONE;DETTAGLIO_TIPOLOGIA;DESC_LUOGO;COMUNE;X;Y;RIF_COORD;SCALA;PIANO;INTERNO;RICHIEDENTE;TELE_NUMERO;COMPETENZA;ZONA_EMERGENZA";
 
-    internal class DettaglioChiamataMap : ClassMap<DettaglioChiamataModelForm>
-    {
-        public DettaglioChiamataMap()
-        {
-            Map(f => f.Chiamata.Civ_Km).Index(0);
-            Map(f => f.Chiamata.Comune).Index(1);
-            Map(f => f.Chiamata.DataOraChiamata).Index(2);
-            Map(f => f.Chiamata.Dettaglio).Index(3);
-            Map(f => f.Chiamata.Interno).Index(4);
-            Map(f => f.Chiamata.NoteChiamata).Index(5);
-            Map(f => f.Chiamata.NumeroChiamata).Index(6);
-            Map(f => f.Chiamata.Operatore).Index(7);
-            Map(f => f.Chiamata.Palazzo).Index(8);
-            Map(f => f.Chiamata.Piano).Index(9);
-            Map(f => f.Chiamata.Prov).Index(10);
-            Map(f => f.Chiamata.Richiedente).Index(11);
-            Map(f => f.Chiamata.RichiedenteTelefono).Index(12);
-            Map(f => f.Chiamata.Scala).Index(13);
-            Map(f => f.Chiamata.Tipologia).Index(14);
-            Map(f => f.Chiamata.TitoloDistaccamento).Index(15);
-        }
-    }
+            streamWriter.WriteLine(str);
 
-    internal class RiepilogoInterventiMap : ClassMap<RiepilogoInterventiModelForm>
-    {
-        public RiepilogoInterventiMap()
-        {
-            //Map(f => f.lstRiepiloghi.);
+            foreach (var chiamata in model.lstRiepiloghi)
+            {
+                str = string.Join(';', new string[] 
+                { 
+                    chiamata.Stato.ToString(), 
+                    chiamata.NumeroIntervento.ToString(),
+                    chiamata.Priorita,
+                    chiamata.Data.ToString("dd/MM/yyyy"),
+                    chiamata.Data.ToString("HH:mm"),
+                    chiamata.Data.ToString("dd/MM/yyyy"),
+                    chiamata.Tipologie,
+                    chiamata.CodTipologie,
+                    chiamata.Descrizione,
+                    chiamata.DettTipologie,
+                    chiamata.DescLuogo,
+                    chiamata.Comune,
+                    chiamata.X,
+                    chiamata.Y,
+                    chiamata.RifCoord,
+                    chiamata.Scala,
+                    chiamata.Piano,
+                    chiamata.Interno,
+                    chiamata.Richiedente,
+                    chiamata.Telefono,
+                    chiamata.Competenza,
+                    chiamata.ZonaEmergenza
+                });
+
+                streamWriter.WriteLine(str);
+            }
         }
     }
 }
