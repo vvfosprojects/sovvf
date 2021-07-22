@@ -7,5 +7,6 @@
         public string[]? Stato { get; set; }
         public string[]? CodiciDistaccamenti { get; set; }
         public string[]? Tipo { get; set; }
+        public string CodMezzoPreaccoppiato { get; set; }
     }
 }

@@ -93,15 +93,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
-                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
-                   .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
-                   .ThenByDescending(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .ThenByDescending(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                   .ThenByDescending(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
-                   //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
+                    .OrderByDescending(mezzo => query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice) ?? false)
+                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
+                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
+                    .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
+                    .ThenByDescending(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                    .ThenByDescending(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                    .ThenByDescending(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
+                    //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
             var result = lstMezziComposizione.Result.ToList();
