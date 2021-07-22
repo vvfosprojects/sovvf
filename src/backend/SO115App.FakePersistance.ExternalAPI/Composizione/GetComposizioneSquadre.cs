@@ -101,12 +101,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var lstSquadre = new ConcurrentBag<Squadra>();
                 Task<WorkShift> workshift = null;
 
-                if (string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato))
+                if (string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato))
                 {
                     Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
                         codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
                 }
-                else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.codDistaccamentoSelezionato);
+                else workshift = _getSquadre.GetAllByCodiceDistaccamento(query.Filtro.CodDistaccamentoSelezionato);
 
                 switch (query.Filtro.Turno) //FILTRO PER TURNO
                 {
@@ -162,9 +162,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool turno = FiltroTurno(query.Filtro.Turno, squadra.Turno);
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.codDistaccamentoSelezionato) ?
+                bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
                     query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
-                    query.Filtro.codDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
+                    query.Filtro.CodDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
 
@@ -175,6 +175,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
                 return lstSquadre.Result
+                    .OrderBy(squadra => (!query?.Filtro?.CodSquadraSelezionata?.Equals(squadra.Codice)) ?? false)
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInSede))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInRientro))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInViaggio))

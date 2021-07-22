@@ -2,11 +2,15 @@
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.ExternalAPI.Client;
+using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,24 +21,38 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
-        private readonly OrdinamentoMezzi _ordinamento; 
+        private readonly OrdinamentoMezzi _ordinamento;
+
+        private readonly IGetSquadre _getSquadre;
+        private readonly IGetStatoSquadra _getStatoSquadre;
+
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
+
         private readonly IGetTipologieByCodice _getTipologieCodice;
         private readonly IConfiguration _config;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
         {
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _config = config;
             _getTipologieCodice = getTipologieCodice;
+            _getSquadre = getSquadre;
+            _getStatoSquadre = getStatoSquadre;
             _ordinamento = new OrdinamentoMezzi(_getTipologieCodice, _config, clientMatrix);
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
+
+            var lstSquadrePreaccoppiate = query.CodiciSedi.Select(sede => 
+            _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
+                .SelectMany(shift => 
+                shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false));
+
+            var lstStatiSquadre = _getStatoSquadre.Get(query.CodiciSedi.ToList());
 
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
@@ -47,6 +65,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Id = m.Codice,
                         Mezzo = m,
+                        SquadrePreaccoppiate = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new ComposizioneSquadra()
+                        {
+                            Codice = sq.Codice,
+                            Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede)
+                        }).ToList()
                     };
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
