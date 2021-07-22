@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Id = m.Codice,
                         Mezzo = m,
                     };
-                    var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
+                    //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
@@ -71,7 +71,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
                     }
-                    mc.IndiceOrdinamento = indice.Result;
+                    //mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
                 });
@@ -93,7 +93,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                    .OrderBy(mezzo => query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice) ?? false)
+                    .OrderBy(mezzo => (!query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
