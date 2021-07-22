@@ -93,7 +93,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                    .OrderByDescending(mezzo => query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice) ?? false)
+                    .OrderBy(mezzo => query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice) ?? false)
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
