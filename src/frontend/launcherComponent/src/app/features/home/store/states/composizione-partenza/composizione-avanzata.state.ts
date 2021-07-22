@@ -109,7 +109,7 @@ export class ComposizioneAvanzataState {
         } as any;
         if (action.preaccoppiato) {
             // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
-            objGetMezzi.filtro.codSquadraPreaccopiata  = mezzoSelezionato ? ['Test'] : null;
+            objGetMezzi.filtro.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
         }
 
         const objGetSquadre = {
