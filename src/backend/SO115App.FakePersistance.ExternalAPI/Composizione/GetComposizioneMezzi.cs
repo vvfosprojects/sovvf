@@ -4,6 +4,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Com
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
@@ -28,9 +29,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
 
         private readonly IGetTipologieByCodice _getTipologieCodice;
+        private readonly IGetRichiesta _getRichiesta;
+
         private readonly IConfiguration _config;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetRichiesta getRichiesta, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
         {
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
@@ -38,6 +41,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getTipologieCodice = getTipologieCodice;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+            _getRichiesta = getRichiesta;
             _ordinamento = new OrdinamentoMezzi(_getTipologieCodice, _config, clientMatrix);
         }
 
@@ -71,10 +75,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     m.PreAccoppiato = lstSqPreacc.Count > 0;
 
+                    string codRichiesta = statiOperativiMezzi.Find(stato => m.Codice.Equals(stato.CodiceMezzo))?.CodiceRichiesta;
+
                     var mc = new ComposizioneMezzi()
                     {
                         Id = m.Codice,
                         Mezzo = m,
+                        IndirizzoIntervento = string.IsNullOrEmpty(codRichiesta) ? null : _getRichiesta.GetByCodice(codRichiesta)?.Localita.Indirizzo,
                         SquadrePreaccoppiate = lstSqPreacc
                     };
 
