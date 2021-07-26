@@ -5,8 +5,8 @@
        (click)="onElimina($event)"></i>
     <div class="row">
         <div *ngIf="!nuovaPartenza.mezzoComposizione" class="col text-danger">
-            <i class="fas fa-truck mr-1"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+            <i class="fas fa-truck mr-1" ngbTooltip="Nessun mezzo selezionato"></i>
+            <span><b>-</b></span>
         </div>
         <div *ngIf="nuovaPartenza.mezzoComposizione"
              class="col">
@@ -16,13 +16,13 @@
                    ngbTooltip="Mezzo {{ nuovaPartenza.mezzoComposizione.mezzo?.stato }}"
                    placement="top-left"></i>
                 <span class="font-weight-bold mr-1" [ngbTooltip]="nuovaPartenza.mezzoComposizione.mezzo?.descrizione"
-                      [disableTooltip]="nuovaPartenza.mezzoComposizione.mezzo?.descrizione.length <= 7">{{nuovaPartenza.mezzoComposizione.mezzo?.descrizione | slice: 0:7}}</span>
+                      [disableTooltip]="nuovaPartenza.mezzoComposizione.mezzo?.descrizione?.length <= 7">{{nuovaPartenza.mezzoComposizione.mezzo?.descrizione | slice: 0:7}}</span>
                 <span class="font-weight-normal">{{nuovaPartenza?.mezzoComposizione.mezzo?.genere}}</span>
             </div>
         </div>
         <div *ngIf="!nuovaPartenza.squadreComposizione?.length" class="col text-danger">
-            <i class="fas fa-users mr-1"></i>
-            <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
+            <i class="fas fa-users mr-1" ngbTooltip="Nessuna squadra selezionata"></i>
+            <span><b>-</b></span>
         </div>
         <div *ngIf="nuovaPartenza.squadreComposizione?.length === 1" class="col">
             <div class="nowrap">
@@ -65,8 +65,8 @@
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.km && !nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col nowrap text-danger">
-            <i class="fas fa-road mr-1 text-danger"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+            <i class="fas fa-road mr-1 text-danger" ngbTooltip="Nessun mezzo selezionato"></i>
+            <span><b>-</b></span>
         </div>
         <!-- Tempo di percorrenza -->
         <div *ngIf="nuovaPartenza.mezzoComposizione?.tempoPercorrenza && !nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake"
@@ -75,13 +75,13 @@
             <span>{{nuovaPartenza.mezzoComposizione.tempoPercorrenza}} min</span>
         </div>
         <div *ngIf="nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake" class="col text-danger">
-            <i class="far fa-clock mr-1 text-warning"></i>
-            <span ngbTooltip="GPS ASSENTE"><b>-</b></span>
+            <i class="far fa-clock mr-1 text-warning" ngbTooltip="GPS ASSENTE"></i>
+            <span><b>-</b></span>
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.tempoPercorrenza && !nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col text-danger">
-            <i class="far fa-clock mr-1 text-danger"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+            <i class="far fa-clock mr-1 text-danger" ngbTooltip="Nessun mezzo selezionato"></i>
+            <span><b>-</b></span>
         </div>
     </div>
     <!-- Distaccamento di appartenenza -->
@@ -93,8 +93,8 @@
                   [ngClass]="badgeDistaccamentoClass()">{{nuovaPartenza.mezzoComposizione.mezzo.distaccamento.descrizione | slice: 0:20}}</span>
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.mezzo?.distaccamento" class="col text-danger">
-            <i class="fas fa-map-marker-alt mr-2 ml-1"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+            <i class="fas fa-map-marker-alt mr-2 ml-1" ngbTooltip="Nessun mezzo selezionato"></i>
+            <span><b>-</b></span>
         </div>
         <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">
             <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>

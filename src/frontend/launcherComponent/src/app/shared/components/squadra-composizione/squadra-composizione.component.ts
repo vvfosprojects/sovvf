@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { nomeStatiSquadra, squadraComposizioneBusy } from '../../helper/function-composizione';
 import { Sede } from '../../model/sede.model';
@@ -8,18 +8,19 @@ import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import {BoxPartenza} from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { makeCopy } from '../../helper/function-generiche';
 
 @Component({
     selector: 'app-squadra-composizione',
     templateUrl: './squadra-composizione.component.html',
     styleUrls: ['./squadra-composizione.component.css']
 })
-export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
+export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnInit {
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     viewState: ViewLayouts;
 
-    @Input() squadraComp: SquadraComposizione;
+    @Input() squadraComposizione: SquadraComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() itemSelezionato: boolean;
     @Input() itemHover: boolean;
@@ -40,9 +41,18 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
 
     disableBtnFeature = false;
     private subscription = new Subscription();
+    squadraComp: any;
 
     constructor() {
         this.getViewState();
+    }
+
+    ngOnInit(): void {
+        // RIVEDERE LOGICA PER DIVERSO MODELLO DATI BE
+        this.squadraComp = makeCopy(this.squadraComposizione);
+        if (this.squadraComposizione && this.squadraComposizione.mezziPreaccoppiati) {
+            this.squadraComp.mezziPreaccoppiati.forEach((x, i) => x.mezzo = makeCopy(this.squadraComposizione.mezziPreaccoppiati[i]));
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -51,7 +61,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
         boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
       }
       if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
-        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].codice) ? this.disableBtnFeature = true : null);
+        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].mezzo.codice) ? this.disableBtnFeature = true : null);
       }
     }
 
@@ -77,7 +87,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges {
               this.deselezionataInRientro.emit(this.squadraComp);
             }
         } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-          if (this.squadraComp.mezziPreaccoppiati[0]?.stato === 'In Sede') {
+          if (this.squadraComp.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
             if (!this.itemSelezionato) {
               this.selezionataPreAccoppiati.emit(this.squadraComp);
             } else {

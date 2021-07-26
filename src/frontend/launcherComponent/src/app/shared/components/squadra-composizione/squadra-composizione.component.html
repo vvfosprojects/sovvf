@@ -41,6 +41,7 @@
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popMezzi"
                                 [popoverTitle]="'Mezzo di ' + squadraComp?.nome"
+                                placement="top"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
@@ -56,13 +57,13 @@
                         <ng-template #popMezzi>
                             <div class="h6 text-center">
                                 <div class="d-inline-block font-weight-bold mr-1">
-                                    {{ squadraComp.mezziPreaccoppiati[0]?.descrizione }}
+                                    {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.descrizione }}
                                 </div>
                                 <div class="d-inline-block">
-                                    {{ squadraComp.mezziPreaccoppiati[0]?.genere }}
+                                    {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.genere }}
                                 </div>
                                 <div class="d-inline">
-                                  - {{ squadraComp.mezziPreaccoppiati[0]?.stato }}
+                                  - {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.stato }}
                                 </div>
                             </div>
                         </ng-template>

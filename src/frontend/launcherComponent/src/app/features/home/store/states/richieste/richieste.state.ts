@@ -396,6 +396,7 @@ export class RichiesteState {
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg',
+                backdrop: true,
             });
         } else {
             modal = this.modalService.open(ListaSquadrePartenzaComponent, {
@@ -403,6 +404,7 @@ export class RichiesteState {
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg',
+                backdrop: true,
             });
         }
         modal.componentInstance.listaSquadre = action.listaSquadre;

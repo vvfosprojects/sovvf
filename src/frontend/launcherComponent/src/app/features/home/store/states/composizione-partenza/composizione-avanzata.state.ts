@@ -109,7 +109,7 @@ export class ComposizioneAvanzataState {
         } as any;
         if (action.preaccoppiato) {
             // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
-            objGetMezzi.filtro.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
+            objGetMezzi.filtro.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] && squadreSelezionate[0].mezziPreaccoppiati[0].mezzo ? squadreSelezionate[0].mezziPreaccoppiati[0].mezzo.codice : null;
         }
 
         const objGetSquadre = {
@@ -126,7 +126,7 @@ export class ComposizioneAvanzataState {
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as any;
         if (action.preaccoppiato) {
-            objGetSquadre.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
+            objGetSquadre.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] && squadreSelezionate[0].mezziPreaccoppiati[0].mezzo ? squadreSelezionate[0].mezziPreaccoppiati[0].mezzo.codice : null;
         }
         if (!skipGetMezzi) {
             console.log('***Obj getMezzi: ', objGetMezzi);

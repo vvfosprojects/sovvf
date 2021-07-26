@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
         <div class="card min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingSquadre"></app-partial-loader>
+            <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fas fa-users mr-2"></i>
@@ -35,18 +35,18 @@
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
                     <li *ngIf="!squadreComposizione?.length && !loadingSquadre"
-                        class="list-group-item border">
-                        <span class="text-muted">Nessun risultato...</span>
+                        class="px-3 pt-1" style="list-style: none;">
+                        <span class="text-muted">Nessun risultato trovato.</span>
                     </li>
-                    <li *ngIf="!squadreComposizione?.length && loadingSquadre"
-                        class="list-group-item border">
+                    <li *ngIf="loadingSquadre"
+                        class="px-3 pt-1" style="list-style: none;">
                         <span class="text-muted">Caricamento risultati...</span>
                     </li>
-                    <ng-template [ngIf]="squadreComposizione?.length">
+                    <ng-template [ngIf]="squadreComposizione?.length && !loadingSquadre">
                         <app-squadra-composizione
                                 *ngFor="let sC of squadreComposizione"
                                 [nightMode]="nightMode"
-                                [squadraComp]="sC"
+                                [squadraComposizione]="sC"
                                 [boxPartenzaList]="boxPartenzaList"
                                 [itemSelezionato]="checkSquadraSelezione(sC.codice)"
                                 [itemHover]="checkSquadraHover(sC.codice)"
@@ -71,7 +71,7 @@
                         [pageSize]="pageSizeSquadre"
                         [collectionSize]="totalItemsSquadre"
                         [maxSize]="2"
-                        [disabled]="loadingListe"
+                        [disabled]="loadingSquadre"
                         (pageChange)="squadrePageChange($event)">
                 </ngb-pagination>
             </div>
@@ -79,7 +79,7 @@
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
         <div class="card mx-auto min-h-comp">
-            <app-partial-loader *ngIf="loadingListe || !squadreComposizione || loadingMezzi"></app-partial-loader>
+            <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
                     <i class="fas fa-truck mr-2"></i>
@@ -108,14 +108,14 @@
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush min-h-comp">
                     <li *ngIf="!mezziComposizione?.length && !loadingMezzi"
-                        class="list-group-item border">
-                        <span class="text-muted">Nessun risultato...</span>
+                        class="px-3 pt-1" style="list-style: none;">
+                        <span class="text-muted">Nessun risultato trovato.</span>
                     </li>
-                    <li *ngIf="!mezziComposizione?.length && loadingMezzi"
-                        class="list-group-item border">
+                    <li *ngIf="loadingMezzi"
+                        class="px-3 pt-1" style="list-style: none;">
                         <span class="text-muted">Caricamento risultati...</span>
                     </li>
-                    <ng-template [ngIf]="mezziComposizione?.length">
+                    <ng-template [ngIf]="mezziComposizione?.length && !loadingMezzi">
                         <div *ngFor="let mC of mezziComposizione">
                             <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                                 <app-mezzo-composizione [mezzoComp]="mC"
@@ -152,13 +152,13 @@
                         [pageSize]="pageSizeMezzi"
                         [collectionSize]="totalItemsMezzi"
                         [maxSize]="5"
-                        [disabled]="loadingListe"
+                        [disabled]="loadingMezzi"
                         (pageChange)="mezziPageChange($event)">
                 </ngb-pagination>
             </div>
         </div>
     </div>
-    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
+    <div *ngIf="!loadingInvioPartenza" class="col-4 pr-0">
         <!-- Lista Partenze Richiesta -->
         <div style="height:33%">
             <div class="card h-100"
@@ -178,8 +178,14 @@
                     </span>
                 </div>
                 <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
-                    <app-lista-partenze [partenze]="richiesta.partenzeRichiesta">
+                    <app-partial-loader *ngIf="!mezziComposizione || !squadreComposizione"></app-partial-loader>
+                    <app-lista-partenze  *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza"
+                                         [partenze]="richiesta.partenzeRichiesta">
                     </app-lista-partenze>
+                    <li *ngIf="!mezziComposizione || !squadreComposizione"
+                        style="list-style: none;">
+                        <span class="text-muted">Caricamento risultati...</span>
+                    </li>
                 </div>
             </div>
         </div>

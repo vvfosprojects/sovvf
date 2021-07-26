@@ -417,7 +417,7 @@ export class BoxPartenzaState {
 
         let skip = false;
         // controllo se il mezzo pre accoppiato è gia presente in un box lista partenza
-        state.boxPartenzaList.forEach(x => x.mezzoComposizione?.id === squadraComp.mezziPreaccoppiati[0].codice ? skip = true : null);
+        state.boxPartenzaList.forEach(x => x.mezzoComposizione?.id === squadraComp.mezziPreaccoppiati[0].mezzo.codice ? skip = true : null);
         if (!skip) {
             if (!validateBoxPartenza(boxPartenzaSelezionato)) {
                 setState(

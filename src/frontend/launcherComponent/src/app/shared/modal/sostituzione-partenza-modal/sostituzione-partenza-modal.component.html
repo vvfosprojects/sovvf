@@ -54,7 +54,7 @@
                         <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                             <app-squadra-composizione
                                     *ngFor="let sC of squadreComposizione"
-                                    [squadraComp]="sC"
+                                    [squadraComposizione]="sC"
                                     [richiesta]="richiesta"
                                     [itemSelezionato]="checkSquadraSelezione(sC.codice)"
                                     [itemHover]="sC.codice === idSquadraHover"

@@ -13,7 +13,6 @@ export class ListaSquadrePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Lista Squadre Partenza creato');
-        console.log('***listaSquadre ', this.listaSquadre);
     }
 
     ngOnDestroy(): void {

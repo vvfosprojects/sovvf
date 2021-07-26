@@ -21,8 +21,11 @@ export interface SquadraComposizione {
 }
 
 export interface MezzoPreaccoppiato {
-    codice: string;
-    descrizione: string;
-    genere: string;
-    stato: string;
+    mezzo: {
+        codice: string;
+        descrizione: string;
+        genere: string;
+        stato: string;
+        distaccamento: string;
+    };
 }

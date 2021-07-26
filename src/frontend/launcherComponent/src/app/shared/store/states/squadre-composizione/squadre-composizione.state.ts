@@ -184,7 +184,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(SelectSquadraComposizionePreAccoppiati)
-    selectSquadraComposizionePreAccoppiati({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizioneInRientro): void {
+    selectSquadraComposizionePreAccoppiati({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizionePreAccoppiati): void {
         const state = getState();
         const squadraComp = action.squadraComp;
         const squadra = action.squadraComp;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -12,15 +12,13 @@ import { Observable, Subscription } from 'rxjs';
 import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { Sede } from '../../../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-box-nuova-partenza',
     templateUrl: './box-nuova-partenza.component.html',
     styleUrls: ['./box-nuova-partenza.component.css']
 })
-export class BoxNuovaPartenzaComponent implements OnDestroy, OnChanges {
+export class BoxNuovaPartenzaComponent implements OnDestroy, OnInit {
 
     // BoxPartenza Composizione
     @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
@@ -51,29 +49,7 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnChanges {
 
     itemBloccato: boolean;
     StatoMezzo = StatoMezzo;
-    nuovaPartenza: {
-        id: string;
-        mezzoComposizione: {
-            id: string;
-            mezzo: {
-                codice?: string,
-                descrizione?: string,
-                genere?: string,
-                stato?: StatoMezzo,
-                distaccamento?: Sede,
-                coordinate?: Coordinate,
-                coordinateFake?: boolean,
-            };
-            km: string;
-            coordinate?: Coordinate;
-            tempoPercorrenza: string;
-            idRichiesta?: string;
-            squadrePreaccoppiate?: SquadraComposizione[];
-            listaSquadre?: SquadraComposizione[];
-            indirizzoIntervento?: string;
-        };
-        squadreComposizione: SquadraComposizione[];
-    };
+    nuovaPartenza: BoxPartenza;
 
     private subscription = new Subscription();
 
@@ -87,13 +63,8 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnChanges {
         );
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.partenza && changes.partenza.currentValue && changes.partenza.currentValue.mezzoComposizione && !changes.partenza.currentValue.mezzoComposizione.mezzo) {
-            this.nuovaPartenza = makeCopy(this.partenza);
-            this.nuovaPartenza.mezzoComposizione.mezzo = this.partenza.mezzoComposizione;
-        } else {
-            this.nuovaPartenza = makeCopy(this.partenza);
-        }
+    ngOnInit(): void {
+        this.nuovaPartenza = makeCopy(this.partenza);
     }
 
     ngOnDestroy(): void {

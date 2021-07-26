@@ -230,14 +230,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     changeRicercaSquadre(ricerca: string): void {
         this.store.dispatch([
             new SetRicercaSquadreComposizione(ricerca),
-            new GetListeComposizioneAvanzata()
+            new GetListeComposizioneAvanzata(null, false, true)
         ]);
     }
 
     changeRicercaMezzi(ricerca: string): void {
         this.store.dispatch([
             new SetRicercaMezziComposizione(ricerca),
-            new GetListeComposizioneAvanzata()
+            new GetListeComposizioneAvanzata(null, true, false)
         ]);
     }
 }
