@@ -25,6 +25,8 @@
                                     [disableComposizioneMode]="loadingListe"
                                     [composizionePartenza]="true"
                                     [prenotato]="prenotato"
+                                    [loadingSquadre]="loadingSquadre$ | async"
+                                    [loadingMezzi]="loadingMezzi$ | async"
                                     [triageSummary]="summary$ | async"
                                     (confirmPrenota)="onPrenota($event)">
         </app-filterbar-composizione>

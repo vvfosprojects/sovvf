@@ -38,6 +38,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() sostituzionePartenza: boolean;
     @Input() competenze: Sede[];
     @Input() nightMode: boolean;
+    @Input() loadingSquadre: boolean;
+    @Input() loadingMezzi: boolean;
     @Input() triageSummary: TriageSummary[];
 
     @Output() confirmPrenota: EventEmitter<boolean> = new EventEmitter<boolean>();
