@@ -65,7 +65,7 @@
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.km && !nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col nowrap text-danger">
-            <i class="fas fa-road mr-1 text-danger" ngbTooltip="Nessun mezzo selezionato"></i>
+            <i class="fas fa-road mr-1 text-danger" ngbTooltip="Coordinate non presenti"></i>
             <span><b>-</b></span>
         </div>
         <!-- Tempo di percorrenza -->
@@ -80,7 +80,7 @@
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.tempoPercorrenza && !nuovaPartenza.mezzoComposizione?.mezzo?.coordinateFake"
              class="col text-danger">
-            <i class="far fa-clock mr-1 text-danger" ngbTooltip="Nessun mezzo selezionato"></i>
+            <i class="far fa-clock mr-1 text-danger" ngbTooltip="Tempo percorrenza non disponibile"></i>
             <span><b>-</b></span>
         </div>
     </div>
@@ -93,7 +93,7 @@
                   [ngClass]="badgeDistaccamentoClass()">{{nuovaPartenza.mezzoComposizione.mezzo.distaccamento.descrizione | slice: 0:20}}</span>
         </div>
         <div *ngIf="!nuovaPartenza.mezzoComposizione?.mezzo?.distaccamento" class="col text-danger">
-            <i class="fas fa-map-marker-alt mr-2 ml-1" ngbTooltip="Nessun mezzo selezionato"></i>
+            <i class="fas fa-map-marker-alt mr-2 ml-1" ngbTooltip="Nessun distaccamento selezionato"></i>
             <span><b>-</b></span>
         </div>
         <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">

@@ -52,6 +52,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
         this.squadraComp = makeCopy(this.squadraComposizione);
         if (this.squadraComposizione && this.squadraComposizione.mezziPreaccoppiati) {
             this.squadraComp.mezziPreaccoppiati.forEach((x, i) => x.mezzo = makeCopy(this.squadraComposizione.mezziPreaccoppiati[i]));
+            this.squadraComp.mezziPreaccoppiati.forEach(x => x.mezzo.distaccamento = { descrizione: x.mezzo.distaccamento });
         }
     }
 
