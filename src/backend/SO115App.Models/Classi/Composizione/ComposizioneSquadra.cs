@@ -19,6 +19,7 @@ namespace SO115App.Models.Classi.Composizione
     {
         public string Codice { get; set; }
         public string Descrizione { get; set; }
+        public string Distaccamento { get; set; }
         public string Genere { get; set; }
         public string Stato { get; set; }
     }
