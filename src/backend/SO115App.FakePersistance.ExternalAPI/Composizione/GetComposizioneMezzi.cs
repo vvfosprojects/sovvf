@@ -61,15 +61,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(mezzi.Result, m =>
                 {
+                    var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new ComposizioneSquadra()
+                    {
+                        Codice = sq.Codice,
+                        Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede)
+                    }).ToList();
+
+                    m.PreAccoppiato = lstSqPreacc.Count > 0;
+
                     var mc = new ComposizioneMezzi()
                     {
                         Id = m.Codice,
                         Mezzo = m,
-                        SquadrePreaccoppiate = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new ComposizioneSquadra()
-                        {
-                            Codice = sq.Codice,
-                            Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede)
-                        }).ToList()
+                        SquadrePreaccoppiate = lstSqPreacc
                     };
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
