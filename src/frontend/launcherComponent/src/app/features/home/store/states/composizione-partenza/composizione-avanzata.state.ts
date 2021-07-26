@@ -64,7 +64,7 @@ export class ComposizioneAvanzataState {
         const paginationMezzi = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
         const paginationSquadre = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
         const mezzoSelezionato = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato)?.mezzo;
-        const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s);
+        const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s) as any;
         const codiceChiamata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)?.codice;
         let codDistaccamentoSelezionato;
         if (squadreSelezionate && squadreSelezionate[0]) {
@@ -105,12 +105,10 @@ export class ComposizioneAvanzataState {
                 // tslint:disable-next-line:max-line-length
                 tipo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo && this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
                 ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
+                codSquadraSelezionata: squadreSelezionate && squadreSelezionate.length ? squadreSelezionate[0].codice : null,
+                codMezzoSelezionato: mezzoSelezionato && mezzoSelezionato.codice ? mezzoSelezionato.codice : null,
             }
         } as any;
-        if (action.preaccoppiato) {
-            // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
-            objGetMezzi.filtro.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] && squadreSelezionate[0].mezziPreaccoppiati[0].mezzo ? squadreSelezionate[0].mezziPreaccoppiati[0].mezzo.codice : null;
-        }
 
         const objGetSquadre = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
@@ -123,10 +121,17 @@ export class ComposizioneAvanzataState {
             codDistaccamentoSelezionato,
             stato: statoSquadra,
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
-            ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
+            ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null,
+            codSquadraSelezionata: squadreSelezionate && squadreSelezionate.length ? squadreSelezionate[0].codice : null,
+            codMezzoSelezionato: mezzoSelezionato && mezzoSelezionato.codice ? mezzoSelezionato.codice : null,
         } as any;
+
         if (action.preaccoppiato) {
-            objGetSquadre.codMezzoPreaccoppiato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] && squadreSelezionate[0].mezziPreaccoppiati[0].mezzo ? squadreSelezionate[0].mezziPreaccoppiati[0].mezzo.codice : null;
+            objGetSquadre.codMezzoSelezionato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
+            objGetMezzi.filtro.codMezzoSelezionato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
+            // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
+            // objGetMezzi.filtro.codSquadraSelezionata = mezzoSelezionato ? mezzoSelezionato.codice : null;
+            // objGetSquadre.codSquadraSelezionata = mezzoSelezionato ? mezzoSelezionato.codice : null;
         }
         if (!skipGetMezzi) {
             console.log('***Obj getMezzi: ', objGetMezzi);
