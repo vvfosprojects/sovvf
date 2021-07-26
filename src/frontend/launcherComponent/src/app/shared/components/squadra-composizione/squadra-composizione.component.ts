@@ -27,6 +27,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     @Input() itemPrenotato: boolean;
     @Input() itemBloccato: boolean;
     @Input() nightMode: boolean;
+    @Input() loadingMezzi: boolean;
     @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionata = new EventEmitter<SquadraComposizione>();
@@ -48,7 +49,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     ngOnInit(): void {
-        // RIVEDERE LOGICA PER DIVERSO MODELLO DATI BE
+        // TODO: RIVEDERE LOGICA PER DIVERSO MODELLO DATI BE
         this.squadraComp = makeCopy(this.squadraComposizione);
         if (this.squadraComposizione && this.squadraComposizione.mezziPreaccoppiati) {
             this.squadraComp.mezziPreaccoppiati.forEach((x, i) => x.mezzo = makeCopy(this.squadraComposizione.mezziPreaccoppiati[i]));

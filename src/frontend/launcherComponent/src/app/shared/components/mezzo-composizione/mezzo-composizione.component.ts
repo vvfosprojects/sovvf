@@ -30,6 +30,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Input() itemInPrenotazione: boolean;
     @Input() itemBloccato: boolean;
     @Input() nightMode: boolean;
+    @Input() loadingSquadre: boolean;
     @Input() boxPartenzaList: BoxPartenza[];
 
     @Output() selezionato = new EventEmitter<MezzoComposizione>();

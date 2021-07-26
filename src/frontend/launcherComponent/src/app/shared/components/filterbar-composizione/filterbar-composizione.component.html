@@ -168,7 +168,7 @@
                         </ng-select>
                         <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
                                 (click)="setDistaccamentiDefault()"
-                                [disabled]="disableDefaultDistaccamenti"
+                                [disabled]="disableDefaultDistaccamenti || loadingSquadre || loadingMezzi"
                                 ngbTooltip="Imposta Distaccamenti di competenza">
                             <i class="fas fa-filter pr-1"></i>
                         </button>

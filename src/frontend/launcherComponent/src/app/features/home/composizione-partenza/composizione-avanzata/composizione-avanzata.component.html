@@ -46,6 +46,7 @@
                         <app-squadra-composizione
                                 *ngFor="let sC of squadreComposizione"
                                 [nightMode]="nightMode"
+                                [loadingMezzi]="loadingMezzi"
                                 [squadraComposizione]="sC"
                                 [boxPartenzaList]="boxPartenzaList"
                                 [itemSelezionato]="checkSquadraSelezione(sC.codice)"
@@ -120,6 +121,7 @@
                             <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                                 <app-mezzo-composizione [mezzoComp]="mC"
                                                         [nightMode]="nightMode"
+                                                        [loadingSquadre]="loadingSquadre"
                                                         [boxPartenzaList]="boxPartenzaList"
                                                         [itemSelezionato]="checkMezzoSelezione(mC.id)"
                                                         [itemHover]="checkMezzoHover(mC.id)"
