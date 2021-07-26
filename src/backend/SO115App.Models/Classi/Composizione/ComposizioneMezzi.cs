@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Composizione;
 using System;
 using System.Collections.Generic;
 
@@ -32,7 +31,7 @@ namespace SO115App.API.Models.Classi.Composizione
         /// <summary>
         ///   Squadre preaccoppiate
         /// </summary>
-        public List<ComposizioneSquadra> SquadrePreaccoppiate { get; set; } = null;
+        public List<SquadraPreaccoppiata> SquadrePreaccoppiate { get; set; } = null;
 
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
@@ -48,5 +47,15 @@ namespace SO115App.API.Models.Classi.Composizione
         ///   Se un mezzo si trova sul posto indicare anche l'indirizzo dell'intervento
         /// </summary>
         public string IndirizzoIntervento { get; set; }
+    }
+
+    public class SquadraPreaccoppiata
+    {
+        public string Codice { get; set; }
+        public string Descrizione { get; set; }
+        public string Distaccamento { get; set; }
+        public string Genere { get; set; }
+        public string Stato { get; set; }
+        public char Turno { get; set; }
     }
 }

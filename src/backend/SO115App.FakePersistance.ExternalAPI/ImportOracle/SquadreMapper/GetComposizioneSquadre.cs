@@ -1,6 +1,4 @@
-﻿using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+﻿using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
@@ -23,7 +21,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             ListaSedi.AddRange(query.CodiciSede);
             var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
 
-            var composizioneSquadre = new List<ComposizioneSquadre>();
+            //var composizioneSquadre = new List<ComposizioneSquadre>();
 
             //foreach (Squadra s in ListaSquadre)
             //{

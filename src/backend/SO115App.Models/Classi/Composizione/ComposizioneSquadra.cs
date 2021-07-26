@@ -7,12 +7,19 @@ namespace SO115App.Models.Classi.Composizione
     {
         public string Codice { get; set; }
         public string Nome { get; set; }
-        public StatoSquadraComposizione Stato { get; set; }
-        public List<MembroComposizione> Membri { get; set; }
-        public DistaccamentoComposizione Distaccamento { get; set; }
         public char Turno { get; set; }
-        public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; } = null;
         public bool DiEmergenza { get; set; } = false;
+        public StatoSquadraComposizione Stato { get; set; }
+        public DistaccamentoComposizione Distaccamento { get; set; }
+        public List<MembroComposizione> Membri { get; set; } = null;
+        public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; } = null;
+        public List<MezzoInRientro> MezziInRientro { get; set; } = null;
+    }
+
+    public class MezzoInRientro
+    {
+        public string Id { get; set; }
+        public MezzoPreaccoppiato Mezzo { get; set; }
     }
 
     public class MezzoPreaccoppiato

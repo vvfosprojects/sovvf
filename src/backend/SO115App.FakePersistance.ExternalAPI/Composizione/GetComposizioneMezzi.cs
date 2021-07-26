@@ -2,8 +2,6 @@
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.ExternalAPI.Client;
-using SO115App.Models.Classi.Composizione;
-using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -61,10 +59,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(mezzi.Result, m =>
                 {
-                    var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new ComposizioneSquadra()
+                    var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraPreaccoppiata()
                     {
                         Codice = sq.Codice,
-                        Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede)
+                        Stato = lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
+                        Descrizione = sq.Descrizione,
+                        Distaccamento = sq.Distaccamento,
+                        Genere = sq.spotType,
+                        Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
                     m.PreAccoppiato = lstSqPreacc.Count > 0;
@@ -75,6 +77,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                         SquadrePreaccoppiate = lstSqPreacc
                     };
+
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
@@ -120,7 +123,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi => //ORDINAMENTO
             {
                 return lstMezzi.Result
-                    .OrderBy(mezzo => (!query?.Filtro?.CodMezzoPreaccoppiato?.Equals(mezzo.Mezzo.Codice)) ?? false)
+                    .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
+                    .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -128,7 +132,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
                     .ThenByDescending(mezzo => query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
                     .ThenByDescending(mezzo => query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
-                    .ThenByDescending(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice));
+                    .ThenByDescending(mezzo => query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice))
+                    .ThenBy(mezzo => mezzo.Mezzo.Distaccamento.Codice);
                     //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
