@@ -151,7 +151,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Descrizione = m.Descrizione,
                         Genere = m.Genere,
                         Distaccamento = m.DescrizioneAppartenenza,
-                        Stato = lstStatiMezzi.Result.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
+                        Stato = lstStatiMezzi.Result?.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
                     }).ToList() : null
                 }));
 
