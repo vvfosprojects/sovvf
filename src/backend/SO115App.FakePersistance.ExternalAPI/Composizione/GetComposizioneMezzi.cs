@@ -2,6 +2,7 @@
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.ExternalAPI.Client;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -29,7 +30,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
 
         private readonly IGetTipologieByCodice _getTipologieCodice;
-        private readonly IGetRichiesta _getRichiesta;
+        //private readonly IGetRichiesta _getRichiesta;
 
         private readonly IConfiguration _config;
 
@@ -41,7 +42,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getTipologieCodice = getTipologieCodice;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            _getRichiesta = getRichiesta;
+            //_getRichiesta = getRichiesta;
             _ordinamento = new OrdinamentoMezzi(_getTipologieCodice, _config, clientMatrix);
         }
 
@@ -66,14 +67,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraPreaccoppiata()
                     {
                         Codice = sq.Codice,
-                        Stato = lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede,
-                        Descrizione = sq.Descrizione,
+                        //Stato = (StatoSquadraComposizione)Enum.Parse(typeof(StatoSquadraComposizione), lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
+                        Nome = sq.Descrizione,
                         Distaccamento = sq.Distaccamento,
-                        Genere = sq.spotType,
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
-                    m.PreAccoppiato = lstSqPreacc.Count > 0;
+                    m.PreAccoppiato = lstSqPreacc?.Count > 0;
 
                     string codRichiesta = statiOperativiMezzi.Find(stato => m.Codice.Equals(stato.CodiceMezzo))?.CodiceRichiesta;
 
@@ -81,7 +81,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Id = m.Codice,
                         Mezzo = m,
-                        IndirizzoIntervento = string.IsNullOrEmpty(codRichiesta) ? null : _getRichiesta.GetByCodice(codRichiesta)?.Localita.Indirizzo,
+                        IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc
                     };
 
