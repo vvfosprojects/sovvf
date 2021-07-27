@@ -134,7 +134,10 @@ export class ComposizioneAvanzataState {
         }
 
         if (!skipGetMezzi) {
-            console.log('***Obj getMezzi: ', objGetMezzi);
+            // per avere mezzo in top prima pagina
+            if (objGetMezzi.filtro.codMezzoSelezionato || objGetMezzi.filtro.codSquadraSelezionata) {
+                objGetMezzi.pagination.page = 1;
+            }
             dispatch(new StartListaMezziComposizioneLoading());
             this.compPartenzaService.getMezziComposizioneAvanzata(objGetMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
                 if (listaMezziComposizioneAvanzata) {
@@ -171,7 +174,10 @@ export class ComposizioneAvanzataState {
         }
 
         if (!skipGetSquadre) {
-            console.log('***Obj getSquadre: ', objGetSquadre);
+            // per avere squadra in top prima pagina
+            if (objGetSquadre.codMezzoSelezionato || objGetSquadre.codSquadraSelezionata) {
+                objGetSquadre.pagination.page = 1;
+            }
             dispatch(new StartListaSquadreComposizioneLoading());
             this.compPartenzaService.getSquadreComposizioneAvanzata(objGetSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
                 if (listaSquadreComposizioneAvanzata) {
