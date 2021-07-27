@@ -290,7 +290,7 @@ export class MezziComposizioneState {
                     dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
                 }
                 dispatch([
-                    new SelectMezzoComposizione(mezzoComp),
+                    new SelectMezzoComposizione(mezzoComp, true),
                     new AddMezzoBoxPartenzaSelezionato(mezzoComp)
                 ]);
 
@@ -333,16 +333,10 @@ export class MezziComposizioneState {
 
     @Action(SelectMezzoComposizione)
     selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: any): void {
-        if (!action.preaccoppiato && action.mezzoComp.mezzo) {
+        if (action.mezzoComp.mezzo) {
             patchState({
-                idMezzoComposizioneSelezionato: action.mezzoComp.id,
+                idMezzoComposizioneSelezionato: action.mezzoComp.mezzo.codice,
                 idMezzoSelezionato: action.mezzoComp.mezzo.codice,
-                mezzoSelezionato: action.mezzoComp,
-            });
-        } else {
-            patchState({
-                idMezzoComposizioneSelezionato: action.codice,
-                idMezzoSelezionato: action.codice,
                 mezzoSelezionato: action.mezzoComp,
             });
         }
@@ -351,7 +345,7 @@ export class MezziComposizioneState {
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
 
-        if (boxPartenzaSelezionato && richiestaComposizione && (!boxPartenzaSelezionato?.squadreComposizione || boxPartenzaSelezionato?.squadreComposizione?.length <= 0)) {
+        if (boxPartenzaSelezionato && richiestaComposizione && (!boxPartenzaSelezionato?.squadreComposizione || boxPartenzaSelezionato?.squadreComposizione?.length <= 0) && !action.preaccoppiato) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());

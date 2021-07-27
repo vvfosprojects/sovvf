@@ -1,4 +1,4 @@
-import { MezzoComposizione } from './mezzo-composizione-interface';
+import { MezzoComposizione, MezzoPreaccoppiato } from './mezzo-composizione-interface';
 import { StatoSquadra } from '../enum/stato-squadra.enum';
 import { Sede } from '../model/sede.model';
 import { Componente } from '../model/componente.model';
@@ -18,14 +18,4 @@ export interface SquadraComposizione {
     spotType?: string;
     workshiftId?: string;
     version?: number;
-}
-
-export interface MezzoPreaccoppiato {
-    mezzo: {
-        codice: string;
-        descrizione: string;
-        genere: string;
-        stato: string;
-        distaccamento: string;
-    };
 }

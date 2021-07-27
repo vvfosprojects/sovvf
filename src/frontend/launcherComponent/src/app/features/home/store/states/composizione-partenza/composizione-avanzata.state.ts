@@ -129,10 +129,10 @@ export class ComposizioneAvanzataState {
         if (action.preaccoppiato) {
             objGetSquadre.codMezzoSelezionato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
             objGetMezzi.filtro.codMezzoSelezionato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;
-            // TODO: INSERIRE LOGICA SELEZIONE SQUADRE PREACCOPPIATE
-            // objGetMezzi.filtro.codSquadraSelezionata = mezzoSelezionato ? mezzoSelezionato.codice : null;
-            // objGetSquadre.codSquadraSelezionata = mezzoSelezionato ? mezzoSelezionato.codice : null;
+            objGetMezzi.filtro.codSquadraSelezionata = squadreSelezionate[0] ? squadreSelezionate[0].codice : null;
+            objGetSquadre.codSquadraSelezionata = squadreSelezionate[0] ? squadreSelezionate[0].codice : null;
         }
+
         if (!skipGetMezzi) {
             console.log('***Obj getMezzi: ', objGetMezzi);
             dispatch(new StartListaMezziComposizioneLoading());

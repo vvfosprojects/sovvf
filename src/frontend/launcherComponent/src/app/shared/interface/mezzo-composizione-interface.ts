@@ -13,3 +13,14 @@ export interface MezzoComposizione {
     listaSquadre?: SquadraComposizione[];
     indirizzoIntervento?: string;
 }
+
+// Modello MezzoPreaccoppiato che manda il BE presenta le seguenti proprietà ma NON dentro l'oggetto 'mezzo'.
+export interface MezzoPreaccoppiato {
+    mezzo: {
+        codice: string;
+        descrizione: string;
+        genere: string;
+        stato: string;
+        distaccamento: string;
+    };
+}

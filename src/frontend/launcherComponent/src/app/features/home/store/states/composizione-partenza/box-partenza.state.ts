@@ -237,8 +237,8 @@ export class BoxPartenzaState {
         state.boxPartenzaList.forEach((box: BoxPartenza) => {
             if (box.id === action.idBoxPartenza) {
                 console.log('boxPartenza', box);
-                if (box.mezzoComposizione && !action.preaccoppiato) {
-                    dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
+                if (box.mezzoComposizione) {
+                    dispatch(new SelectMezzoComposizione(box.mezzoComposizione, true));
                 }
                 if (box.squadreComposizione.length > 0) {
                     box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
@@ -448,8 +448,6 @@ export class BoxPartenzaState {
 
             dispatch([
                 new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, false, true),
-                new SelectSquadraComposizione(squadraComp),
-                new SelectMezzoComposizione(newBoxes[newBoxes.length - 1].mezzoComposizione, true),
                 new GetListeComposizioneAvanzata(null, false, false, true)
             ]);
         }
