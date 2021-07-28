@@ -17,6 +17,7 @@ import { FiltriMezziServizioComponent } from './filtri-mezzi-servizio/filtri-mez
 import { ModalRichiesteChiuseComponent } from './filtri-richieste/modal-richieste-chiuse/modal-richieste-chiuse.component';
 import { ModalZonaEmergenzaComponent } from './filtri-richieste/modal-zona-emergenza/modal-zona-emergenza.component';
 import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
+import { TastoChiamataMappaComponent } from './tasto-chiamata-mappa/tasto-chiamata-mappa.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-sche
         ViewModeComponent,
         FiltriMappaComponent,
         TastoChiamataComponent,
+        TastoChiamataMappaComponent,
         TastoSchedeContattoComponent,
         LoaderMarkerComponent,
         FiltriSchedeContattoComponent,

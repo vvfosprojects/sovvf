@@ -1,0 +1,11 @@
+<button id="buttonNuovaChiamataFromMappa"
+        type="button"
+        class="btn"
+        [class.btn-success]="active"
+        [class.btn-outline-success]="!active"
+        [class.btn-no-hover]="false"
+        [disabled]="disabled"
+        (click)="onActiveChiamataFromMappa()">
+    <i class="fas fa-phone-alt mr-1"></i>
+    <i class="fas fa-map-marker"></i>
+</button>

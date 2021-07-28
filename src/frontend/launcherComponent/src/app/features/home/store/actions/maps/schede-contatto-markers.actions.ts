@@ -60,24 +60,6 @@ export class SetSchedaContattoMarkerById {
     }
 }
 
-export class ToggleOpacitaSchedeContattoMarkers {
-    static readonly type = '[Schede Contatto Marker] Toggle Opacità Schede Contatto Marker';
-
-    constructor(public toggle: boolean, public stato?: ClassificazioneSchedaContatto) {
-    }
-}
-
-export class SetTipoOpacitaSchedeContattoMarkers {
-    static readonly type = '[Schede Contatto Marker] Set Tipo Opacità Schede Contatto Marker';
-
-    constructor(public stato: ClassificazioneSchedaContatto) {
-    }
-}
-
-export class OpacizzaSchedeContattoMarkers {
-    static readonly type = '[Schede Contatto Marker] Opacizza Schede Contatto Marker';
-}
-
 export class ClearSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Clear Schede Contatto Marker';
 }

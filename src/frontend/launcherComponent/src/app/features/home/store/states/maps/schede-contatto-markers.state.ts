@@ -3,7 +3,6 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
 import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
-import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marker-opachi.actions';
 import { FiltriMarkersState } from './filtri-markers.state';
 import { AreaMappaState } from './area-mappa.state';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
@@ -12,14 +11,11 @@ import {
     ClearSchedeContattoMarkers,
     GetSchedeContattoMarkers,
     InsertSchedaContattoMarker,
-    OpacizzaSchedeContattoMarkers,
     PatchSchedeContattoMarkers,
     RefreshSchedeContattoMarkers,
     RemoveSchedaContattoMarker,
     SetSchedaContattoMarkerById,
     SetSchedeContattoMarkers,
-    SetTipoOpacitaSchedeContattoMarkers,
-    ToggleOpacitaSchedeContattoMarkers,
     UpdateSchedaContattoMarker
 } from '../../actions/maps/schede-contatto-markers.actions';
 import { Injectable } from '@angular/core';
@@ -124,9 +120,6 @@ export class SchedeContattoMarkersState {
                     dispatch(new AddSchedeContattoMarkers(schedeAdd));
                 }
             }
-            if (state.statoOpacita) {
-                dispatch(new OpacizzaSchedeContattoMarkers());
-            }
         }
     }
 
@@ -191,43 +184,9 @@ export class SchedeContattoMarkersState {
         }
     }
 
-    @Action(ToggleOpacitaSchedeContattoMarkers)
-    toggleOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: ToggleOpacitaSchedeContattoMarkers): void {
-        patchState({
-            statoOpacita: action.toggle
-        });
-        if (!action.toggle) {
-            patchState({
-                tipoOpacita: SchedeContattoMarkersStateDefaults.tipoOpacita,
-            });
-            dispatch(new ClearMarkerOpachiSC());
-        } else {
-            dispatch(new SetTipoOpacitaSchedeContattoMarkers(action.stato));
-        }
-    }
-
-    @Action(SetTipoOpacitaSchedeContattoMarkers)
-    setTipoOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetTipoOpacitaSchedeContattoMarkers): void {
-        patchState({
-            tipoOpacita: action.stato
-        });
-        dispatch(new OpacizzaSchedeContattoMarkers());
-    }
-
-    @Action(OpacizzaSchedeContattoMarkers)
-    opacizzaSchedaContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
-        const state = getState();
-        if (state.statoOpacita && state.tipoOpacita) {
-            if (state.schedeContattoMarkers) {
-                dispatch(new SetMarkerOpachiSC(idSCFiltrate(state.tipoOpacita, state.schedeContattoMarkers)));
-            }
-        }
-    }
-
     @Action(ClearSchedeContattoMarkers)
     clearSchedeContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
         patchState(SchedeContattoMarkersStateDefaults);
-        dispatch(new ClearMarkerOpachiSC());
     }
 
     @Action(RefreshSchedeContattoMarkers)

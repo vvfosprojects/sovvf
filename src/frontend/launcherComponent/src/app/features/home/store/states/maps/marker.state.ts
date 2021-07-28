@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { RichiesteMarkersState } from './richieste-markers.state';
 import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
-import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { MezziMarkersState } from './mezzi-markers.state';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
@@ -12,9 +11,6 @@ import { SediMarkersState } from './sedi-markers.state';
 import { SetSedeMarkerById } from '../../actions/maps/sedi-markers.actions';
 import { SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetRichiestaMarkerById } from '../../actions/maps/richieste-markers.actions';
-import { MarkerOpachiState } from './marker-opachi.state';
-import { MarkerInfoWindowState } from './marker-info-window.state';
-import { MeteoMarkersState } from './meteo-markers.state';
 import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
@@ -70,9 +66,6 @@ export const markerStateDefaults: MarkerStateModel = {
         RichiesteMarkersState,
         MezziMarkersState,
         SediMarkersState,
-        MarkerOpachiState,
-        MarkerInfoWindowState,
-        MeteoMarkersState,
         ChiamateMarkersState,
         MapsButtonsState,
         SchedeContattoMarkersState
@@ -136,7 +129,6 @@ export class MarkerState {
         this.richiestaMarkerById$.subscribe(s => {
             if (s && s.id === action.markerRichiestaSelezionato) {
                 const uniqueId = 'richiesta-' + action.markerRichiestaSelezionato;
-                dispatch(new GetMarkerDatiMeteo(uniqueId, s.localita.coordinate));
                 dispatch(new SetCentroMappa(new CentroMappa(s.localita.coordinate, MAPSOPTIONS.zoomSelezionato.richiesta)));
             }
         });
@@ -174,7 +166,6 @@ export class MarkerState {
         this.mezzoMarkerById$.subscribe(s => {
             if (s && s.mezzo.codice === action.markerMezzoSelezionato) {
                 const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
-                dispatch(new GetMarkerDatiMeteo(uniqueId, s.mezzo.coordinate));
                 if (!action.composizione) {
                     dispatch(new SetCentroMappa(new CentroMappa(s.mezzo.coordinate, MAPSOPTIONS.zoomSelezionato.mezzo)));
                 }
@@ -214,7 +205,6 @@ export class MarkerState {
         this.sedeMarkerById$.subscribe(s => {
             if (s && s.codice === action.markerSedeSelezionato) {
                 const uniqueId = 'sede-' + action.markerSedeSelezionato;
-                dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
                 dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, MAPSOPTIONS.zoomSelezionato.sede)));
             }
         });

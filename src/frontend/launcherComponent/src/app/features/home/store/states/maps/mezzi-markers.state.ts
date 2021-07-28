@@ -1,7 +1,6 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { MezziMarkerService } from '../../../../../core/service/maps-service';
-import { ClearMarkerOpachiMezzi, SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
@@ -10,13 +9,10 @@ import {
     ClearMezziMarkers,
     GetMezziMarkers,
     InsertMezzoMarker,
-    OpacizzaMezziMarkers,
     PatchMezziMarkers,
     RemoveMezzoMarker,
     SetMezziMarkers,
     SetMezzoMarkerById,
-    SetTipoOpacitaMezziMarkers,
-    ToggleOpacitaMezziMarkers,
     UpdateMezzoMarker
 } from '../../actions/maps/mezzi-markers.actions';
 import { Injectable } from '@angular/core';
@@ -129,9 +125,6 @@ export class MezziMarkersState {
                     dispatch(new AddMezziMarkers(mezzoMarkerAdd));
                 }
             }
-            if (state.statoOpacita) {
-                dispatch(new OpacizzaMezziMarkers());
-            }
         }
     }
 
@@ -193,39 +186,6 @@ export class MezziMarkersState {
             patchState({
                 mezzoMarker: null
             });
-        }
-    }
-
-    @Action(ToggleOpacitaMezziMarkers)
-    toggleOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: ToggleOpacitaMezziMarkers): void {
-        patchState({
-            statoOpacita: action.toggle
-        });
-        if (!action.toggle) {
-            patchState({
-                tipoOpacita: MezziMarkersStateDefaults.tipoOpacita,
-            });
-            dispatch(new ClearMarkerOpachiMezzi());
-        } else {
-            dispatch(new SetTipoOpacitaMezziMarkers(action.stato));
-        }
-    }
-
-    @Action(SetTipoOpacitaMezziMarkers)
-    setTipoOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetTipoOpacitaMezziMarkers): void {
-        patchState({
-            tipoOpacita: action.stato
-        });
-        dispatch(new OpacizzaMezziMarkers());
-    }
-
-    @Action(OpacizzaMezziMarkers)
-    opacizzaMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>): void {
-        const state = getState();
-        if (state.statoOpacita && state.tipoOpacita) {
-            if (state.mezziMarkers) {
-                dispatch(new SetMarkerOpachiMezzi(idMezziFiltrati(state.tipoOpacita, state.mezziMarkers)));
-            }
         }
     }
 

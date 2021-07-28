@@ -28,6 +28,7 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() boxAttivi: boolean;
+    @Input() tastoChiamataMappaActive: boolean;
 
     @Output() mapFullLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 

@@ -21,7 +21,6 @@ import {
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleModifica, ToggleRichieste } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import {
     DelChiamataMarker,
     SetChiamataMarker,
@@ -226,7 +225,6 @@ export class SchedaTelefonataState {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
         };
-        dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
         patchState({
