@@ -186,7 +186,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            backdrop: true
         });
         modal.result.then(() => {
             },
