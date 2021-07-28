@@ -3,7 +3,6 @@ using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Qualifiche
@@ -26,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Qualifiche
 
             _client.SetCache("DettaglioQualifiche_" + idDipendente);
 
-            var result = _client.GetAsync(uri, null).Result;
+            var result = _client.GetAsync(uri).Result;
 
             return result;
         }
