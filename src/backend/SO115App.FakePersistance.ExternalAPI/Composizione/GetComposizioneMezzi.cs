@@ -115,7 +115,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return lstMezzi;
             }).ContinueWith(lstmezzi => lstmezzi.Result.Where(mezzo => //FILTRAGGIO
             {
-                bool ricerca = query.Filtro?.Ricerca?.ToUpper()?.Contains(mezzo.Mezzo.Codice.ToUpper()) ?? true;
+                bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
+                    mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) || 
+                    mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
                     query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice ) ?? true :
