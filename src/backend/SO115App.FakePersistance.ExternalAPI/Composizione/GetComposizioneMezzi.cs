@@ -29,11 +29,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
 
         private readonly IGetTipologieByCodice _getTipologieCodice;
-        //private readonly IGetRichiesta _getRichiesta;
 
         private readonly IConfiguration _config;
 
-        public GetComposizioneMezzi(IGetRichiesta getRichiesta, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
         {
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
@@ -41,20 +40,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getTipologieCodice = getTipologieCodice;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            //_getRichiesta = getRichiesta;
             _ordinamento = new OrdinamentoMezzi(_getTipologieCodice, _config, clientMatrix);
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
+            var lstSquadrePreaccoppiate = query.CodiciSedi.Select(sede =>  _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
+                .SelectMany(shift => shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false));
 
-            var lstSquadrePreaccoppiate = query.CodiciSedi.Select(sede => 
-            _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
-                .SelectMany(shift => 
-                shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false));
-
-            var lstStatiSquadre = _getStatoSquadre.Get(query.CodiciSedi.ToList());
+            var statiOperativiMezzi = Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));
 
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
@@ -74,7 +69,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     m.PreAccoppiato = lstSqPreacc?.Count > 0;
 
-                    string codRichiesta = statiOperativiMezzi.Find(stato => m.Codice.Equals(stato.CodiceMezzo))?.CodiceRichiesta;
+                    string codRichiesta = statiOperativiMezzi.Result.Find(stato => m.Codice.Equals(stato.CodiceMezzo))?.CodiceRichiesta;
 
                     var mc = new ComposizioneMezzi()
                     {
@@ -86,12 +81,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
-                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                    var statoMezzo = statiOperativiMezzi.Result.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
                     if (statoMezzo != null) switch (mc.Mezzo.Stato)
                     {
                         case Costanti.MezzoInSede:
-                            mc.Mezzo.Stato = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
+                            mc.Mezzo.Stato = statiOperativiMezzi.Result.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
                             break;
 
                         case Costanti.MezzoInViaggio:
