@@ -33,6 +33,7 @@
                     {{ nuovaPartenza.squadreComposizione[0].nome | truncate: 10 }}</span>
                 <button *ngIf="nuovaPartenza.mezzoComposizione && compPartenzaMode === 1 && nuovaPartenza.mezzoComposizione?.mezzo?.stato !== StatoMezzo.InRientro && !disableDividi"
                         class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
+                        [disabled]="loadingSquadre || loadingMezzi"
                         [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
                         (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
                     <span class="mr-1" style="font-weight: 500">Dividi</span>
