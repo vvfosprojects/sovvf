@@ -49,8 +49,8 @@ export class MezzoActionsComponent implements OnInit {
         this.getListaEventiMezzo();
     }
 
-    onClick(action?: string, event?: MouseEvent): void {
-        if (action !== 'In Viaggio') {
+    onClick(action?: string, ora?: string, event?: MouseEvent): void {
+        if (!ora) {
             if (event) {
                 event.stopPropagation();
             }

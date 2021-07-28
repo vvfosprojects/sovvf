@@ -76,26 +76,28 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
-            if (!this.itemSelezionato) {
-                this.selezionata.emit(this.squadraComp);
-            } else {
-                this.deselezionata.emit(this.squadraComp);
+        if (!this.loadingMezzi) {
+            if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
+                if (!this.itemSelezionato) {
+                    this.selezionata.emit(this.squadraComp);
+                } else {
+                    this.deselezionata.emit(this.squadraComp);
+                }
+            } else if (inRientro) {
+                if (!this.itemSelezionato) {
+                    this.selezionataInRientro.emit(this.squadraComp);
+                } else {
+                    this.deselezionataInRientro.emit(this.squadraComp);
+                }
+            } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
+                if (this.squadraComp.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
+                    if (!this.itemSelezionato) {
+                        this.selezionataPreAccoppiati.emit(this.squadraComp);
+                    } else {
+                        this.deselezionataPreAccoppiati.emit(this.squadraComp);
+                    }
+                }
             }
-        } else if (inRientro) {
-            if (!this.itemSelezionato) {
-              this.selezionataInRientro.emit(this.squadraComp);
-            } else {
-              this.deselezionataInRientro.emit(this.squadraComp);
-            }
-        } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-          if (this.squadraComp.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
-            if (!this.itemSelezionato) {
-              this.selezionataPreAccoppiati.emit(this.squadraComp);
-            } else {
-              this.deselezionataPreAccoppiati.emit(this.squadraComp);
-            }
-          }
         }
     }
 

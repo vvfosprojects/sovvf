@@ -34,6 +34,8 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnInit {
     @Input() itemOccupato: boolean;
     @Input() nightMode: boolean;
     @Input() disableDividi: boolean;
+    @Input() loadingSquadre: boolean;
+    @Input() loadingMezzi: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -86,8 +88,10 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnInit {
     }
 
     onElimina(e: MouseEvent): void {
-        e.stopPropagation();
-        this.eliminato.emit(this.partenza);
+        if (!this.loadingMezzi && !this.loadingSquadre) {
+            e.stopPropagation();
+            this.eliminato.emit(this.partenza);
+        }
     }
 
     ngClass(): string {

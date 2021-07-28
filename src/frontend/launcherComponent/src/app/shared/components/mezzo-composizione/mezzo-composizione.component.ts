@@ -106,6 +106,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
+        if (!this.loadingSquadre) {
         if (this.mezzoComp.mezzo.stato === 'In Viaggio' || this.mezzoComp.mezzo.stato === 'Sul Posto') {
             this.onSganciamento();
         } else {
@@ -151,6 +152,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                 }
             }
         }
+      }
     }
 
     onHoverIn(): void {

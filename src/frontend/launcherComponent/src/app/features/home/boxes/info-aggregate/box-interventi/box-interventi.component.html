@@ -4,7 +4,7 @@
             <div class="clearfix float-left ml-4 pr-0">
                 <i class="fas fa-medkit mb-2 mr-1"></i>
                 <span class="font-weight-bold " ngbTooltip="Interventi aperti" placement="top-left"
-                      >Richieste: {{interventi?.totale}}</span>
+                      >Interventi: {{interventi?.totale - interventi?.chiamate}}</span>
                 <span style="font-size: 16px">
           <span ngbTooltip="Interventi aperti nel turno precedente" placement="top-left">
             <span class="ml-2 mr-1">T ({{turno?.precedente}}):</span>
@@ -13,7 +13,7 @@
             <span class="mx-1 fas fa-arrow-right fa-fw"></span>
             <span ngbTooltip="Interventi aperti nel turno corrente" placement="top-left">
             <span class="mr-1">T ({{turno?.corrente}}):</span>
-            <span class="font-weight-bold">{{interventi?.totTurnoCorrente}}</span>
+            <span class="font-weight-bold">{{interventi?.totTurnoCorrente - interventi?.chiamate}}</span>
           </span>
                 </span>
             </div>
@@ -53,7 +53,7 @@
                 <div class="row">
                 <div class="col pr-0">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste assegnate" placement="bottom">Assegnati</span></li>
+                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Interventi assegnati" placement="bottom">Assegnati</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-center">
@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste presidiate" placement="top">Presidiati</span></li>
+                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Interventi presidiati" placement="top">Presidiati</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-center">
