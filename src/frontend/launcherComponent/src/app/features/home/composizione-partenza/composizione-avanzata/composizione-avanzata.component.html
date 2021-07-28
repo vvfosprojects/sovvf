@@ -207,6 +207,8 @@
                 <div *ngFor="let p of boxPartenzaList.slice().reverse(); let index = index">
                     <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
                                             [nightMode]="nightMode"
+                                            [loadingSquadre]="loadingSquadre"
+                                            [loadingMezzi]="loadingMezzi"
                                             [disableDividi]="checkDoubleDividi(p)"
                                             [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
                                             [compPartenzaMode]="Composizione.Avanzata"
