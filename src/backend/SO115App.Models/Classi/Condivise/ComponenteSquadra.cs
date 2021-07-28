@@ -34,9 +34,7 @@ namespace SO115App.API.Models.Classi.Condivise
             //this.Rimpiazzo = Rimpiazzo;
         }
 
-        public Componente()
-        {
-        }
+        public Componente() { }
 
         /// <summary>
         ///   Descrizione codice fiscale Componente
@@ -53,8 +51,6 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string Ruolo { get; set; }
 
-        //public Turno CodiceTurno { get; set; }
-
         /// <summary>
         ///   Nominativo Componente
         /// </summary>
@@ -63,45 +59,5 @@ namespace SO115App.API.Models.Classi.Condivise
         public DateTime OrarioInizio { get; set; }
 
         public DateTime OrarioFine { get; set; }
-
-        /// <summary>
-        ///   Indica se il Componente è un capo Partenza
-        /// </summary>
-        public bool CapoPartenza => DescrizioneQualifica == "TEAM_LEADER";
-
-        /// <summary>
-        ///   Indica se è un autista
-        /// </summary>
-        public bool Autista => DescrizioneQualifica == "DRIVER";
-
-        /// <summary>
-        ///   Indica se il componente è un rimpiazzo
-        /// </summary>
-        public bool Rimpiazzo { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un funzionario di guardia
-        /// </summary>
-        public bool FunGuardia { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un tecnino di guardia 1
-        /// </summary>
-        public bool TecnicoGuardia1 { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un tecnico di guardia 2
-        /// </summary>
-        public bool TecnicoGuardia2 { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un capoturno
-        /// </summary>
-        public bool CapoTurno { get; set; }
-
-        /// <summary>
-        ///   descrive il numero di telefono del componente
-        /// </summary>
-        public string Telefono { get; set; }
     }
 }

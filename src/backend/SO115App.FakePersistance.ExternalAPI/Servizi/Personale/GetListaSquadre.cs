@@ -113,11 +113,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                         CodiceFiscale = pVVf.codiceFiscale,
                         OrarioFine = componenteFake.OrarioFine,
                         OrarioInizio = componenteFake.OrarioInizio,
-                        Telefono = componenteFake.Telefono,
-                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                        FunGuardia = componenteFake.FunGuardia,
-                        CapoTurno = componenteFake.CapoTurno
                     };
 
                     ComponentiSquadra.Enqueue(componente);

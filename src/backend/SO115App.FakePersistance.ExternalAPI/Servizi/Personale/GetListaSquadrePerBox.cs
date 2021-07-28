@@ -163,11 +163,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     CodiceFiscale = componenteFake.CodiceFiscale,
                     OrarioFine = componenteFake.OrarioFine,
                     OrarioInizio = componenteFake.OrarioInizio,
-                    Telefono = componenteFake.Telefono,
-                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                    FunGuardia = componenteFake.FunGuardia,
-                    CapoTurno = componenteFake.CapoTurno
                 };
                 ComponentiSquadra.Add(componente);
                 ListaCodiciFiscaliComponentiSquadra.Add(componenteFake.CodiceFiscale);

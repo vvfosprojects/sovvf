@@ -70,11 +70,9 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             result.Funzionari = listaSquadreComposizione.SelectMany(s => s.Membri).Where(m => m.CapoPartenza).Select(m => new Componente() 
             { 
-                CapoTurno = m.CapoPartenza,
                 CodiceFiscale = m.CodiceFiscale,
                 DescrizioneQualifica = m.DescrizioneQualifica,
                 Nominativo = m.Nominativo,
-                Rimpiazzo = m.Rimpiazzo,
                 Ruolo = m.DescrizioneQualifica
             }).ToList();
 

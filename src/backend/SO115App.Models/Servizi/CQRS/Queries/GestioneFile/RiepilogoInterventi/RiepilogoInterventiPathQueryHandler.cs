@@ -71,7 +71,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 {
                     SiglaSquadra = string.Concat(p.Partenza.Squadre.SelectMany(s => s.Codice + " ")),
                     CodMezzo = p.CodiceMezzo,
-                    CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.CapoPartenza).Select(m => m.Nominativo)).FirstOrDefault(),
+                    //CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.CapoPartenza).Select(m => m.Nominativo)).FirstOrDefault(),
                     MezzoInUscita = p.DataOraInserimento,
                     MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
