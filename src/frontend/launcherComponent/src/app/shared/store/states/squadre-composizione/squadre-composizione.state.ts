@@ -20,9 +20,9 @@ import {
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import {
-  AddBoxesPartenzaInRientro,
-  AddBoxesPartenzaPreAccoppiato,
-  AddSquadreBoxPartenza
+    AddBoxesPartenzaInRientro,
+    AddBoxesPartenzaPreAccoppiato,
+    AddSquadreBoxPartenza
 } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { Injectable } from '@angular/core';
@@ -217,25 +217,26 @@ export class SquadreComposizioneState {
                 dispatch(new GetListaMezziSquadre());
             }
             if (action.preAccoppiato) {
-              setState(
-                patch({
-                  idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
-                  idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
-                })
-              );
-              if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
-                this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp, true));
-              }
+                setState(
+                    patch({
+                        idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                        idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                    })
+                );
+                if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
+                    this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp, true));
+                }
+                this.store.dispatch(new GetListeComposizioneAvanzata(null, null, null, true));
             } else {
-              setState(
-                patch({
-                  idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)),
-                  idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)) : state.idSquadreSelezionate,
-                })
-              );
-              if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
-                this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp));
-              }
+                setState(
+                    patch({
+                        idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)),
+                        idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)) : state.idSquadreSelezionate,
+                    })
+                );
+                if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
+                    this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp));
+                }
             }
         }
     }

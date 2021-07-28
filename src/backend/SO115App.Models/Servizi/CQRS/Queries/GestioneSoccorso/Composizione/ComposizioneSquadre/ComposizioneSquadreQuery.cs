@@ -30,5 +30,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         public FiltriComposizioneSquadra Filtro { get; set; }
         public string[] CodiciSede { get; set; }
+        public string IdOperatore { get; set; }
     }
 }

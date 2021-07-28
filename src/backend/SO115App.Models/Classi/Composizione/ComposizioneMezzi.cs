@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Composizione;
 using System;
 using System.Collections.Generic;
 
@@ -52,10 +53,9 @@ namespace SO115App.API.Models.Classi.Composizione
     public class SquadraPreaccoppiata
     {
         public string Codice { get; set; }
-        public string Descrizione { get; set; }
         public string Distaccamento { get; set; }
-        public string Genere { get; set; }
-        public string Stato { get; set; }
+        public string Nome { get; set; }
+        public StatoSquadraComposizione Stato { get; set; }
         public char Turno { get; set; }
     }
 }
