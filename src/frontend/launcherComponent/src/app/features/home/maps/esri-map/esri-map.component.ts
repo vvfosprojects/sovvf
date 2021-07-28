@@ -244,7 +244,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     });
                     modalNuovaChiamata.componentInstance.lat = lat;
                     modalNuovaChiamata.componentInstance.lon = lon;
-                    modalNuovaChiamata.componentInstance.address = response.address; // TODO: trovare indirizzo tramite lat e long
+                    modalNuovaChiamata.componentInstance.address = response.address;
 
                     modalNuovaChiamata.result.then((result: any) => {
                         console.log('modalNuovaChiamata result', result);

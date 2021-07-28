@@ -375,9 +375,6 @@ export class SchedaTelefonataState {
                     new ToggleChiamata()
                 ]);
             } else {
-                if (fromMappa) {
-                    dispatch(new ToggleRichieste());
-                }
                 dispatch(new CestinaChiamata());
             }
         }, () => {
