@@ -1,11 +1,11 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
@@ -13,7 +13,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static SO115App.API.Models.Classi.Condivise.Squadra;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 {
@@ -23,13 +22,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetMezziUtilizzabili _getMezzi;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetStatoSquadra _getStatoSquadre;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
-        public GetPreAccoppiati(IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi, IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre)
+        public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi, IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre)
         {
             _getSquadre = getSquadre;
             _getMezzi = getMezzi;
             _getStatoMezzi = getStatoMezzi;
             _getStatoSquadre = getStatoSquadre;
+            _getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
         }
 
         public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
@@ -61,10 +62,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             {
                 var MezzoSquadra = lstMezzi.Result.Find(mezzo => mezzo.CodiceMezzo.Equals(squadreMezzo.Key));
 
+                var DescSede = _getDistaccamentoByCodiceSedeUC.Get(MezzoSquadra.CodiceDistaccamento).Result;
+
                 return new PreAccoppiato()
                 {
                     CodiceMezzo = MezzoSquadra.CodiceMezzo,
-                    Distaccamento = MezzoSquadra.CodiceDistaccamento,
+                    Distaccamento = DescSede.DescDistaccamento.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
                     DescrizioneMezzo = MezzoSquadra.Descrizione,
                     GenereMezzo = MezzoSquadra.Genere,
                     StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(MezzoSquadra.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
