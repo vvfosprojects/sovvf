@@ -57,6 +57,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
 import { ViewComponentState } from '../view/view.state';
+import { SetChiamataFromMappaActiveValue } from "../../actions/maps/tasto-chiamata-mappa.actions";
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -214,7 +215,11 @@ export class SchedaTelefonataState {
     }
 
     @Action(MarkerChiamata)
-    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
+    markerChiamata({
+                       getState,
+                       patchState,
+                       dispatch
+                   }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
         if (state.idChiamataMarker) {
             dispatch(new UpdateChiamataMarker(action.marker));
@@ -251,7 +256,10 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCountInterventiProssimita)
-    setCountInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
+    setCountInterventiProssimita({
+                                     patchState,
+                                     dispatch
+                                 }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
                 countInterventiProssimita: res.count,
@@ -262,7 +270,10 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetInterventiProssimita)
-    setInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
+    setInterventiProssimita({
+                                patchState,
+                                dispatch
+                            }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
                 interventiProssimita: res.dataArray,
@@ -273,7 +284,11 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
+    insertChiamata({
+                       getState,
+                       patchState,
+                       dispatch
+                   }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
         const state = getState();
         const f = state.richiestaForm.model;

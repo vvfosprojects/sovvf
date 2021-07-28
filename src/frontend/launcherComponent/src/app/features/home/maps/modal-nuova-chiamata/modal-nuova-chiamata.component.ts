@@ -24,7 +24,7 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
     templateUrl: './modal-nuova-chiamata.component.html',
     styleUrls: ['./modal-nuova-chiamata.component.scss']
 })
-export class ModalNuovaChiamataComponent implements OnInit {
+export class ModalNuovaChiamataComponent {
 
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
@@ -63,11 +63,8 @@ export class ModalNuovaChiamataComponent implements OnInit {
     constructor(private activeModal: NgbActiveModal) {
     }
 
-    ngOnInit(): void {
-    }
-
     close(): void {
-        this.activeModal.close('ok');
+        this.activeModal.close('ko');
     }
 
 }

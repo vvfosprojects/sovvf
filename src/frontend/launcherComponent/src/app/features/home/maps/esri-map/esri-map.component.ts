@@ -38,6 +38,7 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Locator from '@arcgis/core/tasks/Locator';
+import { SetChiamataFromMappaActiveValue } from "../../store/actions/maps/tasto-chiamata-mappa.actions";
 
 @Component({
     selector: 'app-esri-map',
@@ -225,11 +226,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 const locatorTask = new Locator({
                     url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
                 });
-
                 const params = {
                     location: event.mapPoint
                 };
-
                 // Trovo l'indirizzo tramite le coordinate
                 locatorTask.locationToAddress(params).then((response) => {
                     console.log('response', response);
@@ -246,11 +245,12 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     modalNuovaChiamata.componentInstance.lon = lon;
                     modalNuovaChiamata.componentInstance.address = response.address;
 
-                    modalNuovaChiamata.result.then((result: any) => {
-                        console.log('modalNuovaChiamata result', result);
+                    modalNuovaChiamata.result.then((result: string) => {
+                        this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
                     });
                 });
 
+                // TEST con API gratuita per il geocode inverso
                 const obj = {
                     location: {
                         latLng: {
@@ -279,8 +279,8 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     modalNuovaChiamata.componentInstance.lon = lon;
                     modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
 
-                    modalNuovaChiamata.result.then((result: any) => {
-                        console.log('modalNuovaChiamata result', result);
+                    modalNuovaChiamata.result.then((result: string) => {
+                        this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
                     });
                 });
 
