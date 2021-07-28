@@ -17,7 +17,7 @@ import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipol
 import { TriageSummaryState } from '../../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { PosInterface } from '../../../../shared/interface/pos.interface';
-import { PermissionFeatures } from "../../../../shared/enum/permission-features.enum";
+import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-modal-nuova-chiamata',
@@ -56,6 +56,7 @@ export class ModalNuovaChiamataComponent implements OnInit {
 
     lat: number;
     lon: number;
+    address: string;
 
     permessiFeature = PermissionFeatures;
 

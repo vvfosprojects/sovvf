@@ -102,6 +102,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() apertoFromMappa: boolean;
     @Input() lat: number;
     @Input() lon: number;
+    @Input() address: string;
 
     @Output() closeChiamataFromMappa: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -131,7 +132,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         if (this.apertoFromMappa) {
-            this.setIndirizzoFromMappa(this.lat, this.lon);
+            this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
     }
 
@@ -326,12 +327,28 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('cerca');
     }
 
-    setIndirizzoFromMappa(lat: number, lon: number): void {
+    setIndirizzoFromMappa(lat: number, lon: number, address: string): void {
         // TODO: formattare latitudine e longitudine
         // const latitudine = Math.round(lat * 100) / 100;
         // const longitudine = Math.round(lon * 100) / 100;
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lon);
+        this.f.indirizzo.patchValue(address);
+
+        const coordinate = new Coordinate(lat, lon);
+        this.chiamataMarker = new ChiamataMarker(
+            this.idChiamata,
+            `${this.operatore.nome} ${this.operatore.cognome}`,
+            `${this.operatore.sede.codice}`,
+            new Localita(coordinate ? coordinate : null, address),
+            null
+        );
+
+        this.f.indirizzo.patchValue(address);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lon);
+
+        this.reducerSchedaTelefonata('cerca');
     }
 
     onModificaIndirizzo(candidate: AddressCandidate): void {
