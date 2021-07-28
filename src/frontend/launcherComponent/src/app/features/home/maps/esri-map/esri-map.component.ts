@@ -17,7 +17,7 @@ import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova
 import { Utente } from '../../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../../../auth/store/auth.state';
-import { makeIdChiamata } from '../../../../shared/helper/function-richieste';
+import { SetChiamataFromMappaActiveValue } from '../../store/actions/maps/tasto-chiamata-mappa.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -38,7 +38,6 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Locator from '@arcgis/core/tasks/Locator';
-import { SetChiamataFromMappaActiveValue } from "../../store/actions/maps/tasto-chiamata-mappa.actions";
 
 @Component({
     selector: 'app-esri-map',
