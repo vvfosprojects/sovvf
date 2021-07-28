@@ -101,17 +101,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public Sede Distaccamento { get; set; }
 
-        /// <summary>
-        ///   Indica l'istante in cui la squadra termina il suo impegno
-        /// </summary>
-        public DateTime? IstanteTermineImpegno { get; set; }
-
-        public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
-
-        public decimal IndiceOrdinamento { get; set; }
-
         public string Turno { get; set; }
-        public DateTime DataInServizio { get; set; }
 
         /// <summary>
         ///   Definisce se la squadra è preaccoppiata con un mezzo

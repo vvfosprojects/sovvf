@@ -27,14 +27,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 
             var listaComponenti = JsonConvert.DeserializeObject<List<Componente>>(json);
 
-            foreach (var cf in squadra.ListaCodiciFiscaliComponentiSquadra)
-            {
-                foreach (var compo in listaComponenti)
-                {
-                    if (compo.CodiceFiscale.Equals(cf))
-                        ListaDef.Add(compo);
-                }
-            }
+            //foreach (var cf in squadra.ListaCodiciFiscaliComponentiSquadra)
+            //{
+            //    foreach (var compo in listaComponenti)
+            //    {
+            //        if (compo.CodiceFiscale.Equals(cf))
+            //            ListaDef.Add(compo);
+            //    }
+            //}
 
             return ListaDef;
         }

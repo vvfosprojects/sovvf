@@ -49,11 +49,6 @@ namespace SO115App.API.Models.Classi.Condivise
         public string DescrizioneQualifica { get; set; }
 
         /// <summary>
-        ///   Descrizione lunga qualifica Componente
-        /// </summary>
-        //public string DescrizioneQualificaLunga { get; set; }
-
-        /// <summary>
         ///   Ruolo ricoperto dall'operatore nel turno indicato
         /// </summary>
         public string Ruolo { get; set; }
@@ -68,11 +63,6 @@ namespace SO115App.API.Models.Classi.Condivise
         public DateTime OrarioInizio { get; set; }
 
         public DateTime OrarioFine { get; set; }
-
-        /// <summary>
-        ///   ToolTip Componente
-        /// </summary>
-        //public string Tooltip { get; set; }
 
         /// <summary>
         ///   Indica se il Componente è un capo Partenza

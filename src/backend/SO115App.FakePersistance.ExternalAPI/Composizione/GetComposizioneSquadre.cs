@@ -145,7 +145,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
-                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.Equals(a))?.Ruolo
+                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo
                     }).ToList(),
                     MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati != null ? lstMezziPreaccoppiati.Result.FindAll(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
                     {

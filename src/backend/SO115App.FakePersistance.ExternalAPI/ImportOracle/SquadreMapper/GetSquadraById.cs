@@ -103,7 +103,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 }
                 Squadra squadra = new Squadra(OraS.SIGLA, Stato, ComponentiSquadra, sedeDistaccamento);
                 squadra.Id = OraS.COD_SQUADRA.ToString();
-                squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
+                //squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
                 return squadra;
             }
             else

@@ -177,7 +177,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             s.Id = squadraFake.CodiceSquadra;
             s.Codice = squadraFake.CodiceSquadra;
-            s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
             return s;
         }
     }
