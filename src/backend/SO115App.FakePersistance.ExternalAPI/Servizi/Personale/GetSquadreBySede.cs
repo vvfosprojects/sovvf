@@ -31,13 +31,13 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
-                        squadra.Componenti = new List<Componente>();
+                        squadra.Membri = new List<Componente>();
 
-                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
+                        squadra.Membri = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
 
                         var listaComponentiSquadra = _getPersonaFisica.Get(squadra.ListaCodiciFiscaliComponentiSquadra).Result;
 
-                        foreach (var componente in squadra.Componenti)
+                        foreach (var componente in squadra.Membri)
                         {
                             foreach (var persona in listaComponentiSquadra.Dati)
                             {

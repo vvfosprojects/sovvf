@@ -64,7 +64,7 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.Nome = Nome;
             this.Stato = Stato;
-            this.Componenti = Componenti;
+            this.Membri = Componenti;
             this.Distaccamento = Distaccamento;
             this.Turno = Turno;
         }
@@ -94,7 +94,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Lista dei componenti della squadra
         /// </summary>
-        public List<Componente> Componenti { get; set; }
+        public List<Componente> Membri { get; set; }
 
         /// <summary>
         ///   Indica il distaccamento della squadra

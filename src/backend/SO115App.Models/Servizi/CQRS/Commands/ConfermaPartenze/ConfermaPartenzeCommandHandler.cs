@@ -63,9 +63,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
-            //PREPARAZIONE DTO E VARIABILI
-            command.ConfermaPartenze.richiesta = command.Richiesta;
-
             var dataAdesso = DateTime.UtcNow;
 
             //GENERAZIONE CODICE INTERVENTO
@@ -190,6 +187,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 });
 
                 dataAdesso = dataAdesso.AddSeconds(1);
+
+
             }
 
             //GESTIONE UTENTE PRESA IN CARICO
