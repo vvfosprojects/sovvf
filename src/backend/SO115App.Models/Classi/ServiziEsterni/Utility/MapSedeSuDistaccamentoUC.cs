@@ -17,11 +17,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             distaccamento.CodSede,
             distaccamento.DescDistaccamento,
             distaccamento.Indirizzo,
-            distaccamento.Coordinate,
-            "",
-            "",
-            "",
-            "",
-            "");
+            distaccamento.Coordinate);
     }
 }

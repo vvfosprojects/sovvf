@@ -24,14 +24,10 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Componente
     {
-        public Componente(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
+        public Componente(string DescrizioneQualifica, string Nominativo)
         {
             this.DescrizioneQualifica = DescrizioneQualifica;
             this.Nominativo = Nominativo;
-            //this.Tooltip = Tooltip;
-            //this.CapoPartenza = CapoPartenza;
-            //this.Autista = Autista;
-            //this.Rimpiazzo = Rimpiazzo;
         }
 
         public Componente() { }

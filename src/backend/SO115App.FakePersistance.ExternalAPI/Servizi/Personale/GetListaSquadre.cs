@@ -107,8 +107,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 if (pVVf != null)
                 {
-                    var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                    pVVf.nome, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                    var componente = new Componente(componenteFake.DescrizioneQualificaLunga, pVVf.nome)
                     {
                         CodiceFiscale = pVVf.codiceFiscale,
                         OrarioFine = componenteFake.OrarioFine,
@@ -130,7 +129,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.Result?.DescDistaccamento, distaccamento.Result?.Indirizzo, distaccamento.Result?.Coordinate, "", "", "", "", "");
+            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.Result?.DescDistaccamento, distaccamento.Result?.Indirizzo, distaccamento.Result?.Coordinate);
 
             var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra.ToList(), sedeDistaccamento, squadraFake.Turno);
 

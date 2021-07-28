@@ -183,8 +183,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var sede = new Sede(mezzoDto.CodiceDistaccamento,
                                 distaccamento != null ? distaccamento.DescDistaccamento : "",
                                 distaccamento != null ? distaccamento.Indirizzo : "",
-                                distaccamento != null ? distaccamento.Coordinate : null,
-                                "", "", "", "", "");
+                                distaccamento != null ? distaccamento.Coordinate : null);
 
             return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
                 mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))

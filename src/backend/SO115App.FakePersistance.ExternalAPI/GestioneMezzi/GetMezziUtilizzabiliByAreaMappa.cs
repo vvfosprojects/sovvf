@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     foreach (var anagrafica in ListaAnagrafiche)
                     {
                         var sede = _getDistaccamentoByCodiceSedeUC.Get(anagrafica.Sede.Id).Result;
-                        Sede InfoSede = new Sede(sede.CodSede, sede.DescDistaccamento, sede.Indirizzo, sede.Coordinate, "", "", "", "", "");
+                        Sede InfoSede = new Sede(sede.CodSede, sede.DescDistaccamento, sede.Indirizzo, sede.Coordinate);
 
                         Mezzo Infomezzo = new Mezzo(anagrafica.GenereMezzo.CodiceTipo + "." + anagrafica.Targa,
                                             anagrafica.Targa,

@@ -290,11 +290,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </remarks>
         public string CodRichiesta { get; set; }
 
-        ///// <summary>
-        ///// Il path del PDF dettaglio INTERVENTO
-        ///// </summary>
-        //public string PathDettaglio { get; set; }
-
         /// <summary>
         ///   E' il codice dell'operatore che ha registrato la richiesta
         /// </summary>
@@ -415,15 +410,6 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 return d;
             }
-        }
-
-        /// <summary>
-        ///   Restituisce l'elenco delle squadre coinvolte nella Richiesta di Assistenza
-        /// </summary>
-        public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
-        {
-            get;
-            //set;
         }
 
         /// <summary>
@@ -1047,19 +1033,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         public bool Esercitazione { get; set; } = false;
 
         [BsonIgnore]
-        //[JsonIgnore]
-        public List<string> lstSquadre
-        {
-            get => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
-            set { }
-        }
+        public List<string> lstSquadre => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
 
         [BsonIgnore]
-        //[JsonIgnore]
-        public DateTime dataOraInserimento
-        {
-            get => Telefonate.First().DataOraInserimento;
-            set { }
-        }
+        public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
     }
 }

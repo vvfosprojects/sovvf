@@ -25,17 +25,12 @@ namespace SO115App.API.Models.Classi.Condivise
         private bool VisualizzazioneCentrale = true;
         private string _descrizione;
 
-        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, string tipoSede, string label, string icona, string regione, string provincia, bool visualizzazioneCentrale = true)
+        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, bool visualizzazioneCentrale = true)
         {
             this.Codice = codice;
             this.Descrizione = descrizione;
             this.Indirizzo = indirizzo;
             this.Coordinate = coordinate;
-            this.Tipo = tipoSede;
-            this.Label = label;
-            this.Icona = icona;
-            this.Regione = regione;
-            this.Provincia = provincia;
             this.VisualizzazioneCentrale = visualizzazioneCentrale;
         }
 
@@ -69,30 +64,5 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indirizzo della Sede
         /// </summary>
         public string Indirizzo { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Tipo { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Regione { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Provincia { get; set; }
-
-        /// <summary>
-        ///   Label
-        /// </summary>
-        public string Label { get; set; }
-
-        /// <summary>
-        ///   Icona
-        /// </summary>
-        public string Icona { get; set; }
     }
 }

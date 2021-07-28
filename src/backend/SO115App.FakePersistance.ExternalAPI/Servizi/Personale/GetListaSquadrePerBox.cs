@@ -149,7 +149,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var sedeDistaccamento = new Sede(squadraFake.Sede, null, null, null, "", "", "", "", "");
+            var sedeDistaccamento = new Sede(squadraFake.Sede, null, null, null);
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
@@ -157,8 +157,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 //PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
 
-                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                                                        "", componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga, "")
                 {
                     CodiceFiscale = componenteFake.CodiceFiscale,
                     OrarioFine = componenteFake.OrarioFine,
