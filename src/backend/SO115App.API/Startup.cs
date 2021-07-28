@@ -35,11 +35,15 @@ using SimpleInjector.Lifestyles;
 using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR;
+using StackExchange.Redis;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 
 namespace SO115App.API
 {
@@ -54,6 +58,7 @@ namespace SO115App.API
         }
 
         public IConfiguration Configuration { get; }
+        public IWatchChangeSchedeNue WatchChangeSchedeNue { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -114,10 +119,20 @@ namespace SO115App.API
                         ValidateAudience = false
                     };
                 });
-            services.AddSignalR().AddHubOptions<NotificationHub>(options =>
-            {
-                options.EnableDetailedErrors = true;
-            });
+
+            services.AddSignalR()
+                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
+                // {
+                //    options.Configuration.ChannelPrefix = "SO115Web";
+                //})
+                .AddNewtonsoftJsonProtocol(opt =>
+                {
+                    opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                })
+                .AddHubOptions<NotificationHub>(options =>
+                {
+                    options.EnableDetailedErrors = true;
+                });
             IntegrateSimpleInjector(services);
         }
 

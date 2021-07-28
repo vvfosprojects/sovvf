@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -34,12 +35,15 @@ using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
@@ -87,6 +91,7 @@ namespace Persistence.MongoDB
             TriageDataMap.Map();
             TrasferimentiChiamateMap.Map();
             PosMap.Map();
+            SchedeNueWSMap.Map();
 
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
@@ -259,6 +264,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<TriageData>("triageData");
+            }
+        }
+
+        public IMongoCollection<SchedaContattoWSNue> SchedeNueCollection
+        {
+            get
+            {
+                return database.GetCollection<SchedaContattoWSNue>("schedeNue");
             }
         }
 

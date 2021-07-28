@@ -13,6 +13,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
@@ -37,6 +38,8 @@ namespace SO115App.CompositionRoot
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
+            container.Register<IWatchChangeSchedeNue, DbWatchForChange>();
+
             container.Register<ISetTipologie, SetTipologie>();
 
             container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
@@ -138,6 +141,9 @@ namespace SO115App.CompositionRoot
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IUndoSchedeContattoMerge,
                 Persistence.MongoDB.GestioneSchedeContatto.UndoSchedeContattoMerge>();
+
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeContatto_WSNUE,
+                                Persistence.MongoDB.GestioneSchedeContatto.GetSchedeContatto>();
 
             #endregion Schede Contatto
 

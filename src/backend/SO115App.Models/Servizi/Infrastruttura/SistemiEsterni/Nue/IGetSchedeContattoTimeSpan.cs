@@ -33,6 +33,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Restituisce l'elenco delle schede contatto corrispondenti ai criteri di ricerca indicati
         /// </summary>
         /// <returns>Lista schede contatto</returns>
-        List<SchedaContatto> SchedeContattoTimeSpan(DateTime dataDa, DateTime dataA);
+        List<SchedaContatto> SchedeContattoTimeSpan(DateTime dataDa, DateTime dataA, string codiceSede);
     }
 }

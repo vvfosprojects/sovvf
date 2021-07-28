@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>SO115App.ExternalAPI.Client</AssemblyName>
     <RootNamespace>SO115App.ExternalAPI.Client</RootNamespace>
   </PropertyGroup>
@@ -24,5 +24,4 @@
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
     <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
   </ItemGroup>
-
 </Project>

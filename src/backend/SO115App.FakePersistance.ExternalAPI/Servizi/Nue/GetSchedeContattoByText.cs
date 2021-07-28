@@ -42,11 +42,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// </summary>
         /// <param name="testolibero">una stringa</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> SchedeContattoFromText(string testolibero)
+        public List<SchedaContatto> SchedeContattoFromText(string testolibero, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetSchedeContattoFromText(testolibero);
+            return _getSchedeMethods.GetSchedeContattoFromText(testolibero, codiceSede);
 
             //---------------------------------------------------------------------------------------
         }

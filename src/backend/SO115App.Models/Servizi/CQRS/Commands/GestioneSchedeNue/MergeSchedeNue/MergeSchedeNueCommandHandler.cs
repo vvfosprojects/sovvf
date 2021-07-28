@@ -36,8 +36,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
 
         public void Handle(MergeSchedeNueCommand command)
         {
-            var elencoCodiciSede = command.schedeSelezionateID.OfType<string>().ToList();
-            var elencoSchedeDaMergiare = _schedeContattoByCodiciScheda.SchedeContattoByCodiciScheda(elencoCodiciSede);
+            var elencoCodiciSchede = command.schedeSelezionateID.OfType<string>().ToList();
+            var elencoSchedeDaMergiare = _schedeContattoByCodiciScheda.SchedeContattoByCodiciScheda(elencoCodiciSchede, command.CodiceSede);
 
             command.SchedaNue = elencoSchedeDaMergiare[0];
 

@@ -42,11 +42,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// </summary>
         /// <param name="gestita">booleana gestita</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> SchedeContattoGestita(bool gestita)
+        public List<SchedaContatto> SchedeContattoGestita(bool gestita, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetSchedeContattoGestita(gestita);
+            return _getSchedeMethods.GetSchedeContattoGestita(gestita, codiceSede);
 
             //---------------------------------------------------------------------------------------
         }

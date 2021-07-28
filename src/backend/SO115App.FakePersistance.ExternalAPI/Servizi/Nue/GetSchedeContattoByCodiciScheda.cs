@@ -42,11 +42,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// </summary>
         /// <param name="codiciFiscali">il codice sede</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> SchedeContattoByCodiciScheda(List<string> codiciSchede)
+        public List<SchedaContatto> SchedeContattoByCodiciScheda(List<string> codiciSchede, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetSchedeContattoByCodiciScheda(codiciSchede);
+            return _getSchedeMethods.GetSchedeContattoByCodiciScheda(codiciSchede, codiceSede);
 
             //---------------------------------------------------------------------------------------
         }

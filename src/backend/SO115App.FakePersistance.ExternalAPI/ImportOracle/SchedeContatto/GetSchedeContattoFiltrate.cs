@@ -16,7 +16,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
             _getSchedeContatto = getSchedeContatto;
         }
 
-        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede, string classificazione)
+        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede, string classificazione, string codiceSede)
         {
             var ListaSchede = _getSchedeContatto.ListaSchedeContatto(codSede);
 

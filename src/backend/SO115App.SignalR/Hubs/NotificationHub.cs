@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.NUE;
 using SO115App.SignalR.Notifications;
 using System;
 using System.Threading.Tasks;
@@ -55,6 +56,11 @@ namespace SO115App.SignalR
                 await Clients.OthersInGroup(codiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + codiceSede).ConfigureAwait(false);
                 await base.OnConnectedAsync().ConfigureAwait(false);
             }
+        }
+
+        public async Task NotifyUpdateSchedaContatto(SchedaContatto scheda)
+        {
+            await Clients.Group(scheda.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", scheda).ConfigureAwait(false);
         }
 
         public string GetConnectionId()

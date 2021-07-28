@@ -32,6 +32,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Restituisce l'elenco delle schede contatto corrispondenti ai criteri di ricerca indicati
         /// </summary>
         /// <returns>Lista schede contatto</returns>
-        List<SchedaContatto> SchedeContattoGestita(bool gestita);
+        List<SchedaContatto> SchedeContattoGestita(bool gestita, string codiceSede);
     }
 }

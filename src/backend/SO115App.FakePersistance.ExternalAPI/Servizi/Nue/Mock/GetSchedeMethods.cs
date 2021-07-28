@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,26 +44,29 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string Conoscenza = "Conoscenza";
         private readonly string Differibile = "Differibile";
         private readonly DbContext _context;
+        private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
 
-        public GetSchedeMethods(DbContext context)
+        public GetSchedeMethods(DbContext context, IGetSchedeContatto_WSNUE getSchedeContatto_WSNUE)
         {
             _context = context;
+            _getSchedeContatto_WSNUE = getSchedeContatto_WSNUE;
         }
 
         /// <summary>
         ///   Metodo che recupera tutti le schede contatto dal json SchedeContatto.
         /// </summary>
-        public List<SchedaContatto> GetList()
+        public List<SchedaContatto> GetList(string codiceSede)
         {
-            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+            var ListaSchede = _getSchedeContatto_WSNUE.GetAllSchedeContatto(codiceSede);
 
-            string json;
+            //string json;
 
-            using (var r = new StreamReader(SchedeContattoJson))
-            {
-                json = r.ReadToEnd();
-            }
-            var ListaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
+            //using (var r = new StreamReader(SchedeContattoJson))
+            //{
+            //    json = r.ReadToEnd();
+            //}
+            //var ListaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
 
             List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
@@ -91,7 +95,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>SchedaContatto</returns>
         public SchedaContatto GetSchedaContattoAttuale(string codiceSede, string codiceOperatore)
         {
-            var listaSchedeContatto = GetList();
+            var listaSchedeContatto = GetList(codiceSede);
 
             if (codiceOperatore == null) return listaSchedeContatto.Find(x =>
                  x.OperatoreChiamata.CodiceSede.Equals(codiceSede));
@@ -108,7 +112,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetSchede(string codiceSede)
         {
-            return GetList().FindAll(x => x.CodiceSede.Equals(codiceSede));
+            return GetList(codiceSede);
         }
 
         /// <summary>
@@ -119,7 +123,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetSchedeContattoFromCodiciFiscali(List<string> codiciFiscali)
         {
-            var listaSchedeContatto = GetList();
+            var listaSchedeContatto = GetList("");
             var listaSchedeContattoFiltered = new List<SchedaContatto>();
 
             foreach (var codice in codiciFiscali)
@@ -139,9 +143,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="dataDa">la data di partenza</param>
         /// <param name="dataA">la data di fine</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoTimeSpan(DateTime dataDa, DateTime dataA)
+        public List<SchedaContatto> GetSchedeContattoTimeSpan(DateTime dataDa, DateTime dataA, string codiceSede)
         {
-            return GetList().FindAll(x => x.DataInserimento >= dataDa && x.DataInserimento <= dataA);
+            return GetList(codiceSede).FindAll(x => x.DataInserimento >= dataDa && x.DataInserimento <= dataA);
         }
 
         /// <summary>
@@ -149,9 +153,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         /// <param name="gestita">booleana getsita</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoGestita(bool gestita)
+        public List<SchedaContatto> GetSchedeContattoGestita(bool gestita, string codiceSede)
         {
-            return GetList().FindAll(x => x.Gestita.Equals(gestita));
+            return GetList(codiceSede).FindAll(x => x.Gestita.Equals(gestita));
         }
 
         /// <summary>
@@ -159,9 +163,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         /// <param name="classificazione">una lista di stringhe</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoFromListTipo(List<string> classificazione)
+        public List<SchedaContatto> GetSchedeContattoFromListTipo(List<string> classificazione, string codiceSede)
         {
-            var listaSchedeContatto = GetList();
+            var listaSchedeContatto = GetList(codiceSede);
             var listaSchedeContattoFiltered = new List<SchedaContatto>();
 
             foreach (var classe in classificazione)
@@ -181,9 +185,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         /// <param name="testolibero">una stringa</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoFromText(string testolibero)
+        public List<SchedaContatto> GetSchedeContattoFromText(string testolibero, string codiceSede)
         {
-            var listaSchede = GetList();
+            var listaSchede = GetList(codiceSede);
 
             return (from schedaContatto in listaSchede let schedacontattoJson = JsonConvert.SerializeObject(schedaContatto) where schedacontattoJson.Contains(testolibero, StringComparison.CurrentCultureIgnoreCase) select schedaContatto).ToList();
         }
@@ -201,7 +205,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var topRight = new GeoCoordinate(lat1, lon1);
             var bottomLeft = new GeoCoordinate(lat2, lon2);
-            var listaSchede = GetList();
+            var listaSchede = GetList("");
             var listaSchedeFiltered = new List<SchedaContatto>();
 
             listaSchedeFiltered.AddRange(listaSchede.Where(x => x.Localita.Coordinate.Latitudine >= bottomLeft.Latitude && x.Localita.Coordinate.Latitudine <= topRight.Latitude && x.Localita.Coordinate.Longitudine >= bottomLeft.Longitude && x.Localita.Coordinate.Longitudine <= topRight.Longitude));
@@ -219,10 +223,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceFiscale">codice fiscale operatore</param>
         /// <param name="rangeOre">range di ore</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione)
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
-            var listaSchedeFiltrate = GetList();
-            if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
+            var listaSchedeFiltrate = GetList(codiceSede);
+            if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
             if (!string.IsNullOrWhiteSpace(codiceFiscale)) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
             if (gestita.HasValue) listaSchedeFiltrate = listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
             if (rangeOre.HasValue)
@@ -325,9 +329,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         /// <param name="codiciScheda">Array di codici scheda</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoByCodiciScheda(List<string> codiciScheda)
+        public List<SchedaContatto> GetSchedeContattoByCodiciScheda(List<string> codiciScheda, string codiceSede)
         {
-            return GetList().FindAll(x => codiciScheda.Any(cod => cod.Equals(x.CodiceScheda)));
+            return GetList(codiceSede).FindAll(x => codiciScheda.Any(cod => cod.Equals(x.CodiceScheda)));
         }
     }
 }

@@ -62,6 +62,13 @@ namespace SO115App.Models.Classi.NUE
         public string ClassificazioneEvento { get; set; }
 
         /// <summary>
+        /// Ovverride della classificazione standard. Ad esempio se in un incidente stradale vi
+		///sono feriti, la competenza passa automaticamente al servizio di Emergenza Sanitaria
+        ///anche se la macro classificazione rimane "incidente stradale".
+        /// </summary>
+        public string AttributoClassificazione { get; set; }
+
+        /// <summary>
         ///   E' la categoria della scheda contatto, proveniente e valorizzata dal NUE.
         /// </summary>
         public string Categoria { get; set; }
