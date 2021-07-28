@@ -181,7 +181,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
 
-                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || squadra.Nome.Contains(query.Filtro.Ricerca);
+                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || 
+                    squadra.Nome.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) || 
+                    squadra.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
