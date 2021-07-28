@@ -46,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             {
                 var lstIdDipendenti = _getAssociazioniByCodSede.GetCodUnitaOrganizzativaByCodSede(sede)
                     .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result;
-
+                
                 Parallel.ForEach(lstIdDipendenti.Result, idDipendente =>
                 {
                     lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result);
@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 });
             });
 
-            var lstCodiciFiscali = lstDettaglio.Select(d => d.dati.codFiscale.ToUpper()).ToArray();
+            var lstCodiciFiscali = lstDettaglio.Where(d => d?.dati?.codFiscale != null).Select(d => d.dati.codFiscale.ToUpper()).ToArray();
 
             var lstPersonale = _getPersonaleByCF.Get(lstCodiciFiscali, query.IdSede).Result;
 
@@ -62,7 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
 
             Parallel.ForEach(lstPersonale, personale =>
             {
-                var dettaglioDipendente = lstDettaglio.FirstOrDefault(d => d.dati.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()))?.dati;
+                var dettaglioDipendente = lstDettaglio.FirstOrDefault(d => d?.dati?.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()) ?? false)?.dati;
                 var codQualifica = lstQualifiche.FirstOrDefault(q => q.dati.FirstOrDefault()?.idDipendente == dettaglioDipendente?.IdDipentente)?.dati?.FirstOrDefault()?.codQualifica;
                 var codComparto = codQualifica != null ? _getPercorsoByIdQualifica.Get(codQualifica).Result?.dati?.CodComparto : null;
 

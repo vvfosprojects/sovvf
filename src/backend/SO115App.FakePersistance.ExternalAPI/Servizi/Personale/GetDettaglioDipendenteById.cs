@@ -25,9 +25,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             _client.SetCache("DettaglioDipendente_" + IdDipendente);
 
-            var result = _client.GetAsync(uri, null).Result;
+            var result = _client.GetAsync(uri).Result;
 
-            result.dati.IdDipentente = IdDipendente;
+            //result?.dati?.IdDipentente = IdDipendente;
 
             return result;
         }
