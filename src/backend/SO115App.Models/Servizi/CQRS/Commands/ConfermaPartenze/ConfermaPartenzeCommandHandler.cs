@@ -187,8 +187,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 });
 
                 dataAdesso = dataAdesso.AddSeconds(1);
-
-
             }
 
             //GESTIONE UTENTE PRESA IN CARICO

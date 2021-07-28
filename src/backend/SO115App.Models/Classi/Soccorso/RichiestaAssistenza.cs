@@ -194,7 +194,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.PartenzaAnnullata))
+                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.Partenza.PartenzaAnnullata))
                     new RiaperturaRichiesta(motivazione, this, dataEvento, id);
                 else
                     new AssegnataRichiesta(this, DateTime.UtcNow, id);
@@ -1018,7 +1018,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
 
         public List<Partenza> lstPartenzeInCorso => Partenze?
-            .Where(p => !p.PartenzaAnnullata)
+            .Where(p => !p.Partenza.PartenzaAnnullata)
             .Select(p => p.Partenza)
             .Where(p => !p.PartenzaAnnullata && !p.Sganciata && !p.Terminata)
             .ToList();
