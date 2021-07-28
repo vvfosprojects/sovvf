@@ -250,7 +250,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     });
                 });
 
-                // TEST con API gratuita per il geocode inverso
+                // !!TEST!! API gratuita per il geocode inverso
                 const obj = {
                     location: {
                         latLng: {
@@ -264,6 +264,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     includeNearestIntersection: true,
                     includeRoadMetadata: true
                 };
+                // Trovo l'indirizzo tramite le coordinate (con API gratuita)
                 this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
                     console.log('response', response);
                     console.log('address', response?.results[0]?.locations[0]?.street);
