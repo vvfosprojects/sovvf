@@ -92,6 +92,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
+            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(query.Filtro.CodiciDistaccamenti.ToList() ?? query.CodiciSede.ToList()).Result
+                .Where(m => lstStatiMezzi.Result.Where(s => s.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).Contains(m.CodiceMezzo)));
 
             Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
             Task<List<MembroComposizione>> lstAnagrafiche = null;
@@ -152,7 +154,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Genere = m.Genere,
                         Distaccamento = m.DescrizioneAppartenenza,
                         Stato = lstStatiMezzi.Result?.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
-                    }).ToList() : null
+                    }).ToList() : null,
+                    MezziInRientro = lstMezziInRientro.Result?.Select(m => new MezzoInRientro()
+                    {
+                        Id = m.CodiceMezzo,
+                        Mezzo = new MezzoPreaccoppiato()
+                        {
+                            Codice = m.CodiceMezzo,
+                            Descrizione = m.Descrizione,
+                            Distaccamento = m.CodiceDistaccamento,
+                            Genere = m.Genere,
+                            Stato = Costanti.MezzoInRientro
+                        }
+                    }).ToList()
                 }));
 
                 return lstSquadre;
