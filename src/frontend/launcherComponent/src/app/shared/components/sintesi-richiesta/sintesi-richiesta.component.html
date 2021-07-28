@@ -315,11 +315,11 @@
                                 <div class="clearfix">
                                     <!-- Operatore chiamata -->
                                     <div *ngIf="richiesta?.operatore as op">
-                                        <div [ngbTooltip]="utentePresaInCarico" class="mb-0">
+                                        <div [ngbTooltip]="operatoreRegistrazioneChiamata" class="mb-0">
                                             <i class="guida fas fa-user fa-fw"></i>
                                             <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
                                             <span class="font-xxlarge">{{ op?.nome + ' ' + op?.cognome | truncate: 14 }}</span>
-                                            <ng-template #utentePresaInCarico>
+                                            <ng-template #operatoreRegistrazioneChiamata>
                                                 <div>
                                                     {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
                                                 </div>

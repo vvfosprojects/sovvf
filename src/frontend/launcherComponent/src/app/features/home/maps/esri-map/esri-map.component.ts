@@ -98,6 +98,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         // TODO: togliere commento (funzionante)
                         // this.addHereItaliaMapImageLayer().then();
 
+                        // Aggiunge il FeatureLayer chiamato "Localizzazione Mezzi VVF"
+                        this.addLocalizzazioneMezziFeatureLayer().then();
+
                         // Nasconde il layer HERE_ITALIA
                         this.toggleLayer('HERE_ITALIA').then();
                     });
@@ -480,10 +483,21 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         const portalMapImageLayerHereItalia = new PortalItem({
             id: '21029042105b4ffb86de33033786dfc8'
         });
-        const layerTest = new MapImageLayer({
+        const mapImageLayerHereItalia = new MapImageLayer({
             portalItem: portalMapImageLayerHereItalia
         });
-        this.map.add(layerTest);
+        this.map.add(mapImageLayerHereItalia);
+    }
+
+    // Aggiunge il FeatureLayer chiamato "Localizzazione Mezzi VVF"
+    async addLocalizzazioneMezziFeatureLayer(): Promise<any> {
+        const portalFeatureLayerLocalizzazioneMezzi = new PortalItem({
+            id: '3bc8743584c4484aa032a353328969d0'
+        });
+        const featureLayerLocalizzazioneMezzi = new FeatureLayer({
+            portalItem: portalFeatureLayerLocalizzazioneMezzi
+        });
+        this.map.add(featureLayerLocalizzazioneMezzi);
     }
 
     // Effettua il toggle di un layer
