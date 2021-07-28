@@ -16,7 +16,6 @@ import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.a
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
-import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
 import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
@@ -211,7 +210,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {
                 this.ricerca = ricerca;
-                this.opacizzaRichieste(ricerca);
             })
         );
     }
@@ -222,21 +220,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 this.codiciFiltriSelezionati = filtri.map(filtro => filtro.codice);
             })
         );
-    }
-
-    opacizzaRichieste(ricerca: any): void {
-        const result = this.filter.transform(this.richieste, ricerca);
-        if (result) {
-            if (!(this.richieste.length === result.length) && result.length > 0) {
-                const s = [];
-                result.forEach((c: any) => {
-                    s.push(c.id);
-                });
-                this.store.dispatch(new SetMarkerOpachiRichieste(s));
-            } else {
-                this.store.dispatch(new ClearMarkerOpachiRichieste());
-            }
-        }
     }
 
     onHoverIn(idRichiesta: string): void {

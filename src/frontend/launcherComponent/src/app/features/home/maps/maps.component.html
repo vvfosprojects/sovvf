@@ -4,6 +4,7 @@
             <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
             <app-esri-map [pCenter]="centroMappa"
                           [chiamateMarkers]="chiamataMarkers$ | async"
+                          [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           (mapIsLoaded)="mapIsLoaded($event)"></app-esri-map>
         </div>
     </div>

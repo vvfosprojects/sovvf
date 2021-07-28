@@ -10,7 +10,6 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxsModule } from '@ngxs/store';
 import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.state';
 import { RicercaFilterbarState } from './store/states/filterbar/ricerca-filterbar.state';
-import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { BoxesModule } from './boxes/boxes.module';
 import { SchedaRichiestaModule } from './scheda-richiesta/scheda-richiesta.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
@@ -36,6 +35,7 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
 import { ZoneEmergenzaState } from './store/states/filterbar/zone-emergenza.state';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
+import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
 
 @NgModule({
     declarations: [
@@ -67,7 +67,6 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
                 BackupViewComponentState,
                 FiltriRichiesteState,
                 RicercaFilterbarState,
-                MarkerMeteoState,
                 TipologicheMezziState,
                 BoxClickState,
                 MapsFiltroState,
@@ -77,7 +76,8 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
                 MezziComposizioneState,
                 SquadreComposizioneState,
                 FiltriComposizioneState,
-                ZoneEmergenzaState
+                ZoneEmergenzaState,
+                TastoChiamataMappaState
             ]
         ),
         BarChartModule,

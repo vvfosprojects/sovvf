@@ -42,7 +42,7 @@ import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
-import { RefreshSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
+import { RefreshSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaContattoModalComponent } from '../../../../../shared/modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable, NgZone } from '@angular/core';
@@ -279,11 +279,6 @@ export class SchedeContattoState {
         patchState({
             tabAttivo: action.tabAttivo,
         });
-        if (action.tabAttivo !== ClassificazioneSchedaContatto.Tutte) {
-            dispatch(new ToggleOpacitaSchedeContattoMarkers(true, action.tabAttivo));
-        } else {
-            dispatch(new ToggleOpacitaSchedeContattoMarkers(false));
-        }
         dispatch(new GetListaSchedeContatto());
     }
 

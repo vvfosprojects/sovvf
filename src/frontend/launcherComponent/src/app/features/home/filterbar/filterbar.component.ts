@@ -10,19 +10,28 @@ import {
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
-import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
-import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, ToggleChiamata, ToggleMezziInServizio, ToggleSchedeContatto } from '../store/actions/view/view.actions';
+import {
+    ChangeView,
+    ToggleChiamata,
+    ToggleMezziInServizio,
+    ToggleSchedeContatto
+} from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
+import {
+    ClearFiltriSchedeContatto,
+    ReducerSetFiltroSchedeContatto
+} from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    ClearFiltriMezziInServizio,
+    SetFiltroMezziInServizio
+} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
@@ -32,6 +41,8 @@ import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface'
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
+import { SetChiamataFromMappaActiveValue } from '../store/actions/maps/tasto-chiamata-mappa.actions';
+import { TastoChiamataMappaState } from '../store/states/maps/tasto-chiamata-mappa.state';
 
 @Component({
     selector: 'app-filterbar',
@@ -44,6 +55,7 @@ export class FilterbarComponent {
     @Input() viewState: ViewLayouts;
     @Input() nightMode: boolean;
     @Input() doubleMonitor: boolean;
+    @Input() tastoChiamataMappaActive: boolean;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
@@ -71,9 +83,6 @@ export class FilterbarComponent {
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
     @Select(MezziInServizioState.filtriSelezionati) filtriSelezionatiMezziInServizio$: Observable<VoceFiltro[]>;
-
-    // Marker Meteo Switch
-    @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
 
     // View State
     @Select(ViewComponentState.codaChiamateStatus) codaChiamateStatus$: Observable<boolean>;
@@ -157,15 +166,12 @@ export class FilterbarComponent {
         this.store.dispatch(new ClearFiltriMezziInServizio());
     }
 
-    /**
-     * Marker Meteo Switch Events
-     */
-    onMeteoSwitch(active: boolean): void {
-        this.store.dispatch(new SetMarkerMeteoSwitch(active));
-    }
-
     toggleChiamata(): void {
         this.store.dispatch(new ToggleChiamata());
+    }
+
+    onToggleChiamataFromMappa(): void {
+        this.store.dispatch(new SetChiamataFromMappaActiveValue());
     }
 
     toggleSchedeContatto(): void {

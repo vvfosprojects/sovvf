@@ -12,8 +12,13 @@ import { ViewportState } from '../../shared/store/states/viewport/viewport.state
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
-import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import {
+    GetDistaccamenti,
+    GetSediAllerta,
+    GetSediTrasferimenti
+} from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -24,6 +29,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     columnState: Grids;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
+
+    // Chiamata From Mappa Active Value
+    @Select(TastoChiamataMappaState.tastoChiamataMappaActive) tastoChiamataMappaActive$: Observable<boolean>;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;

@@ -11,12 +11,10 @@ import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 export class ViewModeComponent {
 
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
-    @Input() stateSwitch: boolean;
     @Input() mapStatus: boolean;
     @Input() nightMode: boolean;
 
     @Output() buttonView = new EventEmitter<AppFeatures>();
-    @Output() toggleMeteo: EventEmitter<boolean> = new EventEmitter();
 
     AppFeature = AppFeatures;
 
@@ -27,10 +25,6 @@ export class ViewModeComponent {
 
     buttonViewMode($event): void {
         this.buttonView.emit($event);
-    }
-
-    onChange(): void {
-        this.toggleMeteo.emit(!this.stateSwitch);
     }
 
 }

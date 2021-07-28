@@ -24,16 +24,12 @@ import { SchedeContattoMarkerService } from '../../../core/service/maps-service/
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
-import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerState } from '../store/states/maps/marker.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
-import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
-import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
@@ -51,15 +47,11 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
                 MapsDirectionState,
                 CentroMappaState,
                 AreaMappaState,
-                MarkerMeteoState,
                 MarkerState,
                 RichiesteMarkersState,
                 MezziMarkersState,
                 SediMarkersState,
-                MarkerInfoWindowState,
-                MarkerOpachiState,
                 ChiamateMarkersState,
-                MeteoMarkersState,
                 MapsButtonsState,
                 FiltriMarkersState,
                 SchedeContattoMarkersState
