@@ -113,6 +113,14 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             this.setContextMenuVisible(false);
                         }
                     });
+                    // Gestisco l'evento "drag"
+                    this.view.on('drag', (event) => {
+                        this.setContextMenuVisible(false);
+                    });
+                    // Gestisco l'evento "mouse-wheel"
+                    this.view.on('mouse-wheel', (event) => {
+                        this.setContextMenuVisible(false);
+                    });
 
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
