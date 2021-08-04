@@ -57,7 +57,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             Sede sedeDistaccamento;
             if (d != null)
             {
-                sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
+                sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate);
 
                 Squadra.StatoSquadra Stato;
 
@@ -92,7 +92,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
                         PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
 
-                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.nome, pVVf.nome, capoPartenza, autista, false);
+                        Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.nome);
                         c.CodiceFiscale = pVVf.codiceFiscale;
 
                         if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
@@ -103,7 +103,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 }
                 Squadra squadra = new Squadra(OraS.SIGLA, Stato, ComponentiSquadra, sedeDistaccamento);
                 squadra.Id = OraS.COD_SQUADRA.ToString();
-                squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
+                //squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
                 return squadra;
             }
             else

@@ -42,7 +42,7 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.ConfermaPartenze.richiesta.Localita.Indirizzo}. Codice Intervento: {command.ConfermaPartenze.richiesta.CodRichiesta}";
+                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
                 var infoMatrix = new MessageMatrix()
                 {
                     Messaggio = messaggio,

@@ -21,7 +21,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetDistaccamentiByCo
             var codProvincia = query.CodiciSede[0].Split('.')[0];
 
             var result = lstSedi.Where(s => s.attiva == 1 && s.codSede_TC.Equals(codProvincia))
-                .Select(s => new Sede($"{s.codProv}.{s.codFiglio_TC}", s.sede, "", new Coordinate(s.latitudine, s.longitudine), "", "", "", "", ""))
+                .Select(s => new Sede($"{s.codProv}.{s.codFiglio_TC}", s.sede, "", new Coordinate(s.latitudine, s.longitudine)))
                 .OrderBy(s => s.Codice)
                 .ToList();
 

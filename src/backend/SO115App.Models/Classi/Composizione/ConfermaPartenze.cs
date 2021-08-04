@@ -9,7 +9,6 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public List<Partenza> Partenze { get; set; }
         public string IdRichiesta { get; set; }
-        public string Turno { get; set; }
         public string IdRichiestaDaSganciare { get; set; }
         public string IdMezzoDaSganciare { get; set; }
         public SintesiRichiesta Chiamata { get; set; }

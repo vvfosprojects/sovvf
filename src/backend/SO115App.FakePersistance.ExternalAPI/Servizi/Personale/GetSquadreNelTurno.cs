@@ -34,8 +34,8 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
-                        squadra.Componenti = new List<Componente>();
-                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
+                        squadra.Membri = new List<Componente>();
+                        squadra.Membri = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
                     }
                     listaSquadreTurno.Add(turno);
                 }

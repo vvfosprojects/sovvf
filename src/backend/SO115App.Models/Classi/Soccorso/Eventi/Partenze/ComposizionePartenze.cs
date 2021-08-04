@@ -38,14 +38,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     /// </remarks>
     public class ComposizionePartenze : AbstractPartenza, IPartenza
     {
-        //[JsonConstructor]
-        //public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
-        //{
-        //    this.Partenza = new Partenza();
-        //    this.Componenti = new HashSet<ComponentePartenza>();
-        //    this.FuoriSede = fuoriSede;
-        //}
-
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
         /// </summary>
@@ -61,47 +53,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceFonte,
             bool fuoriSede, Partenza partenza) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
         {
-            this.Partenza = partenza;
-            this.Componenti = new HashSet<ComponentePartenza>();
-            this.FuoriSede = fuoriSede;
-        }
-
-        /// <summary>
-        ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
-        /// </summary>
-        public string CodiceFiscaleCapopartenza
-        {
-            get
-            {
-                try
-                {
-                    var componenteCapopartenza = this.Componenti.SingleOrDefault(c => c.Ruoli.Contains(ComponentePartenza.Ruolo.CapoPartenza));
-
-                    if (componenteCapopartenza != null)
-                    {
-                        return componenteCapopartenza.CodiceFiscale;
-                    }
-
-                    return null;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    throw new ComposizionePartenzaException("Esiste più di un Capo Partenza", ex);
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Restituisce l'insieme dei codici fiscali relativi alla partenza
-        /// </summary>
-        public ISet<string> CodiciFiscaliComponenti
-        {
-            get
-            {
-                return new HashSet<string>(this
-                    .Componenti
-                    .Select(c => c.CodiceFiscale));
-            }
+            Partenza = partenza;
+            FuoriSede = fuoriSede;
         }
 
         /// <summary>
@@ -109,7 +62,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         public Partenza Partenza { get; set; }
 
-        public ISet<ComponentePartenza> Componenti { get; set; }
 
         /// <summary>
         ///   Indica se l'evento si verifica mentre il mezzo è fuori sede o in sede. Questa
@@ -118,36 +70,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         ///   una singola richiesta.
         /// </summary>
         public bool FuoriSede { get; private set; }
-
-        /// <summary>
-        ///   Restituisce il numero di componenti della <see cref="ComposizionePartenze" />
-        /// </summary>
-        public int NumeroComponenti
-        {
-            get
-            {
-                return this.Componenti.Count;
-            }
-        }
-
-        /// <summary>
-        ///   Restituisce i codici dei mezzi coinvolti in questo evento
-        /// </summary>
-        public ISet<string> CodiciMezzo
-        {
-            get
-            {
-                return new HashSet<string>(this.Componenti
-                    .Select(c => c.CodiceMezzo)
-                    .Where(cm => cm != null)
-                    .Distinct());
-            }
-        }
-
-        public bool PartenzaAnnullata
-        {
-            get; set;
-        } = false;
 
         /// <summary>
         ///   Metodo di visita

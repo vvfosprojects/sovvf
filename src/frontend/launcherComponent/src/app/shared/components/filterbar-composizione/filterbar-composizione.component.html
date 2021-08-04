@@ -9,7 +9,7 @@
             <div *ngIf="composizionePartenza"
                  class="clearfix py-1 pr-0" style="padding-left: 15px; width: 15%;">
                 <div class="clearfix">
-                    <div class="float-left d-inline-flex">
+                    <div class="clearfix mx-2 row">
                         <button class="btn btn-block btn-danger btn-no-hover mt-2 mr-2"
                                 style="width: 65px"
                                 ngbTooltip="Esci dalla Composizione Partenza"
@@ -25,7 +25,7 @@
                              </app-tasto-comp-partenza>
                         </span>
                     </div>
-                    <div class="float-left pt-2"
+                    <div class="clearfix w-50 mx-2 pt-2 row"
                          (click)="$event.stopPropagation()">
                         <button class="btn btn-block btn-primary btn-no-hover font-weight-bolder"
                                 [ngbTooltip]="richiesta?.triageSummary ? 'Visualizza Dettaglio Triage' : 'Triage non disponibile'"

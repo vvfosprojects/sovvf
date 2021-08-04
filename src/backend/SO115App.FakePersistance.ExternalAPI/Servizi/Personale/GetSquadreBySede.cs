@@ -31,23 +31,23 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
-                        squadra.Componenti = new List<Componente>();
+                        squadra.Membri = new List<Componente>();
 
-                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
+                        squadra.Membri = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
 
-                        var listaComponentiSquadra = _getPersonaFisica.Get(squadra.ListaCodiciFiscaliComponentiSquadra).Result;
+                        //var listaComponentiSquadra = _getPersonaFisica.Get(squadra.ListaCodiciFiscaliComponentiSquadra).Result;
 
-                        foreach (var componente in squadra.Componenti)
-                        {
-                            foreach (var persona in listaComponentiSquadra.Dati)
-                            {
-                                if (persona.CodFiscale.Equals(componente.CodiceFiscale))
-                                {
-                                    componente.Nominativo = persona.Nome + " " + persona.Cognome;
-                                    //MANCANO QUALIFICA LUNGA E BREVE
-                                }
-                            }
-                        }
+                        //foreach (var componente in squadra.Membri)
+                        //{
+                            //foreach (var persona in listaComponentiSquadra.Dati)
+                            //{
+                            //    if (persona.CodFiscale.Equals(componente.CodiceFiscale))
+                            //    {
+                            //        componente.Nominativo = persona.Nome + " " + persona.Cognome;
+                            //        //MANCANO QUALIFICA LUNGA E BREVE
+                            //    }
+                            //}
+                        //}
                     }
                     listaSquadreTurno.Add(turno);
                 }

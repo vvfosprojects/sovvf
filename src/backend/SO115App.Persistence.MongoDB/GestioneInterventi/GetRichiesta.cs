@@ -247,7 +247,7 @@ namespace SO115App.Persistence.MongoDB
                 if (i <= 3)
                 {
                     var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
+                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
 
                     if (sede != null)
                         listaSedi.Add(sede);

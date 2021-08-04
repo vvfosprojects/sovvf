@@ -194,7 +194,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.PartenzaAnnullata))
+                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.Partenza.PartenzaAnnullata))
                     new RiaperturaRichiesta(motivazione, this, dataEvento, id);
                 else
                     new AssegnataRichiesta(this, DateTime.UtcNow, id);
@@ -289,11 +289,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   codice non sono presenti il giorno il mese e l'anno
         /// </remarks>
         public string CodRichiesta { get; set; }
-
-        ///// <summary>
-        ///// Il path del PDF dettaglio INTERVENTO
-        ///// </summary>
-        //public string PathDettaglio { get; set; }
 
         /// <summary>
         ///   E' il codice dell'operatore che ha registrato la richiesta
@@ -415,15 +410,6 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 return d;
             }
-        }
-
-        /// <summary>
-        ///   Restituisce l'elenco delle squadre coinvolte nella Richiesta di Assistenza
-        /// </summary>
-        public IEnumerable<SquadraCoinvolta> SquadreCoinvolte
-        {
-            get;
-            //set;
         }
 
         /// <summary>
@@ -1018,7 +1004,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
 
         public List<Partenza> lstPartenzeInCorso => Partenze?
-            .Where(p => !p.PartenzaAnnullata)
+            .Where(p => !p.Partenza.PartenzaAnnullata)
             .Select(p => p.Partenza)
             .Where(p => !p.PartenzaAnnullata && !p.Sganciata && !p.Terminata)
             .ToList();
@@ -1047,19 +1033,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         public bool Esercitazione { get; set; } = false;
 
         [BsonIgnore]
-        //[JsonIgnore]
-        public List<string> lstSquadre
-        {
-            get => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
-            set { }
-        }
+        public List<string> lstSquadre => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
 
         [BsonIgnore]
-        //[JsonIgnore]
-        public DateTime dataOraInserimento
-        {
-            get => Telefonate.First().DataOraInserimento;
-            set { }
-        }
+        public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
     }
 }

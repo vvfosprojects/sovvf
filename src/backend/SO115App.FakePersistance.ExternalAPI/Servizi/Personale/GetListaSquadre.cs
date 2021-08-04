@@ -107,17 +107,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 if (pVVf != null)
                 {
-                    var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                    pVVf.nome, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                    var componente = new Componente(componenteFake.DescrizioneQualificaLunga, pVVf.nome)
                     {
                         CodiceFiscale = pVVf.codiceFiscale,
                         OrarioFine = componenteFake.OrarioFine,
                         OrarioInizio = componenteFake.OrarioInizio,
-                        Telefono = componenteFake.Telefono,
-                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                        FunGuardia = componenteFake.FunGuardia,
-                        CapoTurno = componenteFake.CapoTurno
                     };
 
                     ComponentiSquadra.Enqueue(componente);
@@ -135,13 +129,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.Result?.DescDistaccamento, distaccamento.Result?.Indirizzo, distaccamento.Result?.Coordinate, "", "", "", "", "");
+            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.Result?.DescDistaccamento, distaccamento.Result?.Indirizzo, distaccamento.Result?.Coordinate);
 
             var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra.ToList(), sedeDistaccamento, squadraFake.Turno);
 
             s.Id = squadraFake.CodiceSquadra;
             s.Codice = squadraFake.CodiceSquadra;
-            s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra.ToList();
+            //s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra.ToList();
 
             return s;
         }

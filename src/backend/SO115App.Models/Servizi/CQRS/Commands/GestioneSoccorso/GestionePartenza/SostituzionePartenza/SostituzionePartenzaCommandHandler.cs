@@ -61,8 +61,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 new SostituzionePartenzaFineTurno(command.Richiesta, sostituzione.CodMezzoSmontante, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
 
-                var PartenzaMontante = command.Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(sostituzione.CodMezzoMontante) && x.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
-                var PartenzaSmontante = command.Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(sostituzione.CodMezzoSmontante) && x.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
+                var PartenzaMontante = command.Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(sostituzione.CodMezzoMontante) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
+                var PartenzaSmontante = command.Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(sostituzione.CodMezzoSmontante) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
                 var SquadreSwitch = PartenzaSmontante.Partenza.Squadre;
 
                 //GESTIONE PARTENZA SMONTANTE

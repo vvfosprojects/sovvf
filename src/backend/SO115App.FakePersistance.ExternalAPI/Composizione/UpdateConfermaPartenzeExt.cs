@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
@@ -46,9 +45,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetRientroMezzo _setRientroMezzo;
         private readonly Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra _setStatoSquadraOPService;
 
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
         public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo,
             ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo,
             SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra setStatoSquadraOPService)
@@ -68,9 +64,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            var conferma = new ConfermaPartenze();
-
-            _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
+            _updateRichiesta.UpDate(command.Richiesta);
 
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
@@ -78,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.richiesta.Codice);
+                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
 
                 foreach (var squadra in partenza.Squadre)
                 {
@@ -89,7 +83,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                         {
-                            var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
+                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
+
                             _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
                             {
                                 actionType = "ALLOCATE",
@@ -98,32 +93,31 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 id_chiamata = command.ConfermaPartenze.IdRichiesta,
                                 id_mezzi = new string[1] { partenza.Mezzo.Codice },
                                 id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
-                                id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
+                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
                                 spotId = squadra.spotId,
                                 spotType = squadra.spotType,
                                 version = squadra.version,
                                 workshiftId = squadra.workshiftId
-                            }
-                            );
+                            });
                         }
                         else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                         {
-                            var IndexUtente = command.ConfermaPartenze.richiesta.UtPresaInCarico.Count - 1;
+                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
+
                             _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
                             {
                                 actionType = "DEALLOCATE",
                                 createdAt = DateTime.Now,
                                 id = squadra.IdOPService,
-                                id_chiamata = command.ConfermaPartenze.richiesta.Id,
+                                id_chiamata = command.Richiesta.Id,
                                 id_mezzi = new string[1] { partenza.Mezzo.Codice },
                                 id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
-                                id_utente = command.ConfermaPartenze.richiesta.UtPresaInCarico[IndexUtente],
+                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
                                 spotId = squadra.spotId,
                                 spotType = squadra.spotType,
                                 version = squadra.version,
                                 workshiftId = squadra.workshiftId
-                            }
-                            );
+                            });
                         }
                     }
                 }
@@ -180,9 +174,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
             }
 
-            conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
-            conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
-            conferma.richiesta = command.ConfermaPartenze.richiesta;
+            var conferma = new ConfermaPartenze()
+            {
+                CodiceSede = command.ConfermaPartenze.CodiceSede,
+                IdRichiesta = command.ConfermaPartenze.IdRichiesta,
+                richiesta = command.Richiesta,
+                Partenze = command.ConfermaPartenze.Partenze
+            };
+
             return conferma;
         }
     }

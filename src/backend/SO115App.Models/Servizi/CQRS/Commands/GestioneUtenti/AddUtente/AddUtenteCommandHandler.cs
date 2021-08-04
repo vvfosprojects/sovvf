@@ -96,7 +96,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 Ruoli = command.Ruoli,
                 Username = personale.nome.Replace(" ", "").ToLower(),
                 Password = "test",
-                Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "")
+                Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate)
             };
 
             if (utenteSO != null)

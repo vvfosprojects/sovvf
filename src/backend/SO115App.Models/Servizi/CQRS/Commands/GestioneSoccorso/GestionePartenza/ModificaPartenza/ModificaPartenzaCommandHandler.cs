@@ -27,7 +27,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 new RevocaPerSostituzioneMezzo(Richiesta, command.ModificaPartenza.CodMezzoDaAnnullare, command.ModificaPartenza.DataAnnullamento.Value, command.IdOperatore, command.ModificaPartenza.MotivazioneAnnullamento, partenzaDaAnnullare.Partenza.Codice);
 
-                partenzaDaAnnullare.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoRientrato;
 
