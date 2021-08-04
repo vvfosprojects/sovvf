@@ -171,7 +171,8 @@ export class FilterbarComponent {
     }
 
     onToggleChiamataFromMappa(): void {
-        this.store.dispatch(new SetChiamataFromMappaActiveValue());
+        const toggledValueTastoChiamataMappa = !this.tastoChiamataMappaActive;
+        this.store.dispatch(new SetChiamataFromMappaActiveValue(toggledValueTastoChiamataMappa));
     }
 
     toggleSchedeContatto(): void {

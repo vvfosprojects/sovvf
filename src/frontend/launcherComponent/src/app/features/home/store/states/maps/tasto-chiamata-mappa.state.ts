@@ -25,10 +25,7 @@ export class TastoChiamataMappaState {
 
     @Action(SetChiamataFromMappaActiveValue)
     setChiamataFromMappaActiveValue({ getState, patchState }: StateContext<TastoChiamataMappaStateModel>, action: SetChiamataFromMappaActiveValue): void {
-        const state = getState();
-        const activeStatus = state.active;
-        const value = action.value ? action.value : !activeStatus;
-
+        const value = action.value;
         patchState({
             active: value
         });
