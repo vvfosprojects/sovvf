@@ -88,8 +88,31 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             this.initializeMap().then(() => {
                 // Inizializzazione dei layer lato client delle chiamate in corso
                 this.initializeChiamateInCorsoLayer().then(() => {
-                    // Abilito il click su mappa per avviare la chiamata dal punto selezionato
-                    this.startEventClickNuovaChiamata().then();
+                    // Gestisco l'evento "click"
+                    this.view.on('click', (event) => {
+                        this.eventClick = event;
+                        if (this.tastoChiamataMappaActive && event.button === 0) {
+                            const screenPoint = this.eventClick.screenPoint;
+                            // Controllo se dove ho fatto click sono presenti dei graphics facendo un "HitTest"
+                            this.view.hitTest(screenPoint)
+                                .then((resHitTest) => {
+                                    const graphic = resHitTest.results[0]?.graphic;
+                                    // Se non ci sono graphics posso aprire il "Form Chiamata"
+                                    if (!graphic) {
+                                        this.startNuovaChiamata();
+                                    }
+                                });
+                        } else if (!this.tastoChiamataMappaActive && event.button === 2) {
+                            if (this.contextMenuVisible) {
+                                this.setContextMenuVisible(false);
+                            } else {
+                                this.setContextMenuVisible(true);
+                            }
+                        } else if (event.button !== 2) {
+                            this.setContextMenuVisible(false);
+                        }
+                    });
+
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -199,34 +222,6 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         if (this.view?.ready) {
             this.view.zoom = zoom;
         }
-    }
-
-    // Apre il modale con il Form Chiamata
-    async startEventClickNuovaChiamata(): Promise<any> {
-        this.view.on('click', (event) => {
-            this.eventClick = event;
-            if (this.tastoChiamataMappaActive && event.button === 0) {
-                const screenPoint = this.eventClick.screenPoint;
-                // Controllo se dove ho fatto click sono presenti dei graphics facendo un "HitTest"
-                this.view.hitTest(screenPoint)
-                    .then((resHitTest) => {
-                        const graphic = resHitTest.results[0]?.graphic;
-                        // Se non ci sono graphics posso aprire il "Form Chiamata"
-                        if (!graphic) {
-                            this.startNuovaChiamata();
-                        }
-                    });
-            } else if (!this.tastoChiamataMappaActive && event.button === 2) {
-                if (this.contextMenuVisible) {
-                    this.setContextMenuVisible(false);
-                } else {
-                    this.setContextMenuVisible(true);
-                }
-            } else if (event.button !== 2) {
-                this.setContextMenuVisible(false);
-            }
-        });
-        return this.view.when();
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
