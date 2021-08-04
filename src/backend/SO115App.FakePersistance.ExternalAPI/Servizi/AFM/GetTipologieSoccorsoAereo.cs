@@ -1,5 +1,5 @@
-﻿using SO115App.ExternalAPI.Client;
-using SO115App.ExternalAPI.Fake.Classi;
+﻿using Microsoft.Extensions.Configuration;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -10,13 +10,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
     public class GetTipologieSoccorsoAereo : IGetTipologieRichiestaSoccorsoAereo
     {
         private readonly IHttpRequestManager<List<TipologiaAFM>> _client;
-        public GetTipologieSoccorsoAereo(IHttpRequestManager<List<TipologiaAFM>> client) => _client = client;
+        private readonly IConfiguration _config;
+
+        public GetTipologieSoccorsoAereo(IHttpRequestManager<List<TipologiaAFM>> client, IConfiguration config)
+        {
+            _client = client;
+            _config = config;
+        }
 
         public List<TipologiaAFM> Get()
         {
-            //_client.SetCache();
-
-            var result = _client.GetAsync(new Uri(Costanti.AFM + "requestType"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = _client.GetAsync(new Uri(_config.GetSection("UrlExternalApi").GetSection("AFM").Value + "requestType"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
 
             return result;
         }

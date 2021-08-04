@@ -22,12 +22,6 @@ namespace SO115App.ExternalAPI.Fake.Classi
 {
     public static class Costanti
     {
-        #region Url
-
-        public static string AFM = "http://afm-demo.dipvvf.it/webRescue/";
-
-        #endregion Url
-
         #region Json
 
         public static string GacJson = "Servizi/Gac/Mock/Json/Mezzo.json";

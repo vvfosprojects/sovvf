@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Client;
-using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.ServiziEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using System;
@@ -11,7 +11,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
     public class AggiornaRichiestaSoccorsoAereo : IAggiornaRichiestaSoccorsoAereo
     {
         private readonly IHttpRequestManager<InfoAFM> _client;
-        public AggiornaRichiestaSoccorsoAereo(IHttpRequestManager<InfoAFM> client) => _client = client;
+        private readonly IConfiguration _config;
+        public AggiornaRichiestaSoccorsoAereo(IHttpRequestManager<InfoAFM> client, IConfiguration config)
+        {
+            _client = client;
+            _config = config;
+        }
 
         public InfoAFM Aggiorna(NuovaRichiestaAFM richiesta)
         {
@@ -19,7 +24,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
             var content = new StringContent(jsonString);
 
             //TODO SOSTITUIRE UTENZA
-            var result = _client.PutAsync(new Uri(Costanti.AFM + "rescueRequest"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q", content).Result;
+            var result = _client.PutAsync(new Uri(_config.GetSection("UrlExternalApi").GetSection("AFM").Value + "rescueRequest"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q", content).Result;
 
             return result;
         }
