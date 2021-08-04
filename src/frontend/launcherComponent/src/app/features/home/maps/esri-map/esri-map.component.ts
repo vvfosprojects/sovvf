@@ -109,6 +109,8 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             } else {
                                 this.setContextMenuVisible(true);
                             }
+                        } else if (this.tastoChiamataMappaActive && event.button !== 0) {
+                            this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
                         } else if (event.button !== 2) {
                             this.setContextMenuVisible(false);
                         }
