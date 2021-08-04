@@ -18,8 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
+    [BsonIgnoreExtraElements]
     public class Sede
     {
         private bool VisualizzazioneCentrale = true;
