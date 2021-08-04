@@ -8,7 +8,8 @@ import {
     Input,
     OnChanges,
     SimpleChanges,
-    OnInit, Renderer2
+    OnInit,
+    Renderer2
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
@@ -124,12 +125,12 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         this.mapIsLoaded.emit({ spatialReference: this.map.initialViewProperties.spatialReference });
 
                         // TODO: togliere commento (funzionante)
-                        // this.addHereItaliaMapImageLayer().then();
+                        // this.addMapImageLayer('21029042105b4ffb86de33033786dfc8').then();
 
                         // Aggiunge il FeatureLayer chiamato "Localizzazione Mezzi VVF"
-                        this.addLocalizzazioneMezziFeatureLayer().then();
+                        this.addFeatureLayer('3bc8743584c4484aa032a353328969d0').then();
 
-                        // Nasconde il layer HERE_ITALIA
+                        // Nasconde il layer "HERE_ITALIA" caricato direttamente dal portale
                         this.toggleLayer('HERE_ITALIA').then();
                     });
                 });
@@ -503,26 +504,26 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         // this.view.ui.add(sketch, 'top-right');
     }
 
-    // Aggiunge il MapImageLayer chiamato "Here Italia"
-    async addHereItaliaMapImageLayer(): Promise<any> {
-        const portalMapImageLayerHereItalia = new PortalItem({
-            id: '21029042105b4ffb86de33033786dfc8'
+    // Aggiunge il MapImageLayer dal portal tramite il portalId
+    async addMapImageLayer(portalItemId: string): Promise<any> {
+        const portalMapImageLayer = new PortalItem({
+            id: portalItemId
         });
         const mapImageLayerHereItalia = new MapImageLayer({
-            portalItem: portalMapImageLayerHereItalia
+            portalItem: portalMapImageLayer
         });
         this.map.add(mapImageLayerHereItalia);
     }
 
-    // Aggiunge il FeatureLayer chiamato "Localizzazione Mezzi VVF"
-    async addLocalizzazioneMezziFeatureLayer(): Promise<any> {
-        const portalFeatureLayerLocalizzazioneMezzi = new PortalItem({
-            id: '3bc8743584c4484aa032a353328969d0'
+    // Aggiunge un FeatureLayer dal portal tramite il portalId
+    async addFeatureLayer(portalItemId: string): Promise<any> {
+        const portalFeatureLayer = new PortalItem({
+            id: portalItemId
         });
-        const featureLayerLocalizzazioneMezzi = new FeatureLayer({
-            portalItem: portalFeatureLayerLocalizzazioneMezzi
+        const featureLayer = new FeatureLayer({
+            portalItem: portalFeatureLayer
         });
-        this.map.add(featureLayerLocalizzazioneMezzi);
+        this.map.add(featureLayer);
     }
 
     // Effettua il toggle di un layer
