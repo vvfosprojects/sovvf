@@ -466,7 +466,7 @@
                                     </div>
 
                                     <!-- tipo terreno -->
-                                    <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno)" class="text-right">
+                                    <div class="text-right">
                                         <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
                                              class="d-inline-block m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
                                             {{ tipoTerrenoValue?.terrenoHa }}

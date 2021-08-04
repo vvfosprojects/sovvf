@@ -47,3 +47,13 @@ div#idCheckBox {
 .cursor-crosshair {
   cursor: crosshair;
 }
+
+.item-contextMenu {
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #262626;
+}
+
+.item-contextMenu:hover {
+  background-color: #424242;
+}

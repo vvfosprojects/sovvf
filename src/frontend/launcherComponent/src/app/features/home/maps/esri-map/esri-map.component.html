@@ -1,4 +1,23 @@
 <!-- ESRI Map Container -->
 <div #mapViewNode
-     [class.cursor-crosshair]="tastoChiamataMappaActive"></div>
+     [class.cursor-crosshair]="tastoChiamataMappaActive">
+    <!-- ContextMenu ESRI Container -->
+    <div #contextMenu
+         class="p-2"
+         style="display: none; background-color: #232323; position: absolute">
+        <ul class="list-unstyled m-0">
+            <li class="cursor-pointer item-contextMenu"
+                (click)="startNuovaChiamata()">
+                Nuova Chiamata ({{ eventClick?.mapPoint?.latitude }}, {{ eventClick?.mapPoint?.longitude }})
+            </li>
+            <li class="cursor-pointer item-contextMenu">
+                Opzione 2
+            </li>
+            <li class="cursor-pointer item-contextMenu">
+                Opzione 3
+            </li>
+        </ul>
+    </div>
+    <!-- End ContextMenu ESRI Container -->
+</div>
 <!-- End ESRI Map Container -->

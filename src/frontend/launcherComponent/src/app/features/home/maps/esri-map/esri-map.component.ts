@@ -7,7 +7,8 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    SimpleChanges, OnInit
+    SimpleChanges,
+    OnInit, Renderer2
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
@@ -46,6 +47,15 @@ import Locator from '@arcgis/core/tasks/Locator';
 })
 export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
+    constructor(private http: HttpClient,
+                private modalService: NgbModal,
+                private store: Store,
+                private configModal: NgbModalConfig,
+                private renderer: Renderer2) {
+        configModal.backdrop = 'static';
+        configModal.keyboard = false;
+    }
+
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() tastoChiamataMappaActive: boolean;
@@ -56,19 +66,14 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     map: Map;
     view: any = null;
+    eventClick: any;
+    contextMenuVisible = false;
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
-
-    constructor(private http: HttpClient,
-                private modalService: NgbModal,
-                private store: Store,
-                private configModal: NgbModalConfig) {
-        configModal.backdrop = 'static';
-        configModal.keyboard = false;
-    }
+    @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     ngOnInit(): void {
         this.operatore = this.store.selectSnapshot(AuthState.currentUser);
@@ -84,7 +89,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 // Inizializzazione dei layer lato client delle chiamate in corso
                 this.initializeChiamateInCorsoLayer().then(() => {
                     // Abilito il click su mappa per avviare la chiamata dal punto selezionato
-                    this.onClickNuovaChiamata().then();
+                    this.startEventClickNuovaChiamata().then();
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -119,6 +124,10 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
+        }
+        // Controllo il valore di "tastoChiamataMappaActive"
+        if (changes?.tastoChiamataMappaActive?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
+            this.setContextMenuVisible(false);
         }
     }
 
@@ -172,7 +181,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             zoom,
             highlightOptions: {
                 color: '#CDD6DD',
-            },
+            }
         });
 
         return this.view.when();
@@ -193,108 +202,129 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Apre il modale con il Form Chiamata
-    async onClickNuovaChiamata(): Promise<any> {
+    async startEventClickNuovaChiamata(): Promise<any> {
         this.view.on('click', (event) => {
-            if (this.tastoChiamataMappaActive) {
-                const check = document.getElementById('idCheck');
-                // @ts-ignore
-                if (check && !check.checked) {
-                    return;
-
-                }
-                const lat = event.mapPoint.latitude;
-                const lon = event.mapPoint.longitude;
-
-                // Inserisco il marker Chiamata in Corso
-                // const p: number[] = [lon, lat];
-                // const mp = new Point({
-                //     longitude: p[0],
-                //     latitude: p[1],
-                //     spatialReference: {
-                //         wkid: 3857
-                //     }
-                // });
-                //
-                // const graphic = new Graphic({
-                //     geometry: mp,
-                //     attributes: {
-                //         idChiamataMarker: makeIdChiamata(this.operatore)
-                //     }
-                // });
-
-                // addChiamataMarker(this.chiamateInCorsoFeatureLayer, graphic).then(() => {
-
-                // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-                const locatorTask = new Locator({
-                    url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
-                });
-                const params = {
-                    location: event.mapPoint
-                };
-                // Trovo l'indirizzo tramite le coordinate
-                locatorTask.locationToAddress(params).then((response) => {
-                    console.log('response', response);
-                    console.log('address', response.address);
-
-                    this.changeCenter([lon, lat]);
-                    this.changeZoom(20);
-
-                    // Apro il modale con FormChiamata
-                    const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                    });
-                    modalNuovaChiamata.componentInstance.lat = lat;
-                    modalNuovaChiamata.componentInstance.lon = lon;
-                    modalNuovaChiamata.componentInstance.address = response.address;
-
-                    modalNuovaChiamata.result.then((result: string) => {
-                        this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
-                    });
-                });
-
-                // !!TEST!! API gratuita per il geocode inverso
-                const obj = {
-                    location: {
-                        latLng: {
-                            lat,
-                            lng: lon
+            this.eventClick = event;
+            if (this.tastoChiamataMappaActive && event.button === 0) {
+                const screenPoint = this.eventClick.screenPoint;
+                // Controllo se dove ho fatto click sono presenti dei graphics facendo un "HitTest"
+                this.view.hitTest(screenPoint)
+                    .then((resHitTest) => {
+                        const graphic = resHitTest.results[0]?.graphic;
+                        // Se non ci sono graphics posso aprire il "Form Chiamata"
+                        if (!graphic) {
+                            this.startNuovaChiamata();
                         }
-                    },
-                    options: {
-                        thumbMaps: false
-                    },
-                    includeNearestIntersection: true,
-                    includeRoadMetadata: true
-                };
-                // Trovo l'indirizzo tramite le coordinate (con API gratuita)
-                this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
-                    console.log('response', response);
-                    console.log('address', response?.results[0]?.locations[0]?.street);
-
-                    this.changeCenter([lon, lat]);
-                    this.changeZoom(19);
-
-                    // Apro il modale con FormChiamata
-                    const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                        windowClass: 'xxlModal modal-holder',
                     });
-                    modalNuovaChiamata.componentInstance.lat = lat;
-                    modalNuovaChiamata.componentInstance.lon = lon;
-                    modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
-
-                    modalNuovaChiamata.result.then((result: string) => {
-                        this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
-                    });
-                });
-
-                // });
-
-                // async function addChiamataMarker(chiamateInCorsoFeatureLayer: FeatureLayer, g: Graphic): Promise<any> {
-                //     await chiamateInCorsoFeatureLayer.applyEdits({ addFeatures: [g] });
-                // }
+            } else if (!this.tastoChiamataMappaActive && event.button === 2) {
+                if (this.contextMenuVisible) {
+                    this.setContextMenuVisible(false);
+                } else {
+                    this.setContextMenuVisible(true);
+                }
+            } else if (event.button !== 2) {
+                this.setContextMenuVisible(false);
             }
         });
         return this.view.when();
+    }
+
+    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
+    startNuovaChiamata(): void {
+        // Se il "contextMenu" è aperto lo chiudo
+        if (this.contextMenuVisible) {
+            this.setContextMenuVisible(false);
+        }
+
+        // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
+        const check = document.getElementById('idCheck');
+        // @ts-ignore
+        if (check && !check.checked) {
+            return;
+        }
+
+        const lat = this.eventClick.mapPoint.latitude;
+        const lon = this.eventClick.mapPoint.longitude;
+
+        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
+        const locatorTask = new Locator({
+            url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
+        });
+        const params = {
+            location: this.eventClick.mapPoint
+        };
+        // Trovo l'indirizzo tramite le coordinate
+        locatorTask.locationToAddress(params).then((response) => {
+            console.log('response', response);
+            console.log('address', response.address);
+
+            this.changeCenter([lon, lat]);
+            this.changeZoom(20);
+
+            // Apro il modale con FormChiamata
+            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                windowClass: 'xxlModal modal-holder',
+            });
+            modalNuovaChiamata.componentInstance.lat = lat;
+            modalNuovaChiamata.componentInstance.lon = lon;
+            modalNuovaChiamata.componentInstance.address = response.address;
+
+            modalNuovaChiamata.result.then((result: string) => {
+                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+            });
+        });
+
+        // !!TEST!! API gratuita per il geocode inverso TODO: sostituire con API dei VVF
+        const obj = {
+            location: {
+                latLng: {
+                    lat,
+                    lng: lon
+                }
+            },
+            options: {
+                thumbMaps: false
+            },
+            includeNearestIntersection: true,
+            includeRoadMetadata: true
+        };
+
+        // Trovo l'indirizzo tramite le coordinate (con API gratuita)
+        this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
+            console.log('response', response);
+            console.log('address', response?.results[0]?.locations[0]?.street);
+
+            this.changeCenter([lon, lat]);
+            this.changeZoom(19);
+
+            // Apro il modale con FormChiamata
+            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                windowClass: 'xxlModal modal-holder',
+            });
+            modalNuovaChiamata.componentInstance.lat = lat;
+            modalNuovaChiamata.componentInstance.lon = lon;
+            modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
+
+            modalNuovaChiamata.result.then((result: string) => {
+                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+            });
+        });
+    }
+
+    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
+    setContextMenuVisible(value: boolean): void {
+        if (value) {
+            this.contextMenuVisible = true;
+            const screenPoint = this.eventClick;
+            const pageX = screenPoint.x;
+            const pageY = screenPoint.y;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+        } else {
+            this.contextMenuVisible = false;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
+        }
     }
 
     // Inizializza i layer "Chiamate in Corso"
@@ -515,5 +545,5 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     //     if (layerToRemoveExists) {
     //         this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
     //     }
-    // }
+    //
 }
