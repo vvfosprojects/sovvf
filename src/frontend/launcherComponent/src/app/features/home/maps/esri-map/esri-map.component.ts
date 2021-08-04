@@ -263,7 +263,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             console.log('address', response.address);
 
             this.changeCenter([lon, lat]);
-            this.changeZoom(20);
+            this.changeZoom(19);
 
             // Apro il modale con FormChiamata
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -318,13 +318,19 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     setContextMenuVisible(value: boolean): void {
         if (value) {
-            this.contextMenuVisible = true;
-            const screenPoint = this.eventClick;
-            const pageX = screenPoint.x;
-            const pageY = screenPoint.y;
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+            const lat = this.eventClick.mapPoint.latitude;
+            const lon = this.eventClick.mapPoint.longitude;
+            this.changeCenter([lon, lat]).then(() => {
+                this.changeZoom(19).then(() => {
+                    this.contextMenuVisible = true;
+                    const screenPoint = this.eventClick;
+                    const pageX = screenPoint.x;
+                    const pageY = screenPoint.y;
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+                });
+            });
         } else {
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
