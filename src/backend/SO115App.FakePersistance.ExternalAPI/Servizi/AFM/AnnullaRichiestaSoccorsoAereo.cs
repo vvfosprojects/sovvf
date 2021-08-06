@@ -12,6 +12,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
     {
         private readonly IHttpRequestManager<InfoAFM> _client;
         private readonly IConfiguration _config;
+
         public AnnullaRichiestaSoccorsoAereo(IHttpRequestManager<InfoAFM> client, IConfiguration config)
         {
             _client = client;
@@ -24,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
             var content = new StringContent(jsonString);
 
             //TODO SOSTOTUIRE UTENZA
-            var result = _client.PostAsync(new Uri(_config.GetSection("UrlExternalApi").GetSection("AFM").Value + "rescueRequest/" + CodiceRichiesta + "/abort"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q", content).Result;
+            var result = _client.PostAsync(new Uri(_config.GetSection("AFM").GetSection("URL").Value + "rescueRequest/" + CodiceRichiesta + "/abort"), _config.GetSection("AFM").GetSection("user").Value, _config.GetSection("AFM").GetSection("password").Value, content).Result;
 
             return result;
         }

@@ -11,6 +11,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
     {
         private readonly IHttpRequestManager<List<CategoriaAFM>> _client;
         private readonly IConfiguration _config;
+
         public GetCategorieSoccorsoAereo(IHttpRequestManager<List<CategoriaAFM>> client, IConfiguration config)
         {
             _client = client;
@@ -21,7 +22,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
         {
             //_client.SetCache();
 
-            var result = _client.GetAsync(new Uri(_config.GetSection("UrlExternalApi").GetSection("AFM").Value + "rescueCategory"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = _client.GetAsync(new Uri(_config.GetSection("AFM").GetSection("URL").Value + "rescueCategory"), _config.GetSection("AFM").GetSection("user").Value, _config.GetSection("AFM").GetSection("password").Value).Result;
 
             return result;
         }

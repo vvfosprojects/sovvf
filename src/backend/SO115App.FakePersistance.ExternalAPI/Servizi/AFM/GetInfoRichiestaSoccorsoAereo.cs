@@ -20,7 +20,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
 
         public InfoAFM Get(string requestKey)
         {
-            var result = _client.GetAsync(new Uri(_config.GetSection("UrlExternalApi").GetSection("AFM").Value + "rescueRequest/" + requestKey + "/"), "francesco.dangelis@dipvvf.it", "DNGFNC98R17D662Q").Result;
+            var result = _client.GetAsync(new Uri(_config.GetSection("AFM").GetSection("URL").Value + "rescueRequest/" + requestKey + "/"), _config.GetSection("AFM").GetSection("user").Value, _config.GetSection("AFM").GetSection("password").Value).Result;
 
             return result;
         }
