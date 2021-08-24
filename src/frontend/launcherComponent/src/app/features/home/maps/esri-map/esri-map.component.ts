@@ -40,6 +40,8 @@ import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductio
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Locator from '@arcgis/core/tasks/Locator';
+import Sketch from '@arcgis/core/widgets/Sketch';
+import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 
 @Component({
     selector: 'app-esri-map',
@@ -47,15 +49,6 @@ import Locator from '@arcgis/core/tasks/Locator';
     styleUrls: ['./esri-map.component.scss']
 })
 export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
-
-    constructor(private http: HttpClient,
-                private modalService: NgbModal,
-                private store: Store,
-                private configModal: NgbModalConfig,
-                private renderer: Renderer2) {
-        configModal.backdrop = 'static';
-        configModal.keyboard = false;
-    }
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
@@ -68,13 +61,28 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     map: Map;
     view: any = null;
     eventClick: any;
+    eventMouseMove: any;
+    eventMouseMoveStart: any;
     contextMenuVisible = false;
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
 
+    drawing: boolean;
+    drawGraphicLayer = new GraphicsLayer();
+    drawedPolygon: Graphic;
+
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
     @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
+
+    constructor(private http: HttpClient,
+                private modalService: NgbModal,
+                private store: Store,
+                private configModal: NgbModalConfig,
+                private renderer: Renderer2) {
+        this.configModal.backdrop = 'static';
+        this.configModal.keyboard = false;
+    }
 
     ngOnInit(): void {
         this.operatore = this.store.selectSnapshot(AuthState.currentUser);
@@ -87,7 +95,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             // this.loginIntoESRI().then(() => {
             // Inizializzazione della mappa
             this.initializeMap().then(() => {
-                // Inizializzazione dei layer lato client delle chiamate in corso
+                // Inizializzazione del layer lato client per disegnare (poligoni, linee ecc.) sulla mappa
+                this.map.add(this.drawGraphicLayer);
+                // Inizializzazione del layer lato client delle chiamate in corso
                 this.initializeChiamateInCorsoLayer().then(() => {
                     // Gestisco l'evento "click"
                     this.view.on('click', (event) => {
@@ -115,13 +125,21 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             this.setContextMenuVisible(false);
                         }
                     });
+                    // Gestisco l'evento "pointer-move"
+                    this.view.on('pointer-move', (event) => {
+                        this.eventMouseMove = event;
+                    });
                     // Gestisco l'evento "drag"
                     this.view.on('drag', (event) => {
-                        this.setContextMenuVisible(false);
+                        if (!this.drawing) {
+                            this.setContextMenuVisible(false);
+                        }
                     });
                     // Gestisco l'evento "mouse-wheel"
                     this.view.on('mouse-wheel', (event) => {
-                        this.setContextMenuVisible(false);
+                        if (!this.drawing) {
+                            this.setContextMenuVisible(false);
+                        }
                     });
 
                     // Aggiungo i Chiamate Markers
@@ -237,6 +255,18 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     startNuovaChiamata(): void {
+        // Controllo se è stato scelto un punto ppure un poligono complesso
+        let lat: number;
+        let lon: number;
+        let drawedPolygon: Graphic;
+
+        if (this.eventClick?.mapPoint) {
+            lat = this.eventClick.mapPoint.latitude;
+            lon = this.eventClick.mapPoint.longitude;
+        } else if (this.drawGraphicLayer?.graphics?.length) {
+            drawedPolygon = this.drawedPolygon;
+        }
+
         // Se il "contextMenu" è aperto lo chiudo
         if (this.contextMenuVisible) {
             this.setContextMenuVisible(false);
@@ -249,72 +279,94 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const lat = this.eventClick.mapPoint.latitude;
-        const lon = this.eventClick.mapPoint.longitude;
+        // TODO: implementare quando il servizio "GeocodeServer" sarà disponibile
+        /* if (lat && lon) {
+            // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
+            const locatorTask = new Locator({
+                url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
+            });
+            const params = {
+                location: this.eventClick.mapPoint
+            };
+            // Trovo l'indirizzo tramite le coordinate
+            locatorTask.locationToAddress(params).then((response) => {
+                console.log('response', response);
+                console.log('address', response.address);
 
-        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-        const locatorTask = new Locator({
-            url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
-        });
-        const params = {
-            location: this.eventClick.mapPoint
-        };
-        // Trovo l'indirizzo tramite le coordinate
-        locatorTask.locationToAddress(params).then((response) => {
-            console.log('response', response);
-            console.log('address', response.address);
+                this.changeCenter([lon, lat]);
+                this.changeZoom(19);
 
-            this.changeCenter([lon, lat]);
-            this.changeZoom(19);
+                // Apro il modale con FormChiamata con lat, lon e address
+                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                    windowClass: 'xxlModal modal-holder',
+                });
+                modalNuovaChiamata.componentInstance.lat = lat;
+                modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.componentInstance.address = response.address;
 
-            // Apro il modale con FormChiamata
+                modalNuovaChiamata.result.then((result: string) => {
+                    this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                });
+            });
+        } else if (drawedPolygon) {
+            // Apro il modale con FormChiamata con il drawedPolygon
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
                 windowClass: 'xxlModal modal-holder',
             });
-            modalNuovaChiamata.componentInstance.lat = lat;
-            modalNuovaChiamata.componentInstance.lon = lon;
-            modalNuovaChiamata.componentInstance.address = response.address;
+            modalNuovaChiamata.componentInstance.drawedPolygon = drawedPolygon;
 
             modalNuovaChiamata.result.then((result: string) => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
-        });
+        } */
 
-        // !!TEST!! API gratuita per il geocode inverso TODO: sostituire con API dei VVF
-        const obj = {
-            location: {
-                latLng: {
-                    lat,
-                    lng: lon
-                }
-            },
-            options: {
-                thumbMaps: false
-            },
-            includeNearestIntersection: true,
-            includeRoadMetadata: true
-        };
+        if (lat && lon) {
+            // !!TEST!! API gratuita per il geocode inverso TODO: sostituire con API dei VVF
+            const obj = {
+                location: {
+                    latLng: {
+                        lat,
+                        lng: lon
+                    }
+                },
+                options: {
+                    thumbMaps: false
+                },
+                includeNearestIntersection: true,
+                includeRoadMetadata: true
+            };
 
-        // Trovo l'indirizzo tramite le coordinate (con API gratuita)
-        this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
-            console.log('response', response);
-            console.log('address', response?.results[0]?.locations[0]?.street);
+            // Trovo l'indirizzo tramite le coordinate (con API gratuita)
+            this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
+                console.log('response', response);
+                console.log('address', response?.results[0]?.locations[0]?.street);
 
-            this.changeCenter([lon, lat]);
-            this.changeZoom(19);
+                this.changeCenter([lon, lat]);
+                this.changeZoom(19);
 
-            // Apro il modale con FormChiamata
+                // Apro il modale con FormChiamata con lat, lon e address
+                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                    windowClass: 'xxlModal modal-holder',
+                });
+                modalNuovaChiamata.componentInstance.lat = lat;
+                modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
+
+                modalNuovaChiamata.result.then((result: string) => {
+                    this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                });
+            });
+        } else if (drawedPolygon) {
+            // Apro il modale con FormChiamata con il drawedPolygon
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
                 windowClass: 'xxlModal modal-holder',
             });
-            modalNuovaChiamata.componentInstance.lat = lat;
-            modalNuovaChiamata.componentInstance.lon = lon;
-            modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
+            modalNuovaChiamata.componentInstance.drawedPolygon = drawedPolygon;
 
             modalNuovaChiamata.result.then((result: string) => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
-        });
+        }
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
@@ -334,6 +386,26 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else {
+            this.drawGraphicLayer.removeAll();
+            this.eventClick = null;
+            this.contextMenuVisible = false;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
+        }
+    }
+
+    // Imposta il "contextMenu" del widget Draw visibile o no in base al valore passato a "value"
+    setDrawContextMenuVisible(value: boolean): void {
+        if (value) {
+            this.contextMenuVisible = true;
+            const screenPoint = this.eventMouseMove;
+            const pageX = screenPoint.x;
+            const pageY = screenPoint.y;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 30 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX - 30 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+        } else {
+            this.drawGraphicLayer.removeAll();
+            this.eventMouseMove = null;
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
         }
@@ -496,6 +568,53 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         const search = new Search({
             view: this.view,
         });
+
+        const sketch = new Sketch({
+            layer: this.drawGraphicLayer,
+            view: this.view,
+            // graphic will be selected as soon as it is created
+            creationMode: 'single',
+            availableCreateTools: ['polygon']
+        });
+
+        // Listen to sketch widget's create event.
+        sketch.on('create', (event) => {
+            // check if the create event's state has changed to complete indicating
+            // the graphic create operation is completed.
+            switch (event.state) {
+                case 'start':
+                    this.drawing = true;
+                    this.eventMouseMoveStart = this.eventMouseMove;
+                    break;
+                case 'active':
+                    break;
+                case 'complete':
+                    this.drawing = false;
+                    this.drawedPolygon = event.graphic;
+                    this.setDrawContextMenuVisible(true);
+                    break;
+                default:
+                    console.log('nuovo evento trovato', event);
+                    break;
+            }
+        });
+
+        // Listen to sketch widget's update event.
+        sketch.on('update', () => {
+            this.drawing = false;
+            this.drawedPolygon = null;
+            this.drawGraphicLayer.removeAll();
+            this.setDrawContextMenuVisible(false);
+        });
+
+        // Listen to sketch widget's delete event.
+        sketch.on('delete', () => {
+            this.drawing = false;
+            this.drawedPolygon = null;
+            this.drawGraphicLayer.removeAll();
+            this.setDrawContextMenuVisible(false);
+        });
+
         // Altre possibili posizioni standard o manuale
         // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
         this.view.ui.add(llExpand, 'top-right');
@@ -503,21 +622,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         this.view.ui.add(bgExpand, 'top-right');
         this.view.ui.add(search, {
             position: 'top-left',
-            index: 0, // cosi indico la posizione che deve avere nella ui
+            index: 0 // indico la posizione nella UI
         });
-
-        // Widget per disegnare sulla mappa
-        // const graphicsLayer = new GraphicsLayer();
-        // this.map.add(graphicsLayer);
-        //
-        // const sketch = new Sketch({
-        //     layer: graphicsLayer,
-        //     view: this.view,
-        //     // graphic will be selected as soon as it is created
-        //     creationMode: 'update'
-        // });
-        //
-        // this.view.ui.add(sketch, 'top-right');
+        this.view.ui.add(sketch, 'bottom-right');
     }
 
     // Aggiunge il MapImageLayer dal portal tramite il portalId

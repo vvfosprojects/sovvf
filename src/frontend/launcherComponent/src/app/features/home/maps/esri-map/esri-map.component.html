@@ -4,18 +4,20 @@
     <!-- ContextMenu ESRI Container -->
     <div #contextMenu
          class="p-2"
-         style="display: none; background-color: #232323; position: absolute">
+         style="display: none; background-color: #232323; position: absolute; z-index: 9999999999999">
         <ul class="list-unstyled m-0">
             <li class="cursor-pointer item-contextMenu"
                 (click)="startNuovaChiamata()">
-                Nuova Chiamata ({{ eventClick?.mapPoint?.latitude }}, {{ eventClick?.mapPoint?.longitude }})
+                Nuova Chiamata
+                <span *ngIf="eventClick?.mapPoint">({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
+                <span *ngIf="!eventClick?.mapPoint">(Zona Disegnata)</span>
             </li>
-            <li class="cursor-pointer item-contextMenu">
+            <!-- <li class="cursor-pointer item-contextMenu">
                 Opzione 2
             </li>
             <li class="cursor-pointer item-contextMenu">
                 Opzione 3
-            </li>
+            </li> -->
         </ul>
     </div>
     <!-- End ContextMenu ESRI Container -->
