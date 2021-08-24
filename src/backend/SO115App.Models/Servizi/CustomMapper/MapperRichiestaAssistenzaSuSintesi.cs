@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -37,7 +38,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                   .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
                   .ForMember(x => x.Eventi, y => y.MapFrom(z => z.ListaEventi.ToEventiSintesi()))
                   .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
-                  .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
+                  .ForMember(x => x.Operatore, y => y.MapFrom(_ => MapUtenteSuOperatore(_getUtenteById.GetUtenteByCodice(richiesta.CodOperatore))))
                   .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
                   .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
                   .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia)));
@@ -50,6 +51,14 @@ namespace SO115App.Models.Servizi.CustomMapper
             {
                 throw new Exception("Errore mapping richiesta");
             }
+        }
+
+        private Operatore MapUtenteSuOperatore(API.Models.Classi.Autenticazione.Utente utente)
+        {
+            return new Operatore(utente.CodiceFiscale, utente.Nome, utente.Cognome)
+            {
+                Id = utente.Id
+            };
         }
 
         private List<AttivitaUtente> MapUtenteAttivita(RichiestaAssistenza richiesta, string Tipo)
