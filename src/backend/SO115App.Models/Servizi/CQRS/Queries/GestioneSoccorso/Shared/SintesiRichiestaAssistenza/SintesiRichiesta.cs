@@ -98,7 +98,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
-        public Utente Operatore { get; set; }
+        public Operatore Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
@@ -295,17 +295,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista eventi associato alla richiesta
         /// </summary>
-        public List<Partenza> PartenzeRichiesta
-        {
-            get
-            {
-                if (this.Partenze != null && this.Partenze.Count > 0)
-                {
-                    return Partenze.Select(x => x.Partenza).ToList();
-                }
-                else { return null; }
-            }
-        }
+        //public List<Partenza> PartenzeRichiesta
+        //{
+        //    get
+        //    {
+        //        if (this.Partenze != null && this.Partenze.Count > 0)
+        //        {
+        //            return Partenze.Select(x => x.Partenza).ToList();
+        //        }
+        //        else { return null; }
+        //    }
+        //}
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
