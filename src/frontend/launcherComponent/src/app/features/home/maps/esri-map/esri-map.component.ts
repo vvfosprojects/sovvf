@@ -269,7 +269,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
         // Se il "contextMenu" è aperto lo chiudo
         if (this.contextMenuVisible) {
-            this.setContextMenuVisible(false);
+            this.setContextMenuVisible(false, { skipRemoveDrawedPolygon: !!drawedPolygon });
         }
 
         // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
@@ -338,8 +338,6 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
             // Trovo l'indirizzo tramite le coordinate (con API gratuita)
             this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
-                console.log('response', response);
-                console.log('address', response?.results[0]?.locations[0]?.street);
 
                 this.changeCenter([lon, lat]);
                 this.changeZoom(19);
@@ -357,6 +355,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else if (drawedPolygon) {
+            
+            this.changeZoom(17);
+
             // Apro il modale con FormChiamata con il drawedPolygon
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
                 windowClass: 'xxlModal modal-holder',
@@ -364,13 +365,15 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.drawedPolygon = drawedPolygon;
 
             modalNuovaChiamata.result.then((result: string) => {
+                this.drawedPolygon = null;
+                this.drawGraphicLayer.removeAll();
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
         }
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
-    setContextMenuVisible(value: boolean): void {
+    setContextMenuVisible(value: boolean, options?: { skipRemoveDrawedPolygon?: boolean }): void {
         if (value) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
@@ -386,7 +389,10 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else {
-            this.drawGraphicLayer.removeAll();
+            if  (!options?.skipRemoveDrawedPolygon) {
+                this.drawGraphicLayer.removeAll();
+                this.drawedPolygon = null;
+            }
             this.eventClick = null;
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
@@ -394,7 +400,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Imposta il "contextMenu" del widget Draw visibile o no in base al valore passato a "value"
-    setDrawContextMenuVisible(value: boolean): void {
+    setDrawContextMenuVisible(value: boolean, options?: { skipRemoveDrawedPolygon?: boolean }): void {
         if (value) {
             this.contextMenuVisible = true;
             const screenPoint = this.eventMouseMove;
@@ -404,7 +410,10 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX - 30 + 'px');
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
         } else {
-            this.drawGraphicLayer.removeAll();
+            if  (!options?.skipRemoveDrawedPolygon) {
+                this.drawGraphicLayer.removeAll();
+                this.drawedPolygon = null;
+            }
             this.eventMouseMove = null;
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
