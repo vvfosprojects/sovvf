@@ -90,6 +90,8 @@ export class ActionRichiestaModalComponent implements OnInit {
 
     getMotivazione(): MotivazioneChiusuraRichiestaEnum {
         const tipologiaChiusuraChiamata = this.f?.tipologiaChiusuraChiamata?.value;
+        let tipologiaRiapertura;
+
         if (tipologiaChiusuraChiamata) {
             switch (tipologiaChiusuraChiamata) {
                 case 'InterventoNonNecessario':
@@ -103,7 +105,11 @@ export class ActionRichiestaModalComponent implements OnInit {
                 case 'Int. concluso':
                     return MotivazioneChiusuraRichiestaEnum.InterventoConcluso;
             }
-        } else {
+        } else if (this.riapertura) {
+            tipologiaRiapertura = 'Riapertura';
+            return tipologiaRiapertura;
+        }
+          else {
             return null;
         }
     }
