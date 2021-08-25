@@ -39,6 +39,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         TrasmessaAdEnte,
         InterventoNonNecessario,
         FalsoAllarme,
-        InterventoConcluso
+        InterventoConcluso,
+        Riapertura
     }
 }
