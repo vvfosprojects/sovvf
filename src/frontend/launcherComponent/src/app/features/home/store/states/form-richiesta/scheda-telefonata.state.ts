@@ -57,6 +57,8 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
 import { ViewComponentState } from '../view/view.state';
+import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
+import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -214,12 +216,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(MarkerChiamata)
-    markerChiamata({
-                       getState,
-                       patchState,
-                       dispatch
-                       // tslint:disable-next-line:align
-                   }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
+    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
         if (state.idChiamataMarker) {
             dispatch(new UpdateChiamataMarker(action.marker));
@@ -247,7 +244,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCompetenze)
-    setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+    setCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             patchState({
                 competenze: res.dataArray
@@ -256,11 +253,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCountInterventiProssimita)
-    setCountInterventiProssimita({
-                                     patchState,
-                                     dispatch
-                                     // tslint:disable-next-line:align
-                                 }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
+    setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
                 countInterventiProssimita: res.count,
@@ -271,11 +264,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetInterventiProssimita)
-    setInterventiProssimita({
-                                patchState,
-                                dispatch
-                                // tslint:disable-next-line:align
-                            }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
+    setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
                 interventiProssimita: res.dataArray,
@@ -286,26 +275,44 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({
-                       getState,
-                       patchState,
-                       dispatch
-                       // tslint:disable-next-line:align
-                   }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
+    insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
         const state = getState();
         const f = state.richiestaForm.model;
         const azioneChiamata = action.azioneChiamata;
         const urgente = action.options?.urgente;
-        const fromMappa = action.options?.fromMappa;
 
         let chiamata: SintesiRichiesta;
         let tipologia: Tipologia;
+
         if (f) {
+
             if (f.codTipologia) {
                 tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
             }
+
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
+            const tipiTerreno = [] as TipoTerreno[];
+
+            if  (f.boschi) {
+                tipiTerreno.push({
+                    descrizione: TipoTerrenoEnum.Boschi,
+                    ha: f.boschi
+                });
+            }
+            if  (f.campi) {
+                tipiTerreno.push({
+                    descrizione: TipoTerrenoEnum.Campi,
+                    ha: f.campi
+                });
+            }
+            if  (f.sterpaglie) {
+                tipiTerreno.push({
+                    descrizione: TipoTerrenoEnum.Sterpaglie,
+                    ha: f.sterpaglie
+                });
+            }
+
             chiamata = new SintesiRichiesta(
                 f.id,
                 f.codice,
@@ -346,7 +353,7 @@ export class SchedaTelefonataState {
                 azioneChiamata,
                 f.trnInsChiamata,
                 f.turnoIntervento,
-                f.tipoTerreno,
+                tipiTerreno.length ? tipiTerreno : null,
                 (f.listaEnti?.length) ? f.listaEnti : null,
                 f.listaEntiPresaInCarico,
                 f.obiettivoSensibile,
@@ -364,7 +371,9 @@ export class SchedaTelefonataState {
                 triageSummary?.length ? triageSummary : null
             );
         }
+
         patchState({ azioneChiamata });
+
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([

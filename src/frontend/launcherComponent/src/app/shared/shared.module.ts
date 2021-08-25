@@ -30,7 +30,6 @@ import { TreeviewComponent } from './components/treeview/treeview.component';
 import { ListaEntiComponent } from './components/lista-enti/lista-enti.component';
 import { ListaSquadrePartenzaComponent } from './components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
-import { SelezioneTipiTerrenoComponent } from './components/selezione-tipi-terreno/selezione-tipi-terreno.component';
 import { PartenzaComponent } from './components/partenza/partenza.component';
 import { MezzoActionsComponent } from './components/mezzo/mezzo-actions/mezzo-actions.component';
 import { SintesiRichiestaActionsComponent } from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
@@ -91,7 +90,6 @@ const COMPONENTS = [
     ListaEntiComponent,
     ListaSquadrePartenzaComponent,
     ConfirmModalComponent,
-    SelezioneTipiTerrenoComponent,
     PartenzaComponent,
     MezzoActionsComponent,
     SintesiRichiestaActionsComponent,

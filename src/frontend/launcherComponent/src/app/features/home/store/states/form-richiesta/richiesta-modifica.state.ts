@@ -29,6 +29,8 @@ import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.e
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { SchedaTelefonataState } from './scheda-telefonata.state';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
+import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -141,11 +143,35 @@ export class RichiestaModificaState {
             const f = this.store.selectSnapshot(SchedaTelefonataState.formValue);
             const azioneChiamata = AzioneChiamataEnum.Modifica;
             let tipologia: Tipologia;
+
             if (f) {
+
                 if (f.codTipologia) {
                     tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
                 }
+
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
+                const tipiTerreno = [] as TipoTerreno[];
+    
+                if  (f.boschi) {
+                    tipiTerreno.push({
+                        descrizione: TipoTerrenoEnum.Boschi,
+                        ha: f.boschi
+                    });
+                }
+                if  (f.campi) {
+                    tipiTerreno.push({
+                        descrizione: TipoTerrenoEnum.Campi,
+                        ha: f.campi
+                    });
+                }
+                if  (f.sterpaglie) {
+                    tipiTerreno.push({
+                        descrizione: TipoTerrenoEnum.Sterpaglie,
+                        ha: f.sterpaglie
+                    });
+                }
+
                 sintesiRichiesta = new SintesiRichiesta(
                     f.id,
                     f.codice,
@@ -186,7 +212,7 @@ export class RichiestaModificaState {
                     azioneChiamata,
                     f.trnInsChiamata,
                     f.turnoIntervento,
-                    f.tipoTerreno,
+                    tipiTerreno.length ? tipiTerreno : null,
                     (f.listaEnti?.length) ? f.listaEnti : null,
                     f.listaEntiPresaInCarico,
                     f.obiettivoSensibile,

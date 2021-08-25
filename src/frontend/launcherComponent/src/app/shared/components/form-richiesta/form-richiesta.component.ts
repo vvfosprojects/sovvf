@@ -17,10 +17,7 @@ import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
-import {
-    ReducerSchedaTelefonata,
-    StartChiamata
-} from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { ReducerSchedaTelefonata, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -35,11 +32,7 @@ import { InterventiProssimitaModalComponent } from '../../modal/interventi-pross
 import { Sede } from '../../model/sede.model';
 import { TriageChiamataModalComponent } from '../../modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../../features/home/store/actions/view/view.actions';
-import {
-    ChiudiRichiestaModifica,
-    ClearRichiestaModifica,
-    ModificaIndirizzo
-} from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ClearRichiestaModifica, ModificaIndirizzo } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import {
     ClearDettaglioTipologiaTriageChiamata,
     ClearDettagliTipologie,
@@ -64,6 +57,8 @@ import { ClearSchedaContattoTelefonata } from '../../../features/home/store/acti
 import { PosInterface } from '../../interface/pos.interface';
 import { makeIdChiamata } from '../../helper/function-richieste';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import { TipoTerreno } from '../../model/tipo-terreno';
+import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -227,6 +222,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             rilevanzaStArCu: [false],
             notePrivate: [null],
             notePubbliche: [null],
+            boschi: [null],
+            campi: [null],
+            sterpaglie: [null],
             descrizione: [null],
             zoneEmergenza: [null],
             prioritaRichiesta: [3, Validators.required],
@@ -262,6 +260,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             rilevanzaStArCu: this.richiestaModifica.rilevanteStArCu,
             notePrivate: this.richiestaModifica.notePrivate,
             notePubbliche: this.richiestaModifica.notePubbliche,
+            boschi: getHaBoschi(this.richiestaModifica),
+            campi: getHaCampi(this.richiestaModifica),
+            sterpaglie: getHaSterpaglie(this.richiestaModifica),
             descrizione: this.richiestaModifica.descrizione,
             zoneEmergenza: this.richiestaModifica.zoneEmergenza,
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
@@ -272,6 +273,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.codTipologia.disable();
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
         savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
+
+        function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
+            return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Boschi)[0]?.ha;
+        }
+        function getHaCampi(richiestaModifica: SintesiRichiesta): number {
+            return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Campi)[0]?.ha;
+        }
+        function getHaSterpaglie(richiestaModifica: SintesiRichiesta): number {
+            return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Sterpaglie)[0]?.ha;
+        }
     }
 
     get f(): any {
