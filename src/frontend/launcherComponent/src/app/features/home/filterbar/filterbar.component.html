@@ -11,13 +11,16 @@
                         </app-tasto-chiamata>
                     </div>
                     <div class="float-left mr-3">
-                        <app-tasto-chiamata-mappa [active]="tastoChiamataMappaActive"
-                                                  [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
-                                                  (toggleChiamataFromMappa)="onToggleChiamataFromMappa()">
+                        <app-tasto-chiamata-mappa
+                                *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                                [active]="tastoChiamataMappaActive"
+                                [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
+                                (toggleChiamataFromMappa)="onToggleChiamataFromMappa()">
                         </app-tasto-chiamata-mappa>
                     </div>
                     <div class="float-left">
                         <app-tasto-schede-contatto
+                                *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                                 [active]="schedeContattoStatus$ | async"
                                 [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
                                 [disabled]="permessiFeature.SchedeContatto | checkPermission"
