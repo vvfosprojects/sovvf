@@ -14,7 +14,7 @@
             <div *ngFor="let p of partenze">
                 <div class="row mb-1">
                     <div class="col-9">
-                        <app-partenza [partenza]="p"></app-partenza>
+                        <app-partenza [partenza]="p.partenza"></app-partenza>
                     </div>
                     <div class="col-3">
                         <button class="btn btn-block btn-primary btn-no-hover" (click)="onSelezionePartenza(p)">
@@ -56,7 +56,7 @@
                             </div>
                         </ng-template>
                         <div *ngFor="let p of getPartenzeSostituzione()">
-                            <div *ngFor="let sS of p.squadre" class="mb-1"
+                            <div *ngFor="let sS of p.partenza.squadre" class="mb-1"
                                  [class.alert-warning]="getSquadraSmontanteBySquadraMontante(s?.nome) && getSquadraSmontanteBySquadraMontante(s?.nome) === sS?.nome">
                                 <div class="clearfix">
                                     <div class="float-left pt-1 pl-2">
@@ -64,14 +64,14 @@
                                             <i class="fas fa-users guida mr-1"></i>
                                             {{ sS?.nome }}
                                             <i class="fas fa-truck guida mr-1"></i>
-                                            {{ p?.mezzo?.codice }}
+                                            {{ p?.partenza?.mezzo?.codice }}
                                         </h5>
                                     </div>
                                     <div class="float-right">
                                         <ng-template
                                                 [ngIf]="!getSquadraSmontanteBySquadraMontante(s?.nome) || getSquadraSmontanteBySquadraMontante(s?.nome) !== sS?.nome">
                                             <button class="btn btn-primary btn-no-hover"
-                                                    (click)="onSelezioneSquadraSmontate(s?.nome, sS?.nome, p?.mezzo?.codice)"
+                                                    (click)="onSelezioneSquadraSmontate(s?.nome, sS?.nome, p?.partenza?.mezzo?.codice)"
                                                     [disabled]="getSostituzioneBySquadraMontante(s.nome)?.squadreSmontanti?.length > 0">
                                                 Seleziona
                                             </button>

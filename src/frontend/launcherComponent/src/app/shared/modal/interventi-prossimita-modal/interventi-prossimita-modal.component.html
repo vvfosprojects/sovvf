@@ -437,15 +437,15 @@
                                         <div class="scroll-y"
                                              [ngClass]="{'m-h-160': inGestione, 'm-h-100': !inGestione}">
                                             <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                            <app-lista-partenze [partenze]="r?.partenzeRichiesta"
+                                            <app-lista-partenze [partenze]="r?.partenze"
                                                                 [statoRichiesta]="r?.stato"
                                                                 [inGestione]="inGestione"
                                                                 [idDaSganciare]="idDaSganciare"
-                                                                [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(r?.partenzeRichiesta)"
+                                                                [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(r?.partenze)"
                                                                 (actionMezzo)="onActionMezzo($event)"
                                                                 (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"
-                                                                (sostituzioneFineTurno)="onSostituzioneFineTurno(r.partenzeRichiesta)">
+                                                                (sostituzioneFineTurno)="onSostituzioneFineTurno(r.partenze)">
                                             </app-lista-partenze>
                                         </div>
                                     </div>

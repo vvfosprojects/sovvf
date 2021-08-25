@@ -11,7 +11,7 @@
     <div class="row">
         <!-- Anteprima mezzo e squadra/e da sostituire -->
         <div class="col-12 mb-1">
-            <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="partenzaDaSostituire"
+            <app-box-anteprima-partenza [partenza]="singolaPartenza.partenza" [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()">
             </app-box-anteprima-partenza>
@@ -157,7 +157,7 @@
         </div>
     </div>
     <div class="alert alert-info text-uppercase font-weight-bold mb-0" role="alert">Il
-        mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato
+        mezzo {{singolaPartenza?.partenza?.mezzo.descrizione}} {{singolaPartenza?.partenza?.mezzo.genere}} sarà annullato
         alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
     </div>
 </div>

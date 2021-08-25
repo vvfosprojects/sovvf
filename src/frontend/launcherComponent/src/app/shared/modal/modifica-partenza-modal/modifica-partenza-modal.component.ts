@@ -34,7 +34,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     operatore: string;
     sede: string;
-    partenza: Partenza;
+    singolaPartenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
@@ -78,8 +78,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.listaStatoMezzo = Object.values(StatoMezzoSequenze);
         this.modificaPartenzaForm.reset();
         this.f.codRichiesta.patchValue(this.codRichiesta);
-        this.f.mezzo.patchValue(this.partenza.mezzo);
-        this.f.squadre.patchValue(this.partenza.squadre);
+        this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
+        this.f.squadre.patchValue(this.singolaPartenza.partenza.squadre);
         this.checkStatoMezzoSequenza();
     }
 
@@ -130,7 +130,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     checkStatoMezzoSequenza(): void {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
-            if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
+            if (this.singolaPartenza.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i + 1].disabled = false;
                 this.statiMezzo.splice(0, i + 1);
             }
@@ -204,8 +204,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzoDaAnnullare: null,
                 codSquadreDaAnnullare: null,
                 motivazioneAnnullamento: null,
-                mezzo: this.partenza.mezzo,
-                squadre: this.partenza.squadre,
+                mezzo: this.singolaPartenza.partenza.mezzo,
+                squadre: this.singolaPartenza.partenza.squadre,
                 sequenzaStati: [],
                 dataAnnullamento: null,
             },
@@ -228,7 +228,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
-        sostituzioneModal.componentInstance.partenza = this.partenza;
+        sostituzioneModal.componentInstance.partenza = this.singolaPartenza;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
@@ -246,8 +246,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                         this.nuoveSquadre = nuovaPartenza.squadre.map(x => x);
                         this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
-                        this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);
-                        this.f.codSquadreDaAnnullare.patchValue(this.partenza.squadre.map(x => x.id));
+                        this.f.codMezzoDaAnnullare.patchValue(this.singolaPartenza.partenza.mezzo.codice);
+                        this.f.codSquadreDaAnnullare.patchValue(this.singolaPartenza.partenza.squadre.map(x => x.id));
                         this.f.dataAnnullamento.patchValue(nuovaPartenza.dataAnnullamento);
                     }
                     break;
@@ -259,8 +259,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
-        listaSquadre.idPartenza = this.partenza.id;
-        listaSquadre.squadre = this.partenza.squadre;
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
+        listaSquadre.squadre = this.singolaPartenza.partenza.squadre;
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
@@ -269,7 +269,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             idPartenza: '',
             squadre: [],
         };
-        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
         listaSquadre.squadre = this.nuoveSquadre;
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
@@ -284,10 +284,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.formatTimeForCallBack();
         this.f.sequenzaStati.patchValue(makeCopy(this.sequenze));
         if (!this.f.codMezzoDaAnnullare.value) {
-            this.f.mezzo.patchValue(this.partenza.mezzo);
+            this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
         }
         if (!this.f.codSquadreDaAnnullare.value || this.f.codSquadreDaAnnullare.value.length <= 0) {
-            this.f.squadre.patchValue(this.partenza.squadre);
+            this.f.squadre.patchValue(this.singolaPartenza.partenza.squadre);
         }
         const sequenze = this.f.sequenzaStati.value;
         if (sequenze) {
@@ -310,8 +310,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 annullamento: !!this.f.annullamento.value,
                 codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
                 codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
-                mezzo: !this.f.sede.annullamento ? this.f.mezzo.value : this.partenza.mezzo,
-                squadre: !this.f.sede.annullamento ? this.f.squadre.value : this.partenza.squadre,
+                mezzo: !this.f.sede.annullamento ? this.f.mezzo.value : this.singolaPartenza.partenza.mezzo,
+                squadre: !this.f.sede.annullamento ? this.f.squadre.value : this.singolaPartenza.partenza.squadre,
                 motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
                 sequenzaStati: sequenze,
                 dataAnnullamento: this.f.dataAnnullamento.value,

@@ -42,17 +42,17 @@
             </div>
         </ng-template>
         <!-- anteprima mezzo e squadra/e -->
-        <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
+        <app-box-anteprima-partenza [partenza]="singolaPartenza.partenza" [inSostituzione]="inSostituzione"
                                     (modificaPartenza)="openSostituzioneModal()"
                                     [testoModifica]="'Sostitusci Mezzo/Squadra'" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <div *ngIf="!hideBox" class="alert alert-info text-uppercase font-weight-bold" role="alert">
-            Il mezzo {{partenza?.mezzo?.descrizione}} {{partenza?.mezzo?.genere}} Annullato
+            Il mezzo {{singolaPartenza?.partenza?.mezzo?.descrizione}} {{singolaPartenza?.partenza?.mezzo?.genere}} Annullato
             alle {{timeAnnullamento?.hour <= 9 ? '0' + timeAnnullamento?.hour : timeAnnullamento?.hour}}
             :{{timeAnnullamento?.minute <= 9 ? '0' + timeAnnullamento?.minute : timeAnnullamento?.minute}}</div>
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>
         <!-- anteprima mezzo e squadra/e sostitutive-->
-        <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo"
+        <app-box-anteprima-partenza [partenza]="singolaPartenza.partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo"
                                     [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
                                     [nonModificabile]="true" (annullaPartenza)="annullaPartenza()"
                                     (listaSquadrePartenza)="onListaSquadrePartenzaSostitutiva()"></app-box-anteprima-partenza>

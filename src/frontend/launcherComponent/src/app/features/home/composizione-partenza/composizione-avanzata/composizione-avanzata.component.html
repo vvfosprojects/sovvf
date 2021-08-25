@@ -186,7 +186,7 @@
                 <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
                     <app-partial-loader *ngIf="!mezziComposizione || !squadreComposizione"></app-partial-loader>
                     <app-lista-partenze  *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza"
-                                         [partenze]="richiesta.partenzeRichiesta">
+                                         [partenze]="richiesta.partenze">
                     </app-lista-partenze>
                     <li *ngIf="!mezziComposizione || !squadreComposizione"
                         style="list-style: none;">

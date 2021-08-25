@@ -93,10 +93,10 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     sganciamentoCheck(): void {
-        if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
-            this.sganciamentoDisabilitato = !!this.richiesta.partenzeRichiesta.find(e => {
-                return e.mezzo.descrizione === this.mezzoComp.mezzo.descrizione &&
-                    !e.sganciata && !e.terminata && !e.partenzaAnnullata;
+        if (this.richiesta && this.richiesta.partenze && this.richiesta.partenze.length > 0) {
+            this.sganciamentoDisabilitato = !!this.richiesta.partenze.find(e => {
+                return e.partenza.mezzo.descrizione === this.mezzoComp.mezzo.descrizione &&
+                    !e.partenza.sganciata && !e.partenza.terminata && !e.partenza.partenzaAnnullata;
             });
         }
     }

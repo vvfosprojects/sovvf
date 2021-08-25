@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Partenza } from '../../model/partenza.model';
+import { DettaglioPartenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -17,7 +17,7 @@ import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composi
 export class PartenzaComponent implements OnInit {
 
     @Input() idDaSganciare: string;
-    @Input() partenza: Partenza;
+    @Input() partenza: DettaglioPartenza;
     @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;

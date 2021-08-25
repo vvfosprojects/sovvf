@@ -25,10 +25,10 @@ export class HelperSintesiRichiesta {
         // const nomiSquadre: string[] = [];
         const squadre = [];
 
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    partenza.squadre.forEach((squadra: Squadra) => {
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.squadre && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    p.partenza.squadre.forEach((squadra: Squadra) => {
                         squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
                     });
                 }
@@ -50,10 +50,10 @@ export class HelperSintesiRichiesta {
     /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    mezzi.push(partenza.mezzo);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    mezzi.push(p.partenza.mezzo);
                 }
             });
         }
@@ -63,10 +63,10 @@ export class HelperSintesiRichiesta {
     /* Restituisce i nomi dei mezzi  */
     nomiMezzi(richiesta: SintesiRichiesta): string[] {
         const nomiMezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    nomiMezzi.push(partenza.mezzo.codice);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    nomiMezzi.push(p.partenza.mezzo.codice);
                 }
             });
         }
@@ -76,10 +76,10 @@ export class HelperSintesiRichiesta {
     /* Restituisce la descrizione dei mezzi */
     descscrizioneMezzi(richiesta: SintesiRichiesta): string[] {
         const nomiMezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    nomiMezzi.push(partenza.mezzo.descrizione);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    nomiMezzi.push(p.partenza.mezzo.descrizione);
                 }
             });
         }
@@ -89,9 +89,9 @@ export class HelperSintesiRichiesta {
     /* Restituisce il numero dei mezzi */
     numeroMezzi(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata && partenza.mezzo.stato !== 'In Rientro') {
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato !== 'In Rientro') {
                     numeroMezzi++;
                 }
             });
@@ -102,9 +102,9 @@ export class HelperSintesiRichiesta {
     /* Restituisce il numero dei mezzi in rientro */
     numeroMezziInRietro(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo.stato === 'In Rientro' && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo.stato === 'In Rientro' && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
                     numeroMezzi++;
                 }
             });

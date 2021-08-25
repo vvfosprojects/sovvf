@@ -19,7 +19,7 @@ import {
     StopLoadingNuovaChiamata
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
-import { ToggleChiamata, ToggleModifica, ToggleRichieste } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import {
     DelChiamataMarker,
@@ -57,7 +57,6 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
 import { ViewComponentState } from '../view/view.state';
-import { SetChiamataFromMappaActiveValue } from "../../actions/maps/tasto-chiamata-mappa.actions";
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -219,6 +218,7 @@ export class SchedaTelefonataState {
                        getState,
                        patchState,
                        dispatch
+                       // tslint:disable-next-line:align
                    }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
         if (state.idChiamataMarker) {
@@ -259,6 +259,7 @@ export class SchedaTelefonataState {
     setCountInterventiProssimita({
                                      patchState,
                                      dispatch
+                                     // tslint:disable-next-line:align
                                  }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
@@ -273,6 +274,7 @@ export class SchedaTelefonataState {
     setInterventiProssimita({
                                 patchState,
                                 dispatch
+                                // tslint:disable-next-line:align
                             }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
@@ -288,6 +290,7 @@ export class SchedaTelefonataState {
                        getState,
                        patchState,
                        dispatch
+                       // tslint:disable-next-line:align
                    }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         dispatch(new StartLoadingNuovaChiamata());
         const state = getState();
@@ -336,7 +339,7 @@ export class SchedaTelefonataState {
                 f.codSchedaContatto ? f.codSchedaContatto : null,
                 f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
                 f.fonogramma,
-                f.partenzeRichiesta,
+                f.partenze,
                 (f.etichette && f.etichette.length) ? f.etichette : null,
                 f.notePubbliche,
                 f.notePrivate,

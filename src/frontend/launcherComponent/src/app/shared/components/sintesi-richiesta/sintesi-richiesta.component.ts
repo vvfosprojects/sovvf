@@ -204,7 +204,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
         if (partenze?.length > 0) {
-            return partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
+            return partenze.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
         }
     }
 
@@ -276,7 +276,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             backdrop: 'static',
             keyboard: false
         });
-        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
+        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenze[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
@@ -296,7 +296,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            backdrop: true,
         });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
@@ -311,7 +312,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             size: 'xl',
             centered: true
         });
-        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto);
+        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto);
         this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
         modalSostituzioneFineTurno.componentInstance.idRichiesta = this.richiesta.id;
         modalSostituzioneFineTurno.componentInstance.codRichiesta = this.richiesta.codice;
