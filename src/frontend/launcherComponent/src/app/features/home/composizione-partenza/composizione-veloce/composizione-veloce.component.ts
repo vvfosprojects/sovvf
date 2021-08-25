@@ -71,7 +71,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.richiesta?.currentValue) {
             const richiesta = changes?.richiesta?.currentValue;
-            this.partenzeRichiesta = richiesta.partenzeRichiesta;
+            this.partenzeRichiesta = richiesta.partenze;
         }
     }
 

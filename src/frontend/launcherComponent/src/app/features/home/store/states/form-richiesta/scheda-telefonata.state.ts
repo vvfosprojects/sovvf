@@ -346,7 +346,7 @@ export class SchedaTelefonataState {
                 f.codSchedaContatto ? f.codSchedaContatto : null,
                 f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
                 f.fonogramma,
-                f.partenzeRichiesta,
+                f.partenze,
                 (f.etichette && f.etichette.length) ? f.etichette : null,
                 f.notePubbliche,
                 f.notePrivate,

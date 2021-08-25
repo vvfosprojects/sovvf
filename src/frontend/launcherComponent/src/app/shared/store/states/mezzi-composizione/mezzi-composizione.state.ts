@@ -428,7 +428,7 @@ export class MezziComposizioneState {
     sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
-            partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
+            partenzaDaSganciare = richiestaDa.partenze && richiestaDa.partenze.length > 0 ? richiestaDa.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             if (richiestaDa && partenzaDaSganciare) {
                 let modalSganciamento;
                 const innerWidth = window.innerWidth;

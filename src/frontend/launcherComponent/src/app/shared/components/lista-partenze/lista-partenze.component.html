@@ -3,10 +3,10 @@
 </div>
 <ul *ngIf="checkNumeroPartenzeAttive(partenze) > 0" class="list-unstyled">
     <div *ngFor="let p of partenze; let index = index">
-        <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
+        <li *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata" class="border-bottom">
             <app-partial-loader
                     *ngIf="loadingActionMezzo$ | async"></app-partial-loader>
-            <app-partenza [partenza]="p"
+            <app-partenza [partenza]="p.partenza"
                           [listaEventi]="listaEventi"
                           [inGestione]="inGestione"
                           [statoRichiesta]="statoRichiesta"

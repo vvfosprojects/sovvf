@@ -109,7 +109,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
-    partenza: Partenza;
+    singolaPartenza: Partenza;
     sostituzionePartenzaForm: FormGroup;
     submitted: boolean;
 
@@ -304,8 +304,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
-        listaSquadre.idPartenza = this.partenza.id;
-        listaSquadre.squadre = this.partenza.squadre;
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
+        listaSquadre.squadre = this.singolaPartenza.partenza.squadre;
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 

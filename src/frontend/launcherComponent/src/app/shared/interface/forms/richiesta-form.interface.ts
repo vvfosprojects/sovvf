@@ -55,7 +55,7 @@ export interface RichiestaForm {
     sediAllertate: Sede[];
     codSOAllertate: string[];
     fonogramma: Fonogramma;
-    partenzeRichiesta: Partenza[];
+    partenze: Partenza[];
     listaEnti: Ente[];
     motivazione: string;
     listaUtentiInLavorazione: AttivitaUtente[];

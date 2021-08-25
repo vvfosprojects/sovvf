@@ -86,11 +86,11 @@ export class SostituzionePartenzeFineTurnoModalState {
         const state = getState();
         const partenzaMontate = state.partenzaMontante;
         const sostituzioni = [];
-        partenzaMontate.squadre.forEach((s: Squadra) => {
+        partenzaMontate.partenza.squadre.forEach((s: Squadra) => {
             const sostituzione = {
                 codMezzoSmontante: undefined,
                 squadreSmontanti: null,
-                codMezzoMontante: partenzaMontate.mezzo.codice,
+                codMezzoMontante: partenzaMontate.partenza.mezzo.codice,
                 squadreMontanti: [s.nome]
             };
             sostituzioni.push(sostituzione);
@@ -103,7 +103,7 @@ export class SostituzionePartenzeFineTurnoModalState {
     @Action(UpdateSostituzione)
     updateSostituzione({ getState, setState }: StateContext<ModificaPartenzeFineTurnoStateModel>, action: UpdateSostituzione): void {
         const state = getState();
-        const codMezzoMontante = state.partenzaMontante.mezzo.codice;
+        const codMezzoMontante = state.partenzaMontante.partenza.mezzo.codice;
         const codMezzoSmontante = action.codMezzoSmontante;
         const squadraMontante = action.squadraMontante;
         const squadraSmontante = action.squadraSmontante;

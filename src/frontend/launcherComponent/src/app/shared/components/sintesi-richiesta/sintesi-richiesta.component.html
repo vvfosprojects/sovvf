@@ -416,7 +416,7 @@
                             </div>
 
                             <!-- II colonna Triage -->
-                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) <= 0"
+                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0"
                                  class="col-8">
                                 <div *ngIf="richiesta?.triageSummary?.length">
                                     <app-triage-summary-sintesi-richiesta [triageSummary]="richiesta?.triageSummary"
@@ -425,20 +425,20 @@
                                 </div>
                             </div>
                             <!-- II colonna Lista Partenze -->
-                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenzeRichiesta) > 0"
+                            <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
                                  class="col-8 px-0 border border-light">
                                 <div class="scroll-y px-2 py-1">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                    <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
+                                    <app-lista-partenze [partenze]="richiesta?.partenze"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"
                                                         [idDaSganciare]="idDaSganciare"
-                                                        [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenzeRichiesta)"
+                                                        [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
                                                         (actionMezzo)="onActionMezzo($event)"
                                                         (eliminaPartenza)="onEliminaPartenza($event)"
                                                         (modificaPartenza)="onModificaPartenza($event)"
-                                                        (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenzeRichiesta)">
+                                                        (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)">
                                     </app-lista-partenze>
                                 </div>
                             </div>

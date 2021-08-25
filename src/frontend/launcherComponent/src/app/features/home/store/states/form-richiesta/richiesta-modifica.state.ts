@@ -205,7 +205,7 @@ export class RichiestaModificaState {
                     f.codSchedaContatto ? f.codSchedaContatto : null,
                     f.zoneEmergenza?.length > 1 ? f.zoneEmergenza.split(' ') : null,
                     f.fonogramma,
-                    f.partenzeRichiesta,
+                    f.partenze,
                     (f.etichette && f.etichette.length) ? f.etichette : null,
                     f.notePubbliche,
                     f.notePrivate,

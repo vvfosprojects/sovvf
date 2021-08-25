@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Partenza } from '../../model/partenza.model';
+import { DettaglioPartenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function-mezzo';
 import { Mezzo } from '../../model/mezzo.model';
@@ -14,7 +14,7 @@ import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composi
 })
 export class BoxAnteprimaPartenzaComponent {
 
-    @Input() partenza: Partenza;
+    @Input() partenza: DettaglioPartenza;
     @Input() title: string;
     @Input() testoModifica: string;
     @Input() nonModificabile: boolean;
