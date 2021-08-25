@@ -249,12 +249,12 @@ export class HelperSintesiRichiesta {
             let value = 0;
             let terrenoString = '';
             tipoTerreno.forEach(result => {
-                if (result.mq > value) {
+                if (result.ha > value) {
                     terrenoString = TipoTerrenoEnum[result.descrizione];
-                    value = result.mq;
+                    value = result.ha;
                 }
             });
-            return { terrenoHa: `${terrenoString} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${terrenoString} (${value} mq)` };
+            return { terrenoHa: `${terrenoString} (${value} ha)`, terrenoMq: `${terrenoString} (${round1decimal(value * 10000)} mq)` };
         } else {
             return null;
         }
@@ -264,11 +264,11 @@ export class HelperSintesiRichiesta {
         if (tipoTerreno && tipoTerreno.length > 1) {
             let value = 0;
             tipoTerreno.forEach(terreno => {
-                if (terreno.mq > value) {
-                    value = terreno.mq;
+                if (terreno.ha > value) {
+                    value = terreno.ha;
                 }
             });
-            return tipoTerreno.filter(terreno => terreno.mq !== value);
+            return tipoTerreno.filter(terreno => terreno.ha !== value);
         } else {
             return null;
         }
@@ -276,7 +276,7 @@ export class HelperSintesiRichiesta {
 
     _tipoTerreno(tipoTerreno: TipoTerreno): string {
         if (tipoTerreno) {
-            return `${TipoTerrenoEnum[tipoTerreno.descrizione]} (${tipoTerreno.mq} mq / ${round1decimal(tipoTerreno.mq / 10000)} ha)`;
+            return `${TipoTerrenoEnum[tipoTerreno.descrizione]} (${round1decimal(tipoTerreno.ha * 10000)} mq / ${tipoTerreno.ha} ha)`;
         }
     }
 

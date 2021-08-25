@@ -468,16 +468,16 @@
                                     <!-- tipo terreno -->
                                     <div class="text-right">
                                         <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
-                                             class="d-inline-block m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
+                                             class="d-inline-block mr-2" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
                                             {{ tipoTerrenoValue?.terrenoHa }}
                                         </div>
                                         <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
-                                                class="btn btn-light border big_font py-0 px-1" [ngbPopover]="terreni"
+                                                class="btn btn-light px-1 py-0" [ngbPopover]="terreni"
                                                 (click)="$event.stopPropagation()">
                                             +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
                                         <ng-template #terreni>
                                             <div *ngIf="methods._terreniMinori(richiesta?.tipoTerreno) as terreniTooltip">
-                                                <div *ngFor="let terreno of terreniTooltip">
+                                                <div *ngFor="let terreno of terreniTooltip" class="h6 mb-0">
                                                     {{ methods._tipoTerreno(terreno)}}
                                                 </div>
                                             </div>

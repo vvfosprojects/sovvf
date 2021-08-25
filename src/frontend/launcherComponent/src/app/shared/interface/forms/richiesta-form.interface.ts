@@ -4,7 +4,6 @@ import { DettaglioTipologia } from '../dettaglio-tipologia.interface';
 import { Sede } from '../../model/sede.model';
 import { Complessita } from '../../model/complessita.model';
 import { TurnoIntervento } from '../../model/turno-intervento';
-import { TipoTerreno } from '../../model/tipo-terreno';
 import { ObiettivoSensibile } from '../../model/obiettivo-sensibile';
 import { Ente } from '../ente.interface';
 import { Fonogramma } from '../../model/fonogramma.model';
@@ -28,7 +27,9 @@ export interface RichiestaForm {
     istantePrimaAssegnazione: Date;
     trnInsChiamata: string;
     turnoIntervento: TurnoIntervento;
-    tipoTerreno: TipoTerreno[];
+    boschi: number;
+    campi: number;
+    sterpaglie: number;
     indirizzo: string;
     latitudine: number;
     longitudine: number;

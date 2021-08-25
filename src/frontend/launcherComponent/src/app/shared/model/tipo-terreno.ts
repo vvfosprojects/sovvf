@@ -7,9 +7,9 @@ export class TipoTerreno {
          */
         public descrizione: TipoTerrenoEnum,
         /**
-         * mq del tipo di terreno
+         * ha del tipo di terreno
          */
-        public mq: number,
+        public ha: number,
     ) {
 
     }

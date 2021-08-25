@@ -79,19 +79,17 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     StatoFonogramma = StatoFonogramma;
 
     constructor(private modalService: NgbModal,
-                private activeModal: NgbActiveModal,
                 private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private intl: TimeagoIntl,
                 private store: Store) {
 
-        intl.strings = italianStrings;
-        intl.changes.next();
-
-        popoverConfig.container = 'body';
-        popoverConfig.placement = 'bottom';
-        tooltipConfig.container = 'body';
-        tooltipConfig.placement = 'bottom';
+        this.intl.strings = italianStrings;
+        this.intl.changes.next();
+        this.popoverConfig.container = 'body';
+        this.popoverConfig.placement = 'left';
+        this.tooltipConfig.container = 'body';
+        this.tooltipConfig.placement = 'left';
     }
 
     ngOnInit(): void {
@@ -110,12 +108,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
-            this.isSingleClick = true;
-            setTimeout(() => {
-                if (this.isSingleClick) {
-                    this.clickRichiesta.emit(richiesta);
-                }
-            }, 250);
+            this.clickRichiesta.emit(richiesta);
         }
     }
 
