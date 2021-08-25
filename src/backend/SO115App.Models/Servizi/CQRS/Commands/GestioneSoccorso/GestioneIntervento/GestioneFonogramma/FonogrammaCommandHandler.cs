@@ -22,7 +22,6 @@ using DomainModel.CQRS.Commands.GestioneFonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Fonogramma;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
@@ -30,27 +29,23 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class FonogrammaCommandHandler : ICommandHandler<FonogrammaCommand>
     {
         private readonly IUpDateRichiestaAssistenza _saveRichiestaAssistenza;
-        private readonly IGetRichiesta _getRichiestaById;
 
-        public FonogrammaCommandHandler(IUpDateRichiestaAssistenza saveRichiestaAssistenza, IGetRichiesta getRichiestaById)
+        public FonogrammaCommandHandler(IUpDateRichiestaAssistenza saveRichiestaAssistenza)
         {
             _saveRichiestaAssistenza = saveRichiestaAssistenza;
-            _getRichiestaById = getRichiestaById;
         }
 
         public void Handle(FonogrammaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.Fonogramma.IdRichiesta);
-
             if (command.Fonogramma.Stato.Equals(StatoFonogramma.DaInviare))
             {
-                new InviareFonogramma(richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.Destinatari, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
-                this._saveRichiestaAssistenza.UpDate(richiesta);
+                new InviareFonogramma(command.Richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.Destinatari, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
+                this._saveRichiestaAssistenza.UpDate(command.Richiesta);
             }
             else if (command.Fonogramma.Stato.Equals(StatoFonogramma.Inviato))
             {
-                new FonogrammaInviato(richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.Destinatari, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
-                this._saveRichiestaAssistenza.UpDate(richiesta);
+                new FonogrammaInviato(command.Richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.Destinatari, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
+                this._saveRichiestaAssistenza.UpDate(command.Richiesta);
             }
         }
     }

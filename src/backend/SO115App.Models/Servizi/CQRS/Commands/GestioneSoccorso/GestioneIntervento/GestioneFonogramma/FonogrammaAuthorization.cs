@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -32,19 +34,27 @@ namespace DomainModel.CQRS.Commands.GestioneFonogramma
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenzaByCodice;
 
         public FonogrammaAuthorization(IPrincipal currentUser,
-            IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+            IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni, IGetRichiesta getRichiestaById,
+            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenzaByCodice)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getRichiestaById = getRichiestaById;
+            _getSintesiRichiestaAssistenzaByCodice = getSintesiRichiestaAssistenzaByCodice;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(FonogrammaCommand command)
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
+
+            command.Richiesta = _getRichiestaById.GetById(command.Fonogramma.IdRichiesta);
+            command.Chiamata = _getSintesiRichiestaAssistenzaByCodice.GetSintesi(command.Richiesta.Codice);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
@@ -54,7 +64,7 @@ namespace DomainModel.CQRS.Commands.GestioneFonogramma
                 {
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Chiamata.CodSOCompetente, Costanti.GestoreRichieste))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
                     if (!abilitato)
