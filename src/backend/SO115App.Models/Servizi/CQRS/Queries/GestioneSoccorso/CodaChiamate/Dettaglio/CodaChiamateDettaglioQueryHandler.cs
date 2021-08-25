@@ -87,7 +87,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                 CodiciSede = new string[] { query.CodiceSede }
             };
 
-            var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
+            //var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
 
             DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
