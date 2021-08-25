@@ -69,7 +69,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     chiamateMarkersGraphics = [];
 
     drawing: boolean;
-    drawGraphicLayer = new GraphicsLayer();
+    drawGraphicLayer = new GraphicsLayer({
+        title: 'Chiamate in Corso - Poligoni'
+    });
     drawedPolygon: Graphic;
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
@@ -130,13 +132,13 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         this.eventMouseMove = event;
                     });
                     // Gestisco l'evento "drag"
-                    this.view.on('drag', (event) => {
+                    this.view.on('drag', () => {
                         if (!this.drawing) {
                             this.setContextMenuVisible(false);
                         }
                     });
                     // Gestisco l'evento "mouse-wheel"
-                    this.view.on('mouse-wheel', (event) => {
+                    this.view.on('mouse-wheel', () => {
                         if (!this.drawing) {
                             this.setContextMenuVisible(false);
                         }
@@ -155,11 +157,17 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         // TODO: togliere commento (funzionante)
                         // this.addMapImageLayer('21029042105b4ffb86de33033786dfc8').then();
 
-                        // Aggiunge il FeatureLayer chiamato "Localizzazione Mezzi VVF"
-                        this.addFeatureLayer('3bc8743584c4484aa032a353328969d0').then();
+                        // Aggiunge il FeatureLayer chiamato "LOCALIZZAZIONE MEZZI VVF"
+                        this.addFeatureLayer('3bc8743584c4484aa032a353328969d0').then(() => {
+                            // Nasconde il layer "LOCALIZZAZIONE MEZZI VVF" caricato precedentemente
+                            this.toggleLayer('LOCALIZZAZIONE MEZZI VVF').then();
+                        });
 
-                        // Nasconde il layer "HERE_ITALIA" caricato direttamente dal portale
+                        // Nasconde il layer "HERE_ITALIA" caricato dal portale
                         this.toggleLayer('HERE_ITALIA').then();
+
+                        // Nasconde il layer "Approvvigionamenti Idrici VVF_Idranti" caricato dal portale
+                        this.toggleLayer('Approvvigionamenti Idrici VVF_Idranti').then();
                     });
                 });
             });
@@ -355,7 +363,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else if (drawedPolygon) {
-            
+
             this.changeZoom(17);
 
             // Apro il modale con FormChiamata con il drawedPolygon
