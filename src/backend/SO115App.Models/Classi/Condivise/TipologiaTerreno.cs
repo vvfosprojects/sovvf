@@ -21,10 +21,10 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class TipologiaTerreno
     {
-        public TipologiaTerreno(string Descrizione, string mq)
+        public TipologiaTerreno(string Descrizione, string ha)
         {
             this.Descrizione = Descrizione;
-            this.Mq = mq;
+            this.Ha = ha;
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Descrizione { get; set; }
 
         /// <summary>
-        ///   Metri quadri che hanno interessato l'intervento
+        ///   Ettari che hanno interessato l'intervento
         /// </summary>
-        public string Mq { get; set; }
+        public string Ha { get; set; }
     }
 }
