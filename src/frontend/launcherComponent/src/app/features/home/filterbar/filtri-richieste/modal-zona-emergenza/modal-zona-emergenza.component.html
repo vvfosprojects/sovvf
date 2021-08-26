@@ -10,14 +10,14 @@
 
 <div class="modal-body">
     <span [class.box-selected]="nessunaZonaSelected" [class.box-locked]="nessunaZonaLocked"
-          class="card row row_text box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona"
+          class="card row row_text box-zona-emergenza my-3 cursor-pointer"
           style="margin-left: 15%;">
-      <button (click)="onClickNessunaZona()" class="btn-no-style m-2" [disabled]="nessunaZonaLocked">Nessuna zona emergenza</button>
+      <button (click)="onClickNessunaZona()" class="btn-no-style p-2" [disabled]="nessunaZonaLocked">Nessuna zona emergenza</button>
     </span>
     <div *ngFor="let z of zonaEmergenzaArrayFake; let i = index">
       <span [class.box-locked]="zoneEmergenzaLocked" [class.box-selected]="z.selected"
             class="card row row_text box-zona-emergenza my-3 cursor-pointer" style="margin-left: 15%;">
-        <button (click)="onBoxClick(i)" class="btn-no-style m-2" [disabled]="zoneEmergenzaLocked">{{z.name}}</button>
+        <button (click)="onBoxClick(i)" class="btn-no-style p-2" [disabled]="zoneEmergenzaLocked">{{z.name}}</button>
       </span>
     </div>
 </div>
