@@ -23,7 +23,6 @@ export class ModalZonaEmergenzaComponent {
     }
 
     ngOnInIt(): void {
-        this.nessunaZonaSelected = false;
         this.zonaEmergenzaArrayFake.forEach(e => e.selected = false);
     }
 
@@ -43,18 +42,14 @@ export class ModalZonaEmergenzaComponent {
 
     onBoxClick(i): void {
         this.zonaEmergenzaArrayFake[i].selected = !this.zonaEmergenzaArrayFake[i].selected;
-        this.nessunaZonaLocked = true;
+        let unlockAll = true;
+        this.zonaEmergenzaArrayFake.forEach(e => e.selected ? unlockAll = false : null);
+        unlockAll ? this.nessunaZonaLocked = false : this.nessunaZonaLocked = true;
     }
 
     onClickNessunaZona(): void {
         this.nessunaZonaSelected = !this.nessunaZonaSelected;
-        this.zoneEmergenzaLocked = true;
-    }
-
-    onResetZoneEmergenza(): void {
-        this.zoneEmergenzaLocked = false;
         this.nessunaZonaLocked = false;
-        this.nessunaZonaSelected = false;
-        this.zonaEmergenzaArrayFake.forEach(e => e.selected = false);
+        this.zoneEmergenzaLocked = this.nessunaZonaSelected;
     }
 }

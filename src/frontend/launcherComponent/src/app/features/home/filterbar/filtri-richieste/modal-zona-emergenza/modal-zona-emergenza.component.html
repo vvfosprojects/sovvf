@@ -9,10 +9,6 @@
 </div>
 
 <div class="modal-body">
-    <button (click)="onResetZoneEmergenza()" class="btn btn-no-hover btn-secondary btn-reset-filtri"
-            ngbTooltip="Reset filtri zona emergenza" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
-        <i class="fas fa-undo px-1"></i>
-    </button>
     <span [class.box-selected]="nessunaZonaSelected" [class.box-locked]="nessunaZonaLocked"
           class="card row row_text box-zona-emergenza my-3 cursor-pointer box-selected-nessuna-zona"
           style="margin-left: 15%;">
