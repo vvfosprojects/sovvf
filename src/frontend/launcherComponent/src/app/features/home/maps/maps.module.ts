@@ -35,6 +35,7 @@ import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
+import { MapService } from './service/map-service/map-service.service';
 
 @NgModule({
     imports: [
@@ -72,7 +73,8 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
         RichiesteMarkerService,
         MezziMarkerService,
         SediMarkerService,
-        ChiamateMarkerService
+        ChiamateMarkerService,
+        MapService
     ]
 })
 export class MapsModule {

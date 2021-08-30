@@ -15,3 +15,13 @@
                                 [loading]="loading$ | async"
                                 (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>
 </div>
+<div class="modal-footer">
+    <div class="row w-100">
+        <div class="col-12 text-right">
+            <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
+                    (click)="close('ko')">
+                {{ 'Chiudi' | uppercase }}
+            </button>
+        </div>
+    </div>
+</div>

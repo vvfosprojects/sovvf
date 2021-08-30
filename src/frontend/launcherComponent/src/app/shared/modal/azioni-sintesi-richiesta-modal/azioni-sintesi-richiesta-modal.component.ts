@@ -300,8 +300,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             centered: true,
             backdrop: true
         });
-        modal.result.then(() => {
-            },
+        modal.result.then(() => {},
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 

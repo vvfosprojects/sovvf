@@ -6,6 +6,7 @@ import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from './interface/filtro-targa-mezzo.interface';
 import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-eventi-richiesta',
@@ -25,7 +26,8 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription = new Subscription();
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private modal: NgbActiveModal) {
         this.getVisualizzazioneTestualeEventi();
     }
 
@@ -54,5 +56,9 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    close(type: string): void {
+        this.modal.close(type);
     }
 }
