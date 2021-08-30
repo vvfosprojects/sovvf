@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { NgbActiveModal, NgbModal, NgbModalOptions, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -269,7 +269,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             backdrop: 'static',
             keyboard: false
         });
-        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenze[index];
+        modalModificaPartenza.componentInstance.singolaPartenza = this.richiesta.partenze[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
