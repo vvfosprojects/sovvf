@@ -179,7 +179,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-sidebar {
     background-color: $SO-white $SO-i;
-    z-index: 999 !important;
+    z-index: 999 $SO-i;
   }
 
   .bg-navbar {
@@ -426,6 +426,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-sidebar {
     background-color: $SO-dark-darker $SO-i;
+    z-index: 999 $SO-i;
   }
 
   .bg-navbar {

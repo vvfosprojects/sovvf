@@ -100,6 +100,8 @@ export class ImpostazioniState {
 
     @Action(PatchImpostazioni)
     patchImpostazioni({ getState, setState }: StateContext<ImpostazioniStateModel>, action: PatchImpostazioni): void {
+        action.impostazione.tipo === 'Lista Eventi Chiamate / Interventi' ? action.impostazione.tipo = 'Lista Eventi Richiesta' as any : null;
+
         setState(
             patch({
                 listaImpostazioni: updateItem((i: Impostazione) => i.tipo === action.impostazione.tipo, action.impostazione)
