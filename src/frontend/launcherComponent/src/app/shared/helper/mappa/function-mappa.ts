@@ -14,14 +14,14 @@ export function diffCoordinate(coordinate1: Coordinate, coordinate2: Coordinate)
     return false;
 }
 
-export function makeCoordinate(lat: number, long: number, expRound?: number): Coordinate {
-    return new Coordinate(roundToDecimal(lat, expRound), roundToDecimal(long, expRound));
+export function makeCoordinate(lat: number, long: number): Coordinate {
+    return new Coordinate(lat, long);
 }
 
-export function makeAreaMappa(bounds: any, expRound?: number): AreaMappa {
+export function makeAreaMappa(bounds: { northEastLat: number, northEastLng: number, southWestLat: number, southWestLng: number }): AreaMappa {
     return new AreaMappa(
-        makeCoordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), expRound),
-        makeCoordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng(), expRound)
+        makeCoordinate(bounds.northEastLat, bounds.northEastLng),
+        makeCoordinate(bounds.southWestLat, bounds.southWestLng)
     );
 }
 

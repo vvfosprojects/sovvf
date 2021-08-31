@@ -1,6 +1,6 @@
-<div class="row_text scroll-y" style="max-height: calc(100vh - 200px)">
+<div>
     <ng-template [ngIf]="elencoEventi?.length > 0">
-        <table class="table table-striped">
+        <table class="table table-striped mb-0">
             <thead class="bg-primary text-light h5">
             <th scope="col" style="width:22%">
                 Evento
@@ -18,7 +18,7 @@
                 Note
             </th>
             </thead>
-            <tbody class="h6 font-xlarge">
+            <tbody class="h5">
                 <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r"
                     [nomeClasseEvento]="r.nomeClasseEvento"
                     [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
@@ -27,7 +27,7 @@
             </tbody>
         </table>
     </ng-template>
-    <ng-template [ngIf]="!loading && elencoEventi?.length <= 0">
+    <ng-template [ngIf]="!loading && !elencoEventi?.length">
         <div class="alert alert-danger font-weight-bold h5">Non ci sono eventi associati alla richiesta</div>
     </ng-template>
     <ng-template [ngIf]="loading">

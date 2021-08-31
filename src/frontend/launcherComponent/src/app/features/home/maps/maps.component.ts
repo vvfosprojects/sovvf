@@ -17,6 +17,7 @@ import { ComposizionePartenzaState } from '../store/states/composizione-partenza
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedaContattoMarker } from './maps-model/scheda-contatto-marker.model';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
+import { AreaMappa } from './maps-model/area-mappa-model';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
@@ -30,7 +31,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
     @Input() tastoChiamataMappaActive: boolean;
 
-    @Output() mapFullLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
+    @Output() mapFullLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
@@ -61,12 +62,12 @@ export class MapsComponent implements OnInit, OnDestroy {
         console.log('Componente Maps distrutto');
     }
 
-    mapIsLoaded(event: { spatialReference?: SpatialReference }): void {
-        if (event) {
+    mapIsLoaded(areaMappa: AreaMappa, spatialReference?: SpatialReference ): void {
+        if (areaMappa) {
             this.mapsFullyLoaded = true;
             if (this.mapsFullyLoaded) {
                 setTimeout(() => {
-                    this.mapFullLoaded.emit(event);
+                    this.mapFullLoaded.emit({ areaMappa, spatialReference });
                 }, 2000);
             }
         }

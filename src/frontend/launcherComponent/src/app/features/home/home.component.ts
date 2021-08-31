@@ -12,13 +12,11 @@ import { ViewportState } from '../../shared/store/states/viewport/viewport.state
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
-import {
-    GetDistaccamenti,
-    GetSediAllerta,
-    GetSediTrasferimenti
-} from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
+import { SetAreaMappa } from './store/actions/maps/area-mappa.actions';
+import { AreaMappa } from './maps/maps-model/area-mappa-model';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -87,8 +85,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetSediTrasferimenti());
     }
 
-    onMapFullLoaded(mapProperties?: { spatialReference?: SpatialReference }): void {
-        this.store.dispatch(new SetMapLoaded(true, mapProperties));
+    onMapFullLoaded(areaMappa: AreaMappa, mapProperties?: { spatialReference?: SpatialReference }): void {
+        this.store.dispatch([
+            new SetMapLoaded(true, mapProperties),
+            new SetAreaMappa(areaMappa)
+        ]);
     }
 
     getDettagliTipologie(pageAttuale: boolean): void {

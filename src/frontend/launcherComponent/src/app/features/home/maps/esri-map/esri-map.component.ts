@@ -20,6 +20,12 @@ import { Utente } from '../../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../../../auth/store/auth.state';
 import { SetChiamataFromMappaActiveValue } from '../../store/actions/maps/tasto-chiamata-mappa.actions';
+import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
+import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
+import { SedeMarker } from '../maps-model/sede-marker.model';
+import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
+import { MapService } from '../service/map-service/map-service.service';
+import { AreaMappa } from '../maps-model/area-mappa-model';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -42,6 +48,8 @@ import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Locator from '@arcgis/core/tasks/Locator';
 import Sketch from '@arcgis/core/widgets/Sketch';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
+import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
+import * as webMercatorUtils from "@arcgis/core/geometry/support/webMercatorUtils";
 
 @Component({
     selector: 'app-esri-map',
@@ -52,9 +60,13 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
+    @Input() richiesteMarkers: RichiestaMarker[];
+    @Input() schedeContattoMarkers: SchedaContattoMarker[];
+    @Input() sediMarkers: SedeMarker[];
     @Input() tastoChiamataMappaActive: boolean;
 
-    @Output() mapIsLoaded: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
+    @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
+    @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     operatore: Utente;
 
@@ -67,6 +79,12 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
+    richiesteFeatureLayer: FeatureLayer;
+    richiesteMarkersGraphics = [];
+    schedeContattoFeatureLayer: FeatureLayer;
+    schedeContattoMarkersGraphics = [];
+    sediOperativeFeatureLayer: FeatureLayer;
+    sediOperativeMarkersGraphics = [];
 
     drawing: boolean;
     drawGraphicLayer = new GraphicsLayer({
@@ -78,6 +96,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     constructor(private http: HttpClient,
+                private mapService: MapService,
                 private modalService: NgbModal,
                 private store: Store,
                 private configModal: NgbModalConfig,
@@ -97,10 +116,30 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             // this.loginIntoESRI().then(() => {
             // Inizializzazione della mappa
             this.initializeMap().then(() => {
-                // Inizializzazione del layer lato client per disegnare (poligoni, linee ecc.) sulla mappa
+
+                // Controllo l'extent per richiedere i marker "Richieste" da visualizzare ogni volta che quest'ultimo cambia
+                this.view.watch('extent', (event: any) => {
+                   const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
+                   const bounds = {
+                    northEastLat: geoExt.extent.ymax,
+                    northEastLng: geoExt.extent.xmax,
+                    southWestLat: geoExt.extent.ymin,
+                    southWestLng: geoExt.extent.xmin
+                   };
+                   this.areaCambiata(bounds, event.zoom)
+                });
+
+                // Inizializzazione del layer lato client per disegnare poligoni sulla mappa
                 this.map.add(this.drawGraphicLayer);
-                // Inizializzazione del layer lato client delle chiamate in corso
-                this.initializeChiamateInCorsoLayer().then(() => {
+
+                // Lista layer da inizializzare
+                const layersToInitialize = [
+                    this.initializeRichiesteLayer(),
+                    this.initializeChiamateInCorsoLayer(),
+                    this.initializeSchedeContattoLayer(),
+                    this.initializeSediOperativeLayer()
+                ];
+                Promise.all(layersToInitialize).then(() => {
                     // Gestisco l'evento "click"
                     this.view.on('click', (event) => {
                         this.eventClick = event;
@@ -132,10 +171,20 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         this.eventMouseMove = event;
                     });
                     // Gestisco l'evento "drag"
-                    this.view.on('drag', () => {
+                    this.view.on('drag', (event: any) => {
                         if (!this.drawing) {
                             this.setContextMenuVisible(false);
                         }
+                        const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
+                        const bounds = {
+                         northEastLat: geoExt.extent.ymax,
+                         northEastLng: geoExt.extent.xmax,
+                         southWestLat: geoExt.extent.ymin,
+                         southWestLng: geoExt.extent.xmin
+                        };
+                        this.areaCambiata(bounds, event.zoom)
+                        // TODO: verificare se serve
+                        // this.centroCambiato({ coordinateCentro: { latitudine: event.x, longitudine: event.y }, zoom: event.zoom});
                     });
                     // Gestisco l'evento "mouse-wheel"
                     this.view.on('mouse-wheel', () => {
@@ -143,29 +192,55 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             this.setContextMenuVisible(false);
                         }
                     });
-
+    
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
                         this.addChiamateMarkersToLayer(markersChiamate).then();
                     }
+                    // Aggiungo i Richieste Markers
+                    if (changes?.richiesteMarkers?.currentValue && this.map && this.richiesteFeatureLayer) {
+                        const markersRichieste = changes?.richiesteMarkers?.currentValue;
+                        this.addRichiesteMarkersToLayer(markersRichieste).then();
+                    }
+                    // Aggiungo i SchedeContatto Markers
+                    if (changes?.schedeContattoMarkers?.currentValue && this.map && this.schedeContattoFeatureLayer) {
+                        const markersSchedeContatto = changes?.schedeContattoMarkers?.currentValue;
+                        this.addSchedeContattoMarkersToLayer(markersSchedeContatto).then();
+                    }
+                    // Aggiungo i Sedi Markers
+                    if (changes?.sediMarkers?.currentValue && this.map && this.sediOperativeFeatureLayer) {
+                        const markersSedi = changes?.sediMarkers?.currentValue;
+                        this.addSediMarkersToLayer(markersSedi).then();
+                    }
                     // Inizializzazione dei widget sulla mappa
                     this.initializeWidget().then(() => {
+                        const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
+                        const areaMappa = {
+                            topRight: {
+                                latitudine: geoExt.extent.ymax,
+                                longitudine: geoExt.extent.xmax
+                            },
+                            bottomLeft: {
+                                latitudine: geoExt.extent.ymin,
+                                longitudine: geoExt.extent.xmin
+                            }
+                        } as AreaMappa;
                         // @ts-ignore
-                        this.mapIsLoaded.emit({ spatialReference: this.map.initialViewProperties.spatialReference });
-
+                        this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
+    
                         // TODO: togliere commento (funzionante)
                         // this.addMapImageLayer('21029042105b4ffb86de33033786dfc8').then();
-
+    
                         // Aggiunge il FeatureLayer chiamato "LOCALIZZAZIONE MEZZI VVF"
                         this.addFeatureLayer('3bc8743584c4484aa032a353328969d0').then(() => {
                             // Nasconde il layer "LOCALIZZAZIONE MEZZI VVF" caricato precedentemente
                             this.toggleLayer('LOCALIZZAZIONE MEZZI VVF').then();
                         });
-
+    
                         // Nasconde il layer "HERE_ITALIA" caricato dal portale
                         this.toggleLayer('HERE_ITALIA').then();
-
+    
                         // Nasconde il layer "Approvvigionamenti Idrici VVF_Idranti" caricato dal portale
                         this.toggleLayer('Approvvigionamenti Idrici VVF_Idranti').then();
                     });
@@ -180,10 +255,26 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 this.changeZoom(zoom).then();
             });
         }
+
         // Aggiungo i Chiamate Markers con "ApplyEdits"
         if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
+        }
+        // Aggiungo i Richieste Markers con "ApplyEdits"
+        if (changes?.richiesteMarkers?.currentValue && this.map && this.richiesteFeatureLayer) {
+            const markersRichieste = changes?.richiesteMarkers?.currentValue;
+            this.addRichiesteMarkersToLayer(markersRichieste, true).then();
+        }
+        // Aggiungo i SchedeConatto Markers con "ApplyEdits"
+        if (changes?.schedeContattoMarkers?.currentValue && this.map && this.schedeContattoFeatureLayer) {
+            const markersSchedeContatto = changes?.schedeContattoMarkers?.currentValue;
+            this.addSchedeContattoMarkersToLayer(markersSchedeContatto, true).then();
+        }
+        // Aggiungo i Sedi Markers con "ApplyEdits"
+        if (changes?.sediMarkers?.currentValue && this.map && this.sediOperativeFeatureLayer) {
+            const markersSedi = changes?.sediMarkers?.currentValue;
+            this.addSediMarkersToLayer(markersSedi, true).then();
         }
         // Controllo il valore di "tastoChiamataMappaActive"
         if (changes?.tastoChiamataMappaActive?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
@@ -428,7 +519,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Inizializza i layer "Chiamate in Corso"
+    // Inizializza il layer "Chiamate in Corso"
     async initializeChiamateInCorsoLayer(): Promise<any> {
         // creazione marker Chiamata in Corso
         const markerChiamataInCorso = new PictureMarkerSymbol({
@@ -500,6 +591,354 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         this.map.add(this.chiamateInCorsoFeatureLayer);
     }
 
+    // Inizializza il layer "Richieste"
+    async initializeRichiesteLayer(): Promise<any> {
+        // creazione renderer Richieste
+        const rendererRichieste = new UniqueValueRenderer({
+            field: 'stato',
+            uniqueValueInfos: [
+                {
+                    value: 'Chiamata',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/richieste/ns/chiamata.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Assegnata',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/richieste/ns/assegnata.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Presidiata',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/richieste/ns/presidiata.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Sospesa',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/richieste/ns/sospesa.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Chiusa',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/richieste/ns/chiusa.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+            ],
+        });
+
+        // configurazione del cluster Richieste
+        const clusterConfigRichieste = new FeatureReductionCluster({
+            clusterRadius: '100px',
+            popupTemplate: {
+                title: 'Cluster Richieste',
+                content: 'Questo cluster contiene {cluster_count} Richieste.',
+                fieldInfos: [
+                    {
+                        fieldName: 'cluster_count',
+                        format: {
+                            places: 0,
+                            digitSeparator: true,
+                        },
+                    }
+                ],
+            },
+            clusterMinSize: '50px',
+            clusterMaxSize: '60px',
+            labelingInfo: [
+                {
+                    deconflictionStrategy: 'none',
+                    labelExpressionInfo: {
+                        expression: 'Text($feature.cluster_count, \'#,###\')',
+                    },
+                    symbol: {
+                        type: 'text',
+                        color: 'white',
+                        font: {
+                            weight: 'bold',
+                            family: 'Noto Sans',
+                            size: '30px',
+                        },
+                    },
+                    labelPlacement: 'center-center',
+                },
+            ]
+        });
+
+        // creazione feature layer
+        this.richiesteFeatureLayer = new FeatureLayer({
+            title: 'Richieste',
+            outFields: ['*'],
+            source: [],
+            objectIdField: 'ID',
+            popupEnabled: true,
+            labelsVisible: true,
+            featureReduction: clusterConfigRichieste,
+            renderer: rendererRichieste,
+            fields: [
+                {
+                    name: 'ID',
+                    alias: 'id',
+                    type: 'oid',
+                },
+                {
+                    name: 'stato',
+                    alias: 'Stato',
+                    type: 'string',
+                },
+                {
+                    name: 'note',
+                    alias: 'note',
+                    type: 'string',
+                },
+                {
+                    name: 'descrizioneOperatore',
+                    alias: 'descrizioneOperatore',
+                    type: 'string',
+                },
+                {
+                    name: 'codiceSedeOperatore',
+                    alias: 'codiceSedeOperatore',
+                    type: 'string',
+                },
+            ],
+            spatialReference: {
+                wkid: 3857
+            },
+            popupTemplate: {
+                title: 'Id: {id}',
+                content:
+                    '<ul><li>Stato: {stato} </li>' +
+                    '<li>Note: {descrizioneOperatore} </li><ul>',
+            },
+            geometryType: 'point'
+        });
+
+        // aggiungo il feature layer alla mappa
+        this.map.add(this.richiesteFeatureLayer);
+    }
+
+    // Inizializza il layer "Schede Contatto"
+    async initializeSchedeContattoLayer(): Promise<any> {
+        // creazione renderer SchedeContatto
+        const rendererSchedeContatto = new UniqueValueRenderer({
+            field: 'classificazione',
+            uniqueValueInfos: [
+                {
+                    value: 'Competenza',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Conoscenza',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker-conoscenza.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Differibile',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker-differibile.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+            ],
+        });
+
+        // configurazione del cluster SchedeContatto
+        const clusterConfigSchedeContatto = new FeatureReductionCluster({
+            clusterRadius: '100px',
+            popupTemplate: {
+                title: 'Cluster Schede Contatto',
+                content: 'Questo cluster contiene {cluster_count} Schede Contatto.',
+                fieldInfos: [
+                    {
+                        fieldName: 'cluster_count',
+                        format: {
+                            places: 0,
+                            digitSeparator: true,
+                        },
+                    }
+                ],
+            },
+            clusterMinSize: '50px',
+            clusterMaxSize: '60px',
+            labelingInfo: [
+                {
+                    deconflictionStrategy: 'none',
+                    labelExpressionInfo: {
+                        expression: 'Text($feature.cluster_count, \'#,###\')',
+                    },
+                    symbol: {
+                        type: 'text',
+                        color: 'white',
+                        font: {
+                            weight: 'bold',
+                            family: 'Noto Sans',
+                            size: '30px',
+                        },
+                    },
+                    labelPlacement: 'center-center',
+                },
+            ]
+        });
+
+        // creazione feature layer
+        this.schedeContattoFeatureLayer = new FeatureLayer({
+            title: 'Schede Contatto',
+            outFields: ['*'],
+            source: [],
+            objectIdField: 'ID',
+            popupEnabled: true,
+            labelsVisible: true,
+            featureReduction: clusterConfigSchedeContatto,
+            renderer: rendererSchedeContatto,
+            fields: [
+                {
+                    name: 'ID',
+                    alias: 'id',
+                    type: 'oid',
+                },
+                {
+                    name: 'classificazione',
+                    alias: 'Classificazione',
+                    type: 'string',
+                }
+            ],
+            spatialReference: {
+                wkid: 3857
+            },
+            popupTemplate: {
+                title: 'Id: {id}',
+                content:
+                    '<ul><li>Classificazione: {classificazione} </li>'
+            },
+            geometryType: 'point'
+        });
+
+        // aggiungo il feature layer alla mappa
+        this.map.add(this.schedeContattoFeatureLayer);
+    }
+
+    // Inizializza il layer "Sedi Operative"
+    async initializeSediOperativeLayer(): Promise<any> {
+        // creazione renderer SediOperative
+        const rendererSediOperative = new UniqueValueRenderer({
+            field: 'tipo',
+            uniqueValueInfos: [
+                {
+                    value: 'Comando',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                },
+                {
+                    value: 'Distaccamento',
+                    symbol: new PictureMarkerSymbol({
+                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
+                        width: '50px',
+                        height: '50px'
+                    })
+                }
+            ],
+        });
+
+        // configurazione del cluster SediOperative
+        const clusterConfigSediOperative = new FeatureReductionCluster({
+            clusterRadius: '100px',
+            popupTemplate: {
+                title: 'Cluster Sedi Operative',
+                content: 'Questo cluster contiene {cluster_count} Sedi Operative.',
+                fieldInfos: [
+                    {
+                        fieldName: 'cluster_count',
+                        format: {
+                            places: 0,
+                            digitSeparator: true,
+                        },
+                    }
+                ],
+            },
+            clusterMinSize: '50px',
+            clusterMaxSize: '60px',
+            labelingInfo: [
+                {
+                    deconflictionStrategy: 'none',
+                    labelExpressionInfo: {
+                        expression: 'Text($feature.cluster_count, \'#,###\')',
+                    },
+                    symbol: {
+                        type: 'text',
+                        color: 'white',
+                        font: {
+                            weight: 'bold',
+                            family: 'Noto Sans',
+                            size: '30px',
+                        },
+                    },
+                    labelPlacement: 'center-center',
+                },
+            ]
+        });
+
+        // creazione feature layer
+        this.sediOperativeFeatureLayer = new FeatureLayer({
+            title: 'Sedi Operative',
+            outFields: ['*'],
+            source: [],
+            objectIdField: 'ID',
+            popupEnabled: true,
+            labelsVisible: true,
+            featureReduction: clusterConfigSediOperative,
+            renderer: rendererSediOperative,
+            fields: [
+                {
+                    name: 'ID',
+                    alias: 'id',
+                    type: 'oid',
+                },
+                {
+                    name: 'classificazione',
+                    alias: 'Classificazione',
+                    type: 'string',
+                }
+            ],
+            spatialReference: {
+                wkid: 3857
+            },
+            popupTemplate: {
+                title: 'Id: {id}',
+                content:
+                    '<ul><li>Classificazione: {classificazione} </li>'
+            },
+            geometryType: 'point'
+        });
+
+        // aggiungo il feature layer alla mappa
+        this.map.add(this.sediOperativeFeatureLayer);
+    }
+
     // Aggiunge i marker delle chiamate in corso al layer "Chiamate in Corso"
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
         if (this.chiamateMarkersGraphics?.length) {
@@ -549,6 +988,150 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             }
 
             return chiamateMarkersGraphicsToAdd;
+        }
+    }
+
+    // Aggiunge i marker delle richieste al layer "Richieste"
+    async addRichiesteMarkersToLayer(richiesteMarkers: RichiestaMarker[], applyEdits?: boolean): Promise<any> {
+        if (this.richiesteMarkersGraphics?.length) {
+            const query = { where: '1=1' };
+            this.richiesteFeatureLayer.queryFeatures(query).then((results) => {
+                const deleteFeatures = results.features;
+                this.richiesteFeatureLayer.applyEdits({ deleteFeatures });
+                this.richiesteFeatureLayer.refresh();
+                addMarkers(this.richiesteFeatureLayer).then((richiesteMarkersGraphics: any[]) => {
+                    this.richiesteMarkersGraphics = richiesteMarkersGraphics;
+                });
+            });
+        } else {
+            addMarkers(this.richiesteFeatureLayer).then((richiesteMarkersGraphics: any[]) => {
+                this.richiesteMarkersGraphics = richiesteMarkersGraphics;
+            });
+        }
+
+        async function addMarkers(richiesteFeatureLayer: FeatureLayer): Promise<any[]> {
+            const richiesteMarkersGraphicsToAdd = [];
+            for (const markerDaStampare of richiesteMarkers) {
+                const long = markerDaStampare.localita.coordinate.longitudine;
+                const lat = markerDaStampare.localita.coordinate.latitudine;
+                const p: any = [long, lat];
+                const mp = new Point(p);
+                const graphic = new Graphic({
+                    geometry: mp,
+                    attributes: {
+                        ID: markerDaStampare.id,
+                        STATO: markerDaStampare.stato,
+                        descrizioneOperatore: 'OPERATORE',
+                        codiceSedeOperatore: 'RM.1000',
+                        note: 'NOTE TEST'
+                    }
+                });
+                richiesteMarkersGraphicsToAdd.push(graphic);
+            }
+
+            if (!applyEdits) {
+                richiesteFeatureLayer.source.addMany(richiesteMarkersGraphicsToAdd);
+            } else if (applyEdits) {
+                richiesteFeatureLayer.applyEdits({ addFeatures: richiesteMarkersGraphicsToAdd }).then(() => {
+                    richiesteFeatureLayer.refresh();
+                });
+            }
+
+            return richiesteMarkersGraphicsToAdd;
+        }
+    }
+
+    // Aggiunge i marker delle schede contatto al layer "Schede Contatto"
+    async addSchedeContattoMarkersToLayer(schedeContattoMarkers: SchedaContattoMarker[], applyEdits?: boolean): Promise<any> {
+        if (this.schedeContattoMarkers?.length) {
+            const query = { where: '1=1' };
+            this.schedeContattoFeatureLayer.queryFeatures(query).then((results) => {
+                const deleteFeatures = results.features;
+                this.schedeContattoFeatureLayer.applyEdits({ deleteFeatures });
+                this.schedeContattoFeatureLayer.refresh();
+                addMarkers(this.schedeContattoFeatureLayer).then((schedeContattoMarkersGraphics: any[]) => {
+                    this.schedeContattoMarkersGraphics = schedeContattoMarkersGraphics;
+                });
+            });
+        } else {
+            addMarkers(this.schedeContattoFeatureLayer).then((schedeContattoMarkersGraphics: any[]) => {
+                this.schedeContattoMarkersGraphics = schedeContattoMarkersGraphics;
+            });
+        }
+
+        async function addMarkers(schedeContattoFeatureLayer: FeatureLayer): Promise<any[]> {
+            const schedeContattoMarkersGraphicsToAdd = [];
+            for (const markerDaStampare of schedeContattoMarkers) {
+                const long = markerDaStampare.localita.coordinate.longitudine;
+                const lat = markerDaStampare.localita.coordinate.latitudine;
+                const p: any = [long, lat];
+                const mp = new Point(p);
+                const graphic = new Graphic({
+                    geometry: mp,
+                    attributes: {
+                        ID: markerDaStampare.codiceScheda,
+                        classificazione: markerDaStampare.classificazione
+                    }
+                });
+                schedeContattoMarkersGraphicsToAdd.push(graphic);
+            }
+
+            if (!applyEdits) {
+                schedeContattoFeatureLayer.source.addMany(schedeContattoMarkersGraphicsToAdd);
+            } else if (applyEdits) {
+                schedeContattoFeatureLayer.applyEdits({ addFeatures: schedeContattoMarkersGraphicsToAdd }).then(() => {
+                    schedeContattoFeatureLayer.refresh();
+                });
+            }
+
+            return schedeContattoMarkersGraphicsToAdd;
+        }
+    }
+
+    // Aggiunge i marker delle sedi al layer "Sedi Operative"
+    async addSediMarkersToLayer(sediMarkers: SedeMarker[], applyEdits?: boolean): Promise<any> {
+        if (this.sediMarkers?.length) {
+            const query = { where: '1=1' };
+            this.sediOperativeFeatureLayer.queryFeatures(query).then((results) => {
+                const deleteFeatures = results.features;
+                this.sediOperativeFeatureLayer.applyEdits({ deleteFeatures });
+                this.sediOperativeFeatureLayer.refresh();
+                addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
+                    this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
+                });
+            });
+        } else {
+            addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
+                this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
+            });
+        }
+
+        async function addMarkers(sediOperativeFeatureLayer: FeatureLayer): Promise<any[]> {
+            const sediOperativeMarkersGraphicsToAdd = [];
+            for (const markerDaStampare of sediMarkers) {
+                const long = markerDaStampare.coordinate.longitudine;
+                const lat = markerDaStampare.coordinate.latitudine;
+                const p: any = [long, lat];
+                const mp = new Point(p);
+                const graphic = new Graphic({
+                    geometry: mp,
+                    attributes: {
+                        ID: markerDaStampare.codice,
+                        tipo: markerDaStampare.tipo
+                    }
+                });
+                sediOperativeMarkersGraphicsToAdd.push(graphic);
+            }
+
+            if (!applyEdits) {
+                sediOperativeFeatureLayer.source.addMany(sediOperativeMarkersGraphicsToAdd);
+            } else if (applyEdits) {
+                sediOperativeFeatureLayer.applyEdits({ addFeatures: sediOperativeMarkersGraphicsToAdd }).then(() => {
+                    sediOperativeFeatureLayer.refresh();
+                });
+            }
+
+            return sediOperativeMarkersGraphicsToAdd;
         }
     }
 
@@ -674,12 +1257,20 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // TODO: capire dove, e se, usarlo
+    // TODO: verificare se utilizzato
     // Rimuove un intero layer dalla mappa
     // async removeLayer(layerTitle: string): Promise<any> {
     //     const layerToRemoveExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
     //     if (layerToRemoveExists) {
     //         this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
     //     }
-    //
+    
+    // TODO: verificare se utilizzato
+    centroCambiato(centro: CentroMappa): void {
+        this.mapService.setCentro(makeCentroMappa(makeCoordinate(centro.coordinateCentro.latitudine, centro.coordinateCentro.longitudine), centro.zoom));
+    }
+
+    areaCambiata(bounds: { northEastLat: number, northEastLng: number, southWestLat: number, southWestLng: number }, zoom: number): void {
+        this.mapService.setArea(bounds);
+    }
 }

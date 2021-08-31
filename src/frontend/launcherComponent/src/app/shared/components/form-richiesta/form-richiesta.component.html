@@ -289,6 +289,45 @@
                 <div class="row mb-5">
                     <div class="col-8">
                         <div class="row">
+                            <div class="col-4 mb-2 pr-2">
+                                <div class="input-group">
+                                    <label class="d-none" for="boschi">Boschi</label>
+                                    <input id="boschi"
+                                           [class.is-invalid]="submitted && f.boschi.errors"
+                                           type="number"
+                                           placeholder="Inserisci HA"
+                                           formControlName="boschi" class="form-control"/>
+                                    <span class="input-group-text h6" id="boschi-group-text">
+                                        Boschi
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center px-1">
+                                <div class="input-group">
+                                    <label class="d-none" for="campi">Campi</label>
+                                    <input id="campi"
+                                           [class.is-invalid]="submitted && f.campi.errors"
+                                           type="number"
+                                           placeholder="Inserisci HA"
+                                           formControlName="campi" class="form-control"/>
+                                    <span class="input-group-text h6" id="campi-group-text">
+                                        Campi
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center pl-2">
+                                <div class="input-group">
+                                    <label class="d-none" for="sterpaglie">Sterpaglie</label>
+                                    <input id="sterpaglie"
+                                           [class.is-invalid]="submitted && f.sterpaglie.errors"
+                                           type="number" 
+                                           placeholder="Inserisci HA"
+                                           formControlName="sterpaglie" class="form-control"/>
+                                    <span class="input-group-text h6" id="sterpaglie-group-text">
+                                        Sterpaglie
+                                    </span>
+                                </div>
+                            </div>
                             <div class="col-6 mb-2">
                                 <label class="d-none" for="notePubbliche">Note Pubbliche</label>
                                 <textarea id="notePubbliche"
@@ -306,30 +345,6 @@
                                           placeholder="Inserisci le Note Private"
                                           formControlName="notePrivate" class="form-control area-size">
                                 </textarea>
-                            </div>
-                            <div class="col-4 mb-2 pr-2">
-                                <label class="d-none" for="boschi">Boschi</label>
-                                <input id="boschi"
-                                          [class.is-invalid]="submitted && f.boschi.errors"
-                                          type="number"
-                                          placeholder="HA di Boschi"
-                                          formControlName="boschi" class="form-control"/>
-                            </div>
-                            <div class="col-4 text-center px-1">
-                                <label class="d-none" for="campi">Campi</label>
-                                <input id="campi"
-                                          [class.is-invalid]="submitted && f.campi.errors"
-                                          type="number"
-                                          placeholder="HA di Campi"
-                                          formControlName="campi" class="form-control"/>
-                            </div>
-                            <div class="col-4 text-center pl-2">
-                                <label class="d-none" for="sterpaglie">Sterpaglie</label>
-                                <input id="sterpaglie"
-                                          [class.is-invalid]="submitted && f.sterpaglie.errors"
-                                          type="number" 
-                                          placeholder="HA di Sterpaglie"
-                                          formControlName="sterpaglie" class="form-control"/>
                             </div>
                             <div class="col-12">
                                 <div class="form-group mb-2">
