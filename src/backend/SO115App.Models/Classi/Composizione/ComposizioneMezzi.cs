@@ -34,6 +34,11 @@ namespace SO115App.API.Models.Classi.Composizione
         /// </summary>
         public List<SquadraPreaccoppiata> SquadrePreaccoppiate { get; set; } = null;
 
+        /// <summary>
+        /// Squadre in rientro
+        /// </summary>
+        public List<SquadraPreaccoppiata> ListaSquadre { get; set; } = null;
+
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
         public DateTime? IstanteScadenzaSelezione { get; set; }

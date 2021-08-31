@@ -67,6 +67,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
+                    var lstSquadreInRientro = lstStatiSquadre.Result
+                        .FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
+                        .Select(s => new SquadraPreaccoppiata()
+                        {
+                            Codice = s.CodiceSede,
+                            Distaccamento = s.CodiceSede,
+                            Nome = s.IdSquadra,
+                            Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra)
+                        }).ToList();
+
                     m.PreAccoppiato = lstSqPreacc?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.Result?.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
@@ -77,7 +87,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Id = m.Codice,
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
-                        SquadrePreaccoppiate = lstSqPreacc
+                        SquadrePreaccoppiate = lstSqPreacc,
+                        ListaSquadre = lstSquadreInRientro,
                     };
 
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
