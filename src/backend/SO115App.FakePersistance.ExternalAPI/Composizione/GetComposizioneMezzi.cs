@@ -68,6 +68,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }).ToList();
 
                     m.PreAccoppiato = lstSqPreacc?.Count > 0;
+                    m.IdRichiesta = statiOperativiMezzi.Result?.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
                     string codRichiesta = statiOperativiMezzi.Result.Find(stato => m.Codice.Equals(stato.CodiceMezzo))?.CodiceRichiesta;
 

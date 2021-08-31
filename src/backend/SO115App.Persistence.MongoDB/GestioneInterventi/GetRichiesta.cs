@@ -184,7 +184,7 @@ namespace SO115App.Persistence.MongoDB
 
                         result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
                     else
-                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
+                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList(); 
                 }
             }
 
