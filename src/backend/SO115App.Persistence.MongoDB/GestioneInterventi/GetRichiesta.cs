@@ -116,33 +116,33 @@ namespace SO115App.Persistence.MongoDB
 
             var result = new List<RichiestaAssistenza>();
 
+            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
+            if (filtro.TipologiaRichiesta != null) result = lstRichieste.Where(r =>
+           {
+               if (filtro.TipologiaRichiesta.Equals("Chiamate"))
+                   return r.CodRichiesta == null && r.TestoStatoRichiesta != "X";
+
+               if (filtro.TipologiaRichiesta.Equals("Interventi"))
+                   return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
+
+               if (filtro.TipologiaRichiesta.Equals("ChiamateInterventi") || filtro.TipologiaRichiesta.Equals("InterventiChiamate"))
+                   return r.TestoStatoRichiesta != "X";
+
+               return true;
+           }).ToList();
+
             //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
-                result.AddRange(lstRichieste.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)));
+                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
-
-            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
-            if (filtro.TipologiaRichiesta != null) result = lstRichieste.Where(r =>
-            {
-                if (filtro.TipologiaRichiesta.Equals("Chiamate"))
-                    return r.CodRichiesta == null && r.TestoStatoRichiesta != "X";
-
-                if (filtro.TipologiaRichiesta.Equals("Interventi"))
-                    return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
-
-                if (filtro.TipologiaRichiesta.Equals("ChiamateInterventi"))
-                    return r.TestoStatoRichiesta != "X";
-
-                return true;
-            }).ToList();
 
             //FILTRO ZONE EMERGENZA
             if (filtro.ZoneEmergenza != null)
-                result.AddRange(lstRichieste.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))));
+                result = result.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))).ToList();
 
             //FILTRO PERIODO CHIAMATE CHIUSE
-            if (filtro.PeriodoChiuseChiamate != null) result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
+            if (filtro.PeriodoChiuseChiamate != null) result = result.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
             {
                 if (filtro.PeriodoChiuseChiamate.Data != null)
                     return r.IstanteChiusura.Value.Year == filtro.PeriodoChiuseChiamate.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiuseChiamate.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiuseChiamate.Data.Value.Day;
@@ -165,7 +165,7 @@ namespace SO115App.Persistence.MongoDB
             }
 
             //FILTRO PERIODO INTERVENTI CHIUSE
-            if (filtro.PeriodoChiusiInterventi != null) result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).Where(r =>
+            if (filtro.PeriodoChiusiInterventi != null) result = result.Where(r => r.Chiusa && r.CodRichiesta != null).Where(r =>
             {
                 if (filtro.PeriodoChiusiInterventi.Data != null)
                     return r.CodRichiesta != null && r.IstanteChiusura.Value.Year == filtro.PeriodoChiusiInterventi.Data.Value.Year && r.IstanteChiusura.Value.Month == filtro.PeriodoChiusiInterventi.Data.Value.Month && r.IstanteChiusura.Value.Day == filtro.PeriodoChiusiInterventi.Data.Value.Day;
@@ -184,7 +184,7 @@ namespace SO115App.Persistence.MongoDB
 
                         result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
                     else
-                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList(); 
+                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
                 }
             }
 

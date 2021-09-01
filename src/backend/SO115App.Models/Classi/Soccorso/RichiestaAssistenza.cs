@@ -111,7 +111,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato)
         {
-            partenza.Mezzo.Stato = stato.Stato;
+            //partenza.Mezzo.Stato = stato.Stato;
 
             switch (stato.Stato)
             {
@@ -175,8 +175,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                     break;
             }
 
-            foreach (var squadra in partenza.Squadre)
-                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
+            //foreach (var squadra in partenza.Squadre)
+            //    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
         }
 
         /// <summary>
@@ -684,52 +684,85 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var composizionePartenza = this.Partenze;
+                var partenze = this.Partenze;
 
-                var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
-                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta;
-                var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
-                var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
-                var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
-
-                if (eventoChiusura)
+                if (partenze.Count > 0)
                 {
-                    this.Chiusa = true;
-                    return new Chiusa();
-                }
-
-                if (eventoPresidiata)
-                {
-                    this.Presidiata = true;
-                    return new Presidiata();
-                }
-
-                if (eventoAssegnata)
-                    return new Assegnata();
-
-                if (eventoSospesa)
-                {
-                    this.Sospesa = true;
-                    return new Sospesa();
-                }
-                //if (!eventoRientrata && !eventoInRientro) return new InAttesa();
-
-                if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
-                    return new Assegnata();
-
-                if (composizionePartenza.Count > 0)
-                {
-                    if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                    if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
                     {
-                        this.Sospesa = true;
-                        return new Sospesa();
+                        var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
+
+                        if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 &&
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0)
+                            return new Assegnata();
+                        else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
+                        {
+                            this.Presidiata = true;
+                            return new Presidiata();
+                        }
+                        else
+                        {
+                            this.Sospesa = true;
+                            return new Sospesa();
+                        }
+                    }
+                    else
+                    {
+                        if (_eventi.OrderByDescending(p => p.Istante).First() is ChiusuraRichiesta)
+                        {
+                            this.Chiusa = true;
+                            return new Chiusa();
+                        }
+                        else
+                        {
+                            this.Sospesa = true;
+                            return new Sospesa();
+                        }
                     }
                 }
+                else
+                {
+                    this.InAttesa = true;
+                    return new InAttesa();
+                }
 
-                this.InAttesa = true;
-                return new InAttesa();
+                //var evento = _eventi.OrderByDescending(p => p.Istante);
+
+                //if (evento is ChiusuraRichiesta)
+                //{
+                //    this.Chiusa = true;
+                //    return new Chiusa();
+                //}
+
+                //if (evento is RichiestaPresidiata || evento is ArrivoSulPosto)
+                //{
+                //    this.Presidiata = true;
+                //    return new Presidiata();
+                //}
+
+                //if (evento is AssegnataRichiesta || evento is ComposizionePartenze)
+                //    return new Assegnata();
+
+                //if (evento is RichiestaSospesa || evento is RevocaPerRiassegnazione)
+                //{
+                //    this.Sospesa = true;
+                //    return new Sospesa();
+                //}
+
+                ////if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
+                ////    return new Assegnata();
+
+                //if (partenze.Count > 0)
+                //{
+                //    if (partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                //    {
+                //        this.Sospesa = true;
+                //        return new Sospesa();
+                //    }
+                //}
+
+                //this.InAttesa = true;
+                //return new InAttesa();
             }
         }
 
@@ -755,9 +788,16 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .OfType<ComposizionePartenze>()
                     .ToList();
 
+                var listaPartenze = this.Eventi
+                    .OfType<AbstractPartenza>()
+                    .OrderByDescending(i => i.Istante)
+                    .OrderByDescending(c => c.CodicePartenza)
+                    .ToList();
+
                 var listaPartenzeAnnullatePerNPN = this.Eventi
                     .OfType<RevocaPerInterventoNonPiuNecessario>()
                     .ToList();
+
                 var listaPartenzeAnnullatePerAltraMotivazione = this.Eventi
                     .OfType<RevocaPerAltraMotivazione>()
                     .ToList();
@@ -770,6 +810,33 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 foreach (var evento in listaComposizioni)
                 {
+                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.CodicePartenza.Equals(evento.CodicePartenza)).FirstOrDefault().TipoEvento;
+
+                    if (UltimoEventoPartenza.Equals("MezzoInRientro"))
+                    {
+                        evento.Partenza.Mezzo.Stato = "In Rientro";
+                        foreach (var squadra in evento.Partenza.Squadre)
+                        {
+                            squadra.Stato = Squadra.StatoSquadra.InRientro;
+                        }
+                    }
+                    else if (UltimoEventoPartenza.Equals("ArrivoSulPosto"))
+                    {
+                        evento.Partenza.Mezzo.Stato = "Sul Posto";
+                        foreach (var squadra in evento.Partenza.Squadre)
+                        {
+                            squadra.Stato = Squadra.StatoSquadra.SulPosto;
+                        }
+                    }
+                    else if (UltimoEventoPartenza.Equals("MezzoRientrato"))
+                    {
+                        evento.Partenza.Mezzo.Stato = "Rientrato";
+                        foreach (var squadra in evento.Partenza.Squadre)
+                        {
+                            squadra.Stato = Squadra.StatoSquadra.InSede;
+                        }
+                    }
+
                     if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
                     {
                         foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
@@ -949,21 +1016,95 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="evento">L'evento da aggiungere</param>
         public void AddEvento(Evento evento)
         {
-            //const string messaggio = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
+            const string OrarioErrato = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
+            const string EventoGiaPresente = "Impossibile aggiungere l'evento specificato. L'evento è già presente.";
 
-            //if (_eventi.Count > 0)
-            //{
-            //    if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
-            //    {
-            //        var eventiPartenza = _eventi.OfType<AbstractPartenza>()
-            //            .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
-            //            .Where(e => Aperta)
-            //            .ToList();
+            if (_eventi.Count > 0)
+            {
+                if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
+                {
+                    var InViaggio = _eventi.OfType<ComposizionePartenze>()
+                                    .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                                    .Where(e => Aperta).FirstOrDefault();
 
-            //        if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
-            //            throw new Exception(messaggio);
-            //    }
-            //}
+                    var SulPosto = _eventi.OfType<ArrivoSulPosto>()
+                                    .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                                    .Where(e => Aperta).FirstOrDefault();
+
+                    var InRientro = _eventi.OfType<PartenzaInRientro>()
+                                    .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                                    .Where(e => Aperta).FirstOrDefault();
+
+                    var Rientrata = _eventi.OfType<PartenzaRientrata>()
+                                    .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                                    .Where(e => Aperta).FirstOrDefault();
+
+                    if (evento is ArrivoSulPosto)
+                    {
+                        if (SulPosto != null)
+                            throw new Exception(EventoGiaPresente);
+
+                        if (InViaggio != null)
+                            if (evento.Istante <= InViaggio.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (InRientro != null)
+                            if (evento.Istante >= InRientro.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (Rientrata != null)
+                            if (evento.Istante >= Rientrata.Istante)
+                                throw new Exception(OrarioErrato);
+                    }
+
+                    if (evento is PartenzaInRientro)
+                    {
+                        if (InRientro != null)
+                            throw new Exception(EventoGiaPresente);
+
+                        if (InViaggio != null)
+                            if (evento.Istante <= InViaggio.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (SulPosto != null)
+                            if (evento.Istante <= SulPosto.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (Rientrata != null)
+                            if (evento.Istante >= Rientrata.Istante)
+                                throw new Exception(OrarioErrato);
+                    }
+
+                    if (evento is PartenzaRientrata)
+                    {
+                        if (Rientrata != null)
+                            throw new Exception(EventoGiaPresente);
+
+                        if (InViaggio != null)
+                            if (evento.Istante <= InViaggio.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (InRientro != null)
+                            if (evento.Istante <= InRientro.Istante)
+                                throw new Exception(OrarioErrato);
+
+                        if (SulPosto != null)
+                            if (evento.Istante <= SulPosto.Istante)
+                                throw new Exception(OrarioErrato);
+                    }
+                }
+
+                //if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
+                //{
+                //    var eventiPartenza = _eventi.OfType<AbstractPartenza>()
+                //        .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                //        .Where(e => Aperta)
+                //        .ToList();
+
+                //    if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
+                //        throw new Exception(OrarioErrato);
+                //}
+            }
 
             _eventi.Add(evento);
         }
@@ -979,8 +1120,8 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
                 var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
-                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta; //this.CodRichiesta != null ? true : false; //
+                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata || _eventi.LastOrDefault() is ArrivoSulPosto;
+                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is ComposizionePartenze; //this.CodRichiesta != null ? true : false; //
                 var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
                 var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
                 var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
