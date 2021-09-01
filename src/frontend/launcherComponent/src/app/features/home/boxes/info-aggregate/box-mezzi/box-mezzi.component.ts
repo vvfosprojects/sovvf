@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxMezzi } from '../../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
@@ -15,8 +15,6 @@ export class BoxMezziComponent implements OnChanges {
     mezziDiff: any;
     @Input() mezzi: BoxMezzi;
     @Input() boxClick: BoxClickInterface;
-
-    @Output() clickMezzi = new EventEmitter<string>();
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';

@@ -33,8 +33,7 @@
                 <!-- box mezzi -->
                 <div class="float-right w-50 px-1">
                     <div [ngClass]="nightModeBox()">
-                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
-                                       (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
+                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"></app-box-mezzi>
                     </div>
                 </div>
             </div>
