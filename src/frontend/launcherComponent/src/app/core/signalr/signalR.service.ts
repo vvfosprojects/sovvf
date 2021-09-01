@@ -30,6 +30,7 @@ import {
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import {
     SetMezziInServizio,
+    StopLoadingMezziInServizio,
     UpdateMezzoInServizio
 } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
@@ -207,7 +208,7 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: MezzoInServizio[]) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
-            this.store.dispatch(new StopLoadingActionMezzo());
+            this.store.dispatch(new StopLoadingMezziInServizio());
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
@@ -218,7 +219,7 @@ export class SignalRService {
             } else if (composizionePartenzaActive) {
                 this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
             }
-            this.store.dispatch(new StopLoadingActionMezzo());
+            this.store.dispatch(new StopLoadingMezziInServizio());
         });
 
         /**

@@ -138,12 +138,12 @@ export class MezziInServizioState {
                 }
                 dispatch(new StopLoadingMezziInServizio());
             },
-            error => dispatch(new StopLoadingActionMezzo())
+            error => dispatch(new StopLoadingMezziInServizio())
         );
     }
 
     @Action(SetMezziInServizio)
-    setMezziInServizio({ patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio): void {
+    setMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio): void {
         patchState({
             mezziInServizio: action.mezzi,
             mezziInServizioFiltered: action.mezzi
