@@ -63,7 +63,7 @@ export interface RichiesteStateModel {
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
-    loadingActionMezzo: string;
+    loadingActionMezzo: string[];
     loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string[];
     loadingModificaFonogramma: boolean;
@@ -122,7 +122,7 @@ export class RichiesteState {
     }
 
     @Selector()
-    static loadingActionMezzo(state: RichiesteStateModel): string {
+    static loadingActionMezzo(state: RichiesteStateModel): string[] {
         return state.loadingActionMezzo;
     }
 
@@ -311,9 +311,9 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-                dispatch(new StopLoadingActionMezzo());
+                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
-            error => dispatch(new StopLoadingActionMezzo())
+            error => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
         );
     }
 
@@ -387,18 +387,18 @@ export class RichiesteState {
     }
 
     @Action(VisualizzaListaSquadrePartenza)
-    visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        const innerWidth = window.innerWidth;
+    visualizzaListaSquadrePartenza({ }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
+        // const innerWidth = window.innerWidth;
         let modal;
-        if (innerWidth && innerWidth > 3700) {
-            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg',
-                backdrop: true,
-            });
-        } else {
+        // if (innerWidth && innerWidth > 3700) {
+        //     modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+        //         windowClass: 'modal-holder modal-left',
+        //         backdropClass: 'light-blue-backdrop',
+        //         centered: true,
+        //         size: 'lg',
+        //         backdrop: true,
+        //     });
+        // } else {
             modal = this.modalService.open(ListaSquadrePartenzaComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
@@ -406,7 +406,8 @@ export class RichiesteState {
                 size: 'lg',
                 backdrop: true,
             });
-        }
+        // }
+        modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
@@ -427,17 +428,21 @@ export class RichiesteState {
     }
 
     @Action(StartLoadingActionMezzo)
-    startLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo): void {
-        patchState({
-            loadingActionMezzo: action.idMezzo
-        });
+    startLoadingActionMezzo({ setState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo): void {
+        setState(
+            patch({
+                loadingActionMezzo: append([action.idMezzo])
+            })
+        );
     }
 
     @Action(StopLoadingActionMezzo)
-    stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingActionMezzo: null
-        });
+    stopLoadingActionMezzo({ setState }: StateContext<RichiesteStateModel>, action: StopLoadingActionMezzo): void {
+        setState(
+            patch({
+                loadingActionMezzo: removeItem<string>(idMezzo => idMezzo === action.idMezzo)
+            })
+        );
     }
 
 

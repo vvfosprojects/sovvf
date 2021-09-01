@@ -122,7 +122,7 @@ export class ClearRichiestaById {
 export class VisualizzaListaSquadrePartenza {
     static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
 
-    constructor(public listaSquadre: ListaSquadre) {
+    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre) {
     }
 }
 
@@ -143,6 +143,9 @@ export class StartLoadingActionMezzo {
 
 export class StopLoadingActionMezzo {
     static readonly type = '[Richieste] Stop Loading Action Mezzo';
+
+    constructor(public idMezzo: string) {
+    }
 }
 
 export class StartLoadingEliminaPartenza {
