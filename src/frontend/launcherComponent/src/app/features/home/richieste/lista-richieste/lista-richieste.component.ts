@@ -25,6 +25,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
+    @Input() loadingActionMezzo: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
 
     // Paginazione

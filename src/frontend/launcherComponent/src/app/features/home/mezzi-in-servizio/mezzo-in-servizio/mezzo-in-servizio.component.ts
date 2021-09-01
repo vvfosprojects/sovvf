@@ -45,7 +45,7 @@ export class MezzoInServizioComponent implements OnChanges {
         const listaSquadre = {
             squadre: this.mezzoInServizio.squadre
         };
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(this.mezzoInServizio.mezzo.mezzo.codice, listaSquadre));
     }
 
     cardClasses(stato: StatoMezzo, idMezzo: string): string {
