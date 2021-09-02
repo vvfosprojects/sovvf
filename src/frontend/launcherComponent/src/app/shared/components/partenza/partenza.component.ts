@@ -23,7 +23,7 @@ export class PartenzaComponent implements OnInit {
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
 
-    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre:ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre:ListaSquadre }>();
+    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();

@@ -88,7 +88,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     drawing: boolean;
     drawGraphicLayer = new GraphicsLayer({
-        title: 'Chiamate in Corso - Poligoni'
+        title: 'Disegno Libero - Poligoni'
     });
     drawedPolygon: Graphic;
 
@@ -229,20 +229,31 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         // @ts-ignore
                         this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
     
-                        // TODO: togliere commento (funzionante)
-                        // this.addMapImageLayer('21029042105b4ffb86de33033786dfc8').then();
-    
-                        // Aggiunge il FeatureLayer chiamato "LOCALIZZAZIONE MEZZI VVF"
-                        this.addFeatureLayer('3bc8743584c4484aa032a353328969d0').then(() => {
-                            // Nasconde il layer "LOCALIZZAZIONE MEZZI VVF" caricato precedentemente
-                            this.toggleLayer('LOCALIZZAZIONE MEZZI VVF').then();
-                        });
-    
-                        // Nasconde il layer "HERE_ITALIA" caricato dal portale
-                        this.toggleLayer('HERE_ITALIA').then();
-    
-                        // Nasconde il layer "Approvvigionamenti Idrici VVF_Idranti" caricato dal portale
-                        this.toggleLayer('Approvvigionamenti Idrici VVF_Idranti').then();
+                        const mapImageLayersToAdd = [
+                            // '21029042105b4ffb86de33033786dfc8'
+                        ];
+
+                        for (let lAdd of mapImageLayersToAdd) {
+                            this.addMapImageLayer(lAdd).then();
+                        }
+
+                        const featuresLayersToAdd = [
+                            '3bc8743584c4484aa032a353328969d0'
+                        ];
+
+                        for (let lAdd of featuresLayersToAdd) {
+                            this.addFeatureLayer(lAdd).then();
+                        }
+
+                        const layersToToggle = [
+                            'HERE_ITALIA',
+                            'Sedi Operative',
+                            'Approvvigionamenti Idrici VVF_Idranti'
+                        ];
+
+                        for (let lToggle of layersToToggle) {
+                            this.toggleLayer(lToggle).then();
+                        }
                     });
                 });
             });
@@ -686,7 +697,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             objectIdField: 'ID',
             popupEnabled: true,
             labelsVisible: true,
-            featureReduction: clusterConfigRichieste,
+            // featureReduction: clusterConfigRichieste,
             renderer: rendererRichieste,
             fields: [
                 {
@@ -696,7 +707,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 },
                 {
                     name: 'stato',
-                    alias: 'Stato',
+                    alias: 'stato',
                     type: 'string',
                 },
                 {
@@ -810,7 +821,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             objectIdField: 'ID',
             popupEnabled: true,
             labelsVisible: true,
-            featureReduction: clusterConfigSchedeContatto,
+            // featureReduction: clusterConfigSchedeContatto,
             renderer: rendererSchedeContatto,
             fields: [
                 {
@@ -890,11 +901,11 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     },
                     symbol: {
                         type: 'text',
-                        color: 'white',
+                        color: 'red',
                         font: {
                             weight: 'bold',
                             family: 'Noto Sans',
-                            size: '30px',
+                            size: '25px',
                         },
                     },
                     labelPlacement: 'center-center',
@@ -910,7 +921,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             objectIdField: 'ID',
             popupEnabled: true,
             labelsVisible: true,
-            featureReduction: clusterConfigSediOperative,
+            // featureReduction: clusterConfigSediOperative,
             renderer: rendererSediOperative,
             fields: [
                 {
@@ -919,8 +930,18 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     type: 'oid',
                 },
                 {
-                    name: 'classificazione',
-                    alias: 'Classificazione',
+                    name: 'codice',
+                    alias: 'codice',
+                    type: 'string',
+                },
+                {
+                    name: 'tipo',
+                    alias: 'tipo',
+                    type: 'string',
+                },
+                {
+                    name: 'descrizione',
+                    alias: 'descrizione',
                     type: 'string',
                 }
             ],
@@ -928,9 +949,11 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 wkid: 3857
             },
             popupTemplate: {
-                title: 'Id: {id}',
+                title: 'ID: {id}',
                 content:
-                    '<ul><li>Classificazione: {classificazione} </li>'
+                    '<ul><li>Tipo: {tipo} </li>' +
+                    '<ul><li>Codice: {codice} </li>' +
+                    '<ul><li>Descrizione: {descrizione} </li>'
             },
             geometryType: 'point'
         });
@@ -1090,20 +1113,26 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
     // Aggiunge i marker delle sedi al layer "Sedi Operative"
     async addSediMarkersToLayer(sediMarkers: SedeMarker[], applyEdits?: boolean): Promise<any> {
-        if (this.sediMarkers?.length) {
+        if (this.sediOperativeMarkersGraphics?.length) {
             const query = { where: '1=1' };
             this.sediOperativeFeatureLayer.queryFeatures(query).then((results) => {
                 const deleteFeatures = results.features;
-                this.sediOperativeFeatureLayer.applyEdits({ deleteFeatures });
-                this.sediOperativeFeatureLayer.refresh();
-                addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
-                    this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
+                deleteFeatureSediOperativeLayer(this.sediOperativeFeatureLayer, deleteFeatures).then(() => {
+                    addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
+                        this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
+                        this.sediOperativeFeatureLayer.refresh();
+                    });
                 });
             });
         } else {
             addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
                 this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
             });
+        }
+
+        async function deleteFeatureSediOperativeLayer(sediOperativeFeatureLayer: FeatureLayer, deleteFeatures: any): Promise<any> {
+            await sediOperativeFeatureLayer.applyEdits({ deleteFeatures });
+            sediOperativeFeatureLayer.refresh();
         }
 
         async function addMarkers(sediOperativeFeatureLayer: FeatureLayer): Promise<any[]> {
@@ -1117,7 +1146,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                     geometry: mp,
                     attributes: {
                         ID: markerDaStampare.codice,
-                        tipo: markerDaStampare.tipo
+                        codice: markerDaStampare.codice,
+                        tipo: markerDaStampare.tipo,
+                        descrizione: markerDaStampare.descrizione
                     }
                 });
                 sediOperativeMarkersGraphicsToAdd.push(graphic);

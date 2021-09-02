@@ -429,7 +429,37 @@ export class MezziComposizioneState {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenze && richiestaDa.partenze.length > 0 ? richiestaDa.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
+
             if (richiestaDa && partenzaDaSganciare) {
+                const partenza = partenzaDaSganciare.partenza;
+                const obj = {
+                    mezzo: {
+                        codice: null,
+                        descrizione: null,
+                        stato: null,
+                        genere: null,
+                        distaccamento: {
+                            descrizione: null,
+                        },
+                    },
+                    squadre: null
+                } as any;
+                if (partenza) {
+                    obj.mezzo.codice = partenza.mezzo.codice;
+                    obj.mezzo.descrizione = partenza.mezzo.descrizione;
+                    obj.mezzo.stato = partenza.mezzo.stato;
+                    obj.mezzo.genere = partenza.mezzo.genere;
+                    obj.mezzo.distaccamento.descrizione = partenza.mezzo.distaccamento.descrizione;
+                } else {
+                    obj.mezzo = null;
+                }
+                if (partenza.squadre.length > 0) {
+                    obj.squadre = partenza.squadre.map((squadraComp: any) => {
+                        return squadraComp;
+                    });
+                } else {
+                    obj.squadre = [];
+                }
                 let modalSganciamento;
                 const innerWidth = window.innerWidth;
                 if (innerWidth && innerWidth > 3700) {
@@ -461,7 +491,7 @@ export class MezziComposizioneState {
                     switch (val) {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
-                                partenze: [partenzaDaSganciare],
+                                partenze: [obj],
                                 idRichiesta,
                                 turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
