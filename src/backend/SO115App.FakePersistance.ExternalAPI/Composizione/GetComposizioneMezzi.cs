@@ -61,7 +61,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 })).Result;
 
             var lstSquadrePreaccoppiate = Task.Run(() => query.CodiciSedi.Select(sede =>  _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
-                .SelectMany(shift => shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false)));
+                .SelectMany(shift => shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false)).ToList());
 
             var statiOperativiMezzi = Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));
@@ -79,19 +79,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         //Stato = (StatoSquadraComposizione)Enum.Parse(typeof(StatoSquadraComposizione), lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
                         Nome = sq.Descrizione,
                         Distaccamento = new Sede(sq.Distaccamento),
+                        //Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre.Result?.FirstOrDefault(stato => stato.IdSquadra.Equals(sq.Codice))?.StatoSquadra),
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
-                    var lstSquadreInRientro = lstStatiSquadre.Result?
-                        .FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
-                        .Select(s => new SquadraSemplice()
-                        {
-                            Codice = s.IdSquadra,
-                            Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
-                            Nome = s.IdSquadra,
-                            Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                            Turno = ' ',
-                        }).ToList();
+                    //var lstSquadreInRientro = lstStatiSquadre.Result?.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
+                    //.Select(s => new SquadraSemplice()
+                    //{
+                    //    Codice = s.IdSquadra,
+                    //    Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
+                    //    Nome = s.IdSquadra,
+                    //    Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
+                    //    Turno = ' ',
+                    //}).ToList();
 
                     m.PreAccoppiato = lstSqPreacc?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.Result?.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
@@ -102,7 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc,
-                        ListaSquadre = lstSquadreInRientro,
+                        //ListaSquadre = lstSquadreInRientro,
                     };
 
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
@@ -128,6 +128,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                             break;
                     }
+
                     //mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);

@@ -148,7 +148,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
 
-            var resultApi = _clientMezzi.GetAsync(url);
+            var resultApi = _clientMezzi.GetAsync(url, token);
 
             resultApi.Result?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
 
