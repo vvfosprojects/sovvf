@@ -97,7 +97,7 @@ namespace SO115App.Models.Classi.Utility
         public const string ChiusuraPartenza = "ChiusuraPartenza";
         public const string ArrivoSulPosto = "ArrivoSulPosto";
         public const string UscitaPartenza = "UscitaPartenza";
-        public const string AssegnataRichiesta = "AssegnataRichiesta";
+        public const string AssegnataRichiesta = "Assegnata";
         public const string EventoRichiestaPresidiata = "RichiestaPresidiata";
         public const string EventoRichiestaSospesa = "RichiestaSospesa";
         public const string AssegnataPriorita = "AssegnataPriorita";
@@ -134,10 +134,12 @@ namespace SO115App.Models.Classi.Utility
         #endregion Ruoli Utenti
 
         #region POS
+
         public const string POSFileNonPresente = "Il file non risulta allegato alla richiesta";
         public const string POSDescrizioneNonPresente = "Non risulta essere presente la descrizione";
         public const string POSTipologiaNonPresente = "Associare una tipologia alla POS";
-        #endregion
+
+        #endregion POS
 
         #region FAKE
 

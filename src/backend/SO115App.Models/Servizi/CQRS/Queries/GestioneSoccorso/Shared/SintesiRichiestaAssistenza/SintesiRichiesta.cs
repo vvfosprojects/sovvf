@@ -337,56 +337,53 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                //List<ComposizionePartenze> eventoAssegnata = new List<ComposizionePartenze>();
-                //List<ComposizionePartenze> PartenzeSelect = new List<ComposizionePartenze>();
-                //if (this.Partenze != null)
+                //var composizionePartenza = this.Partenze;
+
+                //if (Chiusa)
                 //{
-                //    eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                //    PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                //    return Costanti.RichiestaChiusa;
                 //}
 
-                //foreach (var partenza in PartenzeSelect)
+                //if (Partenze.Count > 0)
                 //{
-                //    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
-                //        return Costanti.RichiestaPresidiata;
+                //    var PartenzaPiuRecente = Eventi.ToList().OrderByDescending(o => o.Ora).OrderByDescending(p=>p.).FirstOrDefault();
+                //    var CountPartenzeAttive = Partenze.ToList().FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata).OrderByDescending(o => o.Istante);
+                //    var CountMezziSulPosto = Partenze.ToList().FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata && p.Partenza.Mezzo.Stato.Equals("Sul Posto")).OrderByDescending(o => o.Istante);
+
+                // if (PartenzaPiuRecente.Stato.Equals("In Viaggio")) { if
+                // (CountPartenzeAttive.Count() > 0) { if (CountMezziSulPosto.Count() > 0) return
+                // Costanti.RichiestaPresidiata; else return Costanti.RichiestaAssegnata; } }
+
+                // if (PartenzaPiuRecente.Stato.Equals("Sul Posto")) return Costanti.RichiestaPresidiata;
+
+                //    if (PartenzaPiuRecente.Stato.Equals("In Rientro"))
+                //    {
+                //        if (CountPartenzeAttive.Count() > 0)
+                //        {
+                //            if (CountMezziSulPosto.Count() > 0)
+                //                return Costanti.RichiestaPresidiata;
+                //            else
+                //                return Costanti.RichiestaSospesa;
+                //        }
+                //    }
                 //}
 
-                //if (eventoAssegnata.Count > 0 || (Partenze != null && Partenze.Where(p => p.Partenza.Mezzo.Stato == Costanti.MezzoInUscita).Count() > 0))
-                //{
-                //    return Costanti.RichiestaAssegnata;
-                //}
-
-                if (Eventi.Count() > 0)
-                    if (Eventi.LastOrDefault().Stato.Equals("In Viaggio"))
-                        return Costanti.RichiestaAssegnata;
-
-                if (Presidiata)
+                if (this.TestoStatoRichiesta.Equals("C"))
+                    return Costanti.Chiamata;
+                else if (this.TestoStatoRichiesta.Equals("A"))
+                    return Costanti.AssegnataRichiesta;
+                else if (this.TestoStatoRichiesta.Equals("P"))
                     return Costanti.RichiestaPresidiata;
-
-                if (Chiusa)
-                {
+                else if (this.TestoStatoRichiesta.Equals("X"))
                     return Costanti.RichiestaChiusa;
-                }
-                if (Sospesa)
-                {
+                else if (this.TestoStatoRichiesta.Equals("S"))
                     return Costanti.RichiestaSospesa;
-                }
-
-                if (Partenze != null)
-                {
-                    if (Partenze.Count > 0)
-                    {
-                        if (Partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
-                        {
-                            this.Sospesa = true;
-                            return Costanti.RichiestaSospesa;
-                        }
-                    }
-                }
 
                 return Costanti.Chiamata;
             }
         }
+
+        public string TestoStatoRichiesta { get; set; }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {

@@ -42,6 +42,36 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             var partenzaDaLavorare = richiesta.Partenze.OrderByDescending(p => p.Istante).FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
+            var StatoAttualeDelMezzo = partenzaDaLavorare.Partenza.Mezzo.Stato;
+
+            string statoMezzoReale = "";
+
+            if (StatoAttualeDelMezzo.Equals("In Viaggio"))
+            {
+                if (!command.StatoMezzo.Equals("In Viaggio"))
+                    statoMezzoReale = command.StatoMezzo;
+            }
+            else if (StatoAttualeDelMezzo.Equals("Sul Posto"))
+            {
+                if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto"))
+                    statoMezzoReale = StatoAttualeDelMezzo;
+
+                if (command.StatoMezzo.Equals("In Rientro") || command.StatoMezzo.Equals("Rientrato"))
+                {
+                    statoMezzoReale = command.StatoMezzo;
+                }
+            }
+            else if (StatoAttualeDelMezzo.Equals("In Rientro"))
+            {
+                if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto") || command.StatoMezzo.Equals("In Rientro"))
+                    statoMezzoReale = StatoAttualeDelMezzo;
+
+                if (command.StatoMezzo.Equals("Rientrato"))
+                    statoMezzoReale = command.StatoMezzo;
+            }
+            else if (StatoAttualeDelMezzo.Equals("Rientrato"))
+                statoMezzoReale = StatoAttualeDelMezzo;
+
             richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, new CambioStatoMezzo()
             {
                 CodMezzo = command.IdMezzo,
@@ -64,7 +94,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
                 DataOraAggiornamento = dataAdesso,
-                StatoMezzo = command.StatoMezzo,
+                StatoMezzo = statoMezzoReale,
                 IdMezzo = command.IdMezzo
             });
         }

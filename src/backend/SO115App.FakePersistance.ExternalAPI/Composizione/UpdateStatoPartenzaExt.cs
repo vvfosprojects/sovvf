@@ -70,66 +70,103 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var codiceSedeMezzo = command.CodiciSede.First();
 
-            _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
-
-            var dataMovintazione = DateTime.Now;
-
-            var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
-            foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
+            if (CheckStatoMezzoCronologicamenteOk(command))
             {
-                foreach (var squadra in partenza.Partenza.Squadre)
-                {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
-                }
+                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-                if (!partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
-                    if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                var dataMovintazione = DateTime.Now;
+
+                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
+                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
+                {
+                    foreach (var squadra in partenza.Partenza.Squadre)
                     {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante;
-                        _setRientroMezzo.Set(new RientroGAC()
-                        {
-                            targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                            idPartenza = partenza.Partenza.Codice.ToString(),
-                            numeroIntervento = command.Richiesta.CodRichiesta,
-                            dataIntervento = dataIntervento,
-                            dataRientro = dataRientro,
-                            autista = ""
-                        });
+                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
                     }
-                    else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                    {
-                        var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Partenza.Codice)).Istante;
-                        _setUscitaMezzo.Set(new UscitaGAC()
+
+                    if (!partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                        if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                         {
-                            targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                            idPartenza = partenza.Partenza.Codice.ToString(),
-                            numeroIntervento = command.Richiesta.CodRichiesta,
-                            dataIntervento = dataIntervento,
-                            dataUscita = dataUscita,
-                            autista = "",
-                            tipoUscita = new TipoUscita()
+                            var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante;
+                            _setRientroMezzo.Set(new RientroGAC()
                             {
-                                codice = "",
-                                descrizione = "Servizio"
-                            },
-                            comune = new ComuneGAC()
+                                targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
+                                tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                                idPartenza = partenza.Partenza.Codice.ToString(),
+                                numeroIntervento = command.Richiesta.CodRichiesta,
+                                dataIntervento = dataIntervento,
+                                dataRientro = dataRientro,
+                                autista = ""
+                            });
+                        }
+                        else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                        {
+                            var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Partenza.Codice)).Istante;
+                            _setUscitaMezzo.Set(new UscitaGAC()
                             {
-                                codice = "",
-                                descrizione = command.Richiesta.Localita.Citta,
-                            },
-                            provincia = new Models.Classi.Gac.ProvinciaGAC()
-                            {
-                                codice = "",
-                                descrizione = command.Richiesta.Localita.Provincia
-                            },
-                            localita = command.Richiesta.Localita.Citta,
-                            latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                            longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString()
-                        });
-                    }
+                                targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
+                                tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                                idPartenza = partenza.Partenza.Codice.ToString(),
+                                numeroIntervento = command.Richiesta.CodRichiesta,
+                                dataIntervento = dataIntervento,
+                                dataUscita = dataUscita,
+                                autista = "",
+                                tipoUscita = new TipoUscita()
+                                {
+                                    codice = "",
+                                    descrizione = "Servizio"
+                                },
+                                comune = new ComuneGAC()
+                                {
+                                    codice = "",
+                                    descrizione = command.Richiesta.Localita.Citta,
+                                },
+                                provincia = new Models.Classi.Gac.ProvinciaGAC()
+                                {
+                                    codice = "",
+                                    descrizione = command.Richiesta.Localita.Provincia
+                                },
+                                localita = command.Richiesta.Localita.Citta,
+                                latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                                longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString()
+                            });
+                        }
+                }
             }
+        }
+
+        private bool CheckStatoMezzoCronologicamenteOk(AggiornaStatoMezzoCommand command)
+        {
+            var statoAttualeMezzo = command.Richiesta.Partenze.ToList().Find(p => p.CodiceMezzo.Equals(command.IdMezzo)).Partenza.Mezzo.Stato;
+
+            switch (statoAttualeMezzo)
+            {
+                case "In Viaggio":
+
+                    if (!statoAttualeMezzo.Equals("In Viaggio") && !statoAttualeMezzo.Equals("Sul Posto") && !statoAttualeMezzo.Equals("In Rientro") && !statoAttualeMezzo.Equals("Rientrato"))
+                        return true;
+                    break;
+
+                case "Sul Posto":
+                    if (!statoAttualeMezzo.Equals("Sul Posto") && statoAttualeMezzo.Equals("In Viaggio"))
+                        return true;
+                    break;
+
+                case "In Rientro":
+                    if (!statoAttualeMezzo.Equals("In Rientro") && statoAttualeMezzo.Equals("Sul Posto"))
+                        return true;
+                    break;
+
+                case "Rientrato":
+                    if (!statoAttualeMezzo.Equals("Rientrato") && statoAttualeMezzo.Equals("In Rientro"))
+                        return true;
+                    break;
+
+                default:
+                    return true;
+            };
+
+            return true;
         }
     }
 }
