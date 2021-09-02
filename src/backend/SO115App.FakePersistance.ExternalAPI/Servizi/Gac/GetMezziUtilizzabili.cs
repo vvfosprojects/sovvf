@@ -136,6 +136,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
+            if (codiciMezzi?.Count == 0)
+                return null;
+
             var token = _getToken.GeneraToken();
 
             var lstMezziDto = new ConcurrentQueue<MezzoDTO>();

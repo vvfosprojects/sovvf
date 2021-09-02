@@ -92,8 +92,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
-            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(query.Filtro.CodiciDistaccamenti.ToList() ?? query.CodiciSede.ToList()).Result
-                .Where(m => lstStatiMezzi.Result.Where(s => s.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).Contains(m.CodiceMezzo)));
+            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.FindAll(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()));
 
             Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
             Task<List<MembroComposizione>> lstAnagrafiche = null;
