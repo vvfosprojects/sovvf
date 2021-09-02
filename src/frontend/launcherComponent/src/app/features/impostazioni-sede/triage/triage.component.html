@@ -213,13 +213,13 @@
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.noteOperatore">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fas fa-sticky-note-o mr-1"></i>
+                    <i class="fas fa-sticky-note mr-1"></i>
                     Indicazioni Operatore Inserite
                 </label>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.noteUtente">
                 <label class="text-primary form-check-label cursor-pointer ml-3" (click)="onCollapseExpand()">
-                    <i class="fas fa-sticky-note-o mr-1"></i>
+                    <i class="fas fa-sticky-note mr-1"></i>
                     Indicazioni Utente Inserite
                 </label>
             </ng-template>
@@ -242,7 +242,7 @@
                     <button class="btn btn-danger ml-2"
                             ngbTooltip="Rimuovi"
                             (click)="removeItem(item)">
-                        <i class="fas fa-trash-o"></i>
+                        <i class="fas fa-trash"></i>
                     </button>
                 </ng-template>
             </ng-template>
