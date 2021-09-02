@@ -155,7 +155,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (partenza.Mezzo.IdRichiesta != null && partenza.Mezzo.IdRichiesta != command.Richiesta.Codice)
                 {
                     //SE IL MEZZO E' IN RIENTRO SU UN'ALTRA RICHIESTA, FACCIO RIENTRARE LE PARTENZE E GESTISCO LA RICHIESTA
-                    command.RichiestaDaSganciare = _getRichiestaById.GetById(partenza.Mezzo.IdRichiesta);
+                    command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(partenza.Mezzo.IdRichiesta);
 
                     var partenzaDaRientrare = command.RichiestaDaSganciare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
 

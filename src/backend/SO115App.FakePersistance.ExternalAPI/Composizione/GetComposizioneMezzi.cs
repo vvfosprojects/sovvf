@@ -73,22 +73,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(mezzi.Result, m =>
                 {
-                    var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraPreaccoppiata()
+                    var lstSqPreacc = lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraSemplice()
                     {
                         Codice = sq.Codice,
                         //Stato = (StatoSquadraComposizione)Enum.Parse(typeof(StatoSquadraComposizione), lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
                         Nome = sq.Descrizione,
-                        Distaccamento = sq.Distaccamento,
+                        Distaccamento = new Sede(sq.Distaccamento),
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
                     var lstSquadreInRientro = lstStatiSquadre.Result
                         .FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
-                        .Select(s => new SquadraPreaccoppiata()
+                        .Select(s => new SquadraSemplice()
                         {
                             Codice = s.IdSquadra,
-                            Distaccamento = lstSedi?.FirstOrDefault(sede => 
-                                sede.Codice == s.CodiceSede)?.Descrizione,
+                            Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
                             Nome = s.IdSquadra,
                             Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
                             Turno = ' ',

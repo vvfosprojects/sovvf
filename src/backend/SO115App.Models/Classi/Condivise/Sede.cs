@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
@@ -27,6 +28,9 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         private bool VisualizzazioneCentrale = true;
         private string _descrizione;
+
+        [JsonConstructor]
+        public Sede(string desc) => Descrizione = desc;
 
         public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, bool visualizzazioneCentrale = true)
         {
