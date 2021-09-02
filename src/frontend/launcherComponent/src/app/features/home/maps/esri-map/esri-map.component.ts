@@ -45,11 +45,10 @@ import Point from '@arcgis/core/geometry/Point';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
-import Locator from '@arcgis/core/tasks/Locator';
 import Sketch from '@arcgis/core/widgets/Sketch';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
-import * as webMercatorUtils from "@arcgis/core/geometry/support/webMercatorUtils";
+import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
     selector: 'app-esri-map',
@@ -119,14 +118,14 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
                 // Controllo l'extent per richiedere i marker "Richieste" da visualizzare ogni volta che quest'ultimo cambia
                 this.view.watch('extent', (event: any) => {
-                   const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
-                   const bounds = {
-                    northEastLat: geoExt.extent.ymax,
-                    northEastLng: geoExt.extent.xmax,
-                    southWestLat: geoExt.extent.ymin,
-                    southWestLng: geoExt.extent.xmin
-                   };
-                   this.areaCambiata(bounds, event.zoom)
+                    const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
+                    const bounds = {
+                        northEastLat: geoExt.extent.ymax,
+                        northEastLng: geoExt.extent.xmax,
+                        southWestLat: geoExt.extent.ymin,
+                        southWestLng: geoExt.extent.xmin
+                    };
+                    this.areaCambiata(bounds, event.zoom);
                 });
 
                 // Inizializzazione del layer lato client per disegnare poligoni sulla mappa
@@ -177,12 +176,12 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         }
                         const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
                         const bounds = {
-                         northEastLat: geoExt.extent.ymax,
-                         northEastLng: geoExt.extent.xmax,
-                         southWestLat: geoExt.extent.ymin,
-                         southWestLng: geoExt.extent.xmin
+                            northEastLat: geoExt.extent.ymax,
+                            northEastLng: geoExt.extent.xmax,
+                            southWestLat: geoExt.extent.ymin,
+                            southWestLng: geoExt.extent.xmin
                         };
-                        this.areaCambiata(bounds, event.zoom)
+                        this.areaCambiata(bounds, event.zoom);
                         // TODO: verificare se serve
                         // this.centroCambiato({ coordinateCentro: { latitudine: event.x, longitudine: event.y }, zoom: event.zoom});
                     });
@@ -192,7 +191,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             this.setContextMenuVisible(false);
                         }
                     });
-    
+
                     // Aggiungo i Chiamate Markers
                     if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
                         const markersChiamate = changes?.chiamateMarkers?.currentValue;
@@ -228,12 +227,12 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         } as AreaMappa;
                         // @ts-ignore
                         this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
-    
+
                         const mapImageLayersToAdd = [
                             // '21029042105b4ffb86de33033786dfc8'
                         ];
 
-                        for (let lAdd of mapImageLayersToAdd) {
+                        for (const lAdd of mapImageLayersToAdd) {
                             this.addMapImageLayer(lAdd).then();
                         }
 
@@ -241,7 +240,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             '3bc8743584c4484aa032a353328969d0'
                         ];
 
-                        for (let lAdd of featuresLayersToAdd) {
+                        for (const lAdd of featuresLayersToAdd) {
                             this.addFeatureLayer(lAdd).then();
                         }
 
@@ -251,7 +250,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                             'Approvvigionamenti Idrici VVF_Idranti'
                         ];
 
-                        for (let lToggle of layersToToggle) {
+                        for (const lToggle of layersToToggle) {
                             this.toggleLayer(lToggle).then();
                         }
                     });
@@ -499,7 +498,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else {
-            if  (!options?.skipRemoveDrawedPolygon) {
+            if (!options?.skipRemoveDrawedPolygon) {
                 this.drawGraphicLayer.removeAll();
                 this.drawedPolygon = null;
             }
@@ -520,7 +519,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX - 30 + 'px');
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
         } else {
-            if  (!options?.skipRemoveDrawedPolygon) {
+            if (!options?.skipRemoveDrawedPolygon) {
                 this.drawGraphicLayer.removeAll();
                 this.drawedPolygon = null;
             }
@@ -1295,7 +1294,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     //     if (layerToRemoveExists) {
     //         this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
     //     }
-    
+
     // TODO: verificare se utilizzato
     centroCambiato(centro: CentroMappa): void {
         this.mapService.setCentro(makeCentroMappa(makeCoordinate(centro.coordinateCentro.latitudine, centro.coordinateCentro.longitudine), centro.zoom));

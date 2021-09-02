@@ -85,7 +85,7 @@
                 <div class="card mt-3 px-4 py-3"
                      [class.bg-light]="!(nightMode$ | async)"
                      [class.bg-dark-light]="(nightMode$ | async)">
-                    <ngx-treeview [items]="getTItems()"
+                    <ngx-treeview [items]="tItems"
                                   [config]="tConfig"
                                   [itemTemplate]="itemTemplate">
                     </ngx-treeview>
@@ -186,7 +186,7 @@
                 <button class="btn btn-danger"
                         ngbTooltip="Annulla Modifica"
                         (click)="clearItemValueEditTitle()">
-                    <i class="fas fa-close"></i>
+                    <i class="fas fa-window-close"></i>
                 </button>
             </ng-template>
             <ng-template [ngIf]="getItemData(item)?.soccorsoAereo">
