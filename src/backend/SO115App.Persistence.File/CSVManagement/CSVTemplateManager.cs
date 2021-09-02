@@ -28,6 +28,8 @@ namespace SO115App.Persistence.File.CSVManagement
             {
                 case RiepilogoInterventiModelForm model: generaRiepilogoInterventoCSV(model); break;
 
+                case DettaglioChiamataModelForm model: generaDettaglioChiamataCSV(model); break;
+
                 default: throw new NotImplementedException("Template non gestito");
             }
 
@@ -72,6 +74,35 @@ namespace SO115App.Persistence.File.CSVManagement
 
                 streamWriter.WriteLine(str);
             }
+        }
+
+        private void generaDettaglioChiamataCSV(DettaglioChiamataModelForm model)
+        {
+            string str = "CIV_KM;COMUNE;DATA_ORA_CHIAMATA;DETTAGLIO;INTERNO;NOTE_CHIAMATA;NUMERO_CHIAMATA;OPERATORE;PALAZZO;PIANO;PROV;RICHIEDENTE;RICHIEDENTE_TELEFONO;SCALA;TIPOLOGIA;TITOLO_DISTACCAMENTO";
+
+            streamWriter.WriteLine(str);
+
+            str = string.Join(';', new string[]
+            {
+                model.Chiamata.Civ_Km,
+                model.Chiamata.Comune,
+                model.Chiamata.DataOraChiamata.ToString("dd/MM/yyyy"),
+                model.Chiamata.Dettaglio,
+                model.Chiamata.Interno,
+                model.Chiamata.NoteChiamata,
+                model.Chiamata.NumeroChiamata,
+                model.Chiamata.Operatore,
+                model.Chiamata.Palazzo,
+                model.Chiamata.Piano,
+                model.Chiamata.Prov,
+                model.Chiamata.Richiedente,
+                model.Chiamata.RichiedenteTelefono,
+                model.Chiamata.Scala,
+                model.Chiamata.Tipologia,
+                model.Chiamata.TitoloDistaccamento
+            });
+
+            streamWriter.WriteLine(str);            
         }
     }
 }
