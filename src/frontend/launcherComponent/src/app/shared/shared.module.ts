@@ -77,7 +77,7 @@ import { SintesiRichiestaModalComponent } from './modal/sintesi-richiesta-modal/
 import { FormRichiestaComponent } from './components/form-richiesta/form-richiesta.component';
 import { TagInputModule } from 'ngx-chips';
 import { RicercaIndirizzoComponent } from './components/form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
-import { ChiamataService } from "../core/service/chiamata-service/chiamata.service";
+import { ChiamataService } from '../core/service/chiamata-service/chiamata.service';
 
 const COMPONENTS = [
     DebounceClickDirective,
