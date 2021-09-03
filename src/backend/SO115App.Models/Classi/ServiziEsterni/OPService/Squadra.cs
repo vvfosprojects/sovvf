@@ -23,7 +23,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         public string Stato { get; set; }
 
         [JsonPropertyName("vehiclesIds")]
-        public string[] CodiciMezziPreaccoppiati { get; set; }
+        public string[]? CodiciMezziPreaccoppiati { get; set; }
 
         [JsonPropertyName("spotMembers")]
         public Membro[] Membri { get; set; }

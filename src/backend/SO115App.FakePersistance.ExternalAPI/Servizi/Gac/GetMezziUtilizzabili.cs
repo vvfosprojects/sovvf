@@ -136,7 +136,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
-            if (codiciMezzi?.Count == 0)
+            if (codiciMezzi == null || codiciMezzi?.Count == 0)
                 return null;
 
             var token = _getToken.GeneraToken();

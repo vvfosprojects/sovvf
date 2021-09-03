@@ -118,7 +118,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     case null: Parallel.ForEach(workshift.Result.Attuale, squadra => lstSquadre.Add(squadra)); break;
                 }
 
-                lstMezziPreaccoppiati = Task.Run(() => _getMezzi.GetInfo(lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList()));
+                var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
+                lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
 
                 lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(lstSquadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
                 {
@@ -146,7 +147,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo
                     }).ToList(),
-                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati != null ? lstMezziPreaccoppiati.Result.FindAll(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
+                    MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
                     {
                         Codice = m.CodiceMezzo,
                         Descrizione = m.Descrizione,
