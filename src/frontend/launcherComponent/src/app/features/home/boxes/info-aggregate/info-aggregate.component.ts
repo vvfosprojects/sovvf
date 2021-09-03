@@ -8,11 +8,9 @@ import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Select, Store } from '@ngxs/store';
-import { BoxClickState } from '../../store/states/boxes/box-click.state';
 import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state';
 import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
-import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/model/turno-calendario.model';
@@ -32,8 +30,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
 
     datimeteo: Meteo;
-
-    @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
 
     @Input() nightMode: boolean;
 
@@ -55,10 +51,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         console.log('Componente Info Aggregate Distrutto');
     }
 
-    clickBox(cat: string, tipo: string): void {
-        this.store.dispatch(new ReducerBoxClick(cat, tipo));
-    }
-
     nightModeBox(): string {
       let value = '';
       if (!this.nightMode) {
@@ -67,12 +59,6 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         value = 'moon-text moon-card-light';
       }
       return value;
-    }
-
-    clickServizi(tipo: string): void {
-        if (tipo === 'openModal') {
-            // this.modalService.open(ModalServiziComponent, { size: 'lg', centered: true });
-        }
     }
 
     startMeteo(): void {

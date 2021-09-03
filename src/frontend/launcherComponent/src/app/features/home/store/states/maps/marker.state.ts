@@ -12,7 +12,6 @@ import { SetSedeMarkerById } from '../../actions/maps/sedi-markers.actions';
 import { SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetRichiestaMarkerById } from '../../actions/maps/richieste-markers.actions';
 import { ChiamateMarkersState } from './chiamate-markers.state';
-import { MapsButtonsState } from './maps-buttons.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { SchedeContattoMarkersState } from './schede-contatto-markers.state';
 import {
@@ -67,7 +66,6 @@ export const markerStateDefaults: MarkerStateModel = {
         MezziMarkersState,
         SediMarkersState,
         ChiamateMarkersState,
-        MapsButtonsState,
         SchedeContattoMarkersState
     ]
 })

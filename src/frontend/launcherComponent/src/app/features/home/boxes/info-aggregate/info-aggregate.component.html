@@ -6,9 +6,7 @@
                 <div class="float-left w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-interventi [interventi]="(richieste$ | async)"
-                                            [boxClick]="(boxClick$ | async)"
-                                            [turno]="(turnoCalendario$ | async)"
-                                            (clickRichieste)="clickBox('richieste', $event)">
+                                            [turno]="(turnoCalendario$ | async)">
                         </app-box-interventi>
                     </div>
                 </div>
@@ -16,8 +14,8 @@
                 <div class="float-left w-50 px-1">
                     <div [ngClass]="nightModeBox()">
                         <app-box-personale [personaleQty]="(personaleQty$ | async)"
-                                           [personalePresenze]="(presenze$ | async)"
-                                           (clickServizi)="clickServizi($event)"></app-box-personale>
+                                           [personalePresenze]="(presenze$ | async)">
+                        </app-box-personale>
                     </div>
                 </div>
             </div>
@@ -27,13 +25,15 @@
                 <!-- box meteo -->
                 <div class="float-right w-50 px-1">
                     <div [ngClass]="nightModeBox()">
-                        <app-box-meteo [datimeteo]="datimeteo"></app-box-meteo>
+                        <app-box-meteo [datimeteo]="datimeteo">
+                        </app-box-meteo>
                     </div>
                 </div>
                 <!-- box mezzi -->
                 <div class="float-right w-50 px-1">
                     <div [ngClass]="nightModeBox()">
-                        <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"></app-box-mezzi>
+                        <app-box-mezzi [mezzi]="(mezzi$ | async)">
+                        </app-box-mezzi>
                     </div>
                 </div>
             </div>

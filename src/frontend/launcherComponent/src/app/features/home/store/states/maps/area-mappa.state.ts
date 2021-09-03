@@ -1,16 +1,9 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
-import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
-import { Observable, Subscription } from 'rxjs';
-import { MapsFiltroState } from './maps-filtro.state';
-import { FiltriMarkersState } from './filtri-markers.state';
-import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
-import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
-import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
-import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { SetBoundsIniziale } from '../../actions/home.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
@@ -39,12 +32,6 @@ export const AreaMappaStateDefaults: AreaMappaStateModel = {
     defaults: AreaMappaStateDefaults
 })
 export class AreaMappaState {
-
-    private subscription = new Subscription();
-    @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
-    @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
-    @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
-    @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
 
     @Selector()
     static areaMappa(state: AreaMappaStateModel): AreaMappa {
@@ -76,9 +63,6 @@ export class AreaMappaState {
     getMarkerMappa({ getState, dispatch }: StateContext<AreaMappaStateModel>): void {
         const state = getState();
         if (state.areaMappa) {
-            const filtroRichieste = this.store.selectSnapshot(FiltriMarkersState.filtroRichieste);
-            const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
-            const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
             const composizioneModeOn = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (composizioneModeOn) {
                 const composizioneLoaded = this.store.selectSnapshot(ComposizionePartenzaState.loaded);
@@ -87,10 +71,10 @@ export class AreaMappaState {
                 }
             }
             dispatch([
-                new GetRichiesteMarkers(state.areaMappa, filtroRichieste),
+                new GetRichiesteMarkers(state.areaMappa),
                 new GetSediMarkers(state.areaMappa),
-                new GetMezziMarkers(state.areaMappa, filtroMezzi),
-                new GetSchedeContattoMarkers(state.areaMappa, filtroSC)
+                new GetMezziMarkers(state.areaMappa),
+                new GetSchedeContattoMarkers(state.areaMappa)
             ]);
         }
     }

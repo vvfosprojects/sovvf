@@ -2,8 +2,6 @@ import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { BoxPartenza, BoxPartenzaPreAccoppiati } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
@@ -124,7 +122,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(PaginationComposizionePartenzaState.pageSizePreaccoppiati) pageSizePreaccoppiati$: Observable<number>;
 
     richiesta: SintesiRichiesta;
-    prevStateBoxClick: BoxClickStateModel;
     methods = new HelperSintesiRichiesta();
     disablePrenota: boolean;
     prenotato: boolean;
@@ -164,19 +161,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Composizione creato');
-        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
-        if (this.richiesta) {
-            this.store.dispatch([
-                new AllFalseBoxRichieste(),
-                new AllTrueBoxMezzi(),
-                new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato))
-            ]);
-        }
     }
 
     ngOnDestroy(): void {
         this.store.dispatch([
-            new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
             new ClearPreaccoppiati(),

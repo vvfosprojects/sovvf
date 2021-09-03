@@ -66,8 +66,7 @@ export class MezziMarkersState {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
-        console.log('filtroMezzi', action.filtri);
-        this.mezziMarker.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
+        this.mezziMarker.getMezziMarkers(action.areaMappa).subscribe((data: MezzoMarker[]) => {
                 data.map((mezzo: MezzoMarker) => {
                     if (mezzo.mezzo.stato === StatoMezzo.OperativoPreaccoppiato) {
                         mezzo.mezzo.stato = StatoMezzo.InSede;

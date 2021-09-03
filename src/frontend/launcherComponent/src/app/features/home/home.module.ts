@@ -24,8 +24,6 @@ import { HomeService } from '../../core/service/home-service/home.service';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { TipologicheMezziState } from './store/states/composizione-partenza/tipologiche-mezzi.state';
 import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
-import { BoxClickState } from './store/states/boxes/box-click.state';
-import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
 import { RicercaComposizioneState } from '../../shared/store/states/ricerca-composizione/ricerca-composizione.state';
 import { SostituzionePartenzaModalState } from '../../shared/store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { MezziComposizioneState } from '../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
@@ -68,8 +66,6 @@ import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mapp
                 FiltriRichiesteState,
                 RicercaFilterbarState,
                 TipologicheMezziState,
-                BoxClickState,
-                MapsFiltroState,
                 RicercaComposizioneState,
                 ModificaPartenzaModalState,
                 SostituzionePartenzaModalState,
