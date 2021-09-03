@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
-import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
@@ -13,7 +12,6 @@ import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.int
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { onlyUnique } from '../../../shared/helper/function-generiche';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
-import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import {
     ClearFiltriMezziInServizio,
     ClearListaMezziInServizio,
@@ -60,7 +58,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
 
     statiMezziInServizio: StatoMezzo[];
-    prevStateBoxClick: BoxClickStateModel;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -86,22 +83,17 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
             new ClearListaMezziInServizio(),
             new ClearFiltriMezziInServizio(true),
             new ClearRicercaFilterbar(),
-            new UndoAllBoxes(this.prevStateBoxClick)
         ]);
         console.log('Componente Mezzo in Servizio distrutto');
     }
 
     getMezziInServizio(): void {
-        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         this.store.dispatch(new GetListaMezziInServizio());
         this.subscriptions.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
                 if (this.mezziInServizio?.length) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
-                    this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
-                } else {
-                    this.store.dispatch(new AllTrueBoxMezzi());
                 }
             })
         );

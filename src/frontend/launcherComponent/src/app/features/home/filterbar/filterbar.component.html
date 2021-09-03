@@ -73,11 +73,6 @@
     </div>
     <div class="float-right">
         <div class="clearfix">
-            <div *ngIf="(((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && ((mapsStatus$ | async) || doubleMonitor)"
-                 class="float-left mr-3">
-                <!-- TODO: rivedere funzionamento o eliminare -->
-                <!-- <app-filtri-mappa [filtroMarker]="filtroMarker$ | async"></app-filtri-mappa> -->
-            </div>
             <div *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && !doubleMonitor"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"

@@ -7,7 +7,7 @@
                 <span class="font-weight-bold"
                       ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
                 <span class="font-weight-bold"
-                      (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</span>
+                      (click)="onClickServizi()">{{personaleQty?.totale}}</span>
             </div>
             <div class="clearfix float-right ml-4 ml-auto text-right">
                 <ng-template #funzionariGuardia>
@@ -112,7 +112,7 @@
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('squadreServizio')"><span
                                     class="position-relative badge badge-mod-secondary h6 w-75">
-                              <i *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                              <i *ngIf="personaleDiff" class="blink-i-aggregate fas"
                                  [ngClass]="realDiff('squadreServizio')"></i>{{personaleQty?.squadreServizio}}</span>
                             </li>
                         </ul>
@@ -130,7 +130,7 @@
                         <ul class="list-unstyled m-0">
                             <li [ngClass]="checkDiff('squadreAssegnate')"><span
                                     class="position-relative badge badge-mod-danger h6 w-75">
-                      <i *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                      <i *ngIf="personaleDiff" class="blink-i-aggregate fas"
                          [ngClass]="realDiff('squadreAssegnate')"></i>{{personaleQty?.squadreAssegnate}}</span>
                             </li>
                         </ul>
@@ -159,7 +159,7 @@
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
                                     class="position-relative badge badge-mod-secondary h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                                    *ngIf="personaleDiff" class="blink-i-aggregate fas"
                                     [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
                         </ul>
                     </div>
@@ -179,7 +179,7 @@
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
                                     class="position-relative badge badge-mod-secondary h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fa"
+                                    *ngIf="personaleDiff" class="blink-i-aggregate fas"
                                     [ngClass]="realDiff('tecnici')"></i>{{personaleQty?.tecnici}}</span></li>
                         </ul>
                     </div>

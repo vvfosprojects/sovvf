@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { objectDiff } from '../../../../../shared/helper/function-generiche';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
@@ -13,8 +13,6 @@ export class BoxPersonaleComponent implements OnChanges {
 
     @Input() personaleQty: BoxPersonaleQty;
     @Input() personalePresenze: BoxPersonalePresenze;
-
-    @Output() clickServizi = new EventEmitter<string>();
 
     personaleDiff: any;
 
@@ -45,5 +43,9 @@ export class BoxPersonaleComponent implements OnChanges {
         if (this.personaleDiff) {
             return setArrow(this.personaleDiff[key]);
         }
+    }
+
+    onClickServizi(): void {
+        // window.location.href = 'https://opservice-test.dipvvf.it/';
     }
 }

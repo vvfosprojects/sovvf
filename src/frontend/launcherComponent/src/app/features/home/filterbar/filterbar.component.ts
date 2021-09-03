@@ -36,13 +36,10 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
-import { MarkerFiltro } from '../../../shared/interface/marker-filtro.interface';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetChiamataFromMappaActiveValue } from '../store/actions/maps/tasto-chiamata-mappa.actions';
-import { TastoChiamataMappaState } from '../store/states/maps/tasto-chiamata-mappa.state';
 
 @Component({
     selector: 'app-filterbar',
@@ -98,7 +95,6 @@ export class FilterbarComponent {
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
-    @Select(MapsFiltroState.filtroMarker) filtroMarker$: Observable<MarkerFiltro[]>;
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro[]>;
 
     /**

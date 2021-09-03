@@ -6,7 +6,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { FilterbarComponent } from './filterbar.component';
 import { ViewModeComponent } from './view-mode/view-mode.component';
-import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
 import { RicercaComponent } from './ricerca/ricerca.component';
@@ -33,7 +32,6 @@ import { TastoChiamataMappaComponent } from './tasto-chiamata-mappa/tasto-chiama
         FiltriRichiesteComponent,
         FiltroComponent,
         ViewModeComponent,
-        FiltriMappaComponent,
         TastoChiamataComponent,
         TastoChiamataMappaComponent,
         TastoSchedeContattoComponent,

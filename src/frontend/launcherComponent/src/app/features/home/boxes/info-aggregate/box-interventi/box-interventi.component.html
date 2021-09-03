@@ -44,7 +44,7 @@
                             <li [ngClass]="checkDiff('chiamate')"><span
                                 class="position-relative badge h6 w-75 badge-mod-danger "
                                 ><i *ngIf="interventiDiff"
-                                     class="blink-i-aggregate fa"
+                                     class="blink-i-aggregate fas"
                                      [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
                             </li>
                         </ul>
@@ -61,7 +61,7 @@
                     <li [ngClass]="checkDiff('assegnati')"><span
                       class="position-relative badge badge-mod-warning h6 w-75 "
                       ><i *ngIf="interventiDiff"
-                          class="blink-i-aggregate fa"
+                          class="blink-i-aggregate fas"
                           [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
                     </li>
                   </ul>
@@ -82,11 +82,13 @@
                     </div>
                     <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('presidiati')"><span
-                                class="position-relative badge badge-mod-success h6 w-75 "
-                                ><i *ngIf="interventiDiff"
-                                     class="blink-i-aggregate fa"
-                                     [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
+                            <li [ngClass]="checkDiff('presidiati')">
+                              <span class="position-relative badge badge-mod-success h6 w-75">
+                                <i *ngIf="interventiDiff"
+                                    class="blink-i-aggregate fas"
+                                    [ngClass]="realDiff('presidiati')"></i>
+                                    {{interventi.presidiati}}
+                              </span>
                             </li>
                         </ul>
                     </div>
@@ -100,9 +102,9 @@
                 <div class="col px-0 text-center">
                   <ul class="list-unstyled m-0">
                     <li [ngClass]="checkDiff('chiusi')"><span
-                      class="position-relative badge badge-mod-secondary text-light h6 w-75 "
+                      class="position-relative badge badge-mod-secondary text-light h6 w-75"
                       ><i *ngIf="interventiDiff"
-                           class="blink-i-aggregate fa"
+                           class="blink-i-aggregate fas"
                            [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
                     </li>
                   </ul>

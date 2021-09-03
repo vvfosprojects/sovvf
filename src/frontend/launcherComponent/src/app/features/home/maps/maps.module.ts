@@ -20,6 +20,7 @@ import {
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
+import { MapService } from './service/map-service/map-service.service';
 /**
  * Ngxs
  */
@@ -31,11 +32,8 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
-import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
-import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
-import { MapService } from './service/map-service/map-service.service';
 
 @NgModule({
     imports: [
@@ -53,8 +51,6 @@ import { MapService } from './service/map-service/map-service.service';
                 MezziMarkersState,
                 SediMarkersState,
                 ChiamateMarkersState,
-                MapsButtonsState,
-                FiltriMarkersState,
                 SchedeContattoMarkersState
             ]
         )

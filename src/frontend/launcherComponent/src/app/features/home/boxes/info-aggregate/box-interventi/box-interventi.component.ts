@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxInterventi } from '../../boxes-model/box-interventi.model';
 import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function-generiche';
@@ -17,14 +17,10 @@ export class BoxInterventiComponent implements OnChanges {
     @Input() turno: TurnoCalendario;
     @Input() boxClick: BoxClickInterface;
 
-    @Output() clickRichieste = new EventEmitter<string>();
-
     interventiDiff: any;
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
-        // config.openDelay = 200;
-        // config.closeDelay = 100;
     }
 
     ngOnChanges(changes: SimpleChanges): void {

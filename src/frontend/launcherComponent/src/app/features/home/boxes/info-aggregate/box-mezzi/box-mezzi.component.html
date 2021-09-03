@@ -34,7 +34,7 @@
                                     class="position-relative badge badge-mod-success h6 w-75"
                                     ngbTooltip="Evidenzia mezzi in sede sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inSede, 'border-info-aggregate': !boxClick?.mezzi.inSede}">
-                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inSede')"></i>{{mezzi.inSede}}</span>
+                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fas" [ngClass]="realDiff('inSede')"></i>{{mezzi.inSede}}</span>
                             </li>
                         </ul>
                     </div>
@@ -51,7 +51,7 @@
                                     class="position-relative d-inline-block badge badge-mod-success h6 w-75"
                                     ngbTooltip="Evidenzia mezzi in rientro sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inRientro, 'border-info-aggregate': !boxClick?.mezzi.inRientro}">
-                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inRientro')"></i>{{mezzi.inRientro}}</span>
+                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fas" [ngClass]="realDiff('inRientro')"></i>{{mezzi.inRientro}}</span>
                             </li>
                         </ul>
                     </div>
@@ -75,7 +75,7 @@
                                     class="position-relative badge badge-mod-danger h6 w-75"
                                     ngbTooltip="Evidenzia mezzi in viaggio sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.inViaggio, 'border-info-aggregate': !boxClick?.mezzi.inViaggio}">
-                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('inViaggio')"></i>{{mezzi.inViaggio}}</span>
+                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fas" [ngClass]="realDiff('inViaggio')"></i>{{mezzi.inViaggio}}</span>
                             </li>
                         </ul>
                     </div>
@@ -92,7 +92,7 @@
                                     class="position-relative badge badge-mod-danger h6 w-75"
                                     ngbTooltip="Evidenzia mezzi sul posto sulla mappa"
                                     [ngClass]="{'border-click-checked': boxClick?.mezzi.sulPosto, 'border-info-aggregate': !boxClick?.mezzi.sulPosto}">
-                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fa" [ngClass]="realDiff('sulPosto')"></i>{{mezzi.sulPosto}}</span>
+                                    <i *ngIf="mezziDiff" class="blink-i-aggregate fas" [ngClass]="realDiff('sulPosto')"></i>{{mezzi.sulPosto}}</span>
                             </li>
                         </ul>
                     </div>

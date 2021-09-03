@@ -3,7 +3,6 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
 import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
-import { FiltriMarkersState } from './filtri-markers.state';
 import { AreaMappaState } from './area-mappa.state';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import {
@@ -67,7 +66,7 @@ export class SchedeContattoMarkersState {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
-        this.schedeContattoMarkerService.getSchedeContattoMarkers(action.areaMappa, action.filtri).subscribe((data: any) => {
+        this.schedeContattoMarkerService.getSchedeContattoMarkers(action.areaMappa).subscribe((data: any) => {
                 dispatch([
                     new SetSchedeContattoMarkers(data.listaSchedeMarker),
                     new StopLoadingAreaMappa()
@@ -191,9 +190,8 @@ export class SchedeContattoMarkersState {
 
     @Action(RefreshSchedeContattoMarkers)
     refreshSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
-        const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
         const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
-        dispatch(new GetSchedeContattoMarkers(areaMappa, filtroSC));
+        dispatch(new GetSchedeContattoMarkers(areaMappa));
     }
 
 }
