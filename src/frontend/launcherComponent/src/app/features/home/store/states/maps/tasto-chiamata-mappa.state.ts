@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { SetChiamataFromMappaActiveValue } from '../../actions/maps/tasto-chiamata-mappa.actions';
 
@@ -24,7 +24,7 @@ export class TastoChiamataMappaState {
     }
 
     @Action(SetChiamataFromMappaActiveValue)
-    setChiamataFromMappaActiveValue({ getState, patchState }: StateContext<TastoChiamataMappaStateModel>, action: SetChiamataFromMappaActiveValue): void {
+    setChiamataFromMappaActiveValue({ patchState }: StateContext<TastoChiamataMappaStateModel>, action: SetChiamataFromMappaActiveValue): void {
         const value = action.value;
         patchState({
             active: value

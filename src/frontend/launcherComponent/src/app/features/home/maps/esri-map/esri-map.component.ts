@@ -26,6 +26,8 @@ import { SedeMarker } from '../maps-model/sede-marker.model';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../service/map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
+import { ViewComponentState } from '../../store/states/view/view.state';
+import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../store/actions/view/view.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -451,6 +453,17 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 this.changeCenter([lon, lat]);
                 this.changeZoom(19);
 
+                const chiamataFormActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+                const modificaFormActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
+                const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
+                if(chiamataFormActive) {
+                    this.store.dispatch(new ToggleChiamata());
+                } else if(modificaFormActive) {
+                    this.store.dispatch(new ToggleModifica());
+                } else if(composizionePartenzaActive) {
+                    this.store.dispatch(new ToggleComposizione());
+                }
+
                 // Apro il modale con FormChiamata con lat, lon e address
                 const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
                     windowClass: 'xxlModal modal-holder',
@@ -462,21 +475,6 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 modalNuovaChiamata.result.then((result: string) => {
                     this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
                 });
-            });
-        } else if (drawedPolygon) {
-
-            this.changeZoom(17);
-
-            // Apro il modale con FormChiamata con il drawedPolygon
-            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                windowClass: 'xxlModal modal-holder',
-            });
-            modalNuovaChiamata.componentInstance.drawedPolygon = drawedPolygon;
-
-            modalNuovaChiamata.result.then((result: string) => {
-                this.drawedPolygon = null;
-                this.drawGraphicLayer.removeAll();
-                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
         }
     }
