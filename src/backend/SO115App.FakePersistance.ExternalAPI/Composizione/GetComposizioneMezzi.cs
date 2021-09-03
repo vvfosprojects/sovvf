@@ -83,15 +83,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList();
 
-                    //var lstSquadreInRientro = lstStatiSquadre.Result?.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
-                    //.Select(s => new SquadraSemplice()
-                    //{
-                    //    Codice = s.IdSquadra,
-                    //    Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
-                    //    Nome = s.IdSquadra,
-                    //    Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                    //    Turno = ' ',
-                    //}).ToList();
+                    var lstSquadreInRientro = lstStatiSquadre.Result?.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice)
+                    .Select(s => new SquadraSemplice()
+                    {
+                        Codice = s.IdSquadra,
+                        Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
+                        Nome = s.IdSquadra,
+                        Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
+                        Turno = ' ',
+                    }).ToList();
 
                     m.PreAccoppiato = lstSqPreacc?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.Result?.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
@@ -102,7 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc,
-                        //ListaSquadre = lstSquadreInRientro,
+                        ListaSquadre = lstSquadreInRientro,
                     };
 
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
