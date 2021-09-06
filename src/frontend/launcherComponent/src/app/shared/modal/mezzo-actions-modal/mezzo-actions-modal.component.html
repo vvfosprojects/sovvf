@@ -54,7 +54,9 @@
               </label>
           </div>
       </div>
-    <small class="text-muted">* Il cambiamento di stato risulterà il {{todayDate?.day + '/' + todayDate?.month + '/' + todayDate?.year}} alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+      <div class="alert alert-warning" role="alert">
+          <small style="color: black">Il cambiamento di stato risulterà il {{todayDate?.day + '/' + todayDate?.month + '/' + todayDate?.year}} alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+      </div>
   </form>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
