@@ -281,6 +281,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             switch (currentUrl) {
                 case RoutesPath.Home:
                     return true;
+                case RoutesPath.Impostazioni:
+                    return true;
                 default:
                     return false;
             }
