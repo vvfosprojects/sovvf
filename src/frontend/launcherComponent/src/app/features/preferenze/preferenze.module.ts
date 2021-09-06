@@ -6,16 +6,16 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ImpostazioniRoutingModule } from './impostazioni.routing';
-import { ImpostazioniComponent } from './impostazioni.component';
+import { PreferenzeRoutingModule } from './preferenze.routing';
+import { PreferenzeComponent } from './preferenze.component';
 
 @NgModule({
     declarations: [
-        ImpostazioniComponent
+        PreferenzeComponent
     ],
     imports: [
         CommonModule,
-        ImpostazioniRoutingModule,
+        PreferenzeRoutingModule,
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
         NgxsFormPluginModule.forRoot(),
@@ -26,5 +26,5 @@ import { ImpostazioniComponent } from './impostazioni.component';
     ]
 })
 
-export class ImpostazioniModule {
+export class PreferenzeModule {
 }

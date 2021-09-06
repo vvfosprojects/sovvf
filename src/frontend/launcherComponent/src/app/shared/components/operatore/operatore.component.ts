@@ -13,7 +13,6 @@ export class OperatoreComponent {
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
     @Input() url: string;
-    @Output() logout = new EventEmitter();
-
+    
     RoutesPath = RoutesPath;
 }

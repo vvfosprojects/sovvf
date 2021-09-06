@@ -76,8 +76,13 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: RoutesPath.Impostazioni,
-        loadChildren: () => import('./features/impostazioni/impostazioni.module').then(m => m.ImpostazioniModule),
+        path: RoutesPath.Profilo,
+        loadChildren: () => import('./features/profilo/profilo.module').then(m => m.ProfiloModule),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: RoutesPath.Preferenze,
+        loadChildren: () => import('./features/preferenze/preferenze.module').then(m => m.PreferenzeModule),
         canActivate: [AuthGuard]
     },
     {

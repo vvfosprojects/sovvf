@@ -1,60 +1,14 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
+        <div class="col-12 col-md-6 mx-auto mb-2">
+            <h2>
+                <i class="fas fa-cogs"></i>
+                Preferenze
+            </h2>
+        </div>
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
              <div class="row">
-                 <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
-                     <div class="card px-4 py-3 no-padding-custom">
-                         <div class="clearfix bg-impostazioni">
-                             <div class="text-center float-left"
-                                  [class.bg-moon-light]="(nightMode$ | async)"
-                                  style="width: 50%">
-                                 <div class="container mt-2">
-                                     <div class="d-flex justify-content-center h-100">
-                                         <div class="img-fuori-container">
-                                             <div class="icona-verde"></div>
-                                             <div class="img-dentro-container">
-                                                 <img src="../../../../assets/img/logo_vvf_200x.png">
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                                 <h3 class="mb-1">
-                                     {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
-                                 </h3>
-                                 <div class="divider-custom">
-                                     <div class="divider-custom-line"
-                                          style="height: 0.09rem;"></div>
-                                 </div>
-                                 <h6 class="mt-1">
-                                     <span class="font-weight-bold">CF:</span>
-                                     {{ utente.codiceFiscale | uppercase }}
-                                 </h6>
-                             </div>
-                             <div class="text-center float-right py-2" style="width: 50%">
-                                 <h5 class="font-weight-bold allineamento-list font-xxlarge">
-                                     <i class="fas fa-cogs mr-1"></i>
-                                     {{ 'ruoli assegnati' | uppercase }}
-                                 </h5>
-                                 <div class="divider-custom">
-                                     <div class="divider-custom-line" style="height: 0.15rem; margin-right: 25%;"></div>
-                                 </div>
-                                 <div class="allineamento-list">
-                                     <div *ngFor="let ruolo of ruoliUtenteLoggato">
-                                         <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
-                                         {{ ruolo.descrizione }}
-                                     </div>
-                                 </div>
-                                 <div *ngIf="ruoliUtenteLoggato?.length === 0">
-                                     Solo Visualizzazione
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="pl-3 py-2 bg-dark text-white">
-                             <app-versione></app-versione>
-                         </div>
-                     </div>
-                 </div>
                  <div class="col-12">
                      <div class="row">
                          <div class="col-12 col-md-6 mx-auto">

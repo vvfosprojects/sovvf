@@ -16,11 +16,11 @@ import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
-    selector: 'app-impostazioni',
-    templateUrl: './impostazioni.component.html',
-    styleUrls: ['./impostazioni.component.css']
+    selector: 'app-profilo',
+    templateUrl: './profilo.component.html',
+    styleUrls: ['./profilo.component.css']
 })
-export class ImpostazioniComponent implements OnInit, OnDestroy {
+export class ProfiloComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
@@ -29,9 +29,6 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     ruoliUtenteLoggato: Ruolo[];
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-
-    @Select(ImpostazioniState.listaImpostazioni) listaImpostazioni$: Observable<Impostazione[]>;
-    listaImpostazioni: Impostazione[];
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
     sunMode: boolean;
@@ -42,13 +39,12 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         this.getDoubleMonitorMode();
         this.getUtente();
         this.getRuoliUtenteLoggato();
-        this.getListaImpostazioni();
     }
 
     ngOnInit(): void {
         console.log('Componente Impostazioni creato');
         this.store.dispatch([
-            new SetCurrentUrl(RoutesPath.Impostazioni),
+            new SetCurrentUrl(RoutesPath.Profilo),
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
@@ -92,35 +88,5 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
                 this.utente = user;
             })
         );
-    }
-
-    getListaImpostazioni(): void {
-        this.subscription.add(
-            this.listaImpostazioni$.subscribe((listaImpostazioni: Impostazione[]) => {
-                this.listaImpostazioni = makeCopy(listaImpostazioni);
-                if (this.listaImpostazioni.length) {
-                    this.store.dispatch(new SunMode(!this.listaImpostazioni[2].opzioni[0].singleValue.value));
-                }
-                this.listaImpostazioni[1].tipo = TipoImpostazione.EventiRichiesta;
-                this.listaImpostazioni[2].icona = 'fa-moon';
-            })
-        );
-    }
-
-    setImpostazione(tipo: TipoImpostazione, opzioneLabel: string, value: any): void {
-        const listaImpostazioni = makeCopy(this.listaImpostazioni);
-        const impostazione = listaImpostazioni.filter((i: Impostazione) => i.tipo === tipo)[0] as Impostazione;
-        if (!impostazione) {
-            return;
-        }
-        const opzione = impostazione.opzioni.filter((o: OpzioneImpostazione) => o.label === opzioneLabel)[0] as OpzioneImpostazione;
-        if (!opzione) {
-            return;
-        }
-        opzione.singleValue ? opzione.singleValue.value = value : opzione.select.selected = value;
-        this.store.dispatch(new PatchImpostazioni(impostazione));
-        if (tipo === 'Modalità Notte') {
-            this.store.dispatch(new SunMode(!impostazione.opzioni[0].singleValue.value));
-        }
     }
 }
