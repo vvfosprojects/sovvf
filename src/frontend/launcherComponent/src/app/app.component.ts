@@ -295,6 +295,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     return true;
                 case RoutesPath.Rubrica:
                     return true;
+                case RoutesPath.RubricaPersonale:
+                    return true;
                 default:
                     return false;
             }

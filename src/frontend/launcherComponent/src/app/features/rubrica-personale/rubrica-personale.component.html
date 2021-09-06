@@ -1,63 +1,68 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-9 mx-auto mb-2">
-            <h2>
-                <i class="fas fa-id-card"></i>
-                Rubrica Personale VV.F.
-            </h2>
-        </div>
-        <div class="col-12 col-md-9 mx-auto mb-2">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
             <div class="row">
-                <div class="col-2">
-                    <button class="btn btn-outline-secondary btn-no-hover mb-2 font-weight-bold" placement="right"
-                            [routerLink]="['/' + RoutesPath.Rubrica]" ngbTooltip="Visualizza Rubrica">
-                        <i class="fas fa-address-book mr-1"></i>
-                        Rubrica
-                    </button>
+                <div class="col-12 col-md-11 mx-auto mb-2">
+                    <h2>
+                        <i class="fas fa-id-card"></i>
+                        Rubrica Personale VV.F.
+                    </h2>
                 </div>
-                <div class="col d-inline-flex mb-2">
-                    <ng-select class="align-self-center mr-1 custom w-50 float-right custom"
-                               [items]="filtriStatoPersonale"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [searchable]="false"
-                               [loading]="!filtriStatoPersonale"
-                               (change)="addFiltro($event, 'stato')"
-                               (clear)="clearFiltro('stato')"
-                               placeholder="Stato: Tutti">
-                    </ng-select>
-                    <ng-select class="align-self-center custom w-50 float-right custom"
-                               [items]="filtriTipoPersonale"
-                               [multiple]="false"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               [searchable]="false"
-                               [loading]="!filtriTipoPersonale"
-                               (change)="addFiltro($event, 'tipo')"
-                               (clear)="clearFiltro('tipo')"
-                               placeholder="Tipo: Tutti">
-                    </ng-select>
+                <div class="col-12 col-md-11 mx-auto mb-2">
+                    <div class="row">
+                        <div class="col-2">
+                            <button class="btn btn-outline-secondary btn-no-hover mb-2 font-weight-bold" placement="right"
+                                    [routerLink]="['/' + RoutesPath.Rubrica]" ngbTooltip="Visualizza Rubrica">
+                                <i class="fas fa-address-book mr-1"></i>
+                                Rubrica
+                            </button>
+                        </div>
+                        <div class="col d-inline-flex mb-2">
+                            <ng-select class="align-self-center mr-1 custom w-50 float-right custom"
+                                    [items]="filtriStatoPersonale"
+                                    [multiple]="false"
+                                    [closeOnSelect]="true"
+                                    [hideSelected]="true"
+                                    [searchable]="false"
+                                    [loading]="!filtriStatoPersonale"
+                                    (change)="addFiltro($event, 'stato')"
+                                    (clear)="clearFiltro('stato')"
+                                    placeholder="Stato: Tutti">
+                            </ng-select>
+                            <ng-select class="align-self-center custom w-50 float-right custom"
+                                    [items]="filtriTipoPersonale"
+                                    [multiple]="false"
+                                    [closeOnSelect]="true"
+                                    [hideSelected]="true"
+                                    [searchable]="false"
+                                    [loading]="!filtriTipoPersonale"
+                                    (change)="addFiltro($event, 'tipo')"
+                                    (clear)="clearFiltro('tipo')"
+                                    placeholder="Tipo: Tutti">
+                            </ng-select>
+                        </div>
+                        <div class="col text-right">
+                            <app-ricerca-rubrica-personale [loading]="loading$ | async"
+                                                        (ricercaChange)="onRicercaRubricaPersonale($event)">
+                            </app-ricerca-rubrica-personale>
+                        </div>
+                    </div>
                 </div>
-                <div class="col text-right">
-                    <app-ricerca-rubrica-personale [loading]="loading$ | async"
-                                                   (ricercaChange)="onRicercaRubricaPersonale($event)">
-                    </app-ricerca-rubrica-personale>
+                <div *ngIf="ricerca" class="col-12 col-md-11 mx-auto pl-4">
+                    <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+                </div>
+                <div class="col-12 col-md-11 mx-auto">
+                    <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async"
+                                                [totalItems]="totalItems$ | async"
+                                                [pageSize]="pageSize" [page]="page$ | async"
+                                                [loading]="loading$ | async"
+                                                [pageSizes]="pageSizes$ | async"
+                                                (pageChange)="onPageChange($event)"
+                                                (pageSizeChange)="onPageSizeChange($event)">
+                    </app-tabella-rubrica-personale>
                 </div>
             </div>
-        </div>
-        <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
-            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-        </div>
-        <div class="col-12 col-md-9 mx-auto">
-            <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async"
-                                           [totalItems]="totalItems$ | async"
-                                           [pageSize]="pageSize" [page]="page$ | async"
-                                           [loading]="loading$ | async"
-                                           [pageSizes]="pageSizes$ | async"
-                                           (pageChange)="onPageChange($event)"
-                                           (pageSizeChange)="onPageSizeChange($event)">
-            </app-tabella-rubrica-personale>
         </div>
     </div>
 </div>

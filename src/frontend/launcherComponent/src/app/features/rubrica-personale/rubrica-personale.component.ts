@@ -20,6 +20,7 @@ import { SetPageSize } from '../../shared/store/actions/pagination/pagination.ac
 import { GetRubricaPersonale } from './store/actions/rubrica-personale/rubrica-personale.actions';
 import { RicercaRubricaPersonaleState } from './store/states/ricerca-rubrica-personale/ricerca-rubrica-personale.state';
 import { RubricaPersonale } from '../../shared/interface/rubrica-personale.interface';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-rubrica-personale',
@@ -28,6 +29,8 @@ import { RubricaPersonale } from '../../shared/interface/rubrica-personale.inter
 })
 export class RubricaPersonaleComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(RubricaPersonaleState.vociRubricaPersonale) vociRubricaPersonale$: Observable<RubricaPersonale[]>;
     @Select(RubricaPersonaleState.loadingRubricaPersonale) loading$: Observable<boolean>;
     @Select(RicercaRubricaPersonaleState.ricerca) ricerca$: Observable<string>;
@@ -49,6 +52,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getRicerca();
         this.getPageSize();
         this.getRubricaPersonale(true);
@@ -69,6 +73,14 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible(),
         ]);
         this.subscriptions.unsubscribe();
+    }
+    
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getRubricaPersonale(pageAttuale: boolean): void {
