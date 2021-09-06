@@ -8,9 +8,9 @@
     </button>
 </div>
 
-<div class="modal-body px-0 pb-0">
+<div class="modal-body px-0 py-3">
     <!-- FILTRI SUGLI INTERVENTI -->
-    <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri sugli interventi</span>
         <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
         <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- FILTRI AGGIUNTIVI SULLA SQUADRA -->
-    <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri aggiuntivi sulla squadra</span>
         <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
         <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
@@ -132,7 +132,7 @@
     </div>
 
     <!-- ALTRI FILTRI -->
-    <div class="clearfix w-100 badge badge-secondary mt-3" style="font-size: 25px; border-radius: 0">
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Altri filtri</span>
         <span *ngIf="showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
         <span *ngIf="!showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
