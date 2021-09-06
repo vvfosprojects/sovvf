@@ -16,6 +16,7 @@ import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -24,6 +25,8 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 })
 export class RubricaComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
     @Select(RubricaState.loadingRubrica) loading$: Observable<boolean>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
@@ -44,6 +47,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getRicerca();
         this.getPageSize();
         this.getRubrica(true);
@@ -63,6 +67,14 @@ export class RubricaComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
+    }
+    
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getRubrica(pageAttuale: boolean): void {
