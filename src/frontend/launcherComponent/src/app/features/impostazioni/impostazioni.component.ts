@@ -13,6 +13,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-impostazioni',
@@ -20,6 +21,9 @@ import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
     styleUrls: ['./impostazioni.component.css']
 })
 export class ImpostazioniComponent implements OnInit, OnDestroy {
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     ruoliUtenteLoggato: Ruolo[];
@@ -35,6 +39,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
 
     constructor(private store: Store) {
+        this.getDoubleMonitorMode();
         this.getUtente();
         this.getRuoliUtenteLoggato();
         this.getListaImpostazioni();
@@ -55,6 +60,14 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscription.unsubscribe();
+    }
+
+    getDoubleMonitorMode(): void {
+        this.subscription.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getRuoliUtenteLoggato(): void {
