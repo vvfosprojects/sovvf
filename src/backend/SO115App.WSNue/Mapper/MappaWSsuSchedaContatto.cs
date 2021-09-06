@@ -1,81 +1,17 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using SO115App.WSNue.Classi.NUE;
+﻿using SO115App.WSNue.Classi.NUE;
 using SO115App.WSNue.DataContract;
-using SO115App.WSNue.Mapper;
-using SO115App.WSNue.SignalR.Notifications;
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Xml;
 
-namespace SO115App.WSNue.Manager
+namespace SO115App.WSNue.Mapper
 {
-    public class NueManager
+    public static class MappaWSsuSchedaContatto
     {
-        public string InserisciSchedaNue(InsertSchedaNueRequest insertSchedaNueRequest)
-        {
-            var conAppo = ConfigurationManager.ConnectionStrings["MongoDbConn"].ConnectionString;
-            var conDB = conAppo.Split(',')[0];
-            var DbName = conAppo.Split(',')[1];
-
-            var client = new MongoClient(conDB);
-            var database = client.GetDatabase(DbName.Trim());
-
-            try
-            {
-                insertSchedaNueRequest.codiceSede = "RM.1000"; //insertSchedaNueRequest.provinciaDestinatario + ".1000";
-
-                var colCheck = database.ListCollections(new ListCollectionsOptions { Filter = new BsonDocument("name", "schedeNue") }).ToList();
-                if (colCheck.Count > 0)
-                    database.GetCollection<InsertSchedaNueRequest>("schedeNue").InsertOne(insertSchedaNueRequest);
-                else
-                {
-                    database.CreateCollection("schedeNue");
-                    database.GetCollection<InsertSchedaNueRequest>("schedeNue").InsertOne(insertSchedaNueRequest);
-                }
-
-                database.GetCollection<SchedaContatto>("schedecontatto").InsertOne(MappaWSsuSchedaContatto.MappaSchedaContatto(insertSchedaNueRequest));
-
-                SendMessage(insertSchedaNueRequest);
-
-                return "Ok";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        private async void SendMessage(InsertSchedaNueRequest scheda)
-        {
-            var hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:31497/NotificationHub")
-            .Build();
-
-            hubConnection.On<string>("ReciveServerUpdate", update =>
-            {
-                //todo, adding updates tolist for example
-            });
-
-            await hubConnection.StartAsync();
-
-            Notification<Utente> utente = new Notification<Utente>()
-            {
-                CodiciSede = new string[] { scheda.codiceSede },
-                NominativoUtente = "Nue SOAP"
-            };
-
-            hubConnection.InvokeAsync("AddToGroup", utente).Wait();
-
-            hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", MappaScheda(scheda)).Wait();
-
-            hubConnection.InvokeAsync("RemoveToGroup", utente).Wait();
-        }
-
-        private SchedaContatto MappaScheda(InsertSchedaNueRequest scheda)
+        public static SchedaContatto MappaSchedaContatto(InsertSchedaNueRequest scheda)
         {
             Regex regex = new Regex(@">\s*<");
             XmlDocument SchedaXml = new XmlDocument();
@@ -130,7 +66,6 @@ namespace SO115App.WSNue.Manager
                 dataInserimento = Convert.ToDateTime(SchedaXml.SelectSingleNode("//nue:CreateDate", namespaces).InnerText),
                 dettaglio = SchedaXml.SelectSingleNode("//nue:ClassificationDetail", namespaces).InnerText,
                 enteCompetenza = SchedaXml.SelectSingleNode("//nue:CompetenceType", namespaces).InnerText,
-                id = "",
                 numeroPersoneCoinvolte = Convert.ToInt16(SchedaXml.SelectSingleNode("//nue:InvolvedNumber", namespaces).InnerText),
                 priorita = Convert.ToInt16(SchedaXml.SelectSingleNode("//nue:HighPriority", namespaces).InnerText == "TRUE" ? "1" : "0"),
                 richiedente = new Richiedente(Nome + " " + Cognome, Telefono),

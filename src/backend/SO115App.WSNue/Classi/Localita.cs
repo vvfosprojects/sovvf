@@ -25,25 +25,25 @@ namespace SO115App.WSNue.Classi.NUE
     {
         public Localita(Coordinate _coordinate, string Indirizzo, string Note)
         {
-            this.Coordinate = _coordinate;
-            this.Indirizzo = Indirizzo;
-            this.Note = Note;
+            this.coordinate = _coordinate;
+            this.indirizzo = Indirizzo;
+            this.note = Note;
         }
 
         [Required]
-        public Coordinate Coordinate { get; set; }
+        public Coordinate coordinate { get; set; }
 
-        public string Indirizzo { get; set; }
+        public string indirizzo { get; set; }
 
-        public string Citta { get; set; }
+        public string citta { get; set; }
 
-        public string Provincia { get; set; }
-        public string Interno { get; set; }
-        public string Palazzo { get; set; }
-        public string Scala { get; set; }
+        public string provincia { get; set; }
+        public string interno { get; set; }
+        public string palazzo { get; set; }
+        public string scala { get; set; }
 
-        public string Note { get; set; }
+        public string note { get; set; }
 
-        public string Piano { get; set; }
+        public string piano { get; set; }
     }
 }

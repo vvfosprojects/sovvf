@@ -24,18 +24,18 @@ namespace SO115App.WSNue.Classi.NUE
     {
         public Coordinate(double Latitudine, double Longitudine)
         {
-            this.Latitudine = Latitudine;
-            this.Longitudine = Longitudine;
+            this.latitudine = Latitudine;
+            this.longitudine = Longitudine;
         }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        public double Latitudine { get; set; }
+        public double latitudine { get; set; }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        public double Longitudine { get; set; }
+        public double longitudine { get; set; }
     }
 }
