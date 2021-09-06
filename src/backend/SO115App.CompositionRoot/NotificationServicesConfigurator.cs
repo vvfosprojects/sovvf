@@ -66,12 +66,6 @@ namespace SO115App.CompositionRoot
                 SO115App.SignalR.Sender.GestionePartenza.NotificationAnnullaPartenza>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyMessaInLavorazioneRichiesta,
-                SO115App.SignalR.Sender.GestioneIntervento.NotificationInserInLavorazione>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeleteInLavorazioneRichiesta,
-                SO115App.SignalR.Sender.GestioneIntervento.NotificationDeleteInLavorazione>();
-            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeletePresaInCaricoRichiesta,
                 SO115App.SignalR.Sender.GestioneIntervento.NotificationDeletePresaInCarico>();
             container.Register<
