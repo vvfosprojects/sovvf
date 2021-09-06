@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-trasferimento-chiamata',
@@ -25,6 +26,8 @@ import { GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/d
 })
 export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(TrasferimentoChiamataState.listaTrasferimentiChiamate) listaTrasferimentiChiamate$: Observable<TrasferimentoChiamata[]>;
     @Select(RicercaTrasferimentoChiamataState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -44,6 +47,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getRicerca();
         this.getPageSize();
         this.getTrasferimentoChiamata(true);
@@ -64,6 +68,14 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
+    }
+    
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getSediTrasferimenti(): void {

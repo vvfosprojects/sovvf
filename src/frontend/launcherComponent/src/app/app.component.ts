@@ -291,6 +291,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     return true;
                 case RoutesPath.Changelog:
                     return true;
+                case RoutesPath.TrasferimentoChiamata:
+                    return true;
                 default:
                     return false;
             }
