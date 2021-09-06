@@ -24,6 +24,7 @@ import { DettaglioTipologia } from '../../shared/interface/dettaglio-tipologia.i
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../core/service/pos-service/pos.service';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-pos',
@@ -32,6 +33,8 @@ import { PosService } from '../../core/service/pos-service/pos.service';
 })
 export class PosComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     tipologie: Tipologia[];
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
@@ -57,6 +60,7 @@ export class PosComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getRicerca();
         this.getPageSize();
         this.getPos(true);
@@ -78,6 +82,14 @@ export class PosComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
+    }
+
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getTipologie(): void {
