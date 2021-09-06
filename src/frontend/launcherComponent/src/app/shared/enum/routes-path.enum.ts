@@ -14,7 +14,8 @@ export enum RoutesPath {
     RubricaPersonale = 'rubrica-personale',
     TrasferimentoChiamata = 'trasferimento-chiamata',
     Changelog = 'changelog',
-    Impostazioni = 'impostazioni',
+    Profilo = 'profilo',
+    Preferenze = 'preferenze',
     ImpostazioniSede = 'impostazioni-sede',
     POS = 'POS'
 }
