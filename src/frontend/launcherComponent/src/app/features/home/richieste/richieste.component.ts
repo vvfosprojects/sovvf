@@ -141,7 +141,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                         if (this.boxAttivi) {
                             this.listHeightClass = 'm-h-710';
                         } else {
-                            this.listHeightClass = 'm-h-795';
+                            this.listHeightClass = 'm-h-840';
                         }
                     }, 300);
                 }

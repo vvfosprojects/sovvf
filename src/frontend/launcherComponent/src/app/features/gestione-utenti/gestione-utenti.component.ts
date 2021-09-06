@@ -30,6 +30,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -38,6 +39,8 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 })
 export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
@@ -55,7 +58,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
-    subscriptions: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -63,6 +66,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
@@ -83,6 +87,14 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
+    }
+
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     onRicercaUtenti(ricerca: any): void {

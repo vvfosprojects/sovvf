@@ -7,6 +7,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-changelog',
@@ -15,12 +16,15 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 })
 export class ChangelogComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(ChangelogState.listaChangelog) listaChangelog$: Observable<ChangelogInterface[]>;
     listaChangelog: ChangelogInterface[];
 
     private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store) {
+        this.getDoubleMonitorMode();
         this.getListaChangelog();
     }
 
@@ -37,6 +41,14 @@ export class ChangelogComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
+    }
+    
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
     }
 
     getListaChangelog(): void {

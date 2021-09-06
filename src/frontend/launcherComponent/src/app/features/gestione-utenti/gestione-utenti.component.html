@@ -1,42 +1,47 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-9 mx-auto mb-2">
-            <h2>
-                <i class="fas fa-users"></i>
-                Gestione Utenti
-                <a href="http://intranet.dipvvf.it/SOWEB/GestioneUtenti.pdf" target="_blank"><i
-                        class="fas fa-question-circle-o animation-questionmark" aria-hidden="true"></i></a>
-            </h2>
-        </div>
-        <div class="col-12 col-md-9 mx-auto mb-2">
-            <div class="clearfix">
-                <div class="float-left">
-                    <button class="btn btn-primary mb-2" (click)="onAddUtente()">
-                        <i class="fas fa-plus mr-1"></i>
-                        Aggiungi Utente
-                    </button>
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="row">
+                <div class="col-12 col-md-9 mx-auto mb-2">
+                    <h2>
+                        <i class="fas fa-users"></i>
+                        Gestione Utenti
+                        <a href="http://intranet.dipvvf.it/SOWEB/GestioneUtenti.pdf" target="_blank"><i
+                                class="fas fa-question-circle-o animation-questionmark" aria-hidden="true"></i></a>
+                    </h2>
                 </div>
-                <div class="float-right">
-                    <app-ricerca-utenti [loading]="loading$ | async"
-                                        [sediFiltro]="sediFiltro$ | async"
-                                        [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
-                                        (ricercaChange)="onRicercaUtenti($event)"
-                                        (filtroChange)="onFiltroSediChange($event)"
-                                        (filtriReset)="onFiltriReset()"></app-ricerca-utenti>
+                <div class="col-12 col-md-9 mx-auto mb-2">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <button class="btn btn-primary mb-2" (click)="onAddUtente()">
+                                <i class="fas fa-plus mr-1"></i>
+                                Aggiungi Utente
+                            </button>
+                        </div>
+                        <div class="float-right">
+                            <app-ricerca-utenti [loading]="loading$ | async"
+                                                [sediFiltro]="sediFiltro$ | async"
+                                                [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
+                                                (ricercaChange)="onRicercaUtenti($event)"
+                                                (filtroChange)="onFiltroSediChange($event)"
+                                                (filtriReset)="onFiltriReset()"></app-ricerca-utenti>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
+                    <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+                </div>
+                <div class="col-12 col-md-9 mx-auto">
+                    <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
+                                        [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
+                                        [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
+                                        (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
+                                        (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)"
+                                        (pageSizeChange)="onPageSizeChange($event)">
+                    </app-tabella-utenti>
                 </div>
             </div>
-        </div>
-        <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
-            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-        </div>
-        <div class="col-12 col-md-9 mx-auto">
-            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
-                                [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
-                                [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
-                                (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
-                                (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)"
-                                (pageSizeChange)="onPageSizeChange($event)">
-            </app-tabella-utenti>
         </div>
     </div>
 </div>
