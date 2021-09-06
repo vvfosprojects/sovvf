@@ -9,7 +9,7 @@ using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate
 {
-    public class TrasferimentiChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<CodiciChiamateQuery, CodiciChiamateResult>
+    public class TrasferimentiChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<TrasferimentiChiamateQuery, TrasferimentiChiamateResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
@@ -22,7 +22,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
             _getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(CodiciChiamateQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(TrasferimentiChiamateQuery query)
         {
             var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
@@ -32,7 +32,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreRichieste))
+                    bool autorizzato = false;
+                    foreach (var sede in query.CodiciSede)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, sede, Costanti.GestoreRichieste))
+                            autorizzato = true;
+                    }
+
+                    if (!autorizzato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }

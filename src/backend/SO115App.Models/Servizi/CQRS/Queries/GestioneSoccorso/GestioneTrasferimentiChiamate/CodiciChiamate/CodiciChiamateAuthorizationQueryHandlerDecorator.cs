@@ -9,20 +9,20 @@ using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate
 {
-    public class TrasferimentiChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<TrasferimentiChiamateQuery, TrasferimentiChiamateResult>
+    public class CodiciChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<CodiciChiamateQuery, CodiciChiamateResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public TrasferimentiChiamateAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public CodiciChiamateAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(TrasferimentiChiamateQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(CodiciChiamateQuery query)
         {
             string username = this._currentUser.Identity.Name;
             Utente user = _findUserByUsername.FindUserByUs(username);
@@ -34,11 +34,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
                 else
                 {
                     bool abilitato = false;
-                    foreach (var competenza in query.CodiciSede)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreRichieste))
+                        abilitato = true;
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
