@@ -84,6 +84,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
         }
         const modal = this.modalService.open(ModalRichiesteChiuseComponent, modalOptions);
         modal.componentInstance.titolo = event.richiesta;
+        modal.componentInstance.periodoChiuse = this.periodoChiuseChiamate  ? this.periodoChiuseChiamate : this.periodoChiusiInterventi;
         modal.result.then((res: any) => {
             switch (res.status) {
                 case 'ok':

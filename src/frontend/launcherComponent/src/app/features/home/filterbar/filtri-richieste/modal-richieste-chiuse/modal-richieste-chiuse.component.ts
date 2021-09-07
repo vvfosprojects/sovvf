@@ -1,16 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal, NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Select } from '@ngxs/store';
 import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../../navbar/turno/model/turno-calendario.model';
+import { FiltroChiuseDettaglio } from '../../../../../shared/interface/filtro-chiuse-dettaglio.interface';
 
 @Component({
     selector: 'app-modal-richieste-chiuse',
     templateUrl: './modal-richieste-chiuse.component.html',
     styleUrls: ['./modal-richieste-chiuse.component.css']
 })
-export class ModalRichiesteChiuseComponent implements OnDestroy {
+export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
@@ -33,14 +34,29 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
     date: { year: number, month: number };
     todayDate;
     titolo: string;
+    periodoChiuse: FiltroChiuseDettaglio;
+    disableConferma = false;
 
     private subscriptions: Subscription = new Subscription();
 
-    constructor(private modal: NgbActiveModal, calendar: NgbCalendar) {
+    constructor(private modal: NgbActiveModal, private calendar: NgbCalendar) {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
         this.getTurnoCalendario();
         this.todayDate = calendar.getToday();
+    }
+
+    ngOnInit(): void {
+        // check per aggiornare filtri da impostazione precedente
+        if (this.periodoChiuse) {
+            if (this.periodoChiuse.turno) {
+                this.onCheckFiltro('Turno');
+            } else if (this.periodoChiuse.data) {
+                this.datePreviousValue();
+            } else if (this.periodoChiuse.daA) {
+                this.fromToPreviousValue();
+            }
+        }
     }
 
     ngOnDestroy(): void {
@@ -89,21 +105,25 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
 
     chiudiModalFiltriTipologia(closeRes: string): void {
         if (closeRes === 'ok') {
-            this.formatDatetoShow();
-            this.modal.close({
-                status: 'ok',
-                result: {
-                    da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
-                    a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
-                    data: this.prefix['Del'] ? this.formatDate(this.todayDate) : null,
-                    turno: this.prefix['Turno'] ? this.turnoCalendario.corrente : null,
-                },
-                date: this.periodoChiuseToShow,
-            });
+            if (this.fromDate && !this.toDate) {
+                this.disableConferma = true;
+            } else {
+                this.formatDatetoShow();
+                this.disableConferma = false;
+                this.modal.close({
+                    status: 'ok',
+                    result: {
+                        da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
+                        a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
+                        data: this.prefix['Del'] ? this.formatDate(this.todayDate) : null,
+                        turno: this.prefix['Turno'] ? this.turnoCalendario.corrente : null,
+                    },
+                    date: this.periodoChiuseToShow,
+                });
+            }
         } else {
             this.modal.close({ status: 'ko' });
         }
-
     }
 
     onDateSelection(date: NgbDate): void {
@@ -115,6 +135,34 @@ export class ModalRichiesteChiuseComponent implements OnDestroy {
             this.toDate = null;
             this.fromDate = date;
         }
+    }
+
+    datePreviousValue(): void {
+        const firstIndex = this.periodoChiuse.data.indexOf('/');
+        const lastIndex = this.periodoChiuse.data.lastIndexOf('/');
+        this.todayDate.day = +(this.periodoChiuse.data.slice(0, firstIndex));
+        this.todayDate.month = +(this.periodoChiuse.data.slice(firstIndex + 1, lastIndex));
+        this.todayDate.year = +(this.periodoChiuse.data.slice(this.periodoChiuse.data.length - 4, this.periodoChiuse.data.length));
+    }
+
+    fromToPreviousValue(): void {
+        this.onCheckFiltro('DaA');
+        const fullDate = this.periodoChiuse.daA.replace(/\s/g, '');
+        const cutPoint = fullDate.indexOf('-');
+        const from = fullDate.slice(0, cutPoint);
+        const to = fullDate.slice(cutPoint + 1, this.periodoChiuse.daA.length);
+
+        const firstIndexFrom = from.indexOf('/');
+        const lastIndexFrom = from.lastIndexOf('/');
+        this.fromDate.day = +(from.slice(0, firstIndexFrom));
+        this.fromDate.month = +(from.slice(firstIndexFrom + 1, lastIndexFrom));
+        this.fromDate.year = +(from.slice(from.length - 4, from.length));
+
+        const firstIndexTo = to.indexOf('/');
+        const lastIndexTo = to.lastIndexOf('/');
+        this.toDate.day = +(to.slice(0, firstIndexTo));
+        this.toDate.month = +(to.slice(firstIndexTo + 1, lastIndexTo));
+        this.toDate.year = +(to.slice(to.length - 4, to.length));
     }
 
     isHovered(date: NgbDate): boolean {
