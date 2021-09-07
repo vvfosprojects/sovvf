@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
@@ -28,7 +29,9 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.Statri;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -224,6 +227,16 @@ namespace SO115App.Persistence.MongoDB
 
                 return sintesi;
             });
+
+            //List<SchedaSO115> ListaPerStatri = new List<SchedaSO115>();
+            //MapperSintesiRichiestaSuSTATRI mapperSTATRI = new MapperSintesiRichiestaSuSTATRI();
+            //foreach (var sintesi in listaSistesiRichieste.ToList().FindAll(s => s.CodiceRichiesta != null))
+            //{
+            //    var scheda = mapperSTATRI.Map(sintesi);
+            //    ListaPerStatri.Add(scheda);
+            //}
+
+            //var json = JsonConvert.SerializeObject(ListaPerStatri);
 
             //ORDINAMENTO RICHIESTE
             return listaSistesiRichieste
