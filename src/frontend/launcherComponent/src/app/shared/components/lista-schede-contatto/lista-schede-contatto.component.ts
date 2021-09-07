@@ -32,6 +32,7 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Input() hideRangeVisualizzazione: boolean;
     @Input() hideRaggruppa: boolean;
     @Input() nightMode: boolean;
+    @Input() boxAttivi: boolean;
 
     @Output() tabSelected: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -108,6 +109,13 @@ export class ListaSchedeContattoComponent implements OnInit {
 
     onPageChange(page: number): void {
         this.pageChange.emit(page);
+    }
+
+    heightListaRischieste(): string {
+        if (this.boxAttivi) {
+            return 'm-h-710';
+        }
+        return 'm-h-840';
     }
 
 }

@@ -1,7 +1,7 @@
 <div class="row">
-    <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
-    <div class="col-12"
+    <div class="col-12" [ngClass]="heightListaMezzi()"
          [class.mt-2]="!ricerca">
+        <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
         <ng-template [ngIf]="ricerca">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </ng-template>

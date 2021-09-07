@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ItemChart, ItemChartEmit } from '../../../shared/interface/item-chart.interface';
 import { Select, Store } from '@ngxs/store';
 import { GetDataGrafico, OpenModalDettaglioDistaccamento } from '../store/actions/coda-chiamate/coda-chiamate.actions';
@@ -14,6 +14,8 @@ export class CodaChiamateComponent implements OnInit {
 
     @Select(CodaChiamateState.dataGrafico) dataGrafico$: Observable<ItemChart[]>;
     @Select(CodaChiamateState.loading) loading$: Observable<boolean>;
+
+    @Input() boxAttivi: boolean;
 
     constructor(private store: Store) {
     }
@@ -33,5 +35,12 @@ export class CodaChiamateComponent implements OnInit {
 
     onDeactivate(data: ItemChartEmit): void {
         // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    }
+
+    heightCodaChiamate(): string {
+        if (this.boxAttivi) {
+            return 'm-h-710';
+        }
+        return 'm-h-840';
     }
 }
