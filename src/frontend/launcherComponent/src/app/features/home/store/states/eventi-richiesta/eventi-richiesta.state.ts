@@ -33,7 +33,7 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     listaEventiFiltrata: null,
     listaTargaMezzo: null,
     filtroTargaMezzo: null,
-    visualizzazioneIconeNomeClasseEvento: true,
+    visualizzazioneIconeNomeClasseEvento: false,
     loadingEventiRichiesta: false
 };
 
