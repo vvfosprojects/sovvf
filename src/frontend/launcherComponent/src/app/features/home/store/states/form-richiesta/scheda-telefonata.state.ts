@@ -174,9 +174,10 @@ export class SchedaTelefonataState {
     }
 
     @Action(ReducerSchedaTelefonata)
-    reducer({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
+    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
 
-        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate;
+        const state = getState();
+        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : { latitudine: state.richiestaForm.model.latitudine, longitudine: state.richiestaForm.model.longitudine };
 
         function getCooordinate(): Coordinate {
             return coordinate;
