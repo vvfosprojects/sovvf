@@ -42,6 +42,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() fissabile: boolean;
     @Input() partenza: boolean;
     @Input() inGestione: boolean;
+    @Input() borderTop = true;
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
