@@ -43,7 +43,7 @@
       <form *ngIf="prefix['DaA']" class="form-inline">
       <div class="form-group">
         <div class="input-group">
-          <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+          <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [startDate]="fromDate" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
           </ngb-datepicker>
 
                   <ng-template #t let-date let-focused="focused">
@@ -65,6 +65,10 @@
       </div>
     </form>
   </div>
+</div>
+
+<div *ngIf="disableConferma && prefix['DaA']" class="alert alert-danger mb-0" role="alert">
+  Selezionare data di fine periodo.
 </div>
 
 <div class="modal-footer" style="place-content: space-between;">

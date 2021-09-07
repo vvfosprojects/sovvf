@@ -368,18 +368,64 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 //    }
                 //}
 
-                if (this.TestoStatoRichiesta.Equals("C"))
-                    return Costanti.Chiamata;
-                else if (this.TestoStatoRichiesta.Equals("A"))
-                    return Costanti.AssegnataRichiesta;
-                else if (this.TestoStatoRichiesta.Equals("P"))
-                    return Costanti.RichiestaPresidiata;
-                else if (this.TestoStatoRichiesta.Equals("X"))
-                    return Costanti.RichiestaChiusa;
-                else if (this.TestoStatoRichiesta.Equals("S"))
-                    return Costanti.RichiestaSospesa;
+                if (this.TestoStatoRichiesta != null)
+                {
+                    if (this.TestoStatoRichiesta.Equals("C"))
+                        return Costanti.Chiamata;
+                    else if (this.TestoStatoRichiesta.Equals("A"))
+                        return Costanti.AssegnataRichiesta;
+                    else if (this.TestoStatoRichiesta.Equals("P"))
+                        return Costanti.RichiestaPresidiata;
+                    else if (this.TestoStatoRichiesta.Equals("X"))
+                        return Costanti.RichiestaChiusa;
+                    else if (this.TestoStatoRichiesta.Equals("S"))
+                        return Costanti.RichiestaSospesa;
+                    else
+                        return Costanti.Chiamata;
+                }
+                else
+                {
+                    var partenze = this.Partenze;
 
-                return Costanti.Chiamata;
+                    if (partenze != null && partenze.Count > 0)
+                    {
+                        if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
+                        {
+                            var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
+
+                            if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 &&
+                                partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0)
+                                return Costanti.AssegnataRichiesta;
+                            else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
+                            {
+                                this.Presidiata = true;
+                                return Costanti.RichiestaPresidiata;
+                            }
+                            else
+                            {
+                                this.Sospesa = true;
+                                return Costanti.RichiestaSospesa;
+                            }
+                        }
+                        else
+                        {
+                            if (Eventi.OrderByDescending(p => p.Ora).First().Stato.Equals("Chiusa"))
+                            {
+                                this.Chiusa = true;
+                                return Costanti.RichiestaChiusa;
+                            }
+                            else
+                            {
+                                this.Sospesa = true;
+                                return Costanti.RichiestaSospesa;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Costanti.Chiamata;
+                    }
+                }
             }
         }
 

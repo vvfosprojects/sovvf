@@ -25,14 +25,14 @@ namespace SO115App.WSNue.Classi.NUE
     {
         public Richiedente(string nominativo, string telefono)
         {
-            this.Nominativo = nominativo;
-            this.Telefono = telefono;
+            this.nominativo = nominativo;
+            this.telefono = telefono;
         }
 
         [Required]
         [DataType(DataType.PhoneNumber)]
-        public string Telefono { get; set; }
+        public string telefono { get; set; }
 
-        public string Nominativo { get; set; }
+        public string nominativo { get; set; }
     }
 }

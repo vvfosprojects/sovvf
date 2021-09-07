@@ -334,6 +334,7 @@
     <Compile Include="DataContract\InsertSchedaNueResponse.cs" />
     <Compile Include="Interface\ISvcNue.cs" />
     <Compile Include="Manager\NueManager.cs" />
+    <Compile Include="Mapper\MappaWSsuSchedaContatto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="SvcNue.svc.cs">
