@@ -1,4 +1,4 @@
-<div class="col-12 px-0 scroll-y">
+<div class="col-12 px-0 scroll-y" [ngClass]="heightListaRischieste()">
     <ng-template [ngIf]="ricerca">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </ng-template>

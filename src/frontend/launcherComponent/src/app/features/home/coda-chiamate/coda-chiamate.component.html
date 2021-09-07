@@ -1,4 +1,4 @@
-<div class="row" style="max-height:720px; overflow-y: scroll">
+<div class="row" [ngClass]="heightCodaChiamate()" style="overflow-y: scroll">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
     <div class="col-11 mx-auto">
         <div *ngIf="(loading$ | async) === false" class="mt-3">

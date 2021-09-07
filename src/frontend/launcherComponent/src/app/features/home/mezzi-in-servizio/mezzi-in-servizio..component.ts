@@ -197,5 +197,12 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     selezionato(idMezzoInServizio: string): void {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
     }
+
+    heightListaMezzi(): string {
+        if (this.boxAttivi) {
+            return 'm-h-710';
+        }
+        return 'm-h-840';
+    }
 }
 

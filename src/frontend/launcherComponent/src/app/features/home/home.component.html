@@ -46,7 +46,9 @@
                 </div>
                 <!-- Coda Chiamate -->
                 <div class="col-12">
-                    <app-coda-chiamate *ngIf="viewState.codaChiamate.active"></app-coda-chiamate>
+                    <app-coda-chiamate *ngIf="viewState.codaChiamate.active"
+                                       [boxAttivi]="boxAttivi">
+                    </app-coda-chiamate>
                 </div>
                 <!-- Composizione Partenza -->
                 <div class="col-12">
