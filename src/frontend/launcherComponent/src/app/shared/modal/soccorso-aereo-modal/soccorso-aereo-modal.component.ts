@@ -47,12 +47,12 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     }
 
     chiudiModalSoccorsoAereo(closeRes: string): void {
-        this.submitted = true;
         const requestType = [];
         const requestTypeCode = [];
-        this.azioniRichiesta.forEach(x => x.checked ? requestType.push(x.descrizione) : null);
-        this.azioniRichiesta.forEach(x => x.checked ? requestTypeCode.push(x.codice) : null);
         if (closeRes === 'ok') {
+            this.submitted = true;
+            this.azioniRichiesta.forEach(x => x.checked ? requestType.push(x.descrizione) : null);
+            this.azioniRichiesta.forEach(x => x.checked ? requestTypeCode.push(x.codice) : null);
             const obj: any = {
                 description: this.motivazione ? this.motivazione : '',
                 requestKey: this.richiesta.codice,
@@ -87,7 +87,9 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
         this.subscription.add(
             this.azioniRichiesta$.subscribe((azioniRichiesta: any) => {
                 this.azioniRichiesta = makeCopy(azioniRichiesta);
-                this.azioniRichiesta.forEach(x => x.checked = false);
+                if (this.azioniRichiesta) {
+                    this.azioniRichiesta.forEach(x => x.checked = false);
+                }
             })
         );
     }
