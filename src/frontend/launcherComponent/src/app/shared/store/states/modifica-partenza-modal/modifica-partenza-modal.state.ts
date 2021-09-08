@@ -7,8 +7,6 @@ import { SquadraComposizione } from '../../../interface/squadra-composizione-int
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
         model?: {
-            operatore: string;
-            sede: string;
             codRichiesta: string;
             annullamento: boolean;
             codMezzoDaAnnullare: string;
@@ -28,8 +26,6 @@ export interface ModificaPartenzaModalStateModel {
 export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel = {
     modificaPartenzaForm: {
         model: {
-            operatore: undefined,
-            sede: undefined,
             codRichiesta: undefined,
             annullamento: undefined,
             codMezzoDaAnnullare: undefined,

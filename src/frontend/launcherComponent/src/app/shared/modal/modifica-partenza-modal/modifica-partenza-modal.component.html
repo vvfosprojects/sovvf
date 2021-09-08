@@ -9,38 +9,9 @@
 </div>
 
 <div class="modal-body height py-4 px-5">
-    <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
+    <form [formGroup]="modificaPartenzaForm"
+          ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
           autocomplete="off">
-        <!-- operatore e sede -->
-        <div class="d-inline-flex mb-3">
-            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
-                    style="margin-left: 0 !important;"
-                    ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
-                <i class="fas fa-user"></i>
-            </button>
-            <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user"
-                    ngbTooltip="Visualizza Sede" [ngbPopover]="sede">
-                <i class="far fa-building"></i>
-            </button>
-        </div>
-        <ng-template #operatore>
-            <small class="d-block font-weight-bold">Operatore:</small>
-            <div class="clearfix">
-                <div class="float-left">
-                    <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore"
-                           style="background: none; border: none">
-                </div>
-            </div>
-        </ng-template>
-        <ng-template #sede>
-            <small class="d-block font-weight-bold">Sede:</small>
-            <div class="clearfix">
-                <div class="float-left">
-                    <input id="sede" formControlName="sede" class="form-control" placeholder="Sede"
-                           style="background: none; border: none">
-                </div>
-            </div>
-        </ng-template>
         <!-- anteprima mezzo e squadra/e -->
         <app-box-anteprima-partenza [partenza]="singolaPartenza.partenza" [inSostituzione]="inSostituzione"
                                     (modificaPartenza)="openSostituzioneModal()"
@@ -75,23 +46,22 @@
                 <i class="fas fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 35.5rem; margin-left: 250px;">
-            <ul class="list-group list-group-flush font-xlarge">
-                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
-                    style="display: inline-flex; place-content: space-between;">
-                    <input class="form-control font-xlarge" [(ngModel)]="sequenze[index].select[index].name"
-                           [ngModelOptions]="{standalone: true}" style="min-width: 220px; align-self: center;" readonly>
-                    <div class="md-form md-outline" id="default-picker" style="display: flex;">
-                        <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
-                                        style="margin-left: 25px;"></ngb-timepicker>
-                        <i class="far fa-clock" style="align-self: center; padding-left: 10px; font-size: 25px;"
-                           size="small"></i>
-                        <small class="text-muted"
-                               style="display: flex; position: absolute; transform: translate(-305px, 110px); min-width: fit-content; display: ruby">
-                            * Il cambio di stato "{{sequenze[index]?.select[index]?.name}}" risulterà
-                            alle {{sequenza?.time?.hour <= 9 ? '0' + sequenza?.time?.hour : sequenza?.time?.hour}}
-                            :{{sequenza?.time?.minute <= 9 ? '0' + sequenza?.time?.minute : sequenza?.time?.minute}}.
-                        </small>
+        <div *ngIf="sequenze?.length > 0" class="card w-50 mx-auto px-0">
+            <ul class="list-group list-group-flush">
+                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item">
+                    <div class="px-2" style="display: inline-flex; place-content: space-between;">
+                        <input class="form-control"[(ngModel)]="sequenze[index].select[index].name"
+                               [ngModelOptions]="{standalone: true}" style="min-width: 220px; align-self: center;" readonly>
+                        <div class="md-form md-outline" style="display: flex;">
+                            <ngb-timepicker [(ngModel)]="sequenze[index].time"
+                                            [ngModelOptions]="{standalone: true}"
+                                            style="margin-left: 25px;">
+                            </ngb-timepicker>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning mb-0 px-0 text-center" role="alert">
+                        Il cambio di stato "{{sequenze[index]?.select[index]?.name}}" risulterà
+                        alle {{sequenza?.time?.hour <= 9 ? '0' + sequenza?.time?.hour : sequenza?.time?.hour}}:{{sequenza?.time?.minute <= 9 ? '0' + sequenza?.time?.minute : sequenza?.time?.minute}}
                     </div>
                 </li>
             </ul>
