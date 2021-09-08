@@ -159,10 +159,6 @@ export class SintesiRichiesta {
          */
         public motivazione?: string,
         /**
-         * lista di lavorazioni utente
-         */
-        public listaUtentiInLavorazione?: AttivitaUtente[],
-        /**
          * lista di prese in carico utente
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],

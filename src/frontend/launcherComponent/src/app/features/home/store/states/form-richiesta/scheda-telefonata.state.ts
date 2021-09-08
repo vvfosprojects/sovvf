@@ -360,7 +360,6 @@ export class SchedaTelefonataState {
                 f.obiettivoSensibile,
                 f.rilevanzaStArCu,
                 f.motivazione,
-                f.listaUtentiInLavorazione,
                 f.listaUtentiPresaInCarico,
                 f.codUOCompetenza,
                 f.codSOAllertate,

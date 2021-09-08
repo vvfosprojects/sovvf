@@ -40,7 +40,6 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
-import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
@@ -90,8 +89,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
         RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
-        RichiestaGestioneState,
-        RichiestaAttivitaUtenteState
+        RichiestaGestioneState
     ]
 })
 export class RichiesteState {

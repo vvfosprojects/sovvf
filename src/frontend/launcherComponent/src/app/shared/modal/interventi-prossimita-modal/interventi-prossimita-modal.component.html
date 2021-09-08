@@ -334,36 +334,6 @@
                                                 </a>
                                             </ng-template>
                                         </div>
-
-                                        <!-- in lavorazione -->
-                                        <div class="h6">
-                                            <i class="guida fas fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
-                                               placement="right"></i>
-                                            <div *ngIf="methods._primoUtente(r?.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                                 class="d-inline-block m-0 mr-1"
-                                                 [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
-                                                 [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
-                                                {{ utentiInLavorazioneValue?.nominativo | truncate: 15 }}
-                                            </div>
-                                            <div *ngIf="r?.listaUtentiInLavorazione && r?.listaUtentiInLavorazione?.length > 1"
-                                                 ngbDropdown class="d-inline-block" placement="bottom">
-                                                <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
-                                                        (click)="$event.stopPropagation()">
-                                                    +{{ r?.listaUtentiInLavorazione.length - 1 }}
-                                                </button>
-                                                <div ngbDropdownMenu class="p-2 text-center">
-                                                    <div *ngIf="methods._altriUtenti(r?.listaUtentiInLavorazione) as utentiTooltip">
-                                                        <div *ngFor="let utente of utentiTooltip">
-                                                            {{utente?.nominativo}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ng-template #nonInLavorazione>
-                                                <a class="badge badge-secondary text-light">Non in lavorazione</a>
-                                            </ng-template>
-                                        </div>
-
                                         <!-- scheda nue -->
                                         <div class="h6">
                                             <i class="guida far fa-id-card fa-fw mr-1" ngbTooltip="Codice scheda NUE"
@@ -372,9 +342,9 @@
                                                 {{ r?.codiceSchedaNue }}
                                             </a>
                                             <ng-template #nessunCodiceNue>
-                                    <span class="badge badge-secondary text-light">
-                                        Nessuna scheda NUE
-                                    </span>
+                                                <span class="badge badge-secondary text-light">
+                                                    Nessuna scheda NUE
+                                                </span>
                                             </ng-template>
                                         </div>
 
@@ -388,12 +358,12 @@
                                                   [ngClass]="{'badge-success text-light': r?.fonogramma?.stato === StatoFonogramma.Inviato, 'badge-secondary text-light': r?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'badge-warning text-light': r?.fonogramma?.stato === StatoFonogramma.DaInviare}"
                                                   (click)="onDettaglioStatoFonogramma(r); $event.stopPropagation()"
                                                   ngbTooltip="Visualizza Fonogramma">
-                                    {{ getStatoFonogrammaStringByEnum(r?.fonogramma?.stato) }}
-                                </span>
+                                                {{ getStatoFonogrammaStringByEnum(r?.fonogramma?.stato) }}
+                                            </span>
                                             <span *ngIf="!r.fonogramma"
                                                   class="badge badge-secondary text-white">
-                                    Nessun Fonogramma
-                                </span>
+                                                Nessun Fonogramma
+                                            </span>
                                             <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
                                                     ngbTooltip="Modifica Fonogramma"
                                                     (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
@@ -454,10 +424,10 @@
                                     <div class="col-md-3">
                                         <!-- turno intervento -->
                                         <div class="h6 text-right">
-                                <span *ngIf="r?.trnInsChiamata; else nessunTurno">
-                                    {{r?.trnInsChiamata}}
-                                    <i class="fa-fw far fa-calendar-check guida ml-1"></i>
-                                </span>
+                                            <span *ngIf="r?.trnInsChiamata; else nessunTurno">
+                                                {{r?.trnInsChiamata}}
+                                                <i class="fa-fw far fa-calendar-check guida ml-1"></i>
+                                            </span>
                                             <ng-template #nessunTurno>
                                                 <a>-</a>
                                                 <i class="guida far fa-clock fa-fw ml-1"
@@ -481,10 +451,10 @@
                                                 {{ totaleEnti }}
                                             </button>
                                             <ng-template #nessunEnte>
-                                    <span class="badge badge-secondary text-light"
-                                          ngbTooltip="Al momento nessun ente è intervenuto">
-                                        Nessun Ente
-                                    </span>
+                                            <span class="badge badge-secondary text-light"
+                                                ngbTooltip="Al momento nessun ente è intervenuto">
+                                                Nessun Ente
+                                            </span>
                                             </ng-template>
                                             <i class="guida fas fa-industry fa-fw ml-1"
                                                ngbTooltip="Enti intervenuti o che hanno preso in carico la richiesta"
@@ -493,10 +463,10 @@
 
                                         <!-- tipo terreno -->
                                         <div class="h6 text-right">
-                                <span *ngIf="methods._terrenoMaggiore(r?.tipoTerreno) as tipoTerrenoValue; else noterreni"
-                                      class="h6 m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
-                                    {{ tipoTerrenoValue?.terrenoHa }}
-                                </span>
+                                            <span *ngIf="methods._terrenoMaggiore(r?.tipoTerreno) as tipoTerrenoValue; else noterreni"
+                                                class="h6 m-0" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
+                                                {{ tipoTerrenoValue?.terrenoHa }}
+                                            </span>
                                             <button *ngIf="r?.tipoTerreno && r?.tipoTerreno.length > 1"
                                                     class="btn btn-light border big_font py-0 px-1"
                                                     [ngbPopover]="terreni"
