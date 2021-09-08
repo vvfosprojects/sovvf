@@ -11,6 +11,7 @@ import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/s
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { SunMode } from '../../shared/store/actions/viewport/viewport.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
+import { ToggleIconeNomeClasseEvento } from '../home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 
 @Component({
     selector: 'app-preferenze',
@@ -90,6 +91,9 @@ export class PreferenzeComponent implements OnInit, OnDestroy {
         const opzione = impostazione.opzioni.filter((o: OpzioneImpostazione) => o.label === opzioneLabel)[0] as OpzioneImpostazione;
         if (!opzione) {
             return;
+        }
+        if (tipo === this.listaImpostazioni[1].tipo) {
+            value === '1' ? this.store.dispatch(new ToggleIconeNomeClasseEvento('icone')) : this.store.dispatch(new ToggleIconeNomeClasseEvento('testuale'));
         }
         opzione.singleValue ? opzione.singleValue.value = value : opzione.select.selected = value;
         this.store.dispatch(new PatchImpostazioni(impostazione));

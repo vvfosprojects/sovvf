@@ -163,11 +163,23 @@ export class EventiRichiestaState {
     }
 
     @Action(ToggleIconeNomeClasseEvento)
-    toggleIconeNomeClasseEvento({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
+    toggleIconeNomeClasseEvento({ getState, patchState }: StateContext<EventiRichiestaStateModel>, action: any): void {
         const state = getState();
-        patchState({
-            visualizzazioneIconeNomeClasseEvento: !state.visualizzazioneIconeNomeClasseEvento
-        });
+        if (action.toggle) {
+            if (action.toggle === 'testuale') {
+                patchState({
+                    visualizzazioneIconeNomeClasseEvento: false
+                });
+            } else if (action.toggle === 'icone') {
+                patchState({
+                    visualizzazioneIconeNomeClasseEvento: true
+                });
+            }
+        } else {
+            patchState({
+                visualizzazioneIconeNomeClasseEvento: !state.visualizzazioneIconeNomeClasseEvento
+            });
+        }
     }
 
     @Action(StartLoadingEventiRichiesta)

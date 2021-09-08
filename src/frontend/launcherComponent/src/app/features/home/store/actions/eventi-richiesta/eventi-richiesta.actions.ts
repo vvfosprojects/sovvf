@@ -39,6 +39,9 @@ export class ClearEventiRichiesta {
 
 export class ToggleIconeNomeClasseEvento {
     static readonly type = '[EventiRichiesta] Toggle Icone Nome Classe Evento';
+
+    constructor(public toggle?: string) {
+    }
 }
 
 export class StartLoadingEventiRichiesta {
