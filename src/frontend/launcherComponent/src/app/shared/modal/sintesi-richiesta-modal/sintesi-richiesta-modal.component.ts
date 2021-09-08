@@ -19,8 +19,9 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();
 
-    constructor(public modal: NgbActiveModal, private store: Store) {
-        this.subscription.add(this.sintesiRichiesta$.subscribe(sintesi => this.sintesiRichiesta = sintesi));
+    constructor(private modal: NgbActiveModal,
+                private store: Store) {
+        this.getSintesiRichiesta();
     }
 
     ngOnInit(): void {
@@ -33,8 +34,20 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
         console.log('Componente Sintesi Richiesta Modal distrutto');
     }
 
+    getSintesiRichiesta(): void {
+        this.subscription.add(
+            this.sintesiRichiesta$.subscribe((richiesta: SintesiRichiesta) => {
+                this.sintesiRichiesta = richiesta;
+            })
+        );
+    }
+
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
+    }
+
+    close(type: string): void {
+        this.modal.close(type);
     }
 
 }

@@ -1,19 +1,19 @@
-@import "../node_modules/bootstrap/dist/css/bootstrap.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import "~ngx-ui-switch/ui-switch.component.scss";
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~ngx-toastr/toastr-bs4-alert";
-@import "../node_modules/@arcgis/core/assets/esri/themes/light/main.css";
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '~@ng-select/ng-select/themes/default.theme.css';
+@import '~ngx-ui-switch/ui-switch.component.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
+@import '../node_modules/@arcgis/core/assets/esri/themes/light/main.css';
 
 @font-face {
-  font-family: "icon-marker";
-  src: url("./assets/fonts/icon-marker.eot?7adah4");
-  src: url("./assets/fonts/icon-marker.eot?7adah4#iefix") format("embedded-opentype"),
-  url("./assets/fonts/icon-marker.ttf?7adah4") format("truetype"),
-  url("./assets/fonts/icon-marker.woff?7adah4") format("woff"),
-  url("./assets/fonts/icon-marker.svg?7adah4#icon-marker") format("svg");
+  font-family:'"icon-marker';
+  src: url('./assets/fonts/icon-marker.eot?7adah4');
+  src: url('./assets/fonts/icon-marker.eot?7adah4#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icon-marker.ttf?7adah4') format('truetype')
+  url('./assets/fonts/icon-marker.woff?7adah4') format('woff')
+  url('./assets/fonts/icon-marker.svg?7adah4#icon-marker') format('svg');
   font-weight: normal;
   font-style: normal;
 }

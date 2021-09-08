@@ -14,7 +14,6 @@ import {
     resetFiltriSelezionati as _resetFiltriSelezionati,
     setFiltroSelezionato as _setFiltroSelezionato
 } from '../../../../../shared/helper/function-filtro';
-import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
 import {
     ClearFiltriMezziInServizio,
@@ -126,7 +125,7 @@ export class MezziInServizioState {
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: boxesVisibili ? 12 : 15
+            pageSize: boxesVisibili ? 11 : 13
         } as PaginationInterface;
         this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
                 const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
