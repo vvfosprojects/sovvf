@@ -20,6 +20,8 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() listHeightClass: string;
+    @Input() boxAttivi: boolean;
+
 
     // Loading
     @Input() loading: boolean;
@@ -133,6 +135,14 @@ export class ListaRichiesteComponent implements OnChanges {
 
     heightControl(): string {
         return this.listHeightClass;
+    }
+
+    loadHeightControl(): string {
+        if (this.boxAttivi) {
+            return 'm-h-710';
+        } else {
+            return'm-h-840';
+        }
     }
 
     cardClasses(r: SintesiRichiesta): any {

@@ -1,5 +1,5 @@
 <div class="row">
-    <app-partial-loader *ngIf="loading"></app-partial-loader>
+    <app-partial-loader [ngClass]="loadHeightControl()" *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
     <div class="col-12 px-0 py-1"
          [ngClass]="heightControl()"
