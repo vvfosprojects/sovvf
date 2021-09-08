@@ -3,7 +3,7 @@ import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
 import { Store } from '@ngxs/store';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import { statoMezzoBorderClass } from '../../../../shared/helper/function-mezzo';
+import { statoMezzoBorderClass, statoMezzoColor } from '../../../../shared/helper/function-mezzo';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -61,5 +61,9 @@ export class MezzoInServizioComponent implements OnChanges {
             // TODO: logica hover con nightMode
         }
         return returnClass;
+    }
+
+    statoMezzoColor(stato: StatoMezzo): string {
+        return statoMezzoColor(stato);
     }
 }
