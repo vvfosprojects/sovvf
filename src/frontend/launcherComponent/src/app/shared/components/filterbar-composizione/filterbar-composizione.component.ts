@@ -30,7 +30,6 @@ import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/
 export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
 
     @Input() filtri: ListaTipologicheMezzi;
-    @Input() prenotato: any;
     @Input() disableComposizioneMode: boolean;
     @Input() nascondiTornaIndietro: boolean;
     @Input() nascondiCambiaComposizioneMode: boolean;
@@ -41,8 +40,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() loadingSquadre: boolean;
     @Input() loadingMezzi: boolean;
     @Input() triageSummary: TriageSummary[];
-
-    @Output() confirmPrenota: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
@@ -188,11 +185,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
         dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
         dettaglioTriageModal.componentInstance.triageSummary = this.richiesta.triageSummary;
-    }
-
-    _confirmPrenota(): void {
-        const value = !this.prenotato;
-        this.confirmPrenota.emit(value);
     }
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {

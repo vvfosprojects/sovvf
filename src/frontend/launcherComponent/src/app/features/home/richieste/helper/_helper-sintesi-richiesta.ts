@@ -6,7 +6,7 @@ import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
 import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
-import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
+import { AttivitaUtente } from 'src/app/shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function-generiche';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
@@ -290,20 +290,6 @@ export class HelperSintesiRichiesta {
     }
 
     _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
-        if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const a in attivita) {
-                /**
-                 * eventuale logica di controllo
-                 */
-                if (a) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    _isInLavorazione(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
             for (const a in attivita) {
                 /**

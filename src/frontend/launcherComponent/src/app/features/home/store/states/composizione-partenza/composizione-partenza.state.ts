@@ -22,7 +22,6 @@ import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziA
 import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
@@ -145,7 +144,6 @@ export class ComposizionePartenzaState {
         });
 
         dispatch([
-            new AddInLavorazione(action.richiesta),
             new SetTriageSummary(action.richiesta.triageSummary)
         ]);
     }
@@ -246,7 +244,6 @@ export class ComposizionePartenzaState {
     terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         dispatch([
-            new DeleteInLavorazione(state.richiesta),
             new ClearDirection(),
             new GetInitCentroMappa(),
             new ClearComposizioneVeloce(),

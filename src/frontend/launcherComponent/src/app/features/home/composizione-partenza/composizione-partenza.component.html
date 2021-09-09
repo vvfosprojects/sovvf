@@ -24,11 +24,9 @@
                                     [competenze]="richiesta?.competenze"
                                     [disableComposizioneMode]="loadingListe"
                                     [composizionePartenza]="true"
-                                    [prenotato]="prenotato"
                                     [loadingSquadre]="loadingSquadre$ | async"
                                     [loadingMezzi]="loadingMezzi$ | async"
-                                    [triageSummary]="summary$ | async"
-                                    (confirmPrenota)="onPrenota($event)">
+                                    [triageSummary]="summary$ | async">
         </app-filterbar-composizione>
     </div>
     <div class="col-12">

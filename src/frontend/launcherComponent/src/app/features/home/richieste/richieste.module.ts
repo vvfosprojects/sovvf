@@ -26,7 +26,6 @@ import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissa
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
-import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 
 @NgModule({
     imports: [
@@ -44,8 +43,7 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
             RichiestaFissataState,
             RichiestaHoverState,
             RichiestaSelezionataState,
-            RichiestaGestioneState,
-            RichiestaAttivitaUtenteState
+            RichiestaGestioneState
         ]),
         NgxsFormPluginModule,
         SharedModule

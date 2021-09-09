@@ -118,7 +118,7 @@ export class RichiestaModificaState {
     }
 
     @Action(ModificaIndirizzo)
-    modificaIndirizzo({ getState, setState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo): void {
+    modificaIndirizzo({ getState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo): void {
         if (action.nuovoIndirizzo) {
             patchState({
                 modificaIndirizzo: true
@@ -135,7 +135,7 @@ export class RichiestaModificaState {
     }
 
     @Action(PatchRichiesta)
-    patchRichiesta({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: PatchRichiesta): void {
+    patchRichiesta({ dispatch }: StateContext<RichiestaModificaStateModel>, action: PatchRichiesta): void {
         let sintesiRichiesta: SintesiRichiesta;
         if (action.sintesiRichiesta) {
             sintesiRichiesta = action.sintesiRichiesta;
@@ -218,7 +218,6 @@ export class RichiestaModificaState {
                     f.obiettivoSensibile,
                     f.rilevanzaStArCu,
                     f.motivazione,
-                    f.listaUtentiInLavorazione,
                     f.listaUtentiPresaInCarico,
                     f.codUOCompetenza,
                     f.codSOAllertate,

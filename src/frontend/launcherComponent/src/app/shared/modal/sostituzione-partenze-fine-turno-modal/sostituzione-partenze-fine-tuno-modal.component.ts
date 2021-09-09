@@ -22,7 +22,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
 
     @Select(SostituzionePartenzeFineTurnoModalState.partenze) partenze$: Observable<Partenza[]>;
     partenze: Partenza[];
-    @Select(SostituzionePartenzeFineTurnoModalState.partenzaMontante) partenzaMontante$: Observable<DettaglioPartenza>;
+    @Select(SostituzionePartenzeFineTurnoModalState.partenzaMontante) partenzaMontante$: Observable<Partenza>;
     partenzaMontante: DettaglioPartenza;
     @Select(SostituzionePartenzeFineTurnoModalState.sostituzioni) sostituzioni$: Observable<SostituzioneInterface[]>;
     sostituzioni: SostituzioneInterface[];
@@ -60,8 +60,10 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
 
     getPartenzaMontante(): void {
         this.subscriptions.add(
-            this.partenzaMontante$.subscribe((partenzaMontante: DettaglioPartenza) => {
-                this.partenzaMontante = partenzaMontante;
+            this.partenzaMontante$.subscribe((partenzaMontante: Partenza) => {
+                if (partenzaMontante) {
+                    this.partenzaMontante = partenzaMontante.partenza;
+                }
             })
         );
     }

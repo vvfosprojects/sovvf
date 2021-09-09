@@ -7,7 +7,6 @@ import { ComposizionePartenzaComponent } from './composizione-partenza.component
 import { ComposizioneAvanzataComponent } from './composizione-avanzata/composizione-avanzata.component';
 import { FasterComponent } from './composizione-veloce/composizione-veloce.component';
 import { BoxNuovaPartenzaComponent } from './shared/box-nuova-partenza/box-nuova-partenza.component';
-import { AttivitaUtenteService } from '../../../core/service/attivita-utente-service/attivita-utente.service';
 import { NgxsModule } from '@ngxs/store';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
@@ -50,9 +49,6 @@ import { BoxPreaccoppiatoComponent } from './shared/box-preaccoppiato/box-preacc
     ],
     exports: [
         ComposizionePartenzaComponent
-    ],
-    providers: [
-        AttivitaUtenteService
     ]
 })
 export class ComposizionePartenzaModule {

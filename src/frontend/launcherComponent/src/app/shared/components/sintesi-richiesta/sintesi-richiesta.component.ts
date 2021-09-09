@@ -189,14 +189,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         };
     }
 
-    getInLavorazioneTooltip(utentiInLavorazioneValue: any): string {
-        return utentiInLavorazioneValue.nominativo;
-    }
-
-    _inLavorazioneTooltipDisabled(utentiInLavorazioneValue: any): boolean {
-        return utentiInLavorazioneValue.nominativo.length <= 15;
-    }
-
     _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
         if (partenze?.length > 0) {
             return partenze.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;

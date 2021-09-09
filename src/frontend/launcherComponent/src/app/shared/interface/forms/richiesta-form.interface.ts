@@ -58,7 +58,6 @@ export interface RichiestaForm {
     partenze: Partenza[];
     listaEnti: Ente[];
     motivazione: string;
-    listaUtentiInLavorazione: AttivitaUtente[];
     listaUtentiPresaInCarico: AttivitaUtente[];
     codUOCompetenza: string[];
 }
