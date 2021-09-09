@@ -7,18 +7,56 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
     public class WorkShift
     {
         [JsonPropertyName("previous")]
-        public Squadra[] Precedente { get; set; }
+        public SquadraWorkShift Precedente { get; set; }
 
         [JsonPropertyName("next")]
-        public Squadra[] Successivo { get; set; }
+        public SquadraWorkShift Successivo { get; set; }
 
         [JsonPropertyName("current")]
-        public Squadra[] Attuale { get; set; }
+        public SquadraWorkShift Attuale { get; set; }
 
-        public Squadra[] All => new List<Squadra[]> { Attuale, Precedente, Successivo }
-            .SelectMany(l => l.Select(s => s))
+        [JsonIgnore()]
+        public Squadra[] Squadre => new List<Squadra[]> { Attuale.Squadre, Precedente.Squadre, Successivo.Squadre }
+            .SelectMany(l => l)
             .GroupBy(s => s.Codice)
             .Select(s => s.First())
             .ToArray();
+
+        [JsonIgnore()]
+        public Officer[] Funzionari => new List<Officer[]> { Attuale.Funzionari, Precedente.Funzionari, Successivo.Funzionari }
+            .SelectMany(l => l)
+            .GroupBy(s => s.CodiceFiscale)
+            .Select(s => s.First())
+            .ToArray();
+    }
+
+    public class SquadraWorkShift
+    {
+        [JsonPropertyName("workshiftID")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("spots")]
+        public Squadra[] Squadre { get; set; }
+
+        [JsonPropertyName("officers")]
+        public Officer[] Funzionari { get; set; }
+    }
+
+    public class Officer
+    {
+        [JsonPropertyName("userId")]
+        public string CodiceFiscale { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Ruolo { get; set; }
+
+        [JsonPropertyName("jobTitleCode")]
+        public string JobTitleCode { get; set; }
+
+        [JsonPropertyName("firstName")]
+        public string Nome { get; set; }
+
+        [JsonPropertyName("lastName")]
+        public string Cognome { get; set; }
     }
 }

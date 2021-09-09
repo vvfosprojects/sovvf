@@ -61,7 +61,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 })).Result;
 
             var lstSquadrePreaccoppiate = Task.Run(() => query.CodiciSedi.Select(sede =>  _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
-                .SelectMany(shift => shift.Result.All.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false)).ToList());
+                .SelectMany(shift => shift.Result.Squadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false)).ToList());
 
             var statiOperativiMezzi = Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));

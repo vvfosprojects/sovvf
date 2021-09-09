@@ -32,5 +32,4 @@ namespace SO115App.API.Models.Classi.Boxes
 
         public int SquadreAssegnate { get; set; }
     }
-
 }

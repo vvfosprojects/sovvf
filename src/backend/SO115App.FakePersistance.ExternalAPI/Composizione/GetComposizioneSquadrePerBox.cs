@@ -80,11 +80,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     switch (query.Filtro.Turno) //FILTRO PER TURNO
                     {
-                        case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Precedente, squadra => lstSquadre.Add(squadra)); break;
+                        case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Precedente.Squadre, squadra => lstSquadre.Add(squadra)); break;
 
-                        case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo, squadra => lstSquadre.Add(squadra)); break;
+                        case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo.Squadre, squadra => lstSquadre.Add(squadra)); break;
 
-                        case null: Parallel.ForEach(workshift.All, squadra => lstSquadre.Add(squadra)); break;
+                        case null: Parallel.ForEach(workshift.Squadre, squadra => lstSquadre.Add(squadra)); break;
                     }
                 });
 

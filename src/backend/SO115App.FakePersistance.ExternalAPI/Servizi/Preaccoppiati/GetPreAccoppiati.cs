@@ -45,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                 Parallel.ForEach(query.CodiceSede, codice =>
                 {
-                    var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.All.ToList();
+                    var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
                     lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                         lstSquadreMezzo.TryAdd(m, lstSquadre
