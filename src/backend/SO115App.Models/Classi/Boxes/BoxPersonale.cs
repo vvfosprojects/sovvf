@@ -26,10 +26,17 @@ namespace SO115App.API.Models.Classi.Boxes
     {
         public int PersonaleTotale { get; set; }
 
-        public List<Componente> Funzionari { get; set; }
+        public Funzionari Funzionari { get; set; }
 
         public int SquadreServizio { get; set; }
 
         public int SquadreAssegnate { get; set; }
+    }
+
+    public class Funzionari
+    {
+        public List<Componente> Previous { get; set; }
+        public List<Componente> Current { get; set; }
+        public List<Componente> Next { get; set; }
     }
 }
