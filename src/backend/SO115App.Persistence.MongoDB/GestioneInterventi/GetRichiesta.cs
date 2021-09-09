@@ -232,8 +232,8 @@ namespace SO115App.Persistence.MongoDB
             //MapperSintesiRichiestaSuSTATRI mapperSTATRI = new MapperSintesiRichiestaSuSTATRI();
             //foreach (var sintesi in listaSistesiRichieste.ToList().FindAll(s => s.CodiceRichiesta != null))
             //{
-            //    var scheda = mapperSTATRI.Map(sintesi);
-            //    ListaPerStatri.Add(scheda);
+            //    var schede = mapperSTATRI.Map(sintesi);
+            //    ListaPerStatri.AddRange(schede);
             //}
 
             //var json = JsonConvert.SerializeObject(ListaPerStatri);
