@@ -97,6 +97,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
             Task<List<MembroComposizione>> lstAnagrafiche = null;
 
+            //TODO GESTIRE CAMPO SPOTTYPE QUANDO HA VALUE "MODULE" (GESTIRE MODULI COLONNA MOBILE)
+            //TODO GESTIRE SQUADRE CHE STANNO PER FINIRE IL TURNO (5M) (considerare che non tutte finiscono allo stesso orario)
+
             var lstSquadreComposizione = Task.Run(() => //GET
             {
                 var lstSquadre = new ConcurrentBag<Squadra>();

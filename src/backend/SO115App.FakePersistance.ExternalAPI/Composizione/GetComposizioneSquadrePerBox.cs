@@ -84,6 +84,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                         case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo.Squadre, squadra => lstSquadre.Add(squadra)); break;
 
+                        case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Attuale.Squadre, squadra => lstSquadre.Add(squadra)); break;
+
                         case null: Parallel.ForEach(workshift.Squadre, squadra => lstSquadre.Add(squadra)); break;
                     }
                 });

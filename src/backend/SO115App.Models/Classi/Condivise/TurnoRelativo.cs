@@ -4,6 +4,6 @@
     {
         Precedente,
         Successivo,
-        //Attuale,
+        Attuale
     }
 }
