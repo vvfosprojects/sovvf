@@ -22,19 +22,26 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Box
 {
     public class GetBoxPersonale : IGetBoxPersonale
     {
         private readonly IGetComposizioneSquadrePerBox _getComposizioneSquadre;
+        private readonly IGetSquadre _getSquadre;
 
-        public GetBoxPersonale(IGetComposizioneSquadrePerBox GetComposizioneSquadre)
+        public GetBoxPersonale(IGetComposizioneSquadrePerBox GetComposizioneSquadre, IGetSquadre getSquadre)
         {
             _getComposizioneSquadre = GetComposizioneSquadre;
+            _getSquadre = getSquadre;
         }
 
         public BoxPersonale Get(string[] codiciSede)
@@ -52,6 +59,12 @@ namespace SO115App.ExternalAPI.Fake.Box
                 .GroupBy(s => s.Codice)
                 .Select(s => s.First());
 
+            var lstFunzionari = new ConcurrentBag<Officer>(); 
+            
+            Parallel.ForEach(query.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => 
+                _getSquadre.GetAllByCodiceDistaccamento(codice).Result?.Funzionari?.ToList()?.ForEach(f => 
+                lstFunzionari.Add(f)));
+
             var result = new BoxPersonale();
 
             result.SquadreAssegnate =
@@ -68,12 +81,12 @@ namespace SO115App.ExternalAPI.Fake.Box
                 .Select(m => m.First())
                 .Count();
 
-            result.Funzionari = listaSquadreComposizione.SelectMany(s => s.Membri).Where(m => m.CapoPartenza).Select(m => new Componente() 
+            result.Funzionari = lstFunzionari.Select(m => new Componente() 
             { 
                 CodiceFiscale = m.CodiceFiscale,
-                DescrizioneQualifica = m.DescrizioneQualifica,
-                Nominativo = m.Nominativo,
-                Ruolo = m.DescrizioneQualifica
+                DescrizioneQualifica = m.Ruolo,
+                Nominativo = $"{m.Nome} {m.Cognome}",
+                Ruolo = m.Ruolo
             }).ToList();
 
             return result;
