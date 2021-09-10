@@ -55,7 +55,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + sostituzione.CodMezzoSmontante + " tornando in sede con il mezzo " + sostituzione.CodMezzoMontante;
 
-                #endregion
+                #endregion GESTIONE NOTE
 
                 #region GESTIONE RICHIESTA E EVENTI RICIHESTA
 
@@ -81,6 +81,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = PartenzaMontante.Partenza.Squadre
                 });
 
+                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza.Value);
+
                 //GESTIONE NUOVA PARTENZA MONTANTE
                 var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
@@ -89,11 +91,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = SquadreSwitch
                 });
 
+                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza.Value);
+
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 
                 _updateRichiesta.UpDate(command.Richiesta);
 
-                #endregion
+                #endregion GESTIONE RICHIESTA E EVENTI RICIHESTA
 
                 #region Comunicazione a servizi GAC
 
@@ -145,7 +149,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     });
                 });
 
-                #endregion
+                #endregion Comunicazione a servizi GAC
             });
         }
     }
