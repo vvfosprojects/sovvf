@@ -6,89 +6,73 @@
                 <i class="fas fa-users mb-2 mr-1"></i>
                 <span class="font-weight-bold"
                       ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
-                <span class="font-weight-bold"
+                        <span class="font-weight-bold"
                       (click)="onClickServizi()">{{personaleQty?.totale}}</span>
             </div>
             <div class="clearfix float-right ml-4 ml-auto text-right">
                 <ng-template #funzionariGuardia>
                     <!-- Funzionario Guardia -->
-                    <div *ngIf="personalePresenze.funGuardia">
+                    <div *ngIf="personalePresenze.guardia">
                         <div class="h6">Funz. Guardia</div>
-                        <div *ngIf="personalePresenze.funGuardia.descrizione" title="Nominativo" class="h6 mb-2">
+                        <div *ngIf="personalePresenze.guardia[0]?.descrizione" title="Nominativo" class="h6 mb-2">
                             <i class="fas fa-user mr-1"></i>
-                            {{personalePresenze.funGuardia?.descrizione}}
+                            {{personalePresenze.guardia[0].descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.funGuardia.qualifica" title="Qualifica" class="h6">
+                        <div *ngIf="personalePresenze.guardia[0]?.qualifica" title="Qualifica" class="h6">
                             <i class="fas fa-cog mr-1"></i>
-                            {{personalePresenze.funGuardia?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.funGuardia.telefono" title="Telefono" class="h6">
-                            <i class="fas fa-mobile mr-1"></i>
-                            {{personalePresenze.funGuardia?.telefono}}
+                            {{personalePresenze.guardia[0].qualifica}}
                         </div>
                     </div>
-                    <div *ngIf="!personalePresenze.funGuardia">
+                    <div *ngIf="!personalePresenze.guardia?.length">
                         <div class="h6 font-weight-bold">Nessun Funzionario</div>
                     </div>
 
                     <hr class="m-0 mb-2">
 
                     <!-- Capo Turno -->
-                    <div *ngIf="personalePresenze.capoTurno">
+                    <div *ngFor="let capoTurno of personalePresenze.capoTurno">
                         <div class="h6">Capo Turno</div>
-                        <div *ngIf="personalePresenze.capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
+                        <div *ngIf="capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
                             <i class="fas fa-user mr-1"></i>
-                            {{personalePresenze.capoTurno?.descrizione}}
+                            {{capoTurno?.descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.capoTurno.qualifica" title="Qualifica" class="h6">
+                        <div *ngIf="capoTurno.qualifica" title="Qualifica" class="h6">
                             <i class="fas fa-cog mr-1"></i>
-                            {{personalePresenze.capoTurno?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.capoTurno.telefono" title="Telefono" class="h6">
-                            <i class="fas fa-mobile mr-1"></i>
-                            {{personalePresenze.capoTurno?.telefono}}
+                            {{capoTurno?.qualifica}}
                         </div>
                     </div>
-                    <div *ngIf="!personalePresenze.capoTurno">
+                    <div *ngIf="!personalePresenze.capoTurno?.length">
                         <div class="h6 font-weight-bold">Nessun Capo Turno</div>
                     </div>
                 </ng-template>
 
                 <!-- Tecnici Guardia -->
                 <ng-template #tecniciGuardia>
-                    <div *ngIf="personalePresenze.tecnicoGuardia1">
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.descrizione" title="Nominativo" class="h6 mb-2">
+                    <div *ngIf="personalePresenze.primoTecnico">
+                        <div class="h6">Tecnico</div>
+                        <div *ngIf="personalePresenze.primoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
                             <i class="fas fa-user mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia1?.descrizione}}
+                            {{personalePresenze.primoTecnico?.descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.qualifica" title="Qualifica"
+                        <div *ngIf="personalePresenze.primoTecnico.qualifica" title="Qualifica"
                              class="h6">
                             <i class="fas fa-cog mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia1?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.telefono" title="Telefono"
-                             class="h6">
-                            <i class="fas fa-mobile mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia1?.telefono}}
+                            {{personalePresenze.primoTecnico?.qualifica}}
                         </div>
                     </div>
-                    <div *ngIf="personalePresenze.tecnicoGuardia2" class="mt-1">
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.descrizione" title="Nominativo" class="h6 mb-2">
+                    <div *ngIf="personalePresenze.secondoTecnico" class="mt-1">
+                        <div class="h6">Tecnico</div>
+                        <div *ngIf="personalePresenze.secondoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
                             <i class="fas fa-user mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia2?.descrizione}}
+                            {{personalePresenze.secondoTecnico?.descrizione}}
                         </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.qualifica" title="Qualifica"
+                        <div *ngIf="personalePresenze.secondoTecnico.qualifica" title="Qualifica"
                              class="h6">
                             <i class="fas fa-cog mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia2?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.telefono" title="Telefono"
-                             class="h6">
-                            <i class="fas fa-mobile mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia2?.telefono}}
+                            {{personalePresenze.secondoTecnico?.qualifica}}
                         </div>
                     </div>
-                    <div *ngIf="!personalePresenze.tecnicoGuardia1 && !personalePresenze.tecnicoGuardia2">
+                    <div *ngIf="!personalePresenze.primoTecnico && !personalePresenze.secondoTecnico">
                         <div class="h6 font-weight-bold">Nessun Tecnico di Guardia</div>
                     </div>
                 </ng-template>

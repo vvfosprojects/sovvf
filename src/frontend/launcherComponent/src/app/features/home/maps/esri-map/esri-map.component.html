@@ -6,18 +6,17 @@
          class="p-2"
          style="display: none; background-color: #232323; position: absolute; z-index: 9999999999999">
         <ul class="list-unstyled m-0">
-            <li class="cursor-pointer item-contextMenu"
+            <li *ngIf="eventClick?.mapPoint"
+                class="cursor-pointer item-contextMenu"
                 (click)="startNuovaChiamata()">
                 Nuova Chiamata
-                <span *ngIf="eventClick?.mapPoint">({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
-                <span *ngIf="!eventClick?.mapPoint">(Zona Disegnata)</span>
+                <span>({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
             </li>
-            <!-- <li class="cursor-pointer item-contextMenu">
-                Opzione 2
+            <li *ngIf="!eventClick?.mapPoint"
+                class="cursor-pointer item-contextMenu"
+                (click)="saveDrawedPolygon()">
+                Salva Poligono
             </li>
-            <li class="cursor-pointer item-contextMenu">
-                Opzione 3
-            </li> -->
         </ul>
     </div>
     <!-- End ContextMenu ESRI Container -->

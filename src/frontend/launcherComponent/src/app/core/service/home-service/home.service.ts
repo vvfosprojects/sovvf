@@ -22,7 +22,7 @@ export class HomeService {
         this.headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: this.a, CodiceSede: this.codiceSede, IdUtente: this.idUtente });
     }
 
-  getHome(): Observable<Welcome> {
-    return this.http.get<Welcome>(API_WELCOME);
-  }
+    getHome(): Observable<Welcome> {
+      return this.http.get<Welcome>(API_WELCOME);
+    }
 }

@@ -7,7 +7,7 @@ import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
 import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
-import { ClearBoxPersonale, SetBoxPersonale } from '../actions/boxes/box-personale.actions';
+import { ClearBoxPersonale, SetBoxPersonaleCurrent } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, SetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
@@ -18,6 +18,7 @@ import { ClearViewState } from '../actions/view/view.actions';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 import { Injectable } from '@angular/core';
 import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
+import { BoxPersonale } from '../../boxes/boxes-model/box-personale.model';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -58,7 +59,7 @@ export class HomeState {
                 new SetCurrentUrl(RoutesPath.Home),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
-                new SetBoxPersonale(data.boxListaPersonale),
+                new SetBoxPersonaleCurrent(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetTipologicheMezzi(data.listaFiltri),
@@ -66,6 +67,29 @@ export class HomeState {
                 // new SetZoneEmergenza(data.zoneEmergenza)
             ]);
         });
+
+        /* function getFunzionariMap(personale: BoxPersonale, type: string): BoxPersonale {
+            let boxPersonale: BoxPersonale;
+            switch (type) {
+                case 'previous':
+                    boxPersonale = {
+                        personaleTotale: personale.personaleTotale,
+                        funzionari: personale.funzionari.previous,
+                         public squadreServizio: number,
+                         public squadreAssegnate: number
+                    };
+                    break;
+                case 'current':
+                    
+                    break;
+                case 'next':
+                    
+                    break;
+                default:
+                    break;
+            }
+            return boxPersonale;
+        } */
     }
 
     @Action(ClearDataHome)

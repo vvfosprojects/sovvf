@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
-import { BoxClickInterface } from '../box-interface/box-click-interface';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
@@ -25,9 +24,9 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
-    @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
-    @Select(BoxPersonaleState.presenze) presenze$: Observable<BoxPersonalePresenze>;
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
+    @Select(BoxPersonaleState.presenzeCurrent) presenze$: Observable<BoxPersonalePresenze>;
+    @Select(BoxPersonaleState.personaleQtyCurrent) personaleQty$: Observable<BoxPersonaleQty>;
 
     datimeteo: Meteo;
 
