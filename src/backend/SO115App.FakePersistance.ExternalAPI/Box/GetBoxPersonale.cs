@@ -100,12 +100,11 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var statiAssegnati = new string[] { Costanti.MezzoInUscita, Costanti.MezzoSulPosto, Costanti.MezzoInViaggio, Costanti.MezzoInRientro };
 
-            result.SquadreAssegnate = new ConteggioPersonale()
-            {
-                Current = workshift.Result.Attuale.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
-                Next = workshift.Result.Successivo.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
-                Previous = workshift.Result.Precedente.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
-            };
+            result.SquadreAssegnate =
+                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InViaggio)) +
+                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InUscita)) +
+                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.SulPosto)) +
+                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InRientro));
 
             result.SquadreServizio = new ConteggioPersonale()
             {

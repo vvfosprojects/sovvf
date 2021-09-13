@@ -30,7 +30,7 @@ namespace SO115App.API.Models.Classi.Boxes
 
         public ConteggioPersonale SquadreServizio { get; set; }
 
-        public ConteggioPersonale SquadreAssegnate { get; set; }
+        public int SquadreAssegnate { get; set; }
     }
 
     public class ConteggioFunzionari
