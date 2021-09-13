@@ -26,8 +26,6 @@ import { SedeMarker } from '../maps-model/sede-marker.model';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../service/map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { ViewComponentState } from '../../store/states/view/view.state';
-import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../store/actions/view/view.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -50,8 +48,7 @@ import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Sketch from '@arcgis/core/widgets/Sketch';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
-import Portal from "@arcgis/core/portal/Portal";
-import PortalQueryParams from '@arcgis/core/portal/PortalQueryParams';
+import Locator from '@arcgis/core/tasks/Locator';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
@@ -371,18 +368,17 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         // Controllo se è stato scelto un punto ppure un poligono complesso
         let lat: number;
         let lon: number;
-        let drawedPolygon: Graphic;
+
+        const mapPoint = this.eventClick.mapPoint;
 
         if (this.eventClick?.mapPoint) {
-            lat = this.eventClick.mapPoint.latitude;
-            lon = this.eventClick.mapPoint.longitude;
-        } else if (this.drawGraphicLayer?.graphics?.length) {
-            drawedPolygon = this.drawedPolygon;
+            lat = mapPoint.latitude;
+            lon = mapPoint.longitude;
         }
 
         // Se il "contextMenu" è aperto lo chiudo
         if (this.contextMenuVisible) {
-            this.setContextMenuVisible(false, { skipRemoveDrawedPolygon: !!drawedPolygon });
+            this.setContextMenuVisible(false);
         }
 
         // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
@@ -392,101 +388,45 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        // TODO: implementare quando il servizio "GeocodeServer" sarà disponibile
-        /* if (lat && lon) {
-            // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-            const locatorTask = new Locator({
-                url: 'http://gis.dipvvf.it/portal/sharing/rest/services/World/GeocodeServer'
-            });
-            const params = {
-                location: this.eventClick.mapPoint
-            };
-            // Trovo l'indirizzo tramite le coordinate
-            locatorTask.locationToAddress(params).then((response) => {
-                console.log('response', response);
-                console.log('address', response.address);
+        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
+        const locatorTask = new Locator({
+            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
+        });
+        this.view.popup.autoOpenEnabled = false;
 
-                this.changeCenter([lon, lat]);
-                this.changeZoom(19);
+        // Params per il servizio "locationToAddress"
+        let location = mapPoint;
+        const params = {
+            location
+        };
 
-                // Apro il modale con FormChiamata con lat, lon e address
-                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                    windowClass: 'xxlModal modal-holder',
-                });
-                modalNuovaChiamata.componentInstance.lat = lat;
-                modalNuovaChiamata.componentInstance.lon = lon;
-                modalNuovaChiamata.componentInstance.address = response.address;
+        // Trovo l'indirizzo tramite le coordinate
+        locatorTask.locationToAddress(params).then((response) => {
+            console.log('locationToAddress response', response);
 
-                modalNuovaChiamata.result.then((result: string) => {
-                    this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
-                });
-            });
-        } else if (drawedPolygon) {
-            // Apro il modale con FormChiamata con il drawedPolygon
+            this.changeCenter([lon, lat]);
+            this.changeZoom(19);
+
+            // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
                 windowClass: 'xxlModal modal-holder',
             });
-            modalNuovaChiamata.componentInstance.drawedPolygon = drawedPolygon;
+            modalNuovaChiamata.componentInstance.lat = lat;
+            modalNuovaChiamata.componentInstance.lon = lon;
+            modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
 
             modalNuovaChiamata.result.then((result: string) => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
-        } */
-
-        if (lat && lon) {
-            // !!TEST!! API gratuita per il geocode inverso TODO: sostituire con API dei VVF
-            const obj = {
-                location: {
-                    latLng: {
-                        lat,
-                        lng: lon
-                    }
-                },
-                options: {
-                    thumbMaps: false
-                },
-                includeNearestIntersection: true,
-                includeRoadMetadata: true
-            };
-
-            // Trovo l'indirizzo tramite le coordinate (con API gratuita)
-            this.http.post('http://open.mapquestapi.com/geocoding/v1/reverse?key=2S0fOQbN9KRvxAg6ONq7J8s2evnvb8dm', obj).subscribe((response: any) => {
-
-                this.changeCenter([lon, lat]);
-                this.changeZoom(19);
-
-                const chiamataFormActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
-                const modificaFormActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
-                const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
-                if(chiamataFormActive) {
-                    this.store.dispatch(new ToggleChiamata());
-                } else if(modificaFormActive) {
-                    this.store.dispatch(new ToggleModifica());
-                } else if(composizionePartenzaActive) {
-                    this.store.dispatch(new ToggleComposizione());
-                }
-
-                // Apro il modale con FormChiamata con lat, lon e address
-                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                    windowClass: 'xxlModal modal-holder',
-                });
-                modalNuovaChiamata.componentInstance.lat = lat;
-                modalNuovaChiamata.componentInstance.lon = lon;
-                modalNuovaChiamata.componentInstance.address = response?.results[0]?.locations[0]?.street;
-
-                modalNuovaChiamata.result.then((result: string) => {
-                    this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
-                });
-            });
-        }
+        });
     }
 
     saveDrawedPolygon(): void {
-
+        console.log('saveDrawedPolygon');
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
-    setContextMenuVisible(value: boolean, options?: { skipRemoveDrawedPolygon?: boolean }): void {
+    setContextMenuVisible(value: boolean): void {
         if (value) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
@@ -502,10 +442,6 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         } else {
-            if (!options?.skipRemoveDrawedPolygon) {
-                this.drawGraphicLayer.removeAll();
-                this.drawedPolygon = null;
-            }
             this.eventClick = null;
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
