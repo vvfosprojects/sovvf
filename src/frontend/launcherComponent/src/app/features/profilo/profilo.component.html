@@ -1,49 +1,47 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
-        <div class="col-12 col-md-6 mx-auto mb-2">
-            <h2>
-                <i class="far fa-user"></i>
-                Profilo
-            </h2>
-        </div>
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
-             <div class="row">
-                 <div class="col-12 col-md-6 mx-auto mt-2 mb-5">
-                     <div class="card no-padding-custom">
-                         <div class="clearfix bg-impostazioni">
-                             <div class="text-center float-left"
-                                  [class.bg-moon-light]="(nightMode$ | async)"
-                                  style="width: 50%">
-                                    <app-operatore [user]="utente"
-                                                   [ruoliUtenteLoggato]="ruoliUtenteLoggato">
-                                    </app-operatore>
-                             </div>
-                             <div class="text-center float-right py-2" style="width: 50%">
-                                 <h5 class="font-weight-bold allineamento-list">
-                                     <i class="fas fa-cogs mr-1"></i>
-                                     {{ 'ruoli assegnati' | uppercase }}
-                                 </h5>
-                                 <div class="divider-custom">
-                                     <div class="divider-custom-line" style="height: 0.15rem; margin-right: 25%;"></div>
-                                 </div>
-                                 <div class="allineamento-list">
-                                     <div *ngFor="let ruolo of ruoliUtenteLoggato">
-                                         <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
-                                         {{ ruolo.descrizione }}
-                                     </div>
-                                 </div>
-                                 <div *ngIf="ruoliUtenteLoggato?.length === 0">
-                                     Solo Visualizzazione
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="pl-3 py-2 bg-dark text-white">
-                             <app-versione></app-versione>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+            <div class="row">
+                <div class="col-12 col-md-7 mx-auto mb-2">
+                    <h2>
+                        <i class="far fa-user"></i>
+                        Profilo
+                    </h2>
+                </div>
+                <div class="col-12 col-md-7 mx-auto mt-2 mb-5">
+                    <div class="card no-padding-custom">
+                        <div class="clearfix bg-impostazioni">
+                            <div class="text-center float-left"
+                                 [class.bg-moon-light]="(nightMode$ | async)"
+                                 style="width: 50%">
+                                   <app-operatore [user]="utente"
+                                                  [ruoliUtenteLoggato]="ruoliUtenteLoggato">
+                                   </app-operatore>
+                            </div>
+                            <div class="text-center float-right py-2" style="width: 50%">
+                                <h5 class="font-weight-bold allineamento-list">
+                                    <i class="fas fa-cogs mr-1"></i>
+                                    {{ 'ruoli assegnati' | uppercase }}
+                                </h5>
+                                <hr>
+                                <div class="allineamento-list">
+                                    <div *ngFor="let ruolo of ruoliUtenteLoggato">
+                                        <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
+                                        {{ ruolo.descrizione }}
+                                    </div>
+                                </div>
+                                <div *ngIf="ruoliUtenteLoggato?.length === 0">
+                                    Solo Visualizzazione
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pl-3 py-2 bg-dark text-white">
+                            <app-versione></app-versione>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

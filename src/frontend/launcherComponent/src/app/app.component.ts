@@ -248,7 +248,15 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             switch (currentUrl) {
                 case RoutesPath.Home:
                     return true;
+                case RoutesPath.Profilo:
+                    return true;
                 case RoutesPath.GestioneUtenti:
+                    return true;
+                case RoutesPath.ImpostazioniSede:
+                    return true;
+                case RoutesPath.POS:
+                    return true;
+                case RoutesPath.Changelog:
                     return true;
                 case RoutesPath.TrasferimentoChiamata:
                     return true;
@@ -256,9 +264,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     return true;
                 case RoutesPath.RubricaPersonale:
                     return true;
-                case RoutesPath.Changelog:
-                    return true;
-                case RoutesPath.Profilo:
+                case RoutesPath.Preferenze:
                     return true;
                 default:
                     return false;
@@ -296,6 +302,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 case RoutesPath.Rubrica:
                     return true;
                 case RoutesPath.RubricaPersonale:
+                    return true;
+                case RoutesPath.Preferenze:
                     return true;
                 default:
                     return false;
