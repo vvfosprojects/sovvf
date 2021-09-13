@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
@@ -66,17 +67,13 @@ namespace SO115App.ExternalAPI.Fake.Box
                 }
             };
 
-            var listaSquadreComposizione = _getComposizioneSquadre.Get(filtroTurno)
-                .GroupBy(s => s.Codice)
-                .Select(s => s.First());
-
             Task<WorkShift> workshift = null;
 
             Parallel.ForEach(filtro.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
 
             var result = new BoxPersonale();
 
-            result.Funzionari = new Funzionari()
+            result.Funzionari = new ConteggioFunzionari()
             {
                 Current = workshift.Result.Attuale.Funzionari.Select(m => new Componente()
                 {
@@ -101,19 +98,28 @@ namespace SO115App.ExternalAPI.Fake.Box
                 }).ToList()
             };
 
-            result.SquadreAssegnate =
-                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InViaggio)) +
-                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InUscita)) +
-                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.SulPosto)) +
-                listaSquadreComposizione.Count(x => x.Stato.Equals(StatoSquadraComposizione.InRientro));
+            var statiAssegnati = new string[] { Costanti.MezzoInUscita, Costanti.MezzoSulPosto, Costanti.MezzoInViaggio, Costanti.MezzoInRientro };
 
-            result.SquadreServizio = listaSquadreComposizione.Count(); 
+            result.SquadreAssegnate = new ConteggioPersonale()
+            {
+                Current = workshift.Result.Attuale.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
+                Next = workshift.Result.Successivo.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
+                Previous = workshift.Result.Precedente.Squadre.Count(x => !statiAssegnati.Equals("AVAILABLE")),
+            };
 
-            result.PersonaleTotale = listaSquadreComposizione 
-                .SelectMany(s => s.Membri)
-                .GroupBy(m => m.CodiceFiscale)
-                .Select(m => m.First())
-                .Count();
+            result.SquadreServizio = new ConteggioPersonale()
+            {
+                Current = workshift.Result.Attuale.Squadre.Count(),
+                Next = workshift.Result.Successivo.Squadre.Count(),
+                Previous = workshift.Result.Precedente.Squadre.Count(),
+            };
+
+            result.PersonaleTotale = new ConteggioPersonale()
+            {
+                Current = workshift.Result.Attuale.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
+                Next = workshift.Result.Successivo.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
+                Previous = workshift.Result.Precedente.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
+            };
 
             return result;
         }
