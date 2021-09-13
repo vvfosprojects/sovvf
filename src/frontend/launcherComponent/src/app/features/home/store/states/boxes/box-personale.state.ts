@@ -1,20 +1,33 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
-import { ClearBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
+import { ClearBoxPersonale, SetBoxPersonaleCurrent, SetBoxPersonalePresenzeCurrent, SetBoxPersonaleQtyCurrent } from '../../actions/boxes/box-personale.actions';
 import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
 import { Injectable } from '@angular/core';
+import { RuoloFunzionarioSo } from '../../../boxes/boxes-model/ruolo-funzionario-so.enum';
 
 export interface BoxPersonaleStateModel {
-    personale: BoxPersonale;
-    presenze: BoxPersonalePresenze;
-    personaleQty: BoxPersonaleQty;
+    personalePrevious: BoxPersonale;
+    presenzePrevious: BoxPersonalePresenze;
+    personaleQtyPrevious: BoxPersonaleQty;
+    personaleCurrent: BoxPersonale;
+    presenzeCurrent: BoxPersonalePresenze;
+    personaleQtyCurrent: BoxPersonaleQty;
+    personaleNext: BoxPersonale;
+    presenzeNext: BoxPersonalePresenze;
+    personaleQtyNext: BoxPersonaleQty;
 }
 
 export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
-    personale: null,
-    presenze: null,
-    personaleQty: null
+    personalePrevious: null,
+    presenzePrevious: null,
+    personaleQtyPrevious: null,
+    personaleCurrent: null,
+    presenzeCurrent: null,
+    personaleQtyCurrent: null,
+    personaleNext: null,
+    presenzeNext: null,
+    personaleQtyNext: null
 };
 
 @Injectable()
@@ -25,40 +38,70 @@ export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
 export class BoxPersonaleState {
 
     @Selector()
-    static personale(state: BoxPersonaleStateModel): BoxPersonale {
-        return state.personale;
+    static personalePrevious(state: BoxPersonaleStateModel): BoxPersonale {
+        return state.personalePrevious;
     }
 
     @Selector()
-    static personaleQty(state: BoxPersonaleStateModel): BoxPersonaleQty {
-        return state.personaleQty;
+    static presenzePrevious(state: BoxPersonaleStateModel): BoxPersonalePresenze {
+        return state.presenzePrevious;
     }
 
     @Selector()
-    static presenze(state: BoxPersonaleStateModel): BoxPersonalePresenze {
-        return state.presenze;
+    static personaleQtyPrevious(state: BoxPersonaleStateModel): BoxPersonaleQty {
+        return state.personaleQtyPrevious;
     }
 
-    @Action(SetBoxPersonale)
-    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale): void {
+    @Selector()
+    static personaleCurrent(state: BoxPersonaleStateModel): BoxPersonale {
+        return state.personaleCurrent;
+    }
+
+    @Selector()
+    static presenzeCurrent(state: BoxPersonaleStateModel): BoxPersonalePresenze {
+        return state.presenzeCurrent;
+    }
+
+    @Selector()
+    static personaleQtyCurrent(state: BoxPersonaleStateModel): BoxPersonaleQty {
+        return state.personaleQtyCurrent;
+    }
+
+    @Selector()
+    static personaleNext(state: BoxPersonaleStateModel): BoxPersonale {
+        return state.personaleNext;
+    }
+
+    @Selector()
+    static presenzeNext(state: BoxPersonaleStateModel): BoxPersonalePresenze {
+        return state.presenzeNext;
+    }
+
+    @Selector()
+    static personaleQtyNext(state: BoxPersonaleStateModel): BoxPersonaleQty {
+        return state.personaleQtyNext;
+    }
+
+    @Action(SetBoxPersonaleCurrent)
+    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleCurrent): void {
         patchState({
-            personale: action.payload
+            personaleCurrent: action.payload
         });
-        dispatch(new SetBoxPersonaleQty(countPersonale(action.payload)));
-        dispatch(new SetBoxPersonalePresenze(getPresenze(action.payload)));
+        dispatch(new SetBoxPersonaleQtyCurrent(countPersonale(action.payload, 'current')));
+        dispatch(new SetBoxPersonalePresenzeCurrent(getPresenze(action.payload, 'current')));
     }
 
-    @Action(SetBoxPersonaleQty)
-    setBoxPersonaleQty({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQty): void {
+    @Action(SetBoxPersonalePresenzeCurrent)
+    setBoxPersonalePresenze({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenzeCurrent): void {
         patchState({
-            personaleQty: action.personaleQty
+            presenzeCurrent: action.personalePresenze
         });
     }
 
-    @Action(SetBoxPersonalePresenze)
-    setBoxPersonalePresenze({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenze): void {
+    @Action(SetBoxPersonaleQtyCurrent)
+    setBoxPersonaleQty({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQtyCurrent): void {
         patchState({
-            presenze: action.personalePresenze
+            personaleQtyCurrent: action.personaleQty
         });
     }
 
@@ -68,38 +111,63 @@ export class BoxPersonaleState {
     }
 }
 
-export function countPersonale(state: BoxPersonale): BoxPersonaleQty {
+export function countPersonale(state: BoxPersonale, type: string): BoxPersonaleQty {
     const personaleQty = {} as BoxPersonaleQty;
     if (state) {
         personaleQty.funzionari = 0;
         personaleQty.tecnici = 0;
-        state.funzionari.forEach((result: BoxFunzionariSo) => {
-            if (result.funGuardia || result.capoTurno) {
-                personaleQty.funzionari++;
-            }
-            if (result.tecnicoGuardia1 || result.tecnicoGuardia2) {
-                personaleQty.tecnici++;
+        state.funzionari[type]?.forEach((result: BoxFunzionariSo) => {
+            switch (result.ruolo) {
+                case RuoloFunzionarioSo.Guardia:
+                    personaleQty.funzionari++;
+                    break;
+                case RuoloFunzionarioSo.CapoTurno:
+                    personaleQty.funzionari++;
+                    break;
+                case RuoloFunzionarioSo.PrimoTecnico:
+                    personaleQty.tecnici++;
+                    break;
+                case RuoloFunzionarioSo.SecondoTecnico:
+                    personaleQty.tecnici++;
+                    break;
+                default:
+                    console.error('countPersonale => Ruolo funzionario non gestito nello switch');
+                    break;
             }
         });
         personaleQty.squadreAssegnate = state.squadreAssegnate;
-        personaleQty.squadreServizio = state.squadreServizio;
-        personaleQty.totale = state.personaleTotale;
+        personaleQty.squadreServizio = state.squadreServizio[type];
+        personaleQty.totale = state.personaleTotale[type];
     }
     return personaleQty;
 }
 
-export function getPresenze(state: BoxPersonale): BoxPersonalePresenze {
+export function getPresenze(state: BoxPersonale, type: string): BoxPersonalePresenze {
     const personalePresenze = {} as BoxPersonalePresenze;
     if (state) {
-        state.funzionari.forEach((result: BoxFunzionariSo) => {
-            if (result.funGuardia) {
-                personalePresenze.funGuardia = makeBoxPersonalePersona(result);
-            } else if (result.capoTurno) {
-                personalePresenze.capoTurno = makeBoxPersonalePersona(result);
-            } else if (result.tecnicoGuardia1) {
-                personalePresenze.tecnicoGuardia1 = makeBoxPersonalePersona(result);
-            } else if (result.tecnicoGuardia2) {
-                personalePresenze.tecnicoGuardia2 = makeBoxPersonalePersona(result);
+        state.funzionari[type]?.forEach((result: BoxFunzionariSo) => {
+            switch (result.ruolo) {
+                case RuoloFunzionarioSo.Guardia:
+                    if(!personalePresenze.guardia) {
+                        personalePresenze.guardia = [];
+                    }
+                    personalePresenze.guardia.push(makeBoxPersonalePersona(result));
+                    break;
+                case RuoloFunzionarioSo.CapoTurno:
+                    if(!personalePresenze.capoTurno) {
+                        personalePresenze.capoTurno = [];
+                    }
+                    personalePresenze.capoTurno.push(makeBoxPersonalePersona(result));
+                    break;
+                case RuoloFunzionarioSo.PrimoTecnico:
+                    personalePresenze.primoTecnico = makeBoxPersonalePersona(result);
+                    break;
+                case RuoloFunzionarioSo.SecondoTecnico:
+                    personalePresenze.secondoTecnico = makeBoxPersonalePersona(result);
+                    break;
+                default:
+                    console.error('getPresenze => Ruolo funzionario non gestito nello switch');
+                    break;
             }
         });
     }
@@ -110,8 +178,7 @@ export function makeBoxPersonalePersona(boxFunzionarioSo: BoxFunzionariSo): BoxP
     if (boxFunzionarioSo) {
         return {
             descrizione: boxFunzionarioSo.nominativo,
-            qualifica: boxFunzionarioSo.descrizioneQualifica,
-            telefono: boxFunzionarioSo.telefono
+            qualifica: boxFunzionarioSo.descrizioneQualifica
         } as BoxPersonalePersona;
     }
 }

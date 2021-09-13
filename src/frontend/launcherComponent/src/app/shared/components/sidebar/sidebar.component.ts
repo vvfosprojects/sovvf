@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RoutesPath } from '../../enum/routes-path.enum';
 import { Ruolo, Utente } from '../../model/utente.model';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import { Store } from '@ngxs/store';
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
@@ -22,16 +22,15 @@ export class SidebarComponent implements OnInit {
 
     RoutesPath = RoutesPath;
 
-    constructor(private modalService: NgbModal, private store: Store) {
-    }
-
-    ngOnInit(): void {
+    constructor(private modalService: NgbModal,
+                private store: Store) {
     }
 
     /**
      * Stampa Riepilogo Interventi
      */
     onRiepilogoInterventi(): void {
+        this.onToggleSidebar();
         const modalOptions = {
             windowClass: '',
             backdrop: 'static',

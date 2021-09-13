@@ -50,6 +50,8 @@ import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import Sketch from '@arcgis/core/widgets/Sketch';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
+import Portal from "@arcgis/core/portal/Portal";
+import PortalQueryParams from '@arcgis/core/portal/PortalQueryParams';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
@@ -118,7 +120,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             // Inizializzazione della mappa
             this.initializeMap().then(() => {
 
-                // Controllo l'extent per richiedere i marker "Richieste" da visualizzare ogni volta che quest'ultimo cambia
+                // Controllo l'extent per richiedere i marker da visualizzare ogni volta che quest'ultimo cambia
                 this.view.watch('extent', (event: any) => {
                     const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
                     const bounds = {
@@ -477,6 +479,10 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 });
             });
         }
+    }
+
+    saveDrawedPolygon(): void {
+
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"

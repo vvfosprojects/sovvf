@@ -131,7 +131,7 @@ export class CentroMappaState {
     @Action(GetInitZoomCentroMappa)
     getInitZoomCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>): void {
         const state = getState();
-        dispatch(new SetZoomCentroMappa(state.initCentroMappa.zoom));
+        dispatch(new SetZoomCentroMappa(state.initCentroMappa?.zoom));
     }
 
     /**
@@ -142,7 +142,7 @@ export class CentroMappaState {
     @Action(GetInitCoordCentroMappa)
     getInitCoordCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>): void {
         const state = getState();
-        dispatch(new SetCoordCentroMappa(state.initCentroMappa.coordinateCentro));
+        dispatch(new SetCoordCentroMappa(state.initCentroMappa?.coordinateCentro));
     }
 
     @Action(ClearCentroMappa)

@@ -7,14 +7,13 @@ export interface BoxPersonaleQty {
 }
 
 export interface BoxPersonalePresenze {
-    funGuardia: BoxPersonalePersona;
-    capoTurno: BoxPersonalePersona;
-    tecnicoGuardia1: BoxPersonalePersona;
-    tecnicoGuardia2: BoxPersonalePersona;
+    guardia: BoxPersonalePersona[];
+    capoTurno: BoxPersonalePersona[];
+    primoTecnico: BoxPersonalePersona;
+    secondoTecnico: BoxPersonalePersona;
 }
 
 export interface BoxPersonalePersona {
     descrizione: string;
     qualifica: string;
-    telefono?: string;
 }
