@@ -25,6 +25,7 @@ using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System.Collections.Concurrent;
@@ -36,12 +37,12 @@ namespace SO115App.ExternalAPI.Fake.Box
 {
     public class GetBoxPersonale : IGetBoxPersonale
     {
-        private readonly IGetComposizioneSquadrePerBox _getComposizioneSquadre;
+        private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetSquadre _getSquadre;
 
-        public GetBoxPersonale(IGetComposizioneSquadrePerBox GetComposizioneSquadre, IGetSquadre getSquadre)
+        public GetBoxPersonale(IGetStatoMezzi getStatoMezzi, IGetSquadre getSquadre)
         {
-            _getComposizioneSquadre = GetComposizioneSquadre;
+            _getStatoMezzi = getStatoMezzi;
             _getSquadre = getSquadre;
         }
 
@@ -70,6 +71,8 @@ namespace SO115App.ExternalAPI.Fake.Box
             Task<WorkShift> workshift = null;
 
             Parallel.ForEach(filtro.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
+
+            var statoMezzi = _getStatoMezzi.Get(codiciSede);
 
             var result = new BoxPersonale();
 
@@ -100,11 +103,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var statiAssegnati = new string[] { Costanti.MezzoInUscita, Costanti.MezzoSulPosto, Costanti.MezzoInViaggio, Costanti.MezzoInRientro };
 
-            result.SquadreAssegnate =
-                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InViaggio)) +
-                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InUscita)) +
-                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.SulPosto)) +
-                workshift.Result.Attuale.Squadre.Count(x => x.Stato.Equals(StatoSquadraComposizione.InRientro));
+            result.SquadreAssegnate = statoMezzi.Count;
 
             result.SquadreServizio = new ConteggioPersonale()
             {
