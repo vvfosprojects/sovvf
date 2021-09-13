@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 .GroupBy(s => s.Codice)
                 .Select(s => s.First());
 
-            Task<WorkShift> workshift = null; // TODO TUTTI E SUDDIVISI (PREV CURR E NEXT)
+            Task<WorkShift> workshift = null;
 
             Parallel.ForEach(filtro.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
 
