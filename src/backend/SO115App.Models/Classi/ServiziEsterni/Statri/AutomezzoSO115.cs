@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SO115App.Models.Classi.Statri
+namespace SO115App.Models.Classi.ServiziEsterni.Statri
 {
     public class AutomezzoSO115
     {

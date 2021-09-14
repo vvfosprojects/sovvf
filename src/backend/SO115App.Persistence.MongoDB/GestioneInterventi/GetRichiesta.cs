@@ -29,7 +29,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Classi.Statri;
+using SO115App.Models.Classi.ServiziEsterni.Statri;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
