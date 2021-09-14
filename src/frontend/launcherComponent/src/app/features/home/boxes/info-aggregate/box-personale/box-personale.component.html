@@ -87,17 +87,25 @@
                 <div class="row">
                     <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Squadre attualmente in servizio"
-                                      placement="top">Squadre</span>
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                    ngbTooltip="Squadre attualmente in servizio"
+                                    placement="top">
+                                    Squadre
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('squadreServizio')"><span
-                                    class="position-relative badge badge-mod-secondary h6 w-75">
-                              <i *ngIf="personaleDiff" class="blink-i-aggregate fas"
-                                 [ngClass]="realDiff('squadreServizio')"></i>{{personaleQty?.squadreServizio}}</span>
+                            <li [ngClass]="checkDiff('squadreServizio')">
+                                <span class="position-relative badge badge-mod-secondary h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                        class="blink-i-aggregate fas"
+                                        [ngClass]="realDiff('squadreServizio')">
+                                    </i>
+                                    {{personaleQty?.squadreServizio}}
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -105,17 +113,25 @@
                 <div class="row">
                     <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block n-li-box h6" ngbTooltip="Squadre impegnate sugli interventi"
-                                      placement="bottom">Impegnate</span>
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                      ngbTooltip="Squadre impegnate sugli interventi"
+                                      placement="bottom">
+                                    Impegnate
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('squadreAssegnate')"><span
-                                    class="position-relative badge badge-mod-danger h6 w-75">
-                      <i *ngIf="personaleDiff" class="blink-i-aggregate fas"
-                         [ngClass]="realDiff('squadreAssegnate')"></i>{{personaleQty?.squadreAssegnate}}</span>
+                            <li [ngClass]="checkDiff('squadreAssegnate')">
+                                <span class="position-relative badge badge-mod-danger h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                        class="blink-i-aggregate fas"
+                                        [ngClass]="realDiff('squadreAssegnate')">
+                                    </i>
+                                    {{personaleQty?.squadreAssegnate}}
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -130,41 +146,60 @@
                 <div class="row">
                     <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span
-                                    class="d-inline-block n-li-box h6"
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
                                     ngbTooltip="Funzionari di guardia"
-                                    placement="top">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
+                                    placement="top">
+                                    {{personaleQty?.funzionari | personale:'funzionari'}}
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
-                                triggers="mouseenter:mouseleave" container="body"
-                                placement="bottom"><span
-                                    class="position-relative badge badge-mod-secondary h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fas"
-                                    [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
+                            <li [ngClass]="checkDiff('funzionari')"
+                                [ngbPopover]="funzionariGuardia"
+                                triggers="mouseenter:mouseleave"
+                                container="body"
+                                placement="bottom">
+                                <span class="position-relative badge badge-mod-secondary cursor-pointer h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                        class="blink-i-aggregate fas"
+                                        [ngClass]="realDiff('funzionari')">
+                                    </i>
+                                    {{personaleQty?.funzionari}}
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block n-li-box h6"
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
                                       ngbTooltip="Tecnici di guardia"
-                                      placement="bottom">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
+                                      placement="bottom">
+                                      {{personaleQty?.tecnici | personale:'tecnici'}}
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('tecnici')" [ngbPopover]="tecniciGuardia"
-                                triggers="mouseenter:mouseleave" container="body"
-                                placement="bottom"><span
-                                    class="position-relative badge badge-mod-secondary h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fas"
-                                    [ngClass]="realDiff('tecnici')"></i>{{personaleQty?.tecnici}}</span></li>
+                            <li [ngClass]="checkDiff('tecnici')"
+                                [ngbPopover]="tecniciGuardia"
+                                triggers="mouseenter:mouseleave"
+                                container="body"
+                                placement="bottom">
+                                <span class="position-relative badge badge-mod-secondary cursor-pointer h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                        class="blink-i-aggregate fas"
+                                        [ngClass]="realDiff('tecnici')">
+                                    </i>
+                                    {{personaleQty?.tecnici}}
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </div>

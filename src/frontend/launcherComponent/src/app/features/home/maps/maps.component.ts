@@ -18,6 +18,8 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
 import { SchedaContattoMarker } from './maps-model/scheda-contatto-marker.model';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
+import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
+import { DirectionInterface } from './maps-interface/direction-interface';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
@@ -41,6 +43,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(SchedeContattoMarkersState.schedeContattoMarkers) schedeContattoMarkers$: Observable<SchedaContattoMarker[]>;
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
+    @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
 
     mapsFullyLoaded = false;
     centroMappa: CentroMappa;

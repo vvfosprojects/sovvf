@@ -26,6 +26,7 @@ import { SedeMarker } from '../maps-model/sede-marker.model';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../service/map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
+import { DirectionInterface } from '../maps-interface/direction-interface';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -49,6 +50,10 @@ import Sketch from '@arcgis/core/widgets/Sketch';
 import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import Locator from '@arcgis/core/tasks/Locator';
+import RouteParameters from '@arcgis/core/tasks/support/RouteParameters';
+import FeatureSet from '@arcgis/core/tasks/support/FeatureSet';
+import RouteTask from '@arcgis/core/tasks/RouteTask';
+import RouteResult from '@arcgis/core/tasks/support/RouteResult';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
@@ -64,6 +69,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     @Input() schedeContattoMarkers: SchedaContattoMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() tastoChiamataMappaActive: boolean;
+    @Input() direction: DirectionInterface;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -268,28 +274,37 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         // Aggiungo i Chiamate Markers con "ApplyEdits"
-        if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
+        if (changes?.chiamateMarkers?.currentValue && this.chiamateInCorsoFeatureLayer) {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
         }
         // Aggiungo i Richieste Markers con "ApplyEdits"
-        if (changes?.richiesteMarkers?.currentValue && this.map && this.richiesteFeatureLayer) {
+        if (changes?.richiesteMarkers?.currentValue && this.richiesteFeatureLayer) {
             const markersRichieste = changes?.richiesteMarkers?.currentValue;
             this.addRichiesteMarkersToLayer(markersRichieste, true).then();
         }
         // Aggiungo i SchedeConatto Markers con "ApplyEdits"
-        if (changes?.schedeContattoMarkers?.currentValue && this.map && this.schedeContattoFeatureLayer) {
+        if (changes?.schedeContattoMarkers?.currentValue && this.schedeContattoFeatureLayer) {
             const markersSchedeContatto = changes?.schedeContattoMarkers?.currentValue;
             this.addSchedeContattoMarkersToLayer(markersSchedeContatto, true).then();
         }
         // Aggiungo i Sedi Markers con "ApplyEdits"
-        if (changes?.sediMarkers?.currentValue && this.map && this.sediOperativeFeatureLayer) {
+        if (changes?.sediMarkers?.currentValue && this.sediOperativeFeatureLayer) {
             const markersSedi = changes?.sediMarkers?.currentValue;
             this.addSediMarkersToLayer(markersSedi, true).then();
         }
         // Controllo il valore di "tastoChiamataMappaActive"
-        if (changes?.tastoChiamataMappaActive?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
+        if (changes?.tastoChiamataMappaActive?.currentValue && this.chiamateInCorsoFeatureLayer) {
             this.setContextMenuVisible(false);
+        }
+        // Controllo il valore di "direction"
+        if (changes?.direction?.currentValue) {
+            const direction = changes?.direction?.currentValue;
+            if(direction?.isVisible) {
+                this.getRoute(changes?.direction.currentValue);
+            } else {
+                this.clearDirection();
+            }
         }
     }
 
@@ -324,6 +339,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         const container = this.mapViewEl.nativeElement;
 
         EsriConfig.portalUrl = 'http://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
+        // EsriConfig.apiKey = 'API_KEY';
 
         const portalItem = new PortalItem({
             id: 'e0286783ec05475882ed9b1fa89ea8f5'
@@ -466,6 +482,60 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             this.eventMouseMove = null;
             this.contextMenuVisible = false;
             this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
+        }
+    }
+
+    getRoute(direction: DirectionInterface): void {
+        const pointPartenza = new Point({
+            longitude: direction.origin.lng,
+            latitude: direction.origin.lat,
+            spatialReference: {
+                wkid: 3857
+            }
+        });
+        
+        const pointDestinazione = new Point({
+            longitude: direction.destination.lng,
+            latitude: direction.destination.lat,
+            spatialReference: {
+                wkid: 3857
+            }
+        });
+
+        const pointPartenzaGraphic = new Graphic({
+            geometry: pointPartenza
+        });
+
+        const pointDestinazioneGraphic = new Graphic({
+            geometry: pointDestinazione
+        });
+
+        const routeTask: RouteTask = new RouteTask({
+            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+        });
+
+        const routeParams = new RouteParameters({
+            stops: new FeatureSet({
+                features: [pointPartenzaGraphic, pointDestinazioneGraphic]
+            })
+        });
+  
+        routeTask.solve(routeParams).then((data: RouteResult) => {
+            // @ts-ignore 
+            data.routeResults.forEach((result: any) => {
+              result.route.symbol = {
+                type: "simple-line",
+                color: [5, 150, 255],
+                width: 3
+              };
+              this.view.graphics.add(result.route);
+            });
+      })
+    }
+
+    clearDirection(): void {
+        if(this.view?.graphics?.length) {
+            this.view.graphics.removeAll();
         }
     }
 

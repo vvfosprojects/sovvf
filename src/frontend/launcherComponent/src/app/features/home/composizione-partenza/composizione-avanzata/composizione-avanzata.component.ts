@@ -427,7 +427,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // Interazione con Mappa
     mezzoCoordinate(obj: MezzoDirection): void {
         if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
-            if (this.idMezziPrenotati.indexOf(obj.idMezzo) <= -1) {
                 const direction: DirectionInterface = {
                     origin: {
                         lat: obj.coordinateMezzo.latitudine,
@@ -441,7 +440,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 };
 
                 this.sendDirection.emit(direction);
-            }
         } else {
             this.onClearDirection();
             console.error('coordinate mezzo / coordinate richiesta non presenti');

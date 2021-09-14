@@ -28,22 +28,18 @@ export class MapsDirectionState {
     }
 
     @Action(SetDirection)
-    setDirection({ getState, patchState }: StateContext<MapsDirectionStateModel>, action: SetDirection): void {
-        const state = getState();
+    setDirection({ patchState }: StateContext<MapsDirectionStateModel>, action: SetDirection): void {
         patchState({
-            ...state,
             direction: action.direction
         });
     }
 
     @Action(ClearDirection)
-    clearDirection({ getState, patchState }: StateContext<MapsDirectionStateModel>): void {
-        const state = getState();
+    clearDirection({ patchState }: StateContext<MapsDirectionStateModel>): void {
         const mapsDirectionOff: DirectionInterface = {
             isVisible: false
         };
         patchState({
-            ...state,
             direction: mapsDirectionOff
         });
     }
