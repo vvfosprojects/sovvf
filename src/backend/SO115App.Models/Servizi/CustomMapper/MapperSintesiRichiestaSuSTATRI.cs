@@ -1,7 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Classi.Statri;
+using SO115App.Models.Classi.ServiziEsterni.Statri;
 using System;
 using System.Collections.Generic;
 using System.Linq;

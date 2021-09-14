@@ -33,6 +33,7 @@ using SO115App.ExternalAPI.Fake.Servizi.OPService;
 using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
+using SO115App.ExternalAPI.Fake.Servizi.STATRI;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -46,6 +47,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
 using System.Linq;
@@ -304,6 +306,13 @@ namespace SO115App.CompositionRoot
             container.Register<IGetHistoryRichiestaSoccorsoAereo, GetHistoryRichiestaSoccorsoAereo>();
 
             #endregion AFM
+
+            #region STATRI
+
+            container.Register<ISendNewItem, SendNewItem>();
+            container.Register<IUpDateExistingItem, UpDateExistingItem>();
+
+            #endregion STATRI
         }
     }
 }
