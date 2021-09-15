@@ -14,7 +14,6 @@ import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-rich
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
 import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
@@ -176,7 +175,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     onClearDirection(): void {
-        this.store.dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
+        this.store.dispatch(new ClearDirection());
     }
 
     centraMappa(): void {

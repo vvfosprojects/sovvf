@@ -3,7 +3,6 @@ import { ClearDataHome, GetDataHome, SetBoundsIniziale } from '../actions/home.a
 import { ClearRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
-import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
 import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
@@ -18,7 +17,6 @@ import { ClearViewState } from '../actions/view/view.actions';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 import { Injectable } from '@angular/core';
 import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
-import { BoxPersonale } from '../../boxes/boxes-model/box-personale.model';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -67,29 +65,6 @@ export class HomeState {
                 // new SetZoneEmergenza(data.zoneEmergenza)
             ]);
         });
-
-        /* function getFunzionariMap(personale: BoxPersonale, type: string): BoxPersonale {
-            let boxPersonale: BoxPersonale;
-            switch (type) {
-                case 'previous':
-                    boxPersonale = {
-                        personaleTotale: personale.personaleTotale,
-                        funzionari: personale.funzionari.previous,
-                         public squadreServizio: number,
-                         public squadreAssegnate: number
-                    };
-                    break;
-                case 'current':
-                    
-                    break;
-                case 'next':
-                    
-                    break;
-                default:
-                    break;
-            }
-            return boxPersonale;
-        } */
     }
 
     @Action(ClearDataHome)
@@ -97,7 +72,6 @@ export class HomeState {
         dispatch([
             new ClearCentroMappa(),
             new ClearSediMarkers(),
-            new ClearMezziMarkers(),
             new ClearRichiesteMarkers(),
             new ClearChiamateMarkers(),
             new ClearBoxRichieste(),

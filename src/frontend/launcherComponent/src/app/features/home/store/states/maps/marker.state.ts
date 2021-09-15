@@ -4,12 +4,9 @@ import { Observable } from 'rxjs';
 import { RichiesteMarkersState } from './richieste-markers.state';
 import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
-import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
-import { MezziMarkersState } from './mezzi-markers.state';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkersState } from './sedi-markers.state';
 import { SetSedeMarkerById } from '../../actions/maps/sedi-markers.actions';
-import { SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { SetRichiestaMarkerById } from '../../actions/maps/richieste-markers.actions';
 import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
@@ -19,10 +16,6 @@ import {
     ClearMarkerRichiestaSelezionato,
     SetMarkerRichiestaHover,
     ClearMarkerRichiestaHover,
-    SetMarkerMezzoSelezionato,
-    ClearMarkerMezzoSelezionato,
-    SetMarkerMezzoHover,
-    ClearMarkerMezzoHover,
     SetMarkerSedeSelezionato,
     ClearMarkerSedeSelezionato,
     SetMarkerSedeHover,
@@ -38,8 +31,6 @@ import { Injectable } from '@angular/core';
 export interface MarkerStateModel {
     markerRichiestaSelezionato: string;
     markerRichiestaHover: string;
-    markerMezzoSelezionato: string;
-    markerMezzoHover: string;
     markerSedeSelezionato: string;
     markerSedeHover: string;
     markerSCSelezionato: string;
@@ -49,8 +40,6 @@ export interface MarkerStateModel {
 export const markerStateDefaults: MarkerStateModel = {
     markerRichiestaSelezionato: null,
     markerRichiestaHover: null,
-    markerMezzoSelezionato: null,
-    markerMezzoHover: null,
     markerSedeSelezionato: null,
     markerSedeHover: null,
     markerSCSelezionato: null,
@@ -63,7 +52,6 @@ export const markerStateDefaults: MarkerStateModel = {
     defaults: markerStateDefaults,
     children: [
         RichiesteMarkersState,
-        MezziMarkersState,
         SediMarkersState,
         ChiamateMarkersState,
         SchedeContattoMarkersState
@@ -72,7 +60,6 @@ export const markerStateDefaults: MarkerStateModel = {
 export class MarkerState {
 
     @Select(SediMarkersState.getSedeById) sedeMarkerById$: Observable<SedeMarker>;
-    @Select(MezziMarkersState.getMezzoById) mezzoMarkerById$: Observable<MezzoMarker>;
     @Select(RichiesteMarkersState.getRichiestaById) richiestaMarkerById$: Observable<RichiestaMarker>;
 
     @Selector()
@@ -83,16 +70,6 @@ export class MarkerState {
     @Selector()
     static markerRichiestaHover(state: MarkerStateModel): string {
         return state.markerRichiestaHover;
-    }
-
-    @Selector()
-    static markerMezzoSelezionato(state: MarkerStateModel): string {
-        return state.markerMezzoSelezionato;
-    }
-
-    @Selector()
-    static markerMezzoHover(state: MarkerStateModel): string {
-        return state.markerMezzoHover;
     }
 
     @Selector()
@@ -117,13 +94,12 @@ export class MarkerState {
 
     @Selector()
     static markerStateNull(state: MarkerStateModel): boolean {
-        return (!state.markerRichiestaSelezionato && !state.markerMezzoSelezionato && !state.markerSedeSelezionato);
+        return (!state.markerRichiestaSelezionato && !state.markerSedeSelezionato);
     }
 
     @Action(SetMarkerRichiestaSelezionato)
-    setMarkerRichiestaSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaSelezionato): void {
+    setMarkerRichiestaSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaSelezionato): void {
         dispatch(new SetRichiestaMarkerById(action.markerRichiestaSelezionato));
-        const state = getState();
         this.richiestaMarkerById$.subscribe(s => {
             if (s && s.id === action.markerRichiestaSelezionato) {
                 const uniqueId = 'richiesta-' + action.markerRichiestaSelezionato;
@@ -131,7 +107,6 @@ export class MarkerState {
             }
         });
         patchState({
-            ...state,
             markerRichiestaSelezionato: action.markerRichiestaSelezionato
         });
     }
@@ -157,49 +132,9 @@ export class MarkerState {
         });
     }
 
-    @Action(SetMarkerMezzoSelezionato)
-    setMarkerMezzoSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerMezzoSelezionato): void {
-        dispatch(new SetMezzoMarkerById(action.markerMezzoSelezionato));
-        const state = getState();
-        this.mezzoMarkerById$.subscribe(s => {
-            if (s && s.mezzo.codice === action.markerMezzoSelezionato) {
-                const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
-                if (!action.composizione) {
-                    dispatch(new SetCentroMappa(new CentroMappa(s.mezzo.coordinate, MAPSOPTIONS.zoomSelezionato.mezzo)));
-                }
-            }
-        });
-        patchState({
-            ...state,
-            markerMezzoSelezionato: action.markerMezzoSelezionato
-        });
-    }
-
-    @Action(ClearMarkerMezzoSelezionato)
-    clearMarkerMezzoSelezionato({ patchState }: StateContext<MarkerStateModel>): void {
-        patchState({
-            markerMezzoSelezionato: markerStateDefaults.markerMezzoSelezionato
-        });
-    }
-
-    @Action(SetMarkerMezzoHover)
-    setMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerMezzoHover): void {
-        patchState({
-            markerMezzoHover: action.markerMezzoHover
-        });
-    }
-
-    @Action(ClearMarkerMezzoHover)
-    clearMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>): void {
-        patchState({
-            markerMezzoHover: markerStateDefaults.markerMezzoHover
-        });
-    }
-
     @Action(SetMarkerSedeSelezionato)
-    setMarkerSedeSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSedeSelezionato): void {
+    setMarkerSedeSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSedeSelezionato): void {
         dispatch(new SetSedeMarkerById(action.markerSedeSelezionato));
-        const state = getState();
         this.sedeMarkerById$.subscribe(s => {
             if (s && s.codice === action.markerSedeSelezionato) {
                 const uniqueId = 'sede-' + action.markerSedeSelezionato;
@@ -207,7 +142,6 @@ export class MarkerState {
             }
         });
         patchState({
-            ...state,
             markerSedeSelezionato: action.markerSedeSelezionato
         });
     }
@@ -235,17 +169,15 @@ export class MarkerState {
     }
 
     @Action(SetMarkerSCSelezionato)
-    setMarkerSCSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSCSelezionato): void {
+    setMarkerSCSelezionato({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerSCSelezionato): void {
         // dispatch(new SetSCMarkerById(action.markerSCSelezionato));
-        const state = getState();
         patchState({
-            ...state,
             markerSCSelezionato: action.markerSCSelezionato
         });
     }
 
     @Action(ClearMarkerSCSelezionato)
-    clearMarkerSCSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>): void {
+    clearMarkerSCSelezionato({ patchState }: StateContext<MarkerStateModel>): void {
         // dispatch(new SetSCMarkerById());
         patchState({
             markerSCSelezionato: markerStateDefaults.markerSCSelezionato
