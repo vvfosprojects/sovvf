@@ -246,6 +246,7 @@
                                 </button>
                                 <button *ngIf="gestibile"
                                         class="btn btn-light border py-0 px-0 mr-1"
+                                        [class.on-gestione]="inGestione"
                                         ngbTooltip="Gestisci"
                                         [disabled]="disabledGestisciRichiesta"
                                         [class.cursor-not-allowed]="disabledGestisciRichiesta"
@@ -428,7 +429,7 @@
                             <!-- II colonna Lista Partenze -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
                                  class="col-8 px-0 border border-light">
-                                <div class="scroll-y px-2 py-1">
+                                <div class="scroll-y px-2 py-1 max-height-richiesta">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                     <app-lista-partenze [partenze]="richiesta?.partenze"
                                                         [listaEventi]="richiesta?.eventi"

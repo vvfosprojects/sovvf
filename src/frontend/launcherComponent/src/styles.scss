@@ -88,7 +88,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   // overwrite style FontAwesome
   .fas {
-    font-weight: 900 !important;
+    font-weight: 900 $SO-i;
   }
 
   //
@@ -540,6 +540,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   opacity: .5;
 }
 
+.opacity-none {
+  opacity: 1 $SO-i;
+}
+
 .modal-holder {
   animation-name: jumpIn;
   animation-duration: 0.3s;
@@ -707,8 +711,13 @@ tag-input {
 }
 
 .m-h-710 {
-  height: 710px;
-  max-height: 710px;
+  height: 750px;
+  max-height: 750px;
+}
+
+.m-h-647 {
+  height: 647px;
+  max-height: 647px;
 }
 
 .m-h-677 {
@@ -721,6 +730,11 @@ tag-input {
   max-height: 795px;
 }
 
+.m-h-737 {
+  height: 737px;
+  max-height: 737px;
+}
+
 .m-h-840 {
   height: 840px;
   max-height: 840px;
@@ -729,6 +743,16 @@ tag-input {
 .m-h-572 {
   height: 572px;
   max-height: 572px;
+}
+
+.m-h-715 {
+  height: 715px;
+  max-height: 715px;
+}
+
+.m-h-825 {
+  height: 825px;
+  max-height: 825px;
 }
 
 .m-h-400 {
@@ -1019,11 +1043,11 @@ tag-input {
 }
 
 .ng-sidebar__backdrop {
-  z-index: 4 !important;
+  z-index: 4 $SO-i;
 }
 
 .ng-sidebar {
-  z-index: 5 !important;
+  z-index: 5 $SO-i;
 }
 
 [class^="icon-"],
@@ -1355,4 +1379,69 @@ tag-input {
 }
 
 .fa-building-o {
+}
+
+.on-gestione {
+  border: 1px solid #28a745 $SO-i;
+  box-shadow: 0 0 3px 1px #28a745 $SO-i;
+}
+
+.z-index-999 {
+  z-index: 999 $SO-i;
+}
+
+.z-index-2 {
+  z-index: 2 $SO-i;
+}
+
+.z-index-none {
+  z-index: -1 $SO-i;
+}
+
+.z-index-1 {
+  z-index: 1 $SO-i;
+}
+
+.translate-penultima {
+  transform: translate(0px, -82px) $SO-i;
+}
+
+.translate-ultima {
+  transform: translate(0px, -162px) $SO-i;
+}
+
+.translate-mod {
+  transform: translate(0px, -50px) $SO-i;
+}
+
+.translate-mod-1 {
+  transform: translate(0px, -85px) $SO-i;
+}
+
+.translate-mod-2 {
+  transform: translate(0px, -110px) $SO-i;
+}
+
+.translate-mod-3 {
+  transform: translate(0px, -96px) $SO-i;
+}
+
+.translate-mod-4 {
+  transform: translate(0px, -120px) $SO-i;
+}
+
+.translate-mod-5 {
+  transform: translate(0px, -170px) $SO-i;
+}
+
+.translate-none {
+  transform: none $SO-i;
+}
+
+.pt-translate {
+  padding-top: 104px $SO-i;
+}
+
+.pt-penultima {
+  padding-top: 85px $SO-i;
 }

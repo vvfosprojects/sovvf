@@ -156,4 +156,11 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         return this.methods.cardFissataClasses(this.richiestaFissata);
     }
 
+    translatePositionRichiesta(r: SintesiRichiesta): string {
+        let output = '';
+        if (r) {
+            output = output + ' z-index-1 position absolute';
+        }
+        return output;
+    }
 }

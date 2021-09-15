@@ -52,8 +52,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
     richiestaGestione: SintesiRichiesta;
 
-    @Select(RichiestaFissataState.espanso) richiestaFissataEspanso$: Observable<boolean>;
-
     @Select(RichiestaHoverState.idRichiestaHover) idRichiestaHover$: Observable<string>;
     richiestaHover: SintesiRichiesta;
 
@@ -74,7 +72,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     codiciFiltriSelezionati: string[] = [];
 
     loaderRichieste = true;
-    listHeightClass = 'm-h-710';
+    listHeightClass = 'm-h-720';
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
 
@@ -89,7 +87,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.store.dispatch(new GetListaRichieste());
         this.getRichiestaFissata();
-        this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRichiestaGestione();
@@ -131,9 +128,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
                     if (this.boxAttivi) {
-                        this.listHeightClass = 'm-h-572';
+                        this.listHeightClass = 'm-h-647';
                     } else {
-                        this.listHeightClass = 'm-h-677';
+                        this.listHeightClass = 'm-h-737';
                     }
                 } else {
                     setTimeout(() => {
@@ -144,19 +141,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                             this.listHeightClass = 'm-h-840';
                         }
                     }, 300);
-                }
-            })
-        );
-    }
-
-    getRichiestaFissataEspanso(): void {
-        this.subscription.add(
-            this.richiestaFissataEspanso$.subscribe((richiestaEspanso: boolean) => {
-                // console.log(richiestaEspanso);
-                if (richiestaEspanso === true) {
-                    // this.listHeightClass = 'm-h-400';
-                } else {
-                    this.listHeightClass = 'm-h-590';
                 }
             })
         );
@@ -264,7 +248,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onGestioneRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaGestione(richiesta));
-        // console.log('Gestione Richiesta', richiesta);
     }
 
     toggleComposizione(): void {

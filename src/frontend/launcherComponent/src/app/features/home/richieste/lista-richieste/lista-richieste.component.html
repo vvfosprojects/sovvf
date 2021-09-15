@@ -3,10 +3,11 @@
     <!-- Lista di singole Richieste -->
     <div class="col-12 px-0 py-1"
          [ngClass]="heightControl()"
-         style="overflow-x: hidden; overflow-y: auto">
+         style="overflow-x: hidden; overflow-y: hidden; position: relative; display: block;">
         <ng-container *ngIf="richieste?.length">
-            <div *ngFor="let r of richieste"
-                 class="col-12 scale-sintesi-richiesta">
+            <div *ngFor="let r of richieste; let i = index"
+                 class="col-12 scale-sintesi-richiesta"
+                 [ngClass]="translatePositionRichiesta(r, i)">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"
                      class="w-100 rounded"

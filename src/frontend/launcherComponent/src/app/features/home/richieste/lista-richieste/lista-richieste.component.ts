@@ -61,6 +61,7 @@ export class ListaRichiesteComponent implements OnChanges {
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
+    idRichiestaGestione: string;
 
     actionRichiestaArray: any[] = [];
 
@@ -130,7 +131,148 @@ export class ListaRichiesteComponent implements OnChanges {
     }
 
     onGestioneRichiesta(richiesta: SintesiRichiesta): void {
+        this.idRichiestaGestione = richiesta.id;
         this.gestioneRichiesta.emit(richiesta);
+    }
+
+    translatePositionRichiesta(r: SintesiRichiesta, index: number): string {
+        // TODO: Possibile ottimizzazione
+        let output = '';
+        const richiestaNonEspansa = this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione !== r.id);
+        const richiestaEspansa = this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
+        const terzultimaRichiestaEspansa = this.richieste.length >= 3 && index === this.richieste.length - 3 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
+        const penultimaRichiestaEspansa = this.richieste.length >= 4 && index === this.richieste.length - 2 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
+        const ultimaRichiestaEspansa = this.richieste.length >= 6 && index === this.richieste.length - 1 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
+
+        // Se non c'è richiesta espansa allora non c'è variazione
+        if (!this.richiestaGestione || (this.richiestaGestione && this.richiestaFissata && this.richiestaGestione.id === this.richiestaFissata.id)) {
+            return output = '';
+        } else {
+            if (terzultimaRichiestaEspansa && this.richiestaFissata) {
+                output = 'translate-mod-1';
+            }
+            if (penultimaRichiestaEspansa) {
+                // controllo se la richiesta espansa è la penultima della lista
+                output = 'translate-penultima';
+                if (this.richiestaFissata) {
+                    if (r.partenze && r.partenze.length) {
+                        let countPartenzeInCorso = 0;
+                        r.partenze.forEach(x => !x.partenza.partenzaAnnullata && !x.partenza.sganciata && !x.partenza.terminata ? countPartenzeInCorso++ : null);
+                        // controllo se box sono attivi
+                        if (this.boxAttivi) {
+                            // controllo quante partenze in corso ci sono
+                            switch (countPartenzeInCorso) {
+                                case 1:
+                                    output = 'translate-mod-1';
+                                    break;
+                                case 2:
+                                    output = 'translate-mod-2';
+                                    break;
+                                default:
+                                    output = 'translate-ultima';
+                            }
+                            // controllo se è annullata - sganciata - terminata
+                            if (countPartenzeInCorso === 0) {
+                                output = 'translate-mod-1';
+                            }
+                        } else {
+                            // controllo quante partenze in corso ci sono
+                            switch (countPartenzeInCorso) {
+                                case 1:
+                                    output = 'translate-mod-3';
+                                    break;
+                                case 2:
+                                    output = 'translate-mod-4';
+                                    break;
+                                default:
+                                    output = 'translate-mod-5';
+                            }
+                            // controllo se è annullata - sganciata - terminata
+                            if (countPartenzeInCorso === 0) {
+                                output = 'translate-mod-3';
+                            }
+                        }
+
+                        // controllo se box non sono attivi
+                        if (!this.boxAttivi && !richiestaEspansa) {
+                            output = output + ' pt-penultima';
+                        }
+                    }
+                }
+            } else if (ultimaRichiestaEspansa) {
+                // controllo se la richiesta espansa è l'ultima della lista
+                output = 'translate-mod';
+                if (!this.boxAttivi) {
+                    output = 'translate-mod-2';
+                }
+                if (r.partenze && r.partenze.length) {
+                    let countPartenzeInCorso = 0;
+                    r.partenze.forEach(x => !x.partenza.partenzaAnnullata && !x.partenza.sganciata && !x.partenza.terminata ? countPartenzeInCorso++ : null);
+                    // controllo se box sono attivi
+                    if (this.boxAttivi) {
+                        // controllo quante partenze in corso ci sono
+                        switch (countPartenzeInCorso) {
+                            case 1:
+                                output = 'translate-mod-1';
+                                break;
+                            case 2:
+                                output = 'translate-mod-2';
+                                break;
+                            default:
+                                output = 'translate-ultima';
+                        }
+                        // controllo se è annullata - sganciata - terminata
+                        if (countPartenzeInCorso === 0) {
+                            output = 'translate-mod-1';
+                        }
+                    } else {
+                        // controllo quante partenze in corso ci sono
+                        switch (countPartenzeInCorso) {
+                            case 1:
+                                output = 'translate-mod-3';
+                                break;
+                            case 2:
+                                output = 'translate-mod-4';
+                                break;
+                            default:
+                                output = 'translate-mod-5';
+                        }
+                        // controllo se è annullata - sganciata - terminata
+                        if (countPartenzeInCorso === 0) {
+                            output = 'translate-mod-3';
+                        }
+                    }
+
+                    // controllo se box non sono attivi
+                    if (!this.boxAttivi && !richiestaEspansa) {
+                        output = output + ' pt-penultima';
+                    }
+                }
+            } else if (richiestaNonEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {
+                output = 'translate-none';
+
+                // aggiungo il padding all richiesta successiva della richiesta espansa in modo da traslare tutta la lista
+                this.richieste.forEach((x, i) => x.id === this.richiestaGestione.id && (i + 1 === index) ? output = 'pt-translate' : null);
+            }
+
+            if (this.richiestaFissata) {
+                output = output + ' position relative';
+                // se la richiesta espansa è quella fissata allora non traslo le altre richieste
+                if (this.richiestaGestione.id === this.richiestaFissata.id) {
+                    output = output.replace('pt-translate', '');
+                }
+            }
+            // se non è la richiesta espansa
+            if (richiestaNonEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {
+                output = output + ' opacity-50 z-index-none';
+            }
+            // se è la richiesta espansa
+            if (richiestaEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {
+                output = output + ' z-index-2 position-absolute';
+            }
+        }
+
+        return output;
     }
 
     heightControl(): string {
@@ -141,7 +283,7 @@ export class ListaRichiesteComponent implements OnChanges {
         if (this.boxAttivi) {
             return 'm-h-710';
         } else {
-            return'm-h-840';
+            return 'm-h-840';
         }
     }
 

@@ -161,7 +161,7 @@ export class HelperSintesiRichiesta {
         if (!gestione) {
             returnClass = 'fa-long-arrow-alt-down text-secondary';
         } else {
-            returnClass = 'fa-long-arrow-alt-up text-secondary';
+            returnClass = 'fa-long-arrow-alt-up text-success';
         }
         return returnClass;
     }

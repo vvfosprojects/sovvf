@@ -144,3 +144,7 @@ a {
 .text-tipologia {
     color: #ffc107 !important;
 }
+
+.max-height-richiesta {
+    max-height: 175px !important;
+}

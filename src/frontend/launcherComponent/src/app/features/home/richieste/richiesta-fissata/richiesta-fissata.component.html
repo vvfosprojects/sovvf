@@ -1,8 +1,9 @@
 <div class="row">
-    <div class="col-12 mt-1 pl-0 pr-2">
+    <div class="col-12 pl-0 pr-2"
+         [ngClass]="translatePositionRichiesta(richiestaFissata)">
         <div #richiestaContainer
-             class="col-12 {{ cardFissataClasses() }}"
-             [ngClass]="{'mt-2 pb-2': richiestaFissata}">
+             class="col-12 px-0"
+             [ngClass]="cardFissataClasses()">
             <div #richiesta
                  class="w-100 rounded bg-light">
                 <app-partial-loader *ngIf="loadingActionRichiesta?.includes(richiestaFissata.id)"></app-partial-loader>
