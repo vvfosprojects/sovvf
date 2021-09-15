@@ -25,32 +25,6 @@ export class ClearMarkerRichiestaHover {
 
 
 /**
- * inizio action mezzi
- */
-export class SetMarkerMezzoSelezionato {
-    static readonly type = '[Marker] Set Marker Mezzo Selezionato';
-
-    constructor(public markerMezzoSelezionato: string, public composizione?: boolean) {
-    }
-}
-
-export class ClearMarkerMezzoSelezionato {
-    static readonly type = '[Marker] Clear Marker Mezzo Selezionato';
-}
-
-export class SetMarkerMezzoHover {
-    static readonly type = '[Marker] Set Marker Mezzo Hover';
-
-    constructor(public markerMezzoHover: string) {
-    }
-}
-
-export class ClearMarkerMezzoHover {
-    static readonly type = '[Marker] Clear Marker Mezzo Hover';
-}
-
-
-/**
  * inizio action sedi
  */
 export class SetMarkerSedeSelezionato {

@@ -1,7 +1,6 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
-import { GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 import { ViewComponentState } from '../view/view.state';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
@@ -73,7 +72,6 @@ export class AreaMappaState {
             dispatch([
                 new GetRichiesteMarkers(state.areaMappa),
                 new GetSediMarkers(state.areaMappa),
-                new GetMezziMarkers(state.areaMappa),
                 new GetSchedeContattoMarkers(state.areaMappa)
             ]);
         }

@@ -18,7 +18,6 @@ import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-compos
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio  } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     GetListaSchedeContatto,
     SetContatoriSchedeContatto,
@@ -32,7 +31,6 @@ import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
 import { RichiestaMarker } from '../../features/home/maps/maps-model/richiesta-marker.model';
-import { MezzoMarker } from '../../features/home/maps/maps-model/mezzo-marker.model';
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
 import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
@@ -206,11 +204,6 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
             console.log('NotifyGetRichiestaUpdateMarker', data);
             this.store.dispatch(new UpdateRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
-            console.log('NotifyGetMezzoUpdateMarker', data);
-            this.store.dispatch(new UpdateMezzoMarker(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
         });
 

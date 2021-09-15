@@ -1,12 +1,6 @@
 import { State, Selector, Action, StateContext, Select, Store } from '@ngxs/store';
-import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 import { MezziInServizioService } from '../../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
-import { MezziMarkersState } from '../maps/mezzi-markers.state';
-import { Observable } from 'rxjs';
-import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
-import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.enum';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
@@ -70,8 +64,6 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
 })
 
 export class MezziInServizioState {
-
-    @Select(MezziMarkersState.mezziMarkersIds) mezziMarkersIds$: Observable<string[]>;
 
     constructor(private mezziInServizioService: MezziInServizioService,
                 private store: Store) {
@@ -190,7 +182,6 @@ export class MezziInServizioState {
         patchState({
             idMezzoInServizioHover: action.idMezzo
         });
-        dispatch(new SetMarkerMezzoHover(action.idMezzo));
     }
 
     @Action(ClearMezzoInServizioHover)
@@ -198,25 +189,15 @@ export class MezziInServizioState {
         patchState({
             idMezzoInServizioHover: null
         });
-        dispatch(new ClearMarkerMezzoHover());
     }
 
     @Action(SetMezzoInServizioSelezionato)
     setMezzoInServizioSelezionato({ getState, patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: SetMezzoInServizioSelezionato): void {
         const state = getState();
         if (state.idMezzoInServizioSelezionato !== action.idMezzo) {
-            let mezziMarkersIds = [] as string[];
-            this.mezziMarkersIds$.subscribe((markers: string[]) => {
-                mezziMarkersIds = markers;
-            });
-            if (mezziMarkersIds.filter(mId => mId === action.idMezzo).length <= 0) {
-                const mezzoInServizio = state.mezziInServizio.filter(m => m.mezzo.mezzo.codice)[0];
-                dispatch(new SetCentroMappa(new CentroMappa(mezzoInServizio.mezzo.mezzo.coordinate, MAPSOPTIONS.zoomSelezionato.richiesta)));
-            }
             patchState({
                 idMezzoInServizioSelezionato: action.idMezzo
             });
-            dispatch(new SetMarkerMezzoSelezionato(action.idMezzo));
         } else {
             dispatch(new ClearMezzoInServizioSelezionato());
         }
@@ -227,7 +208,6 @@ export class MezziInServizioState {
         patchState({
             idMezzoInServizioSelezionato: null
         });
-        dispatch(new ClearMarkerMezzoSelezionato());
     }
 
     @Action(ClearListaMezziInServizio)

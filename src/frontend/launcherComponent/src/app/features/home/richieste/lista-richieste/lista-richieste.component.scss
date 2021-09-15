@@ -16,7 +16,7 @@
 .col-double {
   float: left;
   width: 50%;
-  padding: 0px 15px;
+  padding: 0 15px;
 }
 
 #listaRichieste {
@@ -92,4 +92,14 @@ cdk-virtual-scroll-viewport {
 ::-webkit-scrollbar { 
   //display: none; /* Chrome Safari */
    width: 0;
+}
+
+.overlap-size {
+  width: 1909px !important;
+  height: 187px !important;
+}
+
+.normal-size {
+  width: 1909px !important;
+  height: 103px !important;
 }

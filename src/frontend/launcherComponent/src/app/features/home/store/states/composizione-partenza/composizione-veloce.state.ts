@@ -16,7 +16,6 @@ import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../../composizione-par
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
 import { checkSquadraOccupata, mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { Injectable } from '@angular/core';
 import { PaginationComposizionePartenzaState } from '../../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
@@ -108,7 +107,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(SetListaPreaccoppiati)
-    setListaPreaccoppiati({ getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SetListaPreaccoppiati): void {
+    setListaPreaccoppiati({ patchState }: StateContext<ComposizioneVeloceStateModel>, action: SetListaPreaccoppiati): void {
         if (action.preAccoppiati) {
             patchState({
                 preAccoppiati: action.preAccoppiati,
@@ -127,7 +126,7 @@ export class ComposizioneVeloceState {
 
 
     @Action(SelectPreAccoppiatoComposizione)
-    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: SelectPreAccoppiatoComposizione): void {
+    selectPreAccoppiatoComposizione({ setState }: StateContext<ComposizioneVeloceStateModel>, action: SelectPreAccoppiatoComposizione): void {
         setState(
             patch({
                 idPreAccoppiatiSelezionati: insertItem(action.preAcc.id),
@@ -137,7 +136,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(UnselectPreAccoppiatoComposizione)
-    unselectPreAccoppiatoComposizione({ setState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UnselectPreAccoppiatoComposizione): void {
+    unselectPreAccoppiatoComposizione({ setState }: StateContext<ComposizioneVeloceStateModel>, action: UnselectPreAccoppiatoComposizione): void {
         setState(
             patch({
                 idPreAccoppiatiSelezionati: removeItem(x => x === action.preAcc.id),
@@ -156,7 +155,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(UpdateMezzoPreAccoppiatoComposizione)
-    updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UpdateMezzoPreAccoppiatoComposizione): void {
+    updateMezzoBoxPartenzaComposizione({ getState, setState }: StateContext<ComposizioneVeloceStateModel>, action: UpdateMezzoPreAccoppiatoComposizione): void {
         const state = getState();
         let preAccoppiato = null;
         state.preAccoppiati.forEach((preAcc: BoxPartenzaPreAccoppiati) => {
@@ -192,9 +191,6 @@ export class ComposizioneVeloceState {
         patchState({
             idPreaccoppiatoHover: action.idBoxPartenzaHover.idBoxPartenza
         });
-        if (!state.idPreAccoppiatiOccupati.includes(action.idBoxPartenzaHover.idBoxPartenza)) {
-            dispatch(new SetMarkerMezzoHover(action.idBoxPartenzaHover.idMezzo));
-        }
     }
 
     @Action(HoverOutPreAccoppiatoComposizione)
@@ -202,6 +198,5 @@ export class ComposizioneVeloceState {
         patchState({
             idPreaccoppiatoHover: null
         });
-        dispatch(new ClearMarkerMezzoHover());
     }
 }

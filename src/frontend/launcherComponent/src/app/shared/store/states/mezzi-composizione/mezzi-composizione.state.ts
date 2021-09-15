@@ -27,7 +27,6 @@ import { ToastrType } from '../../../enum/toastr';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/function-composizione';
-import { ClearMarkerMezzoHover, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../../../features/home/store/actions/maps/marker.actions';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -131,7 +130,6 @@ export class MezziComposizioneState {
     }
 
     constructor(private store: Store,
-                private compPartenzaService: CompPartenzaService,
                 private richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal) {
     }
@@ -209,9 +207,6 @@ export class MezziComposizioneState {
                     dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
-                    if (!mezzo.coordinateFake) {
-                        dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
-                    }
                     dispatch([
                         new SelectMezzoComposizione(mezzoComp),
                         new AddMezzoBoxPartenzaSelezionato(mezzoComp)
@@ -245,9 +240,6 @@ export class MezziComposizioneState {
                 dispatch(new AddBoxPartenza());
             }
             setTimeout(() => {
-                if (!mezzo.coordinateFake) {
-                    dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
-                }
                 dispatch([
                     new SelectMezzoComposizione(mezzoComp),
                     new AddMezzoBoxPartenzaSelezionato(mezzoComp)
@@ -286,9 +278,6 @@ export class MezziComposizioneState {
                 dispatch(new AddBoxPartenza());
             }
             setTimeout(() => {
-                if (!mezzo.coordinateFake) {
-                    dispatch(new SetMarkerMezzoSelezionato(mezzo.codice, true));
-                }
                 dispatch([
                     new SelectMezzoComposizione(mezzoComp, true),
                     new AddMezzoBoxPartenzaSelezionato(mezzoComp)
@@ -382,10 +371,6 @@ export class MezziComposizioneState {
         patchState({
             idMezzoComposizioneHover: action.idMezzoComp
         });
-
-        if (!action.coordinateFake) {
-            dispatch(new SetMarkerMezzoHover(action.idMezzoComp));
-        }
     }
 
     @Action(HoverOutMezzoComposizione)
@@ -393,8 +378,6 @@ export class MezziComposizioneState {
         patchState({
             idMezzoComposizioneHover: null
         });
-
-        dispatch(new ClearMarkerMezzoHover());
     }
 
     // todo: controllare utilizzo
@@ -425,7 +408,7 @@ export class MezziComposizioneState {
     }
 
     @Action(SganciamentoMezzoComposizione)
-    sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
+    sganciamentoMezzoComposizione({}: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenze && richiestaDa.partenze.length > 0 ? richiestaDa.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;

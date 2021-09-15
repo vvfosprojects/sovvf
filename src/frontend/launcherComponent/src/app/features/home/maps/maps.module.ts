@@ -13,7 +13,6 @@ import { ModalNuovaChiamataComponent } from './modal-nuova-chiamata/modal-nuova-
  * Provider
  */
 import {
-    MezziMarkerService,
     SediMarkerService,
     RichiesteMarkerService,
     ChiamateMarkerService
@@ -27,7 +26,6 @@ import { MapService } from './service/map-service/map-service.service';
 import { NgxsModule } from '@ngxs/store';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerState } from '../store/states/maps/marker.state';
-import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
@@ -48,7 +46,6 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
                 AreaMappaState,
                 MarkerState,
                 RichiesteMarkersState,
-                MezziMarkersState,
                 SediMarkersState,
                 ChiamateMarkersState,
                 SchedeContattoMarkersState
@@ -67,7 +64,6 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
         RichiesteMarkerAdapterService,
         SchedeContattoMarkerService,
         RichiesteMarkerService,
-        MezziMarkerService,
         SediMarkerService,
         ChiamateMarkerService,
         MapService

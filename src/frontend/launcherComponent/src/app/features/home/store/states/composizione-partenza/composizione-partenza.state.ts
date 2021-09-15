@@ -24,7 +24,7 @@ import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearS
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
+import { ClearMarkerState } from '../../actions/maps/marker.actions';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
@@ -205,7 +205,6 @@ export class ComposizionePartenzaState {
             }
             dispatch([
                 new StopInvioPartenzaLoading(),
-                new ClearMarkerMezzoSelezionato(),
                 new ClearDirection()
             ]);
             const composizioneActive = !!(getState().richiesta);
