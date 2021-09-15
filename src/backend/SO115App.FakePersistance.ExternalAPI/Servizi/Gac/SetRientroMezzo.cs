@@ -3,16 +3,11 @@ using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Collections.Generic;
-
-#if (!DEBUG)
-
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
 using System.Linq;
 using System.Net.Http;
 using System;
-
-#endif
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -31,8 +26,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(RientroGAC rientro)
         { 
-#if (!DEBUG)
-
             var lstRientri = new List<RientroGAC>() { rientro };
             var jsonString = JsonConvert.SerializeObject(lstRientri);
             var content = new StringContent(jsonString);
@@ -45,8 +38,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 throw new Exception($"Errore servizio rientro GAC: {result.First().codiceEsito}, {result.First().descrizioneEsito}");
             }
-
-#endif
         }
     }
 }
