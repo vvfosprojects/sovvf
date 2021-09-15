@@ -127,7 +127,11 @@ namespace SO115App.ExternalAPI.Client
 
             try
             {
-                var result = JsonSerializer.Deserialize<ResponseObject>(data); 
+                var result = JsonSerializer.Deserialize<ResponseObject>(data);
+
+#if (DEBUG)
+                Console.WriteLine($"({DateTime.Now}) HTTP_CLIENT - {response.StatusCode}: {response.RequestMessage.RequestUri.AbsoluteUri}");
+#endif
 
                 return result;
             }
