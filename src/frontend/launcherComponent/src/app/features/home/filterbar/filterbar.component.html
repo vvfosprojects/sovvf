@@ -10,7 +10,7 @@
                                             (startChiamata)="toggleChiamata()">
                         </app-tasto-chiamata>
                     </div>
-                    <div class="float-left mr-3">
+                    <div *ngIf="viewState.mappa.active || doubleMonitor" class="float-left mr-3">
                         <app-tasto-chiamata-mappa
                                 *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                                 [active]="tastoChiamataMappaActive"
