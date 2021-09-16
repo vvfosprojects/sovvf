@@ -90,7 +90,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .fas {
     font-weight: 900 $SO-i;
   }
-
   //
 
   button {
@@ -130,6 +129,12 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .double-monitor {
   font-size: $SO-font-xlarge;
   font-weight: $SO-weight;
+
+  // overwrite style FontAwesome
+  .fas {
+    font-weight: 900 $SO-i;
+  }
+  //
 
   button {
     font-size: $SO-font-xlarge;
