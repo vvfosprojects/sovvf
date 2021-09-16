@@ -3,17 +3,11 @@ using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Collections.Generic;
-
-#if (!DEBUG)
-
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
 using System;
 using System.Linq;
 using System.Net.Http;
-
-#endif
-
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
     public class SetUscitaMezzo : ISetUscitaMezzo
@@ -31,8 +25,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(UscitaGAC uscita)
         {
-#if (!DEBUG)
-
             var lstUscite = new List<UscitaGAC>() { uscita };
             var jsonString = JsonConvert.SerializeObject(lstUscite);
             var content = new StringContent(jsonString);
@@ -45,8 +37,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 throw new Exception($"Errore servizio uscita GAC: {result.First().codiceEsito}, {result.First().descrizioneEsito}");
             }
-
-#endif
         }
     }
 }
