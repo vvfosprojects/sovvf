@@ -3,6 +3,7 @@
     <app-form-richiesta [tipologie]="(tipologie$ | async)"
                         [operatore]="(utente$ | async)"
                         [enti]="enti$ | async"
+                        [loadingNuovaChiamata]="loadingNuovaChiamata"
                         [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                         [competenze]="competenze$ | async"
                         [countInterventiProssimita]="countInterventiProssimita$ | async"
