@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetRientroMezzo _rientroMezzo;
         private readonly ISetUscitaMezzo _uscitaMezzo;
+        private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
 
-        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo)
+        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo, IGetMaxCodicePartenza getMaxCodicePartenza)
         {
             _updateRichiesta = updateRichiesta;
             _rientroMezzo = rientroMezzo;
             _uscitaMezzo = uscitaMezzo;
+            _getMaxCodicePartenza = getMaxCodicePartenza;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
@@ -76,7 +79,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //GESTIONE NUOVA PARTENZA SMONTANTE
                 var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Codice = command.Richiesta.CodiceUltimaPartenza + 1,
+                    Codice = _getMaxCodicePartenza.GetMax() + 1,
                     Mezzo = PartenzaSmontante.Partenza.Mezzo,
                     Squadre = PartenzaMontante.Partenza.Squadre
                 });
