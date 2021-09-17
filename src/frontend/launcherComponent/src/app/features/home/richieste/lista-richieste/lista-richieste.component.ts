@@ -268,7 +268,7 @@ export class ListaRichiesteComponent implements OnChanges {
             }
             // se è la richiesta espansa
             if (richiestaEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {
-                output = output + ' z-index-2 position-absolute';
+                output = output + ' z-index-2 position-absolute bg-whitesmoke';
             }
         }
 
@@ -280,10 +280,12 @@ export class ListaRichiesteComponent implements OnChanges {
     }
 
     loadHeightControl(): string {
-        if (this.boxAttivi) {
-            return 'm-h-647';
-        } else {
-            return 'm-h-737';
+        if (!this.richiestaFissata) {
+            if (this.boxAttivi) {
+                return 'm-h-710';
+            } else {
+                return 'm-h-845';
+            }
         }
     }
 

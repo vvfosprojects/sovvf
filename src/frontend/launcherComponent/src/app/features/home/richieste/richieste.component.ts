@@ -180,12 +180,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     getRichiestaGestione(): void {
         this.subscription.add(
             this.richiestaGestione$.subscribe((richiestaGestione: SintesiRichiesta) => {
-                if (richiestaGestione) {
-                    const richiestaGestioneArray = this.richieste.filter(r => r.id === richiestaGestione.id);
-                    this.richiestaGestione = richiestaGestioneArray[0];
-                } else {
-                    this.richiestaGestione = null;
-                }
+                richiestaGestione ? this.richiestaGestione = richiestaGestione : this.richiestaGestione = null;
             })
         );
     }
