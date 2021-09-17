@@ -44,16 +44,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetStatoMezzi getStatoMezzi)
+            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getStatoMezzi = getStatoMezzi;
+            _getMaxCodicePartenza = getMaxCodicePartenza;
         }
 
         /// <summary>
@@ -131,9 +133,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-            for (int i = 1; i <= command.ConfermaPartenze.Partenze.Count; i++)
-                command.ConfermaPartenze.Partenze.ToArray()[i - 1].Codice = command.Richiesta.CodiceUltimaPartenza + i;
-
             var PartenzaEsistente = false;
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
@@ -198,13 +197,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
             //GESTIONE CODICE PARTENZA
-            int ContatorePartenze = 1;
-            foreach (var partenza in command.Richiesta.Partenze)
+            int codpart = _getMaxCodicePartenza.GetMax();
+            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == 0))
             {
-                if (partenza.Partenza.Codice == 0)
-                    partenza.Partenza.Codice = ContatorePartenze;
-
-                ContatorePartenze++;
+                codpart += 1;
+                partenza.CodicePartenza = codpart;
+                partenza.Partenza.Codice = codpart;
             }
 
             //SALVO SUL DB

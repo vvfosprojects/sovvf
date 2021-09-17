@@ -56,6 +56,7 @@ import { ImpostazioniState } from '../../../../../shared/store/states/impostazio
 import { ViewComponentState } from '../view/view.state';
 import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function-mezzo';
 import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -151,20 +152,30 @@ export class RichiesteState {
         if (utente) {
             dispatch(new StartLoadingRichieste());
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
+            const richiestaFissata = this.store.selectSnapshot(RichiestaFissataState.richiestaFissata);
+            let richiestePerPagina;
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
                 others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
                 statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
+            boxesVisibili ? richiestePerPagina = 7 : richiestePerPagina = 8;
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: boxesVisibili ? 7 : 8
+                pageSize: richiestePerPagina,
             };
+
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
                 const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
+                const listaRichieste = makeCopy(response.sintesiRichiesta);
+                if (richiestaFissata && listaRichieste.length >= 7) {
+                    let skipRemove;
+                    listaRichieste.forEach( x => x.codice === richiestaFissata.codice ? skipRemove = true : null);
+                    !skipRemove ? listaRichieste.pop() : null;
+                }
                 if (richiesteActive) {
                     dispatch([
-                        new AddRichieste(response.sintesiRichiesta),
+                        new AddRichieste(listaRichieste),
                         new PatchPagination(response.pagination),
                     ]);
                 }
@@ -385,7 +396,7 @@ export class RichiesteState {
     }
 
     @Action(VisualizzaListaSquadrePartenza)
-    visualizzaListaSquadrePartenza({ }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
+    visualizzaListaSquadrePartenza({}: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
         // const innerWidth = window.innerWidth;
         let modal;
         // if (innerWidth && innerWidth > 3700) {
@@ -397,13 +408,13 @@ export class RichiesteState {
         //         backdrop: true,
         //     });
         // } else {
-            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg',
-                backdrop: true,
-            });
+        modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg',
+            backdrop: true,
+        });
         // }
         modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;

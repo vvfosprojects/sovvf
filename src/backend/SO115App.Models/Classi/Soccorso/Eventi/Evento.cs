@@ -112,6 +112,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// </summary>
         public string SedeOperatore { get; set; }
 
-        public int? CodicePartenza { get; set; } = null;
+        public int? CodicePartenza { get; set; } = 1;
     }
 }
