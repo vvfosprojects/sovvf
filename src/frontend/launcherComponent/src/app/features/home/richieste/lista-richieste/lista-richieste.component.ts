@@ -281,9 +281,9 @@ export class ListaRichiesteComponent implements OnChanges {
 
     loadHeightControl(): string {
         if (this.boxAttivi) {
-            return 'm-h-710';
+            return 'm-h-647';
         } else {
-            return 'm-h-840';
+            return 'm-h-737';
         }
     }
 

@@ -81,6 +81,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() enti: Ente[];
     @Input() disabledInviaPartenza = false;
     @Input() resetChiamata: boolean;
+    @Input() loadingNuovaChiamata: boolean;
     @Input() schedaContatto: SchedaContatto;
 
     // Modifica
