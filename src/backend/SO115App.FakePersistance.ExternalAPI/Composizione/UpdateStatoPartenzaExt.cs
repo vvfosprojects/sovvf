@@ -85,6 +85,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                     if (!partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    {
                         if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                         {
                             var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante;
@@ -96,7 +97,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataRientro = dataRientro,
-                                autista = ""
+                                autista = partenza.Partenza.Squadre.First().Membri.Where(m => m.DescrizioneQualifica == "DRIVER").First().Nominativo
                             });
                         }
                         else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -110,7 +111,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataUscita = dataUscita,
-                                autista = "",
+                                autista = partenza.Partenza.Squadre.First().Membri.Where(m => m.DescrizioneQualifica == "DRIVER").First().Nominativo,
                                 tipoUscita = new TipoUscita()
                                 {
                                     codice = "",
@@ -131,6 +132,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString()
                             });
                         }
+                    }
                 }
             }
         }

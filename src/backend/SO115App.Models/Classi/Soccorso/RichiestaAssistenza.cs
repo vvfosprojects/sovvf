@@ -1142,7 +1142,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
         }
 
-        public List<Partenza> lstPartenze => Partenze?.Select(c => c.Partenza).ToList();
+        public List<Partenza> lstPartenze => Eventi.OfType<ComposizionePartenze>()?.Select(c => c.Partenza).ToList();
 
         public List<Partenza> lstPartenzeInCorso => Partenze?
             .Where(p => !p.Partenza.PartenzaAnnullata)

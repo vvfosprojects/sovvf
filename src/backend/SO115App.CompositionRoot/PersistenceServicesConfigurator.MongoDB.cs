@@ -46,6 +46,7 @@ namespace SO115App.CompositionRoot
 
             #region Gestione richiesta di assistenza
 
+            container.Register<IGetMaxCodicePartenza, GetMaxCodicePartenza>();
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
             container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
