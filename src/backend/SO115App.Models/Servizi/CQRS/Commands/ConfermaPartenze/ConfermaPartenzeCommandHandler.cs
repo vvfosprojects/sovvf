@@ -133,14 +133,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-            //int maxcodpart = _getMaxCodicePartenza.GetMax();
-            //for (int i = 0; i < command.ConfermaPartenze.Partenze.Count; i++)
-            //{
-            //    command.ConfermaPartenze.Partenze.ToArray()[i].Codice = command.Richiesta.CodiceUltimaPartenza + maxcodpart;
-
-            //    maxcodpart += i;
-            //}
-
             var PartenzaEsistente = false;
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
