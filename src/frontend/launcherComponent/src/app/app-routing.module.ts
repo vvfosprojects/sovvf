@@ -76,6 +76,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.AreaDocumentale,
+        loadChildren: () => import('./features/area-documentale/area-documentale.module').then(m => m.AreaDocumentaleModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.Profilo,
         loadChildren: () => import('./features/profilo/profilo.module').then(m => m.ProfiloModule),
         canActivate: [AuthGuard]

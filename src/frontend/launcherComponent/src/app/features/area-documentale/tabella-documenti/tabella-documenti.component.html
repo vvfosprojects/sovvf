@@ -1,0 +1,62 @@
+<table class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let d of documenti">
+        <td style="width:12%" class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                    ngbTooltip="Rimuovi Documento"
+                    placement="bottom"
+                    (click)="onDeleteDocumento(d?.id, d?.descrizioneDocumento)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                    ngbTooltip="Modifica Documento"
+                    placement="bottom"
+                    (click)="onEditDocumento(d)">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-success font-weight-bold float-left"
+                    ngbTooltip="Scarica Documento"
+                    placement="bottom"
+                    (click)="onDownloadDocumento(d)">
+                <i class="fas fa-download"></i>
+            </button>
+        </td>
+        <td style="width:22%" class="align-middle">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;"
+               (click)="onViewDocumento(d)">
+                {{ d?.descrizioneDocumento }}
+            </a>
+        </td>
+    </tr>
+    <tr *ngIf="documenti?.length <= 0">
+        <td class="align-middle" style="width:22%">
+            <ng-template [ngIf]="!loading">Nessun Documento trovato</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="documenti?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <app-select-elementi-per-pagina [pageSize]="pageSize"
+                                    [pageSizes]="pageSizes"
+                                    [placeholderElementi]="'documenti'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)">
+    </app-select-elementi-per-pagina>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
+</div>
