@@ -84,7 +84,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = PartenzaMontante.Partenza.Squadre
                 });
 
-                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza.Value);
+                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
 
                 //GESTIONE NUOVA PARTENZA MONTANTE
                 var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
@@ -94,7 +94,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = SquadreSwitch
                 });
 
-                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza.Value);
+                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 

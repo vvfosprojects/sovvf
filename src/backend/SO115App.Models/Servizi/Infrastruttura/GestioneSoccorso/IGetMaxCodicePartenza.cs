@@ -2,6 +2,6 @@
 {
     public interface IGetMaxCodicePartenza
     {
-        int GetMax();
+        string GetMax();
     }
 }

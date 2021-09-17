@@ -15,13 +15,13 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         /// IL MINIMO E' ZERO E NON VA CAMBIATO, POICHE' LA FUNZIONE TORNA IL MASSIMO
         /// </summary>
         /// <returns></returns>
-        public int GetMax()
+        public string GetMax()
         {
             var lstRichieste = _ctx.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C")).ToList();
 
             var lstCodici = lstRichieste?.SelectMany(s => s.lstPartenze.Select(p => p.Codice)).ToList();
 
-            return lstCodici.Count > 0 ? lstCodici.Max() : 0;
+            return lstCodici.Count > 0 ? lstCodici.Max() : "0";
         }
     }
 }
