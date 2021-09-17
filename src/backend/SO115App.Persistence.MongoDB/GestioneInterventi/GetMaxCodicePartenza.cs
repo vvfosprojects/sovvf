@@ -11,13 +11,17 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private DbContext _ctx;
         public GetMaxCodicePartenza(DbContext ctx) => _ctx = ctx;
 
+        /// <summary>
+        /// IL MINIMO E' ZERO E NON VA CAMBIATO, POICHE' LA FUNZIONE TORNA IL MASSIMO
+        /// </summary>
+        /// <returns></returns>
         public int GetMax()
         {
-            var lstRichieste = _ctx.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+            var lstRichieste = _ctx.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C")).ToList();
 
             var lstCodici = lstRichieste?.SelectMany(s => s.lstPartenze.Select(p => p.Codice)).ToList();
 
-            return lstCodici.Count > 0 ? lstCodici.Max() : 1;
+            return lstCodici.Count > 0 ? lstCodici.Max() : 0;
         }
     }
 }

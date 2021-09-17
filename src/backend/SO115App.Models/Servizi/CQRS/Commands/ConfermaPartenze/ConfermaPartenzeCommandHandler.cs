@@ -133,13 +133,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-            int maxcodpart = _getMaxCodicePartenza.GetMax();
-            for (int i = 0; i < command.ConfermaPartenze.Partenze.Count; i++)
-            {
-                command.ConfermaPartenze.Partenze.ToArray()[i].Codice = command.Richiesta.CodiceUltimaPartenza + maxcodpart;
+            //int maxcodpart = _getMaxCodicePartenza.GetMax();
+            //for (int i = 0; i < command.ConfermaPartenze.Partenze.Count; i++)
+            //{
+            //    command.ConfermaPartenze.Partenze.ToArray()[i].Codice = command.Richiesta.CodiceUltimaPartenza + maxcodpart;
 
-                maxcodpart += i;
-            }
+            //    maxcodpart += i;
+            //}
 
             var PartenzaEsistente = false;
 
@@ -205,15 +205,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
             //GESTIONE CODICE PARTENZA
-            int codpart = _getMaxCodicePartenza.GetMax() + 1;
-            foreach (var partenza in command.Richiesta.Partenze)
+            int codpart = _getMaxCodicePartenza.GetMax();
+            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == 0))
             {
-                if (partenza.Partenza.Codice == 0)
-                {
-                    partenza.Partenza.Codice = codpart;
-
-                    codpart++;
-                }
+                codpart += 1;
+                partenza.CodicePartenza = codpart;
+                partenza.Partenza.Codice = codpart;
             }
 
             //SALVO SUL DB
