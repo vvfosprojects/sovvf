@@ -7,6 +7,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -17,6 +18,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
+using SO115App.Persistence.MongoDB.GestioneDocumentale;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
@@ -301,6 +303,15 @@ namespace SO115App.CompositionRoot
             container.Register<IEditPos, EditPOS>();
 
             #endregion POS
+
+            #region Documentale
+
+            container.Register<ISaveDoc, SaveDoc>();
+            container.Register<IDeleteDoc, DeleteDoc>();
+            container.Register<IGetDoc, GetDoc>();
+            container.Register<IEditDoc, EditDoc>();
+
+            #endregion Documentale
         }
     }
 }
