@@ -114,14 +114,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
-    richiestaDoubleClick(richiesta: SintesiRichiesta): void {
-        // if (richiesta && this.espandibile) {
-        //     this.isSingleClick = false;
-        //     this.toggleEspanso(richiesta.id);
-        //     this.doubleClickRichiesta.emit(richiesta);
-        // }
-    }
-
     checkDettaglioSoccorsoAereo(): void {
         if (this.richiesta.eventi && this.richiesta.eventi.note) {
             const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
@@ -220,7 +212,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modal = this.modalService.open(ListaEntiComponent, {
             windowClass: 'enti',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            backdrop: true
         });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
