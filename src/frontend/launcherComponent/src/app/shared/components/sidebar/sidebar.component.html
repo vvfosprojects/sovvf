@@ -39,6 +39,13 @@
         Gestione P.O.S.
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.AreaDocumentale]"
+            [class.btn-sidebar-selected]="url === '/area-documentale'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="far fa-folder-open mr-1"></i>
+        Area Documentale
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
             (click)="onRiepilogoInterventi()">
         <i class="fas fa-print"></i>
         Riepilogo Interventi
