@@ -16,8 +16,9 @@ export class PosService {
     constructor(private http: HttpClient) {
     }
 
-    getPos(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
+    getPos(codiceSede: string, filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const obj = {
+            codiceSede,
             filters: {
                 search: filters.search
             },
