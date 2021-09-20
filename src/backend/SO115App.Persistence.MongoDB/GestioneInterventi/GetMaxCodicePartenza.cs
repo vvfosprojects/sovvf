@@ -19,7 +19,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         {
             var lstRichieste = _ctx.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C")).ToList();
 
-            var lstCodici = lstRichieste?.SelectMany(s => s.lstPartenze.Select(p => p.Codice)).ToList();
+            var lstCodici = lstRichieste?.SelectMany(s => s.lstPartenze?.Select(p => int.Parse(p.Codice.Substring(2)))).ToList();
 
             return lstCodici.Count > 0 ? lstCodici.Max() : 0;
         }

@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             DateTime istante,
             string codiceFonte,
             string TipoEvento,
-            int CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento, CodicePartenza)
+            string CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento, CodicePartenza)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {

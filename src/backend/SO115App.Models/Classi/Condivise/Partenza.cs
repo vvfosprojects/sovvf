@@ -26,7 +26,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Codice incrementale univoco legato alla partenza
         /// </summary>
-        public int Codice { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         ///   Lista delle squadre coinvolte

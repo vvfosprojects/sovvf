@@ -79,22 +79,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //GESTIONE NUOVA PARTENZA SMONTANTE
                 var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Codice = _getMaxCodicePartenza.GetMax() + 1,
+                    Codice = PartenzaSmontante.Partenza.Mezzo.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                     Mezzo = PartenzaSmontante.Partenza.Mezzo,
                     Squadre = PartenzaMontante.Partenza.Squadre
                 });
 
-                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza.Value);
+                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
 
                 //GESTIONE NUOVA PARTENZA MONTANTE
                 var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Codice = command.Richiesta.CodiceUltimaPartenza + 1,
+                    Codice = PartenzaMontante.Partenza.Mezzo.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                     Mezzo = PartenzaMontante.Partenza.Mezzo,
                     Squadre = SquadreSwitch
                 });
 
-                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza.Value);
+                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 

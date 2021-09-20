@@ -45,6 +45,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
+        //private readonly ISetUscitaMezzo _setUscitaMezzo;
+        //private readonly ISetRientroMezzo _setRientroMezzo;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
@@ -128,6 +130,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
                 //    new RichiestaSospesa($"Scangio dell'ultima partenza {command.ConfermaPartenze.Partenze.First().Codice} sulla richiesta {command.Richiesta.Codice}", command.Richiesta, dataAdesso, command.Utente.Id);
 
+                //_set
+
                 _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
             }
 
@@ -198,11 +202,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //GESTIONE CODICE PARTENZA
             int codpart = _getMaxCodicePartenza.GetMax();
-            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == 0))
+            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == "0" || p.CodicePartenza == null))
             {
                 codpart += 1;
-                partenza.CodicePartenza = codpart;
-                partenza.Partenza.Codice = codpart;
+                partenza.CodicePartenza = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                partenza.Partenza.Codice = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
             }
 
             //SALVO SUL DB

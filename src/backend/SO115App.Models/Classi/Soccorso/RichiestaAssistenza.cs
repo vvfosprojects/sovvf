@@ -810,7 +810,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 foreach (var evento in listaComposizioni)
                 {
-                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.CodicePartenza.Equals(evento.CodicePartenza)).FirstOrDefault().TipoEvento;
+                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
 
                     if (UltimoEventoPartenza.Equals("MezzoInRientro"))
                     {
@@ -1153,9 +1153,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Se non ci sono partenze è uguale a 0
         /// </summary>
-        public int CodiceUltimaPartenza => _eventi.OfType<AbstractPartenza>().Count() != 0 ?
-            _eventi.OfType<AbstractPartenza>().Select(e => e.CodicePartenza).Max() ?? 0
-            : 0;
+        public string CodiceUltimaPartenza => _eventi.OfType<AbstractPartenza>().Count() != 0 ?
+            _eventi.OfType<AbstractPartenza>().Select(e => e.CodicePartenza).Max() ?? "0"
+            : "0";
 
         /// <summary>
         ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi

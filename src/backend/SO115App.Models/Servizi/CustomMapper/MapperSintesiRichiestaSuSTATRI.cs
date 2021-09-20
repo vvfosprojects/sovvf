@@ -97,10 +97,10 @@ namespace SO115App.Models.Servizi.CustomMapper
                     //CodiceComune = 0, // PUO PASSARE NULL
                     CodiceCalamita = "",
                     CodiceSedeServizio = Convert.ToInt32(sintesiRichiesta.CodSOCompetente.Split('.')[1]), // METTERE IL NUMERO DOPO IL .
-                    UscitaDallaSede = CercaUscitaPartenza(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza.Value),
-                    ArrivoSulLuogo = CercaArrivoSulPosto(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza.Value),
-                    PartenzaDalLuogo = CercaInRientro(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza.Value),
-                    RientroInSede = CercaRientrato(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza.Value)
+                    UscitaDallaSede = CercaUscitaPartenza(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza),
+                    ArrivoSulLuogo = CercaArrivoSulPosto(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza),
+                    PartenzaDalLuogo = CercaInRientro(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza),
+                    RientroInSede = CercaRientrato(sintesiRichiesta.Eventi, partenza.Partenza.Mezzo.Codice, partenza.CodicePartenza)
                 };
 
                 listaSchede.Add(scheda);
@@ -111,25 +111,25 @@ namespace SO115App.Models.Servizi.CustomMapper
             return listaSchede;
         }
 
-        private DateTime CercaUscitaPartenza(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, int CodicePartenza)
+        private DateTime CercaUscitaPartenza(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, string CodicePartenza)
         {
             var eventoInViaggio = eventiSintesi.FindAll(m => m.Stato.Equals("In Viaggio") && m.CodiceMezzo.Equals(codiceMezzo) && m.CodicePartenza.Equals(CodicePartenza)).OrderByDescending(i => i.Ora).FirstOrDefault();
             return eventoInViaggio != null ? eventoInViaggio.Ora : DateTime.MinValue;
         }
 
-        private DateTime CercaArrivoSulPosto(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, int CodicePartenza)
+        private DateTime CercaArrivoSulPosto(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, string CodicePartenza)
         {
             var eventoArrivoSulPosto = eventiSintesi.FindAll(m => m.Stato.Equals("Sul Posto") && m.CodiceMezzo.Equals(codiceMezzo) && m.CodicePartenza.Equals(CodicePartenza)).OrderByDescending(i => i.Ora).FirstOrDefault();
             return eventoArrivoSulPosto != null ? eventoArrivoSulPosto.Ora : DateTime.MinValue;
         }
 
-        private DateTime CercaInRientro(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, int CodicePartenza)
+        private DateTime CercaInRientro(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, string CodicePartenza)
         {
             var eventoInRientro = eventiSintesi.FindAll(m => m.Stato.Equals("In Rientro") && m.CodiceMezzo.Equals(codiceMezzo) && m.CodicePartenza.Equals(CodicePartenza)).OrderByDescending(i => i.Ora).FirstOrDefault();
             return eventoInRientro != null ? eventoInRientro.Ora : DateTime.MinValue;
         }
 
-        private DateTime CercaRientrato(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, int CodicePartenza)
+        private DateTime CercaRientrato(List<EventoSintesiRichiesta> eventiSintesi, string codiceMezzo, string CodicePartenza)
         {
             var eventoRientrato = eventiSintesi.FindAll(m => m.Stato.Equals("Rientrato") && m.CodiceMezzo.Equals(codiceMezzo) && m.CodicePartenza.Equals(CodicePartenza)).OrderByDescending(i => i.Ora).FirstOrDefault();
             return eventoRientrato != null ? eventoRientrato.Ora : DateTime.MinValue;

@@ -43,7 +43,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             DateTime istante,
             string codiceFonte,
             string motivazione,
-            int codicePartenza) : base(richiesta, codiceMezzo, istante, codiceFonte, "VaInFuoriServizio", codicePartenza)
+            string codicePartenza) : base(richiesta, codiceMezzo, istante, codiceFonte, "VaInFuoriServizio", codicePartenza)
         {
             if (string.IsNullOrWhiteSpace(motivazione))
             {
