@@ -45,9 +45,9 @@ namespace SO115App.API.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            //var codiceSede = Request.Headers["codicesede"];
 
-            pos.CodSede = codiceSede;
+            //pos.CodSede = codiceSede;
             var command = new AddPosCommand()
             {
                 Pos = pos
@@ -86,13 +86,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("GetPosById")]
-        public async Task<IActionResult> GetPosById(string Id)
+        public async Task<IActionResult> GetPosById(string Id, string CodSede)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            //var codiceSede = Request.Headers["codicesede"];
 
             var getQuery = new GetPOSByIdQuery()
             {
-                CodiceSede = codiceSede,
+                CodiceSede = CodSede,
                 IdPos = Id
             };
 
@@ -109,12 +109,12 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Delete")]
-        public async Task<IActionResult> Delete(string Id)
+        public async Task<IActionResult> Delete(string Id, string CodSede)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            //var codiceSede = Request.Headers["codicesede"];
             var command = new DeletePosCommand()
             {
-                codSede = codiceSede,
+                codSede = CodSede,
                 Id = Id
             };
 
@@ -134,9 +134,9 @@ namespace SO115App.API.Controllers
         [HttpPost("Edit")]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            //var codiceSede = Request.Headers["codicesede"];
 
-            pos.CodSede = codiceSede;
+            //pos.CodSede = codiceSede;
             var command = new EditPosCommand()
             {
                 Pos = pos
