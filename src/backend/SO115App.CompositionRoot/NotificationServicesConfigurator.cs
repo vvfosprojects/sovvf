@@ -2,6 +2,7 @@
 using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipologia;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDocumentale;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
@@ -9,6 +10,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiC
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
 using SO115App.SignalR.Sender.ComposizionePartenza;
 using SO115App.SignalR.Sender.GestioneDettaglioTipologia;
+using SO115App.SignalR.Sender.GestioneDocumentale;
 using SO115App.SignalR.Sender.GestioneEnti;
 using SO115App.SignalR.Sender.GestioneIntervento;
 using SO115App.SignalR.Sender.GestionePartenza;
@@ -129,8 +131,16 @@ namespace SO115App.CompositionRoot
             #endregion Triage
 
             #region POS
+
             container.Register<INotificationAddPos, NotificationAddPos>();
-            #endregion
+
+            #endregion POS
+
+            #region Documentale
+
+            container.Register<INotificationAddDoc, NotificationAddDoc>();
+
+            #endregion Documentale
         }
     }
 }
