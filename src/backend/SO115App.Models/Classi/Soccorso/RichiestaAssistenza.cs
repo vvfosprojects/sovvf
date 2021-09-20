@@ -810,7 +810,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 foreach (var evento in listaComposizioni)
                 {
-                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.CodicePartenza.Equals(evento.CodicePartenza)).FirstOrDefault().TipoEvento;
+                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
 
                     if (UltimoEventoPartenza.Equals("MezzoInRientro"))
                     {

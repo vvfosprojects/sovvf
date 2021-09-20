@@ -201,12 +201,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
             //GESTIONE CODICE PARTENZA
-            string codpart = _getMaxCodicePartenza.GetMax();
-            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == "0"))
+            int codpart = _getMaxCodicePartenza.GetMax();
+            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == "0" || p.CodicePartenza == null))
             {
                 codpart += 1;
-                partenza.CodicePartenza = codpart;
-                partenza.Partenza.Codice = codpart;
+                partenza.CodicePartenza = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                partenza.Partenza.Codice = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
             }
 
             //SALVO SUL DB
