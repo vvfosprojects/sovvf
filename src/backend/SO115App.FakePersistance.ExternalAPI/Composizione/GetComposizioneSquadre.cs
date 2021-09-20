@@ -190,7 +190,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
-                return distaccamento && ricerca && diEmergenza && stato && turno;
+                return distaccamento && ricerca && diEmergenza && stato /*&& turno*/;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
