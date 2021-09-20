@@ -78,6 +78,7 @@ import { FormRichiestaComponent } from './components/form-richiesta/form-richies
 import { TagInputModule } from 'ngx-chips';
 import { RicercaIndirizzoComponent } from './components/form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
 import { ChiamataService } from '../core/service/chiamata-service/chiamata.service';
+import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -146,6 +147,7 @@ const COMPONENTS = [
     TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent,
     PosModalComponent,
+    DocumentoAreaDocumentaleModalComponent,
     TriageSummarySintesiRichiestaComponent,
     FormRichiestaComponent,
     RicercaIndirizzoComponent

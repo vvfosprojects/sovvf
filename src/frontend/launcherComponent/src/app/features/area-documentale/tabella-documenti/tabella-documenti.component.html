@@ -3,6 +3,7 @@
     <tr>
         <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
         <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Categoria</th>
     </tr>
     </thead>
     <tbody>
@@ -33,6 +34,14 @@
                style="max-width: 400px;"
                (click)="onViewDocumento(d)">
                 {{ d?.descrizioneDocumento }}
+            </a>
+        </td>
+        <td style="width:22%" class="align-middle">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;"
+               (click)="onViewDocumento(d)">
+                {{ d?.descrizioneCategoria }}
             </a>
         </td>
     </tr>

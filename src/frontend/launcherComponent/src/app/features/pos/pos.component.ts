@@ -128,7 +128,7 @@ export class PosComponent implements OnInit, OnDestroy {
     }
 
     onAddPos(): void {
-        let addPosModal;
+        let addPosModal: any;
         const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
         if (codSede) {
             addPosModal = this.modalService.open(PosModalComponent, {
@@ -150,7 +150,7 @@ export class PosComponent implements OnInit, OnDestroy {
                         console.log('Modal "addPos" chiusa con val ->', result);
                     }
                 },
-                (err) => {
+                (err: any) => {
                     this.store.dispatch(new ResetPosModal());
                     console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
                 }
@@ -212,7 +212,7 @@ export class PosComponent implements OnInit, OnDestroy {
     }
 
     onEditPos(pos: PosInterface): void {
-        let editPosModal;
+        let editPosModal: any;
         const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
         if (codSede) {
             this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
@@ -242,7 +242,7 @@ export class PosComponent implements OnInit, OnDestroy {
                                     console.log('Modal "editPos" chiusa con val ->', result);
                                 }
                             },
-                            (err) => {
+                            (err: any) => {
                                 this.store.dispatch(new ResetPosModal());
                                 console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
                             }
@@ -255,8 +255,8 @@ export class PosComponent implements OnInit, OnDestroy {
         }
     }
 
-    onDeletePos(event: { idPos, descrizionePos }): void {
-        let confirmDeletePosModal;
+    onDeletePos(event: { idPos: string, descrizionePos: string }): void {
+        let confirmDeletePosModal: any;
         confirmDeletePosModal = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -278,7 +278,7 @@ export class PosComponent implements OnInit, OnDestroy {
                         break;
                 }
             },
-            (err) => {
+            (err: any) => {
                 this.store.dispatch(new ResetPosModal());
                 console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
             }

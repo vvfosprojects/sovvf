@@ -14,6 +14,9 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { AreaDocumentaleState } from './store/states/area-documentale/area-documentale.state';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
+import { AuthState } from '../auth/store/auth.state';
+import { DocumentoAreaDocumentaleModalComponent } from 'src/app/shared/modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
+import { AddDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from 'src/app/shared/store/actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
 
 @Component({
     selector: 'app-area-documentale',
@@ -83,7 +86,34 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     onAddDocumento(): void {
-        // TODO: terminare logica con modali
+        let addDocumentoAreaDocumentaleModal: any;
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            addDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+            addDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
+            addDocumentoAreaDocumentaleModal.componentInstance.editDocumento = false;
+            addDocumentoAreaDocumentaleModal.result.then(
+                (result: { success: boolean, formData: FormData }) => {
+                    if (result.success) {
+                        this.addDocumento(result.formData);
+                    } else if (!result.success) {
+                        this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                        console.log('Modal "addDocumento" chiusa con val ->', result);
+                    }
+                },
+                (err: any) => {
+                    this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                    console.error('Modal "addDocumento" chiusa senza bottoni. Err ->', err);
+                }
+            );
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onDownloadDocumento(documento: DocumentoInterface): void {
@@ -103,7 +133,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     addDocumento(formData: FormData): void {
-        // this.store.dispatch(new AddDocumentoAreaDocumentale(formData));
+        this.store.dispatch(new AddDocumentoAreaDocumentale(formData));
     }
 
     editDocumento(id: string, formData: FormData): void {

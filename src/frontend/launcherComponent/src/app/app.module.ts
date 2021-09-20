@@ -75,6 +75,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
+import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-area-documentale-modal/documento-area-documentale-modal.state';
 
 @NgModule({
     declarations: [
@@ -131,6 +132,7 @@ import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i1
                 TriageSummaryState,
                 DistaccamentiState,
                 PosModalState,
+                DocumentoAreaDocumentaleState,
                 SchedaTelefonataState
             ],
             { developmentMode: !environment.production }
