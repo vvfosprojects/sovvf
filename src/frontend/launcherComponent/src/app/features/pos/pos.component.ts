@@ -25,6 +25,7 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../core/service/pos-service/pos.service';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
+import { AuthState } from '../auth/store/auth.state';
 
 @Component({
     selector: 'app-pos',
@@ -128,108 +129,130 @@ export class PosComponent implements OnInit, OnDestroy {
 
     onAddPos(): void {
         let addPosModal;
-        addPosModal = this.modalService.open(PosModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
-        addPosModal.componentInstance.tipologie = this.tipologie;
-        addPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
-        addPosModal.componentInstance.editPos = false;
-        addPosModal.result.then(
-            (result: { success: boolean, formData: FormData }) => {
-                if (result.success) {
-                    this.addPos(result.formData);
-                } else if (!result.success) {
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            addPosModal = this.modalService.open(PosModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+            addPosModal.componentInstance.codSede = codSede;
+            addPosModal.componentInstance.tipologie = this.tipologie;
+            addPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+            addPosModal.componentInstance.editPos = false;
+            addPosModal.result.then(
+                (result: { success: boolean, formData: FormData }) => {
+                    if (result.success) {
+                        this.addPos(result.formData);
+                    } else if (!result.success) {
+                        this.store.dispatch(new ResetPosModal());
+                        console.log('Modal "addPos" chiusa con val ->', result);
+                    }
+                },
+                (err) => {
                     this.store.dispatch(new ResetPosModal());
-                    console.log('Modal "addPos" chiusa con val ->', result);
+                    console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
                 }
-            },
-            (err) => {
-                this.store.dispatch(new ResetPosModal());
-                console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
-            }
-        );
+            );
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onDownloadPos(pos: PosInterface): void {
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
-                    break;
-                case HttpEventType.Response:
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    const a = document.createElement('a');
-                    a.setAttribute('style', 'display:none;');
-                    document.body.appendChild(a);
-                    a.download = pos.fileName;
-                    a.href = URL.createObjectURL(downloadedFile);
-                    a.target = '_blank';
-                    a.click();
-                    document.body.removeChild(a);
-                    break;
-            }
-        }, error => console.log('Errore Stampa POS'));
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + pos.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        const a = document.createElement('a');
+                        a.setAttribute('style', 'display:none;');
+                        document.body.appendChild(a);
+                        a.download = pos.fileName;
+                        a.href = URL.createObjectURL(downloadedFile);
+                        a.target = '_blank';
+                        a.click();
+                        document.body.removeChild(a);
+                        break;
+                }
+            }, error => console.log('Errore Stampa POS'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onViewPos(pos: PosInterface): void {
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
-                    break;
-                case HttpEventType.Response:
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    const a = document.createElement('a');
-                    a.setAttribute('style', 'display:none;');
-                    document.body.appendChild(a);
-                    a.href = URL.createObjectURL(downloadedFile);
-                    a.target = '_blank';
-                    a.click();
-                    document.body.removeChild(a);
-                    break;
-            }
-        }, error => console.log('Errore visualizzazione POS'));
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + pos.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        const a = document.createElement('a');
+                        a.setAttribute('style', 'display:none;');
+                        document.body.appendChild(a);
+                        a.href = URL.createObjectURL(downloadedFile);
+                        a.target = '_blank';
+                        a.click();
+                        document.body.removeChild(a);
+                        break;
+                }
+            }, error => console.log('Errore visualizzazione POS'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onEditPos(pos: PosInterface): void {
         let editPosModal;
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
-                    break;
-                case HttpEventType.Response:
-                    editPosModal = this.modalService.open(PosModalComponent, {
-                        windowClass: 'modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true,
-                        size: 'lg'
-                    });
-                    editPosModal.componentInstance.tipologie = this.tipologie;
-                    editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
-                    editPosModal.componentInstance.editPos = true;
-                    editPosModal.componentInstance.pos = pos;
-                    editPosModal.componentInstance.posFdFile = data.body;
-                    editPosModal.result.then(
-                        (result: { success: boolean, formData: FormData }) => {
-                            if (result.success) {
-                                this.editPos(pos.id, result?.formData);
-                            } else if (!result.success) {
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + pos.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        editPosModal = this.modalService.open(PosModalComponent, {
+                            windowClass: 'modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true,
+                            size: 'lg'
+                        });
+                        editPosModal.componentInstance.codSede = codSede;
+                        editPosModal.componentInstance.tipologie = this.tipologie;
+                        editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
+                        editPosModal.componentInstance.editPos = true;
+                        editPosModal.componentInstance.pos = pos;
+                        editPosModal.componentInstance.posFdFile = data.body;
+                        editPosModal.result.then(
+                            (result: { success: boolean, formData: FormData }) => {
+                                if (result.success) {
+                                    this.editPos(pos.id, result?.formData);
+                                } else if (!result.success) {
+                                    this.store.dispatch(new ResetPosModal());
+                                    console.log('Modal "editPos" chiusa con val ->', result);
+                                }
+                            },
+                            (err) => {
                                 this.store.dispatch(new ResetPosModal());
-                                console.log('Modal "editPos" chiusa con val ->', result);
+                                console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
                             }
-                        },
-                        (err) => {
-                            this.store.dispatch(new ResetPosModal());
-                            console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
-                        }
-                    );
-                    break;
-            }
-        }, error => console.log('Errore Stampa POS'));
+                        );
+                        break;
+                }
+            }, error => console.log('Errore Stampa POS'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onDeletePos(event: { idPos, descrizionePos }): void {

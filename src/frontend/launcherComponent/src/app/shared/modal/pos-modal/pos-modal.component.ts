@@ -8,8 +8,8 @@ import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { PosInterface } from '../../interface/pos.interface';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-pos-modal',
@@ -21,6 +21,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(PosModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+
+    codSede: string;
 
     tipologie: Tipologia[];
     dettagliTipologie: DettaglioTipologia[];
@@ -41,14 +43,11 @@ export class PosModalComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
-        this.initForm();
-        this.getFormValid();
     }
 
     ngOnInit(): void {
-        if (this.editPos) {
-            this.updatePosForm(this.pos);
-        }
+        this.initForm();
+        this.getFormValid();
         this.dettagliTipologieFiltered = this.dettagliTipologie;
     }
 
@@ -58,15 +57,28 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     initForm(): void {
         this.posForm = new FormGroup({
+            codSede: new FormControl(),
             descrizionePos: new FormControl(),
             tipologie: new FormControl(),
             tipologieDettagli: new FormControl()
         });
         this.posForm = this.fb.group({
+            codSede: [null, Validators.required],
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
             tipologieDettagli: [null, Validators.required]
         });
+
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                codSede: this.codSede
+            },
+            path: 'posModal.posForm'
+        }));
+
+        if (this.editPos) {
+            this.updatePosForm(this.pos);
+        }
     }
 
     get f(): any {
@@ -79,14 +91,11 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     updatePosForm(editPos: PosInterface): void {
         console.log('updatePosForm', editPos);
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                descrizionePos: editPos.descrizionePos,
-                tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
-            },
-            path: 'posModal.posForm'
-        }));
+        this.posForm.patchValue({
+            descrizionePos: editPos.descrizionePos,
+            tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
+            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
+        });
 
         if (!this.formData) {
             this.formData = new FormData();
