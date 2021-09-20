@@ -70,8 +70,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                var dataMovintazione = DateTime.UtcNow;
-
                 _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
 
                 foreach (var squadra in partenza.Squadre)
@@ -128,7 +126,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                     {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().First(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
                         _setRientroMezzo.Set(new RientroGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
@@ -142,7 +140,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                     {
-                        var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Select(p => p.DataOraInserimento).Min();
+                        var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],

@@ -162,9 +162,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     var partenzaDaRientrare = command.RichiestaDaSganciare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
 
+                    //GESTOIONE MEZZO IN RIENTRO
                     if (partenzaDaRientrare.Mezzo.Stato == Costanti.MezzoInRientro)
                     {
-                        command.Richiesta.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
+                        command.RichiestaDaSganciare.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
                         {
                             CodMezzo = partenzaDaRientrare.Mezzo.Codice,
                             DataOraAggiornamento = dataAdesso,
@@ -172,6 +173,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         });
 
                         _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+
+                        partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                     }
                 }
 
