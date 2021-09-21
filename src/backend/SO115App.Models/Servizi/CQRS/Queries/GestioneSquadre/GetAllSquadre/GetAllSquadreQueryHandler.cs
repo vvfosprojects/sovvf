@@ -1,7 +1,5 @@
 ﻿using CQRS.Queries;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre
 {
@@ -16,9 +14,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre
 
         public GetAllSquadreResult Handle(GetAllSquadreQuery query)
         {
-            var lstSquadre = _service.GetByCodiceSede(query.CodiciSede);
+            var lstSquadre = _service.GetByCodiceSede(query.CodiciSede).Result;
 
-            return new GetAllSquadreResult() { DataArray = lstSquadre.Result };
+            return new GetAllSquadreResult() { DataArray = lstSquadre };
         }
     }
 }
