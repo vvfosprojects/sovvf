@@ -16,9 +16,10 @@ import { AreaDocumentaleState } from './store/states/area-documentale/area-docum
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
 import { AuthState } from '../auth/store/auth.state';
 import { DocumentoAreaDocumentaleModalComponent } from 'src/app/shared/modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
-import { AddDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from 'src/app/shared/store/actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
+import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from 'src/app/shared/store/actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
 import { HttpEventType } from '@angular/common/http';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
+import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-area-documentale',
@@ -171,11 +172,75 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     onEditDocumento(documento: DocumentoInterface): void {
-        // TODO: terminare logica con modali
+        let editPosModal: any;
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + documento.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        editPosModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
+                            windowClass: 'modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true,
+                            size: 'lg'
+                        });
+                        editPosModal.componentInstance.codSede = codSede;
+                        editPosModal.componentInstance.editDocumento = true;
+                        editPosModal.componentInstance.documento = documento;
+                        editPosModal.componentInstance.posFdFile = data.body;
+                        editPosModal.result.then(
+                            (result: { success: boolean, formData: FormData }) => {
+                                if (result.success) {
+                                    this.editDocumento(documento.id, result?.formData);
+                                } else if (!result.success) {
+                                    this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                                    console.log('Modal "editDocumento" chiusa con val ->', result);
+                                }
+                            },
+                            (err: any) => {
+                                this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                                console.error('Modal "editDocumento" chiusa senza bottoni. Err ->', err);
+                            }
+                        );
+                        break;
+                }
+            }, error => console.log('Errore Stampa Documento'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onDeleteDocumento(event: { idDocumento: string, descrizioneDocumento: string }): void {
-        // TODO: terminare logica con modali
+        let confirmDeletePosModal: any;
+        confirmDeletePosModal = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'md'
+        });
+        confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        confirmDeletePosModal.componentInstance.titolo = 'Eliminazione ' + event.descrizioneDocumento;
+        confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizioneDocumento + '?';
+        confirmDeletePosModal.result.then(
+            (result: string) => {
+                switch (result) {
+                    case 'ok':
+                        this.deleteDocumento(event.idDocumento);
+                        break;
+                    case 'ko':
+                        this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                        console.log('Modal "deleteDocumento" chiusa con val ->', result);
+                        break;
+                }
+            },
+            (err: any) => {
+                this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                console.error('Modal "deleteDocumento" chiusa senza bottoni. Err ->', err);
+            }
+        );
     }
 
     addDocumento(formData: FormData): void {
@@ -183,11 +248,11 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     editDocumento(id: string, formData: FormData): void {
-        // this.store.dispatch(new EditDocumentoAreaDocumentale(id, formData));
+        this.store.dispatch(new EditDocumentoAreaDocumentale(id, formData));
     }
 
     deleteDocumento(id: string): void {
-        // this.store.dispatch(new DeleteDocumentoAreaDocumentale(id));
+        this.store.dispatch(new DeleteDocumentoAreaDocumentale(id));
     }
 
     onRicercaDocumenti(ricerca: string): void {
