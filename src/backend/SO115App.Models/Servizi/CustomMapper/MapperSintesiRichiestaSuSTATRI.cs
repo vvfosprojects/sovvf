@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {
-    public class MapperSintesiRichiestaSuSTATRI
+    public class MapperSintesiRichiestaSuSTATRI : IMapperSintesiInSchedeSO115
     {
         public List<SchedaSO115> Map(SintesiRichiesta sintesiRichiesta)
         {

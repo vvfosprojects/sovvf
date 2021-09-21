@@ -21,6 +21,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
@@ -28,12 +29,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class AggiornaStatoMezzoCommandHandler : ICommandHandler<AggiornaStatoMezzoCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
+        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
 
         private AggiornaStatoMezzoCommandHandler()
         {
         }
 
-        public AggiornaStatoMezzoCommandHandler(IUpdateStatoPartenze updateStatoPartenze) => _updateStatoPartenze = updateStatoPartenze;
+        public AggiornaStatoMezzoCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI)
+        {
+            _updateStatoPartenze = updateStatoPartenze;
+            _sendNewItemSTATRI = sendNewItemSTATRI;
+        }
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
@@ -77,7 +83,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodMezzo = command.IdMezzo,
                 DataOraAggiornamento = dataAdesso,
                 Stato = command.StatoMezzo
-            });
+            }, _sendNewItemSTATRI);
 
             if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenzaDaLavorare.Partenza.Codice).Count() == 0)
             {
