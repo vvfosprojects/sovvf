@@ -422,7 +422,8 @@ export class MezziComposizioneState {
                         stato: null,
                         genere: null,
                         distaccamento: {
-                            descrizione: null,
+                            codice: null,
+                            descrizione: null
                         },
                     },
                     squadre: null
@@ -432,6 +433,7 @@ export class MezziComposizioneState {
                     obj.mezzo.descrizione = partenza.mezzo.descrizione;
                     obj.mezzo.stato = partenza.mezzo.stato;
                     obj.mezzo.genere = partenza.mezzo.genere;
+                    obj.mezzo.distaccamento.codice = partenza.mezzo.distaccamento.codice;
                     obj.mezzo.distaccamento.descrizione = partenza.mezzo.distaccamento.descrizione;
                 } else {
                     obj.mezzo = null;
