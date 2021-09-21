@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,12 +46,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
+        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
+
         //private readonly ISetUscitaMezzo _setUscitaMezzo;
         //private readonly ISetRientroMezzo _setRientroMezzo;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza)
+            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza, ISendNewItemSTATRI sendNewItemSTATRI)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -58,6 +61,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getStatoMezzi = getStatoMezzi;
             _getMaxCodicePartenza = getMaxCodicePartenza;
+            _sendNewItemSTATRI = sendNewItemSTATRI;
         }
 
         /// <summary>
@@ -170,7 +174,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             CodMezzo = partenzaDaRientrare.Mezzo.Codice,
                             DataOraAggiornamento = dataAdesso,
                             Stato = Costanti.MezzoRientrato
-                        });
+                        }, _sendNewItemSTATRI);
 
                         _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
 
@@ -183,14 +187,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     CodMezzo = partenza.Mezzo.Codice,
                     DataOraAggiornamento = dataAdesso,
                     Stato = Costanti.MezzoInUscita
-                });
+                }, _sendNewItemSTATRI);
 
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
                     DataOraAggiornamento = dataAdesso,
                     Stato = Costanti.MezzoInViaggio
-                });
+                }, _sendNewItemSTATRI);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }

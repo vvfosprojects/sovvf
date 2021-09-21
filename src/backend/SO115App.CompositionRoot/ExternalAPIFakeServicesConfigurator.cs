@@ -36,6 +36,7 @@ using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Servizi.STATRI;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
@@ -309,8 +310,9 @@ namespace SO115App.CompositionRoot
 
             #region STATRI
 
-            container.Register<ISendNewItem, SendNewItem>();
+            container.Register<ISendNewItemSTATRI, SendNewItem>();
             container.Register<IUpDateExistingItem, UpDateExistingItem>();
+            container.Register<IMapperSintesiInSchedeSO115, MapperSintesiRichiestaSuSTATRI>();
 
             #endregion STATRI
         }

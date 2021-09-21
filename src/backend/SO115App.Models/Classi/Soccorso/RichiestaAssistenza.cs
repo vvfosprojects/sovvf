@@ -32,6 +32,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,10 +110,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI)
         {
-            //partenza.Mezzo.Stato = stato.Stato;
-
             switch (stato.Stato)
             {
                 case Costanti.MezzoInUscita:
@@ -125,7 +124,6 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento.AddSeconds(2)));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
@@ -135,10 +133,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                     var dataComposizione = stato.DataOraAggiornamento.AddMinutes(1);
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
-                    //if(this.ListaEventi.OfType<>().LastOrDefault())
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, dataComposizione));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
@@ -149,7 +145,6 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
 
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento));
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
@@ -157,8 +152,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                 case Costanti.MezzoInRientro:
 
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
-
-                    //partenza.Mezzo.IstantiCambiStato.Add(new IstanteCambioStato(stato.Stato, stato.DataOraAggiornamento));
 
                     break;
 
@@ -169,14 +162,10 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                    //if (lstPartenze.Where(p => !p.Terminata).Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
-                    //    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore, null);
+                    sendNewItemSTATRI.InvioRichiesta(this);
 
                     break;
             }
-
-            //foreach (var squadra in partenza.Squadre)
-            //    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
         }
 
         /// <summary>
