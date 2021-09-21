@@ -69,10 +69,6 @@ namespace SO115App.API.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Get([FromBody] GetElencoPOSQuery getListaPosQuery)
         {
-            //var codiceSede = Request.Headers["codicesede"];
-
-            //getListaPosQuery.CodiceSede = codiceSede;
-
             try
             {
                 return Ok(_getHandler.Handle(getListaPosQuery));
