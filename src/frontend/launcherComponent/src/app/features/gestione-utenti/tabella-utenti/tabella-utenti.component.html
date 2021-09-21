@@ -32,10 +32,9 @@
                             [class.border-bottom]="(i + 1) < utente.ruoli?.length">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
-                                    <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
-                                          [ngClass]="{'icon-recursive': ruolo.ricorsivo, 'icon-not-recursive-single': !ruolo.ricorsivo}"
-                                          [ngbTooltip]="ruolo.ricorsivo ? 'In profondità' : 'Non in profondità'"
-                                          placement="top"></span>
+                                    <i [ngbTooltip]="'In profondità'" placement="top" class="mx-3 far fa-clone"
+                                       [ngClass]="{'fa-clone': ruolo.ricorsivo, 'fa-square': !ruolo.ricorsivo}"
+                                    ></i>
                                     <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
                                     di
                                     <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>

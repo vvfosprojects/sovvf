@@ -64,10 +64,9 @@
                             <small *ngIf="!voce?.email" class="ml-1 text-muted">
                                 Non presente
                             </small>
-                            <span class="mr-3 font-weight-bold" style="font-size:1.3rem; float: right;"
-                                  [ngClass]="{'icon-recursive': voce.ricorsivo, 'icon-not-recursive-single': !voce.ricorsivo}"
-                                  [ngbTooltip]="voce.ricorsivo ? 'In profondità' : 'Non in profondità'"
-                                  placement="top"></span>
+                            <i [ngbTooltip]="'In profondità'" placement="top" class="mx-3 far fa-clone"
+                               [ngClass]="{'fa-clone': voce.ricorsivo, 'fa-square': !voce.ricorsivo}"
+                            ></i>
                         </li>
                     </ul>
                 </div>
