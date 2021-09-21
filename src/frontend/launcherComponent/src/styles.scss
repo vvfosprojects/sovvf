@@ -1165,10 +1165,10 @@ tag-input {
 }
 
 .blink-i-aggregate {
-  font-size: 12px;
+  font-size: 16px $SO-i;
   position: absolute;
-  left: 10px;
-  top: 4px;
+  left: 3px;
+  top: 3px;
   animation: blink 0.8s linear infinite;
 }
 
