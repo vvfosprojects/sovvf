@@ -182,6 +182,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background: whitesmoke $SO-i;
   }
 
+  .bg-tasto-nuova-chiamata {
+    background-color: $SO-white $SO-i;
+  }
+
   .bg-mezzo-in-servizio:hover {
     background: $SO-light $SO-i;
   }
@@ -472,6 +476,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-partial-loader {
     background-color: rgba(53, 53, 53, 0.7) $SO-i;
+  }
+
+  .bg-tasto-nuova-chiamata {
+    background-color: $SO-dark-darker $SO-i;
   }
 
   #buttonNuovaChiamata {
