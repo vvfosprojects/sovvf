@@ -17,6 +17,8 @@ import { DocumentoInterface } from 'src/app/shared/interface/documento.interface
 import { AuthState } from '../auth/store/auth.state';
 import { DocumentoAreaDocumentaleModalComponent } from 'src/app/shared/modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 import { AddDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from 'src/app/shared/store/actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
+import { HttpEventType } from '@angular/common/http';
+import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
 
 @Component({
     selector: 'app-area-documentale',
@@ -42,7 +44,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-                private store: Store,) {
+                private store: Store,
+                private areaDocumentaleService: AreaDocumentaleService) {
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
@@ -117,11 +120,54 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     onDownloadDocumento(documento: DocumentoInterface): void {
-        // TODO: terminare logica con modali
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + documento.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        const a = document.createElement('a');
+                        a.setAttribute('style', 'display:none;');
+                        document.body.appendChild(a);
+                        a.download = documento.fileName;
+                        a.href = URL.createObjectURL(downloadedFile);
+                        a.target = '_blank';
+                        a.click();
+                        document.body.removeChild(a);
+                        break;
+                }
+            }, error => console.log('Errore Stampa Documento'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onViewDocumento(documento: DocumentoInterface): void {
-        // TODO: terminare logica con modali
+        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
+        if (codSede) {
+            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.error('Errore nel download del file (' + documento.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        const a = document.createElement('a');
+                        a.setAttribute('style', 'display:none;');
+                        document.body.appendChild(a);
+                        a.href = URL.createObjectURL(downloadedFile);
+                        a.target = '_blank';
+                        a.click();
+                        document.body.removeChild(a);
+                        break;
+                }
+            }, error => console.log('Errore visualizzazione Documento'));
+        } else {
+            console.error('CodSede utente non trovato')
+        }
     }
 
     onEditDocumento(documento: DocumentoInterface): void {
