@@ -78,7 +78,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetDocById")]
+        [HttpGet("GetDocumentoById")]
         public async Task<IActionResult> GetDocById(string Id, string CodSede)
         {
             var getQuery = new GetDocByIdQuery()
