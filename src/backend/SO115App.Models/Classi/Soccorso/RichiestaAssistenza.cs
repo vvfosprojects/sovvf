@@ -1006,7 +1006,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         public void AddEvento(Evento evento)
         {
             const string OrarioErrato = "Impossibile aggiungere un evento ad una partenza che ne ha già uno più recente.";
+            const string OrarioFuturo = "Impossibile aggiungere un evento con data futura.";
             const string EventoGiaPresente = "Impossibile aggiungere l'evento specificato. L'evento è già presente.";
+
+            var partenza = evento as ComposizionePartenze;
+            if (partenza == null && evento.Istante.AddHours(2) > DateTime.Now)
+                throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
             {
@@ -1082,17 +1087,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                                 throw new Exception(OrarioErrato);
                     }
                 }
-
-                //if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
-                //{
-                //    var eventiPartenza = _eventi.OfType<AbstractPartenza>()
-                //        .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
-                //        .Where(e => Aperta)
-                //        .ToList();
-
-                //    if (eventiPartenza.Any() && evento.Istante <= eventiPartenza.Max(e => e.Istante))
-                //        throw new Exception(OrarioErrato);
-                //}
             }
 
             _eventi.Add(evento);
