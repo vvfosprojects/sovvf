@@ -3,6 +3,6 @@
     public class FiltriDocumentale
     {
         public string Search { get; set; }
-        public string DescCategoria { get; set; }
+        public string[] DescCategoria { get; set; }
     }
 }

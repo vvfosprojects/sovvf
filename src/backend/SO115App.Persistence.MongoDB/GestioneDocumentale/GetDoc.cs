@@ -44,7 +44,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDocumentale
         public List<DaoDocumentale> GetDocByCodCategoria(GetElencoDocQuery filtri)
         {
             var lstDoc = _dbContext.DocumentaleCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
-                && (c.DescrizioneCategoria.Contains(filtri.Filters.DescCategoria)))
+                && (filtri.Filters.DescCategoria.Any(cat => cat.Contains(c.DescrizioneCategoria))))
                 .Project("{fDFile: 0}").ToList();
 
             var lstDes = new List<DaoDocumentale>();
