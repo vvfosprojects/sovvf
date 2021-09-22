@@ -22,13 +22,15 @@ import { PosRouting } from './area-documentale.routing';
  */
 import { AreaDocumentaleState } from './store/states/area-documentale/area-documentale.state';
 import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documentale/ricerca-area-documentale.state';
+import { FiltriAreaDocumentaleComponent } from './filtri-area-documentale/filtri-area-documentale.component';
 
 
 @NgModule({
     declarations: [
         AreaDocumentaleComponent,
         TabellaDocumentiComponent,
-        RicercaAreaDocumentaleComponent
+        RicercaAreaDocumentaleComponent,
+        FiltriAreaDocumentaleComponent
     ],
     imports: [
         CommonModule,

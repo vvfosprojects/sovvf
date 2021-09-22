@@ -23,15 +23,9 @@ import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import {
-    ClearFiltriSchedeContatto,
-    ReducerSetFiltroSchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
+import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import {
-    ClearFiltriMezziInServizio,
-    SetFiltroMezziInServizio
-} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';

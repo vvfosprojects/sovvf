@@ -79,6 +79,7 @@ import { TagInputModule } from 'ngx-chips';
 import { RicercaIndirizzoComponent } from './components/form-richiesta/ricerca-indirizzo/ricerca-indirizzo.component';
 import { ChiamataService } from '../core/service/chiamata-service/chiamata.service';
 import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
+import { FiltroComponent } from './components/filtro/filtro.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -115,6 +116,7 @@ const COMPONENTS = [
     MezzoComposizioneComponent,
     SquadraComposizioneComponent,
     FilterbarComposizioneComponent,
+    FiltroComponent,
     TastoCompPartenzaComponent,
     BoxAnteprimaPartenzaComponent,
     AllertaSedeModalComponent,

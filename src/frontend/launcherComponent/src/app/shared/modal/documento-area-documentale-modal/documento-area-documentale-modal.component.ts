@@ -21,7 +21,7 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
 
     codSede: string;
 
-    categorie = ['Tipo Documento 1', 'Tipo Documento 2'];
+    categorie = ['Tipo 1', 'Tipo 2', 'Tipo 3'];
 
     editDocumento: boolean;
     documento: DocumentoInterface;

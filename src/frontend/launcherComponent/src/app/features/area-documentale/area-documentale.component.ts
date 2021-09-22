@@ -6,7 +6,7 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { GetDocumentiAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
+import { ClearFiltriAreaDocumentale, GetDocumentiAreaDocumentale, SetFiltroAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
 import { ClearRicercaAreaDocumentale, SetRicercaAreaDocumentale, } from './store/actions/ricerca-area-documentale/ricerca-area-documentale.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -20,6 +20,7 @@ import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocume
 import { HttpEventType } from '@angular/common/http';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-area-documentale',
@@ -32,6 +33,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     doubleMonitor: boolean;
     @Select(AreaDocumentaleState.documenti) documenti$: Observable<DocumentoInterface[]>;
     @Select(AreaDocumentaleState.loadingAreaDocumentale) loading$: Observable<boolean>;
+    @Select(AreaDocumentaleState.filtriAreaDocumentale) filtriAreaDocumentale$: Observable<VoceFiltro[]>;
+    @Select(AreaDocumentaleState.filtriSelezionatiAreaDocumentale) filtriSelezionatiAreaDocumentale$: Observable<VoceFiltro[]>;
     @Select(RicercaAreaDocumentaleState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -80,13 +83,20 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
             })
         );
     }
-
     getDocumenti(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
             page = this.store.selectSnapshot(PaginationState.page);
         }
         this.store.dispatch(new GetDocumentiAreaDocumentale(page));
+    }
+
+    onSelezioneFiltroAreaDocumentale(filtro: VoceFiltro): void {
+        this.store.dispatch(new SetFiltroAreaDocumentale(filtro));
+    }
+
+    onResetFiltriAttiviAreaDocumentale(): void {
+        this.store.dispatch(new ClearFiltriAreaDocumentale());
     }
 
     onAddDocumento(): void {
@@ -172,7 +182,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     onEditDocumento(documento: DocumentoInterface): void {
-        let editPosModal: any;
+        let editDocumentoAreaDocumentaleModal: any;
         const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
         if (codSede) {
             this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
@@ -181,17 +191,17 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         console.error('Errore nel download del file (' + documento.fileName + ')');
                         break;
                     case HttpEventType.Response:
-                        editPosModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
+                        editDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
                             windowClass: 'modal-holder',
                             backdropClass: 'light-blue-backdrop',
                             centered: true,
                             size: 'lg'
                         });
-                        editPosModal.componentInstance.codSede = codSede;
-                        editPosModal.componentInstance.editDocumento = true;
-                        editPosModal.componentInstance.documento = documento;
-                        editPosModal.componentInstance.posFdFile = data.body;
-                        editPosModal.result.then(
+                        editDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
+                        editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
+                        editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
+                        editDocumentoAreaDocumentaleModal.componentInstance.posFdFile = data.body;
+                        editDocumentoAreaDocumentaleModal.result.then(
                             (result: { success: boolean, formData: FormData }) => {
                                 if (result.success) {
                                     this.editDocumento(documento.id, result?.formData);

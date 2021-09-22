@@ -10,7 +10,6 @@ import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
 import { RicercaComponent } from './ricerca/ricerca.component';
 import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from '../../../shared/components/filtro/filtro.component';
 import { FiltriSchedeContattoComponent } from './filtri-schede-contatto/filtri-schede-contatto.component';
 import { FiltriMezziServizioComponent } from './filtri-mezzi-servizio/filtri-mezzi-servizio.component';
 import { ModalRichiesteChiuseComponent } from './filtri-richieste/modal-richieste-chiuse/modal-richieste-chiuse.component';
@@ -30,7 +29,6 @@ import { TastoChiamataMappaComponent } from './tasto-chiamata-mappa/tasto-chiama
         FilterbarComponent,
         RicercaComponent,
         FiltriRichiesteComponent,
-        FiltroComponent,
         ViewModeComponent,
         TastoChiamataComponent,
         TastoChiamataMappaComponent,
