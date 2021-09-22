@@ -7,7 +7,7 @@ import { PosState } from './store/states/pos/pos.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { GetPos } from './store/actions/pos/pos.actions';
+import { GetPos, StartLoadingPos, StopLoadingPos } from './store/actions/pos/pos.actions';
 import { ClearRicercaPos, SetRicercaPos } from './store/actions/ricerca-pos/ricerca-pos.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -218,9 +218,10 @@ export class PosComponent implements OnInit, OnDestroy {
             this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
                     case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
+                        this.store.dispatch(new StartLoadingPos());
                         break;
                     case HttpEventType.Response:
+                        this.store.dispatch(new StopLoadingPos());
                         editPosModal = this.modalService.open(PosModalComponent, {
                             windowClass: 'modal-holder',
                             backdropClass: 'light-blue-backdrop',
