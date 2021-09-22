@@ -162,7 +162,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                    sendNewItemSTATRI.InvioRichiesta(this);
+                    //sendNewItemSTATRI.InvioRichiesta(this);
 
                     break;
             }
