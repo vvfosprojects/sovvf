@@ -6,7 +6,7 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { ClearFiltriAreaDocumentale, GetDocumentiAreaDocumentale, SetFiltroAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
+import { ClearFiltriAreaDocumentale, GetDocumentiAreaDocumentale, SetFiltroAreaDocumentale, StartLoadingDocumentiAreaDocumentale, StopLoadingDocumentiAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
 import { ClearRicercaAreaDocumentale, SetRicercaAreaDocumentale, } from './store/actions/ricerca-area-documentale/ricerca-area-documentale.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -83,6 +83,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
             })
         );
     }
+
     getDocumenti(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
@@ -188,9 +189,13 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
             this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
                     case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + documento.fileName + ')');
+                        this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
                         break;
+                        case HttpEventType.DownloadProgress:
+                            this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
+                            break;
                     case HttpEventType.Response:
+                        this.store.dispatch(new StopLoadingDocumentiAreaDocumentale());
                         editDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
                             windowClass: 'modal-holder',
                             backdropClass: 'light-blue-backdrop',
@@ -200,7 +205,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         editDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
                         editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
                         editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
-                        editDocumentoAreaDocumentaleModal.componentInstance.posFdFile = data.body;
+                        editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = data.body;
                         editDocumentoAreaDocumentaleModal.result.then(
                             (result: { success: boolean, formData: FormData }) => {
                                 if (result.success) {
