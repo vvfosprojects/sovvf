@@ -228,16 +228,6 @@ namespace SO115App.Persistence.MongoDB
                 return sintesi;
             });
 
-            //List<SchedaSO115> ListaPerStatri = new List<SchedaSO115>();
-            //MapperSintesiRichiestaSuSTATRI mapperSTATRI = new MapperSintesiRichiestaSuSTATRI();
-            //foreach (var sintesi in listaSistesiRichieste.ToList().FindAll(s => s.CodiceRichiesta != null))
-            //{
-            //    var schede = mapperSTATRI.Map(sintesi);
-            //    ListaPerStatri.AddRange(schede);
-            //}
-
-            //var json = JsonConvert.SerializeObject(ListaPerStatri);
-
             //ORDINAMENTO RICHIESTE
             return listaSistesiRichieste
                 .Distinct()

@@ -5,6 +5,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza
@@ -12,8 +13,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class ModificaPartenzaCommandHandler : ICommandHandler<ModificaPartenzaCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private ModificaPartenzaCommandHandler() { }
-        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze) => _updateStatoPartenze = updateStatoPartenze;
+        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
+
+        private ModificaPartenzaCommandHandler()
+        {
+        }
+
+        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI)
+        {
+            _updateStatoPartenze = updateStatoPartenze;
+            _sendNewItemSTATRI = sendNewItemSTATRI;
+        }
 
         public void Handle(ModificaPartenzaCommand command)
         {
@@ -76,7 +86,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.DataOraAggiornamento))
                 {
-                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato);
+                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato, _sendNewItemSTATRI);
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
