@@ -1021,7 +1021,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var uscitaPartenza = evento as UscitaPartenza;
             var composizionePartenza = evento as ComposizionePartenze;
             var telefonata = evento as Telefonata;
-            if ((composizionePartenza == null && telefonata == null && uscitaPartenza == null) && evento.Istante.AddHours(2) > DateTime.Now)
+            if ((composizionePartenza == null && telefonata == null && uscitaPartenza == null) && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
