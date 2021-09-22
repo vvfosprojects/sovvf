@@ -170,7 +170,7 @@ namespace SO115App.ExternalAPI.Client
                     {
                         Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
                         DataOraEsecuzione = DateTime.Now,
-                        Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
+                        Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.StatusCode.ToString() : c.Content.ReadAsStringAsync().Result,
                         Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
                         CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
                         IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
@@ -186,6 +186,7 @@ namespace SO115App.ExternalAPI.Client
                         case HttpStatusCode.InternalServerError: throw new Exception(Messages.ErroreInternoAlServer);
                         case HttpStatusCode.Created: throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
                         case HttpStatusCode.UnsupportedMediaType: throw new Exception(Messages.OggettoNonValido);
+                        case HttpStatusCode.NoContent: break;
                         case 0: throw new Exception(c.ReasonPhrase);
                     }
                 }
