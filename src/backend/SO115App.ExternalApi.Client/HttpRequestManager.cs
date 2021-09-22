@@ -186,7 +186,9 @@ namespace SO115App.ExternalAPI.Client
                         case HttpStatusCode.InternalServerError: throw new Exception(Messages.ErroreInternoAlServer);
                         case HttpStatusCode.Created: throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
                         case HttpStatusCode.UnsupportedMediaType: throw new Exception(Messages.OggettoNonValido);
-                        case HttpStatusCode.NoContent: break;
+
+                        case HttpStatusCode.NoContent: return true;
+
                         case 0: throw new Exception(c.ReasonPhrase);
                     }
                 }
