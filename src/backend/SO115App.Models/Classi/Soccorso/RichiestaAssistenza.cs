@@ -162,7 +162,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
 
-                    sendNewItemSTATRI.InvioRichiesta(this);
+                    //sendNewItemSTATRI.InvioRichiesta(this);
 
                     break;
             }
@@ -800,6 +800,15 @@ namespace SO115App.API.Models.Classi.Soccorso
                 foreach (var evento in listaComposizioni)
                 {
                     var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
+
+                    if (UltimoEventoPartenza.Equals("ComposizionePartenza"))
+                    {
+                        evento.Partenza.Mezzo.Stato = "In Viaggio";
+                        foreach (var squadra in evento.Partenza.Squadre)
+                        {
+                            squadra.Stato = Squadra.StatoSquadra.InViaggio;
+                        }
+                    }
 
                     if (UltimoEventoPartenza.Equals("MezzoInRientro"))
                     {

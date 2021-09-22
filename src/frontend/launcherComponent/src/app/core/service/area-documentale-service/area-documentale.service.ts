@@ -16,11 +16,12 @@ export class AreaDocumentaleService {
     constructor(private http: HttpClient) {
     }
 
-    getDocumenti(codiceSede: string,filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
+    getDocumenti(codiceSede: string, filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const obj = {
             codiceSede,
             filters: {
-                search: filters.search
+                search: filters.search,
+                descCategorie: filters.descCategorie?.length ? filters.descCategorie : null
             },
             pagination
         };
