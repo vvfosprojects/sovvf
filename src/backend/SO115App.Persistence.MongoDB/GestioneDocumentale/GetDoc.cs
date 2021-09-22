@@ -3,9 +3,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Documentale;
-using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneDocumentale.RicercaElencoDoc;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +23,17 @@ namespace SO115App.Persistence.MongoDB.GestioneDocumentale
         {
             var text = filtri.Filters.Search?.ToLower() ?? "";
 
-            var lstDoc = _dbContext.DocumentaleCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
-                && (c.DescrizioneDocumento.ToLower().Contains(text)))
-                .Project("{fDFile: 0}").ToList();
+            var lstDoc = _dbContext.DocumentaleCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)).Project("{fDFile: 0}").ToList();
 
             var lstDes = new List<DaoDocumentale>();
             foreach (BsonDocument pos in lstDoc)
                 lstDes.Add(BsonSerializer.Deserialize<DaoDocumentale>(pos));
+
+            if (filtri.Filters.DescCategorie?.Count() > 0)
+                lstDes = lstDes.Where(d => filtri.Filters.DescCategorie.Any(cat => cat.Contains(d.DescrizioneCategoria))).ToList();
+
+            if (filtri.Filters.Search != null)
+                lstDes = lstDes.Where(d => d.DescrizioneDocumento.ToLower().Contains(text)).ToList();
 
             return lstDes;
         }
@@ -44,7 +46,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDocumentale
         public List<DaoDocumentale> GetDocByCodCategoria(GetElencoDocQuery filtri)
         {
             var lstDoc = _dbContext.DocumentaleCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
-                && (filtri.Filters.DescCategoria.Any(cat => cat.Contains(c.DescrizioneCategoria))))
+                && (filtri.Filters.DescCategorie.Any(cat => cat.Contains(c.DescrizioneCategoria))))
                 .Project("{fDFile: 0}").ToList();
 
             var lstDes = new List<DaoDocumentale>();
