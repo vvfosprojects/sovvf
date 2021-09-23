@@ -5,6 +5,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System.Linq;
 
@@ -14,10 +15,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
-
-        private ModificaPartenzaCommandHandler()
-        {
-        }
+        private readonly ICheckCongruitaPartenze _checkCongruita;
 
         public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI)
         {
@@ -84,9 +82,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     .OrderByDescending(p => p.Istante)
                     .FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).FirstOrDefault()));
 
-                foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.DataOraAggiornamento))
+                foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.Istante))
                 {
-                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato, _sendNewItemSTATRI);
+                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato, _sendNewItemSTATRI, _checkCongruita);
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
@@ -95,7 +93,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         Richiesta = Richiesta,
                         IdUtente = command.IdOperatore,
                         IdMezzo = stato.CodMezzo,
-                        DataOraAggiornamento = stato.DataOraAggiornamento,
+                        DataOraAggiornamento = stato.Istante,
                         StatoMezzo = stato.Stato
                     });
                 }

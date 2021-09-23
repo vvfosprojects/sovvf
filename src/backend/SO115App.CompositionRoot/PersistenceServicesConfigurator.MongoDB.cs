@@ -44,6 +44,8 @@ namespace SO115App.CompositionRoot
 
             container.Register<ISetTipologie, SetTipologie>();
 
+            container.Register<ICheckCongruitaPartenze, CheckCongruitaPartenze>();
+
             container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
 
             #region Gestione richiesta di assistenza

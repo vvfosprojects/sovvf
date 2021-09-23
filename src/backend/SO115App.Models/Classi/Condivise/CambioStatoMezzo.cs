@@ -7,13 +7,13 @@ namespace SO115App.Models.Classi.Condivise
 {
     public class CambioStatoMezzo
     {
-        public DateTime DataOraAggiornamento { get; set; }
+        public DateTime Istante { get; set; }
         public string Stato { get; set; }
         public string CodMezzo { get; set; }
 
         public string VerificaCoerenza(List<CambioStatoMezzo> lst)
         {
-            var statoPrecedente = getStatoPrecedente(lst.OrderByDescending(c => c.DataOraAggiornamento).ToList());
+            var statoPrecedente = getStatoPrecedente(lst.OrderByDescending(c => c.Istante).ToList());
 
             if (statoPrecedente == null)
                 return null;

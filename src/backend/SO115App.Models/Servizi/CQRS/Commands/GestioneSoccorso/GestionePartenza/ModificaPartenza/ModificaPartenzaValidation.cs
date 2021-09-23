@@ -55,7 +55,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
 
                 if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.Count > 0)
-                    if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                    if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.Istante))
                         yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
 
                 if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
@@ -76,10 +76,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).Distinct().Count() > 1)
                     yield return new ValidationResult("Cambi stato errati");
 
-                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.Istante == null || s.Istante == default))
                     yield return new ValidationResult("Cambi stato errati");
 
-                if (command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Istante > DateTime.Now))
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
 
                 //QUI VERIFICO LA COERENZA TRA GLI STATI CONSIDERANDO L'ATTUALE STATO DELLA PARTENZA DA MODIFICARE
@@ -93,7 +93,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.Annullamento) seqEventi.Add(new CambioStatoMezzo()
                 {
                     Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                    DataOraAggiornamento = partenzaDaModificare.Istante,
+                    Istante = partenzaDaModificare.Istante,
                     CodMezzo = partenzaDaModificare.Partenza.Mezzo.Codice
                 });
                 foreach (var stato in seqEventi)
@@ -105,7 +105,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.Count > 0)
-                    if (command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento) < partenzaDaModificare.Istante)
+                    if (command.ModificaPartenza.SequenzaStati.Min(c => c.Istante) < partenzaDaModificare.Istante)
                         yield return new ValidationResult("Non puoi aggiungere un evento accaduto prima di una partenza");
             }
         }

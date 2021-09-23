@@ -32,6 +32,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
@@ -110,19 +111,21 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
+            check.CheckCongruenza(stato);
+
             switch (stato.Stato)
             {
                 case Costanti.MezzoInUscita:
 
                     if (!Eventi.OfType<InizioPresaInCarico>().Any())
                     {
-                        new InizioPresaInCarico(this, stato.DataOraAggiornamento.AddSeconds(1), CodOperatore);
-                        SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
+                        new InizioPresaInCarico(this, stato.Istante.AddSeconds(1), CodOperatore);
+                        SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
                     }
 
-                    new UscitaPartenza(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento.AddSeconds(2), CodOperatore, partenza.Codice);
+                    new UscitaPartenza(this, partenza.Mezzo.Codice, stato.Istante.AddSeconds(2), CodOperatore, partenza.Codice);
 
                     partenza.Mezzo.IdRichiesta = Id;
 
@@ -130,10 +133,10 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = stato.DataOraAggiornamento.AddMinutes(1);
+                    var dataComposizione = stato.Istante.AddMinutes(1);
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
-                    SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
+                    SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
                     partenza.Mezzo.IdRichiesta = Id;
 
@@ -141,9 +144,9 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoSulPosto:
 
-                    new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
+                    new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
-                    SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento, null);
+                    SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
                     partenza.Mezzo.IdRichiesta = Id;
 
@@ -151,7 +154,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInRientro:
 
-                    new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
+                    new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
                     break;
 
@@ -160,7 +163,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     partenza.Mezzo.IdRichiesta = null;
                     partenza.Terminata = true;
 
-                    new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenza.Codice);
+                    new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
                     //sendNewItemSTATRI.InvioRichiesta(this);
 
