@@ -29,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public IEnumerable<ValidationResult> Validate(EntiIntervenutiCommand command)
         {
             // Controlli sul richiedente
-            if (command.idEnteIntervenuto == 0)
+            if (command.idEnteIntervenuto == null)
                 yield return new ValidationResult(Costanti.DatiMancanti);
 
             if (command.CodRichiesta.Trim().Length == 0)

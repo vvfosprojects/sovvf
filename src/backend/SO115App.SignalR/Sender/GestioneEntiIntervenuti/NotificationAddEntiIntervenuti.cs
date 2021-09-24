@@ -17,7 +17,7 @@ namespace SO115App.SignalR.Sender.GestioneFonogramma
         public async Task SendNotification(EntiIntervenutiCommand command)
         {
             //Metto a null la richiesta, perchè al FE non serve, sarebbe un parametro inutile
-            command.Richiesta = null;
+            //command.Richiesta = null;
             await _notificationHubContext.Clients.All.SendAsync("ModifyAndNotifySuccess", command);
         }
     }

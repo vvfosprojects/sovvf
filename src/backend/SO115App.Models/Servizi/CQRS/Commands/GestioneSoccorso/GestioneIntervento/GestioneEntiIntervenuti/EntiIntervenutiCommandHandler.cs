@@ -24,6 +24,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using System;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti
 {
@@ -41,16 +42,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public void Handle(EntiIntervenutiCommand command)
         {
             int[] listacodici = new int[1];
-            listacodici[0] = command.idEnteIntervenuto;
+            listacodici = command.idEnteIntervenuto;
             var rublica = _getRurbica.GetBylstCodici(listacodici);
 
             if (command.Richiesta.CodEntiIntervenuti != null)
-                command.Richiesta.CodEntiIntervenuti.Add(rublica[0].Descrizione);
-            else
-            {
-                command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<string>();
-                command.Richiesta.CodEntiIntervenuti.Add(rublica[0].Descrizione);
-            }
+                command.Richiesta.CodEntiIntervenuti.Clear();
+
+            command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<string>();
+            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Descrizione));
 
             new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, rublica[0].Descrizione, command.CodSede);
 

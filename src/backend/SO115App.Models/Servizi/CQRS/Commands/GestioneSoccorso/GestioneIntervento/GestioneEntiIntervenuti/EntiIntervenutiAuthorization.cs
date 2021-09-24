@@ -54,7 +54,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             var user = _findUserByUsername.FindUserByUs(username);
 
             command.Richiesta = _getRichiestaById.GetById(command.CodRichiesta);
-            command.Chiamata = _getSintesiRichiestaAssistenzaByCodice.GetSintesi(command.Richiesta.Codice);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
