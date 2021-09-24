@@ -25,7 +25,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
         {
             string text = query.Filters?.Search?.ToLower() ?? "";
 
-            int[] CodTipologia = null;
+            int? CodTipologia = 0;
             if (query.Filters != null)
                 CodTipologia = query.Filters?.codTipologia;
 
@@ -36,7 +36,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
             if (CodTipologia != null)
                 lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
-                && (c.Descrizione.ToLower().Contains(text)) && (CodTipologia.Contains(c.CodiceTipologia))).ToList();
+                && (c.Descrizione.ToLower().Contains(text)) && (CodTipologia == c.CodiceTipologia)).ToList();
             else
                 lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede)
                 && (c.Descrizione.ToLower().Contains(text))).ToList();
