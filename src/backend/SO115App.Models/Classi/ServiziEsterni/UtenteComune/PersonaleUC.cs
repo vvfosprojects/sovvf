@@ -8,21 +8,21 @@
         /// <summary>
         ///   il codice fiscale della persona fisica
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string codiceFiscale { get; set; }
 
         /// <summary>
         ///   il nome della persona fisica
         /// </summary>
-        public string Nome { get; set; }
+        public string nome { get; set; }
 
         /// <summary>
         ///   il cognome della persona fisica
         /// </summary>
-        public string Cognome { get; set; }
+        public string cognome { get; set; }
 
         /// <summary>
         ///   la sede della persona fisica
         /// </summary>
-        public SedeUC Sede { get; set; }
+        public SedeUC sede { get; set; }
     }
 }

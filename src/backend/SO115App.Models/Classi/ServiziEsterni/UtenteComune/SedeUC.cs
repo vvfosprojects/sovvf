@@ -9,11 +9,11 @@
         /// <summary>
         ///   l'id (codice distaccamento) della sede.
         /// </summary>
-        public string Id { get; set; }
+        public string id { get; set; }
 
         /// <summary>
         ///   la descrizione della sede
         /// </summary>
-        public string Descrizione { get; set; }
+        public string descrizione { get; set; }
     }
 }

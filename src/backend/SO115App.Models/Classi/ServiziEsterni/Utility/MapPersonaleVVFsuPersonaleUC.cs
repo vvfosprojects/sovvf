@@ -23,16 +23,16 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
 
             listaPersonaleUC.ForEach(personaUC => listaPersonaleVVF.Enqueue(new PersonaleVVF
             {
-                codiceFiscale = personaUC.CodiceFiscale,
+                codiceFiscale = personaUC.codiceFiscale,
                 sede = new DistaccamentoPersonale()
                 {
-                    id = personaUC.Sede.Id,
-                    descrizione = personaUC.Sede.Descrizione
+                    id = personaUC.sede.id,
+                    descrizione = personaUC.sede.descrizione
                 },
-                nome = $"{personaUC.Cognome}.{personaUC.Nome}"
+                nome = $"{personaUC.cognome}.{personaUC.nome}"
             }));
 
-            return listaPersonaleVVF.ToList();
+            return listaPersonaleVVF.ToList().OrderBy(n => n.nome).ToList();
         }
     }
 }
