@@ -24,8 +24,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.AFM
             var jsonString = JsonConvert.SerializeObject(richiesta);
             var content = new StringContent(jsonString);
 
-            //TODO SOSTITUIRE UTENZA
-            var result = _client.PutAsync(new Uri(_config.GetSection("AFM").GetSection("URL").Value + "rescueRequest"), _config.GetSection("AFM").GetSection("user").Value, _config.GetSection("AFM").GetSection("password").Value, content).Result;
+            var url = new Uri(_config.GetSection("AFM").GetSection("URL").Value + "rescueRequest");
+            string user = _config.GetSection("AFM").GetSection("user").Value;
+            string pass = _config.GetSection("AFM").GetSection("password").Value;
+
+            var result = _client.PutAsync(url, user, pass, content).Result;
 
             return result;
         }

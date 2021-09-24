@@ -27,7 +27,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.AFM
 
 
         //ERRORI
-        public List<Errore> errors { private get; set; } = null;
+        public List<Errore> errors { get; set; } = null;
 
         public bool IsError() => errors != null && errors.Count > 0;
         public string GetNoteEvento(string azione)
