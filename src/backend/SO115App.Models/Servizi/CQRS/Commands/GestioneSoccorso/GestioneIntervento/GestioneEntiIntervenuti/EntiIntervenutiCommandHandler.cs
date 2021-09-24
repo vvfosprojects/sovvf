@@ -51,7 +51,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<string>();
             command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice.ToString()));
 
-            new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, rublica[0].Descrizione, command.CodSede);
+            foreach (var ente in rublica)
+            {
+                if (command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).Count > 0)
+                {
+                    var eventiPrecedenti = command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).ToList();
+                    bool nuovo = true;
+                    foreach (var evento in eventiPrecedenti)
+                    {
+                        if (((InserimentoEnteIntervenuto)evento).Note.Contains(ente.Codice.ToString()))
+                            nuovo = false;
+                    }
+
+                    if (nuovo)
+                        new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + "(cod. " + ente.Codice + ")", command.CodSede);
+                }
+            }
 
             this._saveRichiestaAssistenza.UpDate(command.Richiesta);
         }
