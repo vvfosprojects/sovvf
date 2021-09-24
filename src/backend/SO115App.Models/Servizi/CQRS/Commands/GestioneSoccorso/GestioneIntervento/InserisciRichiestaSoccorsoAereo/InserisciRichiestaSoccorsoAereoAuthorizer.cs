@@ -32,11 +32,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         {
             command.Richiesta = _getRichiestaById.GetByCodice(command.RichiestaSoccorsoAereo.requestKey);
 
-            var Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
+            command.Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-                if (Utente == null)
+                if (command.Utente == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
@@ -46,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                     {
                         foreach (var competenza in command.Richiesta.CodUOCompetenza)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(Utente.Ruoli, competenza, Costanti.GestoreRichieste))
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
                                 abilitato = true;
                         }
                     }
@@ -55,7 +55,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                     {
                         foreach (var competenza in command.Richiesta.CodSOAllertate)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(Utente.Ruoli, competenza, Costanti.GestoreRichieste))
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
                                 abilitato = true;
                         }
                     }

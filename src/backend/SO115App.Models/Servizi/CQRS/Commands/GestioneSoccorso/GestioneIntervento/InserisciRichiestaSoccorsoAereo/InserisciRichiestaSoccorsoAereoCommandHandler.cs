@@ -48,6 +48,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.RichiestaSoccorsoAereo.onSiteContactPhoneNumber = command.Richiesta.Richiedente.Telefono;
             command.RichiestaSoccorsoAereo.requestTypeCode = "0";
 
+            command.RichiestaSoccorsoAereo.operatorName = command.Utente.Nome;
+            command.RichiestaSoccorsoAereo.operatorSurname = command.Utente.Cognome;
+            command.RichiestaSoccorsoAereo.operatorFiscalCode = command.Utente.CodiceFiscale;
+
             //Comunico al servizio esterno
             var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
@@ -62,18 +66,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             command.ResponseAFM = responseAFM;
 
+            var note = command.ResponseAFM.GetNoteEvento(azione);
+            var targa = command.ResponseAFM.GetTargaEvento();
+
             if (!responseAFM.IsError()) //OK INSERIMENTO
             {
-                var note = command.ResponseAFM.GetNoteEvento(azione);
-                var targa = command.ResponseAFM.GetTargaEvento();
-                
                 new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa, command.ResponseAFM.locality);
             }
             else //ERRORE INSERIMENTO
             {
-                var note = command.ResponseAFM.GetNoteEvento(azione);
-                var targa = command.ResponseAFM.GetTargaEvento();
-
                 new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa);
             }
 
