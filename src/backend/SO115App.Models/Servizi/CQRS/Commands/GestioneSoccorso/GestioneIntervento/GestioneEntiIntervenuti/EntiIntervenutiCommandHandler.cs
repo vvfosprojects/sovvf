@@ -49,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                 command.Richiesta.CodEntiIntervenuti.Clear();
 
             command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<string>();
-            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Descrizione));
+            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice.ToString()));
 
             new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, rublica[0].Descrizione, command.CodSede);
 
