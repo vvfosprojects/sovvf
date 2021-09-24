@@ -38,6 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             //COMPONGO IL MODELLO PER AFM
             var codiceDistaccamentoCompetenza = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng))[0];
             var distaccamentoCompetenza = _getDistaccamento.Get(codiceDistaccamentoCompetenza);
+
             command.RichiestaSoccorsoAereo.datetime = date;
             command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
             command.RichiestaSoccorsoAereo.progressiveNumber = command.Richiesta.CodRichiesta?.Split('-')[2].TrimStart() ?? "";
@@ -63,11 +64,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
             if (!responseAFM.IsError()) //OK INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento(), command.ResponseAFM.locality);
+                var note = command.ResponseAFM.GetNoteEvento(azione);
+                var targa = command.ResponseAFM.GetTargaEvento();
+                
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa, command.ResponseAFM.locality);
             }
             else //ERRORE INSERIMENTO
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento(azione), command.ResponseAFM.GetTargaEvento(), command.ResponseAFM.locality);
+                var note = command.ResponseAFM.GetNoteEvento(azione);
+                var targa = command.ResponseAFM.GetTargaEvento();
+
+                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa);
             }
 
             //Salvo richiesta sul db

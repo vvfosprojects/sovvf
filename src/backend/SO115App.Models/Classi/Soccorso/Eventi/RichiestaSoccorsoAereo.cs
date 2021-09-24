@@ -10,7 +10,7 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
         public string Note { get; set; }
         public string Targa { get; set; }
 
-        public RichiestaSoccorsoAereo(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string note, string targaVeivolo, string codicePartenza)
+        public RichiestaSoccorsoAereo(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string note, string targaVeivolo, string codicePartenza = "")
             : base(richiesta, targaVeivolo, istante, codiceFonte, "RichiestaSoccorsoAereo", codicePartenza)
         {
             Note = note;

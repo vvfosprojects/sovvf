@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         public AbstractPartenza(RichiestaAssistenza richiesta, string codiceMezzo, DateTime istante, string codiceFonte, string TipoEvento, string CodicePartenza) 
             : base(richiesta, istante, codiceFonte, TipoEvento)
         {
-            if (string.IsNullOrWhiteSpace(codiceMezzo))
+            if (string.IsNullOrWhiteSpace(codiceMezzo) && TipoEvento != "RichiestaSoccorsoAereo")
             {
                 throw new ArgumentException("Cannot be null or whitespace", nameof(codiceMezzo));
             }

@@ -3,6 +3,7 @@ using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Linq;
@@ -18,7 +19,13 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         {
             var lstRichiesteMezzo = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Where(r => r.TestoStatoRichiesta != "C")).ToList();
 
-            var lstMovimentiPartenza = lstRichiesteMezzo.SelectMany(r => r.ListaEventi.OfType<AbstractPartenza>().Where(p => p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo)).GroupBy(p => p.CodicePartenza));
+            var lstMovimentiPartenza = lstRichiesteMezzo
+                .SelectMany(r => r.ListaEventi.OfType<AbstractPartenza>()
+                .Where(p =>
+                {
+                    return p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo);
+                })
+                .GroupBy(p => p.CodicePartenza));
 
             foreach (var movimentiPartenza in lstMovimentiPartenza)
             {

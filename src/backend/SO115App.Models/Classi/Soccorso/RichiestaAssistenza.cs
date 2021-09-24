@@ -30,9 +30,11 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
@@ -1024,7 +1026,12 @@ namespace SO115App.API.Models.Classi.Soccorso
             var uscitaPartenza = evento as UscitaPartenza;
             var composizionePartenza = evento as ComposizionePartenze;
             var telefonata = evento as Telefonata;
-            if ((composizionePartenza == null && telefonata == null && uscitaPartenza == null) && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
+            var richiestaSoccorsoAereo = evento as RichiestaSoccorsoAereo;
+            var inviareFonogramma = evento as InviareFonogramma;
+            var fonogrammaInviato = evento as FonogrammaInviato;
+
+            if ((composizionePartenza == null && telefonata == null && uscitaPartenza == null && richiestaSoccorsoAereo == null && inviareFonogramma == null && fonogrammaInviato == null) 
+                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
