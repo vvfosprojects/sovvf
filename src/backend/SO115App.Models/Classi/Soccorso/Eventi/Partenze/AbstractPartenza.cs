@@ -29,17 +29,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     /// </summary>
     public abstract class AbstractPartenza : Evento, IPartenza
     {
-        //[JsonConstructor]
-        //public AbstractPartenza(
-        //    DateTime istante,
-        //    string codiceFonte,
-        //    string codice,
-        //    string codiceMezzo,
-        //    string TipoEvento) : base(istante, codiceFonte, codice, TipoEvento)
-        //{
-        //    this.CodiceMezzo = codiceMezzo;
-        //}
-
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
@@ -47,13 +36,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// <param name="codiceMezzo">Il codice del mezzo</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public AbstractPartenza(
-            RichiestaAssistenza richiesta,
-            string codiceMezzo,
-            DateTime istante,
-            string codiceFonte,
-            string TipoEvento,
-            string CodicePartenza) : base(richiesta, istante, codiceFonte, TipoEvento, CodicePartenza)
+        public AbstractPartenza(RichiestaAssistenza richiesta, string codiceMezzo, DateTime istante, string codiceFonte, string TipoEvento, string CodicePartenza) 
+            : base(richiesta, istante, codiceFonte, TipoEvento)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {
@@ -68,17 +52,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         ///   E' l'identificativo del mezzo a cui è associato l'evento
         /// </summary>
         public string CodiceMezzo { get; private set; }
+        public string CodicePartenza { get; set; }
 
         /// <summary>
         ///   Restituisce i codici dei mezzi coinvolti in questo evento
         /// </summary>
-        ISet<string> IPartenza.CodiciMezzo
-        {
-            get
-            {
-                return new HashSet<string> { this.CodiceMezzo };
-            }
-        }
+        ISet<string> IPartenza.CodiciMezzo => new HashSet<string> { CodiceMezzo };
 
         /// <summary>
         ///   Metodo di visita del visitor.

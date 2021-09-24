@@ -209,11 +209,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //GESTIONE CODICE PARTENZA
             int codpart = _getMaxCodicePartenza.GetMax();
-            foreach (var partenza in command.Richiesta.Partenze.Where(p => p.CodicePartenza == "0" || p.CodicePartenza == null))
+            foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
             {
-                codpart += 1;
-                partenza.CodicePartenza = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
-                partenza.Partenza.Codice = partenza.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                codpart ++;
+                partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+
+                command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
+                command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
             }
 
             //SALVO SUL DB
