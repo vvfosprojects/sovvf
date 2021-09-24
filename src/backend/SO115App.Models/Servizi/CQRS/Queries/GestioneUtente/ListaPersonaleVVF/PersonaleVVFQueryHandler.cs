@@ -39,7 +39,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
                     listaUtentiNonCensiti.Enqueue(personale);
             });
 
-            return new PersonaleVVFResult { ListaPersonale = listaUtentiNonCensiti.ToList() };
+            return new PersonaleVVFResult { ListaPersonale = listaUtentiNonCensiti.ToList().OrderBy(n => n.nome).ToList() };
         }
     }
 }

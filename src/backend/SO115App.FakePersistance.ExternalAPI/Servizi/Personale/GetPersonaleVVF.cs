@@ -67,12 +67,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
 
             //Applico i filtri sui dati
-            return personaleUC.ToList()
-                .FindAll(x => lstSegmenti.Contains(x.Cognome.ToLower()) || lstSegmenti.Contains(x.Nome.ToLower()))
+
+            var listaFiltrata = personaleUC.ToList()
+                //.FindAll(x => lstSegmenti.Contains(x.cognome.ToLower()) || lstSegmenti.Contains(x.nome.ToLower()))
                 .Distinct()
-                .OrderByDescending(x => lstSegmenti.Contains(x.Cognome.ToLower()) && lstSegmenti.Contains(x.Nome.ToLower()))
+                .OrderBy(x => x.cognome)
                 .ToList()
                 .Map();
+
+            return listaFiltrata;
         }
     }
 }

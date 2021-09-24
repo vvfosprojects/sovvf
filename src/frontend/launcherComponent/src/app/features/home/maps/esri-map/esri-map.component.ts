@@ -244,7 +244,8 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                         }
 
                         const featuresLayersToAdd = [
-                            '3bc8743584c4484aa032a353328969d0'
+                            // Localizzazione Mezzi VVF
+                            'd10a69bdc9c449f881b9cac24f3bd621'
                         ];
 
                         for (const lAdd of featuresLayersToAdd) {
@@ -300,7 +301,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         // Controllo il valore di "direction"
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
-            if(direction?.isVisible) {
+            if (direction?.isVisible) {
                 this.getRoute(changes?.direction.currentValue);
             } else {
                 this.clearDirection();
@@ -338,7 +339,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
     async initializeMap(): Promise<any> {
         const container = this.mapViewEl.nativeElement;
 
-        EsriConfig.portalUrl = 'http://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
+        EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
         // EsriConfig.apiKey = 'API_KEY';
 
         const portalItem = new PortalItem({
@@ -411,7 +412,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         this.view.popup.autoOpenEnabled = false;
 
         // Params per il servizio "locationToAddress"
-        let location = mapPoint;
+        const location = mapPoint;
         const params = {
             location
         };
@@ -420,8 +421,8 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
-            this.changeCenter([lon, lat]);
-            this.changeZoom(19);
+            this.changeCenter([lon, lat]).then();
+            this.changeZoom(19).then();
 
             // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -431,7 +432,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.lon = lon;
             modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
 
-            modalNuovaChiamata.result.then((result: string) => {
+            modalNuovaChiamata.result.then(() => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
         });
@@ -493,7 +494,7 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 wkid: 3857
             }
         });
-        
+
         const pointDestinazione = new Point({
             longitude: direction.destination.lng,
             latitude: direction.destination.lat,
@@ -519,22 +520,22 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
                 features: [pointPartenzaGraphic, pointDestinazioneGraphic]
             })
         });
-  
+
         routeTask.solve(routeParams).then((data: RouteResult) => {
-            // @ts-ignore 
+            // @ts-ignore
             data.routeResults.forEach((result: any) => {
-              result.route.symbol = {
-                type: "simple-line",
-                color: [5, 150, 255],
-                width: 3
-              };
-              this.view.graphics.add(result.route);
+                result.route.symbol = {
+                    type: 'simple-line',
+                    color: [5, 150, 255],
+                    width: 3
+                };
+                this.view.graphics.add(result.route);
             });
-      })
+        });
     }
 
     clearDirection(): void {
-        if(this.view?.graphics?.length) {
+        if (this.view?.graphics?.length) {
             this.view.graphics.removeAll();
         }
     }
@@ -661,42 +662,42 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         // configurazione del cluster Richieste
-        const clusterConfigRichieste = new FeatureReductionCluster({
-            clusterRadius: '100px',
-            popupTemplate: {
-                title: 'Cluster Richieste',
-                content: 'Questo cluster contiene {cluster_count} Richieste.',
-                fieldInfos: [
-                    {
-                        fieldName: 'cluster_count',
-                        format: {
-                            places: 0,
-                            digitSeparator: true,
-                        },
-                    }
-                ],
-            },
-            clusterMinSize: '50px',
-            clusterMaxSize: '60px',
-            labelingInfo: [
-                {
-                    deconflictionStrategy: 'none',
-                    labelExpressionInfo: {
-                        expression: 'Text($feature.cluster_count, \'#,###\')',
-                    },
-                    symbol: {
-                        type: 'text',
-                        color: 'white',
-                        font: {
-                            weight: 'bold',
-                            family: 'Noto Sans',
-                            size: '30px',
-                        },
-                    },
-                    labelPlacement: 'center-center',
-                },
-            ]
-        });
+        // const clusterConfigRichieste = new FeatureReductionCluster({
+        //     clusterRadius: '100px',
+        //     popupTemplate: {
+        //         title: 'Cluster Richieste',
+        //         content: 'Questo cluster contiene {cluster_count} Richieste.',
+        //         fieldInfos: [
+        //             {
+        //                 fieldName: 'cluster_count',
+        //                 format: {
+        //                     places: 0,
+        //                     digitSeparator: true,
+        //                 },
+        //             }
+        //         ],
+        //     },
+        //     clusterMinSize: '50px',
+        //     clusterMaxSize: '60px',
+        //     labelingInfo: [
+        //         {
+        //             deconflictionStrategy: 'none',
+        //             labelExpressionInfo: {
+        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
+        //             },
+        //             symbol: {
+        //                 type: 'text',
+        //                 color: 'white',
+        //                 font: {
+        //                     weight: 'bold',
+        //                     family: 'Noto Sans',
+        //                     size: '30px',
+        //                 },
+        //             },
+        //             labelPlacement: 'center-center',
+        //         },
+        //     ]
+        // });
 
         // creazione feature layer
         this.richiesteFeatureLayer = new FeatureLayer({
@@ -785,42 +786,42 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         // configurazione del cluster SchedeContatto
-        const clusterConfigSchedeContatto = new FeatureReductionCluster({
-            clusterRadius: '100px',
-            popupTemplate: {
-                title: 'Cluster Schede Contatto',
-                content: 'Questo cluster contiene {cluster_count} Schede Contatto.',
-                fieldInfos: [
-                    {
-                        fieldName: 'cluster_count',
-                        format: {
-                            places: 0,
-                            digitSeparator: true,
-                        },
-                    }
-                ],
-            },
-            clusterMinSize: '50px',
-            clusterMaxSize: '60px',
-            labelingInfo: [
-                {
-                    deconflictionStrategy: 'none',
-                    labelExpressionInfo: {
-                        expression: 'Text($feature.cluster_count, \'#,###\')',
-                    },
-                    symbol: {
-                        type: 'text',
-                        color: 'white',
-                        font: {
-                            weight: 'bold',
-                            family: 'Noto Sans',
-                            size: '30px',
-                        },
-                    },
-                    labelPlacement: 'center-center',
-                },
-            ]
-        });
+        // const clusterConfigSchedeContatto = new FeatureReductionCluster({
+        //     clusterRadius: '100px',
+        //     popupTemplate: {
+        //         title: 'Cluster Schede Contatto',
+        //         content: 'Questo cluster contiene {cluster_count} Schede Contatto.',
+        //         fieldInfos: [
+        //             {
+        //                 fieldName: 'cluster_count',
+        //                 format: {
+        //                     places: 0,
+        //                     digitSeparator: true,
+        //                 },
+        //             }
+        //         ],
+        //     },
+        //     clusterMinSize: '50px',
+        //     clusterMaxSize: '60px',
+        //     labelingInfo: [
+        //         {
+        //             deconflictionStrategy: 'none',
+        //             labelExpressionInfo: {
+        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
+        //             },
+        //             symbol: {
+        //                 type: 'text',
+        //                 color: 'white',
+        //                 font: {
+        //                     weight: 'bold',
+        //                     family: 'Noto Sans',
+        //                     size: '30px',
+        //                 },
+        //             },
+        //             labelPlacement: 'center-center',
+        //         },
+        //     ]
+        // });
 
         // creazione feature layer
         this.schedeContattoFeatureLayer = new FeatureLayer({
@@ -885,42 +886,42 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         // configurazione del cluster SediOperative
-        const clusterConfigSediOperative = new FeatureReductionCluster({
-            clusterRadius: '100px',
-            popupTemplate: {
-                title: 'Cluster Sedi Operative',
-                content: 'Questo cluster contiene {cluster_count} Sedi Operative.',
-                fieldInfos: [
-                    {
-                        fieldName: 'cluster_count',
-                        format: {
-                            places: 0,
-                            digitSeparator: true,
-                        },
-                    }
-                ],
-            },
-            clusterMinSize: '50px',
-            clusterMaxSize: '60px',
-            labelingInfo: [
-                {
-                    deconflictionStrategy: 'none',
-                    labelExpressionInfo: {
-                        expression: 'Text($feature.cluster_count, \'#,###\')',
-                    },
-                    symbol: {
-                        type: 'text',
-                        color: 'red',
-                        font: {
-                            weight: 'bold',
-                            family: 'Noto Sans',
-                            size: '25px',
-                        },
-                    },
-                    labelPlacement: 'center-center',
-                },
-            ]
-        });
+        // const clusterConfigSediOperative = new FeatureReductionCluster({
+        //     clusterRadius: '100px',
+        //     popupTemplate: {
+        //         title: 'Cluster Sedi Operative',
+        //         content: 'Questo cluster contiene {cluster_count} Sedi Operative.',
+        //         fieldInfos: [
+        //             {
+        //                 fieldName: 'cluster_count',
+        //                 format: {
+        //                     places: 0,
+        //                     digitSeparator: true,
+        //                 },
+        //             }
+        //         ],
+        //     },
+        //     clusterMinSize: '50px',
+        //     clusterMaxSize: '60px',
+        //     labelingInfo: [
+        //         {
+        //             deconflictionStrategy: 'none',
+        //             labelExpressionInfo: {
+        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
+        //             },
+        //             symbol: {
+        //                 type: 'text',
+        //                 color: 'red',
+        //                 font: {
+        //                     weight: 'bold',
+        //                     family: 'Noto Sans',
+        //                     size: '25px',
+        //                 },
+        //             },
+        //             labelPlacement: 'center-center',
+        //         },
+        //     ]
+        // });
 
         // creazione feature layer
         this.sediOperativeFeatureLayer = new FeatureLayer({
