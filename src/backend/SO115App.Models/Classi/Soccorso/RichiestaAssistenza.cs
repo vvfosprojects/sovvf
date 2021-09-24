@@ -719,44 +719,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                     this.InAttesa = true;
                     return new InAttesa();
                 }
-
-                //var evento = _eventi.OrderByDescending(p => p.Istante);
-
-                //if (evento is ChiusuraRichiesta)
-                //{
-                //    this.Chiusa = true;
-                //    return new Chiusa();
-                //}
-
-                //if (evento is RichiestaPresidiata || evento is ArrivoSulPosto)
-                //{
-                //    this.Presidiata = true;
-                //    return new Presidiata();
-                //}
-
-                //if (evento is AssegnataRichiesta || evento is ComposizionePartenze)
-                //    return new Assegnata();
-
-                //if (evento is RichiestaSospesa || evento is RevocaPerRiassegnazione)
-                //{
-                //    this.Sospesa = true;
-                //    return new Sospesa();
-                //}
-
-                ////if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
-                ////    return new Assegnata();
-
-                //if (partenze.Count > 0)
-                //{
-                //    if (partenze.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
-                //    {
-                //        this.Sospesa = true;
-                //        return new Sospesa();
-                //    }
-                //}
-
-                //this.InAttesa = true;
-                //return new InAttesa();
             }
         }
 
@@ -1029,8 +991,15 @@ namespace SO115App.API.Models.Classi.Soccorso
             var richiestaSoccorsoAereo = evento as RichiestaSoccorsoAereo;
             var inviareFonogramma = evento as InviareFonogramma;
             var fonogrammaInviato = evento as FonogrammaInviato;
+            var entiIntervenuti = evento as InserimentoEnteIntervenuto;
 
-            if ((composizionePartenza == null && telefonata == null && uscitaPartenza == null && richiestaSoccorsoAereo == null && inviareFonogramma == null && fonogrammaInviato == null) 
+            if ((composizionePartenza == null
+                && telefonata == null
+                && uscitaPartenza == null
+                && richiestaSoccorsoAereo == null
+                && inviareFonogramma == null
+                && fonogrammaInviato == null
+                && entiIntervenuti == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
@@ -1122,24 +1091,37 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
-                var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
-                var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata || _eventi.LastOrDefault() is ArrivoSulPosto;
-                var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is ComposizionePartenze; //this.CodRichiesta != null ? true : false; //
-                var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
-                var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
-                var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
+                var stato = this.StatoRichiesta;
 
-                if (eventoChiusura)
-                    return "X";
-                else if (eventoPresidiata)
-                    return "P";
-                else if (eventoAssegnata || eventoRiaperta || eventoInRientro || eventoRientrata)
+                if (stato is Assegnata)
                     return "A";
-                else if (eventoSospesa)
+                else if (stato is Presidiata)
+                    return "P";
+                else if (stato is Sospesa)
                     return "S";
+                else if (stato is Chiusa)
+                    return "X";
                 else
                     return "C";
+
+                //var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
+                //var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
+                //var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata || _eventi.LastOrDefault() is ArrivoSulPosto;
+                //var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is ComposizionePartenze; //this.CodRichiesta != null ? true : false; //
+                //var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
+                //var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
+                //var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
+
+                //if (eventoChiusura)
+                //    return "X";
+                //else if (eventoPresidiata)
+                //    return "P";
+                //else if (eventoAssegnata || eventoRiaperta || eventoInRientro || eventoRientrata)
+                //    return "A";
+                //else if (eventoSospesa)
+                //    return "S";
+                //else
+                //    return "C";
             }
             protected set
             {

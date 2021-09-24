@@ -122,6 +122,7 @@ namespace SO115App.Models.Classi.Utility
 
         public const string RichiestaSoccorsoAereo = "RichiestaSoccorsoAereo";
         public const string AnnullamentoRichiestaSoccorsoAereo = "AnnullamentoRichiestaSoccorsoAereo";
+        public const string InserimentoEnteInterenuto = "InserimentoEnteInterenuto";
 
         #endregion Eventi
 

@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CustomMapper
 
                 return _mapper.Map<SintesiRichiesta>(richiesta);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 throw new Exception("Errore mapping richiesta");
             }

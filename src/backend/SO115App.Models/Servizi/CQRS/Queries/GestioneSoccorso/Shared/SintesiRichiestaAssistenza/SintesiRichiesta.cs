@@ -175,7 +175,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EnteDTO> ListaEntiIntervenuti { get; set; }
+        public List<string> CodEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -337,36 +337,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                //var composizionePartenza = this.Partenze;
-
-                //if (Chiusa)
-                //{
-                //    return Costanti.RichiestaChiusa;
-                //}
-
-                //if (Partenze.Count > 0)
-                //{
-                //    var PartenzaPiuRecente = Eventi.ToList().OrderByDescending(o => o.Ora).OrderByDescending(p=>p.).FirstOrDefault();
-                //    var CountPartenzeAttive = Partenze.ToList().FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata).OrderByDescending(o => o.Istante);
-                //    var CountMezziSulPosto = Partenze.ToList().FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata && p.Partenza.Mezzo.Stato.Equals("Sul Posto")).OrderByDescending(o => o.Istante);
-
-                // if (PartenzaPiuRecente.Stato.Equals("In Viaggio")) { if
-                // (CountPartenzeAttive.Count() > 0) { if (CountMezziSulPosto.Count() > 0) return
-                // Costanti.RichiestaPresidiata; else return Costanti.RichiestaAssegnata; } }
-
-                // if (PartenzaPiuRecente.Stato.Equals("Sul Posto")) return Costanti.RichiestaPresidiata;
-
-                //    if (PartenzaPiuRecente.Stato.Equals("In Rientro"))
-                //    {
-                //        if (CountPartenzeAttive.Count() > 0)
-                //        {
-                //            if (CountMezziSulPosto.Count() > 0)
-                //                return Costanti.RichiestaPresidiata;
-                //            else
-                //                return Costanti.RichiestaSospesa;
-                //        }
-                //    }
-                //}
 
                 if (this.TestoStatoRichiesta != null)
                 {

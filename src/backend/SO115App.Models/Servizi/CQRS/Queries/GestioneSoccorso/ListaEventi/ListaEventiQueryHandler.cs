@@ -138,6 +138,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case ChiusuraRichiesta _:
                     return ((ChiusuraRichiesta)evento).Motivazione;
 
+                case InserimentoEnteIntervenuto _:
+                    return ((InserimentoEnteIntervenuto)evento).Note;
+
                 case AllertaSedi _:
 
                 default:
@@ -295,6 +298,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case AnnullamentoRichiestaSoccorsoAereo _:
                     return Costanti.AnnullamentoRichiestaSoccorsoAereo;
+
+                case InserimentoEnteIntervenuto _:
+                    return Costanti.InserimentoEnteInterenuto;
 
                 default:
                     return Costanti.EventoGenerico;

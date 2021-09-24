@@ -7,6 +7,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica.Categorie;
 using System;
@@ -24,18 +25,21 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<DeleteEnteCommand> _deleteEnteHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
         private readonly IQueryHandler<CategorieEntiQuery, CategorieEntiResult> _categorieQueryHandler;
+        private readonly ICommandHandler<EntiIntervenutiCommand> _insertEnteintervenuto;
 
         public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte,
             ICommandHandler<UpdateEnteCommand> updateEnte,
             ICommandHandler<DeleteEnteCommand> deleteEnteHandler,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler,
-            IQueryHandler<CategorieEntiQuery, CategorieEntiResult> categorieQueryHandler)
+            IQueryHandler<CategorieEntiQuery, CategorieEntiResult> categorieQueryHandler,
+            ICommandHandler<EntiIntervenutiCommand> insertEnteintervenuto)
         {
             _updateEnteHandler = updateEnte;
             _addEnteHandler = addEnte;
             _deleteEnteHandler = deleteEnteHandler;
             _rubricaQueryHandler = rubricaQueryHandler;
             _categorieQueryHandler = categorieQueryHandler;
+            _insertEnteintervenuto = insertEnteintervenuto;
         }
 
         [HttpPost("")]
@@ -144,6 +148,26 @@ namespace SO115App.API.Controllers
                 };
 
                 return Ok(_categorieQueryHandler.Handle(query).DataArray);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("AddEnteIntervenuto")]
+        public async Task<IActionResult> AddEnteIntervenuto(EntiIntervenutiCommand enteIntervenuto)
+        {
+            try
+            {
+                enteIntervenuto.CodSede = Request.Headers["codicesede"];
+                enteIntervenuto.IdOperatore = Request.Headers["IdUtente"];
+
+                _insertEnteintervenuto.Handle(enteIntervenuto);
+                return Ok();
             }
             catch (Exception ex)
             {
