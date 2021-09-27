@@ -1,9 +1,11 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
-    ClearFiltriAreaDocumentale,
+    ClearCodCategoriaAreaDocumentale,
+    ClearDescCategoriaAreaDocumentale,
     GetDocumentiAreaDocumentale,
+    SetCodCategoriaAreaDocumentale,
+    SetDescCategoriaAreaDocumentale,
     SetDocumentiAreaDocumentale,
-    SetFiltroAreaDocumentale,
     StartLoadingDocumentiAreaDocumentale,
     StopLoadingDocumentiAreaDocumentale
 } from '../../actions/area-documentale/area-documentale.actions';
@@ -15,26 +17,20 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
-import { VoceFiltro } from 'src/app/features/home/filterbar/filtri-richieste/voce-filtro.model';
-import { makeCopy } from 'src/app/shared/helper/function-generiche';
-import { 
-    setFiltroSelezionato as _setFiltroSelezionato,
-    resetFiltriSelezionati as _resetFiltriSelezionati
-} from 'src/app/shared/helper/function-filtro';
+import { FiltriAreaDocumentaleState } from '../../../../../shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
+import { VoceFiltro } from '../../../../home/filterbar/filtri-richieste/voce-filtro.model';
 
 export interface AreaDocumentaleStateModel {
     documenti: DocumentoInterface[];
-    filtriAreaDocumentale: VoceFiltro[];
+    codCategoria: string;
+    descCategoria: string;
     loadingDocumentiAreaDocumentale: boolean;
 }
 
 export const AreaDocumentaleModelDefaults: AreaDocumentaleStateModel = {
     documenti: undefined,
-    filtriAreaDocumentale: [
-        new VoceFiltro('1', 'Tipo Documento', 'Tipo 1', false),
-        new VoceFiltro('2', 'Tipo Documento', 'Tipo 2', false),
-        new VoceFiltro('3', 'Tipo Documento', 'Tipo 3', false)
-    ],
+    codCategoria: undefined,
+    descCategoria: undefined,
     loadingDocumentiAreaDocumentale: false
 };
 
@@ -56,13 +52,13 @@ export class AreaDocumentaleState {
     }
 
     @Selector()
-    static filtriAreaDocumentale(state: AreaDocumentaleStateModel): VoceFiltro[] {
-        return state.filtriAreaDocumentale;
+    static codCategoria(state: AreaDocumentaleStateModel): string {
+        return state.codCategoria;
     }
 
     @Selector()
-    static filtriSelezionatiAreaDocumentale(state: AreaDocumentaleStateModel): VoceFiltro[] {
-        return state.filtriAreaDocumentale.filter(f => f.selezionato === true);
+    static descCategoria(state: AreaDocumentaleStateModel): string {
+        return state.descCategoria;
     }
 
     @Selector()
@@ -76,11 +72,12 @@ export class AreaDocumentaleState {
         const state = getState();
         const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede.codice;
         const ricerca = this.store.selectSnapshot(RicercaAreaDocumentaleState.ricerca);
-        const descCategorie = state.filtriAreaDocumentale.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
+        const descCategoria = state.descCategoria;
         const filters = {
             search: ricerca,
-            descCategorie
+            descCategoria
         };
+        console.log('filters', filters);
         const pagination = {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
@@ -100,29 +97,35 @@ export class AreaDocumentaleState {
             documenti: action.documentiAreaDocumentale
         });
     }
-    
 
-    @Action(SetFiltroAreaDocumentale)
-    setFiltroMezziInServizio({ getState, patchState, dispatch }: StateContext<AreaDocumentaleStateModel>, action: SetFiltroAreaDocumentale): void {
-        const state = getState();
-        const filtriAreaDocumentale = makeCopy(state.filtriAreaDocumentale);
-        const filtro = makeCopy(action.filtro);
+    @Action(SetCodCategoriaAreaDocumentale)
+    setCodCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>, action: SetCodCategoriaAreaDocumentale): void {
         patchState({
-            filtriAreaDocumentale: _setFiltroSelezionato(filtriAreaDocumentale, filtro)
+            codCategoria: action.codCategoria
         });
-        dispatch(new GetDocumentiAreaDocumentale());
     }
 
-    @Action(ClearFiltriAreaDocumentale)
-    clearFiltriMezziInServizio({ getState, patchState, dispatch }: StateContext<AreaDocumentaleStateModel>, action: ClearFiltriAreaDocumentale): void {
-        const state = getState();
-        const filtriAreaDocumentale = makeCopy(state.filtriAreaDocumentale);
+    @Action(ClearCodCategoriaAreaDocumentale)
+    clearCodCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>): void {
         patchState({
-            filtriAreaDocumentale: _resetFiltriSelezionati(filtriAreaDocumentale)
+            codCategoria: AreaDocumentaleModelDefaults.codCategoria
         });
-        if (!action.preventReloadLista) {
-            dispatch(new GetDocumentiAreaDocumentale());
-        }
+    }
+
+    @Action(SetDescCategoriaAreaDocumentale)
+    setDescCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>, action: SetDescCategoriaAreaDocumentale): void {
+        const filtriAreaDocumentale = this.store.selectSnapshot(FiltriAreaDocumentaleState.filtriAreaDocumentale);
+        const descCategoria = filtriAreaDocumentale.filter((f: VoceFiltro) => f.codice === action.codCategoria)[0]?.descrizione;
+        patchState({
+            descCategoria
+        });
+    }
+
+    @Action(ClearDescCategoriaAreaDocumentale)
+    clearDescCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>): void {
+        patchState({
+            descCategoria: AreaDocumentaleModelDefaults.descCategoria
+        });
     }
 
     @Action(StartLoadingDocumentiAreaDocumentale)

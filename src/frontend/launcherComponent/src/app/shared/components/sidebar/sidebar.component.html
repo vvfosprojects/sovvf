@@ -39,16 +39,8 @@
         Impostazioni Sede
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
-            [routerLink]="['/' + RoutesPath.POS]"
-            [class.btn-sidebar-selected]="url === '/POS'"
-            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-        <i class="far fa-file-alt mr-1"></i>
-        Gestione P.O.S.
-    </button>
-    <button class="btn border-secondary btn-light btn-block btn-no-hover"
-            [routerLink]="['/' + RoutesPath.AreaDocumentale]"
             [class.btn-sidebar-selected]="url === '/area-documentale'"
-            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+            (click)="onShowAzioniAreaDocumentale()">
         <i class="far fa-folder-open mr-1"></i>
         Area Documentale
     </button>

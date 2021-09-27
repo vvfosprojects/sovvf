@@ -6,7 +6,13 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { ClearFiltriAreaDocumentale, GetDocumentiAreaDocumentale, SetFiltroAreaDocumentale, StartLoadingDocumentiAreaDocumentale, StopLoadingDocumentiAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
+import {
+    ClearCodCategoriaAreaDocumentale,
+    ClearDescCategoriaAreaDocumentale,
+    GetDocumentiAreaDocumentale,
+    StartLoadingDocumentiAreaDocumentale,
+    StopLoadingDocumentiAreaDocumentale
+} from './store/actions/area-documentale/area-documentale.actions';
 import { ClearRicercaAreaDocumentale, SetRicercaAreaDocumentale, } from './store/actions/ricerca-area-documentale/ricerca-area-documentale.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -20,7 +26,8 @@ import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocume
 import { HttpEventType } from '@angular/common/http';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
-import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
+import { ActivatedRoute } from '@angular/router';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-area-documentale',
@@ -32,9 +39,11 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(AreaDocumentaleState.documenti) documenti$: Observable<DocumentoInterface[]>;
+    @Select(AreaDocumentaleState.codCategoria) codCategoria$: Observable<string>;
+    codCategoria: string;
+    @Select(AreaDocumentaleState.descCategoria) descCategoria$: Observable<string>;
+    descCategoria: string;
     @Select(AreaDocumentaleState.loadingAreaDocumentale) loading$: Observable<boolean>;
-    @Select(AreaDocumentaleState.filtriAreaDocumentale) filtriAreaDocumentale$: Observable<VoceFiltro[]>;
-    @Select(AreaDocumentaleState.filtriSelezionatiAreaDocumentale) filtriSelezionatiAreaDocumentale$: Observable<VoceFiltro[]>;
     @Select(RicercaAreaDocumentaleState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -49,15 +58,17 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
 
     constructor(public modalService: NgbModal,
                 private store: Store,
+                private route: ActivatedRoute,
                 private areaDocumentaleService: AreaDocumentaleService) {
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
         this.getDoubleMonitorMode();
+        this.getCodCategoria();
+        this.getDescCategoria();
         this.getRicerca();
         this.getPageSize();
-        this.getDocumenti(true);
     }
 
     ngOnInit(): void {
@@ -71,6 +82,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearRicercaAreaDocumentale(),
+            new ClearCodCategoriaAreaDocumentale(),
+            new ClearDescCategoriaAreaDocumentale(),
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
@@ -84,20 +97,37 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         );
     }
 
+    getCodCategoria(): void {
+        this.subscriptions.add(
+            this.codCategoria$.subscribe((codCategoria: string) => {
+                if (codCategoria) {
+                    this.codCategoria = codCategoria;
+                } else {
+                    this.store.dispatch(new Navigate(['/home']));
+                }
+            })
+        );
+    }
+
+    getDescCategoria(): void {
+        this.subscriptions.add(
+            this.descCategoria$.subscribe((descCategoria: string) => {
+                if (descCategoria) {
+                    this.descCategoria = descCategoria;
+                    this.getDocumenti(true);
+                } else {
+                    this.store.dispatch(new Navigate(['/home']));
+                }
+            })
+        );
+    }
+
     getDocumenti(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
             page = this.store.selectSnapshot(PaginationState.page);
         }
         this.store.dispatch(new GetDocumentiAreaDocumentale(page));
-    }
-
-    onSelezioneFiltroAreaDocumentale(filtro: VoceFiltro): void {
-        this.store.dispatch(new SetFiltroAreaDocumentale(filtro));
-    }
-
-    onResetFiltriAttiviAreaDocumentale(): void {
-        this.store.dispatch(new ClearFiltriAreaDocumentale());
     }
 
     onAddDocumento(): void {
@@ -111,6 +141,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 size: 'lg'
             });
             addDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
+            addDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
             addDocumentoAreaDocumentaleModal.componentInstance.editDocumento = false;
             addDocumentoAreaDocumentaleModal.result.then(
                 (result: { success: boolean, formData: FormData }) => {
@@ -127,7 +158,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -153,7 +184,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore Stampa Documento'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -178,7 +209,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore visualizzazione Documento'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -191,9 +222,9 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     case HttpEventType.DownloadProgress:
                         this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
                         break;
-                        case HttpEventType.DownloadProgress:
-                            this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
-                            break;
+                    case HttpEventType.DownloadProgress:
+                        this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
+                        break;
                     case HttpEventType.Response:
                         this.store.dispatch(new StopLoadingDocumentiAreaDocumentale());
                         editDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
@@ -203,6 +234,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                             size: 'lg'
                         });
                         editDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
+                        editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
                         editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
                         editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
                         editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = data.body;
@@ -224,7 +256,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore Stampa Documento'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 

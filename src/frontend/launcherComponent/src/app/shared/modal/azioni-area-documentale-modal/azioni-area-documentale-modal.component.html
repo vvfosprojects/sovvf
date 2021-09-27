@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'AREA DOCUMENTALE - SELEZIONA CATEGORIA' }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
+            (click)="close('ko')">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+
+<div class="modal-body pb-3">
+    <div class="row justify-content-center">
+        <div class="clearfix box-azione w-25 mr-2" style="height: fit-content">
+            <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fas fa-fw fa-file text-secondary"></i>
+            </button>
+            <div class="my-1 px-3" style="height: 30px">POS</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">
+                Documenti POS.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="goToPos(); $event.stopPropagation()">
+                Visualizza
+            </button>
+        </div>
+        <div *ngFor="let f of filtriAreaDocumentale"
+             class="clearfix box-azione w-25" style="height: fit-content">
+            <button class="btn btn-light border py-0 px-1 btn-no-hover m-2"
+                    style="height: 50px; font-size: 25px; width: 50px;">
+                <i class="fas fa-fw fa-file text-secondary"></i>
+            </button>
+            <div class="my-1 px-3" style="height: 30px">{{ f.descrizione }}</div>
+            <div class="my-1 px-3" style="height: 60px; font-weight: 300; ">
+                Documenti {{ f.descrizione }}.
+            </div>
+            <button class="btn btn-outline-secondary btn-no-hover"
+                    style="width: 93%; margin-bottom: 10px; margin-left: 10px"
+                    (click)="visalizzaDocumentiByCategoria(f.codice); $event.stopPropagation()">
+                Visualizza
+            </button>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <div class="row w-100">
+        <div class="col-12 text-right">
+            <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
+                    (click)="close('ko')">
+                {{ 'Chiudi'.toLocaleUpperCase() }}
+            </button>
+        </div>
+    </div>
+</div>

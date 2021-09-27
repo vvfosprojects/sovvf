@@ -21,7 +21,7 @@ export class AreaDocumentaleService {
             codiceSede,
             filters: {
                 search: filters.search,
-                descCategorie: filters.descCategorie?.length ? filters.descCategorie : null
+                descCategorie: [filters.descCategoria]
             },
             pagination
         };

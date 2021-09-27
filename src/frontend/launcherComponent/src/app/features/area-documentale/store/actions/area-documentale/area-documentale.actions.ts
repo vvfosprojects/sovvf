@@ -1,5 +1,3 @@
-import { VoceFiltro } from "src/app/features/home/filterbar/filtri-richieste/voce-filtro.model";
-
 export class GetDocumentiAreaDocumentale {
     static readonly type = '[Area Documentale] Get Documenti Area Documentale';
 
@@ -14,18 +12,26 @@ export class SetDocumentiAreaDocumentale {
     }
 }
 
-export class SetFiltroAreaDocumentale {
-    static readonly type = '[Area Documentale] Set Filtro Area Documentale';
+export class SetCodCategoriaAreaDocumentale {
+    static readonly type = '[Area Documentale] Set CodCategoria Area Documentale';
 
-    constructor(public filtro: VoceFiltro) {
+    constructor(public codCategoria: string) {
     }
 }
 
-export class ClearFiltriAreaDocumentale {
-    static readonly type = '[Area Documentale] Clear Filtri Area Documentale';
+export class ClearCodCategoriaAreaDocumentale {
+    static readonly type = '[Area Documentale] Clear CodCategoria Area Documentale';
+}
 
-    constructor(public preventReloadLista?: boolean) {
+export class SetDescCategoriaAreaDocumentale {
+    static readonly type = '[Area Documentale] Set DescCategoria Area Documentale';
+
+    constructor(public codCategoria: string) {
     }
+}
+
+export class ClearDescCategoriaAreaDocumentale {
+    static readonly type = '[Area Documentale] Clear DescCategoria Area Documentale';
 }
 
 export class StartLoadingDocumentiAreaDocumentale {

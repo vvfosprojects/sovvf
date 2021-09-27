@@ -20,8 +20,7 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
     formValid: boolean;
 
     codSede: string;
-
-    categorie = ['Tipo 1', 'Tipo 2', 'Tipo 3'];
+    descCategoria: string;
 
     editDocumento: boolean;
     documento: DocumentoInterface;
@@ -64,11 +63,12 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
         this.store.dispatch(new UpdateFormValue({
             value: {
                 codSede: this.codSede,
-                descrizioneCategoria: this.categorie[0]
+                descrizioneCategoria: this.descCategoria
             },
             path: 'documentoAreaDocumentaleModal.documentoAreaDocumentaleForm'
         }));
 
+        this.f.descrizioneCategoria.disable();
         if (this.editDocumento) {
             this.updateDocumentoAreaDocumentaleForm(this.documento);
         }
@@ -86,7 +86,7 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
         console.log('updateDocumentoAreaDocumentaleForm', editDocumento);
         this.documentoAreaDocumentaleForm.patchValue({
             descrizioneDocumento: editDocumento.descrizioneDocumento,
-            categoria: editDocumento.descrizioneCategoria
+            descrizioneCategoria: editDocumento.descrizioneCategoria
         });
 
         if (!this.formData) {

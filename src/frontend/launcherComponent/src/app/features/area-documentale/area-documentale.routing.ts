@@ -13,5 +13,5 @@ const posRoutes: Routes = [
     imports: [RouterModule.forChild(posRoutes)],
     exports: [RouterModule]
 })
-export class PosRouting {
+export class AreaDocumentaleRouting {
 }

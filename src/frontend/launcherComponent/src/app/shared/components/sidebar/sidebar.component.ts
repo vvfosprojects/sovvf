@@ -6,6 +6,8 @@ import { RiepilogoInterventiModalComponent } from '../../modal/riepilogo-interve
 import { NavbarState } from '../../../features/navbar/store/states/navbar.state';
 import { ToggleSidebarOpened } from '../../../features/navbar/store/actions/navbar.actions';
 import { Store } from '@ngxs/store';
+import { AzioniAreaDocumentaleModalComponent } from '../../modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
+import { FiltriAreaDocumentaleState } from '../../store/states/filtri-area-documentale/filtri-area-documentale.state';
 
 @Component({
     selector: 'app-sidebar',
@@ -50,6 +52,26 @@ export class SidebarComponent {
         });
     }
 
+    /**
+     * Azioni Area Documentale
+     */
+    onShowAzioniAreaDocumentale(): void {
+        let modalOptions;
+        if (open) {
+            modalOptions = {
+                windowClass: '',
+                backdrop: 'static',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                keyboard: false,
+                size: 'xl',
+            } as NgbModalOptions;
+        }
+        const modal = this.modalService.open(AzioniAreaDocumentaleModalComponent, modalOptions);
+        const filtriAreaDocumentale = this.store.selectSnapshot(FiltriAreaDocumentaleState.filtriAreaDocumentale);
+        modal.componentInstance.filtriAreaDocumentale = filtriAreaDocumentale;
+    }
+
     onToggleSidebar(): void {
         const sidebarOpened = this.store.selectSnapshot(NavbarState.sidebarOpened);
         this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
@@ -58,5 +80,4 @@ export class SidebarComponent {
     onLogout(): void {
         this.logout.emit();
     }
-
 }

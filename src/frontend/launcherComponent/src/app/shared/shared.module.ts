@@ -80,6 +80,7 @@ import { RicercaIndirizzoComponent } from './components/form-richiesta/ricerca-i
 import { ChiamataService } from '../core/service/chiamata-service/chiamata.service';
 import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 import { FiltroComponent } from './components/filtro/filtro.component';
+import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -152,7 +153,8 @@ const COMPONENTS = [
     DocumentoAreaDocumentaleModalComponent,
     TriageSummarySintesiRichiestaComponent,
     FormRichiestaComponent,
-    RicercaIndirizzoComponent
+    RicercaIndirizzoComponent,
+    AzioniAreaDocumentaleModalComponent
 ];
 const MODULES = [
     PipeModule

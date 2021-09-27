@@ -76,6 +76,7 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
 import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-area-documentale-modal/documento-area-documentale-modal.state';
+import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
 
 @NgModule({
     declarations: [
@@ -133,7 +134,8 @@ import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-a
                 DistaccamentiState,
                 PosModalState,
                 DocumentoAreaDocumentaleState,
-                SchedaTelefonataState
+                SchedaTelefonataState,
+                FiltriAreaDocumentaleState
             ],
             { developmentMode: !environment.production }
         ),

@@ -16,25 +16,23 @@ import { RicercaAreaDocumentaleComponent } from './ricerca-area-documentale/rice
 /**
  * Routing
  */
-import { PosRouting } from './area-documentale.routing';
+import { AreaDocumentaleRouting } from './area-documentale.routing';
 /**
  * States
  */
 import { AreaDocumentaleState } from './store/states/area-documentale/area-documentale.state';
 import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documentale/ricerca-area-documentale.state';
-import { FiltriAreaDocumentaleComponent } from './filtri-area-documentale/filtri-area-documentale.component';
 
 
 @NgModule({
     declarations: [
         AreaDocumentaleComponent,
         TabellaDocumentiComponent,
-        RicercaAreaDocumentaleComponent,
-        FiltriAreaDocumentaleComponent
+        RicercaAreaDocumentaleComponent
     ],
     imports: [
         CommonModule,
-        PosRouting,
+        AreaDocumentaleRouting,
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
         NgxsModule.forFeature([

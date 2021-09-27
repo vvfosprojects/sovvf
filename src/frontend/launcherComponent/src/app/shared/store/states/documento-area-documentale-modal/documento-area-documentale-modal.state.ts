@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from '../../actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
-import { GetDocumentiAreaDocumentale } from 'src/app/features/area-documentale/store/actions/area-documentale/area-documentale.actions';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
+import { GetDocumentiAreaDocumentale } from '../../../../features/area-documentale/store/actions/area-documentale/area-documentale.actions';
 
 export interface DocumentoAreaDocumentaleModalStateModel {
     documentoAreaDocumentaleForm: {
@@ -76,7 +76,7 @@ export class DocumentoAreaDocumentaleState {
         formData.append('id', action.id);
         formData.append('codSede', formValue.codSede);
         formData.append('descrizioneDocumento', formValue.descrizioneDocumento);
-        formData.append('categoria', formValue.descrizioneCategoria);
+        formData.append('descrizioneCategoria', formValue.descrizioneCategoria);
         this.areaDocumentaleService.edit(formData).subscribe((response: DocumentoInterface) => {
             dispatch([
                 new ResetDocumentoAreaDocumentaleModal(),
@@ -96,7 +96,7 @@ export class DocumentoAreaDocumentaleState {
                 ]);
             }, (err => dispatch(new ResetDocumentoAreaDocumentaleModal())));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
