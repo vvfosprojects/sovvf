@@ -35,9 +35,6 @@ using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
-    /// <summary>
-    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
-    /// </summary>
     public class ConfermaPartenzeCommandHandler : ICommandHandler<ConfermaPartenzeCommand>
     {
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
@@ -64,11 +61,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _checkCongruita = checkCongruita;
         }
 
-        /// <summary>
-        ///   Query che estrae i valori dei Box presenti in Home Page
-        /// </summary>
-        /// <param name="command">Filtri utilizzati per l'estrazione</param>
-        /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
             var dataAdesso = DateTime.UtcNow;

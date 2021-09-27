@@ -15,7 +15,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private readonly DbContext _dbContext;
         public CheckCongruitaPartenze(DbContext dbContext) => _dbContext = dbContext;
         
-        public bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo)
+        public bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo, string codicePartenza)
         {
             var lstRichiesteMezzo = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Where(r => r.TestoStatoRichiesta != "C")).ToList();
 
@@ -27,7 +27,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 })
                 .GroupBy(p => p.CodicePartenza));
 
-            foreach (var movimentiPartenza in lstMovimentiPartenza)
+            foreach (var movimentiPartenza in lstMovimentiPartenza.Where(p => p.Key != codicePartenza))
             {
                 var min = movimentiPartenza.Select(p => p.Istante).Min();
                 var max = movimentiPartenza.Select(p => p.Istante).Max();

@@ -115,7 +115,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
-            check.CheckCongruenza(stato);
+            check.CheckCongruenza(stato, partenza.Codice);
 
             switch (stato.Stato)
             {
