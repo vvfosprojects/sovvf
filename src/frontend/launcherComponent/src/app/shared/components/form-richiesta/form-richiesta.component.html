@@ -16,7 +16,7 @@
                         <div class="clearfix">
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
-                                <div [class.required-field]="!modifica">
+                                <div class="required-field">
                                     <ng-select class="border"
                                                [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"

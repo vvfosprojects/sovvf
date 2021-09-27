@@ -271,7 +271,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             urgenza: this.richiestaModifica.chiamataUrgente,
             esercitazione: this.richiestaModifica.esercitazione
         });
-        this.f.codTipologia.disable();
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
         savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
 
