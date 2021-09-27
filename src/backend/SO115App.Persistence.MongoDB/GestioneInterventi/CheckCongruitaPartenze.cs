@@ -33,7 +33,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 var max = movimentiPartenza.Select(p => p.Istante).Max();
 
                 if (cambioStatoMezzo.Istante >= min && cambioStatoMezzo.Istante <= max)
-                    throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.ToLongTimeString()}.");
+                    throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.ToLongTimeString()} sulla richiesta '{movimentiPartenza.Select(p => p.CodiceRichiesta).First()}'.");
             }
 
             return true;
