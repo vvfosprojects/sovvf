@@ -992,6 +992,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var inviareFonogramma = evento as InviareFonogramma;
             var fonogrammaInviato = evento as FonogrammaInviato;
             var entiIntervenuti = evento as InserimentoEnteIntervenuto;
+            var sostituzione = evento as SostituzionePartenzaFineTurno;
 
             if ((composizionePartenza == null
                 && telefonata == null
@@ -999,7 +1000,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && richiestaSoccorsoAereo == null
                 && inviareFonogramma == null
                 && fonogrammaInviato == null
-                && entiIntervenuti == null)
+                && entiIntervenuti == null
+                && sostituzione == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
