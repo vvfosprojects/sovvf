@@ -91,9 +91,9 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         this.intl.strings = italianStrings;
         this.intl.changes.next();
         this.popoverConfig.container = 'body';
-        this.popoverConfig.placement = 'left';
+        this.popoverConfig.placement = 'top';
         this.tooltipConfig.container = 'body';
-        this.tooltipConfig.placement = 'left';
+        this.tooltipConfig.placement = 'top';
     }
 
     ngOnInit(): void {
