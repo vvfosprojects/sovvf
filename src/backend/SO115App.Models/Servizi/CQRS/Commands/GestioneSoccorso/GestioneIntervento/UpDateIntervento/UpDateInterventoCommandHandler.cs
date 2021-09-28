@@ -21,11 +21,16 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
@@ -33,6 +38,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiesta _getRichiestaById;
+        private readonly IModificaInterventoChiuso _modificaInterventoChiuso;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
@@ -45,26 +51,58 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         public void Handle(UpDateInterventoCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.Chiamata.Codice);
-            var priorita = command.Chiamata.PrioritaRichiesta;
-            var listaCodiciTipologie = new List<string>();
-            var utentiInLavorazione = new List<string>();
-            var utentiPresaInCarico = new List<string>();
-            foreach (var tipologia in command.Chiamata.Tipologie)
+
+            bool modificaInterventoChiuso = false;
+            List<ModificaMovimentoGAC> lstModificheMovimentiGAC = null;
+
+            if(command.Chiamata.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Descrizione) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
-                listaCodiciTipologie.Add(tipologia.Codice);
+                lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
+                {
+                    Comune = new ComuneGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Chiamata.Localita.Citta
+                    },
+                    idPartenza = partenza.CodicePartenza,
+                    Autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo,
+                    DataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
+                    Latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
+                    Longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
+                    Localita = command.Chiamata.Localita.Citta,
+                    NumeroIntervento = command.Chiamata.CodiceRichiesta,
+                    Provincia = new ProvinciaGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Chiamata.Localita.Provincia
+                    },
+                    targa = partenza.CodiceMezzo,
+                    tipoMezzo = partenza.Partenza.Mezzo.Genere,
+                    DataRientro = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    DataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    TipoUscita = new TipoUscita()
+                    {
+                        codice = "",
+                        descrizione = ""
+                    }
+                }).ToList();
+
+                modificaInterventoChiuso = true;
             }
 
+            var priorita = command.Chiamata.PrioritaRichiesta;
+
+            var listaCodiciTipologie = command.Chiamata.Tipologie.Select(t => t.Codice).ToList();
+
+            var utentiInLavorazione = new List<string>();
             if (command.Chiamata.ListaUtentiInLavorazione != null)
                 foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
-                {
                     utentiInLavorazione.Add(utente.Nominativo);
-                }
 
+            var utentiPresaInCarico = new List<string>();
             if (command.Chiamata.ListaUtentiPresaInCarico != null)
                 foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
-                {
                     utentiPresaInCarico.Add(utente.Nominativo);
-                }
 
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
@@ -91,14 +129,17 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             if (command.Chiamata.RilevanteGrave != richiesta.RilevanteGrave || command.Chiamata.RilevanteStArCu != richiesta.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu);
 
-            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
+            var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
             if (richiesta.PrioritaRichiesta != prioritaRichiesta)
-            {
                 new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
-            }
 
             _updateRichiestaAssistenza.UpDate(richiesta);
+
+            if(modificaInterventoChiuso)
+            {
+                Parallel.ForEach(lstModificheMovimentiGAC, movimento => _modificaInterventoChiuso.Send(movimento));
+            }
         }
     }
 }

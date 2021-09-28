@@ -1,12 +1,9 @@
-﻿using SO115App.API.Models.Classi.Condivise;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
     public interface IModificaInterventoChiuso
     {
-        void Send();
+        void Send(ModificaMovimentoGAC modificamovimento);
     }
 }

@@ -143,6 +143,7 @@ namespace SO115App.CompositionRoot
 
             #region Gac
 
+            container.Register<IModificaInterventoChiuso, ModificaInterventoChiuso>();
             container.Register<ISetRientroMezzo, SetRientroMezzo>();
             container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
