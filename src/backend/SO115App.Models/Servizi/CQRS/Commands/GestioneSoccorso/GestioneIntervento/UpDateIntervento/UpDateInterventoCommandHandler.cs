@@ -56,7 +56,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             bool modificaInterventoChiuso = false;
             List<ModificaMovimentoGAC> lstModificheMovimentiGAC = null;
 
-            if(richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Descrizione) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
+            if(richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
                 lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
                 {
