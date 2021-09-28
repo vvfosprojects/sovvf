@@ -19,6 +19,7 @@ import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
 import { FiltriAreaDocumentaleState } from '../../../../../shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
 import { VoceFiltro } from '../../../../home/filterbar/filtri-richieste/voce-filtro.model';
+import { LSNAME } from '../../../../../core/settings/config';
 
 export interface AreaDocumentaleStateModel {
     documenti: DocumentoInterface[];
@@ -99,17 +100,22 @@ export class AreaDocumentaleState {
     }
 
     @Action(SetCodCategoriaAreaDocumentale)
-    setCodCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>, action: SetCodCategoriaAreaDocumentale): void {
+    setCodCategoriaAreaDocumentale({ patchState, dispatch }: StateContext<AreaDocumentaleStateModel>, action: SetCodCategoriaAreaDocumentale): void {
+        console.log('SetCodCategoriaAreaDocumentale codCategoria', action.codCategoria);
         patchState({
             codCategoria: action.codCategoria
         });
+        sessionStorage.setItem(LSNAME.areaDocumentale, action.codCategoria);
+        dispatch(new SetDescCategoriaAreaDocumentale(action.codCategoria));
     }
 
     @Action(ClearCodCategoriaAreaDocumentale)
-    clearCodCategoriaAreaDocumentale({ patchState }: StateContext<AreaDocumentaleStateModel>): void {
+    clearCodCategoriaAreaDocumentale({ patchState, dispatch }: StateContext<AreaDocumentaleStateModel>): void {
         patchState({
             codCategoria: AreaDocumentaleModelDefaults.codCategoria
         });
+        sessionStorage.removeItem(LSNAME.areaDocumentale);
+        dispatch(new ClearDescCategoriaAreaDocumentale());
     }
 
     @Action(SetDescCategoriaAreaDocumentale)

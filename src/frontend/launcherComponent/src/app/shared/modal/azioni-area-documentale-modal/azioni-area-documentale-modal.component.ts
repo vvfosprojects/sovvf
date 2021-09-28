@@ -32,12 +32,10 @@ export class AzioniAreaDocumentaleModalComponent implements OnInit, OnDestroy {
     }
 
     visalizzaDocumentiByCategoria(codCategoria: string): void {
+        console.log('visalizzaDocumentiByCategoria codCategoria', codCategoria);
         this.close('ok');
         this.store.dispatch([
             new Navigate(['/area-documentale']),
-            new ClearDescCategoriaAreaDocumentale(),
-            new ClearCodCategoriaAreaDocumentale(),
-            new SetDescCategoriaAreaDocumentale(codCategoria),
             new SetCodCategoriaAreaDocumentale(codCategoria),
         ]);
     }

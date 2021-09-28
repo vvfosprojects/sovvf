@@ -8,8 +8,8 @@ import { SetPageSize } from '../../shared/store/actions/pagination/pagination.ac
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import {
     ClearCodCategoriaAreaDocumentale,
-    ClearDescCategoriaAreaDocumentale,
     GetDocumentiAreaDocumentale,
+    SetCodCategoriaAreaDocumentale,
     StartLoadingDocumentiAreaDocumentale,
     StopLoadingDocumentiAreaDocumentale
 } from './store/actions/area-documentale/area-documentale.actions';
@@ -28,6 +28,7 @@ import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-se
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { Navigate } from '@ngxs/router-plugin';
+import { LSNAME } from '../../core/settings/config';
 
 @Component({
     selector: 'app-area-documentale',
@@ -83,7 +84,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearRicercaAreaDocumentale(),
             new ClearCodCategoriaAreaDocumentale(),
-            new ClearDescCategoriaAreaDocumentale(),
             new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
@@ -100,8 +100,14 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     getCodCategoria(): void {
         this.subscriptions.add(
             this.codCategoria$.subscribe((codCategoria: string) => {
+                const codCategoriaAreaDocumentale = sessionStorage.getItem(LSNAME.areaDocumentale);
+                console.log('codCategoriaAreaDocumentale SESSION STORAGE', codCategoriaAreaDocumentale);
                 if (codCategoria) {
                     this.codCategoria = codCategoria;
+                } else if (codCategoriaAreaDocumentale) {
+                    this.store.dispatch(new SetCodCategoriaAreaDocumentale(codCategoriaAreaDocumentale));
+                } else if (!codCategoriaAreaDocumentale) {
+                    this.store.dispatch(new Navigate(['/home']));
                 }
             })
         );
