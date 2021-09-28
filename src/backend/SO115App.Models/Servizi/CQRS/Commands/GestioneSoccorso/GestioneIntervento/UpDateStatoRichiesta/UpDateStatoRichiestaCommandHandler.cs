@@ -77,7 +77,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
             if (command.EntiIntervenuti != null)
             {
-                richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice.ToString()).ToList();
+                richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice).ToList();
             }
 
             richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Motivazione.ToString(), DateTime.UtcNow, command.EntiIntervenuti);

@@ -453,7 +453,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<string> CodEntiIntervenuti { get; set; }
+        public List<int> CodEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Lista degli enti al quale è stata passata la richiesta (Es. ACEA)

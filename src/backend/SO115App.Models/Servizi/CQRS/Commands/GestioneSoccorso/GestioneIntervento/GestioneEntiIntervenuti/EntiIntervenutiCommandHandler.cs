@@ -48,8 +48,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             if (command.Richiesta.CodEntiIntervenuti != null)
                 command.Richiesta.CodEntiIntervenuti.Clear();
 
-            command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<string>();
-            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice.ToString()));
+            command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<int>();
+            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice));
 
             foreach (var ente in rublica)
             {

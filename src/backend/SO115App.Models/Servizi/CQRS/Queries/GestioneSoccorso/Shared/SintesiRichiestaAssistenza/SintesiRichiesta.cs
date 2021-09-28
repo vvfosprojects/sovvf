@@ -175,7 +175,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<string> CodEntiIntervenuti { get; set; }
+        public List<int> CodEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -337,7 +337,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-
                 if (this.TestoStatoRichiesta != null)
                 {
                     if (this.TestoStatoRichiesta.Equals("C"))
