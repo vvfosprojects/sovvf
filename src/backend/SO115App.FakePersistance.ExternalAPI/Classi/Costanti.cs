@@ -73,6 +73,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string GacSetMezzoOccupato = "/SO115/AnagraficaMezzi/SetMezzoOccupato";
         public static string GacUscitaMezzo = "/SO115/AnagraficaMezzi/UscitaMezzo";
         public static string GacRientroMezzo = "/SO115/AnagraficaMezzi/RientroMezzo";
+        public static string ModificaMovimento = "/SO115/AnagraficaMezzi/ModificaMovimento";
 
         #endregion GacMethods
 
