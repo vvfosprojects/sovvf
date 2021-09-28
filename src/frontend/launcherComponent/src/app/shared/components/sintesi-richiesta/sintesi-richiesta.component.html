@@ -206,7 +206,7 @@
                                    container="body"></i>
                                 <span *ngIf="richiesta?.richiedente?.nominativo" class="font-xxlarge mr-2">
                                     <a ngbTooltip="{{ richiesta?.richiedente?.nominativo }}"
-                                       placement="right"
+                                       placement="top"
                                        [disableTooltip]="richiesta?.richiedente?.nominativo?.length <= 20">
                                         {{ richiesta?.richiedente?.nominativo | truncate:20 }}
                                     </a>
