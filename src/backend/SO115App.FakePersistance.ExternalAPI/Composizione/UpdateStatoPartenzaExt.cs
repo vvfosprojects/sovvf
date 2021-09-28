@@ -111,7 +111,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataUscita = dataUscita,
-                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.Nominativo
+                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.Nominativo,
                                 tipoUscita = new TipoUscita()
                                 {
                                     codice = "",
