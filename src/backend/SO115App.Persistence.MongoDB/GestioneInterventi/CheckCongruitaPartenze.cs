@@ -25,9 +25,10 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 {
                     return p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo);
                 })
-                .GroupBy(p => p.CodicePartenza));
+                .GroupBy(p => p.CodicePartenza))
+                .Where(p => p.Key == codicePartenza);
 
-            foreach (var movimentiPartenza in lstMovimentiPartenza.Where(p => p.Key == codicePartenza))
+            foreach (var movimentiPartenza in lstMovimentiPartenza)
             {
                 var min = movimentiPartenza.Select(p => p.Istante).Min();
                 var max = movimentiPartenza.Select(p => p.Istante).Max();
