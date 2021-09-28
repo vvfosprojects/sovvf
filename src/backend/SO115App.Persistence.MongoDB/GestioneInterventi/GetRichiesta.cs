@@ -269,7 +269,7 @@ namespace SO115App.Persistence.MongoDB
 
             var rubrica = new List<EnteDTO>();
             if (richiesta.CodEntiIntervenuti != null)
-                rubrica = _getRubrica.GetBylstCodici(richiesta.CodEntiIntervenuti.Select(c => int.Parse(c)).ToArray());
+                rubrica = _getRubrica.GetBylstCodici(richiesta.CodEntiIntervenuti.Select(c => c).ToArray());
 
             if (richiesta.CodUOCompetenza != null)
             {
