@@ -299,8 +299,10 @@
                                     <input id="boschi"
                                            [class.is-invalid]="submitted && f.boschi.errors"
                                            type="number"
+                                           min="0"
                                            placeholder="Inserisci HA"
-                                           formControlName="boschi" class="form-control"/>
+                                           formControlName="boschi"
+                                           class="form-control"/>
                                     <span class="input-group-text h6" id="boschi-group-text">
                                         Boschi
                                     </span>
@@ -312,8 +314,10 @@
                                     <input id="campi"
                                            [class.is-invalid]="submitted && f.campi.errors"
                                            type="number"
+                                           min="0"
                                            placeholder="Inserisci HA"
-                                           formControlName="campi" class="form-control"/>
+                                           formControlName="campi"
+                                           class="form-control"/>
                                     <span class="input-group-text h6" id="campi-group-text">
                                         Campi
                                     </span>
@@ -324,9 +328,11 @@
                                     <label class="d-none" for="sterpaglie">Sterpaglie</label>
                                     <input id="sterpaglie"
                                            [class.is-invalid]="submitted && f.sterpaglie.errors"
-                                           type="number" 
+                                           type="number"
+                                           min="0"
                                            placeholder="Inserisci HA"
-                                           formControlName="sterpaglie" class="form-control"/>
+                                           formControlName="sterpaglie"
+                                           class="form-control"/>
                                     <span class="input-group-text h6" id="sterpaglie-group-text">
                                         Sterpaglie
                                     </span>
