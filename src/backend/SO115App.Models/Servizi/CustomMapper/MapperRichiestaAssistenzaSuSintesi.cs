@@ -41,6 +41,11 @@ namespace SO115App.Models.Servizi.CustomMapper
                   .ForMember(x => x.Operatore, y => y.MapFrom(_ => MapUtenteSuOperatore(_getUtenteById.GetUtenteByCodice(richiesta.CodOperatore))))
                   .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
                   .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
+                  .ForMember(x => x.TestoStatoRichiesta, y => y.MapFrom(z => z.TestoStatoRichiesta))
+                  .ForMember(x => x.Chiusa, y => y.MapFrom(z => z.Chiusa))
+                  .ForMember(x => x.Presidiata, y => y.MapFrom(z => z.Presidiata))
+                  .ForMember(x => x.Aperta, y => y.MapFrom(z => z.Aperta))
+                  .ForMember(x => x.Sospesa, y => y.MapFrom(z => z.Sospesa))
                   .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia)));
 
                 _mapper = mapConfing.CreateMapper();

@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -42,10 +41,12 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiesta getRichiestaById)
+            IGetRichiesta getRichiestaById,
+            IModificaInterventoChiuso modificaInterventoChiuso)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
+            _modificaInterventoChiuso = modificaInterventoChiuso;
         }
 
         public void Handle(UpDateInterventoCommand command)
@@ -55,7 +56,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             bool modificaInterventoChiuso = false;
             List<ModificaMovimentoGAC> lstModificheMovimentiGAC = null;
 
-            if(command.Chiamata.TestoStatoRichiesta == "X" && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Descrizione) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
+            if(richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Descrizione) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
                 lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
                 {
