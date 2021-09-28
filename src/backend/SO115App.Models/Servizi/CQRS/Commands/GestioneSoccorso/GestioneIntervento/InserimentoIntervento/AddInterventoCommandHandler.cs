@@ -98,7 +98,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Competenze = lstCompetenze.Select(d => new Sede(d.CodSede, d?.DescDistaccamento, d?.Indirizzo, d?.Coordinate)).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = Competenze.ToList()[0],
-                CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c.ToString()).ToList(),
+                CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
                 ChiamataUrgente = command.Chiamata.ChiamataUrgente,
