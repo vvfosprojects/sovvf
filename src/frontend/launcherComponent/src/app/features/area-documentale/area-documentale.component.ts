@@ -102,8 +102,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
             this.codCategoria$.subscribe((codCategoria: string) => {
                 if (codCategoria) {
                     this.codCategoria = codCategoria;
-                } else {
-                    this.store.dispatch(new Navigate(['/home']));
                 }
             })
         );
@@ -115,19 +113,19 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 if (descCategoria) {
                     this.descCategoria = descCategoria;
                     this.getDocumenti(true);
-                } else {
-                    this.store.dispatch(new Navigate(['/home']));
                 }
             })
         );
     }
 
     getDocumenti(pageAttuale: boolean): void {
-        let page = null;
-        if (pageAttuale) {
-            page = this.store.selectSnapshot(PaginationState.page);
+        if (this.descCategoria) {
+            let page = null;
+            if (pageAttuale) {
+                page = this.store.selectSnapshot(PaginationState.page);
+            }
+            this.store.dispatch(new GetDocumentiAreaDocumentale(page));
         }
-        this.store.dispatch(new GetDocumentiAreaDocumentale(page));
     }
 
     onAddDocumento(): void {
@@ -317,7 +315,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca || ricerca === '') {
+                if (ricerca || ricerca === '' && this.descCategoria) {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetDocumentiAreaDocumentale());
                 }

@@ -27,7 +27,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 })
                 .GroupBy(p => p.CodicePartenza));
 
-            foreach (var movimentiPartenza in lstMovimentiPartenza.Where(p => p.Key != codicePartenza))
+            foreach (var movimentiPartenza in lstMovimentiPartenza.Where(p => p.Key == codicePartenza))
             {
                 var min = movimentiPartenza.Select(p => p.Istante).Min();
                 var max = movimentiPartenza.Select(p => p.Istante).Max();
