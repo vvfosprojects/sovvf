@@ -16,7 +16,8 @@ import {
     SetRichiestaModifica,
     SuccessRichiestaModifica,
     ClearIndirizzo,
-    PatchRichiesta
+    PatchRichiesta,
+    PatchEntiIntervenutiRichiesta
 } from '../../actions/form-richiesta/richiesta-modifica.actions';
 import { Injectable } from '@angular/core';
 import { ViewComponentState } from '../view/view.state';
@@ -152,20 +153,20 @@ export class RichiestaModificaState {
 
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
                 const tipiTerreno = [] as TipoTerreno[];
-    
-                if  (f.boschi) {
+
+                if (f.boschi) {
                     tipiTerreno.push({
                         descrizione: TipoTerrenoEnum.Boschi,
                         ha: f.boschi
                     });
                 }
-                if  (f.campi) {
+                if (f.campi) {
                     tipiTerreno.push({
                         descrizione: TipoTerrenoEnum.Campi,
                         ha: f.campi
                     });
                 }
-                if  (f.sterpaglie) {
+                if (f.sterpaglie) {
                     tipiTerreno.push({
                         descrizione: TipoTerrenoEnum.Sterpaglie,
                         ha: f.sterpaglie
@@ -213,7 +214,7 @@ export class RichiestaModificaState {
                     f.trnInsChiamata,
                     f.turnoIntervento,
                     tipiTerreno.length ? tipiTerreno : null,
-                    (f.listaEnti?.length) ? f.listaEnti : null,
+                    f.codEntiIntervenuti?.length ? f.codEntiIntervenuti : null,
                     f.listaEntiPresaInCarico,
                     f.obiettivoSensibile,
                     f.rilevanzaStArCu,
@@ -223,7 +224,6 @@ export class RichiestaModificaState {
                     f.codSOAllertate,
                     f.sediAllertate,
                     f.codSOCompetente,
-                    f.listaEnti,
                     f.urgenza,
                     f.esercitazione,
                     triageSummary?.length ? triageSummary : null
@@ -238,6 +238,25 @@ export class RichiestaModificaState {
                 new ClearRichiestaMarkerModifica(),
                 new GetInitCentroMappa()
             ]);
+        });
+    }
+
+    @Action(PatchEntiIntervenutiRichiesta)
+    patchEntiIntervenutiRichiesta({ dispatch }: StateContext<RichiestaModificaStateModel>, action: PatchEntiIntervenutiRichiesta): void {
+
+        const obj = {
+            idEnteIntervenuto: action.codEntiIntervenuti?.length ? action.codEntiIntervenuti : [],
+            codRichiesta: action.idRichiesta
+        };
+
+        this.richiesteService.modificaEntiIntervenutiRichiesta(obj).subscribe(() => {
+            // dispatch(new SuccessRichiestaModifica());
+        }, () => {
+            // dispatch([
+            //     new ClearIndirizzo(),
+            //     new ClearRichiestaMarkerModifica(),
+            //     new GetInitCentroMappa()
+            // ]);
         });
     }
 

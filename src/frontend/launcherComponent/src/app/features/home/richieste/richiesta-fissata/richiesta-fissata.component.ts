@@ -4,6 +4,7 @@ import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.mod
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { Ente } from '../../../../shared/interface/ente.interface';
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -15,6 +16,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() listaEnti: Ente[];
     @Input() nightMode: boolean;
 
     // Permessi

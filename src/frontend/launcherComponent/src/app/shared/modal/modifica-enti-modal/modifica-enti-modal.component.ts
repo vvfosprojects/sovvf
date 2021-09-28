@@ -18,7 +18,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
     enti: Ente[];
 
-    listaEntiIntervenuti: Ente[];
+    listaEntiIntervenuti: number[];
 
     modificaEntiIntervenutiForm: FormGroup;
     submitted: boolean;
@@ -37,7 +37,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.modificaEntiIntervenutiForm = this.fb.group({
-            listaEnti: [this.listaEntiIntervenuti ? this.listaEntiIntervenuti.map(e => e.codice) : null],
+            listaEnti: [this.listaEntiIntervenuti],
         });
         this.getEnti();
     }

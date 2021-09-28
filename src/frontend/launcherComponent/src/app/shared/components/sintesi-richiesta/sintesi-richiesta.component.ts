@@ -25,6 +25,7 @@ import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi
 import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
+import { Ente } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -55,6 +56,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledAzioniRichiesta = false;
     @Input() disabledComposizionePartenza = false;
+    @Input() listaEnti: Ente[];
     @Input() nightMode: boolean;
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
@@ -215,7 +217,9 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             centered: true,
             backdrop: true
         });
-        modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
+
+        const listaEntiIntervenuti = this.methods._getEntiByCod(this.listaEnti, this.richiesta.codEntiIntervenuti);
+        modal.componentInstance.listaEntiIntervenuti = listaEntiIntervenuti ? listaEntiIntervenuti : null;
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
         modal.result.then(() => console.log('Lista Enti Aperta'),
             () => console.log('Lista Enti Chiusa'));

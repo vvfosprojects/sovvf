@@ -139,9 +139,9 @@ export class SintesiRichiesta {
          */
         public tipoTerreno?: TipoTerreno[],
         /**
-         * lista enti intervenuti
+         * lista codici Enti intervenuti
          */
-        public listaEntiIntervenuti?: Ente[],
+        public codEntiIntervenuti?: number[],
         /**
          * lista enti presa in carico
          */
@@ -178,10 +178,6 @@ export class SintesiRichiesta {
          * codice SO competente
          */
         public codSOCompetente?: string,
-        /**
-         * lista Enti intervenuti
-         */
-        public listaEnti?: Ente[],
         /**
          * richiesta inviata in stato di emergenza
          */
