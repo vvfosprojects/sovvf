@@ -6,7 +6,6 @@ import { Utente } from '../../model/utente.model';
 import { AuthState } from '../../../features/auth/store/auth.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
-import { makeCopy } from '../../helper/function-generiche';
 import { ActionRichiestaModalComponent } from '../action-richiesta-modal/action-richiesta-modal.component';
 import { ActionRichiesta, AllertaSede, ModificaStatoFonogramma } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { TrasferimentoChiamataModalComponent } from '../trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
@@ -16,7 +15,7 @@ import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
-import { PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { PatchEntiIntervenutiRichiesta, PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { Ente } from '../../interface/ente.interface';
@@ -250,14 +249,15 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
-        modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-        modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
+        // modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+        modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta?.codEntiIntervenuti?.length ? this.richiesta.codEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    const mod = makeCopy(this.richiesta);
-                    mod.listaEnti = res.result.listaEnti;
-                    this.store.dispatch(new PatchRichiesta(mod as SintesiRichiesta));
+                    const idRichiesta = this.richiesta.id;
+                    const codEntiIntervenuti = res.result.listaEnti;
+                    this.store.dispatch(new PatchEntiIntervenutiRichiesta(idRichiesta, codEntiIntervenuti));
+                    this.chiudiModalAzioniSintesi('ok');
                     break;
                 case 'ko':
                     break;

@@ -34,6 +34,13 @@ export class PatchRichiesta {
     }
 }
 
+export class PatchEntiIntervenutiRichiesta {
+    static readonly type = '[RichiestaModifica] Request Modifica Enti Intervenuti Richiesta';
+
+    constructor(public idRichiesta: string, public codEntiIntervenuti: string[]) {
+    }
+}
+
 export class SuccessRichiestaModifica {
     static readonly type = '[RichiestaModifica] Modifica Richiesta Success';
 }

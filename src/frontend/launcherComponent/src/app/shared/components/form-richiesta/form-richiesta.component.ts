@@ -1,9 +1,12 @@
 import {
     ChangeDetectionStrategy,
-    Component, EventEmitter,
+    Component,
+    EventEmitter,
     Input,
     OnChanges,
-    OnDestroy, OnInit, Output,
+    OnDestroy,
+    OnInit,
+    Output,
     SimpleChanges,
     ViewEncapsulation
 } from '@angular/core';
@@ -56,9 +59,9 @@ import { roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
 import { makeIdChiamata } from '../../helper/function-richieste';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -216,7 +219,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             palazzo: [null],
             scala: [null],
             interno: [null],
-            listaEnti: [null],
+            codEntiIntervenuti: [null],
             etichette: [null],
             noteIndirizzo: [null],
             rilevanzaGrave: [false],
@@ -254,7 +257,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             palazzo: this.richiestaModifica.localita.palazzo,
             scala: this.richiestaModifica.localita.scala,
             interno: this.richiestaModifica.localita.interno,
-            listaEnti: this.richiestaModifica.listaEnti,
+            codEntiIntervenuti: this.richiestaModifica.codEntiIntervenuti,
             etichette: this.richiestaModifica.tags,
             noteIndirizzo: this.richiestaModifica.localita.note,
             rilevanzaGrave: this.richiestaModifica.rilevanteGrave,
@@ -277,9 +280,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
             return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Boschi)[0]?.ha;
         }
+
         function getHaCampi(richiestaModifica: SintesiRichiesta): number {
             return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Campi)[0]?.ha;
         }
+
         function getHaSterpaglie(richiestaModifica: SintesiRichiesta): number {
             return richiestaModifica?.tipoTerreno?.filter((tT: TipoTerreno) => tT.descrizione === TipoTerrenoEnum.Sterpaglie)[0]?.ha;
         }
@@ -406,6 +411,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             centered: true,
             size: 'xl',
         });
+        modalInterventiProssimita.componentInstance.listaEnti = this.enti;
         modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
         modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
         modalInterventiProssimita.result.then(

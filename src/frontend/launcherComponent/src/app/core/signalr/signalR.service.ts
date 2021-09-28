@@ -134,7 +134,8 @@ export class SignalRService {
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
-            this.store.dispatch(new UpdateRichiesta(data.chiamata));
+            const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
+            this.store.dispatch(new UpdateRichiesta(updateRichiesta));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
         });
 

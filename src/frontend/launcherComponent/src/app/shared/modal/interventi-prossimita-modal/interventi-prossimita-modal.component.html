@@ -446,7 +446,7 @@
                                             </button>
                                             <button class="btn btn-light border big_font py-0 px-1"
                                                     ngbTooltip="Elenco Enti"
-                                                    *ngIf="methods._entiCount(r?.listaEntiIntervenuti?.length, r?.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
+                                                    *ngIf="methods._entiCount(methods._getEntiByCod(listaEnti, r?.codEntiIntervenuti)?.length, r?.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
                                                     (click)="onListaEnti(); $event.stopPropagation()">
                                                 {{ totaleEnti }}
                                             </button>

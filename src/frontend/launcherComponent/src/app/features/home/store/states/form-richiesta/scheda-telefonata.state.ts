@@ -355,7 +355,7 @@ export class SchedaTelefonataState {
                 f.trnInsChiamata,
                 f.turnoIntervento,
                 tipiTerreno.length ? tipiTerreno : null,
-                (f.listaEnti?.length) ? f.listaEnti : null,
+                f.codEntiIntervenuti?.length ? f.codEntiIntervenuti : null,
                 f.listaEntiPresaInCarico,
                 f.obiettivoSensibile,
                 f.rilevanzaStArCu,
@@ -365,7 +365,6 @@ export class SchedaTelefonataState {
                 f.codSOAllertate,
                 f.sediAllertate,
                 f.codSOCompetente,
-                f.listaEnti,
                 f.urgenza || urgente,
                 f.esercitazione,
                 triageSummary?.length ? triageSummary : null

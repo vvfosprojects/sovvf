@@ -29,6 +29,8 @@ import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { EntiState } from '../../../shared/store/states/enti/enti.state';
+import { Ente } from '../../../shared/interface/ente.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -71,6 +73,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
+    @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    enti: Ente[];
+
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
     permessiFeature = PermissionFeatures;
@@ -92,6 +97,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
+        this.getEnti();
         console.log('Componente Richieste creato');
     }
 
@@ -198,6 +204,14 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.filtriRichiesteSelezionati$.subscribe((filtri: VoceFiltro[]) => {
                 this.codiciFiltriSelezionati = filtri.map(filtro => filtro.codice);
+            })
+        );
+    }
+
+    getEnti(): void {
+        this.subscription.add(
+            this.enti$.subscribe((enti: Ente[]) => {
+                this.enti = enti;
             })
         );
     }

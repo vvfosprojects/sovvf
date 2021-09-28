@@ -4,6 +4,7 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
+import { Ente } from '../../../../shared/interface/ente.interface';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -21,7 +22,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() listHeightClass: string;
     @Input() boxAttivi: boolean;
-
+    @Input() listaEnti: Ente[];
 
     // Loading
     @Input() loading: boolean;

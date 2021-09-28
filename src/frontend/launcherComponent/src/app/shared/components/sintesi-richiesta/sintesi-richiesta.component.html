@@ -90,7 +90,7 @@
                                 </button>
 
                                 <!-- enti intervenuti -->
-                                <span *ngIf="methods._entiCount(richiesta?.listaEntiIntervenuti?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti;">
+                                <span *ngIf="methods._entiCount(methods._getEntiByCod(listaEnti, richiesta?.codEntiIntervenuti)?.length, richiesta?.listaEntiPresaInCarico?.length) as totaleEnti;">
                                     <button class="btn btn-light border big_font py-0 mr-1"
                                             ngbTooltip="Elenco Enti"
                                             (click)="onListaEnti(); $event.stopPropagation()">

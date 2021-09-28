@@ -17,6 +17,7 @@ const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;
 const API_GESTIONE_RICHIESTA = BASE_URL + environment.apiUrl.gestioneRichiesta;
 const API_GESTIONE_PARTENZA = BASE_URL + environment.apiUrl.gestionePartenza;
 const API_GESTIONE_FONOGRAMMA = BASE_URL + environment.apiUrl.gestioneFonogramma;
+const API_ENTI = BASE_URL + environment.apiUrl.enti;
 
 @Injectable({
     providedIn: 'root'
@@ -88,5 +89,10 @@ export class SintesiRichiesteService {
     public allertaSede(obj: any): Observable<any> {
         console.log('allertaSede', obj);
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AllertaAltreSedi`, obj);
+    }
+
+    public modificaEntiIntervenutiRichiesta(obj: any): Observable<any> {
+        console.log('modificaEntiIntervenutiRichiesta', obj);
+        return this.http.post<any>(`${API_ENTI}/AddEnteIntervenuto`, obj);
     }
 }
