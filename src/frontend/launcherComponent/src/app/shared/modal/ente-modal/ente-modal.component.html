@@ -35,8 +35,8 @@
         <div class="form-group">
             <label for="telefono">
                 Telefono
-                <small *ngIf="!f.fax.value" class="text-danger">*</small>
-                <small *ngIf="f.fax.value" class="text-muted">(opzionale)</small>
+                <small *ngIf="!f.fax.value && !editEnte" class="text-danger">*</small>
+                <small *ngIf="f.fax.value || editEnte" class="text-muted">(opzionale)</small>
             </label>
             <input id="telefono" type="tel" formControlName="telefono" class="form-control"
                    placeholder="Inserisci il Telefono" (keypress)="checkInputPattern($event, 'PHONE')"
@@ -45,8 +45,8 @@
         <div class="form-group">
             <label for="fax">
                 Fax
-                <small *ngIf="!f.telefono.value" class="text-danger">*</small>
-                <small *ngIf="f.telefono.value" class="text-muted">(opzionale)</small>
+                <small *ngIf="!f.telefono.value && !editEnte" class="text-danger">*</small>
+                <small *ngIf="f.telefono.value || editEnte" class="text-muted">(opzionale)</small>
             </label>
             <input id="fax" type="tel" formControlName="fax" class="form-control"
                    placeholder="Inserisci il Fax" (keypress)="checkInputPattern($event, 'PHONE')"
