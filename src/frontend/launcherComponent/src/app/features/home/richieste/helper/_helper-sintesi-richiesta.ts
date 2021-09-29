@@ -263,13 +263,8 @@ export class HelperSintesiRichiesta {
 
     _terreniMinori(tipoTerreno: TipoTerreno[]): TipoTerreno[] {
         if (tipoTerreno && tipoTerreno.length > 1) {
-            let value = 0;
-            tipoTerreno.forEach(terreno => {
-                if (terreno.ha > value) {
-                    value = terreno.ha;
-                }
-            });
-            return tipoTerreno.filter(terreno => terreno.ha !== value);
+            const tipoTerrenoShow = tipoTerreno.filter(terreno => terreno.ha > 0);
+            return tipoTerrenoShow;
         } else {
             return null;
         }

@@ -26,9 +26,10 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         {
             var coordinate = new Coordinate(41.89996, 12.49104);
 
-            if (codiceSede.Length > 2)
+            if (codiceSede.Length > 2 && codiceSede.Contains("."))
             {
                 var builder = Builders<ListaSedi>.Filter;
+
                 var filter = builder.Eq(x => x.codProv, codiceSede.Split('.')[0]) & builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede.Split('.')[1]));
 
                 var CodSede = codiceSede.Split('.')[0];
@@ -55,12 +56,7 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             {
                 var builder = Builders<ListaSedi>.Filter;
 
-                //var CodFiglio = Convert.ToInt32(codiceSede);
-                //var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-
                 ListaSedi sede = _dbContext.SediCollection.Find(x => x.codSede_TC.Equals(codiceSede) && x.attiva.Equals(1)).FirstOrDefault();
-
-                //var sede = listaSedi.Find(x => x.sede.Equals(codiceSede));
 
                 if (sede != null)
                 {

@@ -474,7 +474,7 @@
                                             {{ tipoTerrenoValue?.terrenoHa }}
                                         </div>
                                         <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
-                                                class="btn btn-light px-1 py-0" [ngbPopover]="terreni"
+                                                class="btn btn-light px-1 py-0" [ngbPopover]="terreni" placement="left"
                                                 (click)="$event.stopPropagation()">
                                             +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
                                         <ng-template #terreni>
