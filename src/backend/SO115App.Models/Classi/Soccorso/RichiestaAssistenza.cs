@@ -1002,7 +1002,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && fonogrammaInviato == null
                 && entiIntervenuti == null
                 && sostituzione == null)
-                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
+                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1)
+                && !(ListaEventi.Last() is SostituzionePartenzaFineTurno && evento is PartenzaInRientro))
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)

@@ -77,24 +77,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 PartenzaMontante.Partenza.Terminata = true;
 
                 //GESTIONE NUOVA PARTENZA SMONTANTE
-                var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
+                var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Codice = PartenzaSmontante.Partenza.Mezzo.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
+                    Codice = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                     Mezzo = PartenzaSmontante.Partenza.Mezzo,
                     Squadre = PartenzaMontante.Partenza.Squadre
                 });
 
-                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
+                new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
 
                 //GESTIONE NUOVA PARTENZA MONTANTE
-                var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.Now, command.sostituzione.idOperatore, false, new Partenza()
+                var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
                 {
                     Codice = PartenzaMontante.Partenza.Mezzo.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                     Mezzo = PartenzaMontante.Partenza.Mezzo,
                     Squadre = SquadreSwitch
                 });
 
-                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.Now.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
+                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 
