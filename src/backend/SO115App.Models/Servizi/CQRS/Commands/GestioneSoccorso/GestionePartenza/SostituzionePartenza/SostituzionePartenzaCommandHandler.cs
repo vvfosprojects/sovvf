@@ -2,6 +2,7 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -17,13 +18,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly ISetRientroMezzo _rientroMezzo;
         private readonly ISetUscitaMezzo _uscitaMezzo;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
+        private readonly IModificaInterventoChiuso _modificaIntervento;
 
-        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo, IGetMaxCodicePartenza getMaxCodicePartenza)
+        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo, IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento)
         {
             _updateRichiesta = updateRichiesta;
             _rientroMezzo = rientroMezzo;
             _uscitaMezzo = uscitaMezzo;
             _getMaxCodicePartenza = getMaxCodicePartenza;
+            _modificaIntervento = modificaIntervento;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
@@ -94,7 +97,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = SquadreSwitch
                 });
 
-                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow.AddMinutes(1), command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
+                new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 
@@ -106,51 +109,85 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 //RIENTRO SMONTANTE
 
-                Task.Factory.StartNew(async () =>
-                {
-                    _rientroMezzo.Set(new RientroGAC()
+                
+                    _modificaIntervento.Send(new ModificaMovimentoGAC()
                     {
-                        idPartenza = PartenzaSmontante.Partenza.Codice.ToString(),
-                        dataIntervento = PartenzaSmontante.DataOraInserimento,
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        dataRientro = PartenzaSmontante.DataOraInserimento,
-                        targa = PartenzaSmontante.Partenza.Mezzo.Codice,
-                        tipoMezzo = PartenzaSmontante.Partenza.Mezzo.Genere
+                        targa = PartenzaMontanteNuova.CodiceMezzo,
+                        idPartenza = PartenzaMontanteNuova.CodicePartenza,
+                        Autista = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                        Comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
+                        Localita = command.Richiesta.Localita.Indirizzo,
+                        Provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
+                        Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                        Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                        DataIntervento = command.Richiesta.dataOraInserimento,
+                        NumeroIntervento = command.Richiesta.CodRichiesta,
+                        tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere,
+                        DataRientro = PartenzaSmontante.Istante,
+                        DataUscita = PartenzaMontanteNuova.Istante,
+                        TipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
                     });
 
-                    //RIENTRO MONTANTE
-                    _rientroMezzo.Set(new RientroGAC()
+                    _modificaIntervento.Send(new ModificaMovimentoGAC()
                     {
-                        idPartenza = PartenzaMontante.Partenza.Codice.ToString(),
-                        dataIntervento = PartenzaMontante.DataOraInserimento,
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        dataRientro = PartenzaMontante.DataOraInserimento,
-                        targa = PartenzaMontante.Partenza.Mezzo.Codice,
-                        tipoMezzo = PartenzaMontante.Partenza.Mezzo.Genere
+                        targa = PartenzaSmontanteNuova.CodiceMezzo,
+                        idPartenza = PartenzaSmontanteNuova.CodicePartenza,
+                        Autista = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                        Comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
+                        Localita = command.Richiesta.Localita.Indirizzo,
+                        Provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
+                        Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                        Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                        DataIntervento = command.Richiesta.dataOraInserimento,
+                        NumeroIntervento = command.Richiesta.CodRichiesta,
+                        tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere,
+                        DataRientro = PartenzaMontante.Istante,
+                        DataUscita = PartenzaSmontanteNuova.Istante,
+                        TipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
                     });
 
-                    //USCITA NUOVA PARTENZA MONTANTE
-                    _uscitaMezzo.Set(new UscitaGAC()
-                    {
-                        idPartenza = PartenzaMontanteNuova.Partenza.Codice.ToString(),
-                        dataIntervento = PartenzaMontanteNuova.DataOraInserimento,
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        dataUscita = PartenzaMontanteNuova.DataOraInserimento,
-                        targa = PartenzaMontanteNuova.Partenza.Mezzo.Codice,
-                        tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere
-                    });
+                    //_rientroMezzo.Set(new RientroGAC()
+                    //{
+                    //    idPartenza = PartenzaSmontante.Partenza.Codice.ToString(),
+                    //    dataIntervento = PartenzaSmontante.DataOraInserimento,
+                    //    numeroIntervento = command.Richiesta.CodRichiesta,
+                    //    dataRientro = PartenzaSmontante.DataOraInserimento,
+                    //    targa = PartenzaSmontante.Partenza.Mezzo.Codice,
+                    //    tipoMezzo = PartenzaSmontante.Partenza.Mezzo.Genere
+                    //});
 
-                    //USCITA NUOVA PARTENZA SMONTANTE
-                    _uscitaMezzo.Set(new UscitaGAC()
-                    {
-                        idPartenza = PartenzaSmontanteNuova.Partenza.Codice.ToString(),
-                        dataIntervento = PartenzaSmontanteNuova.DataOraInserimento,
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        dataUscita = PartenzaSmontanteNuova.DataOraInserimento,
-                        targa = PartenzaSmontanteNuova.Partenza.Mezzo.Codice,
-                        tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere
-                    });
-                });
+                    ////RIENTRO MONTANTE
+                    //_rientroMezzo.Set(new RientroGAC()
+                    //{
+                    //    idPartenza = PartenzaMontante.Partenza.Codice.ToString(),
+                    //    dataIntervento = PartenzaMontante.DataOraInserimento,
+                    //    numeroIntervento = command.Richiesta.CodRichiesta,
+                    //    dataRientro = PartenzaMontante.DataOraInserimento,
+                    //    targa = PartenzaMontante.Partenza.Mezzo.Codice,
+                    //    tipoMezzo = PartenzaMontante.Partenza.Mezzo.Genere
+                    //});
+
+                    ////USCITA NUOVA PARTENZA MONTANTE
+                    //_uscitaMezzo.Set(new UscitaGAC()
+                    //{
+                    //    idPartenza = PartenzaMontanteNuova.Partenza.Codice.ToString(),
+                    //    dataIntervento = PartenzaMontanteNuova.DataOraInserimento,
+                    //    numeroIntervento = command.Richiesta.CodRichiesta,
+                    //    dataUscita = PartenzaMontanteNuova.DataOraInserimento,
+                    //    targa = PartenzaMontanteNuova.Partenza.Mezzo.Codice,
+                    //    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere
+                    //});
+
+                    ////USCITA NUOVA PARTENZA SMONTANTE
+                    //_uscitaMezzo.Set(new UscitaGAC()
+                    //{
+                    //    idPartenza = PartenzaSmontanteNuova.Partenza.Codice.ToString(),
+                    //    dataIntervento = PartenzaSmontanteNuova.DataOraInserimento,
+                    //    numeroIntervento = command.Richiesta.CodRichiesta,
+                    //    dataUscita = PartenzaSmontanteNuova.DataOraInserimento,
+                    //    targa = PartenzaSmontanteNuova.Partenza.Mezzo.Codice,
+                    //    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere
+                    //});
 
                 #endregion Comunicazione a servizi GAC
             });
