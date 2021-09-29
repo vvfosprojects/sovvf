@@ -1,9 +1,12 @@
-<div class="clearfix">
+<div class="clearfix float-right d-inline-flex">
     <div class="float-left mr-2">
         <ng-select [items]="sediFiltro"
+                   class="custom"
+                   style="width: 400px; overflow: auto; max-height: 75px;"
                    bindLabel="descSede"
                    bindValue="codSede"
                    placeholder="Sedi: Tutte"
+                   [appendTo]="'body'"
                    (add)="onAddFiltroSede($event)"
                    (remove)="onRemoveFiltroSede($event)"
                    (clear)="onResetFiltriSedi()"
@@ -18,6 +21,7 @@
         <div class="input-group">
             <label for="ricercaUtentiSO" class="d-none"></label>
             <input id="ricercaUtentiSO"
+                   style="width: 250px;"
                    name="ricercaUtentiSO"
                    [(ngModel)]="ricerca"
                    class="form-control"
