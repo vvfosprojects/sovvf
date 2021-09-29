@@ -326,37 +326,28 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   La richiesta è sospesa se, prima del termine della sua evasione, tutte le risorse le
         ///   sono state sottratte e dirottate presso altro intervento
         /// </remarks>
-        public bool Sospesa
-        {
-            get
-            {
-                return this._eventi
-                    .LastOrDefault() is RichiestaSospesa || this._eventi
-                    .LastOrDefault() is RevocaPerRiassegnazione;
-            }
-            set
-            {
-            }
-        }
+        public bool Sospesa => TestoStatoRichiesta == "S";
 
         /// <summary>
         ///   Indica se la richiesta è in attesa
         /// </summary>
         /// <remarks>La richiesta è in attesa se non le è stata ancora assegnata alcuna partenza</remarks>
-        public bool InAttesa
-        {
-            get
-            {
-                var composizionePartenza = Partenze;
+        public bool InAttesa => TestoStatoRichiesta == "C";
 
-                return composizionePartenza.All(x =>
-                           x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro
-                           || x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato) && StatoRichiesta is InAttesa;
-            }
-            set
-            {
-            }
-        }
+        /// <summary>
+        ///   Indica se la richiesta è aperta
+        /// </summary>
+        public bool Chiusa => TestoStatoRichiesta == "X";
+
+        /// <summary>
+        ///   Indica se la richiesta è chiusa
+        /// </summary>
+        public bool Aperta => !Chiusa;
+
+        /// <summary>
+        ///   Indica se il luogo del sinistro è presidiato
+        /// </summary>
+        public bool Presidiata => TestoStatoRichiesta == "P";
 
         /// <summary>
         ///   Restituisce l'elenco degli stati dei mezzi coinvolti nella Richiesta di Assistenza
@@ -480,58 +471,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Sono i tags legati alla richiesta di assistenza
         /// </summary>
         public ISet<string> Tags { get; set; }
-
-        /// <summary>
-        ///   Indica se la richiesta è aperta
-        /// </summary>
-        public bool Chiusa
-        {
-            get
-            {
-                var ultimoEventoChiusura = this._eventi.LastOrDefault() is ChiusuraRichiesta;
-                if (ultimoEventoChiusura)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            set
-            {
-            }
-        }
-
-        /// <summary>
-        ///   Indica se la richiesta è chiusa
-        /// </summary>
-        public bool Aperta
-        {
-            get
-            {
-                return !this.Chiusa;
-            }
-        }
-
-        /// <summary>
-        ///   Indica se il luogo del sinistro è presidiato
-        /// </summary>
-        public virtual bool Presidiata
-        {
-            get
-            {
-                var composizionePartenze = Partenze;
-                var elencoPresidiate = this.Eventi
-                    .OfType<RichiestaPresidiata>()
-                    .ToList();
-
-                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata && !x.Partenza.Sganciata);
-            }
-            set
-            {
-            }
-        }
 
 #warning realizzare i metodi che restituiscono "n.richieste evase" e "n.mezzi intervenuti (RientratoInSede)" e utilizzarli per gli indicatori di soccorso
 
@@ -690,35 +629,20 @@ namespace SO115App.API.Models.Classi.Soccorso
                             partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0)
                             return new Assegnata();
                         else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
-                        {
-                            this.Presidiata = true;
                             return new Presidiata();
-                        }
                         else
-                        {
-                            this.Sospesa = true;
                             return new Sospesa();
-                        }
                     }
                     else
                     {
                         if (_eventi.OrderByDescending(p => p.Istante).First() is ChiusuraRichiesta)
-                        {
-                            this.Chiusa = true;
                             return new Chiusa();
-                        }
                         else
-                        {
-                            this.Sospesa = true;
                             return new Sospesa();
-                        }
                     }
                 }
                 else
-                {
-                    this.InAttesa = true;
                     return new InAttesa();
-                }
             }
         }
 
@@ -1105,25 +1029,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                     return "X";
                 else
                     return "C";
-
-                //var eventoChiusura = _eventi.LastOrDefault() is ChiusuraRichiesta;
-                //var eventoSospesa = _eventi.LastOrDefault() is RichiestaSospesa || _eventi.LastOrDefault() is RevocaPerRiassegnazione;
-                //var eventoPresidiata = _eventi.LastOrDefault() is RichiestaPresidiata || _eventi.LastOrDefault() is ArrivoSulPosto;
-                //var eventoAssegnata = _eventi.LastOrDefault() is AssegnataRichiesta || _eventi.LastOrDefault() is ComposizionePartenze; //this.CodRichiesta != null ? true : false; //
-                //var eventoRiaperta = _eventi.LastOrDefault() is RiaperturaRichiesta;
-                //var eventoRientrata = _eventi.LastOrDefault() is PartenzaRientrata;
-                //var eventoInRientro = _eventi.LastOrDefault() is PartenzaInRientro;
-
-                //if (eventoChiusura)
-                //    return "X";
-                //else if (eventoPresidiata)
-                //    return "P";
-                //else if (eventoAssegnata || eventoRiaperta || eventoInRientro || eventoRientrata)
-                //    return "A";
-                //else if (eventoSospesa)
-                //    return "S";
-                //else
-                //    return "C";
             }
             protected set
             {
