@@ -584,7 +584,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     nominativo = 'Polizia';
                     break;
                 case '118':
-                    nominativo = 'Ambulanza';
+                    nominativo = 'Servizio Sanitario di Urgenza ed Emergenza';
                     break;
                 case 'VV.UU.':
                     nominativo = 'Polizia Municipale';
