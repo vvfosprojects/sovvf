@@ -69,8 +69,8 @@ namespace SO115App.API.Controllers
             var query = new ComposizioneSquadreQuery()
             {
                 Filtro = filtri,
-                CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
-            };
+                CodiciSede = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries)
+        };
 
             if (ModelState.IsValid)
             {

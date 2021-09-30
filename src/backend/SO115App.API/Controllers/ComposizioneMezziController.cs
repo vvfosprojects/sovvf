@@ -42,7 +42,7 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {
-            query.CodiciSedi = Request.Headers["CodiceSede"].ToArray();
+            query.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
             query.IdOperatore = Request.Headers["idUtente"].ToString();
 
             try

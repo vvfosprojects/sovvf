@@ -159,12 +159,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+            var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
             var lstMezziDto = new List<MezzoDTO>();
 
             try
             {
-                _clientMezzi.SetCache("GacMezzi_" + string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct()));
+                _clientMezzi.SetCache("GacMezzi_" + codici);
 
                 lstMezziDto.AddRange(_clientMezzi.GetAsync(url, _getToken.GeneraToken()).Result);
             }
