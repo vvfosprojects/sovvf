@@ -1,9 +1,14 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
-import Locator from '@arcgis/core/tasks/Locator';
+import { AuthState } from '../../../../features/auth/store/auth.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import Point from '@arcgis/core/geometry/Point';
+import * as Locator from '@arcgis/core/rest/locator';
+import SuggestionResult = __esri.SuggestionResult;
+import locatorAddressToLocationsParams = __esri.locatorAddressToLocationsParams;
+import locatorSuggestLocationsParams = __esri.locatorSuggestLocationsParams;
 
 @Component({
     selector: 'app-ricerca-indirizzo',
@@ -31,21 +36,56 @@ export class RicercaIndirizzoComponent implements OnInit {
         this.mapProperties = this.store.selectSnapshot(AppState.mapProperties);
     }
 
-    onChangeIndirizzo(): void {
-        // @ts-ignore
-        const locator = new Locator('http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer');
-        const indirizzo = {
-            singleLine: this.indirizzo
-        };
+    onChangeIndirizzo(): boolean {
+        if (!this.indirizzo) {
+            this.addressCandidates = [];
+            return false;
+        }
 
-        // @ts-ignore
-        locator.outSpatialReference = {
-            wkid: 102100
-        };
-        // @ts-ignore
-        locator.addressToLocations({ address: indirizzo }).then(async (addressCandidates: AddressCandidate[]) => {
-            this.addressCandidates = addressCandidates.filter((address: AddressCandidate, index: number) => index < 6);
-            this.changeDetectorRef.detectChanges();
+        const indirizzo = this.indirizzo;
+        const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
+
+        const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
+        let location: Point;
+        let paramsSuggestLocation: locatorSuggestLocationsParams;
+
+        if (sedeUtenteLoggato) {
+            const latitude = sedeUtenteLoggato.coordinate.latitudine;
+            const longitude = sedeUtenteLoggato.coordinate.longitudine;
+            location = new Point({
+                latitude,
+                longitude
+            });
+        }
+        paramsSuggestLocation = {
+            url: urlServiceGeocode,
+            location,
+            text: indirizzo
+        } as locatorSuggestLocationsParams;
+        Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
+            this.addressCandidates = [];
+            const addressToLocationsPromises = [];
+
+            for (const suggestionResult of suggestionResults) {
+                const paramsAddressToLocations = {
+                    url: urlServiceGeocode,
+                    magicKey: suggestionResult.magicKey,
+                    address: indirizzo
+                } as locatorAddressToLocationsParams;
+                addressToLocationsPromises.push(
+                    Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
+                        return addressCandidates;
+                    })
+                );
+            }
+
+            Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
+                for (const promiseResult of promisesResult) {
+                    this.addressCandidates.push(promiseResult[0]);
+                    this.changeDetectorRef.detectChanges();
+                }
+                return true;
+            });
         });
     }
 
