@@ -43,6 +43,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var result = lstMezzi?.Select(mezzo => 
             new KeyValuePair<string, string>(mezzo.CodiceMezzo, lstStatiMezzi.Result.FirstOrDefault(stato => stato.CodiceMezzo.Equals(mezzo.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede))
+                .Distinct()
                 .ToDictionary(mezzo => mezzo.Key, mezzo => mezzo.Value);
 
             return result;

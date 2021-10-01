@@ -167,7 +167,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 _clientMezzi.SetCache("GacMezzi_" + codici);
 
-                lstMezziDto.AddRange(_clientMezzi.GetAsync(url, _getToken.GeneraToken()).Result);
+                var data = _clientMezzi.GetAsync(url, _getToken.GeneraToken()).Result;
+
+                lstMezziDto.AddRange(data);
             }
             catch (Exception e)
             {
@@ -177,6 +179,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m)).ToList();
 
+            ListaMezzi.RemoveAll(m => m == null);
+
             return ListaMezzi;
         }
 
@@ -184,16 +188,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result;
 
-            var sede = new Sede(mezzoDto.CodiceDistaccamento,
-                                distaccamento != null ? distaccamento.DescDistaccamento : "",
-                                distaccamento != null ? distaccamento.Indirizzo : "",
-                                distaccamento != null ? distaccamento.Coordinate : null);
+            var sede = new Sede(mezzoDto.CodiceDistaccamento, distaccamento?.DescDistaccamento ?? "", distaccamento?.Indirizzo ?? "", distaccamento?.Coordinate ?? null);
 
-            return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))
+            try
             {
-                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-            };
+                return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
+                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))
+                {
+                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                };
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

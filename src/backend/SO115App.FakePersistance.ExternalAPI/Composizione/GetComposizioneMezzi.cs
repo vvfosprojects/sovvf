@@ -60,6 +60,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Provincia = s.codProv
                 })).Result;
 
+            if (query.CodiciSedi.Contains("CON"))
+                query.CodiciSedi = lstSedi.Select(s => s.Codice).Where(s => s.Contains('.')).Distinct().ToArray();
+
             var lstSquadrePreaccoppiate = Task.Run(() => query.CodiciSedi.Select(sede =>  _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]))
                 .SelectMany(shift => shift.Result.Squadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false)).ToList());
 
