@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -32,5 +31,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public string CodUtente { get; set; }
 
         public RichiestaAssistenza Intervento { get; set; }
+
+        public string[] CodCompetenze { get; set; }
     }
 }

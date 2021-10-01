@@ -24,14 +24,15 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Localita
     {
-        public Localita(Coordinate _coordinate, string Indirizzo, string Note)
+        public Localita(Coordinate _coordinate, string Indirizzo, string Note = null)
         {
             this.Coordinate = _coordinate;
-            //this.Indirizzo = Indirizzo;
             this.Note = Note;
 
             prova(Indirizzo);
         }
+
+        private Localita() { }
 
         //Via Camillo Benso di Cavour 5, 00059, Tolfa, Roma
 
@@ -47,29 +48,23 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Note { get; set; }
         public string Piano { get; set; }
 
-        public void prova(string indirizzo)
+        public void prova(string indirizzo = null)
         {
-            try
-            {
-                string[] dati = indirizzo.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(dato => dato.Trim()).ToArray();
+            if (string.IsNullOrEmpty(indirizzo))
+                indirizzo = Indirizzo;
 
-                if (dati.Count() > 1)
-                {
-                    this.Indirizzo = dati.FirstOrDefault();
-                    this.Citta = dati[2];
-                    this.Provincia = dati.LastOrDefault();
-                }
-                else
-                {
-                    this.Indirizzo = indirizzo;
-                }
-            }
-            catch (System.Exception e)
-            {
+            string[] dati = indirizzo.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(dato => dato.Trim()).ToArray();
 
-                throw;
+            if (dati.Count() > 1)
+            {
+                this.Indirizzo = dati.FirstOrDefault() ?? Indirizzo;
+                this.Citta = dati[2] ?? Citta;
+                this.Provincia = dati.LastOrDefault() ?? Provincia;
             }
-            
+            else
+            {
+                this.Indirizzo = indirizzo;
+            }
         }
     }
 }

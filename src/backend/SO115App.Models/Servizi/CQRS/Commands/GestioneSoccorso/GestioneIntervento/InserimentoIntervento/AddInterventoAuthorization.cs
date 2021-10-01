@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
@@ -50,7 +51,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public IEnumerable<AuthorizationResult> Authorize(AddInterventoCommand command)
         {
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
+            command.CodCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet().ToArray();
+
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -63,7 +65,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        foreach (var competenza in Competenze)
+                        foreach (var competenza in command.CodCompetenze)
                         {
                             if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
                                 abilitato = true;
