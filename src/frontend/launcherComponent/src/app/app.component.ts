@@ -94,6 +94,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2,
                 private ngbAccordionconfig: NgbAccordionConfig) {
+        ngbAccordionconfig.type = 'dark';
         this.getUrl();
         this.getSidebarOpened();
         this.getNightMode();
@@ -103,7 +104,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
-        ngbAccordionconfig.type = 'dark';
     }
 
     ngOnInit(): void {
