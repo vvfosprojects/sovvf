@@ -84,7 +84,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Tipologie = listaCodiciTipologie,
                 CodZoneEmergenza = command.Chiamata.ZoneEmergenza,
                 Richiedente = command.Chiamata.Richiedente,
-                Localita = command.Chiamata.Localita,
+                Localita = new Localita(command.Chiamata.Localita.Coordinate, command.Chiamata.Localita.Indirizzo, command.Chiamata.Localita.Note),
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = command.Chiamata.Codice,
                 TrnInsChiamata = _getTurno.Get().Codice,
@@ -95,7 +95,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = Competenze.ToArray(),
-                Competenze = lstCompetenze.Select(d => new Sede(d.CodSede, d?.DescDistaccamento, d?.Indirizzo, d?.Coordinate)).ToList(),
+                Competenze = lstCompetenze.Select(d => new Sede(d?.CodSede, d?.DescDistaccamento, d?.Indirizzo, d?.Coordinate)).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = Competenze.ToList()[0],
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
@@ -145,7 +145,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             }
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
-            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate)).ToList();
+            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d?.CodSede.ToString(), d?.DescDistaccamento, d?.Indirizzo, d?.Coordinate)).ToList();
 
             _saveRichiestaAssistenza.Save(richiesta);
 
