@@ -369,5 +369,4 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
         this.ngxLoaderConfiguration = config;
     }
-
 }
