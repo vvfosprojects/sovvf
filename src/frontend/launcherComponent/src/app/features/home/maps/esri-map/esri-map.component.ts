@@ -245,7 +245,9 @@ export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
 
                         const featuresLayersToAdd = [
                             // Localizzazione Mezzi VVF
-                            'd10a69bdc9c449f881b9cac24f3bd621'
+                            'd10a69bdc9c449f881b9cac24f3bd621',
+                            // Aziende RIR
+                            '0b2beb85590a4944b173199f62ed557b'
                         ];
 
                         for (const lAdd of featuresLayersToAdd) {
