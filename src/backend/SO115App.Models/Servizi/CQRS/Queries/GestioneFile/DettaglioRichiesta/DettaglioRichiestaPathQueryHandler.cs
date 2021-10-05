@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
 
             var chiamata = new DettaglioChiamata()
             {
-                Civ_Km = richiesta.Localita.Indirizzo.Split(',')[1],
+                //Civ_Km = richiesta.Localita.Indirizzo.Split(',')[1],
                 Comune = richiesta.Localita.Citta,
                 Prov = richiesta.Localita.Provincia,
                 DataOraChiamata = richiesta.ListaEventi.OfType<Telefonata>().First().Istante,

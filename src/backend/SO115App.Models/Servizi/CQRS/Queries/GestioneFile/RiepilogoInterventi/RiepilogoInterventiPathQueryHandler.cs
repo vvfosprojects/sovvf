@@ -55,8 +55,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Richiedente = i.Richiedente.Nominativo,
                 Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
                 NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
-                Comune = i?.Localita?.Indirizzo?.Split(',')[2],
-                KmCiv = i?.Localita?.Indirizzo?.Split(',')[1],
+                Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo?.Split(',')[2],
+                //KmCiv = i?.Localita?.Indirizzo?.Split(',')[1],
 
                 Interno = i.Localita.Interno,
                 Piano = i.Localita.Piano,
