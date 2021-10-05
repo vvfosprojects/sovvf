@@ -130,7 +130,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Indica se la richiesta è chiusa
         /// </summary>
-        public bool Aperta => TestoStatoRichiesta == "A";
+        public bool Aperta => TestoStatoRichiesta != "X";
 
         /// <summary>
         ///   Indica se la richiesta è presidiata
