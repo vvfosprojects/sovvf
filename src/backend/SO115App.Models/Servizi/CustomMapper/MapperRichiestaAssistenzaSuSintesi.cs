@@ -50,7 +50,9 @@ namespace SO115App.Models.Servizi.CustomMapper
 
                 _mapper = mapConfing.CreateMapper();
 
-                return _mapper.Map<SintesiRichiesta>(richiesta);
+                var result = _mapper.Map<SintesiRichiesta>(richiesta);
+
+                return result;
             }
             catch (Exception e)
             {
