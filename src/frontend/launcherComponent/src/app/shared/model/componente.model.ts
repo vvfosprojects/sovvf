@@ -31,6 +31,10 @@ export class Componente {
          * Il tooltip, utile specialmente per sanare problemi di omonimia
          */
         public tooltip?: string,
+        /**
+         * Funzioni del componenete
+         */
+        public funzioni?: string[],
     ) {
     }
 }

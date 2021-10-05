@@ -18,10 +18,6 @@ export class Squadra {
          */
         public stato: StatoSquadra,
         /**
-         * I componenti della squadra
-         */
-        public componenti: Componente[],
-        /**
          * Distaccamento di appartenza
          */
         public distaccamento: Sede,
@@ -33,6 +29,10 @@ export class Squadra {
          * Se la squadra ha mezzo pre accoppiato
          */
         public preAccoppiato?: boolean,
+        /**
+         * I membri della squadra
+         */
+        public membri?: Componente[],
     ) {
     }
 }

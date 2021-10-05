@@ -21,14 +21,18 @@
       <tr *ngFor="let s of listaSquadre.squadre">
         <td>{{ s.nome }}</td>
         <td>
-          <div *ngFor="let c of s.componenti">
+          <div *ngFor="let c of s.membri">
             <div class="badge badge-secondary mr-2 cursor-pointer" [ngbTooltip]="c.descrizioneQualifica"
                 [disableTooltip]="c.descrizioneQualifica.length < 30">
               {{ c.descrizioneQualifica | truncate: 30 }}
             </div>
-            <div class="d-inline-block cursor-pointer" ngbTooltip="{{c.codiceFiscale}}"
+            <div class="d-inline-block cursor-pointer" style="vertical-align: text-top;" ngbTooltip="{{c.codiceFiscale}}"
                 [disableTooltip]="!c.codiceFiscale || !c.codiceFiscale?.length">
               {{ c.nominativo | replace: '.' : ' ' | truncate: 25 }}
+            </div>
+            <div *ngFor="let f of c.funzioni" class="badge badge-mod-info ml-2 cursor-pointer" [ngbTooltip]="f"
+                 [disableTooltip]="f.length < 10">
+              {{ (f | truncate: 10).toUpperCase() }}
             </div>
           </div>
         </td>
