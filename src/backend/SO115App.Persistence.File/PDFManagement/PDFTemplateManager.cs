@@ -1,4 +1,5 @@
-﻿using PdfSharp;
+﻿using Microsoft.Extensions.Configuration;
+using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
@@ -12,8 +13,7 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        //TODO correggere path per test e prod
-        private readonly string _templateFolder = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "..\\", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, "PDFManagement\\Templates"));
+        private readonly string _path;
         private PdfPage _page;
         private XGraphics _gfx;
         private double _y = _minY;
@@ -30,7 +30,11 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private PdfDocument _document;
 
-        public PDFTemplateManager() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        public PDFTemplateManager(IConfiguration config)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            _path = config.GetValue<string>("FileTemplateAbsolutePath");
+        }
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
@@ -38,12 +42,12 @@ namespace SO115App.Persistence.File.PDFManagement
             {
                 case DettaglioChiamataModelForm model:
 
-                    _document = PdfReader.Open($"{_templateFolder}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
+                    _document = PdfReader.Open($"{_path}\\PDFManagement\\Templates\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
 
-                    _document = PdfReader.Open($"{_templateFolder}\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
+                    _document = PdfReader.Open($"{_path}\\PDFManagement\\Templates\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioInterventoPDF(model); break;
 
                 case RiepilogoInterventiModelForm model:
