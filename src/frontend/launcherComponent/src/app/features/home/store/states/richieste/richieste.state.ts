@@ -412,7 +412,7 @@ export class RichiesteState {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg',
+            size: 'xl',
             backdrop: true,
         });
         // }

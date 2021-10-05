@@ -933,6 +933,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 if (evento is AbstractPartenza && _eventi.OfType<AbstractPartenza>().Any())
                 {
+                    var InUscita = _eventi.OfType<UscitaPartenza>()
+                                    .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
+                                    .Where(e => Aperta).FirstOrDefault();
+
                     var InViaggio = _eventi.OfType<ComposizionePartenze>()
                                     .Where(e => e.CodicePartenza == ((AbstractPartenza)evento).CodicePartenza)
                                     .Where(e => Aperta).FirstOrDefault();
@@ -954,6 +958,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                         if (SulPosto != null)
                             throw new Exception(EventoGiaPresente);
 
+                        if (InUscita != null)
+                            if (evento.Istante <= InUscita.Istante)
+                                throw new Exception(OrarioErrato);
+
                         if (InViaggio != null)
                             if (evento.Istante <= InViaggio.Istante)
                                 throw new Exception(OrarioErrato);
@@ -972,6 +980,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                         if (InRientro != null)
                             throw new Exception(EventoGiaPresente);
 
+                        if (InUscita != null)
+                            if (evento.Istante <= InUscita.Istante)
+                                throw new Exception(OrarioErrato);
+
                         if (InViaggio != null)
                             if (evento.Istante <= InViaggio.Istante)
                                 throw new Exception(OrarioErrato);
@@ -989,6 +1001,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                     {
                         if (Rientrata != null)
                             throw new Exception(EventoGiaPresente);
+
+                        if (InUscita != null)
+                            if (evento.Istante <= InUscita.Istante)
+                                throw new Exception(OrarioErrato);
 
                         if (InViaggio != null)
                             if (evento.Istante <= InViaggio.Istante)
