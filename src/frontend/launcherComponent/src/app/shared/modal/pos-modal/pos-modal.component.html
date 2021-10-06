@@ -34,11 +34,13 @@
                            formControlName="tipologie"
                            placeholder="Seleziona una o più Tipologie"
                            [multiple]="true"
+                           [hideSelected]="true"
                            notFoundText="Nessuna Tipologia trovata..."
                            (change)="onChangeSelectedTipologie($event)">
                 </ng-select>
             </div>
-            <div class="form-group">
+            <div class="form-group"
+                 [class.opacity-50]="f.tipologieDettagli.disabled">
                 <label for="dettagliTipologie">
                     Dettagli Tipologie
                     <small class="text-danger">*</small>
@@ -49,6 +51,7 @@
                            formControlName="tipologieDettagli"
                            placeholder="Seleziona uno o più Dettagli Tipologie"
                            [multiple]="true"
+                           [hideSelected]="true"
                            notFoundText="Nessun Dettaglio Tipologia trovato...">
                 </ng-select>
             </div>

@@ -78,6 +78,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
         if (this.editPos) {
             this.updatePosForm(this.pos);
+        } else {
+            this.f.tipologieDettagli.disable();
         }
     }
 
@@ -120,6 +122,12 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     onChangeSelectedTipologie(event: any): void {
+        if (event?.length) {
+            this.f.tipologieDettagli.enable();
+        } else {
+            this.f.tipologieDettagli.disable();
+        }
+        this.f.tipologieDettagli.patchValue(null);
         const codTipologie = event.map((tipologia: Tipologia) => +tipologia.codice);
         this.filterDettagliTipologieByCodTipologie(codTipologie);
     }
