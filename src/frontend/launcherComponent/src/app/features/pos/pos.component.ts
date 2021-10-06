@@ -156,7 +156,7 @@ export class PosComponent implements OnInit, OnDestroy {
                 }
             );
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -182,7 +182,7 @@ export class PosComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore Stampa POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -207,7 +207,7 @@ export class PosComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore visualizzazione POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -252,7 +252,7 @@ export class PosComponent implements OnInit, OnDestroy {
                 }
             }, error => console.log('Errore Stampa POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 

@@ -294,7 +294,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             squadre: this.f.squadre.value,
             motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
             sequenzaStati: this.f.sequenzaStati.value.map((sequenza: any) => ({
-                dataOraAggiornamento: sequenza.dataOraAggiornamento,
+                istante: sequenza.dataOraAggiornamento,
                 stato: sequenza.stato ? sequenza.stato : null,
                 codMezzo: sequenza.codMezzo ? sequenza.codMezzo.codice : null,
             })),
