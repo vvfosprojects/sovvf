@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
@@ -17,15 +18,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
 
-        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI)
+        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _sendNewItemSTATRI = sendNewItemSTATRI;
+            _checkCongruita = checkCongruita;
         }
 
         public void Handle(ModificaPartenzaCommand command)
         {
             var Richiesta = command.Richiesta;
+
+            foreach (CambioStatoMezzo stato in command.ModificaPartenza.SequenzaStati)
+                stato.CodMezzo = command.ModificaPartenza.Mezzo.Codice;
 
             //ANNULLAMENTO E COMPOSIZIONE ---
             if (command.ModificaPartenza.Annullamento)
