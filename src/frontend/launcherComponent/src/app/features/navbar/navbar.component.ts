@@ -8,7 +8,7 @@ import { TurnoExtra } from './turno/model/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar, ToggleSidebarOpened } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TurnoCalendario } from './turno/model/turno-calendario.model';
-import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
+import { calcolaTurnoCalendario } from 'src/app/shared/helper/function-turno';
 import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';

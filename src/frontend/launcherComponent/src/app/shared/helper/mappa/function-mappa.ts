@@ -1,7 +1,6 @@
 import { Coordinate } from '../../model/coordinate.model';
 import { CentroMappa } from '../../../features/home/maps/maps-model/centro-mappa.model';
 import { AreaMappa } from '../../../features/home/maps/maps-model/area-mappa-model';
-import { roundToDecimal } from '../function-generiche';
 
 export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMappa {
     return new CentroMappa(coordinate, zoom);

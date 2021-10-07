@@ -2,16 +2,15 @@
     <div *ngIf="centroMappa" class="col-12 h-100">
         <div class="col-12 h-100">
             <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
-            <app-esri-map [pCenter]="centroMappa"
+            <app-map-esri [pCenter]="centroMappa"
                           [richiesteMarkers]="richiesteMarkers$ | async"
                           [chiamateMarkers]="chiamataMarkers$ | async"
                           [schedeContattoMarkers]="schedeContattoMarkers$ | async"
-                          [chiamateMarkers]="chiamataMarkers$ | async"
                           [sediMarkers]="sediMarkers$ | async"
                           [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           [direction]="direction$ | async"
                           (mapIsLoaded)="mapIsLoaded($event.areaMappa, $event?.spatialReference)">
-            </app-esri-map>
+            </app-map-esri>
         </div>
     </div>
 </div>

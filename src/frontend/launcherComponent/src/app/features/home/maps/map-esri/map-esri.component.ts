@@ -24,7 +24,7 @@ import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
-import { MapService } from '../service/map-service/map-service.service';
+import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import MapView from '@arcgis/core/views/MapView';
@@ -57,11 +57,11 @@ import RouteResult from '@arcgis/core/tasks/support/RouteResult';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
-    selector: 'app-esri-map',
-    templateUrl: './esri-map.component.html',
-    styleUrls: ['./esri-map.component.scss']
+    selector: 'app-map-esri',
+    templateUrl: './map-esri.component.html',
+    styleUrls: ['./map-esri.component.scss']
 })
-export class EsriMapComponent implements OnInit, OnChanges, OnDestroy {
+export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
