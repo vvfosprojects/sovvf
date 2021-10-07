@@ -100,7 +100,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     getCodCategoria(): void {
         this.subscriptions.add(
             this.codCategoria$.subscribe((codCategoria: string) => {
-                const codCategoriaAreaDocumentale = sessionStorage.getItem(LSNAME.areaDocumentale);
+                const codCategoriaAreaDocumentale = localStorage.getItem(LSNAME.areaDocumentale);
                 console.log('codCategoriaAreaDocumentale SESSION STORAGE', codCategoriaAreaDocumentale);
                 if (codCategoria) {
                     this.codCategoria = codCategoria;
