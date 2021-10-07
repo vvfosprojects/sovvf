@@ -89,6 +89,10 @@ cdk-virtual-scroll-viewport {
   transform: scale(1.01);
 }
 
+.scale-sintesi-richiesta-selezionata {
+  transform: scale(1.01);
+}
+
 ::-webkit-scrollbar { 
   //display: none; /* Chrome Safari */
    width: 0;

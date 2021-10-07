@@ -112,8 +112,12 @@
                                 <span class="nowrap">
                                     <ng-container *ngIf="methods.getSquadre(richiesta) as squadre">
                                         <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
-                                                [ngbPopover]="popSquadre" container="body" popoverTitle="Squadre"
-                                                triggers="click" tabindex="0" style="cursor:pointer"
+                                                [ngbPopover]="popSquadre"
+                                                container="body"
+                                                popoverTitle="Squadre"
+                                                triggers="click"
+                                                tabindex="0"
+                                                placement="bottom-right"
                                                 (click)="$event.stopPropagation()">
                                             <i class="guida fas fa-users fa-fw ml-2 mr-1" ngbTooltip="Numero Squadre"></i>
                                             <span>{{ squadre?.length }}</span>
@@ -132,9 +136,11 @@
                                 <span class="nowrap">
                                     <button class="btn btn-light border pl-0 py-0 big_numbers"
                                             [ngbPopover]="popMezzi"
-                                            popoverTitle="Mezzi" triggers="click" tabindex="0" style="cursor:pointer"
-                                            (click)="$event.stopPropagation()"
-                                            placement="bottom-right">
+                                            popoverTitle="Mezzi"
+                                            triggers="click"
+                                            tabindex="0"
+                                            placement="bottom-right"
+                                            (click)="$event.stopPropagation()">
                                         <i class="guida fas fa-truck fa-fw ml-2 mr-1" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
                                         <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}

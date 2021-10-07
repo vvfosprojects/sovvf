@@ -7,6 +7,7 @@
         <ng-container *ngIf="richieste?.length">
             <div *ngFor="let r of richieste; let i = index"
                  class="col-12 scale-sintesi-richiesta"
+                 [class.scale-sintesi-richiesta-selezionata]="r.id === idRichiestaSelezionata"
                  [ngClass]="translatePositionRichiesta(r, i)">
                 <div *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                      id="richiesta"
