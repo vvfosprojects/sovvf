@@ -105,7 +105,7 @@ export class AreaDocumentaleState {
         patchState({
             codCategoria: action.codCategoria
         });
-        sessionStorage.setItem(LSNAME.areaDocumentale, action.codCategoria);
+        localStorage.setItem(LSNAME.areaDocumentale, action.codCategoria);
         dispatch(new SetDescCategoriaAreaDocumentale(action.codCategoria));
     }
 
@@ -114,7 +114,7 @@ export class AreaDocumentaleState {
         patchState({
             codCategoria: AreaDocumentaleModelDefaults.codCategoria
         });
-        sessionStorage.removeItem(LSNAME.areaDocumentale);
+        localStorage.removeItem(LSNAME.areaDocumentale);
         dispatch(new ClearDescCategoriaAreaDocumentale());
     }
 

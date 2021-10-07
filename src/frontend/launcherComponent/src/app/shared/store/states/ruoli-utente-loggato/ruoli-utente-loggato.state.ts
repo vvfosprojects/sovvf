@@ -6,7 +6,7 @@ import {
 } from '../../actions/ruoli/ruoli.actions';
 import { Ruolo } from '../../../model/utente.model';
 import { NavbarState } from '../../../../features/navbar/store/states/navbar.state';
-import { getRuoliRicorsivo } from '../../../helper/get-ruoli-ricorsivo';
+import { getRuoliRicorsivo } from '../../../helper/function-ruoli';
 import { LSNAME } from '../../../../core/settings/config';
 import { Injectable } from '@angular/core';
 
