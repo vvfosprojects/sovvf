@@ -97,7 +97,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataRientro = dataRientro,
-                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.Nominativo
+                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale
                             });
                         }
                         else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -112,7 +112,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataUscita = dataUscita,
-                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.Nominativo,
+                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale,
                                 tipoUscita = new TipoUscita()
                                 {
                                     codice = "",
