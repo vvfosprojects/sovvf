@@ -17,7 +17,7 @@
             </button>
         </ng-template>
     </div>
-    <div class="float-left w-50 px-2">
+    <div class="float-left w-50 px-2" [ngbTooltip]="disableConfirmPartenza || !austistaInPartenza ? 'Mezzo e autista necessari per confermare': ''">
         <button class="btn btn-success btn-block btn-no-hover"
                 [disabled]="disableConfirmPartenza || !austistaInPartenza"
                 (click)="_confirmPartenzaInViaggio()">
