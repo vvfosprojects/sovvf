@@ -6,7 +6,7 @@ import { ViewLayouts } from '../../interface/view.interface';
 import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
-import {BoxPartenza} from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { makeCopy } from '../../helper/function-generiche';
 
@@ -43,6 +43,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     disableBtnFeature = false;
     private subscription = new Subscription();
     squadraComp: any;
+    autistaInSquadra = false;
 
     constructor() {
         this.getViewState();
@@ -55,16 +56,17 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
             this.squadraComp.mezziPreaccoppiati.forEach((x, i) => x.mezzo = makeCopy(this.squadraComposizione.mezziPreaccoppiati[i]));
             this.squadraComp.mezziPreaccoppiati.forEach(x => x.mezzo.distaccamento = { descrizione: x.mezzo.distaccamento });
         }
+        this.checkAutista();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-      const boxPartenzaList = changes?.boxPartenzaList;
-      if (boxPartenzaList?.currentValue && this.squadraComp &&  this.squadraComp.listaMezzi) {
-        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
-      }
-      if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
-        boxPartenzaList?.currentValue.forEach(x =>  x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].mezzo.codice) ? this.disableBtnFeature = true : null);
-      }
+        const boxPartenzaList = changes?.boxPartenzaList;
+        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.listaMezzi) {
+            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
+        }
+        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
+            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].mezzo.codice) ? this.disableBtnFeature = true : null);
+        }
     }
 
     ngOnDestroy(): void {
@@ -164,5 +166,11 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
         }
 
         return result;
+    }
+
+    checkAutista(): void {
+        if (this.squadraComp) {
+            this.squadraComp.membri.forEach(x => x.autista ? this.autistaInSquadra = true : null);
+        }
     }
 }

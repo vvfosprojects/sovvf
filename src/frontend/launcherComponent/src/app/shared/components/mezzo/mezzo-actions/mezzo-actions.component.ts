@@ -50,42 +50,42 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!ora) {
-            if (event) {
-                event.stopPropagation();
-            }
-            let modal;
-            modal = this.modalService.open(MezzoActionsModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                size: 'lg',
-                centered: true
-            });
-            modal.componentInstance.statoMezzo = this.mezzo.stato;
-            modal.componentInstance.listaEventi = this.listaEventi;
-            modal.result.then((res: { status: string, result: any }) => {
-                switch (res.status) {
-                    case 'ok' :
-                        if (action) {
-                            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                            const orario = res.result.oraEvento;
-                            const data = res.result.dataEvento;
-                            const azioneIntervento = res.result.azioneIntervento;
-                            this.actionMezzo.emit({
-                                mezzoAction: this.statoMezzoActions,
-                                oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
-                                azioneIntervento,
-                            });
-                        } else {
-                            this.actionMezzo.emit();
-                        }
-                        break;
-                    case 'ko':
-                        break;
-                }
-            });
+        if (event) {
+            event.stopPropagation();
         }
+        let modal;
+        modal = this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'lg',
+            centered: true
+        });
+        modal.componentInstance.statoMezzo = this.mezzo.stato;
+        modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
+        modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+        modal.componentInstance.listaEventi = this.listaEventi;
+        modal.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    if (action) {
+                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                        const orario = res.result.oraEvento;
+                        const data = res.result.dataEvento;
+                        const azioneIntervento = res.result.azioneIntervento;
+                        this.actionMezzo.emit({
+                            mezzoAction: this.statoMezzoActions,
+                            oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                            dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
+                            azioneIntervento,
+                        });
+                    } else {
+                        this.actionMezzo.emit();
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     getListaEventiMezzo(): void {

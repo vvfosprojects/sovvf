@@ -7,3 +7,18 @@
 .dropdown-toggle::after {
     display: none;
 }
+
+.btn-sm-mod {
+    padding: 0.25rem 0.5rem !important;
+    line-height: 1 !important;
+    border-radius: 0.2rem !important;
+}
+
+.animated-progress {
+    animation: progressmod 60s 1 !important;
+}
+
+@keyframes progressmod {
+    from {width: 0;}
+    to {width: 100px;}
+}

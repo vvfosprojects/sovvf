@@ -19,7 +19,7 @@
     </div>
     <div class="float-left w-50 px-2">
         <button class="btn btn-success btn-block btn-no-hover"
-                [disabled]="disableConfirmPartenza"
+                [disabled]="disableConfirmPartenza || !austistaInPartenza"
                 (click)="_confirmPartenzaInViaggio()">
             <span class="d-inline-block mr-2">Conferma</span>
             <span class="badge badge-light">{{ boxPartenzaLenght }}</span>

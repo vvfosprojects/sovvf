@@ -82,6 +82,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // BoxPartenza Composizione
     @Input() boxPartenzaList: BoxPartenza[];
     @Input() idBoxPartenzaSelezionato: string;
+    @Input() austistaInPartenza: boolean;
 
     // Loading Liste Mezzi e Squadre
     @Input() loadingListe: boolean;

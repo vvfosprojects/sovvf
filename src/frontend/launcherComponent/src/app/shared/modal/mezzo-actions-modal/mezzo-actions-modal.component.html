@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title font-weight-bold">
-      {{ 'Conferma Orario' | uppercase }}
+      {{ title + ' Orario' + titleStato | uppercase }}
   </h4>
   <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
           (click)="modal.dismiss('cross')">
@@ -62,7 +62,7 @@
 <div class="modal-footer" style="place-content: space-between;">
   <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge" [disabled]="!timeActionForm?.valid"
           (click)="onSubmit()">
-    {{ 'Conferma' | uppercase }}
+    {{ title | uppercase }}
   </button>
   <button class="btn btn-lg btn-secondary btn-no-hover font-xxlarge" (click)="onCancel()">
       {{ 'Annulla' | uppercase }}
