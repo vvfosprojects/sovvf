@@ -130,12 +130,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         _setRientroMezzo.Set(new RientroGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            tipoMezzo = partenza.Mezzo.Genere,
                             idPartenza = partenza.Codice.ToString(),
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
                             dataRientro = dataRientro,
-                            autista = partenza.Squadre.First().Membri.Where(m => m.DescrizioneQualifica == "DRIVER").First().CodiceFiscale,
+                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
                         });
                     }
                     else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -145,16 +145,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            tipoMezzo = partenza.Mezzo.Genere,
                             idPartenza = partenza.Codice.ToString(),
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
                             dataUscita = dataUscita,
-                            autista = partenza.Squadre.First().Membri.Where(m => m.DescrizioneQualifica == "DRIVER").First().CodiceFiscale,
+                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
                             tipoUscita = new TipoUscita()
                             {
                                 codice = "",
-                                descrizione = "Servizio"
+                                descrizione = command.Richiesta.Tipologie.First()
                             },
                             comune = new ComuneGAC()
                             {

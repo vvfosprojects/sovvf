@@ -93,12 +93,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             _setRientroMezzo.Set(new RientroGAC()
                             {
                                 targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                                tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                                tipoMezzo = partenza.Partenza.Mezzo.Genere,
                                 idPartenza = partenza.Partenza.Codice.ToString(),
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataRientro = dataRientro,
-                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale
+                                autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
                             });
                         }
                         else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -108,16 +108,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             _setUscitaMezzo.Set(new UscitaGAC()
                             {
                                 targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                                tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                                tipoMezzo = partenza.Partenza.Mezzo.Genere,
                                 idPartenza = partenza.Partenza.Codice.ToString(),
                                 numeroIntervento = command.Richiesta.CodRichiesta,
                                 dataIntervento = dataIntervento,
                                 dataUscita = dataUscita,
-                                autista = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale,
+                                autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
                                 tipoUscita = new TipoUscita()
                                 {
                                     codice = "",
-                                    descrizione = "Servizio"
+                                    descrizione = command.Richiesta.Tipologie.First()
                                 },
                                 comune = new ComuneGAC()
                                 {
