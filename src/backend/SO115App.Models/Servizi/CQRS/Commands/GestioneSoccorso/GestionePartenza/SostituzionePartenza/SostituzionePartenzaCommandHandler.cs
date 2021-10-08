@@ -111,7 +111,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     targa = PartenzaMontanteNuova.CodiceMezzo,
                     idPartenza = PartenzaMontanteNuova.CodicePartenza,
-                    autista = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                    autistaRientro = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
+                    autistaUscita = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
                     comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
                     localita = command.Richiesta.Localita.Indirizzo,
                     provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
@@ -129,7 +130,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     targa = PartenzaSmontanteNuova.CodiceMezzo,
                     idPartenza = PartenzaSmontanteNuova.CodicePartenza,
-                    autista = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                    autistaRientro = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
+                    autistaUscita = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
                     comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
                     localita = command.Richiesta.Localita.Indirizzo,
                     provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },

@@ -66,7 +66,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                         descrizione = command.Chiamata.Localita.Citta
                     },
                     idPartenza = partenza.CodicePartenza,
-                    autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo,
+                    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, //RICONTROLLARE
+                    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, //RICONTROLLARE
                     dataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
                     latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
                     longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
