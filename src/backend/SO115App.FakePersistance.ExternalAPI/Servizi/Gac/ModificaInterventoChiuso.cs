@@ -25,7 +25,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Send(ModificaMovimentoGAC modificamovimento)
         {
-            var jsonString = JsonConvert.SerializeObject(modificamovimento);
+            var lstModificheMovimento = new List<ModificaMovimentoGAC>() { modificamovimento };
+            var jsonString = JsonConvert.SerializeObject(lstModificheMovimento);
             var content = new StringContent(jsonString);
 
             var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.ModificaMovimento);

@@ -6,16 +6,17 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
 {
     public class ModificaMovimentoGAC : BaseGAC
     {
-        public string NumeroIntervento { get; set; }
-        public DateTime DataIntervento { get; set; }
-        public DateTime DataUscita { get; set; }
-        public DateTime DataRientro { get; set; }
-        public TipoUscita TipoUscita { get; set; }
-        public string Autista { get; set; }
-        public string Longitudine { get; set; }
-        public string Latitudine { get; set; }
-        public ComuneGAC Comune { get; set; }
-        public ProvinciaGAC Provincia { get; set; }
-        public string Localita { get; set; }
+        public string numeroIntervento { get; set; }
+        public DateTime dataIntervento { get; set; }
+        public DateTime dataUscita { get; set; }
+        public DateTime dataRientro { get; set; }
+        public TipoUscita tipoUscita { get; set; }
+        public string autistaUscita { get; set; }
+        public string autistaRientro { get; set; }
+        public string longitudine { get; set; }
+        public string latitudine { get; set; }
+        public ComuneGAC comune { get; set; }
+        public ProvinciaGAC provincia { get; set; }
+        public string localita { get; set; }
     }
 }

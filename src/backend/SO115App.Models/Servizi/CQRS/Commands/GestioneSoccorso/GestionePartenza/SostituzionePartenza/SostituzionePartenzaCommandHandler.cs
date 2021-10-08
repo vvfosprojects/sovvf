@@ -111,36 +111,36 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     targa = PartenzaMontanteNuova.CodiceMezzo,
                     idPartenza = PartenzaMontanteNuova.CodicePartenza,
-                    Autista = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
-                    Comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
-                    Localita = command.Richiesta.Localita.Indirizzo,
-                    Provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
-                    Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
-                    DataIntervento = command.Richiesta.dataOraInserimento,
-                    NumeroIntervento = command.Richiesta.CodRichiesta,
+                    autista = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                    comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
+                    localita = command.Richiesta.Localita.Indirizzo,
+                    provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
+                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                    longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                    dataIntervento = command.Richiesta.dataOraInserimento,
+                    numeroIntervento = command.Richiesta.CodRichiesta,
                     tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere,
-                    DataRientro = PartenzaSmontante.Istante,
-                    DataUscita = PartenzaMontanteNuova.Istante,
-                    TipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
+                    dataRientro = PartenzaSmontante.Istante,
+                    dataUscita = PartenzaMontanteNuova.Istante,
+                    tipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
                 });
 
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
                 {
                     targa = PartenzaSmontanteNuova.CodiceMezzo,
                     idPartenza = PartenzaSmontanteNuova.CodicePartenza,
-                    Autista = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
-                    Comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
-                    Localita = command.Richiesta.Localita.Indirizzo,
-                    Provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
-                    Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
-                    DataIntervento = command.Richiesta.dataOraInserimento,
-                    NumeroIntervento = command.Richiesta.CodRichiesta,
+                    autista = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(),
+                    comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
+                    localita = command.Richiesta.Localita.Indirizzo,
+                    provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
+                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                    longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                    dataIntervento = command.Richiesta.dataOraInserimento,
+                    numeroIntervento = command.Richiesta.CodRichiesta,
                     tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere,
-                    DataRientro = PartenzaMontante.Istante,
-                    DataUscita = PartenzaSmontanteNuova.Istante,
-                    TipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
+                    dataRientro = PartenzaMontante.Istante,
+                    dataUscita = PartenzaSmontanteNuova.Istante,
+                    tipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
                 });
 
                 //RIENTRO SMONTANTE

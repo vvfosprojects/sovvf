@@ -126,7 +126,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                     {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().First(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
                         _setRientroMezzo.Set(new RientroGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
@@ -140,7 +140,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                     {
-                        var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
+                        var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
+
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],

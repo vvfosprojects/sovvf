@@ -60,28 +60,28 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             {
                 lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
                 {
-                    Comune = new ComuneGAC()
+                    comune = new ComuneGAC()
                     {
                         codice = "",
                         descrizione = command.Chiamata.Localita.Citta
                     },
                     idPartenza = partenza.CodicePartenza,
-                    Autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo,
-                    DataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
-                    Latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
-                    Longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
-                    Localita = command.Chiamata.Localita.Citta,
-                    NumeroIntervento = command.Chiamata.CodiceRichiesta,
-                    Provincia = new ProvinciaGAC()
+                    autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo,
+                    dataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
+                    latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
+                    longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
+                    localita = command.Chiamata.Localita.Citta,
+                    numeroIntervento = command.Chiamata.CodiceRichiesta,
+                    provincia = new ProvinciaGAC()
                     {
                         codice = "",
                         descrizione = command.Chiamata.Localita.Provincia
                     },
                     targa = partenza.CodiceMezzo,
                     tipoMezzo = partenza.Partenza.Mezzo.Genere,
-                    DataRientro = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
-                    DataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
-                    TipoUscita = new TipoUscita()
+                    dataRientro = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    tipoUscita = new TipoUscita()
                     {
                         codice = "",
                         descrizione = ""
