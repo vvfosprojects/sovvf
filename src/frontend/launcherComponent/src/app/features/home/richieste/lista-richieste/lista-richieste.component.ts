@@ -23,12 +23,15 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() listHeightClass: string;
     @Input() boxAttivi: boolean;
     @Input() listaEnti: Ente[];
+    @Input() annullaStatoMezzi: string[];
 
     // Loading
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
-    @Input() loadingActionMezzo: string[] = [];
+    @Input() loadingActionMezzo: any = [];
+    @Input() loadingProgressBarMezzo: string[] = [];
+    @Input() diffDateInfoMezzo: any = [];
     @Input() loadingEliminaPartenza: boolean;
 
     // Paginazione

@@ -17,6 +17,8 @@ export class MezzoActionsModalComponent implements OnInit {
     outsideDays: 'visible';
     submitted: boolean;
     statoMezzo: string;
+    title: string;
+    titleStato: string;
     listaEventi: any;
     ultimoMezzo = false;
     checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {

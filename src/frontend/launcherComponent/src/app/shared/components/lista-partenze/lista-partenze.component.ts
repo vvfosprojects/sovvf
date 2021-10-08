@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
@@ -22,6 +22,8 @@ export class ListaPartenzeComponent {
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;
     @Input() loadingActionMezzo: string[];
+    @Input() annullaStatoMezzi: string[];
+    @Input() diffDateInfoMezzo: any;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();

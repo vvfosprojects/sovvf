@@ -8,7 +8,11 @@
         <div class="clearfix"
              style="width: 70%">
           <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
-          <div class="badge badge-info mx-1 py-1"
+            <div *ngIf="!autistaInSquadra" class="badge badge-danger" ngbTooltip="Nessun autista"
+                 style="position: fixed; transform: translate(35px, -3px); font-size: 12px;">
+                <i class="fas fa-user-slash" style="font-size: 11px"></i>
+            </div>
+            <div class="badge badge-info mx-1 py-1"
                  [ngbPopover]="componenti"
                  placement="right"
                  triggers="mouseenter:mouseleave"

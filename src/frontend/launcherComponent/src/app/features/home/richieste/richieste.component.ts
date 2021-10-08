@@ -31,6 +31,7 @@ import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { EntiState } from '../../../shared/store/states/enti/enti.state';
 import { Ente } from '../../../shared/interface/ente.interface';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-richieste',
@@ -63,12 +64,15 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
     @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string[]>;
-    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
+    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<any>;
     @Select(RichiesteState.loadingEliminaPartenza) loadingEliminaPartenza$: Observable<boolean>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+
+    @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<string[]>;
+    @Select(LoadingState.diffDateInfoMezzo) diffDateInfoMezzo$: Observable<any>;
 
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];

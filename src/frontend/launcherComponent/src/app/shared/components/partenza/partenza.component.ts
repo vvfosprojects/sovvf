@@ -6,6 +6,8 @@ import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
+import { Store } from '@ngxs/store';
+import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-partenza',
@@ -22,6 +24,9 @@ export class PartenzaComponent implements OnInit {
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
+    @Input() annullaStatoMezzo: boolean;
+    @Input() dateDiffMezzi: any;
+
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
@@ -30,13 +35,21 @@ export class PartenzaComponent implements OnInit {
 
     statoRichiestaEnum = StatoRichiesta;
     listaEventiMezzo: EventoMezzo[] = [];
+    dateDiff: number;
 
-    constructor(config: NgbDropdownConfig) {
+    constructor(config: NgbDropdownConfig, private store: Store) {
         config.placement = 'bottom-left';
     }
 
     ngOnInit(): void {
         this.checkListaEventiMezzo();
+        // if (this.dateDiffMezzi) {
+        //     this.dateDiffMezzi.forEach(x => x.codMezzo === this.partenza.mezzo.codice ? this.dateDiff = x.secondsDiff : null);
+        // }
+    }
+
+    onAnnullaStato(idMezzo: string): void {
+        this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
     }
 
     checkListaEventiMezzo(): void {
