@@ -12,7 +12,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
     {
         private readonly IHttpRequestManager<WorkShift> _service;
         private readonly IConfiguration _config;
-        public GetSquadre(IHttpRequestManager<WorkShift> service, 
+
+        public GetSquadre(IHttpRequestManager<WorkShift> service,
             IConfiguration config)
         {
             _service = service;
@@ -20,7 +21,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         }
 
         /// <summary>
-        /// SE TORNA 204 VA BENE, IL SERVIZIO FUNZIONA, MA NON TONRA NULLA.
+        ///   SE TORNA 204 VA BENE, IL SERVIZIO FUNZIONA, MA NON TONRA NULLA.
         /// </summary>
         /// <param name="Codice"></param>
         /// <returns></returns>
