@@ -148,7 +148,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
-                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo
+                        DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo,
+                        Qualifications = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Qualifications
                     }).ToList(),
                     MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
                     {
@@ -184,8 +185,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
 
-                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) || 
-                    squadra.Nome.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) || 
+                bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) ||
+                    squadra.Nome.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     squadra.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
@@ -56,5 +57,26 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 
         [JsonPropertyName("role")]
         public string Ruolo { get; set; }
+
+        [JsonPropertyName("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonPropertyName("lastName")]
+        public string LastName { get; set; }
+
+        [JsonPropertyName("qualifications")]
+        public List<Qualifiche> Qualifications { get; set; }
+    }
+
+    public class Qualifiche
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("group")]
+        public string Group { get; set; }
     }
 }
