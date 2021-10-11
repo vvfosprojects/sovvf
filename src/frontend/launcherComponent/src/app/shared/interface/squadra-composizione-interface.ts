@@ -19,3 +19,9 @@ export interface SquadraComposizione {
     workshiftId?: string;
     version?: number;
 }
+
+export interface Qualifica {
+    name?: string;
+    description?: string;
+    group?: string;
+}

@@ -1,6 +1,8 @@
 /**
  * Modella il generico componente della squadra
  */
+import { Qualifica } from '../interface/squadra-composizione-interface';
+
 export class Componente {
     constructor(
         /**
@@ -34,7 +36,7 @@ export class Componente {
         /**
          * Funzioni del componenete
          */
-        public funzioni?: string[],
+        public qualifiche?: Qualifica[],
     ) {
     }
 }
