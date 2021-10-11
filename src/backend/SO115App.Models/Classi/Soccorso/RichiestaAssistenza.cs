@@ -158,6 +158,9 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
+                    if(this.lstPartenzeInCorso.Count == 0)
+                        SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
+
                     break;
 
                 case Costanti.MezzoRientrato:
