@@ -71,6 +71,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 new AnnullamentoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, nomeAzione, command.CodicePartenza);
 
+                partenza.Partenza.PartenzaAnnullata = true;
+
                 command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
                 {
                     Istante = date,
