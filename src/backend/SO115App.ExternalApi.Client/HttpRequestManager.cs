@@ -169,27 +169,30 @@ namespace SO115App.ExternalAPI.Client
                     var exception = new ExternalApiLog()
                     {
                         Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
-                        DataOraEsecuzione = DateTime.Now,
+                        DataOraEsecuzione = DateTime.UtcNow,
                         Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.StatusCode.ToString() : c.Content.ReadAsStringAsync().Result,
                         Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
                         CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
                         IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
                     };
 
-                    _writeLog.Save(exception);
-
                     switch (c.StatusCode)
                     {
-                        case HttpStatusCode.NotFound: throw new Exception(Messages.ServizioNonRaggiungibile);
-                        case HttpStatusCode.Forbidden: throw new Exception(Messages.AutorizzazioneNegata);
-                        case HttpStatusCode.UnprocessableEntity: throw new Exception(Messages.DatiMancanti);
-                        case HttpStatusCode.InternalServerError: throw new Exception(Messages.ErroreInternoAlServer);
-                        case HttpStatusCode.Created: throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
-                        case HttpStatusCode.UnsupportedMediaType: throw new Exception(Messages.OggettoNonValido);
+                        case HttpStatusCode.NotFound: 
+                            _writeLog.Save(exception); throw new Exception(Messages.ServizioNonRaggiungibile);
+                        case HttpStatusCode.Forbidden: 
+                            _writeLog.Save(exception); throw new Exception(Messages.AutorizzazioneNegata);
+                        case HttpStatusCode.UnprocessableEntity: 
+                            _writeLog.Save(exception); throw new Exception(Messages.DatiMancanti);
+                        case HttpStatusCode.InternalServerError: 
+                            _writeLog.Save(exception); throw new Exception(Messages.ErroreInternoAlServer);
+                        case HttpStatusCode.Created: 
+                            _writeLog.Save(exception); throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
+                        case HttpStatusCode.UnsupportedMediaType:
+                            _writeLog.Save(exception); throw new Exception(Messages.OggettoNonValido);
 
-                        case HttpStatusCode.NoContent: return true;
-
-                        case 0: throw new Exception(c.ReasonPhrase);
+                        case 0: 
+                            _writeLog.Save(exception); throw new Exception(c.ReasonPhrase);
                     }
                 }
 
