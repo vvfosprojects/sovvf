@@ -49,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public IEnumerable<AuthorizationResult> Authorize(AnnullaPartenzaCommand command)
         {
             command.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
-            command.Richiesta = _getRichiestaById.GetById(command.CodiceRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
@@ -60,8 +60,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
 
-                    if (command.Richiesta.Partenze.Where(p => p.Partenza.Mezzo.Codice.Contains(command.TargaMezzo)).First().Partenza.Mezzo.Stato != Costanti.MezzoInUscita)
-                        yield return new AuthorizationResult("Non puoi annullare una partenza in tale stato.");
+                    //if (command.Richiesta.Partenze.Where(p => p.Partenza.Mezzo.Codice.Contains(command.TargaMezzo)).First().Partenza.Mezzo.Stato != Costanti.MezzoInUscita)
+                    //    yield return new AuthorizationResult("Non puoi annullare una partenza in tale stato.");
 
                     bool abilitato = false;
                     foreach (var competenza in command.Richiesta.CodUOCompetenza)
