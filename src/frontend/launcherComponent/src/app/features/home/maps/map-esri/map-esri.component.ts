@@ -198,7 +198,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                             // Localizzazione Mezzi VVF
                             'd10a69bdc9c449f881b9cac24f3bd621',
                             // Aziende RIR
-                            '0b2beb85590a4944b173199f62ed557b'
+                            '0b2beb85590a4944b173199f62ed557b',
+                            // Interventi
+                            'ef60e8464bda40ada758e2753fcab3a6'
                         ];
 
                         for (const lAdd of featuresLayersToAdd) {

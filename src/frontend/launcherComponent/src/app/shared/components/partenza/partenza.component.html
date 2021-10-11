@@ -1,5 +1,6 @@
 <div class="clearfix"
-     [class.alert-info]="idDaSganciare === partenza.mezzo.descrizione">
+     [class.alert-info]="idDaSganciare === partenza.mezzo.descrizione"
+     [class.px-1]="idDaSganciare === partenza.mezzo.descrizione">
     <div class="float-left font-xxlarge"
          style="display: inline-flex; align-items: center;">
         <app-mezzo [mezzo]="partenza.mezzo"
@@ -18,7 +19,7 @@
                  style="display: inline-flex; align-items: center;">
                 <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
                    ngbTooltip="{{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
-                   class="fas fa-users mr-2"></i>
+                   class="fas fa-users mt-1 mr-2"></i>
                 <div class="d-inline-block"
                      [ngbTooltip]="partenza.squadre[0].nome"
                      [disableTooltip]="partenza.squadre[0].nome && partenza.squadre[0].nome.length <= 6">
