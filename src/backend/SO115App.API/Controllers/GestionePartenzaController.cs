@@ -61,7 +61,7 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
-            command.CodiciSedi = Request.Headers["CodiciSedi"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            command.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
             
             try
             {
