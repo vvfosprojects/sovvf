@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
@@ -23,8 +25,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             string token = "";
 
-            var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}?user={_configuration.GetSection("ESRI").GetSection("User").Value}&password={_configuration.GetSection("ESRI").GetSection("Password").Value}");
-            var EsitoToken = _clientToken.GetAsync(url, token).Result;
+            var request = new ESRI_TokenRequest()
+            {
+                F = "json",
+                User = _configuration.GetSection("ESRI").GetSection("User").Value,
+                Password = _configuration.GetSection("ESRI").GetSection("Password").Value,
+                Referer = _configuration.GetSection("ESRI").GetSection("URLRichieste").Value
+            };
+
+            var jsonString = JsonConvert.SerializeObject(request);
+            var content = new StringContent(jsonString);
+
+            var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}");
+
+            var EsitoToken = _clientToken.PostAsync(url, content).Result;
 
             if (EsitoToken.Token != null)
                 token = EsitoToken.Token;

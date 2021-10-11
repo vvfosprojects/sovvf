@@ -29,7 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             var jsonString = JsonConvert.SerializeObject(message);
             var content = new StringContent(jsonString);
 
-            var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value);
+            var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value + "/addFeatures");
 
             var result = _client.PutAsync(uri, content, _getToken_ESRI.Get()).Result;
 
