@@ -69,7 +69,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             };
 
-            _notify_ESRIAddRichiesta.Call(infoESRI);
+            //_notify_ESRIAddRichiesta.Call(infoESRI);
 
             var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
             var infoMatrix = new MessageMatrix()
