@@ -58,18 +58,11 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AnnullaPartenza")]
-        public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaPartenzaCommand partenza)
+        public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaPartenzaCommand command)
         {
-            var command = new AnnullaPartenzaCommand()
-            {
-                IdRichiesta = partenza.IdRichiesta,
-                TargaMezzo = partenza.TargaMezzo,
-                IdOperatore = Request.Headers["IdUtente"],
-                CodMotivazione = partenza.CodMotivazione,
-                TestoMotivazione = partenza.TestoMotivazione,
-                CodRichiestaSubentrata = partenza.CodRichiestaSubentrata
-            };
-
+            command.IdOperatore = Request.Headers["IdUtente"];
+            command.CodiciSedi = Request.Headers["CodiciSedi"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            
             try
             {
                 _annullaPartenzahandler.Handle(command);
@@ -83,7 +76,7 @@ namespace SO115App.API.Controllers
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
                 else
-                    return BadRequest(new { message = ex.Message });
+                    return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
             }
         }
 
