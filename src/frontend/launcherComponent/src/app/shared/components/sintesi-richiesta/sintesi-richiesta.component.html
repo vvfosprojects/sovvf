@@ -255,7 +255,7 @@
                                         ngbTooltip="Gestisci"
                                         [disabled]="disabledGestisciRichiesta"
                                         [class.cursor-not-allowed]="disabledGestisciRichiesta"
-                                        (click)="onGestioneRichiesta()">
+                                        (click)="onGestioneRichiesta(); $event.stopPropagation()">
                                     <i class="fas fa-fw "
                                        [ngClass]="methods.toggleGestioneClass(inGestione)"></i>
                                 </button>
