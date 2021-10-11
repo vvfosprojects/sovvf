@@ -26,7 +26,8 @@ export class DettaglioPartenza {
         public turno?: TurnoPartenza,
         public sganciata?: boolean,
         public partenzaAnnullata?: boolean,
-        public terminata?: boolean
+        public terminata?: boolean,
+        public codice?: string
     ) {
     }
 }
