@@ -6,12 +6,8 @@
     (click)="onClick()">
     <div class="row px-3">
         <div class="clearfix"
-             style="width: 70%">
+             style="width: 65%">
           <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
-            <div *ngIf="!autistaInSquadra" class="badge badge-danger" ngbTooltip="Nessun autista"
-                 style="position: fixed; transform: translate(35px, -3px); font-size: 12px;">
-                <i class="fas fa-user-slash" style="font-size: 11px"></i>
-            </div>
             <div class="badge badge-info mx-1 py-1"
                  [ngbPopover]="componenti"
                  placement="right"
@@ -34,6 +30,9 @@
                     </div>
                 </div>
             </ng-template>
+            <div *ngIf="!autistaInSquadra" class="badge badge-danger mr-1 py-1" style="vertical-align: text-bottom;" ngbTooltip="Nessun autista">
+                <i class="fas fa-user-slash"></i>
+             </div>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
                 {{ squadraComp?.nome | truncate: 7 }}</div>
@@ -104,19 +103,19 @@
         </div>
         <div *ngIf="viewState?.composizione?.active"
              class="clearfix text-right pr-1"
-             style="width: 30%;">
+             style="width: 35%;">
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComp?.distaccamento.descrizione">
-                {{ squadraComp?.distaccamento.descrizione | competenzaFormat }}
+                 [ngbTooltip]="squadraComp?.distaccamento?.descrizione">
+                {{ squadraComp?.distaccamento?.descrizione | competenzaFormat }}
             </div>
         </div>
         <div *ngIf="!viewState?.composizione?.active"
              class="col-2 pl-0">
             <div class="d-inline-block"
                  [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComp?.distaccamento.descrizione">
-                {{ squadraComp?.distaccamento.descrizione | slice:0:3 }}
+                 [ngbTooltip]="squadraComp?.distaccamento?.descrizione">
+                {{ squadraComp?.distaccamento?.descrizione | slice:0:3 }}
             </div>
         </div>
     </div>

@@ -30,9 +30,8 @@
                 [disableTooltip]="!c.codiceFiscale || !c.codiceFiscale?.length">
               {{ c.nominativo | replace: '.' : ' ' | truncate: 25 }}
             </div>
-            <div *ngFor="let f of c.funzioni" class="badge badge-mod-info ml-2 cursor-pointer" [ngbTooltip]="f"
-                 [disableTooltip]="f.length < 10">
-              {{ (f | truncate: 10).toUpperCase() }}
+            <div *ngFor="let q of c.qualifiche" class="badge badge-mod-info ml-2 cursor-pointer" [ngbTooltip]="q.description">
+              {{ (q.name | truncate: 10).toUpperCase() }}
             </div>
           </div>
         </td>
