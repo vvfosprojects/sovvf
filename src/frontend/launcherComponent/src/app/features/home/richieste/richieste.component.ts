@@ -14,7 +14,6 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
 import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
@@ -30,7 +29,7 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { EntiState } from '../../../shared/store/states/enti/enti.state';
-import { Ente } from '../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
@@ -77,8 +76,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
-    @Select(EntiState.enti) enti$: Observable<Ente[]>;
-    enti: Ente[];
+    @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
+    enti: EnteInterface[];
 
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
@@ -214,40 +213,34 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     getEnti(): void {
         this.subscription.add(
-            this.enti$.subscribe((enti: Ente[]) => {
+            this.enti$.subscribe((enti: EnteInterface[]) => {
                 this.enti = enti;
             })
         );
     }
 
     onHoverIn(idRichiesta: string): void {
-        this.store.dispatch(new SetMarkerRichiestaHover(idRichiesta));
         this.store.dispatch(new SetRichiestaHover(idRichiesta));
     }
 
     onHoverOut(): void {
-        this.store.dispatch(new ClearMarkerRichiestaHover());
         this.store.dispatch(new ClearRichiestaHover());
     }
 
     onSelezione(idRichiesta: string): void {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato(idRichiesta));
         this.store.dispatch(new SetRichiestaSelezionata(idRichiesta));
     }
 
     onDeselezione(): void {
-        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
     onFissaInAlto(richiesta: SintesiRichiesta): void {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new SetRichiestaFissata(richiesta.id, richiesta.codice));
     }
 
     onDefissa(): void {
-        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaFissata());
     }
@@ -255,7 +248,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetTriageSummary(richiesta.triageSummary));
-        this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
     }
 
@@ -269,7 +261,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.store.dispatch([
-            new SetMarkerRichiestaSelezionato(richiesta.id),
             new SetRichiestaComposizione(richiesta)
         ]);
     }

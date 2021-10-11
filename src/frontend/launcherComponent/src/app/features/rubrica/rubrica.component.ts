@@ -9,7 +9,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
-import { Ente } from '../../shared/interface/ente.interface';
+import { EnteInterface } from '../../shared/interface/ente.interface';
 import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
@@ -27,7 +27,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
-    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
     @Select(RubricaState.loadingRubrica) loading$: Observable<boolean>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -113,7 +113,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestAddEnte());
     }
 
-    onEditVoceRubrica(voceRubrica: Ente): void {
+    onEditVoceRubrica(voceRubrica: EnteInterface): void {
         console.log('onEditVoceRubrica', voceRubrica);
         let editVoceRubricaModal;
         editVoceRubricaModal = this.modalService.open(EnteModalComponent, {

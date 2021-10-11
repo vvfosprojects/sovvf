@@ -15,22 +15,15 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio  } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import {
-    GetListaSchedeContatto,
-    SetContatoriSchedeContatto,
-    SetListaSchedeContatto,
-    UpdateSchedaContatto
-} from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
-import { RichiestaMarker } from '../../features/home/maps/maps-model/richiesta-marker.model';
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
 import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
@@ -39,12 +32,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
-import {
-    Ente,
-    ResponseAddEnteRubricaInterface,
-    ResponseDeleteEnteRubricaInterface,
-    ResponseUpdateEnteRubricaInterface
-} from '../../shared/interface/ente.interface';
+import { EnteInterface, ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface } from '../../shared/interface/ente.interface';
 import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
@@ -192,20 +180,6 @@ export class SignalRService {
                 this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
             }
             this.store.dispatch(new StopLoadingMezziInServizio());
-        });
-
-        /**
-         * Markers Mappa
-         */
-        this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaMarker', data);
-            this.store.dispatch(new InsertRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaUpdateMarker', data);
-            this.store.dispatch(new UpdateRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
         });
 
         /**
@@ -363,7 +337,7 @@ export class SignalRService {
         /**
          * Rubrica
          */
-        this.hubNotification.on('NotifyChangeEnti', (enti: Ente[]) => {
+        this.hubNotification.on('NotifyChangeEnti', (enti: EnteInterface[]) => {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });

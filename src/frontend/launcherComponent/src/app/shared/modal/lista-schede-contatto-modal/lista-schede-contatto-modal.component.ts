@@ -24,17 +24,10 @@ import {
     UndoMergeSchedeContatto
 } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
-import {
-    CheckboxError,
-    ClearMergeSchedeContatto,
-    InitSaveMergeSchedeContatto,
-    SetMergeSchedaId,
-    ToggleModalitaMerge
-} from '../../../features/home/store/actions/schede-contatto/merge-schede-contatto.actions';
+import { CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../../../features/home/store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
-import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../../features/home/store/actions/maps/schede-contatto-markers.actions';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
 import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
 
@@ -100,7 +93,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
-            new ClearSchedeContattoMarkers(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
@@ -130,7 +122,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     getSchedeContattoMarkers(): void {
         const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
-        this.store.dispatch(new GetSchedeContattoMarkers(areaMappa));
     }
 
     getSchedeContattoHover(): void {

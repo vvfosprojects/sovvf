@@ -1,32 +1,18 @@
-import {
-    Component,
-    ViewChild,
-    ElementRef,
-    OnDestroy,
-    Output,
-    EventEmitter,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    OnInit,
-    Renderer2
-} from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy, Output, EventEmitter, Input, OnChanges, SimpleChanges, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
-import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../../../auth/store/auth.state';
 import { SetChiamataFromMappaActiveValue } from '../../store/actions/maps/tasto-chiamata-mappa.actions';
-import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
-import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
-import { SedeMarker } from '../maps-model/sede-marker.model';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
+import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
+import { SedeMarker } from '../maps-model/sede-marker.model';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -43,17 +29,14 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
-import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
-import Sketch from '@arcgis/core/widgets/Sketch';
-import GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
-import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import Locator from '@arcgis/core/tasks/Locator';
 import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import RouteTask from '@arcgis/core/tasks/RouteTask';
 import RouteResult from '@arcgis/core/tasks/support/RouteResult';
+import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
+import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
+import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
@@ -65,8 +48,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
-    @Input() richiesteMarkers: RichiestaMarker[];
-    @Input() schedeContattoMarkers: SchedaContattoMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() tastoChiamataMappaActive: boolean;
     @Input() direction: DirectionInterface;
@@ -85,18 +66,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
-    richiesteFeatureLayer: FeatureLayer;
-    richiesteMarkersGraphics = [];
-    schedeContattoFeatureLayer: FeatureLayer;
-    schedeContattoMarkersGraphics = [];
     sediOperativeFeatureLayer: FeatureLayer;
     sediOperativeMarkersGraphics = [];
-
-    drawing: boolean;
-    drawGraphicLayer = new GraphicsLayer({
-        title: 'Disegno Libero - Poligoni'
-    });
-    drawedPolygon: Graphic;
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
     @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
@@ -118,11 +89,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         // Centro e Zoom mappa
         if (changes?.pCenter?.currentValue && !this.map) {
-            // Esegue il login sul portale (da finire)
-            // this.loginIntoESRI().then(() => {
             // Inizializzazione della mappa
             this.initializeMap().then(() => {
-
                 // Controllo l'extent per richiedere i marker da visualizzare ogni volta che quest'ultimo cambia
                 this.view.watch('extent', (event: any) => {
                     const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
@@ -136,13 +104,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 // Inizializzazione del layer lato client per disegnare poligoni sulla mappa
-                this.map.add(this.drawGraphicLayer);
+                // TODO: implementare in un secondo momento
+                // this.map.add(this.drawGraphicLayer);
 
-                // Lista layer da inizializzare
+                // Lista layer (client) da aggiungere alla mappa all'init della mappa
                 const layersToInitialize = [
-                    this.initializeRichiesteLayer(),
                     this.initializeChiamateInCorsoLayer(),
-                    this.initializeSchedeContattoLayer(),
                     this.initializeSediOperativeLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
@@ -178,9 +145,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     });
                     // Gestisco l'evento "drag"
                     this.view.on('drag', (event: any) => {
-                        if (!this.drawing) {
-                            this.setContextMenuVisible(false);
-                        }
+                        // TODO: implementare in un secondo momento
+                        // if (!this.drawing) {
+                        //     this.setContextMenuVisible(false);
+                        // }
                         const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
                         const bounds = {
                             northEastLat: geoExt.extent.ymax,
@@ -194,31 +162,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     });
                     // Gestisco l'evento "mouse-wheel"
                     this.view.on('mouse-wheel', () => {
-                        if (!this.drawing) {
-                            this.setContextMenuVisible(false);
-                        }
+                        // TODO: implementare in un secondo momento
+                        // if (!this.drawing) {
+                        //     this.setContextMenuVisible(false);
+                        // }
                     });
 
-                    // Aggiungo i Chiamate Markers
-                    if (changes?.chiamateMarkers?.currentValue && this.map && this.chiamateInCorsoFeatureLayer) {
-                        const markersChiamate = changes?.chiamateMarkers?.currentValue;
-                        this.addChiamateMarkersToLayer(markersChiamate).then();
-                    }
-                    // Aggiungo i Richieste Markers
-                    if (changes?.richiesteMarkers?.currentValue && this.map && this.richiesteFeatureLayer) {
-                        const markersRichieste = changes?.richiesteMarkers?.currentValue;
-                        this.addRichiesteMarkersToLayer(markersRichieste).then();
-                    }
-                    // Aggiungo i SchedeContatto Markers
-                    if (changes?.schedeContattoMarkers?.currentValue && this.map && this.schedeContattoFeatureLayer) {
-                        const markersSchedeContatto = changes?.schedeContattoMarkers?.currentValue;
-                        this.addSchedeContattoMarkersToLayer(markersSchedeContatto).then();
-                    }
-                    // Aggiungo i Sedi Markers
-                    if (changes?.sediMarkers?.currentValue && this.map && this.sediOperativeFeatureLayer) {
-                        const markersSedi = changes?.sediMarkers?.currentValue;
-                        this.addSediMarkersToLayer(markersSedi).then();
-                    }
                     // Inizializzazione dei widget sulla mappa
                     this.initializeWidget().then(() => {
                         const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
@@ -235,6 +184,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         // @ts-ignore
                         this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
 
+                        // Map Image Layers da aggiungere all'init della mappa
                         const mapImageLayersToAdd = [
                             // '21029042105b4ffb86de33033786dfc8'
                         ];
@@ -243,6 +193,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                             this.addMapImageLayer(lAdd).then();
                         }
 
+                        // Feature Layers da aggiungere all'init della mappa
                         const featuresLayersToAdd = [
                             // Localizzazione Mezzi VVF
                             'd10a69bdc9c449f881b9cac24f3bd621',
@@ -254,6 +205,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                             this.addFeatureLayer(lAdd).then();
                         }
 
+                        // Feature Layers su cui fare il "toggle" (da acceso a spento o viceversa) all'init della mappa
                         const layersToToggle = [
                             'HERE_ITALIA',
                             'Sedi Operative',
@@ -266,7 +218,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     });
                 });
             });
-            // });
         } else if (changes?.pCenter?.currentValue && this.map && this.view?.ready) {
             const newPCenter = changes.pCenter.currentValue;
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
@@ -281,25 +232,17 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
         }
-        // Aggiungo i Richieste Markers con "ApplyEdits"
-        if (changes?.richiesteMarkers?.currentValue && this.richiesteFeatureLayer) {
-            const markersRichieste = changes?.richiesteMarkers?.currentValue;
-            this.addRichiesteMarkersToLayer(markersRichieste, true).then();
-        }
-        // Aggiungo i SchedeConatto Markers con "ApplyEdits"
-        if (changes?.schedeContattoMarkers?.currentValue && this.schedeContattoFeatureLayer) {
-            const markersSchedeContatto = changes?.schedeContattoMarkers?.currentValue;
-            this.addSchedeContattoMarkersToLayer(markersSchedeContatto, true).then();
-        }
         // Aggiungo i Sedi Markers con "ApplyEdits"
         if (changes?.sediMarkers?.currentValue && this.sediOperativeFeatureLayer) {
             const markersSedi = changes?.sediMarkers?.currentValue;
             this.addSediMarkersToLayer(markersSedi, true).then();
         }
+
         // Controllo il valore di "tastoChiamataMappaActive"
         if (changes?.tastoChiamataMappaActive?.currentValue && this.chiamateInCorsoFeatureLayer) {
             this.setContextMenuVisible(false);
         }
+
         // Controllo il valore di "direction"
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
@@ -312,29 +255,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (this.view) {
-            this.view.destroy();
-        }
-        if (this.map) {
-            this.map.destroy();
-        }
-        if (this.chiamateInCorsoFeatureLayer) {
-            this.chiamateInCorsoFeatureLayer.destroy();
-        }
-    }
-
-    // TODO: terminare login automatico
-    // Effettua il login automatico ad ESRI senza doverlo fare manualmente ogni volta
-    async loginIntoESRI(): Promise<any> {
-        await this.http.get('https://www.arcgis.com/sharing/rest/oauth2/authorize?client_id=' + /* TODO: inserire app id dopo registrazione */ +' &response_type=token&redirect_uri=' + 'localhost:4200').subscribe((resAuthorize: any) => {
-            if (resAuthorize) {
-                this.http.get('https://www.arcgis.com/sharing/rest/oauth2/approval?code=' + resAuthorize).subscribe((resApproval: any) => {
-                    if (resApproval) {
-                        console.log('sei loggato');
-                    }
-                });
-            }
-        });
+        this.view?.destroy();
+        this.map?.destroy();
     }
 
     // Inizializza la mappa
@@ -382,166 +304,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
-    startNuovaChiamata(): void {
-        // Controllo se è stato scelto un punto ppure un poligono complesso
-        let lat: number;
-        let lon: number;
-
-        const mapPoint = this.eventClick.mapPoint;
-
-        if (this.eventClick?.mapPoint) {
-            lat = mapPoint.latitude;
-            lon = mapPoint.longitude;
-        }
-
-        // Se il "contextMenu" è aperto lo chiudo
-        if (this.contextMenuVisible) {
-            this.setContextMenuVisible(false);
-        }
-
-        // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
-        const check = document.getElementById('idCheck');
-        // @ts-ignore
-        if (check && !check.checked) {
-            return;
-        }
-
-        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-        const locatorTask = new Locator({
-            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-        });
-        this.view.popup.autoOpenEnabled = false;
-
-        // Params per il servizio "locationToAddress"
-        const location = mapPoint;
-        const params = {
-            location
-        };
-
-        // Trovo l'indirizzo tramite le coordinate
-        locatorTask.locationToAddress(params).then((response) => {
-            console.log('locationToAddress response', response);
-
-            this.changeCenter([lon, lat]).then();
-            this.changeZoom(19).then();
-
-            // Apro il modale con FormChiamata con lat, lon e address
-            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                windowClass: 'xxlModal modal-holder',
-            });
-            modalNuovaChiamata.componentInstance.lat = lat;
-            modalNuovaChiamata.componentInstance.lon = lon;
-            modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
-
-            modalNuovaChiamata.result.then(() => {
-                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
-            });
-        });
-    }
-
-    saveDrawedPolygon(): void {
-        console.log('saveDrawedPolygon');
-    }
-
-    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
-    setContextMenuVisible(value: boolean): void {
-        if (value) {
-            const lat = this.eventClick.mapPoint.latitude;
-            const lon = this.eventClick.mapPoint.longitude;
-            this.changeCenter([lon, lat]).then(() => {
-                this.changeZoom(19).then(() => {
-                    this.contextMenuVisible = true;
-                    const screenPoint = this.eventClick;
-                    const pageX = screenPoint.x;
-                    const pageY = screenPoint.y;
-                    this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
-                    this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
-                    this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
-                });
-            });
-        } else {
-            this.eventClick = null;
-            this.contextMenuVisible = false;
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
-        }
-    }
-
-    // Imposta il "contextMenu" del widget Draw visibile o no in base al valore passato a "value"
-    setDrawContextMenuVisible(value: boolean, options?: { skipRemoveDrawedPolygon?: boolean }): void {
-        if (value) {
-            this.contextMenuVisible = true;
-            const screenPoint = this.eventMouseMove;
-            const pageX = screenPoint.x;
-            const pageY = screenPoint.y;
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 30 + 'px');
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX - 30 + 'px');
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
-        } else {
-            if (!options?.skipRemoveDrawedPolygon) {
-                this.drawGraphicLayer.removeAll();
-                this.drawedPolygon = null;
-            }
-            this.eventMouseMove = null;
-            this.contextMenuVisible = false;
-            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
-        }
-    }
-
-    getRoute(direction: DirectionInterface): void {
-        const pointPartenza = new Point({
-            longitude: direction.origin.lng,
-            latitude: direction.origin.lat,
-            spatialReference: {
-                wkid: 3857
-            }
-        });
-
-        const pointDestinazione = new Point({
-            longitude: direction.destination.lng,
-            latitude: direction.destination.lat,
-            spatialReference: {
-                wkid: 3857
-            }
-        });
-
-        const pointPartenzaGraphic = new Graphic({
-            geometry: pointPartenza
-        });
-
-        const pointDestinazioneGraphic = new Graphic({
-            geometry: pointDestinazione
-        });
-
-        const routeTask: RouteTask = new RouteTask({
-            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
-        });
-
-        const routeParams = new RouteParameters({
-            stops: new FeatureSet({
-                features: [pointPartenzaGraphic, pointDestinazioneGraphic]
-            })
-        });
-
-        routeTask.solve(routeParams).then((data: RouteResult) => {
-            // @ts-ignore
-            data.routeResults.forEach((result: any) => {
-                result.route.symbol = {
-                    type: 'simple-line',
-                    color: [5, 150, 255],
-                    width: 3
-                };
-                this.view.graphics.add(result.route);
-            });
-        });
-    }
-
-    clearDirection(): void {
-        if (this.view?.graphics?.length) {
-            this.view.graphics.removeAll();
-        }
-    }
-
     // Inizializza il layer "Chiamate in Corso"
     async initializeChiamateInCorsoLayer(): Promise<any> {
         // creazione marker Chiamata in Corso
@@ -556,54 +318,15 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             symbol: markerChiamataInCorso
         });
 
-        // configurazione del cluster Chiamate in Corso
-        const clusterConfigChiamateInCorso = new FeatureReductionCluster({
-            clusterRadius: '100px',
-            popupTemplate: {
-                title: 'Cluster Chiamate in Corso',
-                content: 'Questo cluster contiene {cluster_count} Chiamate in Corso.',
-                fieldInfos: [
-                    {
-                        fieldName: 'cluster_count',
-                        format: {
-                            places: 0,
-                            digitSeparator: true,
-                        },
-                    }
-                ],
-            },
-            clusterMinSize: '50px',
-            clusterMaxSize: '60px',
-            labelingInfo: [
-                {
-                    deconflictionStrategy: 'none',
-                    labelExpressionInfo: {
-                        expression: 'Text($feature.cluster_count, \'#,###\')',
-                    },
-                    symbol: {
-                        type: 'text',
-                        color: 'white',
-                        font: {
-                            weight: 'bold',
-                            family: 'Noto Sans',
-                            size: '30px',
-                        },
-                    },
-                    labelPlacement: 'center-center',
-                },
-            ]
-        });
-
         // creazione feature layer
         this.chiamateInCorsoFeatureLayer = new FeatureLayer({
             title: 'Chiamate in Corso',
             source: [],
             objectIdField: 'ID',
-            featureReduction: clusterConfigChiamateInCorso,
-            popupEnabled: false, // TODO: Impostare a true dopo aver risolvo con il popupTemplate
+            popupEnabled: false,
             labelsVisible: true,
+            listMode: 'hide',
             renderer: rendererChiamataInCorso,
-            // popupTemplate: null, // TODO: Risolvere visualizzazione popup
             spatialReference: {
                 wkid: 3857
             },
@@ -612,254 +335,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // aggiungo il feature layer alla mappa
         this.map.add(this.chiamateInCorsoFeatureLayer);
-    }
-
-    // Inizializza il layer "Richieste"
-    async initializeRichiesteLayer(): Promise<any> {
-        // creazione renderer Richieste
-        const rendererRichieste = new UniqueValueRenderer({
-            field: 'stato',
-            uniqueValueInfos: [
-                {
-                    value: 'Chiamata',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/richieste/ns/chiamata.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Assegnata',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/richieste/ns/assegnata.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Presidiata',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/richieste/ns/presidiata.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Sospesa',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/richieste/ns/sospesa.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Chiusa',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/richieste/ns/chiusa.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-            ],
-        });
-
-        // configurazione del cluster Richieste
-        // const clusterConfigRichieste = new FeatureReductionCluster({
-        //     clusterRadius: '100px',
-        //     popupTemplate: {
-        //         title: 'Cluster Richieste',
-        //         content: 'Questo cluster contiene {cluster_count} Richieste.',
-        //         fieldInfos: [
-        //             {
-        //                 fieldName: 'cluster_count',
-        //                 format: {
-        //                     places: 0,
-        //                     digitSeparator: true,
-        //                 },
-        //             }
-        //         ],
-        //     },
-        //     clusterMinSize: '50px',
-        //     clusterMaxSize: '60px',
-        //     labelingInfo: [
-        //         {
-        //             deconflictionStrategy: 'none',
-        //             labelExpressionInfo: {
-        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
-        //             },
-        //             symbol: {
-        //                 type: 'text',
-        //                 color: 'white',
-        //                 font: {
-        //                     weight: 'bold',
-        //                     family: 'Noto Sans',
-        //                     size: '30px',
-        //                 },
-        //             },
-        //             labelPlacement: 'center-center',
-        //         },
-        //     ]
-        // });
-
-        // creazione feature layer
-        this.richiesteFeatureLayer = new FeatureLayer({
-            title: 'Richieste',
-            outFields: ['*'],
-            source: [],
-            objectIdField: 'ID',
-            popupEnabled: true,
-            labelsVisible: true,
-            // featureReduction: clusterConfigRichieste,
-            renderer: rendererRichieste,
-            fields: [
-                {
-                    name: 'ID',
-                    alias: 'id',
-                    type: 'oid',
-                },
-                {
-                    name: 'stato',
-                    alias: 'stato',
-                    type: 'string',
-                },
-                {
-                    name: 'note',
-                    alias: 'note',
-                    type: 'string',
-                },
-                {
-                    name: 'descrizioneOperatore',
-                    alias: 'descrizioneOperatore',
-                    type: 'string',
-                },
-                {
-                    name: 'codiceSedeOperatore',
-                    alias: 'codiceSedeOperatore',
-                    type: 'string',
-                },
-            ],
-            spatialReference: {
-                wkid: 3857
-            },
-            popupTemplate: {
-                title: 'Id: {id}',
-                content:
-                    '<ul><li>Stato: {stato} </li>' +
-                    '<li>Note: {descrizioneOperatore} </li><ul>',
-            },
-            geometryType: 'point'
-        });
-
-        // aggiungo il feature layer alla mappa
-        this.map.add(this.richiesteFeatureLayer);
-    }
-
-    // Inizializza il layer "Schede Contatto"
-    async initializeSchedeContattoLayer(): Promise<any> {
-        // creazione renderer SchedeContatto
-        const rendererSchedeContatto = new UniqueValueRenderer({
-            field: 'classificazione',
-            uniqueValueInfos: [
-                {
-                    value: 'Competenza',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Conoscenza',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker-conoscenza.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Differibile',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/speciali/scheda-contatto-marker-differibile.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-            ],
-        });
-
-        // configurazione del cluster SchedeContatto
-        // const clusterConfigSchedeContatto = new FeatureReductionCluster({
-        //     clusterRadius: '100px',
-        //     popupTemplate: {
-        //         title: 'Cluster Schede Contatto',
-        //         content: 'Questo cluster contiene {cluster_count} Schede Contatto.',
-        //         fieldInfos: [
-        //             {
-        //                 fieldName: 'cluster_count',
-        //                 format: {
-        //                     places: 0,
-        //                     digitSeparator: true,
-        //                 },
-        //             }
-        //         ],
-        //     },
-        //     clusterMinSize: '50px',
-        //     clusterMaxSize: '60px',
-        //     labelingInfo: [
-        //         {
-        //             deconflictionStrategy: 'none',
-        //             labelExpressionInfo: {
-        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
-        //             },
-        //             symbol: {
-        //                 type: 'text',
-        //                 color: 'white',
-        //                 font: {
-        //                     weight: 'bold',
-        //                     family: 'Noto Sans',
-        //                     size: '30px',
-        //                 },
-        //             },
-        //             labelPlacement: 'center-center',
-        //         },
-        //     ]
-        // });
-
-        // creazione feature layer
-        this.schedeContattoFeatureLayer = new FeatureLayer({
-            title: 'Schede Contatto',
-            outFields: ['*'],
-            source: [],
-            objectIdField: 'ID',
-            popupEnabled: true,
-            labelsVisible: true,
-            // featureReduction: clusterConfigSchedeContatto,
-            renderer: rendererSchedeContatto,
-            fields: [
-                {
-                    name: 'ID',
-                    alias: 'id',
-                    type: 'oid',
-                },
-                {
-                    name: 'classificazione',
-                    alias: 'Classificazione',
-                    type: 'string',
-                }
-            ],
-            spatialReference: {
-                wkid: 3857
-            },
-            popupTemplate: {
-                title: 'Id: {id}',
-                content:
-                    '<ul><li>Classificazione: {classificazione} </li>'
-            },
-            geometryType: 'point'
-        });
-
-        // aggiungo il feature layer alla mappa
-        this.map.add(this.schedeContattoFeatureLayer);
     }
 
     // Inizializza il layer "Sedi Operative"
@@ -1026,103 +501,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Aggiunge i marker delle richieste al layer "Richieste"
-    async addRichiesteMarkersToLayer(richiesteMarkers: RichiestaMarker[], applyEdits?: boolean): Promise<any> {
-        if (this.richiesteMarkersGraphics?.length) {
-            const query = { where: '1=1' };
-            this.richiesteFeatureLayer.queryFeatures(query).then((results) => {
-                const deleteFeatures = results.features;
-                this.richiesteFeatureLayer.applyEdits({ deleteFeatures });
-                this.richiesteFeatureLayer.refresh();
-                addMarkers(this.richiesteFeatureLayer).then((richiesteMarkersGraphics: any[]) => {
-                    this.richiesteMarkersGraphics = richiesteMarkersGraphics;
-                });
-            });
-        } else {
-            addMarkers(this.richiesteFeatureLayer).then((richiesteMarkersGraphics: any[]) => {
-                this.richiesteMarkersGraphics = richiesteMarkersGraphics;
-            });
-        }
-
-        async function addMarkers(richiesteFeatureLayer: FeatureLayer): Promise<any[]> {
-            const richiesteMarkersGraphicsToAdd = [];
-            for (const markerDaStampare of richiesteMarkers) {
-                const long = markerDaStampare.localita.coordinate.longitudine;
-                const lat = markerDaStampare.localita.coordinate.latitudine;
-                const p: any = [long, lat];
-                const mp = new Point(p);
-                const graphic = new Graphic({
-                    geometry: mp,
-                    attributes: {
-                        ID: markerDaStampare.id,
-                        STATO: markerDaStampare.stato,
-                        descrizioneOperatore: 'OPERATORE',
-                        codiceSedeOperatore: 'RM.1000',
-                        note: 'NOTE TEST'
-                    }
-                });
-                richiesteMarkersGraphicsToAdd.push(graphic);
-            }
-
-            if (!applyEdits) {
-                richiesteFeatureLayer.source.addMany(richiesteMarkersGraphicsToAdd);
-            } else if (applyEdits) {
-                richiesteFeatureLayer.applyEdits({ addFeatures: richiesteMarkersGraphicsToAdd }).then(() => {
-                    richiesteFeatureLayer.refresh();
-                });
-            }
-
-            return richiesteMarkersGraphicsToAdd;
-        }
-    }
-
-    // Aggiunge i marker delle schede contatto al layer "Schede Contatto"
-    async addSchedeContattoMarkersToLayer(schedeContattoMarkers: SchedaContattoMarker[], applyEdits?: boolean): Promise<any> {
-        if (this.schedeContattoMarkers?.length) {
-            const query = { where: '1=1' };
-            this.schedeContattoFeatureLayer.queryFeatures(query).then((results) => {
-                const deleteFeatures = results.features;
-                this.schedeContattoFeatureLayer.applyEdits({ deleteFeatures });
-                this.schedeContattoFeatureLayer.refresh();
-                addMarkers(this.schedeContattoFeatureLayer).then((schedeContattoMarkersGraphics: any[]) => {
-                    this.schedeContattoMarkersGraphics = schedeContattoMarkersGraphics;
-                });
-            });
-        } else {
-            addMarkers(this.schedeContattoFeatureLayer).then((schedeContattoMarkersGraphics: any[]) => {
-                this.schedeContattoMarkersGraphics = schedeContattoMarkersGraphics;
-            });
-        }
-
-        async function addMarkers(schedeContattoFeatureLayer: FeatureLayer): Promise<any[]> {
-            const schedeContattoMarkersGraphicsToAdd = [];
-            for (const markerDaStampare of schedeContattoMarkers) {
-                const long = markerDaStampare.localita.coordinate.longitudine;
-                const lat = markerDaStampare.localita.coordinate.latitudine;
-                const p: any = [long, lat];
-                const mp = new Point(p);
-                const graphic = new Graphic({
-                    geometry: mp,
-                    attributes: {
-                        ID: markerDaStampare.codiceScheda,
-                        classificazione: markerDaStampare.classificazione
-                    }
-                });
-                schedeContattoMarkersGraphicsToAdd.push(graphic);
-            }
-
-            if (!applyEdits) {
-                schedeContattoFeatureLayer.source.addMany(schedeContattoMarkersGraphicsToAdd);
-            } else if (applyEdits) {
-                schedeContattoFeatureLayer.applyEdits({ addFeatures: schedeContattoMarkersGraphicsToAdd }).then(() => {
-                    schedeContattoFeatureLayer.refresh();
-                });
-            }
-
-            return schedeContattoMarkersGraphicsToAdd;
-        }
-    }
-
     // Aggiunge i marker delle sedi al layer "Sedi Operative"
     async addSediMarkersToLayer(sediMarkers: SedeMarker[], applyEdits?: boolean): Promise<any> {
         if (this.sediOperativeMarkersGraphics?.length) {
@@ -1212,51 +590,55 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             view: this.view,
         });
 
-        const sketch = new Sketch({
-            layer: this.drawGraphicLayer,
-            view: this.view,
-            // graphic will be selected as soon as it is created
-            creationMode: 'single',
-            availableCreateTools: ['polygon']
-        });
+        // TODO: implementare in un secondo momento
+        // const sketch = new Sketch({
+        //     layer: this.drawGraphicLayer,
+        //     view: this.view,
+        //     // graphic will be selected as soon as it is created
+        //     creationMode: 'single',
+        //     availableCreateTools: ['polygon']
+        // });
 
-        // Listen to sketch widget's create event.
-        sketch.on('create', (event) => {
-            // check if the create event's state has changed to complete indicating
-            // the graphic create operation is completed.
-            switch (event.state) {
-                case 'start':
-                    this.drawing = true;
-                    this.eventMouseMoveStart = this.eventMouseMove;
-                    break;
-                case 'active':
-                    break;
-                case 'complete':
-                    this.drawing = false;
-                    this.drawedPolygon = event.graphic;
-                    this.setDrawContextMenuVisible(true);
-                    break;
-                default:
-                    console.log('nuovo evento trovato', event);
-                    break;
-            }
-        });
+        // TODO: implementare in un secondo momento
+        // Ascolta l'evento "create" del widget Sketch
+        // sketch.on('create', (event) => {
+        //     // check if the create event's state has changed to complete indicating
+        //     // the graphic create operation is completed.
+        //     switch (event.state) {
+        //         case 'start':
+        //             this.drawing = true;
+        //             this.eventMouseMoveStart = this.eventMouseMove;
+        //             break;
+        //         case 'active':
+        //             break;
+        //         case 'complete':
+        //             this.drawing = false;
+        //             this.drawedPolygon = event.graphic;
+        //             this.setDrawContextMenuVisible(true);
+        //             break;
+        //         default:
+        //             console.log('nuovo evento trovato', event);
+        //             break;
+        //     }
+        // });
 
-        // Listen to sketch widget's update event.
-        sketch.on('update', () => {
-            this.drawing = false;
-            this.drawedPolygon = null;
-            this.drawGraphicLayer.removeAll();
-            this.setDrawContextMenuVisible(false);
-        });
+        // TODO: implementare in un secondo momento
+        // Ascolta l'evento "update" del widget Sketch
+        // sketch.on('update', () => {
+        //     this.drawing = false;
+        //     this.drawedPolygon = null;
+        //     this.drawGraphicLayer.removeAll();
+        //     this.setDrawContextMenuVisible(false);
+        // });
 
-        // Listen to sketch widget's delete event.
-        sketch.on('delete', () => {
-            this.drawing = false;
-            this.drawedPolygon = null;
-            this.drawGraphicLayer.removeAll();
-            this.setDrawContextMenuVisible(false);
-        });
+        // TODO: implementare in un secondo momento
+        // Ascolta l'evento "delete" del widget Sketch
+        // sketch.on('delete', () => {
+        //     this.drawing = false;
+        //     this.drawedPolygon = null;
+        //     this.drawGraphicLayer.removeAll();
+        //     this.setDrawContextMenuVisible(false);
+        // });
 
         // Altre possibili posizioni standard o manuale
         // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
@@ -1267,7 +649,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             position: 'top-left',
             index: 0 // indico la posizione nella UI
         });
-        this.view.ui.add(sketch, 'bottom-right');
+
+        // TODO: implementare in un secondo momento
+        // this.view.ui.add(sketch, 'bottom-right');
     }
 
     // Aggiunge il MapImageLayer dal portal tramite il portalId
@@ -1300,13 +684,166 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // TODO: verificare se utilizzato
-    // Rimuove un intero layer dalla mappa
-    // async removeLayer(layerTitle: string): Promise<any> {
-    //     const layerToRemoveExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
-    //     if (layerToRemoveExists) {
-    //         this.map.allLayers.toArray().filter((l: Layer) => l.title !== layerTitle);
-    //     }
+    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
+    startNuovaChiamata(): void {
+        // Controllo se è stato scelto un punto ppure un poligono complesso
+        let lat: number;
+        let lon: number;
+
+        const mapPoint = this.eventClick.mapPoint;
+
+        if (this.eventClick?.mapPoint) {
+            lat = mapPoint.latitude;
+            lon = mapPoint.longitude;
+        }
+
+        // Se il "contextMenu" è aperto lo chiudo
+        if (this.contextMenuVisible) {
+            this.setContextMenuVisible(false);
+        }
+
+        // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
+        const check = document.getElementById('idCheck');
+        // @ts-ignore
+        if (check && !check.checked) {
+            return;
+        }
+
+        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
+        const locatorTask = new Locator({
+            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
+        });
+        this.view.popup.autoOpenEnabled = false;
+
+        // Params per il servizio "locationToAddress"
+        const location = mapPoint;
+        const params = {
+            location
+        };
+
+        // Trovo l'indirizzo tramite le coordinate
+        locatorTask.locationToAddress(params).then((response) => {
+            console.log('locationToAddress response', response);
+
+            this.changeCenter([lon, lat]).then();
+            this.changeZoom(19).then();
+
+            // Apro il modale con FormChiamata con lat, lon e address
+            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                windowClass: 'xxlModal modal-holder',
+            });
+            modalNuovaChiamata.componentInstance.lat = lat;
+            modalNuovaChiamata.componentInstance.lon = lon;
+            modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
+
+            modalNuovaChiamata.result.then(() => {
+                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+            });
+        });
+    }
+
+    saveDrawedPolygon(): void {
+        console.log('saveDrawedPolygon');
+    }
+
+    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
+    setContextMenuVisible(value: boolean): void {
+        if (value) {
+            const lat = this.eventClick.mapPoint.latitude;
+            const lon = this.eventClick.mapPoint.longitude;
+            this.changeCenter([lon, lat]).then(() => {
+                this.changeZoom(19).then(() => {
+                    this.contextMenuVisible = true;
+                    const screenPoint = this.eventClick;
+                    const pageX = screenPoint.x;
+                    const pageY = screenPoint.y;
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
+                    this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+                });
+            });
+        } else {
+            this.eventClick = null;
+            this.contextMenuVisible = false;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
+        }
+    }
+
+    // Imposta il "contextMenu" del widget Draw visibile o no in base al valore passato a "value"
+    setDrawContextMenuVisible(value: boolean, options?: { skipRemoveDrawedPolygon?: boolean }): void {
+        if (value) {
+            this.contextMenuVisible = true;
+            const screenPoint = this.eventMouseMove;
+            const pageX = screenPoint.x;
+            const pageY = screenPoint.y;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 30 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX - 30 + 'px');
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
+        } else {
+            // TODO: implementare in un secondo momento
+            // if (!options?.skipRemoveDrawedPolygon) {
+            //     this.drawGraphicLayer.removeAll();
+            //     this.drawedPolygon = null;
+            // }
+            this.eventMouseMove = null;
+            this.contextMenuVisible = false;
+            this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'none');
+        }
+    }
+
+    getRoute(direction: DirectionInterface): void {
+        const pointPartenza = new Point({
+            longitude: direction.origin.lng,
+            latitude: direction.origin.lat,
+            spatialReference: {
+                wkid: 3857
+            }
+        });
+
+        const pointDestinazione = new Point({
+            longitude: direction.destination.lng,
+            latitude: direction.destination.lat,
+            spatialReference: {
+                wkid: 3857
+            }
+        });
+
+        const pointPartenzaGraphic = new Graphic({
+            geometry: pointPartenza
+        });
+
+        const pointDestinazioneGraphic = new Graphic({
+            geometry: pointDestinazione
+        });
+
+        const routeTask: RouteTask = new RouteTask({
+            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+        });
+
+        const routeParams = new RouteParameters({
+            stops: new FeatureSet({
+                features: [pointPartenzaGraphic, pointDestinazioneGraphic]
+            })
+        });
+
+        routeTask.solve(routeParams).then((data: RouteResult) => {
+            // @ts-ignore
+            data.routeResults.forEach((result: any) => {
+                result.route.symbol = {
+                    type: 'simple-line',
+                    color: [5, 150, 255],
+                    width: 3
+                };
+                this.view.graphics.add(result.route);
+            });
+        });
+    }
+
+    clearDirection(): void {
+        if (this.view?.graphics?.length) {
+            this.view.graphics.removeAll();
+        }
+    }
 
     // TODO: verificare se utilizzato
     centroCambiato(centro: CentroMappa): void {

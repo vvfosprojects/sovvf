@@ -10,7 +10,7 @@ import { SchedaTelefonataState } from '../../store/states/form-richiesta/scheda-
 import { Sede } from '../../../../shared/model/sede.model';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { EntiState } from '../../../../shared/store/states/enti/enti.state';
-import { Ente } from '../../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { RichiestaModificaState } from '../../store/states/form-richiesta/richiesta-modifica.state';
 import { DettagliTipologieState } from '../../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
@@ -36,7 +36,7 @@ export class ModalNuovaChiamataComponent {
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
 
     // Loading
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;

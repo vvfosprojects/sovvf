@@ -1,9 +1,9 @@
-import { CategoriaEnte, DeleteEnteInterface, Ente } from 'src/app/shared/interface/ente.interface';
+import { CategoriaEnte, DeleteEnteInterface, EnteInterface } from 'src/app/shared/interface/ente.interface';
 
 export class SetEnti {
     static readonly type = '[Enti] Set Enti';
 
-    constructor(public enti: Ente[]) {
+    constructor(public enti: EnteInterface[]) {
     }
 }
 

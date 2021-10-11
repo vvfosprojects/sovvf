@@ -5,7 +5,7 @@ import { Sede } from '../../model/sede.model';
 import { Complessita } from '../../model/complessita.model';
 import { TurnoIntervento } from '../../model/turno-intervento';
 import { ObiettivoSensibile } from '../../model/obiettivo-sensibile';
-import { Ente } from '../ente.interface';
+import { EnteInterface } from '../ente.interface';
 import { Fonogramma } from '../../model/fonogramma.model';
 import { Partenza } from '../../model/partenza.model';
 import { AttivitaUtente } from '../../model/attivita-utente.model';
@@ -48,7 +48,7 @@ export interface RichiestaForm {
     zoneEmergenza: string;
     prioritaRichiesta: number;
     codSchedaContatto: string;
-    listaEntiPresaInCarico: Ente[];
+    listaEntiPresaInCarico: EnteInterface[];
     urgenza: boolean;
     esercitazione: boolean;
     codSOCompetente: string;

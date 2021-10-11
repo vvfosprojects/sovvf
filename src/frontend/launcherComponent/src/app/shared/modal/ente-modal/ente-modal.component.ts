@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { CategoriaEnte, Ente } from '../../interface/ente.interface';
+import { CategoriaEnte, EnteInterface } from '../../interface/ente.interface';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { GetCategorieEnti } from '../../store/actions/enti/enti.actions';
 
@@ -21,7 +21,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
     @Select(EntiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-    editEnte: Ente;
+    editEnte: EnteInterface;
 
     enteForm: FormGroup;
     checkboxRicorsivoState: { id: string, status: boolean, label: string, disabled: boolean };
@@ -90,7 +90,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         return this.enteForm.controls;
     }
 
-    updateEnteForm(editEnte: Ente): void {
+    updateEnteForm(editEnte: EnteInterface): void {
         console.log('updateEnteForm', editEnte);
         this.store.dispatch(new UpdateFormValue({
             value: {

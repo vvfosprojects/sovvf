@@ -1,9 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import {
-    ReducerFilterListeComposizione,
-    SetRichiestaComposizione,
-} from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
@@ -11,7 +8,6 @@ import { ViewComponentState } from '../../../features/home/store/states/view/vie
 import { Observable, Subscription } from 'rxjs';
 import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ViewLayouts } from '../../interface/view.interface';
@@ -189,14 +185,11 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
-            const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
             this.store.dispatch([
-                new SetMarkerRichiestaSelezionato(idRichiesta),
                 new SetRichiestaComposizione(richiesta)
             ]);
         } else {
             this.store.dispatch([
-                new SetMarkerRichiestaSelezionato(richiesta.id),
                 new SetRichiestaComposizione(richiesta)
             ]);
         }

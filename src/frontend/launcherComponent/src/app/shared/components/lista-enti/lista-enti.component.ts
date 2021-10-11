@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-lista-enti',
@@ -9,8 +9,8 @@ import { Ente } from '../../interface/ente.interface';
 })
 export class ListaEntiComponent implements OnInit, OnDestroy {
 
-    listaEntiIntervenuti: Ente[];
-    listaEntiPresaInCarico: Ente[];
+    listaEntiIntervenuti: EnteInterface[];
+    listaEntiPresaInCarico: EnteInterface[];
 
     ngOnInit(): void {
         console.log('Componente Lista Enti creato');
