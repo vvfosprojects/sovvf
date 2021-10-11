@@ -334,6 +334,7 @@ export class RichiesteState {
 
     @Action(EliminaPartenzaRichiesta)
     eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta): void {
+        // TODO: DA RIMUOVERE POICHè IL BTN ASSOCIATO è STATO RIMOSSO
         dispatch(new StartLoadingEliminaPartenza());
         const obj = {
             idRichiesta: action.idRichiesta,
@@ -342,9 +343,9 @@ export class RichiesteState {
             testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
             codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
         };
-        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            dispatch(new StopLoadingEliminaPartenza());
-        }, error => dispatch(new StopLoadingEliminaPartenza()));
+        // this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
+        //     dispatch(new StopLoadingEliminaPartenza());
+        // }, error => dispatch(new StopLoadingEliminaPartenza()));
     }
 
     @Action(ActionRichiesta)
