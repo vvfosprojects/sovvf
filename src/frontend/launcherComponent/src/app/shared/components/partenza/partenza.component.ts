@@ -51,9 +51,9 @@ export class PartenzaComponent implements OnInit {
 
     onAnnullaStato(idMezzo: string): void {
         const obj = {
-            idRichiesta: this.partenza.mezzo.idRichiesta,
-            CodicePartenza: this.partenza.codice,
-            TargaMezzo: this.partenza.mezzo.codice,
+            codiceRichiesta: this.partenza.mezzo.idRichiesta,
+            codicePartenza: this.partenza.codice,
+            targaMezzo: this.partenza.mezzo.codice,
         };
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
