@@ -113,7 +113,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Richiesta = command.Richiesta,
                     CodiciSede = command.CodiciSedi, 
                     Chiamata = command.Chiamata,
-                    CodRichiesta = command.IdRichiesta,
+                    CodRichiesta = command.CodiceRichiesta,
                     DataOraAggiornamento = date,
                     IdMezzo = command.TargaMezzo,
                     IdUtente = command.IdOperatore,

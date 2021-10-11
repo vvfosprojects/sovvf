@@ -8,12 +8,12 @@ using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 {
-    public class GetToken : IGetToken_ESRI
+    public class GetToken_ESRI : IGetToken_ESRI
     {
         private readonly IHttpRequestManager<ESRI_TokenResponse> _clientToken;
         private readonly IConfiguration _configuration;
 
-        public GetToken(IHttpRequestManager<ESRI_TokenResponse> clientToken, IConfiguration configuration)
+        public GetToken_ESRI(IHttpRequestManager<ESRI_TokenResponse> clientToken, IConfiguration configuration)
         {
             _clientToken = clientToken;
             _configuration = configuration;

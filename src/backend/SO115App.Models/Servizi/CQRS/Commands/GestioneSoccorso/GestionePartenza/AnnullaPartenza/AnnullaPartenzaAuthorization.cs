@@ -49,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public IEnumerable<AuthorizationResult> Authorize(AnnullaPartenzaCommand command)
         {
             command.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
-            command.Richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+            command.Richiesta = _getRichiestaById.GetById(command.CodiceRichiesta);
 
             if (_currentUser.Identity.IsAuthenticated)
             {

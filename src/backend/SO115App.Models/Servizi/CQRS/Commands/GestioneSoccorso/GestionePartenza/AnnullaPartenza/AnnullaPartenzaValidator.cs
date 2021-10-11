@@ -29,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public IEnumerable<ValidationResult> Validate(AnnullaPartenzaCommand command)
         {
             // Controlli sul richiedente
-            if (command.IdRichiesta.Length == 0)
+            if (command.CodiceRichiesta.Length == 0)
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
