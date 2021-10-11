@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DettaglioPartenza } from '../../model/partenza.model';
+import { DettaglioPartenza, Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -21,6 +21,7 @@ export class PartenzaComponent implements OnInit {
 
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
+    @Input() infoPartenza: Partenza;
     @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
@@ -51,9 +52,9 @@ export class PartenzaComponent implements OnInit {
 
     onAnnullaStato(idMezzo: string): void {
         const obj = {
-            codiceRichiesta: this.partenza.mezzo.idRichiesta,
-            codicePartenza: this.partenza.codice,
-            targaMezzo: this.partenza.mezzo.codice,
+            codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
+            codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
+            targaMezzo: this.infoPartenza.codiceMezzo ? this.infoPartenza.codiceMezzo : null,
         };
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));

@@ -12,7 +12,7 @@ export class Partenza {
         public istante?: string,
         public sedeOperatore?: string,
         public tipoEvento?: string,
-        public codicePartenza?: number,
+        public codicePartenza?: string,
         public fuoriSede?: boolean,
     ) {
         }
@@ -27,7 +27,7 @@ export class DettaglioPartenza {
         public sganciata?: boolean,
         public partenzaAnnullata?: boolean,
         public terminata?: boolean,
-        public codice?: string
+        public codice?: string,
     ) {
     }
 }
