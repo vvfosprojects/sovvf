@@ -32,7 +32,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public Utente Operatore { get; set; }
 
         public RichiestaAssistenza Richiesta { get; set; }
-        public string IdRichiesta { get; set; }
+        public string CodiceRichiesta { get; set; }
         public string CodicePartenza { get; set; }
         public string TargaMezzo { get; set; }
     }
