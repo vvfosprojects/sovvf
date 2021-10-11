@@ -71,9 +71,6 @@ namespace SO115App.CompositionRoot
             //SERVIZI GENERICI
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
 
-            container.Register<IGetToken, ExternalAPI.Fake.Servizi.Gac.GetToken>();
-            container.Register<IGetToken_ESRI, ExternalAPI.Fake.Servizi.ESRI.GetToken_ESRI>();
-
             #region IdentityManagement
 
             container.Register<IGetAnagraficaComponente, GetAnagraficaComponente>();
