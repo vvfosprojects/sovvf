@@ -150,7 +150,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     badgeDistaccamentoClass(): string {
         let result = 'badge-terza-competenza';
 
-        if (this.richiesta && this.squadraComp && this.squadraComp) {
+        if (this.richiesta && this.squadraComp && this.squadraComp.distaccamento) {
             const distaccamentoSquadra = this.squadraComp.distaccamento.descrizione.replace(/\s+/g, ' ').trim();
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {

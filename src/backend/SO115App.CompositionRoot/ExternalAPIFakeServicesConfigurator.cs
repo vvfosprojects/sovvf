@@ -24,6 +24,7 @@ using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.AFM;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
+using SO115App.ExternalAPI.Fake.Servizi.ESRI;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
@@ -39,6 +40,7 @@ using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
@@ -69,7 +71,8 @@ namespace SO115App.CompositionRoot
             //SERVIZI GENERICI
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
 
-            container.Register<IGetToken, GetToken>();
+            container.Register<IGetToken, ExternalAPI.Fake.Servizi.Gac.GetToken>();
+            container.Register<IGetToken_ESRI, ExternalAPI.Fake.Servizi.ESRI.GetToken>();
 
             #region IdentityManagement
 
@@ -316,6 +319,13 @@ namespace SO115App.CompositionRoot
             container.Register<IMapperSintesiInSchedeSO115, MapperSintesiRichiestaSuSTATRI>();
 
             #endregion STATRI
+
+            #region ESRI
+
+            container.Register<INotify_ESRIAddRichiesta, SendNewRichiestaAssistena>();
+            container.Register<IGetToken_ESRI, GetToken_ESRI>();
+
+            #endregion ESRI
         }
     }
 }

@@ -205,26 +205,14 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            //if (filtro.SoloChiuse)
-            //    result = lstRichieste.Where(r => r.Chiusa).ToList();
-
             //MAPPING
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
-                //if (richiesta.CodEntiIntervenuti != null)
-                //{
-                //    var lstCodiciEnti = richiesta.CodEntiIntervenuti.Select(c => int.Parse(c)).ToArray();
-
-                //    rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
-                //}
-
                 var sintesi = new SintesiRichiesta();
                 sintesi = _mapperSintesi.Map(richiesta);
                 sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
-                //sintesi.ListaEntiIntervenuti = rubrica.Count == 0 ? null : rubrica;
-
                 return sintesi;
             });
 

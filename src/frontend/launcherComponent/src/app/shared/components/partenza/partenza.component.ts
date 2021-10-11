@@ -8,6 +8,7 @@ import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 import { Store } from '@ngxs/store';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
+import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 
 @Component({
     selector: 'app-partenza',
@@ -37,7 +38,7 @@ export class PartenzaComponent implements OnInit {
     listaEventiMezzo: EventoMezzo[] = [];
     dateDiff: number;
 
-    constructor(config: NgbDropdownConfig, private store: Store) {
+    constructor(config: NgbDropdownConfig, private store: Store, private richiesteService: SintesiRichiesteService) {
         config.placement = 'bottom-left';
     }
 
@@ -49,7 +50,14 @@ export class PartenzaComponent implements OnInit {
     }
 
     onAnnullaStato(idMezzo: string): void {
-        this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
+        const obj = {
+            idRichiesta: this.partenza.mezzo.idRichiesta,
+            CodicePartenza: this.partenza.codice,
+            TargaMezzo: this.partenza.mezzo.codice,
+        };
+        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
+            this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
+        }, error => console.log('Richiesta di annullamento cambio stato fallita'));
     }
 
     checkListaEventiMezzo(): void {
