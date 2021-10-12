@@ -28,8 +28,10 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
@@ -38,18 +40,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetTipologieByCodice _getTipologie;
 
         private readonly ISendNewItemSTATRI _statri;
         private readonly ICheckCongruitaPartenze _check;
 
         private readonly IModificaInterventoChiuso _modificaGAC;
 
-        public AnnullaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, IGetStatoMezzi getStatoMezzi, ISendNewItemSTATRI statri, ICheckCongruitaPartenze check, IModificaInterventoChiuso modificaGAC)
+        public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IGetStatoMezzi getStatoMezzi, ISendNewItemSTATRI statri, ICheckCongruitaPartenze check, IModificaInterventoChiuso modificaGAC)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _getStatoMezzi = getStatoMezzi;
             _statri = statri;
             _check = check;
+            _getTipologie = getTipologie;
             _modificaGAC = modificaGAC;
         }
 
@@ -80,6 +84,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Stato = nuovoStatoMezzo
                 }, _statri, _check);
 
+                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+
                 //SEGNALO LA MODIFICA A GAC
                 var movimento = new ModificaMovimentoGAC()
                 {
@@ -107,8 +113,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     },
                     tipoUscita = new TipoUscita()
                     {
-                        codice = "",
-                        descrizione = command.Richiesta.Tipologie.First()
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
                     }
                 };
 
