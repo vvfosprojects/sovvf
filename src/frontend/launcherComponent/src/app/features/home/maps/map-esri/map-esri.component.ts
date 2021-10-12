@@ -104,10 +104,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.areaCambiata(bounds, event.zoom);
                 });
 
-                // Inizializzazione del layer lato client per disegnare poligoni sulla mappa
-                // TODO: implementare in un secondo momento
-                // this.map.add(this.drawGraphicLayer);
-
                 // Lista layer (client) da aggiungere alla mappa all'init della mappa
                 const layersToInitialize = [
                     this.initializeChiamateInCorsoLayer(),

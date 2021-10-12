@@ -15,6 +15,8 @@ import { AreaMappa } from './maps-model/area-mappa-model';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { DirectionInterface } from './maps-interface/direction-interface';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
+import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-maps',
@@ -35,6 +37,9 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
+
+    // Filtri Richieste Selezionati
+    @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
 
     mapsFullyLoaded = false;
     centroMappa: CentroMappa;

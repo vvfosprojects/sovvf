@@ -19,4 +19,5 @@ export enum RoutesPath {
     ImpostazioniSede = 'impostazioni-sede',
     POS = 'POS',
     AreaDocumentale = 'area-documentale',
+    DashboardPortale = 'dashboard-portale'
 }
