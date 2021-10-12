@@ -5,8 +5,12 @@ using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 {
@@ -25,23 +29,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             string token = "";
 
-            var request = new ESRI_TokenRequest()
-            {
-                F = "json",
-                User = _configuration.GetSection("ESRI").GetSection("User").Value,
-                Password = _configuration.GetSection("ESRI").GetSection("Password").Value,
-                Referer = _configuration.GetSection("ESRI").GetSection("URLRichieste").Value
-            };
+            Dictionary<string, string> postData = new Dictionary<string, string>();
+            postData.Add("username", _configuration.GetSection("ESRI").GetSection("User").Value);
+            postData.Add("password", _configuration.GetSection("ESRI").GetSection("Password").Value);
+            postData.Add("referer", _configuration.GetSection("ESRI").GetSection("URLRichieste").Value);
+            postData.Add("f", "json");
 
-            var jsonString = JsonConvert.SerializeObject(request);
-            var content = new StringContent(jsonString);
+            var multipartFormDataContent = new MultipartFormDataContent();
+
+            foreach (var keyValuePair in postData)
+            {
+                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
+                    String.Format("\"{0}\"", keyValuePair.Key));
+            }
+
+            //using HttpContent formContent = new FormUrlEncodedContent(postData);
+            //var content = new MultipartFormDataContent();
+            //content.Add(formContent);
 
             var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}");
 
-            var EsitoToken = _clientToken.PostAsync(url, content).Result;
+            var EsitoToken = _clientToken.PostAsyncFormData(url, multipartFormDataContent).Result;
 
-            if (EsitoToken.Token != null)
-                token = EsitoToken.Token;
+            if (EsitoToken.token != null)
+                token = EsitoToken.token;
 
             return token;
         }

@@ -5,33 +5,33 @@ using System.Text;
 
 namespace SO115App.Models.Classi.ESRI
 {
-    public class ESRI_ResposeMessage
+    public class ESRI_ResponseMessage
     {
         [JsonProperty(PropertyName = "addResults")]
-        public List<Result> AddResults { get; set; }
+        public List<Result> addResults { get; set; }
     }
 
     public class Result
     {
         [JsonProperty(PropertyName = "objectId")]
-        public string ObjectId { get; set; }
+        public int objectId { get; set; }
 
         [JsonProperty(PropertyName = "globalId")]
-        public string GlobalId { get; set; }
+        public string globalId { get; set; }
 
         [JsonProperty(PropertyName = "success")]
-        public bool Success { get; set; }
+        public bool success { get; set; }
 
         [JsonProperty(PropertyName = "error")]
-        public error Error { get; set; }
+        public error error { get; set; }
     }
 
     public class error
     {
         [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
+        public string code { get; set; }
 
         [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
+        public string description { get; set; }
     }
 }

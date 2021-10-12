@@ -1082,10 +1082,23 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public bool Esercitazione { get; set; } = false;
 
+        /// <summary>
+        ///   Oggetto ESRI. si riempie nel momento in cui si fa la prima registrazione sul Portal
+        ///   della chiamata
+        /// </summary>
+        public ESRI Esri_Param { get; set; }
+
         [BsonIgnore]
         public List<string> lstSquadre => Partenze.SelectMany(p => p.Partenza.Squadre).Select(s => s.Nome).ToList();
 
         [BsonIgnore]
         public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
+    }
+
+    public class ESRI
+    {
+        public int ObjectId { get; set; }
+
+        public DateTime LastUpdate { get; set; }
     }
 }

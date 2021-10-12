@@ -54,22 +54,22 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             var infoESRI = new ESRI_RichiestaMessage()
             {
-                Geometry = new geometry()
+                geometry = new geometry()
                 {
-                    X = sintesi.Localita.Coordinate.Longitudine.ToString(),
-                    Y = sintesi.Localita.Coordinate.Latitudine.ToString()
+                    x = sintesi.Localita.Coordinate.Longitudine,
+                    y = sintesi.Localita.Coordinate.Latitudine
                 },
-                Attributes = new attributes()
+                attributes = new attributes()
                 {
-                    Mongodb_id = sintesi.Id,
-                    Categoria = sintesi.Tipologie[0].Categoria,
-                    Codice = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice,
-                    Descrizione = sintesi.Descrizione,
-                    Stato = sintesi.Stato
+                    mongodb_id = sintesi.Id,
+                    categoria = sintesi.Tipologie[0].Categoria,
+                    codice = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice,
+                    descrizione = sintesi.Descrizione,
+                    stato = sintesi.Stato
                 }
             };
 
-            _notify_ESRIAddRichiesta.Call(infoESRI);
+            _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
             var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
             var infoMatrix = new MessageMatrix()

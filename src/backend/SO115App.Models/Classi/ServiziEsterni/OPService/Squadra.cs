@@ -65,18 +65,18 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         public string LastName { get; set; }
 
         [JsonPropertyName("qualifications")]
-        public List<Qualifiche> Qualifications { get; set; }
+        public List<Qualifiche> qualifications { get; set; }
     }
 
     public class Qualifiche
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string description { get; set; }
 
         [JsonPropertyName("group")]
-        public string Group { get; set; }
+        public string group { get; set; }
     }
 }

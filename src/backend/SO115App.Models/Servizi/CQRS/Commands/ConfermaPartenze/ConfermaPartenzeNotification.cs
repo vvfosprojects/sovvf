@@ -18,7 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Classi.Matrix;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System;
@@ -29,16 +31,40 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
     {
         private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
+        private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
 
-        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender, ICallMatrix callMatrix)
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
+                                            ICallMatrix callMatrix,
+                                            INotifyUpDateRichiesta notifyUpDateRichiesta)
         {
             _sender = sender;
             _callMatrix = callMatrix;
+            _notifyUpDateRichiesta = notifyUpDateRichiesta;
         }
 
         public void Notify(ConfermaPartenzeCommand command)
         {
             _sender.SendNotification(command);
+
+            var infoESRI = new ESRI_RichiestaMessage()
+            {
+                geometry = new geometry()
+                {
+                    x = command.Richiesta.Localita.Coordinate.Longitudine,
+                    y = command.Richiesta.Localita.Coordinate.Latitudine
+                },
+                attributes = new attributes()
+                {
+                    objectId = command.Richiesta.Esri_Param.ObjectId,
+                    mongodb_id = command.Richiesta.Id,
+                    categoria = command.Richiesta.Tipologie[0],
+                    codice = command.Richiesta.CodRichiesta,
+                    descrizione = command.Richiesta.Descrizione,
+                    stato = command.Richiesta.TestoStatoRichiesta
+                }
+            };
+
+            _notifyUpDateRichiesta.UpDate(infoESRI);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
