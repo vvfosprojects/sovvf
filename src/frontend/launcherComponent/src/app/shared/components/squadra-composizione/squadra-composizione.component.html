@@ -14,14 +14,13 @@
                  placement="right"
                  triggers="mouseenter:mouseleave"
                  style="vertical-align: text-bottom;">
-                <i class="fas mr-1"
+                <i class="fas"
+                   [class.mr-1]="squadraComp.membri?.length"
                    [class.fa-user]="autistaInSquadra"
                    [class.fa-user-slash]="!autistaInSquadra"></i>
-                <ng-template [ngIf]="squadraComp?.membri?.length">
-                    <div class="d-inline-block">
-                        {{ squadraComp.membri.length }}
-                    </div>
-                </ng-template>
+                <div class="d-inline-block">
+                    {{ squadraComp.membri?.length }}
+                </div>
             </div>
             <ng-template #componenti>
                 <h5 class="font-weight-bolder">{{ squadraComp.nome }}</h5>
