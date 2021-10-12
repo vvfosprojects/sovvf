@@ -117,7 +117,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     richiesta: SintesiRichiesta;
     methods = new HelperSintesiRichiesta();
-    austistaInPartenza = false;
 
     Composizione = Composizione;
 
@@ -136,10 +135,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         );
         this.subscription.add(
             this.boxPartenzaList$.subscribe((partenzaLista: any) => {
-                if (partenzaLista) {
-                    this.austistaInPartenza = false;
-                    partenzaLista.forEach(x => x.squadreComposizione ? x.squadreComposizione.forEach(y => y.membri ? y.membri.forEach(z => z.autista ? this.austistaInPartenza = true : null) : null) : null);
-                }
+                this.boxPartenzaList = partenzaLista;
             })
         );
         this.subscription.add(

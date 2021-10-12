@@ -14,7 +14,6 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 export class ComposizioneConfirmButtonComponent implements OnInit {
 
     @Input() boxPartenzaLenght: number;
-    @Input() austistaInPartenza: boolean;
     @Input() disableConfirmPartenza = true;
     @Input() richiesta: SintesiRichiesta;
 
