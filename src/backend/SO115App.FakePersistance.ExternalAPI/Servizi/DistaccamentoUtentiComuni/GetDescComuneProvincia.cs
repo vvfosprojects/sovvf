@@ -4,7 +4,6 @@ using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni

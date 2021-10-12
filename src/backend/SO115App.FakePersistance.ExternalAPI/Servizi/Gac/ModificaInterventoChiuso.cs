@@ -32,8 +32,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             //OTTENGO PROVINCIA E COMUNE
             var territorio = _comuneService.GetComuneBy(modificamovimento.comune.descrizione).Result;
 
-            modificamovimento.comune.codice = territorio.First().codice;
-            modificamovimento.provincia.codice = territorio.First().codice;
+            modificamovimento.comune.codice = territorio.First(x => x.descrizione.ToLower().Equals(modificamovimento.comune.descrizione.ToLower())).codice;
+            modificamovimento.provincia.codice = territorio.First(x => x.descrizione.ToLower().Equals(modificamovimento.provincia.descrizione.ToLower())).codice;
 
             //USCITA GAC
             var lstModificheMovimento = new List<ModificaMovimentoGAC>() { modificamovimento };
