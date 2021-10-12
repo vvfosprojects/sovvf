@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
@@ -25,15 +27,28 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     public class UpDateStatoRichiestaNotifier : ICommandNotifier<UpDateStatoRichiestaCommand>
     {
         private readonly INotifyUpDateStatoRichiesta _sender;
+        private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public UpDateStatoRichiestaNotifier(INotifyUpDateStatoRichiesta sender)
+        public UpDateStatoRichiestaNotifier(INotifyUpDateStatoRichiesta sender,
+                                            INotifyUpDateRichiesta notifyUpDateRichiesta,
+                                            IMappingESRIMessage mappingESRIMessage,
+                                            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _sender = sender;
+            _notifyUpDateRichiesta = notifyUpDateRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         public void Notify(UpDateStatoRichiestaCommand command)
         {
             _sender.SendNotification(command);
+
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
+            var infoESRI = _mappingESRIMessage.Map(sintesi);
+            _notifyUpDateRichiesta.UpDate(infoESRI);
         }
     }
 }
