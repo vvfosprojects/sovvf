@@ -230,15 +230,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onSelezione(event: { idRichiesta: string, coordinate: Coordinate }): void {
         this.store.dispatch([
-            new SetRichiestaSelezionata(event.idRichiesta),
-            new SetCentroMappa({ coordinateCentro: event.coordinate }),
-            new SetZoomCentroMappa(16)
+            new SetRichiestaSelezionata(event.idRichiesta)
         ]);
     }
 
     onDeselezione(): void {
         this.store.dispatch([
-            new GetInitZoomCentroMappa(),
             new ClearRichiestaSelezionata()
         ]);
     }

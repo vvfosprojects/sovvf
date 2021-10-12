@@ -1,19 +1,31 @@
-<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown" (openChange)="onToggleDropdown($event)"
-     placement="bottom-left">
-    <button class="btn mx-2" [ngbTooltip]="getTooltip()" style="position:relative;" [ngClass]="getClasses()"
+<div #myDrop="ngbDropdown"
+     class="d-inline-block"
+     ngbDropdown
+     placement="bottom-left"
+     (openChange)="onToggleDropdown($event)">
+    <button class="btn mx-2"
+            [ngClass]="getClasses()"
+            style="position:relative;"
+            [ngbTooltip]="getTooltip()"
+            placement="left"
             (click)="listaNotifiche?.length > 0 && myDrop.toggle()" ngbDropdownAnchor>
         <i class="far fa-bell"></i>
         <div *ngIf="nuoveNotifiche" class="position-absolute badge badge-danger px-1" style="top:2px; right:4px;">
             {{ nuoveNotifiche }}
         </div>
     </button>
-    <div ngbDropdownMenu style="width: 330px; max-height:400px; overflow: auto" class="my-0">
+    <div ngbDropdownMenu
+         class="my-0"
+         style="width: 330px; max-height:400px; overflow: auto">
         <div class="text-center mt-3 mb-2">
             <h4 class="font-weight-bold mb-0">Notifiche</h4>
         </div>
-        <div *ngFor="let notifica of listaNotifiche; let i = index" class="position-relative pl-3 pr-2 pt-4 pb-2"
+        <div *ngFor="let notifica of listaNotifiche; let i = index"
+             class="position-relative pl-3 pr-2 pt-4 pb-2"
              [ngClass]="{'border-bottom': listaNotifiche?.length > 1 && (i + 1) !== listaNotifiche?.length, 'border-bottom-0': (i + 1) === listaNotifiche?.length, 'cursor-pointer bg-light': this.active === i }"
-             (mouseenter)="setActive(i)" (mouseleave)="clearActive()" (click)="onSelezione(notifica)">
+             (mouseenter)="setActive(i)"
+             (mouseleave)="clearActive()"
+             (click)="onSelezione(notifica)">
             <h5 class="font-weight-bolder my-1">{{ notifica.titolo }}</h5>
             <h6 class="mb-1">{{ notifica.descrizione }}</h6>
             <div class="text-center">
