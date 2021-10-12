@@ -3,8 +3,8 @@ using SO115App.Models.Classi.ESRI;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI
 {
-    public interface INotify_ESRIAddRichiesta
+    public interface IMappingESRIMessage
     {
-        public void Call(ESRI_RichiestaMessage message, RichiestaAssistenza richiesta);
+        public ESRI_RichiestaMessage Map(RichiestaAssistenza richiesta);
     }
 }

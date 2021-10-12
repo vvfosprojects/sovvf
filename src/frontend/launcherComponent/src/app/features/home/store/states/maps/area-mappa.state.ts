@@ -1,18 +1,11 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 import { ViewComponentState } from '../view/view.state';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { SetBoundsIniziale } from '../../actions/home.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
-import {
-    GetMarkersMappa,
-    SetAreaMappa,
-    StartLoadingAreaMappa,
-    StopLoadingAreaMappa
-} from '../../actions/maps/area-mappa.actions';
+import { GetMarkersMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { Injectable } from '@angular/core';
 
 export interface AreaMappaStateModel {
@@ -70,9 +63,7 @@ export class AreaMappaState {
                 }
             }
             dispatch([
-                new GetRichiesteMarkers(state.areaMappa),
-                new GetSediMarkers(state.areaMappa),
-                new GetSchedeContattoMarkers(state.areaMappa)
+                new GetSediMarkers(state.areaMappa)
             ]);
         }
     }

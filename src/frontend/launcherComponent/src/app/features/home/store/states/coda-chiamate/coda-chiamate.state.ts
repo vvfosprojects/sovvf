@@ -20,7 +20,6 @@ import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioDistaccamentoModalComponent } from '../../../coda-chiamate/dettaglio-distaccamento-modal/dettaglio-distaccamento-modal.component';
 import { DettaglioSedeCodaChiamateDto } from '../../../../../shared/interface/dto/coda-chiamate/dettaglio-sede-coda-chiamate-dto.interface';
-import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleComposizione } from '../../actions/view/view.actions';
@@ -142,7 +141,6 @@ export class CodaChiamateState {
                             case 'nuovaPartenza':
                                 const richiesta = result.data;
                                 dispatch([
-                                    new SetMarkerRichiestaSelezionato(richiesta.id),
                                     new SetRichiestaComposizione(richiesta),
                                     new ToggleComposizione(Composizione.Avanzata)
                                 ]);

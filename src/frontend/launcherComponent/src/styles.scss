@@ -236,6 +236,18 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   background-color: $SO-dark $SO-i;
   color: $SO-white $SO-i;
 
+  // style Esri
+  .esri-feature-fields__field-header {
+    background-color: $SO-dark-light $SO-i;
+    color: $SO-white $SO-i;
+  }
+  //
+
+  .esri-feature-fields__field-data {
+    background-color: $SO-dark-light $SO-i;
+    color: $SO-white $SO-i;
+  }
+
   a {
     color: $SO-white $SO-i;
   }

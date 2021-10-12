@@ -21,21 +21,13 @@ import {
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import {
-    DelChiamataMarker,
-    SetChiamataMarker,
-    UpdateChiamataMarker
-} from '../../actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import {
-    GetListaRichieste,
-    SetIdChiamataInviaPartenza,
-    SetNeedRefresh
-} from '../../actions/richieste/richieste.actions';
+import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
@@ -45,7 +37,6 @@ import { AuthState } from '../../../../auth/store/auth.state';
 import { Sede } from '../../../../../shared/model/sede.model';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PatchRichiesta, SetRichiestaModifica } from '../../actions/form-richiesta/richiesta-modifica.actions';
-import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ConfirmModalComponent } from '../../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
@@ -392,8 +383,7 @@ export class SchedaTelefonataState {
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new SetTriageSummary(chiamataResult.triageSummary),
-                    new ToggleModifica(),
-                    new SetMarkerRichiestaSelezionato(chiamataResult.id)
+                    new ToggleModifica()
                 ]);
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
@@ -523,5 +513,4 @@ export class SchedaTelefonataState {
             loadingNuovaChiamata: false
         });
     }
-
 }

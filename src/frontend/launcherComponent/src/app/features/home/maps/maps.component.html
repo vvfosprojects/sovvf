@@ -3,9 +3,7 @@
         <div class="col-12 h-100">
             <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
             <app-map-esri [pCenter]="centroMappa"
-                          [richiesteMarkers]="richiesteMarkers$ | async"
                           [chiamateMarkers]="chiamataMarkers$ | async"
-                          [schedeContattoMarkers]="schedeContattoMarkers$ | async"
                           [sediMarkers]="sediMarkers$ | async"
                           [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           [direction]="direction$ | async"

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+
 //using Newtonsoft.Json;
 using Polly;
 using Polly.Caching;
@@ -58,7 +59,7 @@ namespace SO115App.ExternalAPI.Client
             else
                 _client.DefaultRequestHeaders.Authorization = null;
 
-           var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
+            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return manageResponse(response);
         }
@@ -78,8 +79,22 @@ namespace SO115App.ExternalAPI.Client
 
             if (token != null)
                 _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            else
+                _client.DefaultRequestHeaders.Authorization = null;
 
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content ?? new StringContent("")));
+
+            return manageResponse(response);
+        }
+
+        public async Task<ResponseObject> PostAsyncFormData(Uri url, HttpContent content = null, string token = null)
+        {
+            if (token != null)
+                _client.DefaultRequestHeaders.Authorization = getBearerAuthorization(token);
+            else
+                _client.DefaultRequestHeaders.Authorization = null;
+
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             return manageResponse(response);
         }
@@ -118,10 +133,9 @@ namespace SO115App.ExternalAPI.Client
             return manageResponse(response);
         }
 
-
         //PRIVATE METHODS
 
-        ResponseObject manageResponse(HttpResponseMessage response)
+        private ResponseObject manageResponse(HttpResponseMessage response)
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
@@ -135,23 +149,23 @@ namespace SO115App.ExternalAPI.Client
 
                 return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
         }
 
-        AuthenticationHeaderValue getBearerAuthorization(string token)
+        private AuthenticationHeaderValue getBearerAuthorization(string token)
         {
             return new AuthenticationHeaderValue("Bearer", "=" + token);
         }
 
-        AuthenticationHeaderValue getBasicAuthorization(string username, string password)
+        private AuthenticationHeaderValue getBasicAuthorization(string username, string password)
         {
             return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}")));
         }
 
-        MediaTypeWithQualityHeaderValue getMediaType()
+        private MediaTypeWithQualityHeaderValue getMediaType()
         {
             return new MediaTypeWithQualityHeaderValue("application/json");
         }
@@ -178,20 +192,20 @@ namespace SO115App.ExternalAPI.Client
 
                     switch (c.StatusCode)
                     {
-                        case HttpStatusCode.NotFound: 
+                        case HttpStatusCode.NotFound:
                             _writeLog.Save(exception); throw new Exception(Messages.ServizioNonRaggiungibile);
-                        case HttpStatusCode.Forbidden: 
+                        case HttpStatusCode.Forbidden:
                             _writeLog.Save(exception); throw new Exception(Messages.AutorizzazioneNegata);
-                        case HttpStatusCode.UnprocessableEntity: 
+                        case HttpStatusCode.UnprocessableEntity:
                             _writeLog.Save(exception); throw new Exception(Messages.DatiMancanti);
-                        case HttpStatusCode.InternalServerError: 
+                        case HttpStatusCode.InternalServerError:
                             _writeLog.Save(exception); throw new Exception(Messages.ErroreInternoAlServer);
-                        case HttpStatusCode.Created: 
+                        case HttpStatusCode.Created:
                             _writeLog.Save(exception); throw new Exception(Messages.NonTuttiIDatiInviatiSonoStatiProcessati);
                         case HttpStatusCode.UnsupportedMediaType:
                             _writeLog.Save(exception); throw new Exception(Messages.OggettoNonValido);
 
-                        case 0: 
+                        case 0:
                             _writeLog.Save(exception); throw new Exception(c.ReasonPhrase);
                     }
                 }

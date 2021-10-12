@@ -71,7 +71,7 @@ namespace SO115App.CompositionRoot
             //SERVIZI GENERICI
             container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
 
-            container.Register<IGetToken, ExternalAPI.Fake.Servizi.Gac.GetToken>();
+            container.Register<IGetToken, GetToken>();
 
             #region IdentityManagement
 
@@ -324,6 +324,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<INotify_ESRIAddRichiesta, SendNewRichiestaAssistena>();
             container.Register<IGetToken_ESRI, GetToken_ESRI>();
+            container.Register<INotifyUpDateRichiesta, SendUpDateRichiestaAssistenza>();
 
             #endregion ESRI
         }

@@ -1,4 +1,4 @@
-import { Ente } from '../../../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../../../shared/interface/ente.interface';
 
 export class GetRubrica {
     static readonly type = '[Rubrica] Get Rubrica';
@@ -10,7 +10,7 @@ export class GetRubrica {
 export class SetRubrica {
     static readonly type = '[Rubrica] Set Voci Rubrica';
 
-    constructor(public vociRubrica: Ente[]) {
+    constructor(public vociRubrica: EnteInterface[]) {
     }
 }
 
@@ -21,7 +21,7 @@ export class AddVoceRubrica {
 export class UpdateVoceRubrica {
     static readonly type = '[Rubrica] Update Voce Rubrica';
 
-    constructor(public voceRubrica: Ente) {
+    constructor(public voceRubrica: EnteInterface) {
     }
 }
 

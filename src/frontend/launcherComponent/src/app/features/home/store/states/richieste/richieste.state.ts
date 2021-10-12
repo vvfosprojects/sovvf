@@ -37,7 +37,6 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -172,7 +171,9 @@ export class RichiesteState {
                 if (richiestaFissata && listaRichieste.length >= 7) {
                     let skipRemove;
                     listaRichieste.forEach(x => x.codice === richiestaFissata.codice ? skipRemove = true : null);
-                    !skipRemove ? listaRichieste.pop() : null;
+                    if (!skipRemove) {
+                        listaRichieste.pop();
+                    }
                 }
                 if (richiesteActive) {
                     dispatch([
@@ -303,7 +304,6 @@ export class RichiesteState {
         dispatch([
             new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
-            new SetMarkerRichiestaSelezionato(action.richiesta.id),
             new SetRichiestaComposizione(action.richiesta)
         ]);
     }
@@ -404,17 +404,7 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({}: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        // const innerWidth = window.innerWidth;
         let modal;
-        // if (innerWidth && innerWidth > 3700) {
-        //     modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-        //         windowClass: 'modal-holder modal-left',
-        //         backdropClass: 'light-blue-backdrop',
-        //         centered: true,
-        //         size: 'lg',
-        //         backdrop: true,
-        //     });
-        // } else {
         modal = this.modalService.open(ListaSquadrePartenzaComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -422,7 +412,6 @@ export class RichiesteState {
             size: 'xl',
             backdrop: true,
         });
-        // }
         modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
@@ -507,5 +496,4 @@ export class RichiesteState {
             loadingModificaFonogramma: false
         });
     }
-
 }

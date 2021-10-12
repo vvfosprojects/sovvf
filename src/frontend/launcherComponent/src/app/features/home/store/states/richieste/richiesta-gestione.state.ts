@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
-import { ClearMarkerRichiestaSelezionato, SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { Injectable } from '@angular/core';
@@ -43,9 +42,7 @@ export class RichiestaGestioneState {
             patchState({
                 richiestaGestione: action.richiesta
             });
-            dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
-            dispatch(new SetMarkerRichiestaSelezionato(action.richiesta.id));
         }
     }
 
@@ -54,7 +51,6 @@ export class RichiestaGestioneState {
         const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
         // se la richiesta non è fissata deseleziono il marker della richiesta in gestione e centro la mappa
         if (idRichiestaFissata !== action.idRichiesta) {
-            dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
         }
         patchState(RichiestaGestioneStateDefaults);

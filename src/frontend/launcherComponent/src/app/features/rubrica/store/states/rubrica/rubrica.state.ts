@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { Ente } from '../../../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../../../shared/interface/ente.interface';
 import {
     GetRubrica,
     SetRubrica,
@@ -18,7 +18,7 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { Injectable } from '@angular/core';
 
 export interface RubricaStateModel {
-    vociRubrica: Ente[];
+    vociRubrica: EnteInterface[];
     loadingRubrica: boolean;
 }
 
@@ -40,7 +40,7 @@ export class RubricaState {
     }
 
     @Selector()
-    static vociRubrica(state: RubricaStateModel): Ente[] {
+    static vociRubrica(state: RubricaStateModel): EnteInterface[] {
         return state.vociRubrica;
     }
 
@@ -87,7 +87,7 @@ export class RubricaState {
     updateVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: UpdateVoceRubrica): void {
         setState(
             patch({
-                vociRubrica: updateItem<Ente>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
+                vociRubrica: updateItem<EnteInterface>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
             })
         );
     }
@@ -101,7 +101,7 @@ export class RubricaState {
         }
         setState(
             patch({
-                vociRubrica: removeItem<Ente>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
+                vociRubrica: removeItem<EnteInterface>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
             })
         );
     }

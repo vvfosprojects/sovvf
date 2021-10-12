@@ -1,11 +1,7 @@
-import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleModifica } from '../../actions/view/view.actions';
-import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
-import { RichiesteMarkersState } from '../maps/richieste-markers.state';
-import { ClearRichiestaMarkerModifica, UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
-import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { Observable } from 'rxjs';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,
@@ -20,7 +16,6 @@ import {
     PatchEntiIntervenutiRichiesta
 } from '../../actions/form-richiesta/richiesta-modifica.actions';
 import { Injectable } from '@angular/core';
-import { ViewComponentState } from '../view/view.state';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
@@ -35,14 +30,12 @@ import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
-    richiestaMarker: RichiestaMarker;
     successModifica: boolean;
     modificaIndirizzo: boolean;
 }
 
 export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     richiestaModifica: null,
-    richiestaMarker: null,
     successModifica: false,
     modificaIndirizzo: false
 };
@@ -53,8 +46,6 @@ export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     defaults: RichiestaModificaStateDefaults
 })
 export class RichiestaModificaState {
-
-    @Select(RichiesteMarkersState.getRichiestaById) richiestaMarker$: Observable<RichiestaMarker>;
 
     constructor(private store: Store,
                 private richiesteService: SintesiRichiesteService) {
@@ -75,15 +66,6 @@ export class RichiestaModificaState {
         patchState({
             richiestaModifica: action.richiesta
         });
-        if (action.richiesta) {
-            this.richiestaMarker$.subscribe(result => {
-                if (result) {
-                    patchState({
-                        richiestaMarker: result
-                    });
-                }
-            });
-        }
     }
 
     @Action(ModificaRilevanza)
@@ -124,14 +106,6 @@ export class RichiestaModificaState {
             patchState({
                 modificaIndirizzo: true
             });
-            const mappaActive = this.store.selectSnapshot(ViewComponentState.mapsIsActive);
-            if (mappaActive) {
-                const temporaryMarker: RichiestaMarker = makeCopy(getState().richiestaMarker);
-                temporaryMarker.localita = action.nuovoIndirizzo;
-                dispatch(new UpdateRichiestaMarkerModifica(temporaryMarker));
-                dispatch(new SetCoordCentroMappa(action.nuovoIndirizzo.coordinate));
-                dispatch(new SetZoomCentroMappa(18));
-            }
         }
     }
 
@@ -235,7 +209,6 @@ export class RichiestaModificaState {
         }, () => {
             dispatch([
                 new ClearIndirizzo(),
-                new ClearRichiestaMarkerModifica(),
                 new GetInitCentroMappa()
             ]);
         });
@@ -270,12 +243,10 @@ export class RichiestaModificaState {
 
     @Action(ChiudiRichiestaModifica)
     chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica): void {
-        const state = getState();
-        if (state.modificaIndirizzo && !action.mantieniModificaIndirizzo) {
-            dispatch(new UpdateRichiestaMarker(state.richiestaMarker));
-        }
-        dispatch(new ToggleModifica(true));
-        dispatch(new ClearRichiestaModifica());
+        dispatch([
+            new ToggleModifica(true),
+            new ClearRichiestaModifica()
+        ]);
     }
 
     @Action(ClearRichiestaModifica)

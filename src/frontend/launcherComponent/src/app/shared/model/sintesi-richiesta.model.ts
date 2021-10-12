@@ -12,7 +12,7 @@ import { TipoTerreno } from './tipo-terreno';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
-import { Ente } from '../interface/ente.interface';
+import { EnteInterface } from '../interface/ente.interface';
 import { TriageSummary } from '../interface/triage-summary.interface';
 import { DettaglioTipologia } from '../interface/dettaglio-tipologia.interface';
 
@@ -145,7 +145,7 @@ export class SintesiRichiesta {
         /**
          * lista enti presa in carico
          */
-        public listaEntiPresaInCarico?: Ente[],
+        public listaEntiPresaInCarico?: EnteInterface[],
         /**
          * obiettivo sensibile
          */

@@ -25,7 +25,7 @@ import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi
 import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -58,7 +58,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledAzioniRichiesta = false;
     @Input() disabledComposizionePartenza = false;
-    @Input() listaEnti: Ente[];
+    @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();

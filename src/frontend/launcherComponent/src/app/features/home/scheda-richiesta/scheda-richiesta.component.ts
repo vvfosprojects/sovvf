@@ -7,7 +7,7 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { SchedaTelefonataState } from '../store/states/form-richiesta/scheda-telefonata.state';
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
-import { Ente } from 'src/app/shared/interface/ente.interface';
+import { EnteInterface } from 'src/app/shared/interface/ente.interface';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
@@ -38,7 +38,7 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
 
     // Loading
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;

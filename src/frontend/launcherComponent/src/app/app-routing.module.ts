@@ -81,6 +81,10 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.DashboardPortale,
+        loadChildren: () => import('./features/dashboard-portale/dashboard-portale.module').then(m => m.DashboardPortaleModule),
+    },
+    {
         path: RoutesPath.Profilo,
         loadChildren: () => import('./features/profilo/profilo.module').then(m => m.ProfiloModule),
         canActivate: [AuthGuard]
