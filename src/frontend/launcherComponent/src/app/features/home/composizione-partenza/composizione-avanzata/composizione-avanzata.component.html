@@ -59,7 +59,8 @@
                                 (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
                                 (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
                                 (hoverIn)="squadraHoverIn($event)"
-                                (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                                (hoverOut)="squadraHoverOut($event)">
+                        </app-squadra-composizione>
                     </ng-template>
                 </ul>
             </div>
@@ -219,7 +220,8 @@
                                             [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
                                             (eliminato)="eliminaBoxPartenza($event)"
                                             (squadraShortcut)="squadraShortcut($event)"
-                                            (deselezionato)="onClearDirection()"></app-box-nuova-partenza>
+                                            (deselezionato)="onClearDirection()">
+                    </app-box-nuova-partenza>
                 </div>
             </div>
         </div>

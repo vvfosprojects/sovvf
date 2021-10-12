@@ -7,14 +7,16 @@
     <div class="row px-3">
         <div class="clearfix"
              style="width: 65%">
-          <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
+            <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
             <div class="badge mx-1 py-1"
                  [ngClass]="autistaInSquadra ? 'badge-info' : 'badge-danger'"
                  [ngbPopover]="componenti"
                  placement="right"
                  triggers="mouseenter:mouseleave"
-                  style="vertical-align: text-bottom;">
-                <i class="fas fa-user mr-1"></i>
+                 style="vertical-align: text-bottom;">
+                <i class="fas mr-1"
+                   [class.fa-user]="autistaInSquadra"
+                   [class.fa-user-slash]="!autistaInSquadra"></i>
                 <ng-template [ngIf]="squadraComp?.membri?.length">
                     <div class="d-inline-block">
                         {{ squadraComp.membri.length }}
@@ -22,7 +24,7 @@
                 </ng-template>
             </div>
             <ng-template #componenti>
-                <h5 *ngIf="!autistaInSquadra">Autista non presente</h5>
+                <h5 class="font-weight-bolder">{{ squadraComp.nome }}</h5>
                 <div *ngFor="let c of squadraComp?.membri">
                     <div class="badge badge-secondary mr-1">
                         {{ c.descrizioneQualifica | truncate: 18 }}
@@ -31,6 +33,11 @@
                         {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
                     </div>
                 </div>
+                <h6 *ngIf="!autistaInSquadra"
+                    class="text-danger font-weight-bolder mt-3">
+                    <i class="fas fa-user-slash mr-1"></i>
+                    Autista non presente
+                </h6>
             </ng-template>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
@@ -65,7 +72,7 @@
                                     {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.genere }}
                                 </div>
                                 <div class="d-inline">
-                                  - {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.stato }}
+                                    - {{ squadraComp.mezziPreaccoppiati[0]?.mezzo?.stato }}
                                 </div>
                             </div>
                         </ng-template>
@@ -91,9 +98,9 @@
                         </button>
                         <ng-template #popMezziIntervento>
                             <div *ngFor="let m of squadraComp.listaMezzi" class="h6 text-center">
-                                  <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
-                                  <div class="d-inline">({{ m.mezzo.genere }})</div>
-                                  <div class="d-inline"> - {{ m.mezzo.stato }}</div>
+                                <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
+                                <div class="d-inline">({{ m.mezzo.genere }})</div>
+                                <div class="d-inline"> - {{ m.mezzo.stato }}</div>
                             </div>
                         </ng-template>
                     </ng-container>
