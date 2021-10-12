@@ -26,6 +26,7 @@ using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,15 +39,18 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IModificaInterventoChiuso _modificaInterventoChiuso;
+        private readonly IGetTipologieByCodice _getTipologie;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetRichiesta getRichiestaById,
-            IModificaInterventoChiuso modificaInterventoChiuso)
+            IModificaInterventoChiuso modificaInterventoChiuso,
+            IGetTipologieByCodice getTipologie)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
             _modificaInterventoChiuso = modificaInterventoChiuso;
+            _getTipologie = getTipologie;
         }
 
         public void Handle(UpDateInterventoCommand command)
@@ -58,6 +62,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             if(richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
+                var tipologia = _getTipologie.Get(new List<string> { command.Chiamata.Tipologie.First().Codice }).First();
+
                 lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
                 {
                     comune = new ComuneGAC()
@@ -84,8 +90,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
                     tipoUscita = new TipoUscita()
                     {
-                        codice = "",
-                        descrizione = ""
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
                     }
                 }).ToList();
 
