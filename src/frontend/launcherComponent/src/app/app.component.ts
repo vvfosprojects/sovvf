@@ -266,6 +266,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     return true;
                 case RoutesPath.Preferenze:
                     return true;
+                case RoutesPath.DashboardPortale:
+                    return true;
                 default:
                     return false;
             }
@@ -304,6 +306,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 case RoutesPath.RubricaPersonale:
                     return true;
                 case RoutesPath.Preferenze:
+                    return true;
+                case RoutesPath.DashboardPortale:
                     return true;
                 default:
                     return false;
