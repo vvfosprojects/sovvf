@@ -158,7 +158,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
-                    if(this.lstPartenzeInCorso.Count == 0)
+                    if (this.lstPartenzeInCorso.Count == 0)
                         SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
                     break;
@@ -645,7 +645,12 @@ namespace SO115App.API.Models.Classi.Soccorso
                     }
                 }
                 else
-                    return new InAttesa();
+                {
+                    if (_eventi.OrderByDescending(p => p.Istante).First() is ChiusuraRichiesta)
+                        return new Chiusa();
+                    else
+                        return new InAttesa();
+                }
             }
         }
 

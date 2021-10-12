@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                         objectid = richiesta.Esri_Param.ObjectId,
                         mongodb_id = richiesta.Id,
                         categoria = richiesta.Tipologie[0].Categoria,
-                        codice = richiesta.CodiceRichiesta,
+                        codice = richiesta.CodiceRichiesta != null ? richiesta.CodiceRichiesta : richiesta.Codice,
                         descrizione = richiesta.Descrizione,
                         stato = richiesta.Stato
                     }
