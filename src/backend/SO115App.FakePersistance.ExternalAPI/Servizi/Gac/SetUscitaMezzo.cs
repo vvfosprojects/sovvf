@@ -8,6 +8,8 @@ using SO115App.ExternalAPI.Fake.Classi;
 using System;
 using System.Linq;
 using System.Net.Http;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
     public class SetUscitaMezzo : ISetUscitaMezzo
@@ -15,16 +17,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<List<Response>> _client;
         private readonly IConfiguration _configuration;
+        private readonly IGetDescComuneProvincia _comuneService;
 
-        public SetUscitaMezzo(IHttpRequestManager<List<Response>> client, IGetToken getToken, IConfiguration configuration)
+        public SetUscitaMezzo(IHttpRequestManager<List<Response>> client, IGetToken getToken, IConfiguration configuration, IGetDescComuneProvincia comuneService)
         {
             _getToken = getToken;
             _configuration = configuration;
             _client = client;
+            _comuneService = comuneService;
         }
 
         public void Set(UscitaGAC uscita)
         {
+            //OTTENGO PROVINCIA E COMUNE
+            var territorio = _comuneService.GetComuneBy(uscita.comune.descrizione).Result;
+
+            uscita.comune.codice = territorio.First().codice;
+            uscita.provincia.codice = territorio.First().codice;
+
+            //USCITA GAC
             var lstUscite = new List<UscitaGAC>() { uscita };
             var jsonString = JsonConvert.SerializeObject(lstUscite);
             var content = new StringContent(jsonString);

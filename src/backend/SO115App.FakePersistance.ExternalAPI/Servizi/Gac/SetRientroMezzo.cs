@@ -25,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         }
 
         public void Set(RientroGAC rientro)
-        { 
+        {
             var lstRientri = new List<RientroGAC>() { rientro };
             var jsonString = JsonConvert.SerializeObject(lstRientri);
             var content = new StringContent(jsonString);

@@ -117,6 +117,7 @@ namespace SO115App.CompositionRoot
 
             #region Territorio
 
+            container.Register<IGetDescComuneProvincia, GetDescComuneProvincia>();
             container.Register<IGetAlberaturaISTAT, GetListaAlberaturaRegioni>();
 
             #endregion Territorio
