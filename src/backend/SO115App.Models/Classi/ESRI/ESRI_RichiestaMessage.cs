@@ -32,8 +32,8 @@ namespace SO115App.Models.Classi.ESRI
         [JsonProperty(PropertyName = "categoria")]
         public string categoria { get; set; }
 
-        [JsonProperty(PropertyName = "objectId")]
-        public int objectId { get; set; }
+        [JsonProperty(PropertyName = "objectid")]
+        public int objectid { get; set; }
     }
 
     public class geometry

@@ -53,7 +53,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
             _sender.SendNotification(command);
 
-            var infoESRI = _mappingESRIMessage.Map(command.Intervento);
+            var infoESRI = _mappingESRIMessage.Map(sintesi);
 
             _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
