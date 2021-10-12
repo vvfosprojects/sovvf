@@ -114,17 +114,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 switch (query.Filtro.Turno) //FILTRO PER TURNO
                 {
-                    case TurnoRelativo.Precedente: Parallel.ForEach(workshift.Precedente.Squadre, squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Precedente: if(workshift.Precedente != null) Parallel.ForEach(workshift.Precedente?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
 
-                    case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Successivo.Squadre, squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Successivo: if (workshift.Successivo != null) Parallel.ForEach(workshift.Successivo?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
 
-                    case null: Parallel.ForEach(workshift.Attuale.Squadre, squadra => lstSquadre.Add(squadra)); break;
+                    case null: if (workshift.Attuale != null) Parallel.ForEach(workshift.Attuale?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
                 }
 
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
 
-                lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(lstSquadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
+                lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(workshift.Squadre.SelectMany(s => s.Membri.Select(m => m.CodiceFiscale)).Distinct().ToList()).Result.Dati.Select(a => new MembroComposizione()
                 {
                     Nominativo = $"{a?.Nome} {a?.Cognome}",
                     CodiceFiscale = a?.CodFiscale
@@ -144,7 +144,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
                     Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)),
-                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale).Contains(a.CodiceFiscale))?.Select(a => new MembroComposizione()
+                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale.ToUpper()).Contains(a.CodiceFiscale.ToUpper()))?.Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
