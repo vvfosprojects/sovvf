@@ -12,11 +12,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 {
     public class SendUpDateRichiestaAssistenza : INotifyUpDateRichiesta
     {
-        private readonly IHttpRequestManager<ESRI_ResponseMessage> _client;
+        private readonly IHttpRequestManager<ESRI_UpDateResposeMessage> _client;
         private readonly IConfiguration _configuration;
         private readonly IGetToken_ESRI _getToken_ESRI;
 
-        public SendUpDateRichiestaAssistenza(IHttpRequestManager<ESRI_ResponseMessage> client,
+        public SendUpDateRichiestaAssistenza(IHttpRequestManager<ESRI_UpDateResposeMessage> client,
                                              IConfiguration configuration,
                                              IGetToken_ESRI getToken_ESRI)
         {
@@ -48,8 +48,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
-            if (result != null && result.addResults[0].success == false)
-                throw new Exception($"Errore servizio ESRI: {result.addResults[0].error.description}");
+            if (result != null && result.updateResults[0].success == false)
+                throw new Exception($"Errore servizio ESRI");
         }
     }
 }

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Fonogramma;
@@ -111,7 +112,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public DateTime? IstanteChiusura { get; internal set; }
 
-        #region GESTIONE STATI 
+        #region GESTIONE STATI
 
         /// <summary>
         ///   Indica se la richiesta è sospesa
@@ -213,7 +214,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
             }
         }
 
-        #endregion
+        #endregion GESTIONE STATI
 
         /// <summary>
         ///   Priorita della richiesta
@@ -292,7 +293,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
         [DataType(DataType.DateTime)]
-
         public DateTime? IstantePresaInCarico { get; set; }
 
         ///<summary>
@@ -361,6 +361,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Lista eventi associato alla richiesta
         /// </summary>
         public List<EventoSintesiRichiesta> Eventi { get; set; }
+
         public string Motivazione { get; set; }
 
         public Fonogramma Fonogramma { get; set; }
@@ -382,5 +383,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
         /// </summary>
         public bool Esercitazione { get; set; }
+
+        public ESRI Esri_Param { get; set; }
     }
 }

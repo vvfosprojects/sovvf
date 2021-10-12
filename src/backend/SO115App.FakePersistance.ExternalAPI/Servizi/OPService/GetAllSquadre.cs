@@ -63,9 +63,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             listaSedi.Add(codice);
 
             var lstSquadre = new ConcurrentBag<ComposizioneSquadra>();
-
-            //var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(listaSedi));
-
             var lstDistaccamenti = await Task.Run(() =>
             {
                 var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
