@@ -1,15 +1,11 @@
-.clear-search-mezzi {
-    transform: translate(230px, -32px);
-    position: fixed;
-    cursor: pointer
-}
-
 .clear-search-squadre {
-    transform: translate(190px, -32px);
+    transform: translate(225px, -32px);
     position: fixed;
     cursor: pointer
 }
 
-.font-comp-xl {
-    font-size: 130% !important;
+.clear-search-mezzi {
+    transform: translate(265px, -32px);
+    position: fixed;
+    cursor: pointer
 }
