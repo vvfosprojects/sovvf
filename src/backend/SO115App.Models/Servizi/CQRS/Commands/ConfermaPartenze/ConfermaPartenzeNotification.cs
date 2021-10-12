@@ -32,37 +32,24 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
         private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
         private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
 
         public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
                                             ICallMatrix callMatrix,
-                                            INotifyUpDateRichiesta notifyUpDateRichiesta)
+                                            INotifyUpDateRichiesta notifyUpDateRichiesta,
+                                            IMappingESRIMessage mappingESRIMessage)
         {
             _sender = sender;
             _callMatrix = callMatrix;
             _notifyUpDateRichiesta = notifyUpDateRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
         }
 
         public void Notify(ConfermaPartenzeCommand command)
         {
             _sender.SendNotification(command);
 
-            var infoESRI = new ESRI_RichiestaMessage()
-            {
-                geometry = new geometry()
-                {
-                    x = command.Richiesta.Localita.Coordinate.Longitudine,
-                    y = command.Richiesta.Localita.Coordinate.Latitudine
-                },
-                attributes = new attributes()
-                {
-                    objectId = command.Richiesta.Esri_Param.ObjectId,
-                    mongodb_id = command.Richiesta.Id,
-                    categoria = command.Richiesta.Tipologie[0],
-                    codice = command.Richiesta.CodRichiesta,
-                    descrizione = command.Richiesta.Descrizione,
-                    stato = command.Richiesta.TestoStatoRichiesta
-                }
-            };
+            var infoESRI = _mappingESRIMessage.Map(command.Richiesta);
 
             _notifyUpDateRichiesta.UpDate(infoESRI);
 

@@ -33,16 +33,19 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ICallMatrix _callMatrix;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
         private readonly INotify_ESRIAddRichiesta _notify_ESRIAddRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
 
         public AddInterventoNotifier(INotifyInserimentoChiamata sender,
                                      ICallMatrix callMatrix,
                                      IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
-                                     INotify_ESRIAddRichiesta notify_ESRIAddRichiesta)
+                                     INotify_ESRIAddRichiesta notify_ESRIAddRichiesta,
+                                     IMappingESRIMessage mappingESRIMessage)
         {
             _sender = sender;
             _callMatrix = callMatrix;
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
             _notify_ESRIAddRichiesta = notify_ESRIAddRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
         }
 
         public void Notify(AddInterventoCommand command)
@@ -50,24 +53,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
             _sender.SendNotification(command);
 
-            // MongDb_Id, codice, stato, descrizione, categoria
-
-            var infoESRI = new ESRI_RichiestaMessage()
-            {
-                geometry = new geometry()
-                {
-                    x = sintesi.Localita.Coordinate.Longitudine,
-                    y = sintesi.Localita.Coordinate.Latitudine
-                },
-                attributes = new attributes()
-                {
-                    mongodb_id = sintesi.Id,
-                    categoria = sintesi.Tipologie[0].Categoria,
-                    codice = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice,
-                    descrizione = sintesi.Descrizione,
-                    stato = sintesi.Stato
-                }
-            };
+            var infoESRI = _mappingESRIMessage.Map(command.Intervento);
 
             _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
