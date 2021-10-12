@@ -78,21 +78,21 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             result.Funzionari = new ConteggioFunzionari()
             {
-                Current = workshift.Result.Attuale.Funzionari.Select(m => new Componente()
+                Current = workshift.Result.Attuale?.Funzionari.Select(m => new Componente()
                 {
                     CodiceFiscale = m.CodiceFiscale,
                     DescrizioneQualifica = m.Ruolo,
                     Nominativo = $"{m.Nome} {m.Cognome}",
                     Ruolo = m.Ruolo
                 }).ToList(),
-                Next = workshift.Result.Successivo.Funzionari.Select(m => new Componente()
+                Next = workshift.Result.Successivo?.Funzionari.Select(m => new Componente()
                 {
                     CodiceFiscale = m.CodiceFiscale,
                     DescrizioneQualifica = m.Ruolo,
                     Nominativo = $"{m.Nome} {m.Cognome}",
                     Ruolo = m.Ruolo
                 }).ToList(),
-                Previous = workshift.Result.Precedente.Funzionari.Select(m => new Componente()
+                Previous = workshift.Result.Precedente?.Funzionari.Select(m => new Componente()
                 {
                     CodiceFiscale = m.CodiceFiscale,
                     DescrizioneQualifica = m.Ruolo,
@@ -107,16 +107,16 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             result.SquadreServizio = new ConteggioPersonale()
             {
-                Current = workshift.Result.Attuale.Squadre.Count(),
-                Next = workshift.Result.Successivo.Squadre.Count(),
-                Previous = workshift.Result.Precedente.Squadre.Count(),
+                Current = workshift.Result.Attuale?.Squadre.Count() ?? 0,
+                Next = workshift.Result.Successivo?.Squadre.Count() ?? 0,
+                Previous = workshift.Result.Precedente?.Squadre.Count() ?? 0,
             };
 
             result.PersonaleTotale = new ConteggioPersonale()
             {
-                Current = workshift.Result.Attuale.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
-                Next = workshift.Result.Successivo.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
-                Previous = workshift.Result.Precedente.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count(),
+                Current = workshift.Result.Attuale?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
+                Next = workshift.Result.Successivo?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
+                Previous = workshift.Result.Precedente?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
             };
 
             return result;

@@ -6,7 +6,9 @@ using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,14 +21,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly ISetUscitaMezzo _uscitaMezzo;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
         private readonly IModificaInterventoChiuso _modificaIntervento;
+        private readonly IGetTipologieByCodice _getTipologie;
 
-        public SostituzionePartenzaCommandHandler(IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo, IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento)
+        public SostituzionePartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpDateRichiestaAssistenza updateRichiesta, ISetRientroMezzo rientroMezzo, ISetUscitaMezzo uscitaMezzo, IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento)
         {
             _updateRichiesta = updateRichiesta;
             _rientroMezzo = rientroMezzo;
             _uscitaMezzo = uscitaMezzo;
             _getMaxCodicePartenza = getMaxCodicePartenza;
             _modificaIntervento = modificaIntervento;
+            _getTipologie = getTipologie;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
@@ -107,6 +111,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 #region Comunicazione a servizi GAC
 
+                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
                 {
                     targa = PartenzaMontanteNuova.CodiceMezzo,
@@ -123,7 +129,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere,
                     dataRientro = PartenzaSmontante.Istante,
                     dataUscita = PartenzaMontanteNuova.Istante,
-                    tipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
+                    tipoUscita = new TipoUscita()
+                    {
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
+                    }
                 });
 
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
@@ -142,7 +152,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere,
                     dataRientro = PartenzaMontante.Istante,
                     dataUscita = PartenzaSmontanteNuova.Istante,
-                    tipoUscita = new TipoUscita() { codice = "", descrizione = "Sostituzione" }
+                    tipoUscita = new TipoUscita()
+                    {
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
+                    }
                 });
 
                 //RIENTRO SMONTANTE

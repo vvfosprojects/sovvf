@@ -24,9 +24,11 @@ using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
@@ -42,13 +44,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IUpDateRichiestaAssistenza _upDateRichiesta;
         private readonly ISetUscitaMezzo _setUscitaMezzo;
         private readonly ISetRientroMezzo _setRientroMezzo;
+        private readonly IGetTipologieByCodice _getTipologie;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
             ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta,
-            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo)
+            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
@@ -56,6 +59,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             _setRientroMezzo = setRientroMezzo;
             _setUscitaMezzo = setUscitaMezzo;
+
+            _getTipologie = getTipologie;
         }
 
         /// <summary>
@@ -105,6 +110,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(p => p.Partenza.Codice.Equals(partenza.Partenza.Codice)).Istante;
 
+                            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+
                             _setUscitaMezzo.Set(new UscitaGAC()
                             {
                                 targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
@@ -116,8 +123,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
                                 tipoUscita = new TipoUscita()
                                 {
-                                    codice = "",
-                                    descrizione = command.Richiesta.Tipologie.First()
+                                    codice = tipologia.Codice,
+                                    descrizione = tipologia.Descrizione
                                 },
                                 comune = new ComuneGAC()
                                 {

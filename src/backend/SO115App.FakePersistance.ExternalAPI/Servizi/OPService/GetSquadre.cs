@@ -28,7 +28,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         public async Task<WorkShift> GetAllByCodiceDistaccamento(string Codice)
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value); 
-            var url = new Uri(baseurl, "api/v1/so-workshift" + "?id_sede=" + Codice);
+            var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + Codice);
 
             try
             {
@@ -36,7 +36,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
                 return result ?? JsonSerializer.Deserialize<WorkShift>(mock);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return JsonSerializer.Deserialize<WorkShift>(mock);
             }

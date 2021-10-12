@@ -16,14 +16,14 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         public SquadraWorkShift Attuale { get; set; }
 
         [JsonIgnore()]
-        public Squadra[] Squadre => new List<Squadra[]> { Attuale.Squadre, Precedente.Squadre, Successivo.Squadre }
+        public Squadra[] Squadre => new List<Squadra[]> { Attuale?.Squadre, Precedente?.Squadre, Successivo?.Squadre }
             .SelectMany(l => l)
             .GroupBy(s => s.Codice)
             .Select(s => s.First())
             .ToArray();
 
         [JsonIgnore()]
-        public Officer[] Funzionari => new List<Officer[]> { Attuale.Funzionari, Precedente.Funzionari, Successivo.Funzionari }
+        public Officer[] Funzionari => new List<Officer[]> { Attuale?.Funzionari, Precedente?.Funzionari, Successivo?.Funzionari }
             .SelectMany(l => l)
             .GroupBy(s => s.CodiceFiscale)
             .Select(s => s.First())
