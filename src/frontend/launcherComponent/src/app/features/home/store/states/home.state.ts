@@ -3,7 +3,6 @@ import { ClearDataHome, GetDataHome, SetBoundsIniziale } from '../actions/home.a
 import { ClearRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
-import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, SetBoxPersonaleCurrent } from '../actions/boxes/box-personale.actions';
@@ -72,7 +71,6 @@ export class HomeState {
         dispatch([
             new ClearCentroMappa(),
             new ClearSediMarkers(),
-            new ClearRichiesteMarkers(),
             new ClearChiamateMarkers(),
             new ClearBoxRichieste(),
             new ClearBoxMezzi(),

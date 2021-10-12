@@ -18,7 +18,7 @@ import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-r
 import { PatchEntiIntervenutiRichiesta, PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
@@ -37,7 +37,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
 
-    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
 
     subscription: Subscription = new Subscription();
 
@@ -102,7 +102,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             case StatoRichiestaActions.Chiusa:
                 if (this.richiesta.stato === StatoRichiesta.Chiamata) {
                     modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                    const enti = this.store.selectSnapshot(EntiState.enti) as Ente[];
+                    const enti = this.store.selectSnapshot(EntiState.enti) as EnteInterface[];
                     modalConferma.componentInstance.chiusuraChiamata = true;
                     modalConferma.componentInstance.enti = enti;
                 } else {

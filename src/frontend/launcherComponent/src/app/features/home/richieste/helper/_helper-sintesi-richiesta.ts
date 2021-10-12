@@ -11,7 +11,7 @@ import { round1decimal } from '../../../../shared/helper/function-generiche';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { Ente } from '../../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../../shared/interface/ente.interface';
 
 export class HelperSintesiRichiesta {
 
@@ -276,11 +276,11 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    _getEntiByCod(listEnti: Ente[], codEnti: number[]): Ente[] {
+    _getEntiByCod(listEnti: EnteInterface[], codEnti: number[]): EnteInterface[] {
         if (listEnti?.length && codEnti?.length) {
             const enti = [];
             codEnti.forEach((codEnte: number) => {
-                listEnti.forEach((e: Ente) => {
+                listEnti.forEach((e: EnteInterface) => {
                     if (e.codice === codEnte) {
                         enti.push(e);
                     }

@@ -2,22 +2,13 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import {
-    ClearFiltroSelezionatoRichieste,
-    ResetFiltriSelezionatiRichieste,
-    SetFiltroSelezionatoRichieste,
-} from '../store/actions/filterbar/filtri-richieste.actions';
+import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste, } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { SetRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import {
-    ChangeView,
-    ToggleChiamata,
-    ToggleMezziInServizio,
-    ToggleSchedeContatto
-} from '../store/actions/view/view.actions';
+import { ChangeView, ToggleChiamata, ToggleMezziInServizio, ToggleSchedeContatto } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
@@ -93,7 +84,7 @@ export class FilterbarComponent {
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
-     * @param:: store
+     * @param: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;

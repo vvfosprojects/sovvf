@@ -21,18 +21,10 @@ import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
-import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
-import {
-    CheckboxError,
-    ClearMergeSchedeContatto,
-    InitSaveMergeSchedeContatto,
-    SetMergeSchedaId,
-    ToggleModalitaMerge
-} from '../store/actions/schede-contatto/merge-schede-contatto.actions';
+import { CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
-import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
@@ -88,7 +80,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                 private modal: NgbModal) {
         this.getRicerca();
         this.getSchedeContatto();
-        this.getSchedeContattoMarkers();
         this.getSchedeContattoHover();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
@@ -106,7 +97,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearFiltriSchedeContatto(),
             new ClearListaSchedeContatto(),
-            new ClearSchedeContattoMarkers(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
@@ -131,11 +121,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                 this.schedeContatto = schedeContatto;
             })
         );
-    }
-
-    getSchedeContattoMarkers(): void {
-        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
-        this.store.dispatch(new GetSchedeContattoMarkers(areaMappa));
     }
 
     getSchedeContattoHover(): void {

@@ -8,7 +8,7 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-interventi-prossimita-modal',
@@ -29,7 +29,7 @@ export class InterventiProssimitaModalComponent {
     composizionePartenza = true;
     loadingEliminaPartenza = false;
     idDaSganciare = '';
-    listaEnti: Ente[];
+    listaEnti: EnteInterface[];
 
     submitted: boolean;
     methods = new HelperSintesiRichiesta();

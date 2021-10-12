@@ -242,14 +242,16 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     setUrgenza(): void {
-        const schedaTelefonata: SchedaTelefonataInterface = {
-            tipo: 'inserita',
-            markerChiamata: this.chiamataMarker
-        };
-        schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
-        this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, { urgente: true }));
-        this.checkedUrgenza = true;
-        this.disableUrgenza = true;
+        if (!this.disableUrgenza) {
+            const schedaTelefonata: SchedaTelefonataInterface = {
+                tipo: 'inserita',
+                markerChiamata: this.chiamataMarker
+            };
+            schedaTelefonata.azioneChiamata = AzioneChiamataEnum.MettiInCoda;
+            this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, { urgente: true }));
+            this.checkedUrgenza = true;
+            this.disableUrgenza = true;
+        }
     }
 
     closeModal(type: string): void {

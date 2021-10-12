@@ -5,7 +5,7 @@ import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-mar
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
 import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ResponseInterface } from './response/response.interface';
-import { Ente } from './ente.interface';
+import { EnteInterface } from './ente.interface';
 
 export interface Welcome {
     boxListaMezzi: BoxMezzi;
@@ -15,6 +15,6 @@ export interface Welcome {
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaTipologicheMezzi;
-    rubrica: Ente[];
+    rubrica: EnteInterface[];
     zoneEmergenza: string[];
 }

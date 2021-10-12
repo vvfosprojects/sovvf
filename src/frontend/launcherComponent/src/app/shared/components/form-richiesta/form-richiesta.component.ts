@@ -28,7 +28,7 @@ import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { Ente } from 'src/app/shared/interface/ente.interface';
+import { EnteInterface } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../modal/confirm-modal/confirm-modal.component';
 import { ListaSchedeContattoModalComponent } from '../../modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { InterventiProssimitaModalComponent } from '../../modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
@@ -36,23 +36,11 @@ import { Sede } from '../../model/sede.model';
 import { TriageChiamataModalComponent } from '../../modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../../features/home/store/actions/view/view.actions';
 import { ChiudiRichiestaModifica, ClearRichiestaModifica, ModificaIndirizzo } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import {
-    ClearDettaglioTipologiaTriageChiamata,
-    ClearDettagliTipologie,
-    ClearTipologiaTriageChiamata,
-    ClearTriageChiamata,
-    GetDettagliTipologieByCodTipologia
-} from '../../store/actions/triage-modal/triage-modal.actions';
+import { ClearDettaglioTipologiaTriageChiamata, ClearDettagliTipologie, ClearTipologiaTriageChiamata, ClearTriageChiamata, GetDettagliTipologieByCodTipologia } from '../../store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
-import {
-    ClearPosTriageSummary,
-    ClearTriageSummary,
-    SetPosTriageSummary,
-    SetTriageSummary
-} from '../../store/actions/triage-summary/triage-summary.actions';
+import { ClearPosTriageSummary, ClearTriageSummary, SetPosTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { getPrioritaTriage } from '../../helper/function-triage';
-import { ClearRichiestaMarkerModifica } from '../../../features/home/store/actions/maps/richieste-markers.actions';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { roundToDecimal } from '../../helper/function-generiche';
@@ -81,7 +69,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() interventiStessaVia: SintesiRichiesta[];
     @Input() countInterventiChiusiStessoIndirizzo: number;
     @Input() interventiChiusiStessoIndirizzo: SintesiRichiesta[];
-    @Input() enti: Ente[];
+    @Input() enti: EnteInterface[];
     @Input() disabledInviaPartenza = false;
     @Input() resetChiamata: boolean;
     @Input() loadingNuovaChiamata: boolean;
@@ -185,7 +173,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.submitted = false;
         if (this.richiestaModifica) {
             this.store.dispatch([
-                new ClearRichiestaMarkerModifica(),
                 new ChiudiRichiestaModifica()
             ]);
         } else {

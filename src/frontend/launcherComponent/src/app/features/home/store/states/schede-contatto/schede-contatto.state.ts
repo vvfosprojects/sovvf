@@ -32,7 +32,7 @@ import { SchedeContattoService } from '../../../../../core/service/schede-contat
 import { FiltersSchedeContatto } from '../../../../../shared/interface/filters/filters-schede.contatto';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
+import { setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
@@ -42,11 +42,9 @@ import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
-import { RefreshSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaContattoModalComponent } from '../../../../../shared/modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable, NgZone } from '@angular/core';
-import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
 import { FiltersInterface } from '../../../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
@@ -421,7 +419,6 @@ export class SchedeContattoState {
         this.schedeContattoService.mergeSchedeContatto(action.schedeSelezionateId).subscribe(() => {
             dispatch([
                 new ClearMergeSchedeContatto(),
-                new RefreshSchedeContattoMarkers(),
                 new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo', null, null, true)
             ]);
         });
@@ -435,7 +432,6 @@ export class SchedeContattoState {
             console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
             dispatch([
                 new ClearMergeSchedeContatto(),
-                new RefreshSchedeContattoMarkers(),
                 new ShowToastr(ToastrType.Success, 'Undo schede contatto', 'Rimozione raggruppamento completato con successo', null, null, true)
             ]);
         });
@@ -457,11 +453,6 @@ export class SchedeContattoState {
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
-                modal.result.then(
-                    () => {
-                    },
-                    () => dispatch(new ClearMarkerSCSelezionato())
-                );
             });
         } else {
             this.ngZone.run(() => {
@@ -474,11 +465,6 @@ export class SchedeContattoState {
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
-                modal.result.then(
-                    () => {
-                    },
-                    () => dispatch(new ClearMarkerSCSelezionato())
-                );
             });
         }
     }

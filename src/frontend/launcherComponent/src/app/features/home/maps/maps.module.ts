@@ -12,13 +12,7 @@ import { ModalNuovaChiamataComponent } from './modal-nuova-chiamata/modal-nuova-
 /**
  * Provider
  */
-import {
-    SediMarkerService,
-    RichiesteMarkerService,
-    ChiamateMarkerService
-} from '../../../core/service/maps-service';
-import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
+import { SediMarkerService, ChiamateMarkerService } from '../../../core/service/maps-service';
 import { MapService } from './map-service/map-service.service';
 /**
  * Ngxs
@@ -27,11 +21,9 @@ import { NgxsModule } from '@ngxs/store';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerState } from '../store/states/maps/marker.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
-import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
-import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { MappaState } from '../store/states/maps/mappa.state';
 
 @NgModule({
@@ -47,10 +39,8 @@ import { MappaState } from '../store/states/maps/mappa.state';
                 CentroMappaState,
                 AreaMappaState,
                 MarkerState,
-                RichiesteMarkersState,
                 SediMarkersState,
-                ChiamateMarkersState,
-                SchedeContattoMarkersState
+                ChiamateMarkersState
             ]
         )
     ],
@@ -63,9 +53,6 @@ import { MappaState } from '../store/states/maps/mappa.state';
         MapsComponent
     ],
     providers: [
-        RichiesteMarkerAdapterService,
-        SchedeContattoMarkerService,
-        RichiesteMarkerService,
         SediMarkerService,
         ChiamateMarkerService,
         MapService

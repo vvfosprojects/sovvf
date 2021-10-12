@@ -33,16 +33,19 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ICallMatrix _callMatrix;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
         private readonly INotify_ESRIAddRichiesta _notify_ESRIAddRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
 
         public AddInterventoNotifier(INotifyInserimentoChiamata sender,
                                      ICallMatrix callMatrix,
                                      IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
-                                     INotify_ESRIAddRichiesta notify_ESRIAddRichiesta)
+                                     INotify_ESRIAddRichiesta notify_ESRIAddRichiesta,
+                                     IMappingESRIMessage mappingESRIMessage)
         {
             _sender = sender;
             _callMatrix = callMatrix;
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
             _notify_ESRIAddRichiesta = notify_ESRIAddRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
         }
 
         public void Notify(AddInterventoCommand command)
@@ -50,26 +53,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
             _sender.SendNotification(command);
 
-            // MongDb_Id, codice, stato, descrizione, categoria
+            var infoESRI = _mappingESRIMessage.Map(command.Intervento);
 
-            var infoESRI = new ESRI_RichiestaMessage()
-            {
-                Geometry = new geometry()
-                {
-                    X = sintesi.Localita.Coordinate.Longitudine.ToString(),
-                    Y = sintesi.Localita.Coordinate.Latitudine.ToString()
-                },
-                Attributes = new attributes()
-                {
-                    Mongodb_id = sintesi.Id,
-                    Categoria = sintesi.Tipologie[0].Categoria,
-                    Codice = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice,
-                    Descrizione = sintesi.Descrizione,
-                    Stato = sintesi.Stato
-                }
-            };
-
-            //_notify_ESRIAddRichiesta.Call(infoESRI);
+            _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
             var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
             var infoMatrix = new MessageMatrix()

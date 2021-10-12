@@ -18,7 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Classi.Matrix;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System;
@@ -29,16 +31,27 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
     {
         private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
+        private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
 
-        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender, ICallMatrix callMatrix)
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
+                                            ICallMatrix callMatrix,
+                                            INotifyUpDateRichiesta notifyUpDateRichiesta,
+                                            IMappingESRIMessage mappingESRIMessage)
         {
             _sender = sender;
             _callMatrix = callMatrix;
+            _notifyUpDateRichiesta = notifyUpDateRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
         }
 
         public void Notify(ConfermaPartenzeCommand command)
         {
             _sender.SendNotification(command);
+
+            var infoESRI = _mappingESRIMessage.Map(command.Richiesta);
+
+            _notifyUpDateRichiesta.UpDate(infoESRI);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {

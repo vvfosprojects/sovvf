@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 import { MotivazioneChiusuraRichiestaEnum } from '../../enum/motivazione-chiusura-richiesta.enum';
 
 @Component({
@@ -18,7 +18,7 @@ export class ActionRichiestaModalComponent implements OnInit {
     bottoni: any[];
 
     chiusuraChiamata: boolean;
-    enti: Ente[];
+    enti: EnteInterface[];
 
     chiusuraIntervento: boolean;
     motivazioniChiusuraIntervento: string[];
@@ -73,9 +73,9 @@ export class ActionRichiestaModalComponent implements OnInit {
         }
     }
 
-    onChangeSelectEnte(ente: Ente): void {
+    onChangeSelectEnte(ente: EnteInterface): void {
         let entiSelezionati = this.f.enti.value;
-        const isSelezionato = entiSelezionati?.filter((e: Ente) => e.codice === ente.codice)[0];
+        const isSelezionato = entiSelezionati?.filter((e: EnteInterface) => e.codice === ente.codice)[0];
         if (!isSelezionato) {
             if (!entiSelezionati) {
                 entiSelezionati = [];
@@ -83,7 +83,7 @@ export class ActionRichiestaModalComponent implements OnInit {
             entiSelezionati.push(ente);
             this.f.enti.patchValue(entiSelezionati);
         } else {
-            entiSelezionati = entiSelezionati.filter((e: Ente) => e.codice !== ente.codice);
+            entiSelezionati = entiSelezionati.filter((e: EnteInterface) => e.codice !== ente.codice);
             this.f.enti.patchValue(entiSelezionati);
         }
     }

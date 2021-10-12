@@ -4,7 +4,7 @@ import {
     ResponseAddEnteRubricaInterface,
     ResponseDeleteEnteRubricaInterface,
     ResponseUpdateEnteRubricaInterface,
-    Ente
+    EnteInterface
 } from 'src/app/shared/interface/ente.interface';
 import { ClearFormEnte, GetCategorieEnti, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte, SetCategorieEnti, SetEnti } from '../../actions/enti/enti.actions';
 import { RubricaStateModel } from '../../../../features/rubrica/store/states/rubrica/rubrica.state';
@@ -13,7 +13,7 @@ import { TipoTelefono } from '../../../enum/tipo-telefono.enum';
 import { Injectable } from '@angular/core';
 
 export interface EntiStateModel {
-    enti: Ente[];
+    enti: EnteInterface[];
     categorieEnti: CategoriaEnte[];
     enteForm: {
         model?: {
@@ -67,7 +67,7 @@ export const entiStateDefaults: EntiStateModel = {
 export class EntiState {
 
     @Selector()
-    static enti(state: EntiStateModel): Ente[] {
+    static enti(state: EntiStateModel): EnteInterface[] {
         return state.enti;
     }
 

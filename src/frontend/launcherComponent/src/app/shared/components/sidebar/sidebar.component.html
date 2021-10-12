@@ -18,6 +18,13 @@
         Disconnettiti
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover mt-5"
+            [routerLink]="['/' + RoutesPath.DashboardPortale]"
+            [class.btn-sidebar-selected]="url === '/dashboard-portale'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-columns"></i>
+        Dashboard Portale
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.GestioneUtenti]"
             [class.btn-sidebar-selected]="url === '/gestione-utenti'"
             [routerLinkActive]="['text-dark']">

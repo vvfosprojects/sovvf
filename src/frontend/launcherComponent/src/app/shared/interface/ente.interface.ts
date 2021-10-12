@@ -26,7 +26,7 @@ export interface AddEnteInterface {
 }
 
 export interface ResponseAddEnteRubricaInterface {
-    data: Ente;
+    data: EnteInterface;
     pagination: PaginationInterface;
 }
 
@@ -44,7 +44,7 @@ export interface UpdateEnteRubricaInterface {
 }
 
 export interface ResponseUpdateEnteRubricaInterface {
-    data: Ente;
+    data: EnteInterface;
     pagination: PaginationInterface;
 }
 
@@ -57,7 +57,7 @@ export interface ResponseDeleteEnteRubricaInterface {
     pagination: PaginationInterface;
 }
 
-export interface Ente {
+export interface EnteInterface {
     id: string;
     codice: number;
     descrizione: string;
