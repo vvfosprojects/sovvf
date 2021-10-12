@@ -73,11 +73,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.setGenereMezzoDefault();
         }
 
-        if (changes?.competenze && this.richiesta && changes?.competenze?.previousValue) {
-            // Check distaccamenti quando Chiamata
-            this.checkDistaccamenti();
-        } else if (changes?.disableComposizioneMode && this.richiesta) {
-            // Check distaccamenti quando Intervento
+        if (this.richiesta && (changes?.loadingMezzi || changes?.loadingMezzi)) {
             this.checkDistaccamenti();
         }
 
