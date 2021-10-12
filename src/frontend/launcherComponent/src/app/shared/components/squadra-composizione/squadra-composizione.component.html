@@ -8,7 +8,8 @@
         <div class="clearfix"
              style="width: 65%">
           <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
-            <div class="badge badge-info mx-1 py-1"
+            <div class="badge mx-1 py-1"
+                 [ngClass]="autistaInSquadra ? 'badge-info' : 'badge-danger'"
                  [ngbPopover]="componenti"
                  placement="right"
                  triggers="mouseenter:mouseleave"
@@ -21,6 +22,7 @@
                 </ng-template>
             </div>
             <ng-template #componenti>
+                <h5 *ngIf="!autistaInSquadra">Autista non presente</h5>
                 <div *ngFor="let c of squadraComp?.membri">
                     <div class="badge badge-secondary mr-1">
                         {{ c.descrizioneQualifica | truncate: 18 }}
@@ -30,9 +32,6 @@
                     </div>
                 </div>
             </ng-template>
-            <div *ngIf="!autistaInSquadra" class="badge badge-danger mr-1 py-1" style="vertical-align: text-bottom;" ngbTooltip="Nessun autista">
-                <i class="fas fa-user-slash"></i>
-             </div>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
                 {{ squadraComp?.nome | truncate: 7 }}</div>
