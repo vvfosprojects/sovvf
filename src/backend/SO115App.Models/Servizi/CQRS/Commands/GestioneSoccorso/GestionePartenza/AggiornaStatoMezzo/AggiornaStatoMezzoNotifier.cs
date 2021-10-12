@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
@@ -25,15 +27,28 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class AggiornaStatoMezzoNotifier : ICommandNotifier<AggiornaStatoMezzoCommand>
     {
         private readonly INotifyAggiornaStatoMezzo _sender;
+        private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public AggiornaStatoMezzoNotifier(INotifyAggiornaStatoMezzo sender)
+        public AggiornaStatoMezzoNotifier(INotifyAggiornaStatoMezzo sender,
+                                          INotifyUpDateRichiesta notifyUpDateRichiesta,
+                                          IMappingESRIMessage mappingESRIMessage,
+                                          IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _sender = sender;
+            _notifyUpDateRichiesta = notifyUpDateRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         public void Notify(AggiornaStatoMezzoCommand command)
         {
             _sender.SendNotification(command);
+
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
+            var infoESRI = _mappingESRIMessage.Map(sintesi);
+            _notifyUpDateRichiesta.UpDate(infoESRI);
         }
     }
 }

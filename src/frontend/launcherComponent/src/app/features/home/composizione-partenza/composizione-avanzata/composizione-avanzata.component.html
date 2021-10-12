@@ -7,8 +7,8 @@
         <div class="card min-h-comp">
             <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
-                <div class="float-left pt-2">
-                    <i class="fas fa-users mr-2"></i>
+                <div class="float-left h3 mb-0 pt-1 pl-2">
+                    <i class="fas fa-users mr-1"></i>
                     Squadre
                 </div>
                 <div class="float-right w-50">
@@ -19,7 +19,6 @@
                            [ngClass]="{'border-danger': ricercaSquadre?.length}"
                            type="text"
                            name="ricercaSquadre"
-                           style="font-size: 115%"
                            placeholder="Cerca..."
                            [(ngModel)]="ricercaSquadre"
                            appDebounceKeyUp
@@ -83,8 +82,8 @@
         <div class="card mx-auto min-h-comp">
             <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
-                <div class="float-left pt-2">
-                    <i class="fas fa-truck mr-2"></i>
+                <div class="float-left h3 mb-0 pt-1 pl-2">
+                    <i class="fas fa-truck mr-1"></i>
                     Mezzi
                 </div>
                 <div class="float-right"
@@ -96,7 +95,6 @@
                            [ngClass]="{'border-danger': ricercaMezzi?.length}"
                            type="text"
                            name="ricercaMezzi"
-                           style="font-size: 115%"
                            placeholder="Cerca..."
                            [(ngModel)]="ricercaMezzi" appDebounceKeyUp
                            (debounceKeyUp)="onSearchMezzi()"
