@@ -5,6 +5,7 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -52,7 +53,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
-    @Output() selezione = new EventEmitter<string>();
+    @Output() selezione = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
     @Output() deselezione = new EventEmitter<boolean>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
@@ -83,7 +84,7 @@ export class ListaRichiesteComponent implements OnChanges {
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta?.id !== this.idRichiestaSelezionata) {
-            this.selezione.emit(richiesta.id);
+            this.selezione.emit({ idRichiesta: richiesta.id, coordinate: richiesta.localita.coordinate });
         } else {
             this.deselezione.emit(true);
         }
@@ -97,7 +98,7 @@ export class ListaRichiesteComponent implements OnChanges {
     /* Gestisce il double click sulla richiesta */
     richiestaDoubleClick(richiesta: SintesiRichiesta): void {
         if (richiesta?.id !== this.idRichiestaSelezionata) {
-            this.selezione.emit(richiesta.id);
+            this.selezione.emit({ idRichiesta: richiesta.id, coordinate: richiesta.localita.coordinate });
         } else {
             this.deselezione.emit(true);
         }

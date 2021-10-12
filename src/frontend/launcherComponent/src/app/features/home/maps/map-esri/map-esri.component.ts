@@ -38,6 +38,7 @@ import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { SetCentroMappa, SetZoomCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -193,25 +194,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                             this.addMapImageLayer(lAdd).then();
                         }
 
-                        // Feature Layers da aggiungere all'init della mappa
-                        const featuresLayersToAdd = [
-                            // Localizzazione Mezzi VVF
-                            'd10a69bdc9c449f881b9cac24f3bd621',
-                            // Aziende RIR
-                            '0b2beb85590a4944b173199f62ed557b',
-                            // Interventi
-                            'ef60e8464bda40ada758e2753fcab3a6'
-                        ];
-
-                        for (const lAdd of featuresLayersToAdd) {
-                            this.addFeatureLayer(lAdd).then();
-                        }
-
                         // Feature Layers su cui fare il "toggle" (da acceso a spento o viceversa) all'init della mappa
                         const layersToToggle = [
-                            'HERE_ITALIA',
-                            'Sedi Operative',
-                            'Approvvigionamenti Idrici VVF_Idranti'
+                            'Sedi Operative'
                         ];
 
                         for (const lToggle of layersToToggle) {
@@ -269,7 +254,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         // EsriConfig.apiKey = 'API_KEY';
 
         const portalItem = new PortalItem({
-            id: 'e0286783ec05475882ed9b1fa89ea8f5'
+            id: '55fdd15730524dedbff72e285cba3795'
         });
 
         this.map = new WebMap({
