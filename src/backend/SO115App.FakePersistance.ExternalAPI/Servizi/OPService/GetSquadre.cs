@@ -27,8 +27,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         /// <returns></returns>
         public async Task<WorkShift> GetAllByCodiceDistaccamento(string Codice)
         {
-            var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
-            var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + Codice);
+            var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value); 
+            var url = new Uri(baseurl, "api/v1/so-workshift" + "?id_sede=" + Codice);
 
             try
             {
