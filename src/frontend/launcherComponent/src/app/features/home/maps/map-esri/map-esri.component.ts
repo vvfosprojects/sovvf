@@ -13,6 +13,7 @@ import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
+import { VoceFiltro } from '../../filterbar/filtri-richieste/voce-filtro.model';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -38,7 +39,6 @@ import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { SetCentroMappa, SetZoomCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -52,6 +52,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() tastoChiamataMappaActive: boolean;
     @Input() direction: DirectionInterface;
+    @Input() filtriRichiesteSelezionati: VoceFiltro[];
+    @Input() schedeContattoStatus: boolean;
+    @Input() mezziInServizioStatus: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -110,6 +113,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.initializeSediOperativeLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
+                    // Feature Layers da spegnere all'init della mappa
+                    const layersToShutdown = [
+                        'Sedi Operative'
+                    ];
+                    for (const lShutdown of layersToShutdown) {
+                        this.toggleLayer(lShutdown, false).then();
+                    }
+
                     // Gestisco l'evento "click"
                     this.view.on('click', (event) => {
                         this.eventClick = event;
@@ -180,24 +191,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         } as AreaMappa;
                         // @ts-ignore
                         this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
-
-                        // Map Image Layers da aggiungere all'init della mappa
-                        const mapImageLayersToAdd = [
-                            // '21029042105b4ffb86de33033786dfc8'
-                        ];
-
-                        for (const lAdd of mapImageLayersToAdd) {
-                            this.addMapImageLayer(lAdd).then();
-                        }
-
-                        // Feature Layers su cui fare il "toggle" (da acceso a spento o viceversa) all'init della mappa
-                        const layersToToggle = [
-                            'Sedi Operative'
-                        ];
-
-                        for (const lToggle of layersToToggle) {
-                            this.toggleLayer(lToggle).then();
-                        }
                     });
                 });
             });
@@ -233,6 +226,53 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.getRoute(changes?.direction.currentValue);
             } else {
                 this.clearDirection();
+            }
+        }
+
+        // Controllo il valore di "filtriRichiesteSelezionati"
+        if (changes?.filtriRichiesteSelezionati?.currentValue) {
+            const filtriRichiesteSelezionati = changes.filtriRichiesteSelezionati.currentValue as VoceFiltro[];
+            if (filtriRichiesteSelezionati?.length) {
+                filtriRichiesteSelezionati.forEach((filtro: VoceFiltro) => {
+                    const codFiltro = filtro.codice.toLocaleLowerCase().replace(/\s+/g, '');
+                    switch (codFiltro) {
+                        case 'interventichiusi':
+                            this.toggleLayer('Interventi - Chiusi', true).then();
+                            break;
+                        default:
+                            console.log('default');
+                            this.toggleLayer('Interventi - Chiusi', false).then();
+                            break;
+                    }
+                });
+            } else {
+                this.toggleLayer('Interventi - Chiusi', false).then();
+            }
+        }
+
+        // Controllo se la feature "Schede Contatto" viene attivata
+        if (changes?.schedeContattoStatus?.currentValue !== null) {
+            const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
+            switch (schedeContattoActive) {
+                case true:
+                    this.toggleLayer('Schede Contatto', true).then();
+                    break;
+                case false:
+                    this.toggleLayer('Schede Contatto', false).then();
+                    break;
+            }
+        }
+
+        // Controllo se la feature "Mezzi in Servizio" viene attivata
+        if (changes?.mezziInServizioStatus?.currentValue !== null) {
+            const mezziInServizioActive = changes?.mezziInServizioStatus?.currentValue;
+            switch (mezziInServizioActive) {
+                case true:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    break;
+                case false:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    break;
             }
         }
     }
@@ -660,10 +700,17 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Effettua il toggle di un layer
-    async toggleLayer(layerTitle: string): Promise<any> {
+    async toggleLayer(layerTitle: string, valueToSet?: boolean): Promise<any> {
         const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
         if (layerExists) {
-            this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
+            console.log('test');
+            if (valueToSet === null) {
+                console.log('test 1');
+                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
+            } else {
+                console.log('test 2', valueToSet);
+                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = valueToSet;
+            }
         }
     }
 

@@ -7,6 +7,9 @@
                           [sediMarkers]="sediMarkers$ | async"
                           [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           [direction]="direction$ | async"
+                          [filtriRichiesteSelezionati]="filtriRichiesteSelezionati$ | async"
+                          [schedeContattoStatus]="schedeContattoStatus$ | async"
+                          [mezziInServizioStatus]="mezziInServizioStatus$ | async"
                           (mapIsLoaded)="mapIsLoaded($event.areaMappa, $event?.spatialReference)">
             </app-map-esri>
         </div>

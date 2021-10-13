@@ -8,7 +8,8 @@
                 <div class="col-12"
                      [class.py-1]="boxAttivi || !viewState.chiamata.active || !viewState.modifica.active || !viewState.composizione.active"
                      [class.d-none]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active">
-                    <app-info-aggregate [nightMode]="(nightMode$ | async)"></app-info-aggregate>
+                    <app-info-aggregate [nightMode]="(nightMode$ | async)">
+                    </app-info-aggregate>
                 </div>
                 <!-- Filterbar -->
                 <div class="col-12 bg-filterbar py-2"
@@ -42,7 +43,8 @@
                 <!-- Scheda Richiesta -->
                 <div class="col-12">
                     <app-scheda-richiesta
-                            *ngIf="viewState.chiamata.active || viewState.modifica.active"></app-scheda-richiesta>
+                            *ngIf="viewState.chiamata.active || viewState.modifica.active">
+                    </app-scheda-richiesta>
                 </div>
                 <!-- Coda Chiamate -->
                 <div class="col-12">
