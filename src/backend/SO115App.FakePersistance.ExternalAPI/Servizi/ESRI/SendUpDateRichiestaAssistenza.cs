@@ -46,10 +46,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value + "/updateFeatures");
 
-            var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
+            //var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
-            if (result != null && result.updateResults[0].success == false)
-                throw new Exception($"Errore servizio ESRI");
+            //if (result != null && result.updateResults[0].success == false)
+            //    throw new Exception($"Errore servizio ESRI");
         }
     }
 }
