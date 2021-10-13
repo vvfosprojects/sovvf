@@ -68,14 +68,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            _updateRichiesta.UpDate(command.Richiesta);
-
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
-
                 foreach (var squadra in partenza.Squadre)
                 {
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
@@ -156,7 +152,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
                             dataUscita = dataUscita,
-                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale, //TODO VALORIZZARE MEMBRI
+                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
                             tipoUscita = new TipoUscita()
                             {
                                 codice = tipologia.Codice,
@@ -177,7 +173,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                         });
                     }
+
+                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
             }
+
+            _updateRichiesta.UpDate(command.Richiesta);
 
             var conferma = new ConfermaPartenze()
             {
