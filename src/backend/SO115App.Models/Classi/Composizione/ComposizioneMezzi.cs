@@ -39,7 +39,13 @@ namespace SO115App.API.Models.Classi.Composizione
         /// </summary>
         public List<SquadraSemplice> ListaSquadre { get; set; } = null;
 
+        /// <summary>
+        /// Rappresentato in KM
+        /// </summary>
         public string Km { get; set; }
+        /// <summary>
+        /// Rappresentato in Minuti
+        /// </summary>
         public string TempoPercorrenza { get; set; }
         public DateTime? IstanteScadenzaSelezione { get; set; }
 
@@ -62,5 +68,6 @@ namespace SO115App.API.Models.Classi.Composizione
         public string Nome { get; set; }
         public StatoSquadraComposizione Stato { get; set; }
         public char Turno { get; set; }
+        public List<Componente> Membri { get; set; }
     }
 }
