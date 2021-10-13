@@ -40,7 +40,7 @@ namespace SO115App.Models.Classi.Composizione
         public bool CapoPartenza => DescrizioneQualifica == "TEAM_LEADER";
         public bool Autista => DescrizioneQualifica == "DRIVER";
         public bool Rimpiazzo => DescrizioneQualifica == "";
-        public List<Qualifiche> Qualifications { get; set; }
+        public Qualifiche[] Qualifications { get; set; }
     }
 
     public class DistaccamentoComposizione

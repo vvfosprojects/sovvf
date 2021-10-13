@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Utenti;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System;
 
 namespace SO115App.API.Models.Classi.Condivise
@@ -30,7 +31,9 @@ namespace SO115App.API.Models.Classi.Condivise
             this.Nominativo = Nominativo;
         }
 
-        public Componente() { }
+        public Componente()
+        {
+        }
 
         /// <summary>
         ///   Descrizione codice fiscale Componente
@@ -55,5 +58,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public DateTime OrarioInizio { get; set; }
 
         public DateTime OrarioFine { get; set; }
+
+        public Qualifiche[] qualifications { get; set; }
     }
 }
