@@ -14,9 +14,10 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { DirectionInterface } from './maps-interface/direction-interface';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
+import { ViewComponentState } from '../store/states/view/view.state';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
     selector: 'app-maps',
@@ -40,6 +41,10 @@ export class MapsComponent implements OnInit, OnDestroy {
 
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
+    // Status "Schede Contatto"
+    @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    // Status "Mezzi in Servizio"
+    @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
 
     mapsFullyLoaded = false;
     centroMappa: CentroMappa;
