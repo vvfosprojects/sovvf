@@ -11,6 +11,7 @@ namespace SO115App.Models.Classi.Composizione
         public char Turno { get; set; }
         public bool DiEmergenza { get; set; } = false;
         public StatoSquadraComposizione Stato { get; set; }
+        public string Tipologia { get; set; }
         public DistaccamentoComposizione Distaccamento { get; set; }
         public List<MembroComposizione> Membri { get; set; } = null;
         public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; } = null;
