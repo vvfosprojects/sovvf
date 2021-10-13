@@ -115,8 +115,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
-            if(partenza.Mezzo.Stato != stato.Stato) //SE DEVO FARE UN ANNULLAMENTO ORARIO NON SERVE FARE IL CHECK
-                check.CheckCongruenza(stato, partenza.Codice);
+            if(partenza.Mezzo.Stato != stato.Stato)
+                check.CheckCongruenza(stato, partenza.Codice, false);
+            else
+                check.CheckCongruenza(stato, partenza.Codice, true);
 
             switch (stato.Stato)
             {
