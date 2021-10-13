@@ -36,7 +36,7 @@ export class Componente {
         /**
          * Funzioni del componenete
          */
-        public qualifiche?: Qualifica[],
+        public qualifications?: Qualifica[],
     ) {
     }
 }
