@@ -142,12 +142,12 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             if (richiesta.PrioritaRichiesta != prioritaRichiesta)
                 new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
-            _updateRichiestaAssistenza.UpDate(richiesta);
-
             if(modificaInterventoChiuso)
             {
                 Parallel.ForEach(lstModificheMovimentiGAC, movimento => _modificaInterventoChiuso.Send(movimento));
             }
+
+            _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
 }

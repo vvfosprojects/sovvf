@@ -105,8 +105,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
 
-                _updateRichiesta.UpDate(command.Richiesta);
-
                 #endregion GESTIONE RICHIESTA E EVENTI RICIHESTA
 
                 #region Comunicazione a servizi GAC
@@ -159,51 +157,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     }
                 });
 
-                //RIENTRO SMONTANTE
-                //_rientroMezzo.Set(new RientroGAC()
-                //{
-                //    idPartenza = PartenzaSmontante.Partenza.Codice.ToString(),
-                //    dataIntervento = PartenzaSmontante.DataOraInserimento,
-                //    numeroIntervento = command.Richiesta.CodRichiesta,
-                //    dataRientro = PartenzaSmontante.DataOraInserimento,
-                //    targa = PartenzaSmontante.Partenza.Mezzo.Codice,
-                //    tipoMezzo = PartenzaSmontante.Partenza.Mezzo.Genere
-                //});
-
-                ////RIENTRO MONTANTE
-                //_rientroMezzo.Set(new RientroGAC()
-                //{
-                //    idPartenza = PartenzaMontante.Partenza.Codice.ToString(),
-                //    dataIntervento = PartenzaMontante.DataOraInserimento,
-                //    numeroIntervento = command.Richiesta.CodRichiesta,
-                //    dataRientro = PartenzaMontante.DataOraInserimento,
-                //    targa = PartenzaMontante.Partenza.Mezzo.Codice,
-                //    tipoMezzo = PartenzaMontante.Partenza.Mezzo.Genere
-                //});
-
-                ////USCITA NUOVA PARTENZA MONTANTE
-                //_uscitaMezzo.Set(new UscitaGAC()
-                //{
-                //    idPartenza = PartenzaMontanteNuova.Partenza.Codice.ToString(),
-                //    dataIntervento = PartenzaMontanteNuova.DataOraInserimento,
-                //    numeroIntervento = command.Richiesta.CodRichiesta,
-                //    dataUscita = PartenzaMontanteNuova.DataOraInserimento,
-                //    targa = PartenzaMontanteNuova.Partenza.Mezzo.Codice,
-                //    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere
-                //});
-
-                ////USCITA NUOVA PARTENZA SMONTANTE
-                //_uscitaMezzo.Set(new UscitaGAC()
-                //{
-                //    idPartenza = PartenzaSmontanteNuova.Partenza.Codice.ToString(),
-                //    dataIntervento = PartenzaSmontanteNuova.DataOraInserimento,
-                //    numeroIntervento = command.Richiesta.CodRichiesta,
-                //    dataUscita = PartenzaSmontanteNuova.DataOraInserimento,
-                //    targa = PartenzaSmontanteNuova.Partenza.Mezzo.Codice,
-                //    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere
-                //});
-
                 #endregion Comunicazione a servizi GAC
+
+                _updateRichiesta.UpDate(command.Richiesta);
             });
         }
     }
