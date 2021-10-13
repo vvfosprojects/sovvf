@@ -38,6 +38,9 @@
                     Autista non presente
                 </h6>
             </ng-template>
+            <div *ngIf="squadraComp.tipologia && squadraComp.tipologia === 'MODULE'" class="badge mx-1 py-1 badge-mod-warning" ngbTooltip="Colonna mobile">
+                <i class="fas fa-chart-pie"></i>
+            </div>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
                 {{ squadraComp?.nome | truncate: 7 }}</div>
