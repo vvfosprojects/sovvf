@@ -63,7 +63,8 @@
                     <ul class=" mb-0"
                         style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
                         <li>
-                            <span class="ml-1">{{ trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+                            <span class="ml-1" [ngbTooltip]="(trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss')" placement="top">
+                                {{ (trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss').slice(0, (trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss')?.length - 3 ) }}</span>
                         </li>
                     </ul>
                 </div>
