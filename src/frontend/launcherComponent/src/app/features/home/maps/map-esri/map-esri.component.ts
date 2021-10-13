@@ -240,7 +240,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                             this.toggleLayer('Interventi - Chiusi', true).then();
                             break;
                         default:
-                            console.log('default');
                             this.toggleLayer('Interventi - Chiusi', false).then();
                             break;
                     }
@@ -703,12 +702,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     async toggleLayer(layerTitle: string, valueToSet?: boolean): Promise<any> {
         const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
         if (layerExists) {
-            console.log('test');
             if (valueToSet === null) {
-                console.log('test 1');
                 this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
             } else {
-                console.log('test 2', valueToSet);
                 this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = valueToSet;
             }
         }
