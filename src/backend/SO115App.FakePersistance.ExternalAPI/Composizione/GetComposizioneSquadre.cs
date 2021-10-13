@@ -114,7 +114,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 switch (query.Filtro.Turno) //FILTRO PER TURNO
                 {
-                    case TurnoRelativo.Precedente: if(workshift.Precedente != null) Parallel.ForEach(workshift.Precedente?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Precedente: if (workshift.Precedente != null) Parallel.ForEach(workshift.Precedente?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
 
                     case TurnoRelativo.Successivo: if (workshift.Successivo != null) Parallel.ForEach(workshift.Successivo?.Squadre ?? default, squadra => lstSquadre.Add(squadra)); break;
 
@@ -149,7 +149,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
                         DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo,
-                        Qualifications = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.qualifications
+                        Qualifications = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.qualifications,
                     }).ToList(),
                     MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
                     {
@@ -170,7 +170,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             Genere = m.Genere,
                             Stato = Costanti.MezzoInRientro
                         }
-                    }).ToList()
+                    }).ToList(),
+                    Tipologia = squadra.spotType
                 }));
 
                 return lstSquadre;
