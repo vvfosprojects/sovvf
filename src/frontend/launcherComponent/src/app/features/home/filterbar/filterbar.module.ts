@@ -16,6 +16,7 @@ import { ModalRichiesteChiuseComponent } from './filtri-richieste/modal-richiest
 import { ModalZonaEmergenzaComponent } from './filtri-richieste/modal-zona-emergenza/modal-zona-emergenza.component';
 import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
 import { TastoChiamataMappaComponent } from './tasto-chiamata-mappa/tasto-chiamata-mappa.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { TastoChiamataMappaComponent } from './tasto-chiamata-mappa/tasto-chiama
         FormsModule,
         FilterPipeModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        RouterModule
     ],
     declarations: [
         FilterbarComponent,

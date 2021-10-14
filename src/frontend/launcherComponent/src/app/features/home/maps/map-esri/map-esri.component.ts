@@ -55,6 +55,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
     @Input() schedeContattoStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
+    @Input() areaMappaLoading: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -155,7 +156,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.view.on('drag', (event: any) => {
                         // TODO: implementare in un secondo momento
                         // if (!this.drawing) {
-                        //     this.setContextMenuVisible(false);
+                        this.setContextMenuVisible(false);
                         // }
                         const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
                         const bounds = {
@@ -172,7 +173,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.view.on('mouse-wheel', () => {
                         // TODO: implementare in un secondo momento
                         // if (!this.drawing) {
-                        //     this.setContextMenuVisible(false);
+                        this.setContextMenuVisible(false);
                         // }
                     });
 
@@ -774,7 +775,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     setContextMenuVisible(value: boolean): void {
-        if (value) {
+        if (value && !this.areaMappaLoading) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
             this.changeCenter([lon, lat]).then(() => {
