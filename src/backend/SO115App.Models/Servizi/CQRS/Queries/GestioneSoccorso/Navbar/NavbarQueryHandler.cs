@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Linq;
@@ -34,14 +35,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     {
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
         public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
-                                  IGetConteggioSchede getConteggioSchedeHandler, IGetUtenteById getUtenteById)
+                                  IGetConteggioSchede getConteggioSchedeHandler,
+                                  IGetUtenteById getUtenteById,
+                                  IGetCentroMappaMarker centroMappaMarkerHandler)
         {
             _alberaturaUO = alberaturaUO;
             _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
+            _centroMappaMarkerHandler = centroMappaMarkerHandler;
         }
 
         /// <summary>
@@ -53,6 +58,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         {
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
+            var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodSedi[0]);
             var lstSedi = _alberaturaUO.ListaSediAlberata();
 
             lstSedi.Figli = lstSedi.Map();
@@ -61,7 +67,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             {
                 ListaSedi = lstSedi,
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
-                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi)
+                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
+                CentroMappaMarker = centroMappaMarker
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

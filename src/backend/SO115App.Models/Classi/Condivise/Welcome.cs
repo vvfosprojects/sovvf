@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.RubricaDTO;
 using System.Collections.Generic;
@@ -32,12 +31,13 @@ namespace SO115App.Models.Classi.Condivise
         public BoxInterventi BoxListaInterventi { get; set; }
 
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
-        //public InfoNue InfoNue { get; set; }
-        public CentroMappa CentroMappaMarker { get; set; }
 
+        //public InfoNue InfoNue { get; set; }
         public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
+
         //public List<Tipologia> Tipologie { get; set; }
         public List<EnteDTO> Rubrica { get; set; }
+
         public List<string> ZoneEmergenza { get; set; }
     }
 }
