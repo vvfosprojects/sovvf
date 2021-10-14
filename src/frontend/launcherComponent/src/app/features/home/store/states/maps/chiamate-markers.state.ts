@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
 import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';

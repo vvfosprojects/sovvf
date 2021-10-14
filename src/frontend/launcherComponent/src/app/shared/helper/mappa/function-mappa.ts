@@ -1,6 +1,6 @@
 import { Coordinate } from '../../model/coordinate.model';
-import { CentroMappa } from '../../../features/home/maps/maps-model/centro-mappa.model';
-import { AreaMappa } from '../../../features/home/maps/maps-model/area-mappa-model';
+import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
+import { AreaMappa } from '../../../features/maps/maps-model/area-mappa-model';
 
 export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMappa {
     return new CentroMappa(coordinate, zoom);

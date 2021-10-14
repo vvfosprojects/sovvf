@@ -6,7 +6,7 @@ import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
-import { SetCurrentUrl, SetMapLoaded } from '../../shared/store/actions/app/app.actions';
+import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -15,9 +15,6 @@ import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.act
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
-import { SetAreaMappa } from './store/actions/maps/area-mappa.actions';
-import { AreaMappa } from './maps/maps-model/area-mappa-model';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -83,13 +80,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     getSediTrasferimenti(): void {
         this.store.dispatch(new GetSediTrasferimenti());
-    }
-
-    onMapFullLoaded(areaMappa: AreaMappa, mapProperties?: { spatialReference?: SpatialReference }): void {
-        this.store.dispatch([
-            new SetMapLoaded(true, mapProperties),
-            new SetAreaMappa(areaMappa)
-        ]);
     }
 
     getDettagliTipologie(pageAttuale: boolean): void {

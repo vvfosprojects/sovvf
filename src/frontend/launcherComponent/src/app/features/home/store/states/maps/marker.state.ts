@@ -1,8 +1,8 @@
 import { Selector, State, Action, StateContext, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
-import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
+import { CentroMappa } from '../../../../maps/maps-model/centro-mappa.model';
+import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
 import { SediMarkersState } from './sedi-markers.state';
 import { SetSedeMarkerById } from '../../actions/maps/sedi-markers.actions';
 import { ChiamateMarkersState } from './chiamate-markers.state';

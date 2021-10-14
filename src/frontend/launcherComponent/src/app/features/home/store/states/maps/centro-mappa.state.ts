@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
+import { CentroMappa } from '../../../../maps/maps-model/centro-mappa.model';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     ClearCentroMappa,

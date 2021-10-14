@@ -3,17 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
-import { Utente } from '../../../../shared/model/utente.model';
+import { Utente } from '../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
-import { AuthState } from '../../../auth/store/auth.state';
-import { SetChiamataFromMappaActiveValue } from '../../store/actions/maps/tasto-chiamata-mappa.actions';
+import { AuthState } from '../../auth/store/auth.state';
+import { SetChiamataFromMappaActiveValue } from '../../home/store/actions/maps/tasto-chiamata-mappa.actions';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
-import { VoceFiltro } from '../../filterbar/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -61,6 +61,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     operatore: Utente;
+    token: string;
 
     map: Map;
     view: any = null;
@@ -89,6 +90,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.operatore = this.store.selectSnapshot(AuthState.currentUser);
+        this.token = this.store.selectSnapshot(AuthState.currentEsriToken);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -287,7 +289,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const container = this.mapViewEl.nativeElement;
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
-        // EsriConfig.apiKey = 'API_KEY';
+        EsriConfig.request.interceptors.push({
+            before: (params) => {
+                params.requestOptions.query = params.requestOptions.query || {};
+                params.requestOptions.query.token = this.token;
+            },
+        });
 
         const portalItem = new PortalItem({
             id: '55fdd15730524dedbff72e285cba3795'

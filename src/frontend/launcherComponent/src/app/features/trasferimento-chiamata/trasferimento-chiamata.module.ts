@@ -13,6 +13,7 @@ import { RicercaTrasferimentoChiamataComponent } from './ricerca-trasferimento-c
 import { TabellaTrasferimentoChiamataComponent } from './tabella-trasferimento-chiamata/tabella-trasferimento-chiamata.component';
 import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamata/trasferimento-chiamata.state';
 import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasfe
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
   providers: []
 })

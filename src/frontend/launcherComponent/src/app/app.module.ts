@@ -58,6 +58,10 @@ import { PaginationState } from './shared/store/states/pagination/pagination.sta
 import { TriageSummaryState } from './shared/store/states/triage-summary/triage-summary.state';
 import { DistaccamentiState } from './shared/store/states/distaccamenti/distaccamenti.state';
 import { PosModalState } from './shared/store/states/pos-modal/pos-modal.state';
+import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-area-documentale-modal/documento-area-documentale-modal.state';
+import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
+import { TastoChiamataMappaState } from './features/home/store/states/maps/tasto-chiamata-mappa.state';
+import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 /**
  * Route
  */
@@ -72,11 +76,11 @@ import { ErrorInterceptor, JwtInterceptor, LoaderInterceptor } from './core/inte
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
+/**
+ * Provider
+ */
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
-import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-area-documentale-modal/documento-area-documentale-modal.state';
-import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
 
 @NgModule({
     declarations: [
@@ -135,7 +139,8 @@ import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-do
                 PosModalState,
                 DocumentoAreaDocumentaleState,
                 SchedaTelefonataState,
-                FiltriAreaDocumentaleState
+                FiltriAreaDocumentaleState,
+                TastoChiamataMappaState
             ],
             { developmentMode: !environment.production }
         ),

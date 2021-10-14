@@ -11,6 +11,13 @@ export class SetCurrentJwt {
     }
 }
 
+export class SetCurrentEsriToken {
+    static readonly type = '[Auth] Set current Esri Token';
+
+    constructor(public currentEsriToken: string) {
+    }
+}
+
 export class SetCurrentTicket {
     static readonly type = '[Auth] Set current Ticket';
 
