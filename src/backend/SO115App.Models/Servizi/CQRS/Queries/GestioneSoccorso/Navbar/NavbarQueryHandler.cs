@@ -22,6 +22,7 @@ using Serilog;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Linq;
@@ -36,17 +37,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
+        private readonly IGetToken_ESRI _getToken;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
         public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
                                   IGetConteggioSchede getConteggioSchedeHandler,
                                   IGetUtenteById getUtenteById,
-                                  IGetCentroMappaMarker centroMappaMarkerHandler)
+                                  IGetCentroMappaMarker centroMappaMarkerHandler,
+                                  IGetToken_ESRI getToken)
         {
             _alberaturaUO = alberaturaUO;
             _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
+            _getToken = getToken;
         }
 
         /// <summary>
@@ -68,7 +72,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
                 ListaSedi = lstSedi,
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
                 infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
-                CentroMappaMarker = centroMappaMarker
+                CentroMappaMarker = centroMappaMarker,
+                TokenESRI = _getToken.Get()
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

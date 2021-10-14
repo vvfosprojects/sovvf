@@ -28,13 +28,10 @@ namespace SO115App.API.Models.Classi.NavBar
     public class Navbar
     {
         public UnitaOperativa ListaSedi { get; set; }
-
         public Utente Utente { get; set; }
-
         public IEnumerable<Role> RuoliUtLoggato { get; set; }
-
         public InfoNue infoNue { get; set; }
-
         public CentroMappa CentroMappaMarker { get; set; }
+        public string TokenESRI { get; set; }
     }
 }
