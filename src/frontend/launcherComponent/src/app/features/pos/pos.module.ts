@@ -22,6 +22,7 @@ import { PosRouting } from './pos.routing';
  */
 import { PosState } from './store/states/pos/pos.state';
 import { RicercaPosState } from './store/states/ricerca-pos/ricerca-pos.state';
+import { MapsModule } from '../maps/maps.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { RicercaPosState } from './store/states/ricerca-pos/ricerca-pos.state';
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
     providers: []
 })
