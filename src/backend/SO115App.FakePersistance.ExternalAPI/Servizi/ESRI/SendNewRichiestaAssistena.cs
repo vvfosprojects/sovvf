@@ -33,24 +33,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             //var content = new StringContent(jsonString);
 
-            //List<ESRI_RichiestaMessage> listaMsg = new List<ESRI_RichiestaMessage>();
-            //listaMsg.Add(message);
-            //var jsonString = JsonConvert.SerializeObject(listaMsg);
+            List<ESRI_RichiestaMessage> listaMsg = new List<ESRI_RichiestaMessage>();
+            listaMsg.Add(message);
+            var jsonString = JsonConvert.SerializeObject(listaMsg);
 
-            //Dictionary<string, string> postData = new Dictionary<string, string>();
-            //postData.Add("features", jsonString);
-            //postData.Add("f", "json");
-            //postData.Add("token", _getToken_ESRI.Get());
+            Dictionary<string, string> postData = new Dictionary<string, string>();
+            postData.Add("features", jsonString);
+            postData.Add("f", "json");
+            postData.Add("token", _getToken_ESRI.Get());
 
-            //var multipartFormDataContent = new MultipartFormDataContent();
+            var multipartFormDataContent = new MultipartFormDataContent();
 
-            //foreach (var keyValuePair in postData)
-            //{
-            //    multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
-            //        String.Format("\"{0}\"", keyValuePair.Key));
-            //}
+            foreach (var keyValuePair in postData)
+            {
+                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
+                    String.Format("\"{0}\"", keyValuePair.Key));
+            }
 
-            //var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value + "/addFeatures");
+            var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value + "/addFeatures");
 
             var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
