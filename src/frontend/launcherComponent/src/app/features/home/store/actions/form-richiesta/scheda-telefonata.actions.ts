@@ -1,5 +1,5 @@
 import { SchedaTelefonataInterface } from '../../../../../shared/interface/scheda-telefonata.interface';
-import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';

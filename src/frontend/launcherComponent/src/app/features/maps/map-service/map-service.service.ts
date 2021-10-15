@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { SetCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
+import { SetCentroMappa } from '../../home/store/actions/maps/centro-mappa.actions';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { SetAreaMappa } from '../../store/actions/maps/area-mappa.actions';
-import { MAPSOPTIONS } from '../../../../core/settings/maps-options';
-import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../shared/helper/mappa/function-mappa';
+import { SetAreaMappa } from '../../home/store/actions/maps/area-mappa.actions';
+import { MAPSOPTIONS } from '../../../core/settings/maps-options';
+import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../shared/helper/mappa/function-mappa';
 
 @Injectable()
 export class MapService {

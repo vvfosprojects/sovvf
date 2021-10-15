@@ -8,7 +8,7 @@ import {
     ClearDataUser,
     GetAuth,
     Logout,
-    RecoveryUrl,
+    RecoveryUrl, SetCurrentEsriToken,
     SetCurrentJwt,
     SetCurrentTicket,
     SetCurrentUser,
@@ -35,6 +35,7 @@ import { GestioneUtentiService } from '../../../core/service/gestione-utenti-ser
 
 export interface AuthStateModel {
     currentJwt: string;
+    currentEsriToken: string;
     currentTicket: string;
     currentUser: Utente;
     logged: boolean;
@@ -43,6 +44,7 @@ export interface AuthStateModel {
 
 export const AuthStateDefaults: AuthStateModel = {
     currentJwt: null,
+    currentEsriToken: null,
     currentTicket: null,
     currentUser: null,
     logged: false,
@@ -63,6 +65,11 @@ export class AuthState {
     @Selector()
     static currentJwt(state: AuthStateModel): string {
         return state.currentJwt;
+    }
+
+    @Selector()
+    static currentEsriToken(state: AuthStateModel): string {
+        return state.currentEsriToken;
     }
 
     @Selector()
@@ -115,6 +122,15 @@ export class AuthState {
                 currentTicket: null
             });
             dispatch([new SetLogged()]);
+        }
+    }
+
+    @Action(SetCurrentEsriToken)
+    setCurrentEsriToken({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentEsriToken): void {
+        if (action.currentEsriToken) {
+            patchState({
+                currentEsriToken: action.currentEsriToken
+            });
         }
     }
 
@@ -268,5 +284,4 @@ export class AuthState {
         localStorage.removeItem(LSNAME.redirectUrl);
         sessionStorage.removeItem(LSNAME.cacheSedi);
     }
-
 }

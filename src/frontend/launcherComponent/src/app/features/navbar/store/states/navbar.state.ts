@@ -7,6 +7,9 @@ import { AppSettings } from '../../../../shared/interface/app-settings.interface
 import { SetRuoliUtenteLoggato } from '../../../../shared/store/actions/ruoli/ruoli.actions';
 import { Injectable } from '@angular/core';
 import { StartBigLoading, StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
+import { SetInitCentroMappa } from '../../../home/store/actions/maps/centro-mappa.actions';
+import { SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
+import { SetCurrentEsriToken } from '../../../auth/store/auth.actions';
 
 export interface NavbarStateModel {
     loaded: boolean;
@@ -45,11 +48,6 @@ export class NavbarState {
     constructor(private navbarService: NavbarService) {
     }
 
-    @Action(ClearDataNavbar)
-    clearDataNavbar({ patchState }: StateContext<NavbarStateModel>): void {
-        patchState(NavbarStateDefaults);
-    }
-
     @Action(GetDataNavbar)
     getDataNavbar({ dispatch }: StateContext<NavbarStateModel>): void {
         dispatch(new StartBigLoading());
@@ -67,7 +65,17 @@ export class NavbarState {
         });
         dispatch([
             new SetRuoliUtenteLoggato(action.settings.utente.ruoli),
-            new SetListaSediTreeview(action.settings.listaSedi)
+            new SetListaSediTreeview(action.settings.listaSedi),
+            new SetInitCentroMappa(action.settings.centroMappaMarker),
+            new SetCurrentEsriToken(action.settings.tokenESRI)
+        ]);
+    }
+
+    @Action(ClearDataNavbar)
+    clearDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>): void {
+        patchState(NavbarStateDefaults);
+        dispatch([
+            new SetMapLoaded(false)
         ]);
     }
 

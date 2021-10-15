@@ -42,7 +42,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetBoxPersonale _boxPersonaleHandler;
         private readonly IGetBoxRichieste _boxRichiesteHandler;
         private readonly IGetChiamateInCorso _listaChiamateInCorsoMarkerHandler;
-        private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IGetFiltri _filtriHandler;
         private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
@@ -53,7 +52,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetBoxPersonale boxPersonaleHandler,
             IGetBoxRichieste boxRichiesteHandler,
             IGetChiamateInCorso listaChiamateInCorsoMarkerHandler,
-            IGetCentroMappaMarker centroMappaMarkerHandler,
             IGetFiltri filtriHandler,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
@@ -64,7 +62,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
             _listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
-            _centroMappaMarkerHandler = centroMappaMarkerHandler;
             _filtriHandler = filtriHandler;
             _getDistaccamenti = getDistaccamenti;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
@@ -107,7 +104,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
             var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
-            var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
 
             var rubrica = Task.Factory.StartNew(() => _getRurbica.Get(pinNodi.Select(n => n.Codice).ToArray()));
 
@@ -116,14 +112,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
                 ListaChiamateInCorso = listaChiamateInCorso.Result,
-                CentroMappaMarker = centroMappaMarker.Result,
                 ListaFiltri = filtri,
                 ZoneEmergenza = ListaZoneEmergenza.Result,
                 Rubrica = rubrica.Result,
                 BoxListaInterventi = boxListaInterventi.Result,
                 BoxListaMezzi = boxListaMezzi.Result,
                 BoxListaPersonale = boxListaPersonale.Result
-            };            
+            };
 
             Log.Debug("Fine elaborazione Welcome Handler");
 

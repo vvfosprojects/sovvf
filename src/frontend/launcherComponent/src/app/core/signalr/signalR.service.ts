@@ -27,7 +27,7 @@ import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interf
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
 import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
-import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../features/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';

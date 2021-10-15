@@ -1,4 +1,4 @@
-import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { AreaMappa } from '../../../../maps/maps-model/area-mappa-model';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 import { ViewComponentState } from '../view/view.state';

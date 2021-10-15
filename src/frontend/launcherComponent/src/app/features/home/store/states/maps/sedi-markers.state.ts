@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
+import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';

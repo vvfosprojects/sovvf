@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { ChiamataMarker } from '../../../../features/home/maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../../features/maps/maps-model/chiamata-marker.model';
 
 const BASE_URL = environment.baseUrl;
 const API_MARKER_CHIAMATE = BASE_URL + environment.apiUrl.markerChiamataInCorso;

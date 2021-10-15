@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { Tipologia } from '../../../shared/model/tipologia.model';
 import { Select } from '@ngxs/store';
-import { TipologieState } from '../../../../shared/store/states/tipologie/tipologie.state';
-import { Utente } from '../../../../shared/model/utente.model';
-import { AuthState } from '../../../auth/store/auth.state';
+import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
+import { Utente } from '../../../shared/model/utente.model';
+import { AuthState } from '../../auth/store/auth.state';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SchedaTelefonataState } from '../../store/states/form-richiesta/scheda-telefonata.state';
-import { Sede } from '../../../../shared/model/sede.model';
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { EntiState } from '../../../../shared/store/states/enti/enti.state';
-import { EnteInterface } from '../../../../shared/interface/ente.interface';
-import { RichiestaModificaState } from '../../store/states/form-richiesta/richiesta-modifica.state';
-import { DettagliTipologieState } from '../../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
-import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
-import { TriageSummaryState } from '../../../../shared/store/states/triage-summary/triage-summary.state';
-import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
-import { PosInterface } from '../../../../shared/interface/pos.interface';
-import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
+import { SchedaTelefonataState } from '../../home/store/states/form-richiesta/scheda-telefonata.state';
+import { Sede } from '../../../shared/model/sede.model';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { EntiState } from '../../../shared/store/states/enti/enti.state';
+import { EnteInterface } from '../../../shared/interface/ente.interface';
+import { RichiestaModificaState } from '../../home/store/states/form-richiesta/richiesta-modifica.state';
+import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
+import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
+import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
+import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
+import { PosInterface } from '../../../shared/interface/pos.interface';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-modal-nuova-chiamata',

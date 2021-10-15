@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetBoundsIniziale } from '../actions/home.actions';
 import { ClearRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
-import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
+import { ClearCentroMappa } from '../actions/maps/centro-mappa.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, SetBoxPersonaleCurrent } from '../actions/boxes/box-personale.actions';
@@ -10,7 +10,7 @@ import { ClearChiamateMarkers, SetChiamateMarkers } from '../actions/maps/chiama
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
-import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
+import { SetCurrentUrl } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
@@ -58,7 +58,6 @@ export class HomeState {
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonaleCurrent(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
-                new SetInitCentroMappa(data.centroMappaMarker),
                 new SetTipologicheMezzi(data.listaFiltri),
                 new SetEnti(data.rubrica),
                 // new SetZoneEmergenza(data.zoneEmergenza)
@@ -76,7 +75,6 @@ export class HomeState {
             new ClearBoxMezzi(),
             new ClearBoxPersonale(),
             new ClearRichieste(),
-            new SetMapLoaded(false),
             new ClearViewState()
         ]);
         patchState(HomeStateDefaults);

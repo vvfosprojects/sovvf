@@ -1,4 +1,4 @@
-import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
 
 export class GetChiamateMarkers {
     static readonly type = '[Chiamate Marker] Get Chiamate Markers API';
