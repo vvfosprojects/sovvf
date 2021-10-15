@@ -8,6 +8,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreferenzeRoutingModule } from './preferenze.routing';
 import { PreferenzeComponent } from './preferenze.component';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { PreferenzeComponent } from './preferenze.component';
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ]
 })
 
