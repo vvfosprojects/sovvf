@@ -3,7 +3,7 @@
         <div class="clearfix">
             <div class="float-left mr-4">
                 <div class="clearfix">
-                    <div class="float-left mr-1">
+                    <div class="float-left mr-2">
                         <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
                                             [richiestaModifica]="richiestaModifica$ | async"
                                             [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
@@ -26,6 +26,16 @@
                                 [disabled]="permessiFeature.SchedeContatto | checkPermission"
                                 (toggle)="toggleSchedeContatto()">
                         </app-tasto-schede-contatto>
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Trasferimenti Chiamate"
+                                placement="bottom"
+                                [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
+                                [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="permessiFeature.ListaTrasferimentiChiamate | checkPermission"
+                                [disabled]="permessiFeature.ListaTrasferimentiChiamate | checkPermission">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
                     </div>
                 </div>
             </div>

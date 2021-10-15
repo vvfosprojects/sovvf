@@ -22,7 +22,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaModificaState } from '../store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
-import { Navigate } from '@ngxs/router-plugin';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetChiamataFromMappaActiveValue } from '../store/actions/maps/tasto-chiamata-mappa.actions';
 
@@ -80,7 +80,12 @@ export class FilterbarComponent {
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
+    // Filtri Richiesta
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriAttiviToolTip$: Observable<VoceFiltro[]>;
+
+    // Url Path
+    @Select(RouterState.url) url$: Observable<string>;
+    url: string;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
@@ -90,6 +95,7 @@ export class FilterbarComponent {
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
 
     permessiFeature = PermissionFeatures;
+    RoutesPath = RoutesPath;
 
     constructor(private store: Store) {
     }

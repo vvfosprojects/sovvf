@@ -3,16 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova-chiamata.component';
-import { Utente } from '../../../../shared/model/utente.model';
+import { Utente } from '../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
-import { AuthState } from '../../../auth/store/auth.state';
-import { SetChiamataFromMappaActiveValue } from '../../store/actions/maps/tasto-chiamata-mappa.actions';
+import { AuthState } from '../../auth/store/auth.state';
+import { SetChiamataFromMappaActiveValue } from '../../home/store/actions/maps/tasto-chiamata-mappa.actions';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
+import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -38,7 +39,6 @@ import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { SetCentroMappa, SetZoomCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -52,11 +52,16 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() tastoChiamataMappaActive: boolean;
     @Input() direction: DirectionInterface;
+    @Input() filtriRichiesteSelezionati: VoceFiltro[];
+    @Input() schedeContattoStatus: boolean;
+    @Input() mezziInServizioStatus: boolean;
+    @Input() areaMappaLoading: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     operatore: Utente;
+    token: string;
 
     map: Map;
     view: any = null;
@@ -85,6 +90,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.operatore = this.store.selectSnapshot(AuthState.currentUser);
+        this.token = this.store.selectSnapshot(AuthState.currentEsriToken);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -110,6 +116,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.initializeSediOperativeLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
+                    // Feature Layers da spegnere all'init della mappa
+                    const layersToShutdown = [
+                        'Sedi Operative'
+                    ];
+                    for (const lShutdown of layersToShutdown) {
+                        this.toggleLayer(lShutdown, false).then();
+                    }
+
                     // Gestisco l'evento "click"
                     this.view.on('click', (event) => {
                         this.eventClick = event;
@@ -144,7 +158,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.view.on('drag', (event: any) => {
                         // TODO: implementare in un secondo momento
                         // if (!this.drawing) {
-                        //     this.setContextMenuVisible(false);
+                        this.setContextMenuVisible(false);
                         // }
                         const geoExt = webMercatorUtils.webMercatorToGeographic(this.view.extent);
                         const bounds = {
@@ -161,7 +175,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.view.on('mouse-wheel', () => {
                         // TODO: implementare in un secondo momento
                         // if (!this.drawing) {
-                        //     this.setContextMenuVisible(false);
+                        this.setContextMenuVisible(false);
                         // }
                     });
 
@@ -180,24 +194,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         } as AreaMappa;
                         // @ts-ignore
                         this.mapIsLoaded.emit({ areaMappa, spatialReference: this.map.spatialReference });
-
-                        // Map Image Layers da aggiungere all'init della mappa
-                        const mapImageLayersToAdd = [
-                            // '21029042105b4ffb86de33033786dfc8'
-                        ];
-
-                        for (const lAdd of mapImageLayersToAdd) {
-                            this.addMapImageLayer(lAdd).then();
-                        }
-
-                        // Feature Layers su cui fare il "toggle" (da acceso a spento o viceversa) all'init della mappa
-                        const layersToToggle = [
-                            'Sedi Operative'
-                        ];
-
-                        for (const lToggle of layersToToggle) {
-                            this.toggleLayer(lToggle).then();
-                        }
                     });
                 });
             });
@@ -235,6 +231,52 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.clearDirection();
             }
         }
+
+        // Controllo il valore di "filtriRichiesteSelezionati"
+        if (changes?.filtriRichiesteSelezionati?.currentValue) {
+            const filtriRichiesteSelezionati = changes.filtriRichiesteSelezionati.currentValue as VoceFiltro[];
+            if (filtriRichiesteSelezionati?.length) {
+                filtriRichiesteSelezionati.forEach((filtro: VoceFiltro) => {
+                    const codFiltro = filtro.codice.toLocaleLowerCase().replace(/\s+/g, '');
+                    switch (codFiltro) {
+                        case 'interventichiusi':
+                            this.toggleLayer('Interventi - Chiusi', true).then();
+                            break;
+                        default:
+                            this.toggleLayer('Interventi - Chiusi', false).then();
+                            break;
+                    }
+                });
+            } else {
+                this.toggleLayer('Interventi - Chiusi', false).then();
+            }
+        }
+
+        // Controllo se la feature "Schede Contatto" viene attivata
+        if (changes?.schedeContattoStatus?.currentValue !== null) {
+            const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
+            switch (schedeContattoActive) {
+                case true:
+                    this.toggleLayer('Schede Contatto', true).then();
+                    break;
+                case false:
+                    this.toggleLayer('Schede Contatto', false).then();
+                    break;
+            }
+        }
+
+        // Controllo se la feature "Mezzi in Servizio" viene attivata
+        if (changes?.mezziInServizioStatus?.currentValue !== null) {
+            const mezziInServizioActive = changes?.mezziInServizioStatus?.currentValue;
+            switch (mezziInServizioActive) {
+                case true:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    break;
+                case false:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    break;
+            }
+        }
     }
 
     ngOnDestroy(): void {
@@ -247,7 +289,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const container = this.mapViewEl.nativeElement;
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
-        // EsriConfig.apiKey = 'API_KEY';
+        EsriConfig.request.interceptors.push({
+            before: (params) => {
+                params.requestOptions.query = params.requestOptions.query || {};
+                params.requestOptions.query.token = this.token;
+            },
+        });
 
         const portalItem = new PortalItem({
             id: '55fdd15730524dedbff72e285cba3795'
@@ -660,10 +707,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Effettua il toggle di un layer
-    async toggleLayer(layerTitle: string): Promise<any> {
+    async toggleLayer(layerTitle: string, valueToSet?: boolean): Promise<any> {
         const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
         if (layerExists) {
-            this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
+            if (valueToSet === null) {
+                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
+            } else {
+                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = valueToSet;
+            }
         }
     }
 
@@ -731,7 +782,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     setContextMenuVisible(value: boolean): void {
-        if (value) {
+        if (value && !this.areaMappaLoading) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
             this.changeCenter([lon, lat]).then(() => {

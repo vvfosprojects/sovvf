@@ -58,15 +58,6 @@
                 <div class="clearfix">
                     <!-- Operatore e Bottono Destra -->
                     <div class="float-right">
-                        <button class="btn btn-light mr-2"
-                                ngbTooltip="Visualizza Trasferimenti Chiamate"
-                                [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
-                                [class.btn-nav-selected]="url === '/trasferimento-chiamata'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
-                                [class.cursor-not-allowed]="permessiFeature.ListaTrasferimentiChiamate | checkPermission"
-                                [disabled]="permessiFeature.ListaTrasferimentiChiamate | checkPermission">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
                         <button class="btn btn-light"
                                 ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"

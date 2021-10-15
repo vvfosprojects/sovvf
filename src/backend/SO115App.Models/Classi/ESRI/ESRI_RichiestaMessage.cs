@@ -16,21 +16,65 @@ namespace SO115App.Models.Classi.ESRI
 
     public class attributes
     {
-        // MongDb_Id, codice, stato, descrizione, categoria
-        [JsonProperty(PropertyName = "mongodb_id")]
-        public string mongodb_id { get; set; }
-
-        [JsonProperty(PropertyName = "codice")]
-        public string codice { get; set; }
+        [JsonProperty(PropertyName = "codiceRichiesta")]
+        public string codicerichiesta { get; set; }
 
         [JsonProperty(PropertyName = "stato")]
         public string stato { get; set; }
 
-        [JsonProperty(PropertyName = "descrizione")]
-        public string descrizione { get; set; }
+        [JsonProperty(PropertyName = "operatoreCodiceFiscale")]
+        public string operatorecodicefiscale { get; set; }
 
-        [JsonProperty(PropertyName = "categoria")]
-        public string categoria { get; set; }
+        [JsonProperty(PropertyName = "istanteRicezioneRichiesta")]
+        public DateTime istantericezionerichiesta { get; set; }
+
+        [JsonProperty(PropertyName = "tipologiaCodice")]
+        public int tipologiacodice { get; set; }
+
+        [JsonProperty(PropertyName = "tipologiaDettaglio")]
+        public string tipologiadettaglio { get; set; }
+
+        [JsonProperty(PropertyName = "richiedenteTelefono")]
+        public string richiedentetelefono { get; set; }
+
+        [JsonProperty(PropertyName = "richiedenteNominativo")]
+        public string richiedentenominativo { get; set; }
+
+        [JsonProperty(PropertyName = "indirizzo")]
+        public string indirizzo { get; set; }
+
+        [JsonProperty(PropertyName = "interno")]
+        public string interno { get; set; }
+
+        [JsonProperty(PropertyName = "palazzo")]
+        public string palazzo { get; set; }
+
+        [JsonProperty(PropertyName = "scala")]
+        public string scala { get; set; }
+
+        [JsonProperty(PropertyName = "note")]
+        public string note { get; set; }
+
+        [JsonProperty(PropertyName = "piano")]
+        public string piano { get; set; }
+
+        [JsonProperty(PropertyName = "rilevanteGrave")]
+        public int rilevantegrave { get; set; }
+
+        [JsonProperty(PropertyName = "listaEnti")]
+        public string listaenti { get; set; }
+
+        [JsonProperty(PropertyName = "chiamataUrgente")]
+        public int chiamataurgente { get; set; }
+
+        [JsonProperty(PropertyName = "esercitazione")]
+        public int esercitazione { get; set; }
+
+        [JsonProperty(PropertyName = "listaUtentiPresaInCarico")]
+        public string listautentipresaincarico { get; set; }
+
+        [JsonProperty(PropertyName = "tipologiaCategoria")]
+        public string tipologiacategoria { get; set; }
 
         [JsonProperty(PropertyName = "objectid")]
         public int objectid { get; set; }

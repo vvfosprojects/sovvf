@@ -1,5 +1,5 @@
-import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
-import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
+import { AreaMappa } from '../../../../maps/maps-model/area-mappa-model';
 
 export class GetSediMarkers {
     static readonly type = '[Sedi Marker] Get Sedi Marker';

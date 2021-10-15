@@ -1,5 +1,5 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
-import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../../../maps/maps-interface/direction-interface';
 import { SetDirection, ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { Injectable } from '@angular/core';
 

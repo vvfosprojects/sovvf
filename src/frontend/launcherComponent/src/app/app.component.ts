@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -76,6 +76,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
+    animateSidebar = false;
 
     ngxLoaderConfiguration: any = {};
 
@@ -93,7 +94,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
                 private render: Renderer2,
-                private ngbAccordionconfig: NgbAccordionConfig) {
+                private ngbAccordionconfig: NgbAccordionConfig,
+                private cdRef: ChangeDetectorRef) {
         ngbAccordionconfig.type = 'dark';
         this.getUrl();
         this.getSidebarOpened();
@@ -116,6 +118,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     ngAfterViewChecked(): void {
         this.getHeight();
         this.getWidth();
+        this.animateSidebar = true;
+        this.cdRef.detectChanges();
     }
 
     ngOnDestroy(): void {

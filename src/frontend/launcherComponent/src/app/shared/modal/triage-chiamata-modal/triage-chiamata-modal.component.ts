@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
-import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../features/maps/maps-model/chiamata-marker.model';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
 import { ReducerSchedaTelefonata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';

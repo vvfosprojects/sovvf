@@ -1,4 +1,4 @@
-import { AreaMappa } from '../../maps/maps-model/area-mappa-model';
+import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { makeLatLngBounds } from '../../../../shared/helper/mappa/function-mappa';
 
 export class GetDataHome {

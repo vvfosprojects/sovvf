@@ -22,6 +22,7 @@ import { RubricaRouting } from './rubrica.routing';
  */
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
+import { MapsModule } from '../maps/maps.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
     providers: []
 })

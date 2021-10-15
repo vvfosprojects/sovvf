@@ -1,4 +1,4 @@
-import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 export class AreaMappa {
     constructor(

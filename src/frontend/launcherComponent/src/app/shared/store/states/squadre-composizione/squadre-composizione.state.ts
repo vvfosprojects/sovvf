@@ -150,11 +150,13 @@ export class SquadreComposizioneState {
                 })
             );
         }
-        if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
+
+        if (richiestaComposizione) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());
         }
+
         setState(
             patch({
                 idSquadreComposizioneSelezionate: append([squadraComp.codice]),
@@ -245,12 +247,12 @@ export class SquadreComposizioneState {
     unselectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione): void {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
-        if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
+        if (idSquadreSelezionate) {
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-            if (richiestaComposizione && ((boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
+            if (richiestaComposizione && !(boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && boxPartenzaSelezionato.squadreComposizione && boxPartenzaSelezionato.squadreComposizione.length === 1)) {
                 dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
                 dispatch(new GetListaMezziSquadre());

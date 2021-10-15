@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AreaMappaState } from './area-mappa.state';
 import { CentroMappaState } from './centro-mappa.state';
 import { MapsDirectionState } from './maps-direction.state';
-import { TastoChiamataMappaState } from './tasto-chiamata-mappa.state';
 import { AddLayersMappa, RemoveLayersMappa } from '../../actions/maps/mappa.actions';
 import { append, patch } from '@ngxs/store/operators';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
@@ -23,8 +22,7 @@ export const MappaStateDefaults: MappaStateModel = {
     children: [
         AreaMappaState,
         CentroMappaState,
-        MapsDirectionState,
-        TastoChiamataMappaState
+        MapsDirectionState
     ]
 })
 export class MappaState {

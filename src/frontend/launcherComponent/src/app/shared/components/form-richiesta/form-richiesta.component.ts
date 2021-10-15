@@ -14,7 +14,7 @@ import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
-import { ChiamataMarker } from '../../../features/home/maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../../features/maps/maps-model/chiamata-marker.model';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
 import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

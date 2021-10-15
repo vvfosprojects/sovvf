@@ -512,8 +512,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
 // Loader index.html
 .loader {
-  margin-top: calc(25%);
-  margin-left: calc(50% - 60px);
   border: 16px solid $SO-dark-light;
   border-top: 16px solid #f3f3f3;
   border-radius: $SO-middle $SO-i;
@@ -1152,6 +1150,14 @@ tag-input {
   top: $SO-middle $SO-i;
   left: $SO-middle $SO-i;
   margin-left: -125px;
+  margin-top: -70px;
+}
+
+.main-loader-centered {
+  position: absolute;
+  top: $SO-middle $SO-i;
+  left: $SO-middle $SO-i;
+  margin-left: -10px;
   margin-top: -70px;
 }
 

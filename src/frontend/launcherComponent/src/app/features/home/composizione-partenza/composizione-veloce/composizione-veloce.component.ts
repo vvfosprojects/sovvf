@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';

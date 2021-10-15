@@ -46,7 +46,7 @@
         Impostazioni Sede
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
-            [class.btn-sidebar-selected]="url === '/area-documentale'"
+            [class.btn-sidebar-selected]="url === '/area-documentale' || url === '/POS'"
             (click)="onShowAzioniAreaDocumentale()">
         <i class="far fa-folder-open mr-1"></i>
         Area Documentale

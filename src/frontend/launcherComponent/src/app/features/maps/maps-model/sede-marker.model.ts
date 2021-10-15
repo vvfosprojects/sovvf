@@ -1,5 +1,5 @@
-import {Sede} from '../../../../shared/model/sede.model';
-import {Coordinate} from '../../../../shared/model/coordinate.model';
+import {Sede} from '../../../shared/model/sede.model';
+import {Coordinate} from '../../../shared/model/coordinate.model';
 
 export class SedeMarker implements Sede {
     constructor(

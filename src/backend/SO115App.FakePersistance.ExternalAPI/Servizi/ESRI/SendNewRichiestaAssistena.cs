@@ -52,22 +52,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             //var uri = new Uri(_configuration.GetSection("ESRI").GetSection("URLRichieste").Value + "/addFeatures");
 
-            //var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
+            var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
-            //if (result != null && result.addResults[0].success == false)
-            //{
-            //    throw new Exception($"Errore servizio ESRI: {result.addResults[0].error.description}");
-            //}
-            //else
-            //{
-            //    richiesta.Esri_Param = new API.Models.Classi.Soccorso.ESRI()
-            //    {
-            //        ObjectId = result.addResults[0].objectId,
-            //        LastUpdate = DateTime.Now
-            //    };
+            if (result != null && result.addResults[0].success == false)
+            {
+                throw new Exception($"Errore servizio ESRI: {result.addResults[0].error.description}");
+            }
+            else
+            {
+                richiesta.Esri_Param = new API.Models.Classi.Soccorso.ESRI()
+                {
+                    ObjectId = result.addResults[0].objectId,
+                    LastUpdate = DateTime.Now
+                };
 
-            //    _upDateRichiestaAssistenza.UpDate(richiesta);
-            //}
+                _upDateRichiestaAssistenza.UpDate(richiesta);
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import {
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearSelectedMezziComposizione, SetListaMezziComposizione, UnselectMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import {
     ListaComposizioneAvanzata, MezziComposizioneAvanzata,
@@ -15,7 +15,7 @@ import {
 } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
-import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { RemoveBoxPartenza, RemoveMezzoBoxPartenzaSelezionato } from '../../actions/composizione-partenza/box-partenza.actions';
 import {
     StartListaMezziComposizioneLoading,
     StartListaSquadreComposizioneLoading,
@@ -67,8 +67,19 @@ export class ComposizioneAvanzataState {
         const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s) as any;
         const codiceChiamata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)?.codice;
         let codDistaccamentoSelezionato;
+        let autistaInPartenza = false;
+
         if (squadreSelezionate && squadreSelezionate[0]) {
+            squadreSelezionate.forEach(x => x.membri ? x.membri.forEach(y => y.autista ? autistaInPartenza = true : null) : null);
             codDistaccamentoSelezionato = squadreSelezionate[0].distaccamento.codice;
+            if (!autistaInPartenza) {
+                if (mezzoSelezionato && mezzoSelezionato.genere !== 'AV') {
+                    this.store.dispatch([
+                        new UnselectMezzoComposizione(),
+                        new RemoveMezzoBoxPartenzaSelezionato()
+                    ]);
+                }
+            }
         } else if (mezzoSelezionato) {
             codDistaccamentoSelezionato = mezzoSelezionato.distaccamento.codice;
         } else {
@@ -91,7 +102,6 @@ export class ComposizioneAvanzataState {
             default:
                 statoSquadra = null;
         }
-
         const objGetMezzi = {
             codiceChiamata: codiceChiamata ? codiceChiamata : null,
             pagination: {
@@ -107,6 +117,7 @@ export class ComposizioneAvanzataState {
                 ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null,
                 codSquadraSelezionata: squadreSelezionate && squadreSelezionate.length ? squadreSelezionate[0].codice : null,
                 codMezzoSelezionato: mezzoSelezionato && mezzoSelezionato.codice ? mezzoSelezionato.codice : null,
+                autista: !!autistaInPartenza,
             }
         } as any;
 
@@ -124,7 +135,14 @@ export class ComposizioneAvanzataState {
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null,
             codSquadraSelezionata: squadreSelezionate && squadreSelezionate.length ? squadreSelezionate[0].codice : null,
             codMezzoSelezionato: mezzoSelezionato && mezzoSelezionato.codice ? mezzoSelezionato.codice : null,
+            autista: !!autistaInPartenza,
+
         } as any;
+
+        if ((!squadreSelezionate || (squadreSelezionate && squadreSelezionate.length <= 0)) && !mezzoSelezionato) {
+            objGetMezzi.filtro.autista = null;
+            objGetSquadre.autista = null;
+        }
 
         if (action.preaccoppiato) {
             objGetSquadre.codMezzoSelezionato = squadreSelezionate[0] && squadreSelezionate[0].mezziPreaccoppiati[0] ? squadreSelezionate[0].mezziPreaccoppiati[0].codice : null;

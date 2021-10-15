@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';

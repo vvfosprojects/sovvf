@@ -15,7 +15,7 @@ import {
     UpdateRichiestaComposizione, StartListaSquadreComposizioneLoading, StartListaMezziComposizioneLoading, StopListaSquadreComposizioneLoading, StopListaMezziComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
+import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
 import { ClearComposizioneVeloce, ClearPreaccoppiati, ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';

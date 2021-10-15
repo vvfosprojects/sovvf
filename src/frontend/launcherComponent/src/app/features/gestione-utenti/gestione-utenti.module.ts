@@ -28,6 +28,7 @@ import { NgxsModule } from '@ngxs/store';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
             ]
         ),
         NgxsFormPluginModule,
+        MapsModule,
     ],
     providers: []
 })

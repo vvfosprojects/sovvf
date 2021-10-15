@@ -14,7 +14,7 @@ import { BoxesModule } from './boxes/boxes.module';
 import { SchedaRichiestaModule } from './scheda-richiesta/scheda-richiesta.module';
 import { EventiRichiestaModule } from './eventi/eventi-richiesta.module';
 import { FilterbarModule } from './filterbar/filterbar.module';
-import { MapsModule } from './maps/maps.module';
+import { MapsModule } from '../maps/maps.module';
 import { RichiesteModule } from './richieste/richieste.module';
 import { ComposizionePartenzaModule } from './composizione-partenza/composizione-partenza.module';
 import { ViewComponentState } from './store/states/view/view.state';
@@ -33,7 +33,6 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
 import { ZoneEmergenzaState } from './store/states/filterbar/zone-emergenza.state';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
-import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
 
 @NgModule({
     declarations: [
@@ -72,8 +71,7 @@ import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mapp
                 MezziComposizioneState,
                 SquadreComposizioneState,
                 FiltriComposizioneState,
-                ZoneEmergenzaState,
-                TastoChiamataMappaState
+                ZoneEmergenzaState
             ]
         ),
         BarChartModule,
