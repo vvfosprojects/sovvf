@@ -22,6 +22,7 @@ import { AreaDocumentaleRouting } from './area-documentale.routing';
  */
 import { AreaDocumentaleState } from './store/states/area-documentale/area-documentale.state';
 import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documentale/ricerca-area-documentale.state';
+import { MapsModule } from '../maps/maps.module';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
     providers: []
 })
