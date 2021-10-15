@@ -11,24 +11,24 @@ namespace SO115App.Models.Classi.Condivise
         public string Stato { get; set; }
         public string CodMezzo { get; set; }
 
-        public string VerificaCoerenza(List<CambioStatoMezzo> lst)
+        public string VerificaCoerenza(List<CambioStatoMezzo> lst, bool ex = false)
         {
             var statoPrecedente = getStatoPrecedente(lst.OrderByDescending(c => c.Istante).ToList());
 
             if (statoPrecedente == null)
                 return null;
 
-            switch (Stato)
+            return Stato switch
             {
-                case "In Uscita": return checkCoerenza(CoerenzeStati.InUscita, statoPrecedente.Stato);
-                case "In Viaggio": return checkCoerenza(CoerenzeStati.InViaggio, statoPrecedente.Stato);
-                case "Sul Posto": return checkCoerenza(CoerenzeStati.SulPosto, statoPrecedente.Stato);
-                case "In Rientro": return checkCoerenza(CoerenzeStati.InRientro, statoPrecedente.Stato);
-                case "Rientrato": return checkCoerenza(CoerenzeStati.Rientrato, statoPrecedente.Stato);
-                case "In Sede": return checkCoerenza(CoerenzeStati.InSede, statoPrecedente.Stato);
-            }
+                Costanti.MezzoInUscita => checkCoerenza(CoerenzeStati.InUscita, statoPrecedente.Stato, ex),
+                Costanti.MezzoInViaggio => checkCoerenza(CoerenzeStati.InViaggio, statoPrecedente.Stato, ex),
+                Costanti.MezzoSulPosto => checkCoerenza(CoerenzeStati.SulPosto, statoPrecedente.Stato, ex),
+                Costanti.MezzoInRientro => checkCoerenza(CoerenzeStati.InRientro, statoPrecedente.Stato, ex),
+                Costanti.MezzoRientrato => checkCoerenza(CoerenzeStati.Rientrato, statoPrecedente.Stato, ex),
+                Costanti.MezzoInSede => checkCoerenza(CoerenzeStati.InSede, statoPrecedente.Stato, ex),
 
-            throw new Exception("Errore controllo sequenza stati");
+                _ => throw new Exception("Errore controllo sequenza stati"),
+            };
         }
 
         /// <summary>
@@ -36,8 +36,11 @@ namespace SO115App.Models.Classi.Condivise
         /// </summary>
         /// <param name="coerenzeStatoAttuale">Costante CoerenzaStati</param>
         /// <returns>Messaggio ad HOC di errore</returns>
-        private string checkCoerenza(List<string> coerenzeStatoAttuale, string statoPrecedente)
+        private string checkCoerenza(List<string> coerenzeStatoAttuale, string statoPrecedente, bool generaEccezione)
         {
+            if(generaEccezione)
+                throw new Exception($"Lo stato {Stato} non può seguire lo stato {statoPrecedente}");
+
             if (!coerenzeStatoAttuale.Contains(statoPrecedente))
                 return $"Lo stato {Stato} non può seguire lo stato {statoPrecedente}";
             else

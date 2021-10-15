@@ -4,6 +4,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     public interface ICheckCongruitaPartenze
     {
-        bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo, string codicePartenza);
+        bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo, string codicePartenza, bool ex = false);
     }
 }

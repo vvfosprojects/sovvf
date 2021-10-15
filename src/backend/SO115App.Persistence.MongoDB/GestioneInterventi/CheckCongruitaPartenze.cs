@@ -15,7 +15,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private readonly DbContext _dbContext;
         public CheckCongruitaPartenze(DbContext dbContext) => _dbContext = dbContext;
         
-        public bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo, string codicePartenza)
+        public bool CheckCongruenza(CambioStatoMezzo cambioStatoMezzo, string codicePartenza, bool ex = false)
         {
             var lstRichiesteMezzo = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Where(r => r.TestoStatoRichiesta != "C")).ToList();
 
@@ -26,7 +26,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                     return p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo);
                 })
                 .GroupBy(p => p.CodicePartenza))
-                .Where(p => p.Key == codicePartenza);
+                .Where(p => p.Key == codicePartenza)
+                .ToList();
 
             foreach (var movimentiPartenza in lstMovimentiPartenza)
             {
@@ -34,7 +35,13 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 var max = movimentiPartenza.Select(p => p.Istante).Max();
 
                 if (cambioStatoMezzo.Istante >= min && cambioStatoMezzo.Istante <= max)
-                    throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.AddHours(2).ToShortTimeString()} sulla richiesta '{movimentiPartenza.Select(p => p.CodiceRichiesta).First()}'.");
+                {
+                    if (ex && movimentiPartenza.Key == codicePartenza)
+                        throw new Exception("Non puoi impostare l'orario di uno stato prima del precedente.");
+
+                    if(ex)
+                        throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.AddHours(2).ToLongTimeString()} sulla richiesta '{movimentiPartenza.Select(p => p.CodiceRichiesta).First()}'.");
+                }
             }
 
             return true;
