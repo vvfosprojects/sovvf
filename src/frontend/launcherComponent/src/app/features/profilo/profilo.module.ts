@@ -8,6 +8,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfiloRoutingModule } from './profilo.routing';
 import { ProfiloComponent } from './profilo.component';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { ProfiloComponent } from './profilo.component';
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ]
 })
 
