@@ -19,6 +19,7 @@ import { TabellaRubricaPersonaleComponent } from './tabella-rubrica-personale/ta
 import { RubricaPersonaleState } from './store/states/rubrica-personale/rubrica-personale.state';
 import { RicercaRubricaPersonaleComponent } from './ricerca-rubrica-personale/ricerca-rubrica-personale.component';
 import { RicercaRubricaPersonaleState } from './store/states/ricerca-rubrica-personale/ricerca-rubrica-personale.state';
+import { MapsModule } from '../maps/maps.module';
 
 /**
  * States
@@ -44,7 +45,8 @@ import { RicercaRubricaPersonaleState } from './store/states/ricerca-rubrica-per
         FormsModule,
         NgSelectModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
     providers: []
 })
