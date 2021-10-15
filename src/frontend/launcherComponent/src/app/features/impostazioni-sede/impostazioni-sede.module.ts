@@ -14,6 +14,7 @@ import { NgxsModule } from '@ngxs/store';
 import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-dettagli-tipologie/ricerca-dettagli-tipologie.component';
 import { DettaglioTipologiaModalState } from './store/states/dettaglio-tipologia-modal-state';
 import { TriageComponent } from './triage/triage.component';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { TriageComponent } from './triage/triage.component';
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MapsModule
     ]
 })
 
