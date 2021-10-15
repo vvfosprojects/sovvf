@@ -11,6 +11,7 @@ import { ChangelogComponent } from './changelog.component';
 import { ChangelogRoutingModule } from './changelog.routing';
 import { ChangelogState } from './store/changelog.state';
 import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { ChangelogItemComponent } from './changelog-item/changelog-item.componen
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgbModule
+        NgbModule,
+        MapsModule
     ]
 })
 
