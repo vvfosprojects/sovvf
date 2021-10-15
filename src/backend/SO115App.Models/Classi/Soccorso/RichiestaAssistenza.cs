@@ -116,9 +116,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
             if(partenza.Mezzo.Stato != stato.Stato)
-                check.CheckCongruenza(stato, partenza.Codice, false);
-            else
                 check.CheckCongruenza(stato, partenza.Codice, true);
+            else
+                check.CheckCongruenza(stato, partenza.Codice, false);
 
             switch (stato.Stato)
             {

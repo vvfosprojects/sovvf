@@ -26,7 +26,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                     return p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo);
                 })
                 .GroupBy(p => p.CodicePartenza))
-                .Where(p => p.Key == codicePartenza);
+                .Where(p => p.Key == codicePartenza)
+                .ToList();
 
             foreach (var movimentiPartenza in lstMovimentiPartenza)
             {
@@ -37,8 +38,9 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 {
                     if (ex && movimentiPartenza.Key == codicePartenza)
                         throw new Exception("Non puoi impostare l'orario di uno stato prima del precedente.");
-                    
-                    throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.AddHours(2).ToShortTimeString()} sulla richiesta '{movimentiPartenza.Select(p => p.CodiceRichiesta).First()}'.");
+
+                    if(ex)
+                        throw new Exception($"Il mezzo {cambioStatoMezzo.CodMezzo} risulta occupato alle ore {cambioStatoMezzo.Istante.AddHours(2).ToLongTimeString()} sulla richiesta '{movimentiPartenza.Select(p => p.CodiceRichiesta).First()}'.");
                 }
             }
 
