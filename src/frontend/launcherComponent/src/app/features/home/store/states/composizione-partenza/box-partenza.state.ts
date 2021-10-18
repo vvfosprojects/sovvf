@@ -136,7 +136,7 @@ export class BoxPartenzaState {
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
                 action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                    dispatch(new UnselectSquadraComposizione(squadra, true));
+                    dispatch(new UnselectSquadraComposizione(squadra, false, true));
                 });
             }
         }

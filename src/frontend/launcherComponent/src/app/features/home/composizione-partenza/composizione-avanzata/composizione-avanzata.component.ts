@@ -354,7 +354,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
         this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         this.onClearDirection();
-        this.store.dispatch(new GetListeComposizioneAvanzata());
+        if (this.boxPartenzaList && this.boxPartenzaList.length === 1) {
+            this.store.dispatch(new GetListeComposizioneAvanzata());
+        }
     }
 
     dopoAggiungiBoxPartenza(): void {
