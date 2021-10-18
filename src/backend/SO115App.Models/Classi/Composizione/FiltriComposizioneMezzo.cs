@@ -8,5 +8,6 @@
         public string[]? Stato { get; set; }
         public string[]? CodiciDistaccamenti { get; set; }
         public string[]? Tipo { get; set; }
+        public bool? Autista { get; set; }
     }
 }
