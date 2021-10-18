@@ -110,7 +110,7 @@ export class RichiestaModificaState {
     }
 
     @Action(PatchRichiesta)
-    patchRichiesta({ dispatch }: StateContext<RichiestaModificaStateModel>, action: PatchRichiesta): void {
+    patchRichiesta({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: PatchRichiesta): void {
         let sintesiRichiesta: SintesiRichiesta;
         if (action.sintesiRichiesta) {
             sintesiRichiesta = action.sintesiRichiesta;
@@ -125,6 +125,7 @@ export class RichiestaModificaState {
                     tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
                 }
 
+                const competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze);
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
                 const tipiTerreno = [] as TipoTerreno[];
 
@@ -172,7 +173,7 @@ export class RichiestaModificaState {
                             latitudine: f.latitudine
                         },
                     },
-                    f.competenze,
+                    competenze,
                     f.complessita,
                     f.istantePresaInCarico,
                     f.istantePrimaAssegnazione,

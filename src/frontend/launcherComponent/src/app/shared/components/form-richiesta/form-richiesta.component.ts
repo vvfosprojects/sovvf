@@ -20,7 +20,7 @@ import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
-import { ReducerSchedaTelefonata, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { MarkerChiamata, ReducerSchedaTelefonata, SetCompetenze, SetCountInterventiProssimita, SetInterventiProssimita, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -312,6 +312,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onSetIndirizzo(candidate: AddressCandidate): void {
+        console.log('onSetIndirizzo', candidate);
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
@@ -331,11 +332,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setIndirizzoFromMappa(lat: number, lon: number, address: string): void {
-        // TODO: formattare latitudine e longitudine
-        // const latitudine = Math.round(lat * 100) / 100;
-        // const longitudine = Math.round(lon * 100) / 100;
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lon);
+        const latitudine = roundToDecimal(lat, 6);
+        const longitudine = roundToDecimal(lon, 6);
+        this.f.latitudine.patchValue(latitudine);
+        this.f.longitudine.patchValue(longitudine);
         this.f.indirizzo.patchValue(address);
 
         const coordinate = new Coordinate(lat, lon);
@@ -364,7 +364,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.longitudine.patchValue(coordinate.longitudine);
         this.f.indirizzo.patchValue(candidate.address);
 
-        this.store.dispatch(new ModificaIndirizzo(nuovoIndirizzo));
+        this.store.dispatch([
+            new ModificaIndirizzo(nuovoIndirizzo),
+            new SetCompetenze(coordinate),
+            new SetCountInterventiProssimita(candidate.address, coordinate),
+            new SetInterventiProssimita(candidate.address, coordinate)
+        ]);
     }
 
     modificaIndirizzo(): void {

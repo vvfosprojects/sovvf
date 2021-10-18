@@ -129,6 +129,14 @@
                                                 [competenza]="c" [i]="i"></app-competenza>
                             </div>
                         </ng-template>
+                        <!-- COMPETENZE RICHIESTA MODIFICA -->
+                        <ng-template [ngIf]="!competenze?.length && richiestaModifica?.competenze?.length">
+                            <div class="float-left"
+                                 style="font-size: xx-large">
+                                <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
+                                                [competenza]="c" [i]="i"></app-competenza>
+                            </div>
+                        </ng-template>
                     </div>
                 </div>
             </div>
