@@ -1153,14 +1153,12 @@ tag-input {
   margin-top: -70px;
 }
 
-@media only screen and (max-width: 3700px) {
-  .main-loader-centered {
-    position: absolute;
-    top: $SO-middle $SO-i;
-    left: $SO-middle $SO-i;
-    margin-left: -10px;
-    margin-top: -70px;
-  }
+.main-loader-centered {
+  position: absolute;
+  top: $SO-middle $SO-i;
+  left: $SO-middle $SO-i;
+  margin-left: -10px;
+  margin-top: -70px;
 }
 
 @media only screen and (min-width: 3701px) {
