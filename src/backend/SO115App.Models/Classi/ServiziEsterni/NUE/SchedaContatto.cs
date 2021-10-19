@@ -115,5 +115,14 @@ namespace SO115App.Models.Classi.NUE
         public bool Collegata { get; set; }
 
         public List<SchedaContatto> Collegate { get; set; }
+
+        public Esri_Params esri_params { get; set; }
+    }
+
+    public class Esri_Params
+    {
+        public int ObjectId { get; set; }
+
+        public DateTime LastUpdate { get; set; }
     }
 }

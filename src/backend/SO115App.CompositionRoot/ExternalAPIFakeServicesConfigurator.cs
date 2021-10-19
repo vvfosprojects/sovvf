@@ -325,6 +325,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetToken_ESRI, GetToken_ESRI>();
             container.Register<INotifyUpDateRichiesta, SendUpDateRichiestaAssistenza>();
             container.Register<IMappingESRIMessage, MappingESRIMessage>();
+            container.Register<INotifyUpDateSchedaContatto, SendUpDateSchedaContatto>();
 
             #endregion ESRI
         }

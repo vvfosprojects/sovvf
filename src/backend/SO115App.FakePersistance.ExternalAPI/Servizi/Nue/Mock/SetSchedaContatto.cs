@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Persistence.MongoDB;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.IO;
@@ -37,11 +38,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly DbContext _context;
         private readonly IGetSchedeContatto _getSchedeContatto;
+        private readonly INotifyUpDateSchedaContatto _notifyUpDateSchedaContatto;
 
-        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto)
+        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto, INotifyUpDateSchedaContatto notifyUpDateSchedaContatto)
         {
             _context = context;
             _getSchedeContatto = getSchedeContatto;
+            _notifyUpDateSchedaContatto = notifyUpDateSchedaContatto;
         }
 
         /// <summary>
@@ -49,22 +52,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         ///   schede contatto.
         /// </summary>
         /// <param name="lista">La lista di schede contatto</param>
-        public void Set(List<SchedaContatto> lista, string codiceSchedaModificata)
+        public void Set(SchedaContatto scheda, string codiceSchedaModificata)
         {
             var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
 
-            foreach (SchedaContatto scheda in lista)
+            if (scheda.CodiceScheda.Equals(codiceSchedaModificata))
             {
-                if (scheda.CodiceScheda.Equals(codiceSchedaModificata))
+                if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                 {
-                    if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                    {
-                        _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
-                    }
-                    else
-                    {
-                        _context.SchedeContattoCollection.InsertOne(scheda);
-                    }
+                    _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
+                }
+                else
+                {
+                    _context.SchedeContattoCollection.InsertOne(scheda);
                 }
             }
         }
@@ -80,23 +80,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var schedeContatto = _getSchedeContatto.ListaSchedeContatto(codiceSede);
 
-            foreach (var schedaContatto in schedeContatto.FindAll(x => x.CodiceScheda.Equals(codiceScheda)))
-            {
-                if (schedaContatto.OperatoreChiamata != null)
-                {
-                    schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
-                    schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-                }
-                else
-                {
-                    schedaContatto.OperatoreChiamata = new Operatore();
-                    schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
-                    schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-                }
-                schedaContatto.Gestita = gestita;
-            }
+            var schedaContatto = schedeContatto.Find(x => x.CodiceScheda.Equals(codiceScheda));
 
-            Set(schedeContatto, codiceScheda);
+            if (schedaContatto.OperatoreChiamata != null)
+            {
+                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
+                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
+            }
+            else
+            {
+                schedaContatto.OperatoreChiamata = new Operatore();
+                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
+                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
+            }
+            schedaContatto.Gestita = gestita;
+
+            //Richiamo ESRI per aggiornare il MARKER
+            //_notifyUpDateSchedaContatto.UpDate(schedaContatto);
+
+            Set(schedaContatto, codiceScheda);
         }
     }
 }
