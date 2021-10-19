@@ -26,7 +26,7 @@ namespace SO115App.WSNue.Manager
 
             try
             {
-                insertSchedaNueRequest.codiceSede = "RM.1000"; //insertSchedaNueRequest.provinciaDestinatario + ".1000";
+                var SchedaSO115 = MappaScheda(insertSchedaNueRequest);
 
                 var colCheck = database.ListCollections(new ListCollectionsOptions { Filter = new BsonDocument("name", "schedeNue") }).ToList();
                 if (colCheck.Count > 0)
@@ -39,7 +39,7 @@ namespace SO115App.WSNue.Manager
 
                 database.GetCollection<SchedaContatto>("schedecontatto").InsertOne(MappaWSsuSchedaContatto.MappaSchedaContatto(insertSchedaNueRequest));
 
-                SendMessage(insertSchedaNueRequest);
+                SendMessage(SchedaSO115);
 
                 return "Ok";
             }
@@ -49,10 +49,10 @@ namespace SO115App.WSNue.Manager
             }
         }
 
-        private async void SendMessage(InsertSchedaNueRequest scheda)
+        private async void SendMessage(SchedaContatto scheda)
         {
             var hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:31497/NotificationHub")
+            .WithUrl(ConfigurationManager.ConnectionStrings["SO115MsgConn"].ConnectionString)
             .Build();
 
             hubConnection.On<string>("ReciveServerUpdate", update =>
@@ -70,7 +70,7 @@ namespace SO115App.WSNue.Manager
 
             hubConnection.InvokeAsync("AddToGroup", utente).Wait();
 
-            hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", MappaScheda(scheda)).Wait();
+            hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", scheda).Wait();
 
             hubConnection.InvokeAsync("RemoveToGroup", utente).Wait();
         }
@@ -125,7 +125,7 @@ namespace SO115App.WSNue.Manager
             {
                 classificazione = classificazione,
                 classificazioneEvento = SchedaXml.SelectSingleNode("//nue:Classification", namespaces).InnerText,
-                codiceSede = scheda.codiceSede,
+                codiceSede = scheda.provinciaDestinatario + ".1000",
                 codiceScheda = SchedaXml.SelectSingleNode("//nue:ID", namespaces).InnerText,
                 dataInserimento = Convert.ToDateTime(SchedaXml.SelectSingleNode("//nue:CreateDate", namespaces).InnerText),
                 dettaglio = SchedaXml.SelectSingleNode("//nue:ClassificationDetail", namespaces).InnerText,
