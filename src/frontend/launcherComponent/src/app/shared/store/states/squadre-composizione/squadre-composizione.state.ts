@@ -252,7 +252,7 @@ export class SquadreComposizioneState {
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-            if (richiestaComposizione && !(boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && boxPartenzaSelezionato.squadreComposizione && boxPartenzaSelezionato.squadreComposizione.length === 1)) {
+            if (richiestaComposizione && !(boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && boxPartenzaSelezionato.squadreComposizione && boxPartenzaSelezionato.squadreComposizione.length === 1) && !action.preventGet) {
                 dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
                 dispatch(new GetListaMezziSquadre());

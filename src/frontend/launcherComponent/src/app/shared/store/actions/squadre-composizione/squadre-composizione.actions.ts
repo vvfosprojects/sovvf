@@ -60,7 +60,7 @@ export class SelectSquadraComposizionePreAccoppiati {
 export class UnselectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Unselect Squadra Composizione';
 
-    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean, public preventGet?: boolean) {
     }
 }
 

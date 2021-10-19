@@ -27,30 +27,31 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
         public string Get()
         {
-            string token = "";
+            //string token = "";
 
-            Dictionary<string, string> postData = new Dictionary<string, string>();
-            postData.Add("username", _configuration.GetSection("ESRI").GetSection("User").Value);
-            postData.Add("password", _configuration.GetSection("ESRI").GetSection("Password").Value);
-            postData.Add("referer", _configuration.GetSection("ESRI").GetSection("URLRichieste").Value);
-            postData.Add("f", "json");
+            //Dictionary<string, string> postData = new Dictionary<string, string>();
+            //postData.Add("username", _configuration.GetSection("ESRI").GetSection("User").Value);
+            //postData.Add("password", _configuration.GetSection("ESRI").GetSection("Password").Value);
+            //postData.Add("referer", _configuration.GetSection("ESRI").GetSection("URLRichieste").Value);
+            //postData.Add("f", "json");
 
-            var multipartFormDataContent = new MultipartFormDataContent();
+            //var multipartFormDataContent = new MultipartFormDataContent();
 
-            foreach (var keyValuePair in postData)
-            {
-                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
-                    String.Format("\"{0}\"", keyValuePair.Key));
-            }
+            //foreach (var keyValuePair in postData)
+            //{
+            //    multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
+            //        String.Format("\"{0}\"", keyValuePair.Key));
+            //}
 
             var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}");
 
-            var EsitoToken = _clientToken.PostAsyncFormData(url, multipartFormDataContent).Result;
+            //var EsitoToken = _clientToken.PostAsyncFormData(url, multipartFormDataContent).Result;
 
-            if (EsitoToken.token != null)
-                token = EsitoToken.token;
+            //if (EsitoToken.token != null)
+            //    token = EsitoToken.token;
 
-            return token;
+            //return token;
+            return "";
         }
     }
 }

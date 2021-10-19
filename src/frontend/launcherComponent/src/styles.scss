@@ -1161,6 +1161,16 @@ tag-input {
   margin-top: -70px;
 }
 
+@media only screen and (min-width: 3701px) {
+  .main-loader-centered {
+    position: absolute;
+    top: $SO-middle $SO-i;
+    left: 25% $SO-i;
+    margin-left: -10px;
+    margin-top: -70px;
+  }
+}
+
 .loader-centrato img {
   width: 250px;
   height: 140px;

@@ -18,9 +18,9 @@
                                 (toggleChiamataFromMappa)="onToggleChiamataFromMappa()">
                         </app-tasto-chiamata-mappa>
                     </div>
-                    <div class="float-left">
+                    <div *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                         class="float-left">
                         <app-tasto-schede-contatto
-                                *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                                 [active]="schedeContattoStatus$ | async"
                                 [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
                                 [disabled]="permessiFeature.SchedeContatto | checkPermission"

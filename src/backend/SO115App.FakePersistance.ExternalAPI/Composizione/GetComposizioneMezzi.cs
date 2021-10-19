@@ -161,7 +161,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice ) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(mezzo.Mezzo.Distaccamento?.Codice);
 
-                bool genere = query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true;
+                bool genere = (query.Filtro.Autista == true || query.Filtro.Autista == null) ? query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true : mezzo.Mezzo.Genere.ToLower().Contains("av");
 
                 bool stato = query.Filtro?.Stato?.Contains(mezzo.Mezzo.Stato) ?? true;
 

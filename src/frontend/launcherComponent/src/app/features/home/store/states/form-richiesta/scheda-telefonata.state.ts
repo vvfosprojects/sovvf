@@ -283,6 +283,7 @@ export class SchedaTelefonataState {
                 tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
             }
 
+            const competenze = state.competenze;
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
             const tipiTerreno = [] as TipoTerreno[];
 
@@ -330,7 +331,7 @@ export class SchedaTelefonataState {
                         latitudine: f.latitudine
                     },
                 },
-                f.competenze,
+                competenze,
                 f.complessita,
                 f.istantePresaInCarico,
                 f.istantePrimaAssegnazione,

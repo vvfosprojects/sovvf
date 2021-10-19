@@ -6,7 +6,7 @@
     (click)="onClick()">
     <div class="row px-3">
         <div class="clearfix"
-             style="width: 65%">
+             style="width: 67%">
             <app-icona-stato [stato]="_nomeStatiSquadra(squadraComp?.stato)"></app-icona-stato>
             <div class="badge mx-1 py-1"
                  [ngClass]="autistaInSquadra ? 'badge-info' : 'badge-danger'"
@@ -39,7 +39,8 @@
                 </h6>
             </ng-template>
             <div *ngIf="squadraComp.tipologia && squadraComp.tipologia === 'MODULE'" class="badge mr-1 py-1 badge-mod-warning" ngbTooltip="Colonna mobile">
-                <i class="fas fa-chart-pie"></i>
+                <i class="fas fa-truck" style="font-size: 15px"></i>
+                <i class="fas fa-truck" style="font-size: 15px"></i>
             </div>
             <div class="d-inline-block font-weight-bolder mr-1"
                  [ngbTooltip]="squadraComp?.nome.length >= 0 ? squadraComp?.nome : null">
@@ -111,7 +112,7 @@
         </div>
         <div *ngIf="viewState?.composizione?.active"
              class="clearfix text-right pr-1"
-             style="width: 35%;">
+             style="width: 33%;">
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"
                  [ngbTooltip]="squadraComp?.distaccamento?.descrizione">
