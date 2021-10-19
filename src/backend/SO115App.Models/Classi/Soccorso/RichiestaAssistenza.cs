@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze check)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
             if (partenza.Mezzo.Stato != stato.Stato)
                 check.CheckCongruenza(stato, partenza.Codice, true);
@@ -173,7 +173,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
-                    //sendNewItemSTATRI.InvioRichiesta(this);
+                    sendNewItemSTATRI.InvioRichiesta(this);
 
                     break;
             }
@@ -1092,6 +1092,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
         /// </summary>
         public bool Esercitazione { get; set; } = false;
+
+        /// <summary>
+        ///   Indica se la richiesta è stata inviata a STATRI
+        /// </summary>
+        public bool InviatoSTATRI { get; set; } = false;
 
         /// <summary>
         ///   Oggetto ESRI. si riempie nel momento in cui si fa la prima registrazione sul Portal

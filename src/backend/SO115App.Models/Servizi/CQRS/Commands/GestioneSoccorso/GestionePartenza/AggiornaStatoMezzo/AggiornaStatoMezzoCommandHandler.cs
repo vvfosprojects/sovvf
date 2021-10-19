@@ -35,13 +35,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class AggiornaStatoMezzoCommandHandler : ICommandHandler<AggiornaStatoMezzoCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
+        private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
         private readonly IModificaInterventoChiuso _modificaGac;
         private readonly IGetStatoMezzi _statoMezzi;
         private readonly IGetTipologieByCodice _getTipologie;
 
-        public AggiornaStatoMezzoCommandHandler(IGetTipologieByCodice getTipologie, IGetStatoMezzi statoMezzi, IModificaInterventoChiuso modificaGac, IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
+        public AggiornaStatoMezzoCommandHandler(IGetTipologieByCodice getTipologie, IGetStatoMezzi statoMezzi,
+                                                IModificaInterventoChiuso modificaGac, IUpdateStatoPartenze updateStatoPartenze,
+                                                ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _sendNewItemSTATRI = sendNewItemSTATRI;
@@ -105,7 +107,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             //SE CAMBIO ORARIO DI UNO STATO AVVISO GAC
             var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First();
             if (command.StatoMezzo.Equals(statoAttuale)) _modificaGac.Send(new ModificaMovimentoGAC()
-            { 
+            {
                 comune = new ComuneGAC() { descrizione = richiesta.Localita.Citta },
                 dataIntervento = richiesta.dataOraInserimento,
                 localita = richiesta.Localita.Indirizzo,

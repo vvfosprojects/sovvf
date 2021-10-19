@@ -2,35 +2,36 @@
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.Statri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.STATRI
 {
-    public class SendNewItem : ISendNewItemSTATRI
+    public class SendSTATRIItem : ISendSTATRIItem
     {
         private readonly IConfiguration _config;
-        private readonly IHttpRequestManager<List<ReturnMsg>> _client;
+        private readonly IHttpRequestManager<ReturnMsg> _client;
         private readonly IMapperRichiestaSuSintesi _mapperRichiestaSuSintesi;
         private readonly IMapperSintesiInSchedeSO115 _mapperSintesiInSchedeSO115;
+        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public SendNewItem(IConfiguration config, IHttpRequestManager<List<ReturnMsg>> client,
+        public SendSTATRIItem(IConfiguration config, IHttpRequestManager<ReturnMsg> client,
                            IMapperRichiestaSuSintesi mapperRichiestaSuSintesi,
-                           IMapperSintesiInSchedeSO115 mapperSintesiInSchedeSO115)
+                           IMapperSintesiInSchedeSO115 mapperSintesiInSchedeSO115,
+                           IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
             _client = client;
             _mapperRichiestaSuSintesi = mapperRichiestaSuSintesi;
             _mapperSintesiInSchedeSO115 = mapperSintesiInSchedeSO115;
+            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _config = config;
         }
 
-        public async Task<List<ReturnMsg>> InvioRichiesta(RichiestaAssistenza richiesta)
+        public async void InvioRichiesta(RichiestaAssistenza richiesta)
         {
             var sintesi = _mapperRichiestaSuSintesi.Map(richiesta);
             var schede = _mapperSintesiInSchedeSO115.Map(sintesi);
@@ -40,11 +41,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.STATRI
 
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("Statri").Value);
 
-            var url = new Uri(baseurl, "import");
+            string action;
+            if (richiesta.InviatoSTATRI)
+                action = "UpdateRichiesta";
+            else
+                action = "import";
 
+            var url = new Uri(baseurl, action);
             var result = await _client.PostAsync(url, content);
-
-            return result;
+            if (result != null && result.FailedImport == null)
+            {
+                richiesta.InviatoSTATRI = true;
+                _upDateRichiestaAssistenza.UpDate(richiesta);
+            }
         }
     }
 }
