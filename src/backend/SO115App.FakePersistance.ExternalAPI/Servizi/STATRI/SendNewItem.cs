@@ -40,7 +40,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.STATRI
 
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("Statri").Value);
 
-            var url = new Uri(baseurl, "/api/ENDPOINT_DA_CHIAMARE");
+            var url = new Uri(baseurl, "import");
 
             var result = await _client.PostAsync(url, content);
 
