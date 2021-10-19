@@ -90,8 +90,6 @@ namespace SO115App.CompositionRoot
 
             #region Gestione Sedi
 
-            container.Register<IGetSedi, GetSedi>();
-
             container.Register<IGetCoordinateByCodSede, GetCoordinateByCodSede>();
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento, GetcompetenzeByCoordinateIntervento>();
