@@ -124,7 +124,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Genere,
+                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Codice.Split('.')[0],
                     dataRientro = PartenzaSmontante.Istante,
                     dataUscita = PartenzaMontanteNuova.Istante,
                     tipoUscita = new TipoUscita()
@@ -147,7 +147,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Genere,
+                    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Codice.Split('.')[0],
                     dataRientro = PartenzaMontante.Istante,
                     dataUscita = PartenzaSmontanteNuova.Istante,
                     tipoUscita = new TipoUscita()

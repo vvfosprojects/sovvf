@@ -130,7 +130,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         _setRientroMezzo.Set(new RientroGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Mezzo.Genere,
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
                             idPartenza = partenza.Codice.ToString(),
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
@@ -147,7 +147,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenza.Mezzo.Genere,
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
                             idPartenza = partenza.Codice.ToString(),
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,

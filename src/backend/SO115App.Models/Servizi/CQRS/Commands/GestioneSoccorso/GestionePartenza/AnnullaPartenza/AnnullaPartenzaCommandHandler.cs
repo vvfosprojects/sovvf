@@ -89,38 +89,38 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
 
                 //SEGNALO LA MODIFICA A GAC
-                var movimento = new ModificaMovimentoGAC()
-                {
-                    targa = command.TargaMezzo,
-                    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
-                    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
-                    dataIntervento = command.Richiesta.dataOraInserimento,
-                    dataRientro = date,
-                    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
-                    idPartenza = command.CodicePartenza,
-                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = partenza.Partenza.Mezzo.Genere,
-                    localita = "",
-                    comune = new ComuneGAC()
-                    {
-                        codice = "",
-                        descrizione = command.Richiesta.Localita.Citta
-                    },
-                    provincia = new ProvinciaGAC()
-                    {
-                        codice = "",
-                        descrizione = command.Richiesta.Localita.Provincia
-                    },
-                    tipoUscita = new TipoUscita()
-                    {
-                        codice = tipologia.Codice,
-                        descrizione = tipologia.Descrizione
-                    }
-                };
+                //var movimento = new ModificaMovimentoGAC()
+                //{
+                //    targa = command.TargaMezzo,
+                //    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                //    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                //    dataIntervento = command.Richiesta.dataOraInserimento,
+                //    dataRientro = date,
+                //    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
+                //    idPartenza = command.CodicePartenza,
+                //    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                //    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                //    numeroIntervento = command.Richiesta.CodRichiesta,
+                //    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                //    localita = "",
+                //    comune = new ComuneGAC()
+                //    {
+                //        codice = "",
+                //        descrizione = command.Richiesta.Localita.Citta
+                //    },
+                //    provincia = new ProvinciaGAC()
+                //    {
+                //        codice = "",
+                //        descrizione = command.Richiesta.Localita.Provincia
+                //    },
+                //    tipoUscita = new TipoUscita()
+                //    {
+                //        codice = tipologia.Codice,
+                //        descrizione = tipologia.Descrizione
+                //    }
+                //};
 
-                _modificaGAC.Send(movimento);
+                //_modificaGAC.Send(movimento);
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()

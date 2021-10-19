@@ -19,4 +19,4 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         public ProvinciaGAC provincia { get; set; }
         public string localita { get; set; }
     }
-}
+} 
