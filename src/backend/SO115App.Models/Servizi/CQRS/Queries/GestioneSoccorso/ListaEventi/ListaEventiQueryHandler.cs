@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -142,6 +143,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return ((InserimentoEnteIntervenuto)evento).Note;
 
                 case AllertaSedi _:
+
+                case STATRI_InivioRichiesta _:
+                    return ((STATRI_InivioRichiesta)evento).Messaggio;
 
                 default:
                     return "";
@@ -301,6 +305,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case InserimentoEnteIntervenuto _:
                     return Costanti.InserimentoEnteInterenuto;
+
+                case STATRI_InivioRichiesta _:
+                    return Costanti.STATRI_InivioRichiesta;
 
                 default:
                     return Costanti.EventoGenerico;

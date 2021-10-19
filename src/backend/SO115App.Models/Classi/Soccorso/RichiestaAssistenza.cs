@@ -31,6 +31,7 @@ using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -928,6 +929,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var fonogrammaInviato = evento as FonogrammaInviato;
             var entiIntervenuti = evento as InserimentoEnteIntervenuto;
             var sostituzione = evento as SostituzionePartenzaFineTurno;
+            var statri = evento as STATRI_InivioRichiesta;
 
             if ((composizionePartenza == null
                 && telefonata == null
@@ -936,7 +938,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && inviareFonogramma == null
                 && fonogrammaInviato == null
                 && entiIntervenuti == null
-                && sostituzione == null)
+                && sostituzione == null
+                && statri == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
