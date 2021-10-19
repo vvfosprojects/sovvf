@@ -85,7 +85,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                         descrizione = command.Chiamata.Localita.Provincia
                     },
                     targa = partenza.CodiceMezzo,
-                    tipoMezzo = partenza.Partenza.Mezzo.Genere,
+                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
                     dataRientro = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
                     dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
                     tipoUscita = new TipoUscita()

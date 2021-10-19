@@ -101,7 +101,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
                     longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = partenza.Partenza.Mezzo.Genere,
+                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
                     localita = "",
                     comune = new ComuneGAC()
                     {

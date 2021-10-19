@@ -115,7 +115,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 longitudine = richiesta.Localita.Coordinate.Longitudine.ToString(),
                 provincia = new ProvinciaGAC() { descrizione = richiesta.Localita.Provincia },
                 targa = command.IdMezzo,
-                tipoMezzo = partenzaDaLavorare.Partenza.Mezzo.Genere,
+                tipoMezzo = partenzaDaLavorare.Partenza.Mezzo.Codice.Split('.')[0],
                 idPartenza = partenzaDaLavorare.Partenza.Codice,
                 numeroIntervento = richiesta.CodRichiesta,
                 autistaUscita = partenzaDaLavorare.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
