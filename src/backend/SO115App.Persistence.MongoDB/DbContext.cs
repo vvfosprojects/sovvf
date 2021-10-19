@@ -39,6 +39,7 @@ using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System;
@@ -132,6 +133,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
             BsonClassMap.RegisterClassMap<InserimentoEnteIntervenuto>();
+            BsonClassMap.RegisterClassMap<STATRI_InivioRichiesta>();
         }
 
         public IMongoCollection<PosDAO> DtoPosCollection

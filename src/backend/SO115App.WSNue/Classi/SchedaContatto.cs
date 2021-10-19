@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.WSNue.Classi.ESRI;
 using System;
 using System.Collections.Generic;
 
@@ -114,5 +115,10 @@ namespace SO115App.WSNue.Classi.NUE
         public bool collegata { get; set; }
 
         public List<SchedaContatto> collegate { get; set; }
+
+        /// <summary>
+        ///   Parametri di ESRI
+        /// </summary>
+        public Esri_Params esri_params { get; set; }
     }
 }

@@ -1,13 +1,18 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
+using SO115App.WSNue.Classi.ESRI;
 using SO115App.WSNue.Classi.NUE;
 using SO115App.WSNue.DataContract;
 using SO115App.WSNue.Mapper;
 using SO115App.WSNue.SignalR.Notifications;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -39,7 +44,8 @@ namespace SO115App.WSNue.Manager
 
                 database.GetCollection<SchedaContatto>("schedecontatto").InsertOne(MappaWSsuSchedaContatto.MappaSchedaContatto(insertSchedaNueRequest));
 
-                SendMessage(SchedaSO115);
+                SendMessageSO115WEB(SchedaSO115);
+                SendMessageESRI(SchedaSO115);
 
                 return "Ok";
             }
@@ -49,7 +55,128 @@ namespace SO115App.WSNue.Manager
             }
         }
 
-        private async void SendMessage(SchedaContatto scheda)
+        private async void SendMessageESRI(SchedaContatto schedaSO115)
+        {
+            HttpClient client = new HttpClient();
+
+            List<EsriRichiestaMsg> listaMsg = new List<EsriRichiestaMsg>()
+            {
+                new EsriRichiestaMsg()
+                {
+                    geometry = new geometry()
+                    {
+                        x = schedaSO115.localita.coordinate.longitudine,
+                        y = schedaSO115.localita.coordinate.latitudine
+                    },
+                    attributes = new attributes()
+                    {
+                        categoria = schedaSO115.categoria,
+                        classificazione = schedaSO115.classificazione,
+                        classificazioneEvento = schedaSO115.classificazioneEvento,
+                        collegata = schedaSO115.collegata,
+                        dataInserimento = schedaSO115.dataInserimento,
+                        dettaglio = schedaSO115.dettaglio,
+                        enteCompetenza = schedaSO115.enteCompetenza,
+                        gestita = schedaSO115.gestita,
+                        Indirizzo = schedaSO115.localita.indirizzo,
+                        NominativoRichiedente = schedaSO115.richiedente.nominativo,
+                        TelefonoRichiedente = schedaSO115.richiedente.telefono,
+                        priorita = schedaSO115.priorita
+                    }
+                }
+            };
+
+            var jsonString = JsonConvert.SerializeObject(listaMsg);
+
+            Dictionary<string, string> postData = new Dictionary<string, string>();
+            postData.Add("features", jsonString);
+            postData.Add("f", "json");
+            postData.Add("token", GetToken());
+
+            var multipartFormDataContent = new MultipartFormDataContent();
+
+            foreach (var keyValuePair in postData)
+            {
+                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
+                    String.Format("\"{0}\"", keyValuePair.Key));
+            }
+
+            var uri = new Uri(ConfigurationManager.ConnectionStrings["ESRIMsgConn"].ConnectionString + "/addFeatures");
+
+            var response = await client.PostAsync(uri, multipartFormDataContent);
+            var data = response.Content.ReadAsStringAsync().Result;
+
+            var result = System.Text.Json.JsonSerializer.Deserialize<EsriRispostaMsg>(data);
+
+            if (result != null && result.addResults[0].success == false)
+            {
+                throw new Exception($"Errore servizio ESRI: {result.addResults[0].error.description}");
+            }
+            else
+            {
+                schedaSO115.esri_params = new Esri_Params()
+                {
+                    ObjectId = result.addResults[0].objectId,
+                    LastUpdate = DateTime.Now
+                };
+
+                UpDateRichiestaAssistenza(schedaSO115);
+            }
+        }
+
+        private void UpDateRichiestaAssistenza(SchedaContatto schedaSO115)
+        {
+            var conAppo = ConfigurationManager.ConnectionStrings["MongoDbConn"].ConnectionString;
+            var conDB = conAppo.Split(',')[0];
+            var DbName = conAppo.Split(',')[1];
+
+            var client = new MongoClient(conDB);
+            var database = client.GetDatabase(DbName.Trim());
+
+            try
+            {
+                var filter = Builders<SchedaContatto>.Filter.Eq(s => s.id, schedaSO115.id);
+                database.GetCollection<SchedaContatto>("schedecontatto").ReplaceOne(filter, schedaSO115);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private string GetToken()
+        {
+            HttpClient client = new HttpClient();
+            string token = "";
+
+            Dictionary<string, string> postData = new Dictionary<string, string>();
+            postData.Add("username", ConfigurationManager.ConnectionStrings["ESRIUser"].ConnectionString);
+            postData.Add("password", ConfigurationManager.ConnectionStrings["ESRIPassword"].ConnectionString);
+            postData.Add("referer", ConfigurationManager.ConnectionStrings["ESRIMsgConn"].ConnectionString);
+            postData.Add("f", "json");
+
+            var multipartFormDataContent = new MultipartFormDataContent();
+
+            foreach (var keyValuePair in postData)
+            {
+                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
+                    String.Format("\"{0}\"", keyValuePair.Key));
+            }
+
+            var url = new Uri($"{ConfigurationManager.ConnectionStrings["ESRITokenMsgConn"].ConnectionString}");
+
+            var response = client.PostAsync(url, multipartFormDataContent).Result;
+
+            var data = response.Content.ReadAsStringAsync().Result;
+
+            var result = System.Text.Json.JsonSerializer.Deserialize<EsriTokenMsg>(data);
+
+            if (result != null)
+                token = result.token;
+
+            return token;
+        }
+
+        private async void SendMessageSO115WEB(SchedaContatto scheda)
         {
             var hubConnection = new HubConnectionBuilder()
             .WithUrl(ConfigurationManager.ConnectionStrings["SO115MsgConn"].ConnectionString)

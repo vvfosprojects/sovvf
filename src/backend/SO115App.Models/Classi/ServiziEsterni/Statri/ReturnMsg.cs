@@ -6,7 +6,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Statri
 {
     public class ReturnMsg
     {
-        public List<SuccessfullImport> SuccessfullImport { get; set; }
-        public List<FailedImport> FailedImport { get; set; }
+        public Successfull[] SuccessfullImport { get; set; }
+        public Error[] FailedImport { get; set; }
     }
 }

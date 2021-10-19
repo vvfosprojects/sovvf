@@ -289,12 +289,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const container = this.mapViewEl.nativeElement;
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
-        // EsriConfig.request.interceptors.push({
-        //     before: (params) => {
-        //         params.requestOptions.query = params.requestOptions.query || {};
-        //         params.requestOptions.query.token = this.token;
-        //     },
-        // });
 
         const portalItem = new PortalItem({
             id: '55fdd15730524dedbff72e285cba3795'
