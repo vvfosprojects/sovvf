@@ -43,10 +43,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                     String.Format("\"{0}\"", keyValuePair.Key));
             }
 
-            //using HttpContent formContent = new FormUrlEncodedContent(postData);
-            //var content = new MultipartFormDataContent();
-            //content.Add(formContent);
-
             var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}");
 
             var EsitoToken = _clientToken.PostAsyncFormData(url, multipartFormDataContent).Result;

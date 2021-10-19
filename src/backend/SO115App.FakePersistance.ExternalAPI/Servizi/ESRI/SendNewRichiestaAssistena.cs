@@ -31,8 +31,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
         public void Call(ESRI_RichiestaMessage message, RichiestaAssistenza richiesta)
         {
-            //var content = new StringContent(jsonString);
-
             List<ESRI_RichiestaMessage> listaMsg = new List<ESRI_RichiestaMessage>();
             listaMsg.Add(message);
             var jsonString = JsonConvert.SerializeObject(listaMsg);
