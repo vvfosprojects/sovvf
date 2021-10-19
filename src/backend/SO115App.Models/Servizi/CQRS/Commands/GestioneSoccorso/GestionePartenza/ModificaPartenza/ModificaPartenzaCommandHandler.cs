@@ -15,10 +15,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class ModificaPartenzaCommandHandler : ICommandHandler<ModificaPartenzaCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
+        private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
 
-        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
+        public ModificaPartenzaCommandHandler(IUpdateStatoPartenze updateStatoPartenze, ISendSTATRIItem sendNewItemSTATRI,
+                                              ICheckCongruitaPartenze checkCongruita)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _sendNewItemSTATRI = sendNewItemSTATRI;

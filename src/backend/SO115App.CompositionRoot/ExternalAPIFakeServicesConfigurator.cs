@@ -314,8 +314,7 @@ namespace SO115App.CompositionRoot
 
             #region STATRI
 
-            container.Register<ISendNewItemSTATRI, SendNewItem>();
-            container.Register<IUpDateExistingItem, UpDateExistingItem>();
+            container.Register<ISendSTATRIItem, SendSTATRIItem>();
             container.Register<IMapperSintesiInSchedeSO115, MapperSintesiRichiestaSuSTATRI>();
 
             #endregion STATRI

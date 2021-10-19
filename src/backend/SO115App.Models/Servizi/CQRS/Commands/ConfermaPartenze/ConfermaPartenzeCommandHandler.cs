@@ -44,12 +44,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
 
-        private readonly ISendNewItemSTATRI _sendNewItemSTATRI;
+        private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza, ISendNewItemSTATRI sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
+            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -203,7 +203,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             int codpart = _getMaxCodicePartenza.GetMax();
             foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
             {
-                codpart ++;
+                codpart++;
                 partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
 
                 command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;

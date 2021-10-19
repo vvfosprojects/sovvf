@@ -42,12 +42,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetTipologieByCodice _getTipologie;
 
-        private readonly ISendNewItemSTATRI _statri;
+        private readonly ISendSTATRIItem _statri;
         private readonly ICheckCongruitaPartenze _check;
 
         private readonly IModificaInterventoChiuso _modificaGAC;
 
-        public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IGetStatoMezzi getStatoMezzi, ISendNewItemSTATRI statri, ICheckCongruitaPartenze check, IModificaInterventoChiuso modificaGAC)
+        public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze,
+                                             IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
+                                             IModificaInterventoChiuso modificaGAC)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _getStatoMezzi = getStatoMezzi;
@@ -68,7 +70,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             string statoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
 
-            if(!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzo))
+            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzo))
             {
                 string nuovoStatoMezzo = Costanti.MezzoInRientro;
                 string nomeAzione = "AnnullamentoPartenza";
@@ -124,7 +126,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()
                 {
                     Richiesta = command.Richiesta,
-                    CodiciSede = command.CodiciSedi, 
+                    CodiciSede = command.CodiciSedi,
                     Chiamata = command.Chiamata,
                     CodRichiesta = command.CodiceRichiesta,
                     DataOraAggiornamento = date,
