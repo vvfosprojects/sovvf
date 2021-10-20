@@ -257,10 +257,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
             switch (schedeContattoActive) {
                 case true:
-                    this.toggleLayer('Schede Contatto', true).then();
+                    this.toggleLayer('Schede Contatto - Non Gestita', true).then();
                     break;
                 case false:
-                    this.toggleLayer('Schede Contatto', false).then();
+                    this.toggleLayer('Schede Contatto - Non Gestita', false).then(() => {
+                        this.toggleLayer('Schede Contatto - Gestita', false).then();
+                    });
                     break;
             }
         }
