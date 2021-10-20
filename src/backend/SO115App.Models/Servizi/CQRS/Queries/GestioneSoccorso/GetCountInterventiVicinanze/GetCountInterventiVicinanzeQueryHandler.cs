@@ -20,35 +20,37 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
 
         public GetCountInterventiVicinanzeResult Handle(GetCountInterventiVicinanzeQuery query)
         {
-            var competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate);
+            //var competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate);
 
-            var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
+            //var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
-            var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = lstPinNodo,
-                IndirizzoIntervento = new API.Models.Classi.Condivise.Localita(null, query.Indirizzo)
-            });
+            //var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            //{
+            //    UnitaOperative = lstPinNodo,
+            //    IndirizzoIntervento = new API.Models.Classi.Condivise.Localita(null, query.Indirizzo)
+            //});
 
-            var result = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = lstPinNodo
-            });
+            //var result = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            //{
+            //    UnitaOperative = lstPinNodo
+            //});
 
-            result.RemoveAll(i => resultStessaVia.Select(ii => ii.Codice).Contains(i.Codice));
+            //result.RemoveAll(i => resultStessaVia.Select(ii => ii.Codice).Contains(i.Codice));
 
-            var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            {
-                UnitaOperative = lstPinNodo,
-                Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }
-            });
+            //var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
+            //{
+            //    UnitaOperative = lstPinNodo,
+            //    Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }
+            //});
 
-            return new GetCountInterventiVicinanzeResult()
-            {
-                Count = result.Count,
-                CountInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo.Count,
-                CountStessaVia = resultStessaVia.Count
-            };
+            //return new GetCountInterventiVicinanzeResult()
+            //{
+            //    Count = result.Count,
+            //    CountInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo.Count,
+            //    CountStessaVia = resultStessaVia.Count
+            //};
+
+            return null;
         }
     }
 }
