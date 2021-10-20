@@ -63,7 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             while (true)
             {
                 //some other processing to do possible
-                if (stopwatch.ElapsedMilliseconds >= 2000)
+                if (stopwatch.ElapsedMilliseconds >= 3000)
                 {
                     break;
                 }
