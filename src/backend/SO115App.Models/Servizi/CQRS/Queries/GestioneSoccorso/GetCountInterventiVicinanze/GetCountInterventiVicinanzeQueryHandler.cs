@@ -20,7 +20,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
 
         public GetCountInterventiVicinanzeResult Handle(GetCountInterventiVicinanzeQuery query)
         {
-            var competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate);
+            var competenze = query.Competenze;
 
             var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
