@@ -9,5 +9,6 @@ namespace SO115App.Models.Classi.UtilityRichiesta
     {
         public Coordinate Coordinate { get; set; }
         public string Indirizzo { get; set; }
+        public string[] Competenze { get; set; }
     }
 }

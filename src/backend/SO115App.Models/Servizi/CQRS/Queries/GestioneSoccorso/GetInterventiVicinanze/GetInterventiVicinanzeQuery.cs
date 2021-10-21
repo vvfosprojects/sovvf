@@ -7,9 +7,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
     {
         public string IdOperatore { get; set; }
         public string[] CodiciSede { get; set; }
-
         public Coordinate Coordinate { get; set; }
-
         public string Indirizzo { get; set; }
+        public string[] Competenze { get; set; }
     }
 }

@@ -25,5 +25,6 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
     {
         public string HubConId { get; set; }
         public ChiamateInCorso ChiamataInCorso { get; set; }
+        public string[] Competenze { get; set; }
     }
 }
