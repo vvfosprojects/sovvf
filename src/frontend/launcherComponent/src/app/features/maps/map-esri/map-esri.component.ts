@@ -388,44 +388,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             ],
         });
 
-        // configurazione del cluster SediOperative
-        // const clusterConfigSediOperative = new FeatureReductionCluster({
-        //     clusterRadius: '100px',
-        //     popupTemplate: {
-        //         title: 'Cluster Sedi Operative',
-        //         content: 'Questo cluster contiene {cluster_count} Sedi Operative.',
-        //         fieldInfos: [
-        //             {
-        //                 fieldName: 'cluster_count',
-        //                 format: {
-        //                     places: 0,
-        //                     digitSeparator: true,
-        //                 },
-        //             }
-        //         ],
-        //     },
-        //     clusterMinSize: '50px',
-        //     clusterMaxSize: '60px',
-        //     labelingInfo: [
-        //         {
-        //             deconflictionStrategy: 'none',
-        //             labelExpressionInfo: {
-        //                 expression: 'Text($feature.cluster_count, \'#,###\')',
-        //             },
-        //             symbol: {
-        //                 type: 'text',
-        //                 color: 'red',
-        //                 font: {
-        //                     weight: 'bold',
-        //                     family: 'Noto Sans',
-        //                     size: '25px',
-        //                 },
-        //             },
-        //             labelPlacement: 'center-center',
-        //         },
-        //     ]
-        // });
-
         // creazione feature layer
         this.sediOperativeFeatureLayer = new FeatureLayer({
             title: 'Sedi Operative',
@@ -785,8 +747,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.changeZoom(19).then(() => {
                     this.contextMenuVisible = true;
                     const screenPoint = this.eventClick;
-                    const pageX = screenPoint.x;
+                    let pageX = screenPoint.x;
                     const pageY = screenPoint.y;
+                    if (pageX > 1600) {
+                        pageX = 1600;
+                    }
                     this.renderer.setStyle(this.contextMenu.nativeElement, 'top', pageY + 10 + 'px');
                     this.renderer.setStyle(this.contextMenu.nativeElement, 'left', pageX + 23 + 'px');
                     this.renderer.setStyle(this.contextMenu.nativeElement, 'display', 'block');
