@@ -52,7 +52,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disableFissaInAlto = false;
     @Input() loadingEliminaPartenza = false;
     @Input() loadingActionMezzo: any;
-    @Input() annullaStatoMezzi: string[];
     @Input() diffDateInfoMezzo: any;
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
