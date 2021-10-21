@@ -57,19 +57,23 @@ export class ChiamateMarkersState {
 
     @Action(SetChiamataMarker)
     setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker): void {
-        this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker).subscribe(() => {
+        this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker, action.competenze).subscribe(() => {
         }, error => {
-            dispatch(new ClearIndirizzo());
-            dispatch(new GetInitCentroMappa());
+            dispatch([
+                new ClearIndirizzo(),
+                new GetInitCentroMappa()
+            ]);
         });
     }
 
     @Action(UpdateChiamataMarker)
     updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker): void {
-        this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker).subscribe(() => {
+        this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker, action.competenze).subscribe(() => {
         }, error => {
-            dispatch(new ClearIndirizzo());
-            dispatch(new GetInitCentroMappa());
+            dispatch([
+                new ClearIndirizzo(),
+                new GetInitCentroMappa()
+            ]);
         });
     }
 

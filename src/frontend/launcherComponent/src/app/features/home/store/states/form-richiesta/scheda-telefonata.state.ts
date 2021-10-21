@@ -188,10 +188,7 @@ export class SchedaTelefonataState {
                 const markerChiamata = action.schedaTelefonata.markerChiamata;
                 const indirizzo = action.schedaTelefonata.markerChiamata.localita.indirizzo;
                 dispatch([
-                    new MarkerChiamata(markerChiamata),
-                    new SetCompetenze(getCooordinate()),
-                    new SetCountInterventiProssimita(indirizzo, getCooordinate()),
-                    new SetInterventiProssimita(indirizzo, getCooordinate())
+                    new SetCompetenze(getCooordinate(), indirizzo, markerChiamata)
                 ]);
                 break;
             case 'inserita':
@@ -211,9 +208,9 @@ export class SchedaTelefonataState {
     markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
         if (state.idChiamataMarker) {
-            dispatch(new UpdateChiamataMarker(action.marker));
+            dispatch(new UpdateChiamataMarker(action.marker, action.competenze));
         } else {
-            dispatch(new SetChiamataMarker(action.marker));
+            dispatch(new SetChiamataMarker(action.marker, action.competenze));
         }
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
@@ -236,17 +233,23 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCompetenze)
-    setCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+    setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
+            const competenze = res.dataArray;
+            dispatch([
+                new MarkerChiamata(action.markerChiamata, competenze),
+                new SetCountInterventiProssimita(action.indirizzo, action.coordinate, competenze),
+                new SetInterventiProssimita(action.indirizzo, action.coordinate, competenze)
+            ]);
             patchState({
-                competenze: res.dataArray
+                competenze
             });
         });
     }
 
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
-        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: CountInterventiProssimitaResponse) => {
+        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.competenze).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
                 countInterventiProssimita: res.count,
                 countInterventiStessaVia: res.countStessaVia,
@@ -257,7 +260,7 @@ export class SchedaTelefonataState {
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
-        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate).subscribe((res: InterventiProssimitaResponse) => {
+        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.competenze).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
                 interventiProssimita: res.dataArray,
                 interventiStessaVia: res.dataArrayStessaVia,

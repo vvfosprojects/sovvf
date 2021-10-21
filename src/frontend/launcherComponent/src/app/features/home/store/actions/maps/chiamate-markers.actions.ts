@@ -1,4 +1,5 @@
 import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 export class GetChiamateMarkers {
     static readonly type = '[Chiamate Marker] Get Chiamate Markers API';
@@ -14,14 +15,14 @@ export class SetChiamateMarkers {
 export class SetChiamataMarker {
     static readonly type = '[Chiamate Marker] Set Chiamata Marker API';
 
-    constructor(public chiamataMarker: ChiamataMarker) {
+    constructor(public chiamataMarker: ChiamataMarker, public competenze: Sede[]) {
     }
 }
 
 export class UpdateChiamataMarker {
     static readonly type = '[Chiamate Marker] Update Chiamata Marker API';
 
-    constructor(public chiamataMarker: ChiamataMarker) {
+    constructor(public chiamataMarker: ChiamataMarker, public competenze: Sede[]) {
     }
 }
 
