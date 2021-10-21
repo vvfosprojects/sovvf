@@ -131,9 +131,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.url$.subscribe((url: string) => {
                 this.url = url;
-                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
-                    this.store.dispatch(new GetDataNavbar());
-                }
             })
         );
     }
