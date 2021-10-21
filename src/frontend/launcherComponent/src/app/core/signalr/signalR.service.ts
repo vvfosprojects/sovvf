@@ -7,7 +7,7 @@ import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { GetListaRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
-import { SetBoxPersonaleCurrent } from '../../features/home/store/actions/boxes/box-personale.actions';
+import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
 import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
@@ -187,7 +187,7 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
             console.log('NotifyGetBoxPersonale', data);
-            this.store.dispatch(new SetBoxPersonaleCurrent(data));
+            this.store.dispatch(new SetBoxPersonale(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Personale ricevute da signalR', null, 5));
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {

@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { Observable } from 'rxjs';
@@ -25,13 +25,16 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(BoxRichiesteState.richieste) richieste$: Observable<BoxInterventi>;
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
-    @Select(BoxPersonaleState.presenzeCurrent) presenze$: Observable<BoxPersonalePresenze>;
-    @Select(BoxPersonaleState.personaleQtyCurrent) personaleQty$: Observable<BoxPersonaleQty>;
+    @Select(BoxPersonaleState.presenzePrevious) presenzePrevious$: Observable<BoxPersonalePresenze>;
+    @Select(BoxPersonaleState.personaleQtyPrevious) personaleQtyPrevious$: Observable<BoxPersonaleQty>;
+    @Select(BoxPersonaleState.presenzeCurrent) presenzeCurrent$: Observable<BoxPersonalePresenze>;
+    @Select(BoxPersonaleState.personaleQtyCurrent) personaleQtyCurrent$: Observable<BoxPersonaleQty>;
+    @Select(BoxPersonaleState.presenzeNext) presenzeNext$: Observable<BoxPersonalePresenze>;
+    @Select(BoxPersonaleState.personaleQtyNext) personaleQtyNext$: Observable<BoxPersonaleQty>;
 
     datimeteo: Meteo;
 
     @Input() nightMode: boolean;
-
 
     timerMeteo: NodeJS.Timer;
 

@@ -5,7 +5,7 @@ import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa } from '../actions/maps/centro-mappa.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
-import { ClearBoxPersonale, SetBoxPersonaleCurrent } from '../actions/boxes/box-personale.actions';
+import { ClearBoxPersonale, SetBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, SetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
@@ -56,7 +56,7 @@ export class HomeState {
                 new SetCurrentUrl(RoutesPath.Home),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
-                new SetBoxPersonaleCurrent(data.boxListaPersonale),
+                new SetBoxPersonale(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetTipologicheMezzi(data.listaFiltri),
                 new SetEnti(data.rubrica),
