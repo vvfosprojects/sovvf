@@ -208,9 +208,9 @@ export class SchedaTelefonataState {
     markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
         if (state.idChiamataMarker) {
-            dispatch(new UpdateChiamataMarker(action.marker, action.competenze));
+            dispatch(new UpdateChiamataMarker(action.marker, action.codCompetenze));
         } else {
-            dispatch(new SetChiamataMarker(action.marker, action.competenze));
+            dispatch(new SetChiamataMarker(action.marker, action.codCompetenze));
         }
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
@@ -235,11 +235,14 @@ export class SchedaTelefonataState {
     @Action(SetCompetenze)
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
-            const competenze = res.dataArray;
+            const competenze = res.dataArray as Sede[];
+            const codCompetenze = competenze.map((c: Sede) => {
+                return c.codice;
+            });
             dispatch([
-                new MarkerChiamata(action.markerChiamata, competenze),
-                new SetCountInterventiProssimita(action.indirizzo, action.coordinate, competenze),
-                new SetInterventiProssimita(action.indirizzo, action.coordinate, competenze)
+                new MarkerChiamata(action.markerChiamata, codCompetenze),
+                new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze)
             ]);
             patchState({
                 competenze
@@ -249,7 +252,7 @@ export class SchedaTelefonataState {
 
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
-        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.competenze).subscribe((res: CountInterventiProssimitaResponse) => {
+        this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: CountInterventiProssimitaResponse) => {
             patchState({
                 countInterventiProssimita: res.count,
                 countInterventiStessaVia: res.countStessaVia,
@@ -260,7 +263,7 @@ export class SchedaTelefonataState {
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
-        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.competenze).subscribe((res: InterventiProssimitaResponse) => {
+        this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
             patchState({
                 interventiProssimita: res.dataArray,
                 interventiStessaVia: res.dataArrayStessaVia,
@@ -290,19 +293,19 @@ export class SchedaTelefonataState {
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
             const tipiTerreno = [] as TipoTerreno[];
 
-            if  (f.boschi) {
+            if (f.boschi) {
                 tipiTerreno.push({
                     descrizione: TipoTerrenoEnum.Boschi,
                     ha: f.boschi
                 });
             }
-            if  (f.campi) {
+            if (f.campi) {
                 tipiTerreno.push({
                     descrizione: TipoTerrenoEnum.Campi,
                     ha: f.campi
                 });
             }
-            if  (f.sterpaglie) {
+            if (f.sterpaglie) {
                 tipiTerreno.push({
                     descrizione: TipoTerrenoEnum.Sterpaglie,
                     ha: f.sterpaglie

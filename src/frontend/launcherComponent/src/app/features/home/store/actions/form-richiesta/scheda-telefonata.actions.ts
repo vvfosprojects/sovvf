@@ -15,7 +15,7 @@ export class ReducerSchedaTelefonata {
 export class MarkerChiamata {
     static readonly type = '[SchedaTelefonata] Set chiamata Marker';
 
-    constructor(public marker: ChiamataMarker, public competenze: Sede[]) {
+    constructor(public marker: ChiamataMarker, public codCompetenze: string[]) {
     }
 }
 
@@ -29,14 +29,14 @@ export class SetCompetenze {
 export class SetCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Count Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate, public competenze: Sede[]) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
 }
 
 export class SetInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate, public competenze: Sede[]) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
 }
 
