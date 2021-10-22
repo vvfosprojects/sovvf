@@ -173,9 +173,9 @@ export class SchedeContattoState {
     @Action(GetContatoriSchedeContatto)
     getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>): void {
         dispatch(new StartLoadingSchedeContatto());
-        this.schedeContattoService.getContatoriSchedeContatto().subscribe((contatori: ContatoriSchedeContatto) => {
+        this.schedeContattoService.getContatoriSchedeContatto().subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
             dispatch([
-                new SetContatoriSchedeContatto(contatori),
+                new SetContatoriSchedeContatto(data.infoNue),
                 new StopLoadingSchedeContatto()
             ]);
         });
