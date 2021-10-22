@@ -7,6 +7,18 @@ namespace SO115App.WSNue.Classi.ESRI
     {
         [JsonProperty(PropertyName = "addResults")]
         public List<Result> addResults { get; set; }
+
+        [JsonProperty(PropertyName = "error")]
+        public Error error { get; set; }
+    }
+
+    public class Error
+    {
+        [JsonProperty(PropertyName = "code")]
+        public int code { get; set; }
+
+        [JsonProperty(PropertyName = "message")]
+        public string message { get; set; }
     }
 
     public class Result
@@ -27,7 +39,7 @@ namespace SO115App.WSNue.Classi.ESRI
     public class error
     {
         [JsonProperty(PropertyName = "code")]
-        public string code { get; set; }
+        public int code { get; set; }
 
         [JsonProperty(PropertyName = "description")]
         public string description { get; set; }

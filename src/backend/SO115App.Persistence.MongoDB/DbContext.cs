@@ -47,6 +47,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Evento = SO115App.Models.Classi.NUE.Evento;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
 
@@ -93,7 +94,6 @@ namespace Persistence.MongoDB
             TriageDataMap.Map();
             TrasferimentiChiamateMap.Map();
             PosMap.Map();
-            SchedeNueWSMap.Map();
             DocumentaleMap.Map();
 
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
@@ -134,6 +134,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ExternalApiLog>();
             BsonClassMap.RegisterClassMap<InserimentoEnteIntervenuto>();
             BsonClassMap.RegisterClassMap<STATRI_InivioRichiesta>();
+            BsonClassMap.RegisterClassMap<Evento>();
+            BsonClassMap.RegisterClassMap<InsertSchedaNueRequest>();
         }
 
         public IMongoCollection<PosDAO> DtoPosCollection
