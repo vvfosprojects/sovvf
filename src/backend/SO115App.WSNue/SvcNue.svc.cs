@@ -2,15 +2,8 @@
 using SO115App.WSNue.Interface;
 using SO115App.WSNue.Manager;
 using SO115App.WSNue.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
-using System.Text;
-using System.Web.Services;
-using System.Xml.Linq;
 
 namespace SO115App.WSNue
 {
