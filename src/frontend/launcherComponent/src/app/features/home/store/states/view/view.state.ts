@@ -33,8 +33,8 @@ import {
     activeCodaChiamate,
     activeRichieste
 } from '../../helper/view-state-function';
-import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { GetInitCentroMappa, SetCoordCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
+import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
 import { ResetChiamata } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';

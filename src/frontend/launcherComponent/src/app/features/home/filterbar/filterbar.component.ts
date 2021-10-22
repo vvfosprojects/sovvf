@@ -24,7 +24,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
-import { SetChiamataFromMappaActiveValue } from '../store/actions/maps/tasto-chiamata-mappa.actions';
+import { SetChiamataFromMappaActiveValue } from '../../maps/store/actions/tasto-chiamata-mappa.actions';
 
 @Component({
     selector: 'app-filterbar',

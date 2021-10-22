@@ -16,7 +16,7 @@ import { InsertChiamataSuccess } from '../../features/home/store/actions/form-ri
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
@@ -51,7 +51,8 @@ import {
     RemoveSquadreOccupateDistaccamentoCodaChiamate
 } from '../../features/home/store/actions/coda-chiamate/coda-chiamate.actions';
 import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
+import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -131,7 +132,6 @@ export class SignalRService {
          * Soccorso Aereo
          */
         // Todo: tipicizzare
-
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
             console.log('NotifySuccessAFM', data);
             this.store.dispatch(new UpdateRichiesta(data.richiesta));
@@ -225,7 +225,10 @@ export class SignalRService {
          */
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
-            this.store.dispatch(new InsertChiamataSuccess(data));
+            this.store.dispatch([
+                new InsertChiamataSuccess(data),
+                new RefreshMappa(true)
+            ]);
         });
         this.hubNotification.on('SaveAndNotifySuccessChiamataTrasferita', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamataTrasferita', data);
@@ -237,8 +240,12 @@ export class SignalRService {
         /**
          * Schede Contatto
          */
-        this.hubNotification.on('NotifyGetContatoriSchedeContatto', (data: ContatoriSchedeContatto) => {
+        this.hubNotification.on('NotifyGetContatoriSchedeContatto', (data: any) => {
             console.log('NotifyGetContatoriSchedeContatto', data);
+            this.store.dispatch(new GetContatoriSchedeContatto());
+        });
+        this.hubNotification.on('NotifySetContatoriSchedeContatto', (data: ContatoriSchedeContatto) => {
+            console.log('NotifySetContatoriSchedeContatto', data);
             this.store.dispatch(new SetContatoriSchedeContatto(data));
         });
         this.hubNotification.on('NotifyGetListaSchedeContatto', (data: SchedaContatto[]) => {
@@ -437,7 +444,6 @@ export class SignalRService {
         }
     }
 
-
     addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.warn('addToGroup', notification);
@@ -459,5 +465,4 @@ export class SignalRService {
             );
         }
     }
-
 }

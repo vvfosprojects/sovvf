@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { SetChiamataFromMappaActiveValue } from '../../actions/maps/tasto-chiamata-mappa.actions';
+import { SetChiamataFromMappaActiveValue } from '../actions/tasto-chiamata-mappa.actions';
 
 export interface TastoChiamataMappaStateModel {
     active: boolean;

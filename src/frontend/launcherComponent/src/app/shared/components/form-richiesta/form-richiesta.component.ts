@@ -25,7 +25,7 @@ import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Subscription } from 'rxjs';
-import { DelChiamataMarker } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker } from '../../../features/maps/store/actions/chiamate-markers.actions';
 import { Tipologia } from '../../model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { EnteInterface } from 'src/app/shared/interface/ente.interface';
