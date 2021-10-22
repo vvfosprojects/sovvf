@@ -17,6 +17,7 @@ export class MezzoActionsModalComponent implements OnInit {
     outsideDays: 'visible';
     submitted: boolean;
     statoMezzo: string;
+    dataInViaggio: any;
     title: string;
     titleStato: string;
     listaEventi: any;
@@ -46,9 +47,15 @@ export class MezzoActionsModalComponent implements OnInit {
 
     formatTime(): void {
         const d = new Date();
-        this.time.hour = d.getHours();
-        this.time.minute = d.getMinutes();
-        this.time.second = d.getSeconds();
+        if (this.title !== 'Modifica') {
+            this.time.hour = d.getHours();
+            this.time.minute = d.getMinutes();
+            this.time.second = d.getSeconds();
+        } else {
+            this.time.hour = (+this.dataInViaggio.ora) + 2;
+            this.time.minute = +this.dataInViaggio.minuti;
+            this.time.second = d.getSeconds();
+        }
     }
 
     onCheck(key: string): void {

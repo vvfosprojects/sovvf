@@ -55,6 +55,16 @@ export class MezzoActionsComponent implements OnInit {
                 event.stopPropagation();
             }
             let modal;
+            const dataInViaggio = {
+                ora: '',
+                minuti: ''
+            };
+            if (ora) {
+                const indexOra =  ora.indexOf('T') + 1;
+                const indexMin =  ora.indexOf(':') + 1;
+                dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
+                dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
+            }
             modal = this.modalService.open(MezzoActionsModalComponent, {
                 windowClass: 'modal-holder',
                 backdropClass: 'light-blue-backdrop',
@@ -64,6 +74,7 @@ export class MezzoActionsComponent implements OnInit {
             modal.componentInstance.statoMezzo = this.mezzo.stato;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
             modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+            modal.componentInstance.dataInViaggio = dataInViaggio;
             modal.componentInstance.listaEventi = this.listaEventi;
             modal.result.then((res: { status: string, result: any }) => {
                 switch (res.status) {
