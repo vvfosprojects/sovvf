@@ -111,14 +111,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 latitudine = richiesta.Localita.Coordinate.Latitudine.ToString(),
                 longitudine = richiesta.Localita.Coordinate.Longitudine.ToString(),
                 provincia = new ProvinciaGAC() { descrizione = richiesta.Localita.Provincia },
-                targa = command.IdMezzo,
+                targa = command.IdMezzo.Split('.')[1],
                 tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
                 idPartenza = partenza.Partenza.Codice,
                 numeroIntervento = richiesta.CodRichiesta,
-                autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
-                autistaRientro = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
-                dataRientro = partenza.Istante,
-                dataUscita = partenza.Istante,
+                autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                autistaRientro = null, //partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
+                dataRientro = null, // solo se movimento chiuso
+                dataUscita = command.DataOraAggiornamento,
                 tipoUscita = new TipoUscita()
                 {
                     codice = richiesta.Tipologie.First(),
