@@ -4,7 +4,7 @@ import {
     ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
     ClearSchedaContattoHover,
-    ClearSchedaContattoTelefonata,
+    ClearSchedaContattoTelefonata, GetContatoriSchedeContatto,
     GetListaSchedeContatto,
     InsertSchedeContatto,
     OpenDetailSC,
@@ -168,6 +168,17 @@ export class SchedeContattoState {
                 private modal: NgbModal,
                 private ngZone: NgZone,
                 private store: Store) {
+    }
+
+    @Action(GetContatoriSchedeContatto)
+    getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>): void {
+        dispatch(new StartLoadingSchedeContatto());
+        this.schedeContattoService.getContatoriSchedeContatto().subscribe((contatori: ContatoriSchedeContatto) => {
+            dispatch([
+                new SetContatoriSchedeContatto(contatori),
+                new StopLoadingSchedeContatto()
+            ]);
+        });
     }
 
     @Action(SetContatoriSchedeContatto)

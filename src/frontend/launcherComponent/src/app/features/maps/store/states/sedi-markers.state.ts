@@ -1,8 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
-import { SediMarkerService } from '../../../../../core/service/maps-service';
+import { SedeMarker } from '../../maps-model/sede-marker.model';
+import { SediMarkerService } from '../../../../core/service/maps-service';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../actions/area-mappa.actions';
 import {
     AddSediMarkers,
     ClearSediMarkers,
@@ -10,22 +10,19 @@ import {
     InsertSedeMarker,
     PatchSediMarkers,
     RemoveSedeMarker,
-    SetSedeMarkerById,
     SetSediMarkers,
     UpdateSedeMarker
-} from '../../actions/maps/sedi-markers.actions';
+} from '../actions/sedi-markers.actions';
 import { Injectable } from '@angular/core';
 
 export interface SediMarkersStateModel {
     sediMarkers: SedeMarker[];
     sediMarkersId: string[];
-    sedeMarkerById: SedeMarker;
 }
 
 export const SediMarkersStateDefaults: SediMarkersStateModel = {
     sediMarkers: [],
-    sediMarkersId: [],
-    sedeMarkerById: null
+    sediMarkersId: []
 };
 
 @Injectable()
@@ -41,13 +38,7 @@ export class SediMarkersState {
         return state.sediMarkers;
     }
 
-    @Selector()
-    static getSedeById(state: SediMarkersStateModel): SedeMarker {
-        return state.sedeMarkerById;
-    }
-
     constructor(private sediMarkerService: SediMarkerService) {
-
     }
 
     @Action(GetSediMarkers)
@@ -156,20 +147,6 @@ export class SediMarkersState {
                 sediMarkersId: removeItem<string>(id => id === payload)
             })
         );
-    }
-
-    @Action(SetSedeMarkerById)
-    setSedeMarkerById({ getState, patchState }: StateContext<SediMarkersStateModel>, action: SetSedeMarkerById): void {
-        const state = getState();
-        if (action.id) {
-            patchState({
-                sedeMarkerById: state.sediMarkers.filter(sedi => sedi.codice === action.id)[0]
-            });
-        } else {
-            patchState({
-                sedeMarkerById: null
-            });
-        }
     }
 
     @Action(ClearSediMarkers)

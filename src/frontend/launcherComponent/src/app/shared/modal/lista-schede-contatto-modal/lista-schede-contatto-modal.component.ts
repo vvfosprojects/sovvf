@@ -29,7 +29,7 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
-import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
+import { AreaMappaState } from '../../../features/maps/store/states/area-mappa.state';
 
 @Component({
     selector: 'app-lista-schede-contatto-modal',

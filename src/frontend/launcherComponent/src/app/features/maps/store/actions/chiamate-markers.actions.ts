@@ -1,5 +1,5 @@
-import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
-import { Sede } from '../../../../../shared/model/sede.model';
+import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
+import { Sede } from '../../../../shared/model/sede.model';
 
 export class GetChiamateMarkers {
     static readonly type = '[Chiamate Marker] Get Chiamate Markers API';

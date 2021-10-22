@@ -23,6 +23,7 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -31,22 +32,14 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
     public class NotificationUndoMergeSchedeNue : INotificationUndoMergeSchedeNue
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _getSchedeContattoHandler;
 
-        public NotificationUndoMergeSchedeNue(IHubContext<NotificationHub> notificationHubContext, IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> getSchedeContattoHandler)
+        public NotificationUndoMergeSchedeNue(IHubContext<NotificationHub> notificationHubContext)
         {
             _notificationHubContext = notificationHubContext;
-            _getSchedeContattoHandler = getSchedeContattoHandler;
         }
 
         public async Task SendNotification(UndoMergeSchedeNueCommand command)
         {
-            //var getSchedeContatto = new GetSchedeContattoQuery
-            //{
-            //    CodiceSede = command.CodiceSede
-            //};
-            //var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto;
-
             var listaSchedeNueNonMergiate = new List<SchedaContatto>();
             foreach (var schedafiglia in command.SchedaNue.Collegate)
             {

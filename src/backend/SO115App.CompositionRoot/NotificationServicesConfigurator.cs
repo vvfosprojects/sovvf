@@ -36,11 +36,6 @@ namespace SO115App.CompositionRoot
             container.Register<INotificationAnnullaRichiestaSoccorsoAereo, NotificationAnnullaRichiestaSoccorsoAereo>();
             container.Register<INotificationInserisciRichiestaSoccorsoAereo, NotificationInserisciRichiestaSoccorsoAereo>();
             container.Register<
-                Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
-                SignalR.Sender.GestioneSchedeContatto.NotificationMergeSchedeNue>();
-            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationUndoMergeSchedeNue,
-                SignalR.Sender.GestioneSchedeContatto.NotificationUndoMergeSchedeNue>();
-            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
                 SO115App.SignalR.Sender.GestioneChiamata.NotificationInserimentoChiamata>();
             container.Register<
@@ -81,8 +76,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
                 SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
-            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
-                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
             container.Register<
                 Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente,
                 SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
@@ -145,6 +138,19 @@ namespace SO115App.CompositionRoot
             container.Register<INotificationAddDoc, NotificationAddDoc>();
 
             #endregion Documentale
+
+            #region SchedeContatto
+
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
+                SignalR.Sender.GestioneSchedeContatto.NotificationMergeSchedeNue>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationUndoMergeSchedeNue,
+                SignalR.Sender.GestioneSchedeContatto.NotificationUndoMergeSchedeNue>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
+                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationContatoreSchedeNue,
+                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationContatoreSchedeNue>();
+
+            #endregion SchedeContatto
         }
     }
 }

@@ -6,19 +6,19 @@ import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
 import { ViewInterfaceMaps } from '../../shared/interface/view.interface';
 import { Select, Store } from '@ngxs/store';
-import { SediMarkersState } from '../home/store/states/maps/sedi-markers.state';
-import { CentroMappaState } from '../home/store/states/maps/centro-mappa.state';
-import { ChiamateMarkersState } from '../home/store/states/maps/chiamate-markers.state';
+import { SediMarkersState } from './store/states/sedi-markers.state';
+import { CentroMappaState } from './store/states/centro-mappa.state';
+import { ChiamateMarkersState } from './store/states/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../home/store/states/composizione-partenza/composizione-partenza.state';
-import { AreaMappaState } from '../home/store/states/maps/area-mappa.state';
+import { AreaMappaState } from './store/states/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
-import { MapsDirectionState } from '../home/store/states/maps/maps-direction.state';
+import { MapsDirectionState } from './store/states/maps-direction.state';
 import { DirectionInterface } from './maps-interface/direction-interface';
 import { FiltriRichiesteState } from '../home/store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
-import { SetAreaMappa } from '../home/store/actions/maps/area-mappa.actions';
+import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({

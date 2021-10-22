@@ -1,5 +1,5 @@
-import { CentroMappa } from '../../../../maps/maps-model/centro-mappa.model';
-import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { CentroMappa } from '../../maps-model/centro-mappa.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 export class SetCentroMappa {
     static readonly type = '[Centro Mappa] Set Centro Mappa';

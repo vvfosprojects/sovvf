@@ -6,7 +6,7 @@ import { ModalNuovaChiamataComponent } from '../modal-nuova-chiamata/modal-nuova
 import { Utente } from '../../../shared/model/utente.model';
 import { Store } from '@ngxs/store';
 import { AuthState } from '../../auth/store/auth.state';
-import { SetChiamataFromMappaActiveValue } from '../../home/store/actions/maps/tasto-chiamata-mappa.actions';
+import { SetChiamataFromMappaActiveValue } from '../store/actions/tasto-chiamata-mappa.actions';
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
@@ -86,6 +86,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 private renderer: Renderer2) {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
+        this.mapService.getRefresh().subscribe(() => {
+            // TODO: implementare logica che fa il refresh dei layer degli interventi
+            console.log('refresh');
+        });
     }
 
     ngOnInit(): void {

@@ -23,6 +23,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneSchedeContatto
@@ -30,34 +31,26 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
     public class NotificationSetSchedaGestita : INotificationSetSchedaGestita
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _getConteggioSchedeHandler;
-        private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _getSchedeContattoHandler;
+
+        private readonly IGetConteggioSchede _getConteggioSchede;
+        private readonly IGetSchedeContatto _getSchedeContatto;
 
         public NotificationSetSchedaGestita(
             IHubContext<NotificationHub> notificationHubContext,
-            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler, IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> getSchedeContatto)
+            IGetConteggioSchede getConteggioSchede,
+            IGetSchedeContatto getSchedeContatto)
         {
             _notificationHubContext = notificationHubContext;
-            _getConteggioSchedeHandler = getConteggioSchedeHandler;
-            _getSchedeContattoHandler = getSchedeContatto;
+            _getConteggioSchede = getConteggioSchede;
+            _getSchedeContatto = getSchedeContatto;
         }
 
         public async Task SendNotification(SetSchedaGestitaCommand command)
         {
-            var getConteggioSchedeQuery = new GetConteggioSchedeQuery
-            {
-                CodiciSede = new string[] { command.CodiceSede }
-            };
+            var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
 
-            var getSchedeContatto = new GetSchedeContattoQuery
-            {
-                CodiceSede = command.CodiceSede
-            };
-
-            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto.Find(x => x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
-
-            var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
-            await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            await _notificationHubContext.Clients.All.SendAsync("NotifySetContatoriSchedeContatto", infoNue);
             await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
         }
     }

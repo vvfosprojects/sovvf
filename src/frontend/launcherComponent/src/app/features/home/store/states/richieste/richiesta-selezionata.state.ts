@@ -3,7 +3,7 @@ import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from '../../action
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { Injectable } from '@angular/core';
-import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { SetCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 
 export interface RichiestaSelezionataStateModel {
     idRichiestaSelezionata: string;

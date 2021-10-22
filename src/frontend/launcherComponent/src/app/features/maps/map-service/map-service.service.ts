@@ -4,9 +4,9 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { SetCentroMappa } from '../../home/store/actions/maps/centro-mappa.actions';
+import { SetCentroMappa } from '../store/actions/centro-mappa.actions';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { SetAreaMappa } from '../../home/store/actions/maps/area-mappa.actions';
+import { SetAreaMappa } from '../store/actions/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../core/settings/maps-options';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../shared/helper/mappa/function-mappa';
 
@@ -16,6 +16,8 @@ export class MapService {
     private centro$ = new Subject<CentroMappa>();
     private area$ = new Subject<AreaMappa>();
     private centro: Coordinate;
+
+    private refresh$ = new Subject<boolean>();
 
     private wipeTopRight: Coordinate;
 
@@ -59,5 +61,13 @@ export class MapService {
 
     private getArea(): Observable<AreaMappa> {
         return this.area$.asObservable().pipe(debounceTime(MAPSOPTIONS.panMarkerRefresh));
+    }
+
+    setRefresh(value: boolean): void {
+        this.refresh$.next(true);
+    }
+
+    getRefresh(): Observable<boolean> {
+        return this.refresh$.asObservable();
     }
 }
