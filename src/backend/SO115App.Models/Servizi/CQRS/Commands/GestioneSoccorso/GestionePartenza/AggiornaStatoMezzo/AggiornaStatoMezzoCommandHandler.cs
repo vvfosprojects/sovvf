@@ -94,7 +94,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }, _sendNewItemSTATRI, _checkCongruita);
             }
 
-
             if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenza.Partenza.Codice).Count() == 0)
             {
                 if (command.AzioneIntervento.ToLower().Equals("chiusa"))
