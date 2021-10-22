@@ -20,6 +20,8 @@
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR.Notifications;
 using System;
 using System.Threading.Tasks;
@@ -60,7 +62,7 @@ namespace SO115App.SignalR
 
         public async Task NotifyUpdateSchedaContatto(SchedaContatto scheda)
         {
-            await Clients.Group(scheda.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", scheda).ConfigureAwait(false);
+            await Clients.Group(scheda.CodiceSede).SendAsync("NotifyNewSchedaContatto", scheda).ConfigureAwait(false);
         }
 
         public string GetConnectionId()

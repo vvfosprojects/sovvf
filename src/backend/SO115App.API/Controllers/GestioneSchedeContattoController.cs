@@ -25,6 +25,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
@@ -39,6 +40,7 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
         private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _queryhandlerSchede;
+        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _queryhandlerContatoriSchede;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
         private readonly ICommandHandler<UndoMergeSchedeNueCommand> _undoMergeSchede;
@@ -46,6 +48,7 @@ namespace SO115App.API.Controllers
         public GestioneSchedeContattoController(
             IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
             IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> queryhandlerSchede,
+            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> queryhandlerContatoriSchede,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
             ICommandHandler<MergeSchedeNueCommand> setMerge,
             ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede)
@@ -55,6 +58,7 @@ namespace SO115App.API.Controllers
             _setMerge = setMerge;
             _undoMergeSchede = undoMergeSchede ?? throw new ArgumentNullException(nameof(_undoMergeSchede));
             _queryhandlerSchede = queryhandlerSchede;
+            _queryhandlerContatoriSchede = queryhandlerContatoriSchede;
         }
 
         [HttpPost("GetSchede")]
@@ -66,6 +70,26 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_queryHandler.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetContatoriSchede")]
+        public async Task<IActionResult> GetContatoriSchede()
+        {
+            var query = new GetConteggioSchedeQuery()
+            {
+                CodiciSede = Request.Headers["codiceSede"].ToArray()
+            };
+
+            try
+            {
+                return Ok(_queryhandlerContatoriSchede.Handle(query));
             }
             catch (Exception ex)
             {

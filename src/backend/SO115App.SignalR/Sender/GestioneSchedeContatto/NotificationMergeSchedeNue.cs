@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,24 +31,19 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
     public class NotificationMergeSchedeNue : INotificationMergeSchedeNue
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _getConteggioSchedeHandler;
+        private readonly IGetConteggioSchede _getConteggioSchede;
 
         public NotificationMergeSchedeNue(
             IHubContext<NotificationHub> notificationHubContext,
-            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler)
+            IGetConteggioSchede getConteggioSchede)
         {
             _notificationHubContext = notificationHubContext;
-            _getConteggioSchedeHandler = getConteggioSchedeHandler;
+            _getConteggioSchede = getConteggioSchede;
         }
 
         public async Task SendNotification(MergeSchedeNueCommand command)
         {
-            var getConteggioSchedeQuery = new GetConteggioSchedeQuery
-            {
-                CodiciSede = new string[] { command.CodiceSede }
-            };
-
-            var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
             await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
             await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
 
