@@ -84,8 +84,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     },
                     targa = partenza.CodiceMezzo.Split('.')[1],
                     tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                    autistaRientro = null, //partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, 
-                    dataRientro = null, // mandare solo se mezzo gia rientrato
+                    autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
+                    dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante,
                     autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale, //RICONTROLLARE
                     dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
                     tipoUscita = new TipoUscita()
