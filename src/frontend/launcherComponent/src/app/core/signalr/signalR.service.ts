@@ -13,7 +13,7 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../shared/store/actions/maps/chiamate-markers.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
@@ -255,6 +255,10 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyRemoveSchedeContatto', (data: string[]) => {
             console.log('NotifyRemoveSchedeContatto', data);
+            this.store.dispatch(new GetListaSchedeContatto());
+        });
+        this.hubNotification.on('NotifyNewSchedaContatto', (data: SchedaContatto) => {
+            console.log('NotifyNewSchedaContatto', data);
             this.store.dispatch(new GetListaSchedeContatto());
         });
 
