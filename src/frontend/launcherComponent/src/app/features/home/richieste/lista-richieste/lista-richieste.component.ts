@@ -24,7 +24,6 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() listHeightClass: string;
     @Input() boxAttivi: boolean;
     @Input() listaEnti: EnteInterface[];
-    @Input() annullaStatoMezzi: string[];
 
     // Loading
     @Input() loading: boolean;

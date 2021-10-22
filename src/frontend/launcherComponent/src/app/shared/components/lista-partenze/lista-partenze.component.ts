@@ -22,7 +22,6 @@ export class ListaPartenzeComponent {
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;
     @Input() loadingActionMezzo: string[];
-    @Input() annullaStatoMezzi: string[];
     @Input() diffDateInfoMezzo: any;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();

@@ -111,12 +111,15 @@ namespace SO115App.API.Models.Classi.Soccorso
 
         /// <summary>
         ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        ///   CREA SEMPRE UN EVENTO
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
-            if (partenza.Mezzo.Stato != stato.Stato)
+            bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
+
+            if (!cambioOrarioUscita)
                 check.CheckCongruenza(stato, partenza.Codice, true);
             else
                 check.CheckCongruenza(stato, partenza.Codice, false);
@@ -139,7 +142,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = stato.Istante.AddMinutes(1);
+                    var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
+                    
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
