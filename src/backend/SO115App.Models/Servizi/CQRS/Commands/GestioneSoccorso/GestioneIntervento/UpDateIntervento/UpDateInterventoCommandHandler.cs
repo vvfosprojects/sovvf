@@ -64,7 +64,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             {
                 var tipologia = _getTipologie.Get(new List<string> { command.Chiamata.Tipologie.First().Codice }).First();
 
-                modificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
+                modificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Where(p => !p.Partenza.Terminata).Select(partenza => new ModificaMovimentoGAC()
                 {
                     comune = new ComuneGAC()
                     {
