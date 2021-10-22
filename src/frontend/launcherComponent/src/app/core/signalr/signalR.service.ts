@@ -13,7 +13,6 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../shared/store/actions/maps/chiamate-markers.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
@@ -52,6 +51,7 @@ import {
     RemoveSquadreOccupateDistaccamentoCodaChiamate
 } from '../../features/home/store/actions/coda-chiamate/coda-chiamate.actions';
 import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
