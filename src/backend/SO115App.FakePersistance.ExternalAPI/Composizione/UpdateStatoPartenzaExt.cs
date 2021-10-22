@@ -91,23 +91,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
 
-                if (!partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                 {
-                    if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                    {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
+                    var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
 
-                        _setRientroMezzo.Set(new RientroGAC()
-                        {
-                            targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
-                            idPartenza = partenzaRientro.Partenza.Codice.ToString(),
-                            numeroIntervento = command.Richiesta.CodRichiesta,
-                            dataIntervento = dataIntervento,
-                            dataRientro = dataRientro,
-                            autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
-                        });
-                    }
+                    _setRientroMezzo.Set(new RientroGAC()
+                    {
+                        targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
+                        tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
+                        idPartenza = partenzaRientro.Partenza.Codice.ToString(),
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataIntervento = dataIntervento,
+                        dataRientro = dataRientro,
+                        autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
+                    });
                 }
             }
         }
