@@ -240,10 +240,6 @@ export class SignalRService {
         /**
          * Schede Contatto
          */
-        this.hubNotification.on('NotifyGetContatoriSchedeContatto', (data: any) => {
-            console.log('NotifyGetContatoriSchedeContatto', data);
-            this.store.dispatch(new GetContatoriSchedeContatto());
-        });
         this.hubNotification.on('NotifySetContatoriSchedeContatto', (data: ContatoriSchedeContatto) => {
             console.log('NotifySetContatoriSchedeContatto', data);
             this.store.dispatch(new SetContatoriSchedeContatto(data));
@@ -266,7 +262,10 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyNewSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyNewSchedaContatto', data);
-            this.store.dispatch(new GetListaSchedeContatto());
+            this.store.dispatch([
+                new GetContatoriSchedeContatto(),
+                new GetListaSchedeContatto()
+            ]);
         });
 
         /**
