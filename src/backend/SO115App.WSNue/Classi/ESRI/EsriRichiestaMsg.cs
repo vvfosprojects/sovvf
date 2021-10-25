@@ -15,7 +15,7 @@ namespace SO115App.WSNue.Classi.ESRI
     public class attributes
     {
         [JsonProperty(PropertyName = "datainserimento")]
-        public DateTime datainserimento { get; set; }
+        public double datainserimento { get; set; }
 
         [JsonProperty(PropertyName = "nominativorichiedente")]
         public string nominativorichiedente { get; set; }
@@ -58,5 +58,13 @@ namespace SO115App.WSNue.Classi.ESRI
 
         [JsonProperty(PropertyName = "y")]
         public double y { get; set; }
+
+        [JsonProperty(PropertyName = "spatialReference")]
+        public SpatialReference spatialReference { get; set; }
+    }
+
+    public class SpatialReference
+    {
+        public int wkid { get; set; } = 4326;
     }
 }

@@ -69,7 +69,11 @@ namespace SO115App.WSNue.Manager
                         geometry = new geometry()
                         {
                             x = schedaSO115.localita.coordinate.longitudine,
-                            y = schedaSO115.localita.coordinate.latitudine
+                            y = schedaSO115.localita.coordinate.latitudine,
+                            spatialReference = new SpatialReference()
+                            {
+                                wkid = 4326
+                            }
                         },
                         attributes = new attributes()
                         {
@@ -77,7 +81,7 @@ namespace SO115App.WSNue.Manager
                             classificazione = schedaSO115.classificazione,
                             classificazioneEvento = schedaSO115.classificazioneEvento,
                             collegata = 0,
-                            datainserimento = schedaSO115.dataInserimento,
+                            datainserimento = schedaSO115.dataInserimento.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
                             dettaglio = schedaSO115.dettaglio,
                             enteCompetenza = schedaSO115.enteCompetenza,
                             gestita = 0,
