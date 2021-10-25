@@ -54,25 +54,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.STATRI
             {
                 richiesta.InviatoSTATRI = true;
 
-                if (result.SuccessfullImport != null)
+                if (result.Successfull != null)
                 {
-                    foreach (var invio in result.SuccessfullImport)
+                    foreach (var invio in result.Successfull)
                     {
-                        if (action.Equals("import"))
-                            new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"La scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} è stata inviata a STATRI Web");
-                        else
-                            new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"La scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} è stata aggiornata su STATRI Web");
+                        new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"La scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} è stata inviata a STATRI Web");
                     }
                 }
 
-                if (result.FailedImport != null)
+                if (result.Failed != null)
                 {
-                    foreach (var invio in result.FailedImport)
+                    foreach (var invio in result.Failed)
                     {
-                        if (action.Equals("import"))
-                            new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"L'invio della scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} non è andata a buon fine. Motivo:{invio.Failed}");
-                        else
-                            new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"L'aggiornamento della scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} non è andata a buon fine. Motivo:{invio.Failed}");
+                        new STATRI_InivioRichiesta(richiesta, DateTime.Now, richiesta.CodOperatore, $"L'invio della scheda numero {invio.NumeroScheda}/{invio.ProgressivoScheda} riguardante la richiesta {richiesta.CodRichiesta} non è andata a buon fine. Motivo:{invio.Failed}");
                     }
                 }
                 _upDateRichiestaAssistenza.UpDate(richiesta);
