@@ -50,20 +50,20 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
             if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
             {
-                foreach (var composizione in richiesta.Partenze)
+                foreach (var composizione in richiesta.lstPartenzeInCorso)
                 {
-                    if (!composizione.Partenza.Sganciata && !composizione.Partenza.PartenzaAnnullata)
+                    if (!composizione.Sganciata && !composizione.PartenzaAnnullata)
                     {
-                        if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                        if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                         {
-                            if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                                composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                            if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                                composizione.Mezzo.Stato = Costanti.MezzoInRientro;
 
-                            composizione.Partenza.Mezzo.IdRichiesta = null;
+                            composizione.Mezzo.IdRichiesta = null;
 
                             AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
                             statoMezzo.CodiciSede = new string[] { command.CodiceSede };
-                            statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
+                            statoMezzo.IdMezzo = composizione.Mezzo.Codice;
                             statoMezzo.Richiesta = richiesta;
                             statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
                             _upDatePartenza.Update(statoMezzo);
@@ -71,7 +71,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                     }
 
                     if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
-                        composizione.Partenza.Terminata = true;
+                        composizione.Terminata = true;
                 }
             }
 
