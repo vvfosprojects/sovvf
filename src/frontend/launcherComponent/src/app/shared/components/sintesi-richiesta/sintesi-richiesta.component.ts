@@ -59,6 +59,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledComposizionePartenza = false;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
+    @Input() annullaStatoMezzi: string[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();

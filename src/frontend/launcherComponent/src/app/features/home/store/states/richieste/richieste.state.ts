@@ -56,6 +56,7 @@ import { ViewComponentState } from '../view/view.state';
 import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function-mezzo';
 import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -320,10 +321,10 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-                // this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                // setTimeout(x => {
-                //     this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                // }, 60000);
+                this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                setTimeout(x => {
+                    this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                }, 60000);
 
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
