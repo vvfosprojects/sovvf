@@ -60,7 +60,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             bool modificaInterventoChiuso = false;
             List<ModificaMovimentoGAC> lstModificheMovimentiGAC = null;
 
-            if(richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
+            if (richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
                 var tipologia = _getTipologie.Get(new List<string> { command.Chiamata.Tipologie.First().Codice }).First();
 
@@ -142,7 +142,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             if (richiesta.PrioritaRichiesta != prioritaRichiesta)
                 new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
-            if(modificaInterventoChiuso)
+            if (modificaInterventoChiuso)
             {
                 Parallel.ForEach(lstModificheMovimentiGAC, movimento => _modificaInterventoChiuso.Send(movimento));
             }
