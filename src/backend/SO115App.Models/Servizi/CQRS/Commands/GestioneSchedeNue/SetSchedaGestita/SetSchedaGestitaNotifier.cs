@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita
@@ -25,15 +26,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
     public class SetSchedaGestitaNotifier : ICommandNotifier<SetSchedaGestitaCommand>
     {
         private readonly INotificationSetSchedaGestita _sender;
+        private readonly INotifyUpDateSchedaContatto _notifyUpDateSchedaContatto;
 
-        public SetSchedaGestitaNotifier(INotificationSetSchedaGestita sender)
+        public SetSchedaGestitaNotifier(INotificationSetSchedaGestita sender, INotifyUpDateSchedaContatto notifyUpDateSchedaContatto)
         {
             _sender = sender;
+            _notifyUpDateSchedaContatto = notifyUpDateSchedaContatto;
         }
 
         public void Notify(SetSchedaGestitaCommand command)
         {
             _sender.SendNotification(command);
+
+            //Richiamo ESRI per aggiornare il MARKER
+            _notifyUpDateSchedaContatto.UpDate(command.Scheda);
         }
     }
 }

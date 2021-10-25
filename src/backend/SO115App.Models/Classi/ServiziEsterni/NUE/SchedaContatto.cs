@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
@@ -149,8 +150,8 @@ namespace SO115App.Models.Classi.NUE
 
     public class Esri_Params
     {
-        public int ObjectId { get; set; }
+        public int objectId { get; set; }
 
-        public DateTime LastUpdate { get; set; }
+        public DateTime lastUpdate { get; set; }
     }
 }

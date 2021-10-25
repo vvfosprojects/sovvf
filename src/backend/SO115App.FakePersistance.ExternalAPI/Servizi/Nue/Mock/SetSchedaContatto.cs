@@ -38,13 +38,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly DbContext _context;
         private readonly IGetSchedeContatto _getSchedeContatto;
-        private readonly INotifyUpDateSchedaContatto _notifyUpDateSchedaContatto;
 
-        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto, INotifyUpDateSchedaContatto notifyUpDateSchedaContatto)
+        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto)
         {
             _context = context;
             _getSchedeContatto = getSchedeContatto;
-            _notifyUpDateSchedaContatto = notifyUpDateSchedaContatto;
         }
 
         /// <summary>
@@ -94,9 +92,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
             }
             schedaContatto.Gestita = gestita;
-
-            //Richiamo ESRI per aggiornare il MARKER
-            //_notifyUpDateSchedaContatto.UpDate(schedaContatto);
 
             Set(schedaContatto, codiceScheda);
         }

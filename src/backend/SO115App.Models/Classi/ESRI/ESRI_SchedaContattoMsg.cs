@@ -14,9 +14,10 @@ namespace SO115App.Models.Classi.ESRI
 
     public class SchedaContattoAttributes
     {
+        [JsonProperty(PropertyName = "objectid")]
         public int objectid { get; set; }
 
-        public DateTime dataInserimento { get; set; }
+        public double dataInserimento { get; set; }
 
         public string NominativoRichiedente { get; set; }
 
@@ -36,8 +37,8 @@ namespace SO115App.Models.Classi.ESRI
 
         public string classificazione { get; set; }
 
-        public bool gestita { get; set; }
+        public int gestita { get; set; }
 
-        public bool collegata { get; set; }
+        public int collegata { get; set; }
     }
 }

@@ -87,5 +87,13 @@ namespace SO115App.Models.Classi.ESRI
 
         [JsonProperty(PropertyName = "y")]
         public double y { get; set; }
+
+        [JsonProperty(PropertyName = "spatialReference")]
+        public SpatialReference spatialReference { get; set; }
+    }
+
+    public class SpatialReference
+    {
+        public int wkid { get; set; } = 4326;
     }
 }

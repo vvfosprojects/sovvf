@@ -131,7 +131,7 @@ namespace SO115App.WSNue.Manager
                 {
                     schedaSO115.esri_params = new Esri_Params()
                     {
-                        ObjectId = result.addResults[0].objectId,
+                        objectId = result.addResults[0].objectId,
                         LastUpdate = DateTime.Now
                     };
 
