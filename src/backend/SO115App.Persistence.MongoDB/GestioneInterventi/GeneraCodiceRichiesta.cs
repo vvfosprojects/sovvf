@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
@@ -10,8 +11,13 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
     public class GeneraCodiceRichiesta : IGeneraCodiceRichiesta
     {
         private readonly DbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public GeneraCodiceRichiesta(DbContext dbContext) => _dbContext = dbContext;
+        public GeneraCodiceRichiesta(DbContext dbContext, IConfiguration configuration)
+        {
+            _dbContext = dbContext;
+            _configuration = configuration;
+        }
 
         public string GeneraCodiceIntervento(string codiceProvincia, int anno)
         {
@@ -34,7 +40,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
         private int GetMaxCodiceIntervento(string codiceSede)
         {
-            int MaxIdSintesi = 1;
+            int MaxIdSintesi = Convert.ToInt32(_configuration.GetSection("AppSettings").GetSection("RequestStartNumber").Value);
             var codiceProvincia = codiceSede.Split('.')[0];
 
             var ListaRichieste = _dbContext.RichiestaAssistenzaCollection
@@ -55,7 +61,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
         private int GetMaxCodiceChiamata(string codiceSede)
         {
-            int MaxIdSintesi = 1;
+            int MaxIdSintesi = Convert.ToInt32(_configuration.GetSection("AppSettings").GetSection("CallStartNumeber").Value);
             var codiceProvincia = codiceSede.Split('.')[0];
 
             var ListaRichieste = _dbContext.RichiestaAssistenzaCollection
