@@ -708,7 +708,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 {
                     var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
 
-                    if (UltimoEventoPartenza.Equals("ComposizionePartenza"))
+                    if (UltimoEventoPartenza.Equals("ComposizionePartenza") || UltimoEventoPartenza.Equals("UscitaPartenza"))
                     {
                         evento.Partenza.Mezzo.Stato = "In Viaggio";
                         foreach (var squadra in evento.Partenza.Squadre)
