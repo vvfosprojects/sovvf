@@ -113,7 +113,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
                 {
-                    targa = PartenzaMontanteNuova.CodiceMezzo,
+                    targa = PartenzaMontanteNuova.CodiceMezzo.Split('.', StringSplitOptions.RemoveEmptyEntries)[1],
                     idPartenza = PartenzaMontanteNuova.CodicePartenza,
                     autistaRientro = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
                     autistaUscita = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
@@ -124,9 +124,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Codice.Split('.')[0],
-                    dataRientro = PartenzaSmontante.Istante,
-                    dataUscita = PartenzaMontanteNuova.Istante,
+                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
+                    dataRientro = PartenzaSmontante.Istante, //??
+                    dataUscita = PartenzaSmontante.Istante, //??
                     tipoUscita = new TipoUscita()
                     {
                         codice = tipologia.Codice,
