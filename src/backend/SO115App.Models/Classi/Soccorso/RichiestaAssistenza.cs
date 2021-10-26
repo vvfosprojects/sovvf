@@ -934,6 +934,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var entiIntervenuti = evento as InserimentoEnteIntervenuto;
             var sostituzione = evento as SostituzionePartenzaFineTurno;
             var statri = evento as STATRI_InivioRichiesta;
+            var trasferimento = evento as SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata;
 
             if ((composizionePartenza == null
                 && telefonata == null
@@ -943,7 +944,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && fonogrammaInviato == null
                 && entiIntervenuti == null
                 && sostituzione == null
-                && statri == null)
+                && statri == null
+                && trasferimento == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
