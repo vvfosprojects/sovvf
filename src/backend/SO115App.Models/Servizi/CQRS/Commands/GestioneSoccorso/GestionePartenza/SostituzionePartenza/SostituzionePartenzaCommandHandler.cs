@@ -58,7 +58,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             //GESTIONE NUOVA PARTENZA MONTANTE
             var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
             {
-                Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
+                Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 2).ToString(),
                 Mezzo = PartenzaMontante.Partenza.Mezzo,
                 Squadre = SquadreSwitch
             });
@@ -97,7 +97,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             new SostituzionePartenzaFineTurno(command.Richiesta, PartenzaSmontante.CodiceMezzo, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
 
-            //finire la where con codici partenze
+            //TODO finire la where con codici partenze o mezzi
             foreach (var composizione in command.Richiesta.Partenze.Where(p => p.Partenza.Terminata == false && p.Partenza.Sganciata == false && p.Partenza.PartenzaAnnullata == false))
             {
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
