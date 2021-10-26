@@ -31,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             ESRI_SchedaContattoMsg messaggio = new ESRI_SchedaContattoMsg()
             {
-                geometry = new geometry()
+                geometry = new geometrySC()
                 {
                     x = scheda.Localita.Coordinate.Longitudine,
                     y = scheda.Localita.Coordinate.Latitudine,
