@@ -74,7 +74,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice);
 
                     //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
                     if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
@@ -174,7 +174,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         });
                     }
 
-                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
             }
 
             _updateRichiesta.UpDate(command.Richiesta);

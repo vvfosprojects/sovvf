@@ -66,12 +66,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             else
                 query.CodiciSedi = query.CodiciSedi.Where(s => s.Contains('.')).Distinct().ToArray();
 
-            var lstSquadre = Task.Run(() => query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift.Result.Squadre).ToList());
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));
+            var lstSquadre = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift.Result.Squadre).ToList();  //Task.Run(() => query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift.Result.Squadre).ToList());
+            var lstStatiSquadre = _getStatoSquadre.Get(query.CodiciSedi.ToList());  //Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));
 
-            var lstSquadrePreaccoppiate = Task.Run(() => lstSquadre.Result?.Where(s => s.CodiciMezziPreaccoppiati != null).ToList());
+            var lstSquadrePreaccoppiate = Task.Run(() => lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList());
 
-            var statiOperativiMezzi = Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
@@ -86,29 +86,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         //Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre.Result?.FirstOrDefault(stato => stato.IdSquadra.Equals(sq.Codice))?.StatoSquadra),
                         //Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(sq.Stato),
                         Nome = sq.Descrizione,
-                        //Membri = 
+                        //Membri =
                         Distaccamento = new Sede(sq.Distaccamento),
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList());
 
-                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Result?.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
+                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
                     {
                         Codice = s.IdSquadra,
                         Distaccamento = new Sede(lstSedi?.FirstOrDefault(sede => sede.Codice == s.CodiceSede)?.Descrizione),
                         Nome = s.IdSquadra,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.Result.First(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
+                        Membri = lstSquadre.First(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{m.FirstName} {m.LastName}",
                             Ruolo = m.Ruolo
                         }).ToList(),
-                        Turno = lstSquadre.Result.First(sq => sq.Codice.Equals(s.IdSquadra)).TurnoAttuale.ToCharArray()[0],
+                        Turno = lstSquadre.First(sq => sq.Codice.Equals(s.IdSquadra)).TurnoAttuale.ToCharArray()[0],
                     }).ToList());
 
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
-                    m.IdRichiesta = statiOperativiMezzi.Result?.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
+                    m.IdRichiesta = statiOperativiMezzi.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
                     var mc = new ComposizioneMezzi()
                     {
@@ -123,28 +123,35 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
 
-                    var statoMezzo = statiOperativiMezzi.Result?.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
-
-                    if (statoMezzo != null) switch (mc.Mezzo.Stato)
+                    if (mc.Mezzo.Codice.Contains("25038"))
                     {
-                        //case Costanti.MezzoInSede:
-                        //    mc.Mezzo.Stato = statiOperativiMezzi.Result?.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
-                        //    break;
-
-                        case Costanti.MezzoInViaggio:
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
-
-                        case Costanti.MezzoSulPosto:
-                            mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
-
-                        case Costanti.MezzoInRientro:
-                            mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                            break;
                     }
+                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
+                    if (statoMezzo != null)
+                    {
+                        mc.Mezzo.Stato = statoMezzo.StatoOperativo;
+
+                        switch (mc.Mezzo.Stato)
+                        {
+                            //case Costanti.MezzoInSede:
+                            //    mc.Mezzo.Stato = statiOperativiMezzi.Result?.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
+                            //    break;
+
+                            case Costanti.MezzoInViaggio:
+                                mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                                break;
+
+                            case Costanti.MezzoSulPosto:
+                                mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
+                                mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                                break;
+
+                            case Costanti.MezzoInRientro:
+                                mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
+                                break;
+                        }
+                    }
                     //mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
@@ -154,11 +161,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
-                    mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) || 
+                    mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice ) ?? true :
+                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(mezzo.Mezzo.Distaccamento?.Codice);
 
                 bool genere = (query.Filtro.Autista == true || query.Filtro.Autista == null) ? query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true : mezzo.Mezzo.Genere.ToLower().Contains("av");
@@ -180,7 +187,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                     .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                     .ThenBy(mezzo => mezzo.Mezzo.Distaccamento.Codice);
-                    //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
+                //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
             var result = lstMezziComposizione.Result.ToList();
