@@ -33,7 +33,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var territorio = _comuneService.GetComuneBy(uscita.comune.descrizione).Result;
 
             uscita.comune.codice = territorio.First(x => x.descrizione.ToLower().Equals(uscita.comune.descrizione.ToLower())).codice;
-            uscita.provincia.codice = territorio.First(x => x.descrizione.ToLower().Equals(uscita.provincia.descrizione.ToLower())).codice;
+            uscita.provincia.codice = territorio.First(x => x.provincia.descrizione.ToLower().Equals(uscita.provincia.descrizione.ToLower())).codice;
 
             //USCITA GAC
             var lstUscite = new List<UscitaGAC>() { uscita };
