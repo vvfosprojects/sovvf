@@ -57,7 +57,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                         if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                         {
                             if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                                composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                                composizione.Partenza.Mezzo.Stato = Costanti.MezzoRientrato;
 
                             composizione.Partenza.Mezzo.IdRichiesta = null;
 
@@ -65,7 +65,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                             statoMezzo.CodiciSede = new string[] { command.CodiceSede };
                             statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
                             statoMezzo.Richiesta = richiesta;
-                            statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
+                            statoMezzo.StatoMezzo = Costanti.MezzoRientrato;
                             _upDatePartenza.Update(statoMezzo);
                         }
                     }
