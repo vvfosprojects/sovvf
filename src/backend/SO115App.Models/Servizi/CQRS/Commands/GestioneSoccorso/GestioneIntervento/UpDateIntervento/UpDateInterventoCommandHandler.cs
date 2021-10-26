@@ -58,13 +58,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             var richiesta = _getRichiestaById.GetByCodice(command.Chiamata.Codice);
 
             bool modificaInterventoChiuso = false;
-            List<ModificaMovimentoGAC> lstModificheMovimentiGAC = null;
+            ModificaMovimentoGAC modificheMovimentiGAC = null;
 
             if (richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
                 var tipologia = _getTipologie.Get(new List<string> { command.Chiamata.Tipologie.First().Codice }).First();
 
-                lstModificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
+                modificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
                 {
                     comune = new ComuneGAC()
                     {
@@ -72,8 +72,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                         descrizione = command.Chiamata.Localita.Citta
                     },
                     idPartenza = partenza.CodicePartenza,
-                    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, //RICONTROLLARE
-                    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, //RICONTROLLARE
                     dataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
                     latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
                     longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
@@ -84,16 +82,18 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                         codice = "",
                         descrizione = command.Chiamata.Localita.Provincia
                     },
-                    targa = partenza.CodiceMezzo,
+                    targa = partenza.CodiceMezzo.Split('.')[1],
                     tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                    dataRientro = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
+                    dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante,
+                    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale, //RICONTROLLARE
                     dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
                     tipoUscita = new TipoUscita()
                     {
                         codice = tipologia.Codice,
                         descrizione = tipologia.Descrizione
                     }
-                }).ToList();
+                }).Last();
 
                 modificaInterventoChiuso = true;
             }
@@ -144,7 +144,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             if (modificaInterventoChiuso)
             {
-                Parallel.ForEach(lstModificheMovimentiGAC, movimento => _modificaInterventoChiuso.Send(movimento));
+                _modificaInterventoChiuso.Send(modificheMovimentiGAC);
             }
 
             _updateRichiestaAssistenza.UpDate(richiesta);
