@@ -103,8 +103,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
 
-                var CodSede = PartenzaSmontante.Partenza.Mezzo.Distaccamento.Codice;
-
                 #endregion GESTIONE RICHIESTA E EVENTI RICIHESTA
 
                 #region Comunicazione a servizi GAC
@@ -115,8 +113,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     targa = PartenzaMontanteNuova.CodiceMezzo.Split('.', StringSplitOptions.RemoveEmptyEntries)[1],
                     idPartenza = PartenzaMontanteNuova.CodicePartenza,
-                    autistaRientro = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
-                    autistaUscita = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
+                    autistaRientro = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, 
+                    autistaUscita = PartenzaMontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, 
+                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
+                    dataRientro = PartenzaSmontante.Istante, 
+                    dataUscita = PartenzaSmontante.Istante, 
+
                     comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
                     localita = command.Richiesta.Localita.Indirizzo,
                     provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
@@ -124,9 +126,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = PartenzaMontanteNuova.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
-                    dataRientro = PartenzaSmontante.Istante, //??
-                    dataUscita = PartenzaSmontante.Istante, //??
                     tipoUscita = new TipoUscita()
                     {
                         codice = tipologia.Codice,
@@ -136,10 +135,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 _modificaIntervento.Send(new ModificaMovimentoGAC()
                 {
-                    targa = PartenzaSmontanteNuova.CodiceMezzo,
+                    targa = PartenzaSmontanteNuova.CodiceMezzo.Split('.', StringSplitOptions.RemoveEmptyEntries)[1],
                     idPartenza = PartenzaSmontanteNuova.CodicePartenza,
-                    autistaRientro = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
-                    autistaUscita = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).Where(m => m.Ruolo == "DRIVER")?.Select(m => m.Nominativo)?.FirstOrDefault(), //RICONTROLLARE
+                    autistaRientro = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").Nominativo,
+                    autistaUscita = PartenzaSmontanteNuova.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").Nominativo, 
+                    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
+                    dataRientro = PartenzaSmontanteNuova.Istante, 
+                    dataUscita = PartenzaSmontanteNuova.Istante, 
+
                     comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
                     localita = command.Richiesta.Localita.Indirizzo,
                     provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
@@ -147,9 +150,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = PartenzaSmontanteNuova.Partenza.Mezzo.Codice.Split('.')[0],
-                    dataRientro = PartenzaMontante.Istante,
-                    dataUscita = PartenzaSmontanteNuova.Istante,
                     tipoUscita = new TipoUscita()
                     {
                         codice = tipologia.Codice,
