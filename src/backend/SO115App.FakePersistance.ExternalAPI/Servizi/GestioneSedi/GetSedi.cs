@@ -84,30 +84,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstProvinciali = GetDirezioniProvinciali();
 
+            var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
+
             var con = GetInfoSede("00");
 
             var conFiglio = GetInfoSede("001");
+            
 
-            var lstFigli = new ConcurrentBag<SedeUC>();
+            //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
+            var result = new UnitaOperativa(con.Id, con.Descrizione);
+            result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
 
-            Task.Run(() => Parallel.ForEach(lstProvinciali.Result, provinciale => GetFigliDirezione(provinciale.id).Result.ForEach(figlio => lstFigli.Add(figlio))));
-                //.ContinueWith();
-
-
-            //CREO L'ALNERATURA DELLE SEDI
-
-            var result = new UnitaOperativa(con.CodDistaccamento, con.Descrizione);
-
-            result.AddFiglio(new UnitaOperativa(conFiglio.CodDistaccamento, conFiglio.Descrizione));
-
-            foreach (var figlio in result.Figli)
+            //REGIONI
+            foreach (var regionale in lstRegionali.Result)
             {
-
+                result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
             }
 
-            //var result = new UnitaOperativa();
+            //PROVINCE
+            Parallel.ForEach(lstProvinciali.Result, provinciale =>
+            {
+                var infoSede = GetInfoSede(provinciale.id);
 
-            return null;
+                result.Figli.First().Figli.FirstOrDefault(r => r.Codice.Equals(infoSede.IdSedePadre))?.AddFiglio(new UnitaOperativa(provinciale?.id, provinciale?.descrizione));
+            });
+
+            return result;
         }
     }
 }
