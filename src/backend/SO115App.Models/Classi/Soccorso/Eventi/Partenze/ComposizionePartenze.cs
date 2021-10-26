@@ -62,7 +62,6 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         public Partenza Partenza { get; set; }
 
-
         /// <summary>
         ///   Indica se l'evento si verifica mentre il mezzo è fuori sede o in sede. Questa
         ///   informazione serve al <see cref="ProcessoreStato" /> a calcolare lo stato iniziale in
@@ -70,6 +69,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         ///   una singola richiesta.
         /// </summary>
         public bool FuoriSede { get; private set; }
+
+        public bool InviataSTATRI { get; set; }
 
         /// <summary>
         ///   Metodo di visita

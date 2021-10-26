@@ -24,7 +24,7 @@ namespace SO115App.WSNue.Classi.ESRI
 {
     public class Esri_Params
     {
-        public int ObjectId { get; set; }
+        public int objectId { get; set; }
 
         public DateTime LastUpdate { get; set; }
     }

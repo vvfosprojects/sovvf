@@ -25,8 +25,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.Statri
         public virtual string ViaPiazza { get; set; }
         public virtual string NumeroCivico { get; set; }
         public virtual int Boschi { get; set; }
-        public virtual int Campi { get; set; }
-        public virtual int Sterpaglia { get; set; }
+        public virtual int Pascoli { get; set; }
+        public virtual int Altro { get; set; }
         public virtual string RichiedenteIntervento { get; set; }
         public virtual string Telefono { get; set; }
         public virtual bool InterventoPiuSquadre { get; set; }

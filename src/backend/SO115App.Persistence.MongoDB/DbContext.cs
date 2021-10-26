@@ -136,6 +136,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<STATRI_InivioRichiesta>();
             BsonClassMap.RegisterClassMap<Evento>();
             BsonClassMap.RegisterClassMap<InsertSchedaNueRequest>();
+            BsonClassMap.RegisterClassMap<Esri_Params>();
         }
 
         public IMongoCollection<PosDAO> DtoPosCollection

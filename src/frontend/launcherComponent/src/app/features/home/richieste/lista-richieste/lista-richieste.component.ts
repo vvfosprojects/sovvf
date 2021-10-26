@@ -45,6 +45,8 @@ export class ListaRichiesteComponent implements OnChanges {
     // Night Mode
     @Input() nightMode: boolean;
 
+    @Input() annullaStatoMezzi: string[];
+
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() pageChange = new EventEmitter<number>();

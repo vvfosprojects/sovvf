@@ -50,7 +50,6 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!ora || action === 'In Viaggio') {
             if (event) {
                 event.stopPropagation();
             }
@@ -98,7 +97,6 @@ export class MezzoActionsComponent implements OnInit {
                         break;
                 }
             });
-        }
     }
 
     getListaEventiMezzo(): void {

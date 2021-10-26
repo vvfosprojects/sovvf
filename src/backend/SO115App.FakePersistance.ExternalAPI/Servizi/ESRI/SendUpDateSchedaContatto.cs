@@ -27,23 +27,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
         public void UpDate(SchedaContatto scheda)
         {
+            List<ESRI_SchedaContattoMsg> listMsg = new List<ESRI_SchedaContattoMsg>();
+
             ESRI_SchedaContattoMsg messaggio = new ESRI_SchedaContattoMsg()
             {
-                geometry = new geometry()
+                geometry = new geometrySC()
                 {
                     x = scheda.Localita.Coordinate.Longitudine,
-                    y = scheda.Localita.Coordinate.Latitudine
+                    y = scheda.Localita.Coordinate.Latitudine,
+                    spatialReference = new SpatialReference()
+                    {
+                        wkid = 4326
+                    }
                 },
                 attributes = new SchedaContattoAttributes()
                 {
+                    objectid = scheda.esri_params.objectId,
                     categoria = scheda.Categoria,
                     classificazione = scheda.Classificazione,
                     classificazioneEvento = scheda.ClassificazioneEvento,
-                    collegata = scheda.Collegata,
-                    dataInserimento = scheda.DataInserimento,
+                    collegata = scheda.Collegata ? 1 : 0,
+                    dataInserimento = scheda.DataInserimento.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds,
                     dettaglio = scheda.Dettaglio,
                     enteCompetenza = scheda.EnteCompetenza,
-                    gestita = scheda.Gestita,
+                    gestita = scheda.Gestita ? 1 : 0,
                     Indirizzo = scheda.Localita.Indirizzo,
                     NominativoRichiedente = scheda.Richiedente.Nominativo,
                     TelefonoRichiedente = scheda.Richiedente.Telefono,
@@ -51,7 +58,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                 }
             };
 
-            var jsonString = JsonConvert.SerializeObject(messaggio);
+            listMsg.Add(messaggio);
+
+            var jsonString = JsonConvert.SerializeObject(listMsg);
 
             Dictionary<string, string> postData = new Dictionary<string, string>();
             postData.Add("features", jsonString);
