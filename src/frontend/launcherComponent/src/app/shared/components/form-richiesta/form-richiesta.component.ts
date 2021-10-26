@@ -20,12 +20,12 @@ import { Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
-import { MarkerChiamata, ReducerSchedaTelefonata, SetCompetenze, SetCountInterventiProssimita, SetInterventiProssimita, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { ReducerSchedaTelefonata, SetCompetenze, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Subscription } from 'rxjs';
-import { DelChiamataMarker } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
+import { DelChiamataMarker } from '../../../features/maps/store/actions/chiamate-markers.actions';
 import { Tipologia } from '../../model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { EnteInterface } from 'src/app/shared/interface/ente.interface';
@@ -366,9 +366,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         this.store.dispatch([
             new ModificaIndirizzo(nuovoIndirizzo),
-            new SetCompetenze(coordinate),
-            new SetCountInterventiProssimita(candidate.address, coordinate),
-            new SetInterventiProssimita(candidate.address, coordinate)
+            new SetCompetenze(coordinate, candidate.address, this.chiamataMarker)
         ]);
     }
 

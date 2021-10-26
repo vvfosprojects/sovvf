@@ -52,7 +52,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disableFissaInAlto = false;
     @Input() loadingEliminaPartenza = false;
     @Input() loadingActionMezzo: any;
-    @Input() annullaStatoMezzi: string[];
     @Input() diffDateInfoMezzo: any;
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
@@ -60,6 +59,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledComposizionePartenza = false;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
+    @Input() annullaStatoMezzi: string[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();

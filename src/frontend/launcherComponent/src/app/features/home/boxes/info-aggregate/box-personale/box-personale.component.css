@@ -5,3 +5,7 @@ h6, .h6 {
 .box-personale {
   height: 123px;
 }
+
+.popover-body {
+  min-width: 280px !important;
+}

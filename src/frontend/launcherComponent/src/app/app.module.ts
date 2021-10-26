@@ -60,7 +60,7 @@ import { DistaccamentiState } from './shared/store/states/distaccamenti/distacca
 import { PosModalState } from './shared/store/states/pos-modal/pos-modal.state';
 import { DocumentoAreaDocumentaleState } from './shared/store/states/documento-area-documentale-modal/documento-area-documentale-modal.state';
 import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
-import { TastoChiamataMappaState } from './features/home/store/states/maps/tasto-chiamata-mappa.state';
+import { TastoChiamataMappaState } from './features/maps/store/states/tasto-chiamata-mappa.state';
 import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 /**
  * Route

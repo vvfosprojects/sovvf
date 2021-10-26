@@ -9,7 +9,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         public string numeroIntervento { get; set; }
         public DateTime dataIntervento { get; set; }
         public DateTime dataUscita { get; set; }
-        public DateTime dataRientro { get; set; }
+        public DateTime? dataRientro { get; set; }
         public TipoUscita tipoUscita { get; set; }
         public string autistaUscita { get; set; }
         public string autistaRientro { get; set; }

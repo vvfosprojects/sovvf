@@ -325,6 +325,7 @@
     <Compile Include="Classi\ESRI\EsriRispostaMsg.cs" />
     <Compile Include="Classi\ESRI\EsriTokenMsg.cs" />
     <Compile Include="Classi\ESRI\Esri_Params.cs" />
+    <Compile Include="Classi\Evento.cs" />
     <Compile Include="Classi\ListaSedi.cs" />
     <Compile Include="Classi\Localita.cs" />
     <Compile Include="Classi\LoggedUser.cs" />

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
@@ -115,5 +116,42 @@ namespace SO115App.Models.Classi.NUE
         public bool Collegata { get; set; }
 
         public List<SchedaContatto> Collegate { get; set; }
+
+        public Esri_Params esri_params { get; set; }
+
+        /// <summary>
+        ///   Contiene il messaggio NUE originale
+        /// </summary>
+        public InsertSchedaNueRequest msgNue { get; set; }
+
+        /// <summary>
+        ///   Contiene il log di tutti gli eventi generati durante l'import della scheda NUE
+        /// </summary>
+        public List<Evento> listaEventiWS { get; set; }
+    }
+
+    public class Evento
+    {
+        public DateTime istante { get; set; }
+        public string descrizione { get; set; }
+    }
+
+    public class InsertSchedaNueRequest
+    {
+        public string enteMittente;
+        public string enteDestinatario;
+        public string sedeMittente;
+        public string sedeDestinataria;
+        public string provinciaMittente;
+        public string provinciaDestinatario;
+        public string schedaContatto;
+        public string codiceSede;
+    }
+
+    public class Esri_Params
+    {
+        public int objectId { get; set; }
+
+        public DateTime lastUpdate { get; set; }
     }
 }

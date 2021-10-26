@@ -1,12 +1,13 @@
-import { AreaMappa } from '../../../../maps/maps-model/area-mappa-model';
+import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
-import { ViewComponentState } from '../view/view.state';
-import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { SetBoundsIniziale } from '../../actions/home.actions';
-import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { GetMarkersMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { GetSediMarkers } from '../actions/sedi-markers.actions';
+import { ViewComponentState } from '../../../home/store/states/view/view.state';
+import { makeCopy } from '../../../../shared/helper/function-generiche';
+import { SetBoundsIniziale } from '../../../home/store/actions/home.actions';
+import { ComposizionePartenzaState } from '../../../home/store/states/composizione-partenza/composizione-partenza.state';
+import { GetMarkersMappa, RefreshMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../actions/area-mappa.actions';
 import { Injectable } from '@angular/core';
+import { MapService } from '../../map-service/map-service.service';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -35,7 +36,8 @@ export class AreaMappaState {
         return state.areaMappaLoading !== 0;
     }
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private mapService: MapService) {
         this.store.dispatch(new GetMarkersMappa());
     }
 
@@ -86,4 +88,8 @@ export class AreaMappaState {
         });
     }
 
+    @Action(RefreshMappa)
+    refreshMappa({ getState, patchState }: StateContext<AreaMappaStateModel>, action: RefreshMappa): void {
+        this.mapService.setRefresh(action.value);
+    }
 }

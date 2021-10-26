@@ -6,8 +6,8 @@ import { BoxPartenza, BoxPartenzaPreAccoppiati } from './interface/box-partenza-
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
-import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
-import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { ClearDirection, SetDirection } from '../../maps/store/actions/maps-direction.actions';
+import { SetCoordCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';

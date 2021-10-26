@@ -20,7 +20,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
 
         public GetInterventiVicinanzeResult Handle(GetInterventiVicinanzeQuery query)
         {
-            var competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate);
+            var competenze = query.Competenze;
 
             var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
@@ -49,6 +49,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
                 DataArrayInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo,
                 DataArrayStessaVia = resultStessaVia
             };
+
+            return null;
         }
     }
 }

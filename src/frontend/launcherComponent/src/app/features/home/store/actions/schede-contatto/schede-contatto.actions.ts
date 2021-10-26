@@ -4,6 +4,10 @@ import { ContatoriSchedeContatto } from '../../../../../shared/interface/contato
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
+export class GetContatoriSchedeContatto {
+    static readonly type = '[Schede Contatto] Get Contatori Schede Contatto';
+}
+
 export class SetContatoriSchedeContatto {
     static readonly type = '[Schede Contatto] Set Contatori Schede Contatto';
 

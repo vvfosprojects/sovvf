@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using SO115App.WSNue.Classi.ESRI;
+using SO115App.WSNue.DataContract;
 using System;
 using System.Collections.Generic;
 
@@ -29,7 +30,7 @@ namespace SO115App.WSNue.Classi.NUE
     /// </summary>
     public class SchedaContatto
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
@@ -120,5 +121,15 @@ namespace SO115App.WSNue.Classi.NUE
         ///   Parametri di ESRI
         /// </summary>
         public Esri_Params esri_params { get; set; }
+
+        /// <summary>
+        ///   Contiene il messaggio NUE originale
+        /// </summary>
+        public InsertSchedaNueRequest msgNue { get; set; }
+
+        /// <summary>
+        ///   Contiene il log di tutti gli eventi generati durante l'import della scheda NUE
+        /// </summary>
+        public List<Evento> listaEventiWS { get; set; }
     }
 }

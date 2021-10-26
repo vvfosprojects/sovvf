@@ -13,8 +13,12 @@
                 <!-- box personale -->
                 <div class="float-left w-50 px-1">
                     <div [ngClass]="nightModeBox()">
-                        <app-box-personale [personaleQty]="(personaleQty$ | async)"
-                                           [personalePresenze]="(presenze$ | async)">
+                        <app-box-personale [personaleQtyPrevious]="(personaleQtyPrevious$ | async)"
+                                           [personalePresenzePrevious]="(presenzePrevious$ | async)"
+                                           [personaleQtyCurrent]="(personaleQtyCurrent$ | async)"
+                                           [personalePresenzeCurrent]="(presenzeCurrent$ | async)"
+                                           [personaleQtyNext]="(personaleQtyNext$ | async)"
+                                           [personalePresenzeNext]="(presenzeNext$ | async)">
                         </app-box-personale>
                     </div>
                 </div>

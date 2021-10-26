@@ -1,12 +1,12 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
-import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SchedaTelefonataState } from '../form-richiesta/scheda-telefonata.state';
-import { ClearIndirizzo } from '../../actions/form-richiesta/scheda-telefonata.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
+import { ChiamateMarkerService } from '../../../../core/service/maps-service';
+import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../shared/enum/toastr';
+import { SchedaTelefonataState } from '../../../home/store/states/form-richiesta/scheda-telefonata.state';
+import { ClearIndirizzo } from '../../../home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { GetInitCentroMappa } from '../actions/centro-mappa.actions';
 import {
     ClearChiamateMarkers,
     DelChiamataMarker,
@@ -17,8 +17,9 @@ import {
     SetChiamataMarker,
     UpdateChiamataMarker,
     UpdateItemChiamataMarker
-} from '../../actions/maps/chiamate-markers.actions';
+} from '../actions/chiamate-markers.actions';
 import { Injectable } from '@angular/core';
+import { Sede } from '../../../../shared/model/sede.model';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -57,19 +58,23 @@ export class ChiamateMarkersState {
 
     @Action(SetChiamataMarker)
     setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker): void {
-        this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker).subscribe(() => {
+        this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
         }, error => {
-            dispatch(new ClearIndirizzo());
-            dispatch(new GetInitCentroMappa());
+            dispatch([
+                new ClearIndirizzo(),
+                new GetInitCentroMappa()
+            ]);
         });
     }
 
     @Action(UpdateChiamataMarker)
     updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker): void {
-        this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker).subscribe(() => {
+        this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
         }, error => {
-            dispatch(new ClearIndirizzo());
-            dispatch(new GetInitCentroMappa());
+            dispatch([
+                new ClearIndirizzo(),
+                new GetInitCentroMappa()
+            ]);
         });
     }
 

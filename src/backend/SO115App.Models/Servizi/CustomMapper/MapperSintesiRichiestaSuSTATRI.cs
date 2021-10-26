@@ -64,8 +64,8 @@ namespace SO115App.Models.Servizi.CustomMapper
                                         ? true : false,
                     AnnoIntervento = sintesiRichiesta.IstanteRicezioneRichiesta.Year,
                     Boschi = sintesiRichiesta.TipoTerreno != null ? sintesiRichiesta.TipoTerreno.All(t => t.Descrizione.Equals("BOSCHI")) ? 1 : 0 : 0,
-                    Campi = sintesiRichiesta.TipoTerreno != null ? sintesiRichiesta.TipoTerreno.All(t => t.Descrizione.Equals("CAMPI")) ? 1 : 0 : 0,
-                    Sterpaglia = sintesiRichiesta.TipoTerreno != null ? sintesiRichiesta.TipoTerreno.All(t => t.Descrizione.Equals("STERPAGLIE")) ? 1 : 0 : 0,
+                    Pascoli = sintesiRichiesta.TipoTerreno != null ? sintesiRichiesta.TipoTerreno.All(t => t.Descrizione.Equals("CAMPI")) ? 1 : 0 : 0,
+                    Altro = sintesiRichiesta.TipoTerreno != null ? sintesiRichiesta.TipoTerreno.All(t => t.Descrizione.Equals("STERPAGLIE")) ? 1 : 0 : 0,
                     Carabinieri = sintesiRichiesta.Richiedente.Nominativo.Contains("Carabinieri") ? true : false,
                     Chiamata = sintesiRichiesta.IstanteRicezioneRichiesta,
                     DataIntervento = sintesiRichiesta.IstantePresaInCarico.Value,
@@ -78,7 +78,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                     Note_Operatore = sintesiRichiesta.NotePrivate,
                     NumProtocolloFono = sintesiRichiesta.Fonogramma != null ? sintesiRichiesta.Fonogramma.ProtocolloFonogramma : "",
                     PoliziaDiStato = sintesiRichiesta.Richiedente.Nominativo.Contains("Polizia Di Stato") ? true : false,
-                    Progressivo = progressivo,
+                    Progressivo = Convert.ToInt32(partenza.Partenza.Codice.Substring(2, partenza.Partenza.Codice.Length - 2)),
                     RichiedenteIntervento = sintesiRichiesta.Richiedente.Nominativo,
                     RilevanteStArCu = sintesiRichiesta.RilevanteStArCu,
                     SiglaComando = sintesiRichiesta.Codice.Substring(0, 2),
@@ -94,7 +94,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                     NumeroCivico = "",
                     Scheda = Convert.ToInt32(sintesiRichiesta.CodiceRichiesta.Split('-')[2]),
                     CFFUNZSERV = "",
-                    CodiceTipologia = 0,
+                    CodiceTipologia = Convert.ToInt32(sintesiRichiesta.Tipologie[0].Codice),
                     //CodiceComune = 0, // PUO PASSARE NULL
                     CodiceCalamita = "",
                     CodiceSedeServizio = Convert.ToInt32(sintesiRichiesta.CodSOCompetente.Split('.')[1]), // METTERE IL NUMERO DOPO IL .

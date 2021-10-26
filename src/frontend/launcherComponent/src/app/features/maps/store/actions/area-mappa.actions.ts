@@ -1,4 +1,4 @@
-import { AreaMappa } from '../../../../maps/maps-model/area-mappa-model';
+import { AreaMappa } from '../../maps-model/area-mappa-model';
 
 export class SetAreaMappa {
     static readonly type = '[Area Mappa] Set Area Mappa';
@@ -17,4 +17,11 @@ export class StartLoadingAreaMappa {
 
 export class StopLoadingAreaMappa {
     static readonly type = '[Area Mappa] Stop Loading Area Mappa';
+}
+
+export class RefreshMappa {
+    static readonly type = '[Area Mappa] Refresh Mappa';
+
+    constructor(public value: boolean) {
+    }
 }

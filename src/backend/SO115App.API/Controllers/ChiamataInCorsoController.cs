@@ -88,10 +88,13 @@ namespace SO115App.API.Controllers
         {
             var HubConId = Request.Headers["HubConnectionId"];
 
+            chiamata.CodiceSedeOperatore = Request.Headers["codicesede"];
             var command = new ChiamataInCorsoMarkerCommand()
             {
                 AddChiamataInCorso = chiamata,
-                HubConId = HubConId
+
+                HubConId = HubConId,
+                Competenze = chiamata.Competenze
             };
 
             try
@@ -155,11 +158,13 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> UpDate([FromBody] ChiamateInCorso chiamata)
         {
             var HubConId = Request.Headers["HubConnectionId"];
+            chiamata.CodiceSedeOperatore = Request.Headers["codicesede"];
 
             var command = new UpDateChiamataInCorsoMarkerCommand()
             {
                 ChiamataInCorso = chiamata,
-                HubConId = HubConId
+                HubConId = HubConId,
+                Competenze = chiamata.Competenze
             };
 
             try

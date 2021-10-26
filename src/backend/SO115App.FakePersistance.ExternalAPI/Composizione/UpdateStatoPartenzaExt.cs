@@ -79,69 +79,32 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-                var dataMovintazione = DateTime.Now;
-
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
+                
                 foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
                 {
                     foreach (var squadra in partenza.Partenza.Squadre)
                     {
                         _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
                     }
+                }
 
-                    if (!partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
+
+                if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                {
+                    var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
+
+                    _setRientroMezzo.Set(new RientroGAC()
                     {
-                        if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                        {
-                            var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante;
-
-                            _setRientroMezzo.Set(new RientroGAC()
-                            {
-                                targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                                tipoMezzo = partenza.CodiceMezzo.Split('.')[0],
-                                idPartenza = partenza.Partenza.Codice.ToString(),
-                                numeroIntervento = command.Richiesta.CodRichiesta,
-                                dataIntervento = dataIntervento,
-                                dataRientro = dataRientro,
-                                autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
-                            });
-                        }
-                        else if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                        {
-                            var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(p => p.Partenza.Codice.Equals(partenza.Partenza.Codice)).Istante;
-
-                            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
-
-                            _setUscitaMezzo.Set(new UscitaGAC()
-                            {
-                                targa = partenza.Partenza.Mezzo.Codice.Split('.')[1],
-                                tipoMezzo = partenza.CodiceMezzo.Split('.')[0],
-                                idPartenza = partenza.Partenza.Codice.ToString(),
-                                numeroIntervento = command.Richiesta.CodRichiesta,
-                                dataIntervento = dataIntervento,
-                                dataUscita = dataUscita,
-                                autista = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
-                                tipoUscita = new TipoUscita()
-                                {
-                                    codice = tipologia.Codice,
-                                    descrizione = tipologia.Descrizione
-                                },
-                                comune = new ComuneGAC()
-                                {
-                                    codice = "",
-                                    descrizione = command.Richiesta.Localita.Citta,
-                                },
-                                provincia = new Models.Classi.Gac.ProvinciaGAC()
-                                {
-                                    codice = "",
-                                    descrizione = command.Richiesta.Localita.Provincia
-                                },
-                                localita = command.Richiesta.Localita.Citta,
-                                latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                                longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString()
-                            });
-                        }
-                    }
+                        targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
+                        tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
+                        idPartenza = partenzaRientro.Partenza.Codice.ToString(),
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataIntervento = dataIntervento,
+                        dataRientro = dataRientro,
+                        autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
+                    });
                 }
             }
         }

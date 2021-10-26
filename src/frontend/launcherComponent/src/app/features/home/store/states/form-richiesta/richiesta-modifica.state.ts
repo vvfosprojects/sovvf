@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleModifica } from '../../actions/view/view.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,

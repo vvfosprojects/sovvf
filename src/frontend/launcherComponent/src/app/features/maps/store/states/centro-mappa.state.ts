@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { CentroMappa } from '../../../../maps/maps-model/centro-mappa.model';
-import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { CentroMappa } from '../../maps-model/centro-mappa.model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 import {
     ClearCentroMappa,
     GetInitCentroMappa,
@@ -10,7 +10,7 @@ import {
     SetCoordCentroMappa,
     SetInitCentroMappa,
     SetZoomCentroMappa
-} from '../../actions/maps/centro-mappa.actions';
+} from '../actions/centro-mappa.actions';
 import { Injectable } from '@angular/core';
 
 export interface CentroMappaStateModel {

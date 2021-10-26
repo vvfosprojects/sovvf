@@ -80,7 +80,8 @@ namespace SO115App.API.Controllers
                     CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
                     Coordinate = controllo.Coordinate,
-                    Indirizzo = controllo.Indirizzo
+                    Indirizzo = controllo.Indirizzo,
+                    Competenze = controllo.Competenze
                 };
 
                 return Ok(_getInterventiVicinanze.Handle(query));
@@ -106,7 +107,8 @@ namespace SO115App.API.Controllers
                     CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
                     Coordinate = controllo.Coordinate,
-                    Indirizzo = controllo.Indirizzo
+                    Indirizzo = controllo.Indirizzo,
+                    Competenze = controllo.Competenze
                 };
 
                 return Ok(_getCountInterventiVicinanze.Handle(query));

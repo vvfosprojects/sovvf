@@ -58,9 +58,9 @@ namespace SO115App.SignalR
             }
         }
 
-        public async Task NotifyUpdateSchedaContatto(SchedaContatto scheda)
+        public async Task NotifyNewSchedaContatto(SchedaContatto scheda)
         {
-            await Clients.Group(scheda.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", scheda).ConfigureAwait(false);
+            await Clients.Group(scheda.CodiceSede).SendAsync("NotifyNewSchedaContatto", scheda).ConfigureAwait(false);
         }
 
         public string GetConnectionId()

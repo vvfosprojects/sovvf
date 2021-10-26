@@ -1,6 +1,15 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
-import { ClearBoxPersonale, SetBoxPersonaleCurrent, SetBoxPersonalePresenzeCurrent, SetBoxPersonaleQtyCurrent } from '../../actions/boxes/box-personale.actions';
+import {
+    ClearBoxPersonale, SetBoxPersonale,
+    SetBoxPersonaleCurrent, SetBoxPersonaleNext,
+    SetBoxPersonalePresenzeCurrent, SetBoxPersonalePresenzeNext,
+    SetBoxPersonalePresenzePrevious,
+    SetBoxPersonalePrevious,
+    SetBoxPersonaleQtyCurrent,
+    SetBoxPersonaleQtyNext,
+    SetBoxPersonaleQtyPrevious
+} from '../../actions/boxes/box-personale.actions';
 import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
 import { Injectable } from '@angular/core';
@@ -82,8 +91,40 @@ export class BoxPersonaleState {
         return state.personaleQtyNext;
     }
 
+    @Action(SetBoxPersonale)
+    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonale): void {
+        dispatch([
+            new SetBoxPersonalePrevious(action.payload),
+            new SetBoxPersonaleCurrent(action.payload),
+            new SetBoxPersonaleNext(action.payload)
+        ]);
+    }
+
+    @Action(SetBoxPersonalePrevious)
+    setBoxPersonalePrevious({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePrevious): void {
+        patchState({
+            personalePrevious: action.payload
+        });
+        dispatch(new SetBoxPersonaleQtyPrevious(countPersonale(action.payload, 'previous')));
+        dispatch(new SetBoxPersonalePresenzePrevious(getPresenze(action.payload, 'previous')));
+    }
+
+    @Action(SetBoxPersonalePresenzePrevious)
+    setBoxPersonalePresenzePrevious({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenzePrevious): void {
+        patchState({
+            presenzePrevious: action.personalePresenze
+        });
+    }
+
+    @Action(SetBoxPersonaleQtyPrevious)
+    setBoxPersonaleQtyPrevious({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQtyPrevious): void {
+        patchState({
+            personaleQtyPrevious: action.personaleQty
+        });
+    }
+
     @Action(SetBoxPersonaleCurrent)
-    setBoxPersonale({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleCurrent): void {
+    setBoxPersonaleCurrent({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleCurrent): void {
         patchState({
             personaleCurrent: action.payload
         });
@@ -92,16 +133,39 @@ export class BoxPersonaleState {
     }
 
     @Action(SetBoxPersonalePresenzeCurrent)
-    setBoxPersonalePresenze({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenzeCurrent): void {
+    setBoxPersonalePresenzeCurrent({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenzeCurrent): void {
         patchState({
             presenzeCurrent: action.personalePresenze
         });
     }
 
     @Action(SetBoxPersonaleQtyCurrent)
-    setBoxPersonaleQty({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQtyCurrent): void {
+    setBoxPersonaleQtyCurrent({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQtyCurrent): void {
         patchState({
             personaleQtyCurrent: action.personaleQty
+        });
+    }
+
+    @Action(SetBoxPersonaleNext)
+    setBoxPersonaleNext({ patchState, dispatch }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleNext): void {
+        patchState({
+            personaleNext: action.payload
+        });
+        dispatch(new SetBoxPersonaleQtyNext(countPersonale(action.payload, 'next')));
+        dispatch(new SetBoxPersonalePresenzeNext(getPresenze(action.payload, 'next')));
+    }
+
+    @Action(SetBoxPersonalePresenzeNext)
+    setBoxPersonalePresenzeNext({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonalePresenzeNext): void {
+        patchState({
+            presenzeNext: action.personalePresenze
+        });
+    }
+
+    @Action(SetBoxPersonaleQtyNext)
+    setBoxPersonaleQtyNext({ patchState }: StateContext<BoxPersonaleStateModel>, action: SetBoxPersonaleQtyNext): void {
+        patchState({
+            personaleQtyNext: action.personaleQty
         });
     }
 
@@ -148,13 +212,13 @@ export function getPresenze(state: BoxPersonale, type: string): BoxPersonalePres
         state.funzionari[type]?.forEach((result: BoxFunzionariSo) => {
             switch (result.ruolo) {
                 case RuoloFunzionarioSo.Guardia:
-                    if(!personalePresenze.guardia) {
+                    if (!personalePresenze.guardia) {
                         personalePresenze.guardia = [];
                     }
                     personalePresenze.guardia.push(makeBoxPersonalePersona(result));
                     break;
                 case RuoloFunzionarioSo.CapoTurno:
-                    if(!personalePresenze.capoTurno) {
+                    if (!personalePresenze.capoTurno) {
                         personalePresenze.capoTurno = [];
                     }
                     personalePresenze.capoTurno.push(makeBoxPersonalePersona(result));

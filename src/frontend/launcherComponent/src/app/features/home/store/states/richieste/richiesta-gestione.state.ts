@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ClearRichiestaGestione, SetRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { Injectable } from '@angular/core';
 

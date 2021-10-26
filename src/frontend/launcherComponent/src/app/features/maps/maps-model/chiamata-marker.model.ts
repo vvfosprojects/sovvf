@@ -26,6 +26,10 @@ export class ChiamataMarker {
          * indica se il marker è creato dallo stesso utente che lo visualizza
          */
         public mySelf?: boolean,
+        /**
+         * competenze
+         */
+        public competenze?: string[]
     ) {
     }
 

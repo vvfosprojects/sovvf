@@ -3,6 +3,7 @@ import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.mode
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -14,28 +15,28 @@ export class ReducerSchedaTelefonata {
 export class MarkerChiamata {
     static readonly type = '[SchedaTelefonata] Set chiamata Marker';
 
-    constructor(public marker: ChiamataMarker) {
+    constructor(public marker: ChiamataMarker, public codCompetenze: string[]) {
     }
 }
 
 export class SetCompetenze {
     static readonly type = '[SchedaTelefonata] Set Competenze';
 
-    constructor(public coordinate: Coordinate) {
+    constructor(public coordinate: Coordinate, public indirizzo: string, public markerChiamata: ChiamataMarker) {
     }
 }
 
 export class SetCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Count Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
 }
 
 export class SetInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
 }
 

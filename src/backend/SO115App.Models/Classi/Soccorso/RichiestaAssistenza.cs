@@ -110,13 +110,16 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        ///   Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre CREA
+        ///   SEMPRE UN EVENTO
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check)
         {
-            if (partenza.Mezzo.Stato != stato.Stato)
+            bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
+
+            if (!cambioOrarioUscita)
                 check.CheckCongruenza(stato, partenza.Codice, true);
             else
                 check.CheckCongruenza(stato, partenza.Codice, false);
@@ -139,7 +142,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = stato.Istante.AddMinutes(1);
+                    var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
+
                     new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
@@ -704,7 +708,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 {
                     var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
 
-                    if (UltimoEventoPartenza.Equals("ComposizionePartenza"))
+                    if (UltimoEventoPartenza.Equals("ComposizionePartenza") || UltimoEventoPartenza.Equals("UscitaPartenza"))
                     {
                         evento.Partenza.Mezzo.Stato = "In Viaggio";
                         foreach (var squadra in evento.Partenza.Squadre)
@@ -930,6 +934,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var entiIntervenuti = evento as InserimentoEnteIntervenuto;
             var sostituzione = evento as SostituzionePartenzaFineTurno;
             var statri = evento as STATRI_InivioRichiesta;
+            var trasferimento = evento as SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata;
 
             if ((composizionePartenza == null
                 && telefonata == null
@@ -939,7 +944,8 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && fonogrammaInviato == null
                 && entiIntervenuti == null
                 && sostituzione == null
-                && statri == null)
+                && statri == null
+                && trasferimento == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 

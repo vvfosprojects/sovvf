@@ -14,7 +14,7 @@ import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipolo
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
-import { TastoChiamataMappaState } from './store/states/maps/tasto-chiamata-mappa.state';
+import { TastoChiamataMappaState } from '../maps/store/states/tasto-chiamata-mappa.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {

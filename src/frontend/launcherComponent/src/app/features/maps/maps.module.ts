@@ -18,13 +18,11 @@ import { MapService } from './map-service/map-service.service';
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { MapsDirectionState } from '../home/store/states/maps/maps-direction.state';
-import { MarkerState } from '../home/store/states/maps/marker.state';
-import { SediMarkersState } from '../home/store/states/maps/sedi-markers.state';
-import { CentroMappaState } from '../home/store/states/maps/centro-mappa.state';
-import { ChiamateMarkersState } from '../home/store/states/maps/chiamate-markers.state';
-import { AreaMappaState } from '../home/store/states/maps/area-mappa.state';
-import { MappaState } from '../home/store/states/maps/mappa.state';
+import { MapsDirectionState } from './store/states/maps-direction.state';
+import { SediMarkersState } from './store/states/sedi-markers.state';
+import { CentroMappaState } from './store/states/centro-mappa.state';
+import { ChiamateMarkersState } from './store/states/chiamate-markers.state';
+import { AreaMappaState } from './store/states/area-mappa.state';
 
 @NgModule({
     imports: [
@@ -34,11 +32,9 @@ import { MappaState } from '../home/store/states/maps/mappa.state';
         NgSelectModule,
         NgxsModule.forFeature(
             [
-                MappaState,
                 MapsDirectionState,
                 CentroMappaState,
                 AreaMappaState,
-                MarkerState,
                 SediMarkersState,
                 ChiamateMarkersState
             ]

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { ResponseInterface } from '../../../shared/interface/response/response.interface';
+import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_SCHEDE_CONTATTO = BASE_URL + environment.apiUrl.schedeContatto;
@@ -35,17 +36,16 @@ export class SchedeContattoService {
         return this.http.get<SchedaContatto>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
     }
 
+    getContatoriSchedeContatto(): Observable<{ infoNue: ContatoriSchedeContatto }> {
+        return this.http.get<{ infoNue: ContatoriSchedeContatto }>(`${API_SCHEDE_CONTATTO}/GetContatoriSchede`);
+    }
+
     mergeSchedeContatto(idSchedeContatto: string[]): Observable<any> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, idSchedeContatto);
     }
 
     undoMergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita);
-    }
-
-    setSchedaContattoLetta(codiceScheda: string, letta: boolean): Observable<any> {
-        const obj = { codiceScheda, letta };
-        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj);
     }
 
     setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean): Observable<any> {

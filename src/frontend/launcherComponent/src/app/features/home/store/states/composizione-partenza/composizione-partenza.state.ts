@@ -12,7 +12,11 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListeComposizione,
-    UpdateRichiestaComposizione, StartListaSquadreComposizioneLoading, StartListaMezziComposizioneLoading, StopListaSquadreComposizioneLoading, StopListaMezziComposizioneLoading
+    UpdateRichiestaComposizione,
+    StartListaSquadreComposizioneLoading,
+    StartListaMezziComposizioneLoading,
+    StopListaSquadreComposizioneLoading,
+    StopListaMezziComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
@@ -22,11 +26,10 @@ import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziA
 import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { ClearDirection } from '../../actions/maps/maps-direction.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearMarkerState } from '../../actions/maps/marker.actions';
+import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
+import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
-import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../../../maps/store/actions/area-mappa.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
@@ -249,8 +252,7 @@ export class ComposizionePartenzaState {
             new ClearComposizioneAvanzata(),
             new ClearMezzoComposizione(),
             new ClearSquadraComposizione(),
-            new ClearPartenza(),
-            new ClearMarkerState(),
+            new ClearPartenza()
         ]);
     }
 

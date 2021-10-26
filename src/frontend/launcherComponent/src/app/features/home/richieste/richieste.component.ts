@@ -14,7 +14,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { GetInitZoomCentroMappa, SetCentroMappa, SetZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
+import { GetInitZoomCentroMappa, SetCentroMappa, SetZoomCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
 import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
 import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';

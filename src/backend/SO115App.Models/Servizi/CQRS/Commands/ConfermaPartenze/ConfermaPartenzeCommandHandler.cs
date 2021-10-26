@@ -171,6 +171,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
 
                         partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                        foreach (var squadra in partenza.Squadre)
+                        {
+                            squadra.Stato = Classi.Condivise.Squadra.StatoSquadra.InViaggio;
+                        }
                     }
                 }
 

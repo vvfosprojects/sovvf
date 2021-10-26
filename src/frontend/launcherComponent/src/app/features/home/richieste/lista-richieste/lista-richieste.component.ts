@@ -24,7 +24,6 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() listHeightClass: string;
     @Input() boxAttivi: boolean;
     @Input() listaEnti: EnteInterface[];
-    @Input() annullaStatoMezzi: string[];
 
     // Loading
     @Input() loading: boolean;
@@ -45,6 +44,8 @@ export class ListaRichiesteComponent implements OnChanges {
 
     // Night Mode
     @Input() nightMode: boolean;
+
+    @Input() annullaStatoMezzi: string[];
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

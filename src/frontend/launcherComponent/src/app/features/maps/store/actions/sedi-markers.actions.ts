@@ -1,5 +1,5 @@
-import { SedeMarker } from '../../../../maps/maps-model/sede-marker.model';
-import { AreaMappa } from '../../../../maps/maps-model/area-mappa-model';
+import { SedeMarker } from '../../maps-model/sede-marker.model';
+import { AreaMappa } from '../../maps-model/area-mappa-model';
 
 export class GetSediMarkers {
     static readonly type = '[Sedi Marker] Get Sedi Marker';
@@ -47,13 +47,6 @@ export class RemoveSedeMarker {
     static readonly type = '[Sedi Marker] Remove Sede Marker';
 
     constructor(public payload: string) {
-    }
-}
-
-export class SetSedeMarkerById {
-    static readonly type = '[Sedi Marker] Set Sede Marker by ID';
-
-    constructor(public id?: string) {
     }
 }
 

@@ -14,31 +14,41 @@ namespace SO115App.WSNue.Classi.ESRI
 
     public class attributes
     {
-        public int objectid { get; set; }
+        [JsonProperty(PropertyName = "datainserimento")]
+        public double datainserimento { get; set; }
 
-        public DateTime dataInserimento { get; set; }
+        [JsonProperty(PropertyName = "nominativorichiedente")]
+        public string nominativorichiedente { get; set; }
 
-        public string NominativoRichiedente { get; set; }
+        [JsonProperty(PropertyName = "telefonorichiedente")]
+        public string telefonorichiedente { get; set; }
 
-        public string TelefonoRichiedente { get; set; }
+        [JsonProperty(PropertyName = "indirizzo")]
+        public string indirizzo { get; set; }
 
-        public string Indirizzo { get; set; }
-
+        [JsonProperty(PropertyName = "classificazioneEvento")]
         public string classificazioneEvento { get; set; }
 
+        [JsonProperty(PropertyName = "categoria")]
         public string categoria { get; set; }
 
+        [JsonProperty(PropertyName = "enteCompetenza")]
         public string enteCompetenza { get; set; }
 
+        [JsonProperty(PropertyName = "dettaglio")]
         public string dettaglio { get; set; }
 
+        [JsonProperty(PropertyName = "priorita")]
         public int priorita { get; set; }
 
+        [JsonProperty(PropertyName = "classificazione")]
         public string classificazione { get; set; }
 
-        public bool gestita { get; set; }
+        [JsonProperty(PropertyName = "gestita")]
+        public int gestita { get; set; }
 
-        public bool collegata { get; set; }
+        [JsonProperty(PropertyName = "collegata")]
+        public int collegata { get; set; }
     }
 
     public class geometry
@@ -48,5 +58,13 @@ namespace SO115App.WSNue.Classi.ESRI
 
         [JsonProperty(PropertyName = "y")]
         public double y { get; set; }
+
+        [JsonProperty(PropertyName = "spatialReference")]
+        public SpatialReference spatialReference { get; set; }
+    }
+
+    public class SpatialReference
+    {
+        public int wkid { get; set; } = 4326;
     }
 }
