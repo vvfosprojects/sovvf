@@ -16,7 +16,7 @@ export class OpserviceModalComponent implements OnInit {
     }
 
     openOpserviNewTab(): void {
-        window.open('https://opservice-test.dipvvf.it');
+        window.open('https://opservice-test.dipvvf.it', '_blank', 'toolbar=0,location=0,menubar=0');
         this.modal.dismiss('cross');
     }
 }
