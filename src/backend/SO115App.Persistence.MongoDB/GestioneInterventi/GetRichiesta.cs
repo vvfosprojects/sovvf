@@ -120,19 +120,29 @@ namespace SO115App.Persistence.MongoDB
             var result = new List<RichiestaAssistenza>();
 
             //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
-            if (filtro.TipologiaRichiesta != null) result = lstRichieste.Where(r =>
-           {
-               if (filtro.TipologiaRichiesta.Equals("Chiamate"))
-                   return r.CodRichiesta == null && r.TestoStatoRichiesta != "X";
+            if (filtro.TipologiaRichiesta != null)
+            {
+                result = lstRichieste.Where(r =>
+                {
+                    if (filtro.TipologiaRichiesta.Equals("Chiamate"))
+                        return r.CodRichiesta == null && r.TestoStatoRichiesta != "X";
 
-               if (filtro.TipologiaRichiesta.Equals("Interventi"))
-                   return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
+                    if (filtro.TipologiaRichiesta.Equals("Interventi"))
+                        return r.CodRichiesta != null && r.TestoStatoRichiesta != "X";
 
-               if (filtro.TipologiaRichiesta.Equals("ChiamateInterventi") || filtro.TipologiaRichiesta.Equals("InterventiChiamate"))
-                   return r.TestoStatoRichiesta != "X";
+                    if (filtro.TipologiaRichiesta.Equals("ChiamateInterventi") || filtro.TipologiaRichiesta.Equals("InterventiChiamate"))
+                        return r.TestoStatoRichiesta != "X";
 
-               return true;
-           }).ToList();
+                    return true;
+                }).ToList();
+            }
+            else
+            {
+                if (filtro.Chiuse == null)
+                    result = lstRichieste.Where(r => r.TestoStatoRichiesta != "X").ToList();
+                else
+                    result = lstRichieste.ToList();
+            }
 
             //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
@@ -163,7 +173,12 @@ namespace SO115App.Persistence.MongoDB
                     if (filtro.SoloboxRichieste)
                         result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
                     else
-                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).ToList();
+                    {
+                        if (filtro.TipologiaRichiesta == null)
+                            result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null).ToList();
+                        else
+                            result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta == null));
+                    }
                 }
             }
 
@@ -187,7 +202,12 @@ namespace SO115App.Persistence.MongoDB
 
                         result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
                     else
-                        result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
+                    {
+                        if (filtro.TipologiaRichiesta == null)
+                            result = lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null).ToList();
+                        else
+                            result.AddRange(lstRichieste.Where(r => r.Chiusa && r.CodRichiesta != null));
+                    }
                 }
             }
 
