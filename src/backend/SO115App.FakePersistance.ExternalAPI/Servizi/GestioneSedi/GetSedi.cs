@@ -31,6 +31,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
 
+            _serviceDirezioni.SetCache(url.AbsoluteUri);
+
             var lstSediProvinciali = await _serviceDirezioni.GetAsync(url);
 
             return lstSediProvinciali;
@@ -40,6 +42,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
+
+            _serviceDirezioni.SetCache(url.AbsoluteUri);
 
             var lstSediRegionali = await _serviceDirezioni.GetAsync(url);
 
@@ -51,6 +55,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
 
+            _serviceDirezioni.SetCache(url.AbsoluteUri);
+
             var lstFigli = await _serviceDirezioni.GetAsync(url);
 
             return lstFigli;
@@ -60,6 +66,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
+
+            _serviceSedi.SetCache(url.AbsoluteUri);
 
             var sede = _serviceSedi.GetAsync(url).Result;
 

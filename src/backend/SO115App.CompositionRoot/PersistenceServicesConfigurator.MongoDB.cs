@@ -195,10 +195,6 @@ namespace SO115App.CompositionRoot
             #region Utility
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
-                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetNavBar>();
-
-            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
                 SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetTurno>();
 
