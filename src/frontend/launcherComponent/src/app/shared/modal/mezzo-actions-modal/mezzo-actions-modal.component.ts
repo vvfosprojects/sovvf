@@ -23,9 +23,9 @@ export class MezzoActionsModalComponent implements OnInit {
     listaEventi: any;
     ultimoMezzo = false;
     checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {
-        sospesa: false,
+        sospesa: true,
         chiusa: false,
-        aperta: true
+        aperta: false,
     };
     azioneIntervento: string;
 
