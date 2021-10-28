@@ -34,14 +34,14 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var token = _getToken.GeneraToken();
 
-            _clientMezzi.SetCache("Mezzi_" + CodiciSedi);
+            //_clientMezzi.SetCache("Mezzi_" + CodiciSedi);
 
             var lstSediQueryString = string.Join("&codiciSedi=", CodiciSedi.Select(sede => sede.Split('.')[0]).Distinct().ToArray());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
 
             var lstMezzi = _clientMezzi.GetAsync(url, token).Result;
 
-            var result = lstMezzi?.Select(mezzo => 
+            var result = lstMezzi?.Select(mezzo =>
             new KeyValuePair<string, string>(mezzo.CodiceMezzo, lstStatiMezzi.Result.FirstOrDefault(stato => stato.CodiceMezzo.Equals(mezzo.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede))
                 .Distinct()
                 .ToDictionary(mezzo => mezzo.Key, mezzo => mezzo.Value);
