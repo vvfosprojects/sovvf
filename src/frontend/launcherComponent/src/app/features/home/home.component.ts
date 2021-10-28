@@ -15,6 +15,9 @@ import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.act
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { TastoChiamataMappaState } from '../maps/store/states/tasto-chiamata-mappa.state';
+import { GetBoxPersonale } from './store/actions/boxes/box-personale.actions';
+import { GetBoxMezzi } from './store/actions/boxes/box-mezzi.actions';
+import { GetBoxRichieste } from './store/actions/boxes/box-richieste.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -56,7 +59,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('Componente Home creato');
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Home),
-            new GetDataHome()
+            new GetDataHome(),
+            new GetBoxRichieste(),
+            new GetBoxMezzi(),
+            new GetBoxPersonale(),
         ]);
     }
 

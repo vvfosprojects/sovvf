@@ -33,6 +33,9 @@ import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-p
 import { ZoneEmergenzaState } from './store/states/filterbar/zone-emergenza.state';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
+import { BoxPersonaleService } from '../../core/service/box-service/box-personale.service';
+import { BoxMezziService } from '../../core/service/box-service/box-mezzi.service';
+import { BoxRichiesteService } from '../../core/service/box-service/box-richieste.service';
 
 @NgModule({
     declarations: [
@@ -79,6 +82,9 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
     exports: [],
     providers: [
         HomeService,
+        BoxPersonaleService,
+        BoxMezziService,
+        BoxRichiesteService,
         NgbActiveModal
     ]
 })

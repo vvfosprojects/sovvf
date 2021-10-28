@@ -1,7 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
-import { ClearBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
+import { ClearBoxRichieste, GetBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
 import { Injectable } from '@angular/core';
+import { BoxRichiesteService } from '../../../../../core/service/box-service/box-richieste.service';
 
 export interface BoxRichiesteStateModel {
     richieste: BoxInterventi;
@@ -18,12 +19,21 @@ export const boxRichiesteStateDefaults: BoxRichiesteStateModel = {
 })
 export class BoxRichiesteState {
 
-    constructor() {
+    constructor(private boxRichiesteService: BoxRichiesteService) {
     }
 
     @Selector()
     static richieste(state: BoxRichiesteStateModel): BoxInterventi {
         return state.richieste;
+    }
+
+    @Action(GetBoxRichieste)
+    getBoxMezzi({ dispatch }: StateContext<BoxRichiesteStateModel>): void {
+        this.boxRichiesteService.getDataBoxRichieste().subscribe((data: any) => {
+            dispatch([
+                new SetBoxRichieste(data.boxRichieste),
+            ]);
+        });
     }
 
     @Action(SetBoxRichieste)
