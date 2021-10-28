@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { Select } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
@@ -38,10 +38,6 @@ export class ModalNuovaChiamataComponent {
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
 
-    // Loading
-    @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
-    loadingNuovaChiamata: boolean;
-
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
 
@@ -66,5 +62,4 @@ export class ModalNuovaChiamataComponent {
     close(): void {
         this.activeModal.close('ko');
     }
-
 }
