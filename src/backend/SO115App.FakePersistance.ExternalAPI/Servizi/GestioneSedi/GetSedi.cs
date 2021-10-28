@@ -112,9 +112,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             //PROVINCE
             Parallel.ForEach(lstProvinciali.Result, provinciale =>
             {
-                var infoSede = GetInfoSede(provinciale.id);
+                var infoProvinciale = GetInfoSede(provinciale.id);
 
-                result.Figli.First().Figli.FirstOrDefault(r => r.Codice.Equals(infoSede.IdSedePadre))?.AddFiglio(new UnitaOperativa(provinciale?.id, provinciale?.descrizione));
+                var lstComunali = GetFigliDirezione(provinciale.id).Result
+                    .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet();
+
+                var distaccamento = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale"));
+
+                result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
+                    .AddFiglio(new UnitaOperativa(distaccamento?.Codice, provinciale?.descrizione) { Figli = lstComunali });
             });
 
             return result;
