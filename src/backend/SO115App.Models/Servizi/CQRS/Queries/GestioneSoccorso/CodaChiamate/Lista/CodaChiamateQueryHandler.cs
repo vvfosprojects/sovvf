@@ -91,8 +91,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                         codDistaccamento = unita.Codice,
                         descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
-                        squadreLibere = boxPersonale.SquadreServizio.Current - boxPersonale.SquadreAssegnate,
-                        squadreOccupate = boxPersonale.SquadreAssegnate
+                        squadreLibere = boxPersonale != null ? boxPersonale.SquadreServizio.Current - boxPersonale.SquadreAssegnate : 0,
+                        squadreOccupate = boxPersonale != null ? boxPersonale.SquadreAssegnate : 0
                     };
 
                     info.ListaCodaChiamate.Add(infoDistaccamento);
