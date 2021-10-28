@@ -128,7 +128,7 @@ namespace SO115App.API.Models.Classi.Organigramma
             {
                 foreach (var f in this.Figli)
                 {
-                    foreach (var n in f.GetSottoAlbero(pins))
+                    foreach (var n in f?.GetSottoAlbero(pins))
                     {
                         yield return n;
                     }
