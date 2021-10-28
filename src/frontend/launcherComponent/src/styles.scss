@@ -11,8 +11,8 @@
   font-family:'"icon-marker';
   src: url('./assets/fonts/icon-marker.eot?7adah4');
   src: url('./assets/fonts/icon-marker.eot?7adah4#iefix') format('embedded-opentype'),
-  url('./assets/fonts/icon-marker.ttf?7adah4') format('truetype')
-  url('./assets/fonts/icon-marker.woff?7adah4') format('woff')
+  url('./assets/fonts/icon-marker.ttf?7adah4') format('truetype'),
+  url('./assets/fonts/icon-marker.woff?7adah4') format('woff'),
   url('./assets/fonts/icon-marker.svg?7adah4#icon-marker') format('svg');
   font-weight: normal;
   font-style: normal;
@@ -1180,12 +1180,6 @@ tag-input {
   -webkit-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
   -moz-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
   box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 0.55);
-}
-
-.border-click-checked {
-  -webkit-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
-  -moz-box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
-  box-shadow: $SO-shadow-info-aggregate rgba(90, 94, 107, 1);
 }
 
 .blink-aggregate span {

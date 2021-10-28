@@ -18,8 +18,6 @@ export class BoxMezziComponent implements OnChanges {
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
-        // config.openDelay = 200;
-        // config.closeDelay = 100;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
