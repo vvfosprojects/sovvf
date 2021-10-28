@@ -65,8 +65,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodSedi[0]);
             var lstSedi = _alberaturaUO.ListaSediAlberata();
 
-            //lstSedi.Figli = lstSedi.Map();
-
             var navbars = new Classi.NavBar.Navbar
             {
                 ListaSedi = lstSedi,

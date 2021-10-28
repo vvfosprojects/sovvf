@@ -21,7 +21,6 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
-using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.NavBar
 {
@@ -29,7 +28,6 @@ namespace SO115App.API.Models.Classi.NavBar
     {
         public UnitaOperativa ListaSedi { get; set; }
         public Utente Utente { get; set; }
-        public IEnumerable<Role> RuoliUtLoggato { get; set; }
         public InfoNue infoNue { get; set; }
         public CentroMappa CentroMappaMarker { get; set; }
         public string TokenESRI { get; set; }

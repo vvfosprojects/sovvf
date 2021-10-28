@@ -98,30 +98,38 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var conFiglio = GetInfoSede("001");
             
-
             //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
             var result = new UnitaOperativa(con.Id, con.Descrizione);
-            result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
 
-            //REGIONI
-            foreach (var regionale in lstRegionali.Result)
+            try
             {
-                result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
+                result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
+
+                //REGIONI
+                foreach (var regionale in lstRegionali.Result)
+                {
+                    result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
+                }
+
+                //PROVINCE
+                Parallel.ForEach(lstProvinciali.Result, provinciale =>
+                {
+                    var infoProvinciale = GetInfoSede(provinciale.id);
+
+                    var lstComunali = GetFigliDirezione(provinciale.id).Result
+                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet();
+
+                    var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
+                    lstComunali.Remove(centrale);
+
+                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
+                        .AddFiglio(new UnitaOperativa(centrale.Codice, provinciale.descrizione) { Figli = lstComunali });
+                });
             }
-
-            //PROVINCE
-            Parallel.ForEach(lstProvinciali.Result, provinciale =>
+            catch (Exception e)
             {
-                var infoProvinciale = GetInfoSede(provinciale.id);
-
-                var lstComunali = GetFigliDirezione(provinciale.id).Result
-                    .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet();
-
-                var distaccamento = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale"));
-
-                result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
-                    .AddFiglio(new UnitaOperativa(distaccamento?.Codice, provinciale?.descrizione) { Figli = lstComunali });
-            });
+                return null;
+            }
 
             return result;
         }
