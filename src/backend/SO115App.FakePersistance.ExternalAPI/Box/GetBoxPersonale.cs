@@ -26,6 +26,7 @@ using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System.Collections.Concurrent;
@@ -37,20 +38,20 @@ namespace SO115App.ExternalAPI.Fake.Box
 {
     public class GetBoxPersonale : IGetBoxPersonale
     {
-        private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetStatoSquadra _getStatoSquadra;
         private readonly IGetSquadre _getSquadre;
 
-        public GetBoxPersonale(IGetStatoMezzi getStatoMezzi, IGetSquadre getSquadre)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre)
         {
-            _getStatoMezzi = getStatoMezzi;
+            _getStatoSquadra = getStatoSquadra;
             _getSquadre = getSquadre;
         }
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            var filtroTurno = new ComposizioneSquadreQuery() 
-            { 
-                CodiciSede = codiciSede, 
+            var filtroTurno = new ComposizioneSquadreQuery()
+            {
+                CodiciSede = codiciSede,
                 Filtro = new FiltriComposizioneSquadra()
                 {
                     CodiciDistaccamenti = codiciSede,
@@ -72,7 +73,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             Parallel.ForEach(filtro.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
 
-            var statoMezzi = _getStatoMezzi.Get(codiciSede);
+            var statoSquadre = _getStatoSquadra.Get(codiciSede.ToList());
 
             var result = new BoxPersonale();
 
@@ -103,7 +104,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var statiAssegnati = new string[] { Costanti.MezzoInUscita, Costanti.MezzoSulPosto, Costanti.MezzoInViaggio, Costanti.MezzoInRientro };
 
-            result.SquadreAssegnate = statoMezzi.Count;
+            result.SquadreAssegnate = statoSquadre.Count;
 
             result.SquadreServizio = new ConteggioPersonale()
             {
