@@ -51,9 +51,9 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
             }
-            foreach (var unita in listaSediAlberate.GetSottoAlbero(listaPin))
+            foreach (var unita in listaSediAlberate?.GetSottoAlbero(listaPin))
             {
-                if (unita.Codice.Equals(codSedeDaVerificare))
+                if (unita?.Codice?.Equals(codSedeDaVerificare) ?? false)
                 {
                     return true;
                 }

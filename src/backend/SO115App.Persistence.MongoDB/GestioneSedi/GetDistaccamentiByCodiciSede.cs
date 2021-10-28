@@ -38,7 +38,7 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
                     .In(sede => sede.codProv, listaSottoSedi.Select(uo => uo.Codice.Split('.')[0]));
 
                 var filtroCodice = Builders<ListaSedi>.Filter
-                    .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.')[1])));
+                    .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.').Last())));
 
                 var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
                 DistaccamentiResult = _dbContext.SediCollection.Find(filtroSede & filtroCodice & filterAttive).ToList();
