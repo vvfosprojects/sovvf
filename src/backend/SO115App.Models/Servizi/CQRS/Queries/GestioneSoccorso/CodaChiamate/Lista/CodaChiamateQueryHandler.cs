@@ -19,17 +19,15 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using static SO115App.API.Models.Classi.Condivise.Squadra;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 {
@@ -40,16 +38,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
     {
         private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetComposizioneSquadre _iGetComposizioneSquadre;
         private readonly IGetTurno _getTurno;
+        private readonly IGetBoxPersonale _getBoxPersonale;
 
         public CodaChiamateQueryHandler(IGetListaSintesi iGetListaSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-                                        IGetComposizioneSquadre iGetComposizioneSquadre, IGetTurno getTurno)
+                                        IGetTurno getTurno, IGetBoxPersonale getBoxPersonale)
         {
             _iGetListaSintesi = iGetListaSintesi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _iGetComposizioneSquadre = iGetComposizioneSquadre;
             _getTurno = getTurno;
+            _getBoxPersonale = getBoxPersonale;
         }
 
         /// <summary>
@@ -83,36 +81,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             InfoIstogramma info = new InfoIstogramma();
             info.ListaCodaChiamate = new List<Istogramma>();
 
-            var listaSquadre = Task.Run(() => _iGetComposizioneSquadre.Get(new ComposizioneSquadreQuery()
+            foreach (var unita in listaSedi)
             {
-                Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
+                if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
-                    CodiciDistaccamenti = listaSedi.Select(s => s.Codice).ToArray()
-                }
-            }));
-
-            Parallel.ForEach(listaSedi, unita =>
-            {
-                var composizioneSquadreQuery = new ComposizioneSquadreQuery()
-                {
-                    CodiciSede = new string[] { unita.Codice },
-                    Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
+                    var boxPersonale = _getBoxPersonale.Get(new string[1] { unita.Codice });
+                    var infoDistaccamento = new Istogramma()
                     {
-                        CodiciDistaccamenti = new string[] { unita.Codice }
-                    }
-                };
+                        codDistaccamento = unita.Codice,
+                        descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
+                        numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
+                        squadreLibere = boxPersonale.SquadreServizio.Current - boxPersonale.SquadreAssegnate,
+                        squadreOccupate = boxPersonale.SquadreAssegnate
+                    };
 
-                var infoDistaccamento = new Istogramma()
-                {
-                    codDistaccamento = unita.Codice,
-                    descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
-                    numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
-                    squadreLibere = listaSquadre.Result.Count > 0 ? listaSquadre.Result.FindAll(x => x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0,
-                    squadreOccupate = listaSquadre.Result.Count > 0 ? listaSquadre.Result.FindAll(x => !x.Stato.Equals(StatoSquadra.InSede) && x.Distaccamento.Equals(unita.Codice) && x.Turno.Equals(turnoCorrente)).Count() : 0
-                };
-
-                info.ListaCodaChiamate.Add(infoDistaccamento);
-            });
+                    info.ListaCodaChiamate.Add(infoDistaccamento);
+                }
+            }
 
             return new CodaChiamateResult()
             {
