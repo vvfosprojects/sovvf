@@ -54,6 +54,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() direction: DirectionInterface;
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
     @Input() schedeContattoStatus: boolean;
+    @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
     @Input() areaMappaLoading: boolean;
 
@@ -87,7 +88,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
-            // TODO: implementare logica che fa il refresh dei layer degli interventi
+            // TODO: implementare logica refresh layer Interventi
             console.log('refresh');
         });
     }
@@ -267,6 +268,19 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer('SchedeContatto - Non Gestita', false).then(() => {
                         this.toggleLayer('SchedeContatto - Gestita', false).then();
                     });
+                    break;
+            }
+        }
+
+        // Controllo se la feature "Composizione Partenza" viene attivata
+        if (changes?.composizionePartenzaStatus?.currentValue !== null) {
+            const composizionePartenzaActive = changes?.composizionePartenzaStatus?.currentValue;
+            switch (composizionePartenzaActive) {
+                case true:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    break;
+                case false:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false);
                     break;
             }
         }

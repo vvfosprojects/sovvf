@@ -44,6 +44,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    // Status "Composizione Partenza"
+    @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     // Status "Mezzi in Servizio"
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
 
