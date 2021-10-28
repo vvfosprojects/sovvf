@@ -32,20 +32,8 @@ namespace SO115App.CompositionRoot
             container.Register(typeof(ICSVTemplateManager<>), typeof(ICSVTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("CSVTemplateManager")).ToArray()[0]);
 
             container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
-                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
-            container.Register<
                 API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice,
-                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativaRadice_CON_Direzioni_ComLazio>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativeVisibiliPerSoccorso,
-                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetSituazioneMezzi,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetSituazioneMezzi_RandomFake>();
             container.Register<
                 API.Models.Servizi.Infrastruttura.Anagrafiche.IGetTipoInterventoByCodice,
                 API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche.GetTipoInterventoByCodice_Fake>();

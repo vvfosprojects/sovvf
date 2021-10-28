@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
 
 namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 {
@@ -28,11 +27,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
     /// </summary>
     internal class MapperRichiestaSuSintesi : IMapperRichiestaSuSintesi
     {
-        /// <summary>
-        ///   Istanza del servizio
-        /// </summary>
-        private readonly IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice;
-
         /// <summary>
         ///   Istanza del servizio
         /// </summary>
@@ -48,10 +42,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
         ///   L'istanza del servizio di mapping di un mezzo sulla sintesi
         /// </param>
         public MapperRichiestaSuSintesi(
-            IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
             MapperMezzoSuSintesi mapperMezzoSuSintesi)
         {
-            this.getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
             this.mapperMezzoSuSintesi = mapperMezzoSuSintesi;
         }
 

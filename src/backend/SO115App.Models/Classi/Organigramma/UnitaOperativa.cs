@@ -81,7 +81,7 @@ namespace SO115App.API.Models.Classi.Organigramma
 
             foreach (var figlio in this.Figli)
             {
-                foreach (var uo in figlio?.GetSottoAlbero())
+                foreach (var uo in figlio.GetSottoAlbero())
                 {
                     yield return uo;
                 }
