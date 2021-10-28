@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="openOpserviNewTab()" ngbTooltip="Apri in una nuova finestra" placement="right">
+        <i class="fas fa-external-link-alt text-primary"></i>
+    </button>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <iframe src="https://opservice-test.dipvvf.it/home" title="OpService"
+            width="1765" height="680">
+    </iframe>
+</div>

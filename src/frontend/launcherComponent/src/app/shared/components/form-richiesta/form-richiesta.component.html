@@ -403,9 +403,10 @@
                             <span class="mb-0 h5">Priorità</span>
                             <span class="pl-2"
                                   style="font-size: 18px;">
-                          <ngb-rating [formControl]="f.prioritaRichiesta"
-                                      [starTemplate]="t"
+                          <ngb-rating [starTemplate]="t"
+                                      [rate]="richiestaModifica.prioritaRichiesta"
                                       [max]="4"
+                                      (rateChange)="onChangePrioritaRichiesta($event)"
                                       style="display: inline-grid !important; transform: rotate(180deg)"></ngb-rating>
                           <ng-template #t
                                        let-fill="fill"

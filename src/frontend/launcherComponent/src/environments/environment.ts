@@ -10,6 +10,11 @@ export const environment = {
     versionCheckURL: 'version.json',
     apiUrl: {
         welcome: '/api/Welcome',
+        box: {
+            mezzi: '/api/Box/GetBoxMezzi',
+            personale: '/api/Box/GetBoxPersonale',
+            richieste: '/api/Box/GetBoxRichieste'
+        },
         markers: '/api/Marker',
         markerChiamataInCorso: '/api/ChiamataInCorso',
         rigaElencoRichieste: '/api/GestioneRichiesta/GetRichieste',

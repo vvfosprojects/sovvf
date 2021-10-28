@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import {
-    ClearBoxPersonale, SetBoxPersonale,
+    ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale,
     SetBoxPersonaleCurrent, SetBoxPersonaleNext,
     SetBoxPersonalePresenzeCurrent, SetBoxPersonalePresenzeNext,
     SetBoxPersonalePresenzePrevious,
@@ -14,6 +14,7 @@ import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../.
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
 import { Injectable } from '@angular/core';
 import { RuoloFunzionarioSo } from '../../../boxes/boxes-model/ruolo-funzionario-so.enum';
+import { BoxPersonaleService } from '../../../../../core/service/box-service/box-personale.service';
 
 export interface BoxPersonaleStateModel {
     personalePrevious: BoxPersonale;
@@ -45,6 +46,9 @@ export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
     defaults: boxPersonaleStateDefaults
 })
 export class BoxPersonaleState {
+
+    constructor(private boxPersonaleService: BoxPersonaleService) {
+    }
 
     @Selector()
     static personalePrevious(state: BoxPersonaleStateModel): BoxPersonale {
@@ -89,6 +93,15 @@ export class BoxPersonaleState {
     @Selector()
     static personaleQtyNext(state: BoxPersonaleStateModel): BoxPersonaleQty {
         return state.personaleQtyNext;
+    }
+
+    @Action(GetBoxPersonale)
+    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>): void {
+        this.boxPersonaleService.getDataBoxPersonale().subscribe((data: any) => {
+            dispatch([
+                new SetBoxPersonale(data.boxPersonale),
+            ]);
+        });
     }
 
     @Action(SetBoxPersonale)

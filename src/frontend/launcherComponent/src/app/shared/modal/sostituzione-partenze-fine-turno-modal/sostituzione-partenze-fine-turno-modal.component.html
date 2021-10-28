@@ -72,14 +72,14 @@
                                                 [ngIf]="!getSquadraSmontanteBySquadraMontante(s?.nome) || getSquadraSmontanteBySquadraMontante(s?.nome) !== sS?.nome">
                                             <button class="btn btn-primary btn-no-hover"
                                                     (click)="onSelezioneSquadraSmontate(s?.nome, sS?.nome, p?.partenza?.mezzo?.codice)"
-                                                    [disabled]="getSostituzioneBySquadraMontante(s.nome)?.squadreSmontanti?.length > 0">
+                                                    [disabled]="(getSostituzioneBySquadraMontante(s.nome)?.squadreSmontanti?.length > 0) || squadraSmontanteCheck.includes(sS?.nome)">
                                                 Seleziona
                                             </button>
                                         </ng-template>
                                         <ng-template
                                                 [ngIf]="getSquadraSmontanteBySquadraMontante(s?.nome) && getSquadraSmontanteBySquadraMontante(s?.nome) === sS?.nome">
                                             <button class="btn btn-danger btn-no-hover"
-                                                    (click)="onDeselezioneSquadraSmontate(s?.nome)">
+                                                    (click)="onDeselezioneSquadraSmontate(s?.nome, sS?.nome)">
                                                 Deseleziona
                                             </button>
                                         </ng-template>

@@ -23,7 +23,7 @@ import { ClearClipboard } from '../../../features/home/store/actions/form-richie
 import { ReducerSchedaTelefonata, SetCompetenze, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
-import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { Priorita, SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../../features/maps/store/actions/chiamate-markers.actions';
 import { Tipologia } from '../../model/tipologia.model';
@@ -614,6 +614,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     setEsercitazioneValue(): void {
         const newUrgenzaValue = !this.f.esercitazione.value;
         this.f.esercitazione.patchValue(newUrgenzaValue);
+    }
+    
+    onChangePrioritaRichiesta(nuovaPrioritaRichiesta: Priorita): void {
+        this.f.prioritaRichiesta.patchValue(nuovaPrioritaRichiesta);
     }
 
     onInAttesa(): void {

@@ -31,6 +31,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
 
     idRichiesta: string;
     codRichiesta: string;
+    squadraSmontanteCheck = [];
 
     private subscriptions: Subscription = new Subscription();
 
@@ -118,10 +119,12 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     onSelezioneSquadraSmontate(squadraMontante: string, squadraSmontante: string, codMezzoSmontante: string): void {
+        this.squadraSmontanteCheck.push(squadraSmontante);
         this.store.dispatch(new UpdateSostituzione(squadraMontante, squadraSmontante, codMezzoSmontante));
     }
 
-    onDeselezioneSquadraSmontate(squadraMontante: string): void {
+    onDeselezioneSquadraSmontate(squadraMontante: string, squadraSmontante: string): void {
+        this.squadraSmontanteCheck = this.squadraSmontanteCheck.filter( x => x !== squadraSmontante);
         this.store.dispatch(new UpdateSostituzione(squadraMontante, null, null));
     }
 

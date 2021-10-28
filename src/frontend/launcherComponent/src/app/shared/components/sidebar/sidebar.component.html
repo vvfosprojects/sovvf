@@ -24,13 +24,11 @@
         <i class="fas fa-users mr-1"></i>
         Gestione Utenti
     </button>
-    <a href="https://opservice-test.dipvvf.it"
-       target="_blank"
-       class="btn border-secondary btn-light btn-block btn-no-hover text-sidebar-link"
-       role="button" aria-pressed="true">
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            (click)="onOpenOpservice()">
         <i class="fas fa-clock mr-1"></i>
         Servizi Operativi
-    </a>
+    </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.DashboardPortale]"
             [class.btn-sidebar-selected]="url === '/dashboard-portale'"

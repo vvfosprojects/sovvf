@@ -26,10 +26,6 @@ namespace SO115App.Models.Classi.Condivise
 {
     public class Welcome
     {
-        public BoxMezzi BoxListaMezzi { get; set; }
-        public BoxPersonale BoxListaPersonale { get; set; }
-        public BoxInterventi BoxListaInterventi { get; set; }
-
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
 
         //public InfoNue InfoNue { get; set; }

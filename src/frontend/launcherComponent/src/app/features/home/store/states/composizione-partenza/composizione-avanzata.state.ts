@@ -139,7 +139,7 @@ export class ComposizioneAvanzataState {
 
         } as any;
 
-        if ((!squadreSelezionate || (squadreSelezionate && squadreSelezionate.length <= 0)) && !mezzoSelezionato) {
+        if (!squadreSelezionate || (squadreSelezionate && squadreSelezionate.length <= 0)) {
             objGetMezzi.filtro.autista = null;
             objGetSquadre.autista = null;
         }

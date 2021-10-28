@@ -46,13 +46,13 @@ export class SintesiRichiestaActionsComponent implements OnInit {
             case StatoRichiestaActions.Chiusa:
                 modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
                 modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
+                modalConferma.componentInstance.messaggioAttenzione = 'Lo stato di tutti i mezzi sarà "Rientrato"';
                 break;
 
             case StatoRichiestaActions.Sospesa:
                 modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
                 modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
+                modalConferma.componentInstance.messaggioAttenzione = 'Lo stato di tutti i mezzi sarà "Rientrato"';
                 break;
 
             case StatoRichiestaActions.Riaperta:

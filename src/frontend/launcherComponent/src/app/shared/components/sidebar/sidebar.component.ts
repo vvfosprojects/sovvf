@@ -8,6 +8,7 @@ import { ToggleSidebarOpened } from '../../../features/navbar/store/actions/navb
 import { Store } from '@ngxs/store';
 import { AzioniAreaDocumentaleModalComponent } from '../../modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { FiltriAreaDocumentaleState } from '../../store/states/filtri-area-documentale/filtri-area-documentale.state';
+import { OpserviceModalComponent } from '../../modal/opservice-modal/opservice-modal.component';
 
 @Component({
     selector: 'app-sidebar',
@@ -75,6 +76,14 @@ export class SidebarComponent {
     onToggleSidebar(): void {
         const sidebarOpened = this.store.selectSnapshot(NavbarState.sidebarOpened);
         this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
+    }
+
+    onOpenOpservice(): void {
+        this.modalService.open(OpserviceModalComponent, {
+            windowClass: 'modal-holder xxlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+        });
     }
 
     onLogout(): void {
