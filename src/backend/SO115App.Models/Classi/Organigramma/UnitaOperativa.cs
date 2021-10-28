@@ -61,7 +61,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Nome
         {
-            get => _nome.Replace("Comando VV.F.", "Centrale");
+            get => _nome.Replace("COMANDO VV.F.", "Centrale");
             set => _nome = value;
         }
 

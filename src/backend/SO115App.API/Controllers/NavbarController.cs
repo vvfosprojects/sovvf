@@ -58,7 +58,9 @@ namespace SO115App.API.Controllers
 
             try
             {
-                return Ok(handler.Handle(query).Navbar);
+                var result = handler.Handle(query);
+
+                return Ok(result.Navbar);
             }
             catch (Exception ex)
             {

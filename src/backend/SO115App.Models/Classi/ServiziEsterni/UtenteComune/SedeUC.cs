@@ -7,7 +7,7 @@
     public class SedeUC
     {
         /// <summary>
-        ///   l'id (codice distaccamento) della sede.
+        ///   l'id della sede.
         /// </summary>
         public string id { get; set; }
 
@@ -15,5 +15,10 @@
         ///   la descrizione della sede
         /// </summary>
         public string descrizione { get; set; }
+
+        ///// <summary>
+        ///// codice del distaccamento
+        ///// </summary>
+        //public string codDistaccamento { get; set; } = null;
     }
 }

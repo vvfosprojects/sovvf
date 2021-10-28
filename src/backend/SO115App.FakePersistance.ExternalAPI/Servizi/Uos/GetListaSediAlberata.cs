@@ -26,7 +26,7 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Uos
 {
-    public class GetListaSediAlberata : IGetAlberaturaUnitaOperative
+    public class GetListaSediAlberata //: IGetAlberaturaUnitaOperative
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
