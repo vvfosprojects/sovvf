@@ -1,9 +1,9 @@
 <div class="px-3 m-h-820-richiesta">
-    <app-partial-loader *ngIf="loadingNuovaChiamata"></app-partial-loader>
+    <app-partial-loader *ngIf="loadingSchedaRichiesta"></app-partial-loader>
     <app-form-richiesta [tipologie]="(tipologie$ | async)"
                         [operatore]="(utente$ | async)"
                         [enti]="enti$ | async"
-                        [loadingNuovaChiamata]="loadingNuovaChiamata"
+                        [loadingSchedaRichiesta]="loadingSchedaRichiesta"
                         [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                         [competenze]="competenze$ | async"
                         [countInterventiProssimita]="countInterventiProssimita$ | async"

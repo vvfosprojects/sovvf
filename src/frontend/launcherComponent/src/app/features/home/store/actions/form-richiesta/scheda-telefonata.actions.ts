@@ -3,7 +3,6 @@ import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.mode
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { Sede } from '../../../../../shared/model/sede.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -85,10 +84,10 @@ export class ClearIndirizzo {
     static readonly type = '[SchedaTelefonata] Clear Indirizzo';
 }
 
-export class StartLoadingNuovaChiamata {
-    static readonly type = '[SchedaTelefonata] Start Loading Nuova Chiamata';
+export class StartLoadingSchedaRichiesta {
+    static readonly type = '[SchedaTelefonata] Start Loading Scheda Richiesta';
 }
 
-export class StopLoadingNuovaChiamata {
-    static readonly type = '[SchedaTelefonata] Stop Loading Nuova Chiamata';
+export class StopLoadingSchedaRichiesta {
+    static readonly type = '[SchedaTelefonata] Stop Loading Scheda Richiesta';
 }

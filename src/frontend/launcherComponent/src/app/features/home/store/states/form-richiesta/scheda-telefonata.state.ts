@@ -15,8 +15,8 @@ import {
     SetCountInterventiProssimita,
     SetInterventiProssimita,
     StartChiamata,
-    StartLoadingNuovaChiamata,
-    StopLoadingNuovaChiamata
+    StartLoadingSchedaRichiesta,
+    StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
@@ -70,7 +70,7 @@ export interface SchedaTelefonataStateModel {
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
     resetChiamata: boolean;
-    loadingNuovaChiamata: boolean;
+    loadingSchedaRichiesta: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -92,7 +92,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     azioneChiamata: null,
     idChiamataMarker: null,
     resetChiamata: true,
-    loadingNuovaChiamata: false
+    loadingSchedaRichiesta: false
 };
 
 @Injectable()
@@ -160,8 +160,8 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
-    static loadingNuovaChiamata(state: SchedaTelefonataStateModel): boolean {
-        return state.loadingNuovaChiamata;
+    static loadingSchedaRichiesta(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingSchedaRichiesta;
     }
 
     @Action(ReducerSchedaTelefonata)
@@ -274,7 +274,7 @@ export class SchedaTelefonataState {
 
     @Action(InsertChiamata)
     insertChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
-        dispatch(new StartLoadingNuovaChiamata());
+        dispatch(new StartLoadingSchedaRichiesta());
         const state = getState();
         const f = state.richiestaForm.model;
         const azioneChiamata = action.azioneChiamata;
@@ -401,7 +401,7 @@ export class SchedaTelefonataState {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
-            dispatch(new StopLoadingNuovaChiamata());
+            dispatch(new StopLoadingSchedaRichiesta());
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
@@ -425,7 +425,7 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
-            dispatch(new StopLoadingNuovaChiamata());
+            dispatch(new StopLoadingSchedaRichiesta());
             const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
             if (chiamataStatus) {
                 dispatch(new ToggleChiamata());
@@ -507,17 +507,17 @@ export class SchedaTelefonataState {
         }));
     }
 
-    @Action(StartLoadingNuovaChiamata)
+    @Action(StartLoadingSchedaRichiesta)
     startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
-            loadingNuovaChiamata: true
+            loadingSchedaRichiesta: true
         });
     }
 
-    @Action(StopLoadingNuovaChiamata)
+    @Action(StopLoadingSchedaRichiesta)
     stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
-            loadingNuovaChiamata: false
+            loadingSchedaRichiesta: false
         });
     }
 }

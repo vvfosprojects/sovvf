@@ -79,6 +79,11 @@ export class SediTreeviewState {
         }
     }
 
+    @Selector()
+    static isCON(state: SediTreeviewStateModel): boolean {
+        return state.sediNavbarSelezionate?.iniziali?.length && state.sediNavbarSelezionate.iniziali.indexOf('CON') !== -1;
+    }
+
     @Action(SetListaSediTreeview)
     setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview): void {
         patchState({

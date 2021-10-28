@@ -1,4 +1,4 @@
-<div class="container-fluid py-2">
+<div class="container-fluid pt-3 pb-2">
     <div class="row">
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
@@ -42,7 +42,7 @@
                                     placeholder="Tipo: Tutti">
                             </ng-select>
                         </div>
-                        <div class="col text-right">
+                        <div class="col-4">
                             <app-ricerca-rubrica-personale [loading]="loading$ | async"
                                                         (ricercaChange)="onRicercaRubricaPersonale($event)">
                             </app-ricerca-rubrica-personale>

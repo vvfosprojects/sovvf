@@ -239,7 +239,7 @@
                     <!-- 112  -->
                     <div class="row my-2 bg-secondary" style="padding: 15px"></div>
                     <div class="row">
-                        <div class="col wrapper-grid custom-control custom-radio" [class.opacity-50]="loadingNuovaChiamata">
+                        <div class="col wrapper-grid custom-control custom-radio" [class.opacity-50]="loadingSchedaRichiesta">
                             <div class="d-none">Numeri</div>
                             <div class="d-inline-block pl-2" style="font-size: 18px;">
                                 <div style="width: max-content; display: inline-grid; margin-left: 5px">
@@ -249,7 +249,7 @@
                                                name="112"
                                                [checked]="scorciatoieTelefono[112]"
                                                (click)="onCheckScorciatoiaNumero('112')"
-                                               [disabled]="loadingNuovaChiamata">
+                                               [disabled]="loadingSchedaRichiesta">
                                         <label for="112"
                                                class="ml-1 mb-0"
                                                style="cursor: pointer">112</label>
@@ -260,7 +260,7 @@
                                                name="113"
                                                [checked]="scorciatoieTelefono[113]"
                                                (click)="onCheckScorciatoiaNumero('113')"
-                                               [disabled]="loadingNuovaChiamata">
+                                               [disabled]="loadingSchedaRichiesta">
                                         <label for="113"
                                                class="ml-1 mb-0"
                                                style="cursor: pointer">113</label>
@@ -271,7 +271,7 @@
                                                name="118"
                                                [checked]="scorciatoieTelefono[118]"
                                                (click)="onCheckScorciatoiaNumero('118')"
-                                               [disabled]="loadingNuovaChiamata">
+                                               [disabled]="loadingSchedaRichiesta">
                                         <label for="118"
                                                class="ml-1 mb-0"
                                                style="cursor: pointer">118</label>
@@ -280,7 +280,7 @@
                                         <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU."
                                                name="VV.UU."
                                                [checked]="scorciatoieTelefono['VV.UU.']"
-                                               [disabled]="loadingNuovaChiamata">
+                                               [disabled]="loadingSchedaRichiesta">
                                         <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
                                     </div>
                                 </div>
@@ -417,12 +417,13 @@
                             <i class="fas fa-circle mr-1"></i>
                           </span>
                           </ng-template>
-                          <div style="width: max-content; display: inline-grid; margin-left: 8px">
+                          <span class="d-inline-block"
+                                style="width: max-content; display: inline-grid; margin-left: 8px">
                             <span>Alta</span>
                             <span>Media</span>
                             <span>Bassa</span>
                             <span>Nessuna</span>
-                          </div>
+                          </span>
                         </span>
                             <span *ngIf="submitted && f.prioritaRichiesta.errors"
                                   class="form-text small">

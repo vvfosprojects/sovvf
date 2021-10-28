@@ -41,8 +41,8 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
 
     // Loading
-    @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
-    loadingNuovaChiamata: boolean;
+    @Select(SchedaTelefonataState.loadingSchedaRichiesta) loadingSchedaRichiesta$: Observable<boolean>;
+    loadingSchedaRichiesta: boolean;
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
@@ -74,8 +74,8 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     getLoadingNuovaChiamata(): void {
         this.subscription.add(
-            this.loadingNuovaChiamata$.subscribe((loading: boolean) => {
-                this.loadingNuovaChiamata = loading;
+            this.loadingSchedaRichiesta$.subscribe((loading: boolean) => {
+                this.loadingSchedaRichiesta = loading;
             })
         );
     }

@@ -47,9 +47,6 @@ export class SuccessRichiestaModifica {
 
 export class ChiudiRichiestaModifica {
     static readonly type = '[RichiestaModifica] Modifica Richiesta Chiudi';
-
-    constructor(public mantieniModificaIndirizzo?: boolean) {
-    }
 }
 
 export class ClearIndirizzo {

@@ -20,13 +20,15 @@
                     </div>
                     <div *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                          class="float-left">
-                        <app-tasto-schede-contatto
-                                [active]="schedeContattoStatus$ | async"
-                                [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
-                                [disabled]="permessiFeature.SchedeContatto | checkPermission"
-                                (toggle)="toggleSchedeContatto()">
-                        </app-tasto-schede-contatto>
-                        <button class="btn btn-light mr-2"
+                        <div class="d-inline mr-2">
+                            <app-tasto-schede-contatto
+                                    [active]="schedeContattoStatus$ | async"
+                                    [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
+                                    [disabled]="permessiFeature.SchedeContatto | checkPermission"
+                                    (toggle)="toggleSchedeContatto()">
+                            </app-tasto-schede-contatto>
+                        </div>
+                        <button class="btn btn-light border-secondary"
                                 ngbTooltip="Visualizza Trasferimenti Chiamate"
                                 placement="bottom"
                                 [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
@@ -34,12 +36,23 @@
                                 [routerLinkActive]="['btn-light-nav', 'text-dark']"
                                 [class.cursor-not-allowed]="permessiFeature.ListaTrasferimentiChiamate | checkPermission"
                                 [disabled]="permessiFeature.ListaTrasferimentiChiamate | checkPermission">
+                            <i class="fas fa-phone-alt mr-1"></i>
                             <i class="fas fa-exchange-alt"></i>
                         </button>
                     </div>
                 </div>
             </div>
             <div class="float-left mr-3">
+                <app-ricerca
+                        *ngIf="((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
+                        [ricerca]="ricerca$ | async"
+                        [debounce]="true"
+                        [placeholder]="getRicercaPlaceholder()"
+                        [disableSearch]="!!(richiesteStatus$ | async)"
+                        (search)="onSearch($event)">
+                </app-ricerca>
+            </div>
+            <div class="float-left">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [filtri]="filtriRichieste$ | async"
                                       [statiRichiesta]="filtriStatiRichieste$ | async"
@@ -68,16 +81,6 @@
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
                                            (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
                 </app-filtri-mezzi-servizio>
-            </div>
-            <div class="float-left mr-4">
-                <app-ricerca
-                        *ngIf="((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
-                        [ricerca]="ricerca$ | async"
-                        [debounce]="true"
-                        [placeholder]="getRicercaPlaceholder()"
-                        [disableSearch]="!!(richiesteStatus$ | async)"
-                        (search)="onSearch($event)">
-                </app-ricerca>
             </div>
         </div>
     </div>

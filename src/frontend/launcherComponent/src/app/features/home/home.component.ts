@@ -18,6 +18,7 @@ import { TastoChiamataMappaState } from '../maps/store/states/tasto-chiamata-map
 import { GetBoxPersonale } from './store/actions/boxes/box-personale.actions';
 import { GetBoxMezzi } from './store/actions/boxes/box-mezzi.actions';
 import { GetBoxRichieste } from './store/actions/boxes/box-richieste.actions';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     columnState: Grids;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
+    @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
 
     // Chiamata From Mappa Active Value
     @Select(TastoChiamataMappaState.tastoChiamataMappaActive) tastoChiamataMappaActive$: Observable<boolean>;

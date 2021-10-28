@@ -1,4 +1,4 @@
-<div class="container-fluid py-2">
+<div class="container-fluid pt-3 pb-2">
     <div class="row">
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
@@ -22,7 +22,7 @@
                                 Personale VV.F.
                             </button>
                         </div>
-                        <div class="col text-right">
+                        <div class="col-4">
                             <app-ricerca-rubrica [loading]="loading$ | async"
                                                 (ricercaChange)="onRicercaRubrica($event)"></app-ricerca-rubrica>
                         </div>

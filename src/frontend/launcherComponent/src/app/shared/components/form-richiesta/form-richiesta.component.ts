@@ -72,7 +72,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() enti: EnteInterface[];
     @Input() disabledInviaPartenza = false;
     @Input() resetChiamata: boolean;
-    @Input() loadingNuovaChiamata: boolean;
+    @Input() loadingSchedaRichiesta: boolean;
     @Input() schedaContatto: SchedaContatto;
 
     // Modifica
@@ -427,7 +427,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             backdropClass: 'light-blue-backdrop',
             centered: true
         };
-        const schedeContatto = this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
+        this.modalService.open(ListaSchedeContattoModalComponent, modalOptions);
     }
 
     openTriage(): void {
@@ -615,7 +615,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const newUrgenzaValue = !this.f.esercitazione.value;
         this.f.esercitazione.patchValue(newUrgenzaValue);
     }
-    
+
     onChangePrioritaRichiesta(nuovaPrioritaRichiesta: Priorita): void {
         this.f.prioritaRichiesta.patchValue(nuovaPrioritaRichiesta);
     }

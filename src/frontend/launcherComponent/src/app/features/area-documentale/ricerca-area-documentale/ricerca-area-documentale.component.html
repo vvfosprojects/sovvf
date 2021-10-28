@@ -12,10 +12,10 @@
                [debounceTime]="600"
                (debounceKeyUp)="ricercaChange.emit(ricerca)">
         <div class="input-group-append">
-            <button class="btn btn-primary btn-no-hover">
-                <i *ngIf="!loading" class="fas fa-search text-light"></i>
-                <i *ngIf="loading" class="fas fa-spinner fa-spin text-light"></i>
-            </button>
+            <span class="input-group-text">
+                <i *ngIf="!loading" class="fas fa-search"></i>
+                <i *ngIf="loading" class="fas fa-spinner fa-spin"></i>
+            </span>
         </div>
     </div>
 </form>

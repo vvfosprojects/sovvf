@@ -27,6 +27,7 @@ import { SchedaTelefonataState } from './scheda-telefonata.state';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
+import { StartLoadingSchedaRichiesta, StopLoadingSchedaRichiesta } from '../../actions/form-richiesta/scheda-telefonata.actions';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -205,12 +206,17 @@ export class RichiestaModificaState {
                 );
             }
         }
+        dispatch(new StartLoadingSchedaRichiesta());
         this.richiesteService.patchRichiesta(sintesiRichiesta).subscribe(() => {
-            dispatch(new SuccessRichiestaModifica());
+            dispatch([
+                new SuccessRichiestaModifica(),
+                new StopLoadingSchedaRichiesta()
+            ]);
         }, () => {
             dispatch([
                 new ClearIndirizzo(),
-                new GetInitCentroMappa()
+                new GetInitCentroMappa(),
+                new StopLoadingSchedaRichiesta()
             ]);
         });
     }
@@ -239,11 +245,11 @@ export class RichiestaModificaState {
         patchState({
             successModifica: true
         });
-        dispatch(new ChiudiRichiestaModifica(true));
+        dispatch(new ChiudiRichiestaModifica());
     }
 
     @Action(ChiudiRichiestaModifica)
-    chiudiRichiestaModifica({ getState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica): void {
+    chiudiRichiestaModifica({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
         dispatch([
             new ToggleModifica(true),
             new ClearRichiestaModifica()
