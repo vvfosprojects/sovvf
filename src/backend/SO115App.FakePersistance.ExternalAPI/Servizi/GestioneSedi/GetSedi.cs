@@ -94,12 +94,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 sede = f.Nome
             }));
 
-            //result.AddRange(lstSedi.Figli.First().Figli.First().Figli.SelectMany(f => f.Figli).Select(f => new ListaSedi()
-            //{
-            //    attiva = 1,
-            //    idsede = int.Parse(f.Codice),
-            //    sede = f.Nome
-            //}));
+            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f =>
+            f.Figli.Select(ff => new ListaSedi()
+            {
+                attiva = 1,
+                idsede = int.Parse(f.Codice),
+                sede = f.Nome
+            })));
 
             return result;
         }
