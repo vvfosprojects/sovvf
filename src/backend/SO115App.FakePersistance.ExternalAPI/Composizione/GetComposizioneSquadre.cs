@@ -79,16 +79,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll()
-                .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
-                .Distinct()
-                .Select(s => new DistaccamentoComposizione()
-                {
-                    Codice = $"{s.codProv}.{s.codFiglio_TC}",
-                    Coordinate = new Coordinate(s.latitudine, s.longitudine),
-                    Descrizione = s.sede.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
-                    Provincia = s.codProv
-                }));
+            var lstSedi = Task.Run(() => _getSedi.GetAll().Select(s => new DistaccamentoComposizione()
+            {
+                Codice = $"{s.codProv}.{s.codFiglio_TC}",
+                Coordinate = new Coordinate(s.latitudine, s.longitudine),
+                Descrizione = s.sede.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
+                Provincia = s.codProv
+            }));
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
