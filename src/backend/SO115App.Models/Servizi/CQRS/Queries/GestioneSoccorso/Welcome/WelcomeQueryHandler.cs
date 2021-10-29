@@ -90,18 +90,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             else
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
-            var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
-
-            var rubrica = Task.Factory.StartNew(() => _getRurbica.Get(pinNodi.Select(n => n.Codice).ToArray()));
-
-            var ListaZoneEmergenza = Task.Factory.StartNew(() => _getZoneEmergenza.GetAll());
+            var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
+            var ListaZoneEmergenza = _getZoneEmergenza.GetAll();
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
-                ListaChiamateInCorso = listaChiamateInCorso.Result,
+                ListaChiamateInCorso = listaChiamateInCorso,
                 ListaFiltri = filtri,
-                ZoneEmergenza = ListaZoneEmergenza.Result,
-                Rubrica = rubrica.Result
+                ZoneEmergenza = ListaZoneEmergenza,
+                Rubrica = new List<SO115App.Models.Classi.RubricaDTO.EnteDTO>()
             };
 
             Log.Debug("Fine elaborazione Welcome Handler");
