@@ -122,15 +122,22 @@
                             </ng-template>
                         </div>
                         <!-- COMPETENZE -->
-                        <ng-template [ngIf]="competenze?.length">
-                            <div class="float-left"
-                                 style="font-size: xx-large">
+                        <ng-template [ngIf]="!loadingCompetenze && competenze?.length">
+                            <div class="float-left font-xxlarge">
                                 <app-competenza *ngFor="let c of competenze; let i = index"
-                                                [competenza]="c" [i]="i"></app-competenza>
+                                                [competenza]="c" [i]="i">
+                                </app-competenza>
+                            </div>
+                        </ng-template>
+                        <ng-template [ngIf]="loadingCompetenze">
+                            <div class="font-xlarge pl-2 pt-1">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                                Recupero Competenze
                             </div>
                         </ng-template>
                         <!-- COMPETENZE RICHIESTA MODIFICA -->
-                        <ng-template [ngIf]="!competenze?.length && richiestaModifica?.competenze?.length">
+                        <ng-template
+                                [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
                             <div class="float-left"
                                  style="font-size: xx-large">
                                 <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
@@ -239,7 +246,8 @@
                     <!-- 112  -->
                     <div class="row my-2 bg-secondary" style="padding: 15px"></div>
                     <div class="row">
-                        <div class="col wrapper-grid custom-control custom-radio" [class.opacity-50]="loadingSchedaRichiesta">
+                        <div class="col wrapper-grid custom-control custom-radio"
+                             [class.opacity-50]="loadingSchedaRichiesta">
                             <div class="d-none">Numeri</div>
                             <div class="d-inline-block pl-2" style="font-size: 18px;">
                                 <div style="width: max-content; display: inline-grid; margin-left: 5px">
@@ -399,7 +407,8 @@
                                     (click)="setUrgenza()">
                             </app-checkbox>
                         </div>
-                        <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata" class="wrapper-grid mt-1">
+                        <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata"
+                             class="wrapper-grid mt-3">
                             <span class="mb-0 h5">Priorità</span>
                             <span class="pl-2"
                                   style="font-size: 18px;">
@@ -442,7 +451,7 @@
                     <ng-template [ngIf]="!modifica">
                         <button class="btn btn-primary btn-no-hover btn-xlarge mr-3"
                                 style="min-width: 100px"
-                                [disabled]="disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -451,7 +460,7 @@
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge mr-3"
                                 style="min-width: 100px"
-                                [disabled]="formIsInvalid()"
+                                [disabled]="loadingCompetenze || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
@@ -460,7 +469,7 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
                                     type="button"
-                                    [disabled]="formIsInvalid()"
+                                    [disabled]="loadingCompetenze || formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
