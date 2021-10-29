@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
-    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative
+    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi
     {
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
@@ -98,7 +98,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 sede = fff.Nome
             }))));
 
-            return result.Distinct().ToList();
+            return result.ToList();
         }
 
         public UnitaOperativa ListaSediAlberata()
@@ -139,7 +139,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
                     lstComunali.Remove(centrale);
 
-                    var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
+                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione);
                     lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
                     result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
@@ -150,6 +150,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             {
                 return null;
             }
+
+            return result;
+        }
+
+        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin)
+        {
+            var lstCodici = listaPin.Select(p => p.Codice).ToList();
+
+            var result = GetAll().Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
+            {
+                Id = s.Id,
+                CodSede = s.Id,
+                DescDistaccamento = s.sede
+            }).ToList();
 
             return result;
         }

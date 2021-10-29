@@ -185,6 +185,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetAlberaturaUnitaOperative, GetSedi>();
             container.Register<IGetDirezioni, GetSedi>();
             container.Register<IGetSedi, GetSedi>();
+            container.Register<IGetListaDistaccamentiByPinListaSedi, GetSedi>();
 
             #endregion Sedi
 
