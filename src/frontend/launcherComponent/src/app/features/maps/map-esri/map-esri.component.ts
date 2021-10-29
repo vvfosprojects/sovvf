@@ -14,6 +14,7 @@ import { DirectionInterface } from '../maps-interface/direction-interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
+import { TravelModeService } from '../map-service/travel-mode.service';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -84,7 +85,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 private modalService: NgbModal,
                 private store: Store,
                 private configModal: NgbModalConfig,
-                private renderer: Renderer2) {
+                private renderer: Renderer2,
+                private travelModeService: TravelModeService) {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
@@ -231,7 +233,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(changes?.direction.currentValue);
+                this.getRoute(direction);
             } else {
                 this.clearDirection();
             }
@@ -836,7 +838,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const routeParams = new RouteParameters({
             stops: new FeatureSet({
                 features: [pointPartenzaGraphic, pointDestinazioneGraphic]
-            })
+            }),
+            travelMode: this.travelModeService.getTravelModeByGenereMezzo(direction.genereMezzo)
         });
 
         routeTask.solve(routeParams).then((data: RouteResult) => {

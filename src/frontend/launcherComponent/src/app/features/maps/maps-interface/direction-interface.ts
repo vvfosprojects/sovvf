@@ -7,5 +7,6 @@ export interface DirectionInterface {
         lat: number;
         lng: number;
     };
+    genereMezzo?: string;
     isVisible: boolean;
 }

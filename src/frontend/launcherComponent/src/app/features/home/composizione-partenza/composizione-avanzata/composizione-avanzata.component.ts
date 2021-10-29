@@ -438,6 +438,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                         lat: this.richiesta.localita.coordinate.latitudine,
                         lng: this.richiesta.localita.coordinate.longitudine
                     },
+                    genereMezzo: obj.genereMezzo,
                     isVisible: true
                 };
 
