@@ -14,8 +14,8 @@ import {
     SetCompetenze,
     SetCountInterventiProssimita,
     SetInterventiProssimita,
-    StartChiamata,
-    StartLoadingSchedaRichiesta,
+    StartChiamata, StartLoadingCompetenze,
+    StartLoadingSchedaRichiesta, StopLoadingCompetenze,
     StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
@@ -71,6 +71,7 @@ export interface SchedaTelefonataStateModel {
     idChiamataMarker: string;
     resetChiamata: boolean;
     loadingSchedaRichiesta: boolean;
+    loadingCompetenze: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -92,7 +93,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     azioneChiamata: null,
     idChiamataMarker: null,
     resetChiamata: true,
-    loadingSchedaRichiesta: false
+    loadingSchedaRichiesta: false,
+    loadingCompetenze: false
 };
 
 @Injectable()
@@ -162,6 +164,11 @@ export class SchedaTelefonataState {
     @Selector()
     static loadingSchedaRichiesta(state: SchedaTelefonataStateModel): boolean {
         return state.loadingSchedaRichiesta;
+    }
+
+    @Selector()
+    static loadingCompetenze(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingCompetenze;
     }
 
     @Action(ReducerSchedaTelefonata)
@@ -234,6 +241,7 @@ export class SchedaTelefonataState {
 
     @Action(SetCompetenze)
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+        dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             const competenze = res.dataArray as Sede[];
             const codCompetenze = competenze.map((c: Sede) => {
@@ -242,7 +250,8 @@ export class SchedaTelefonataState {
             dispatch([
                 new MarkerChiamata(action.markerChiamata, codCompetenze),
                 new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze)
+                new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                new StopLoadingCompetenze()
             ]);
             patchState({
                 competenze
@@ -508,16 +517,30 @@ export class SchedaTelefonataState {
     }
 
     @Action(StartLoadingSchedaRichiesta)
-    startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+    startLoadingSchedaRichiesta({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingSchedaRichiesta: true
         });
     }
 
     @Action(StopLoadingSchedaRichiesta)
-    stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+    stopLoadingSchedaRichiesta({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingSchedaRichiesta: false
+        });
+    }
+
+    @Action(StartLoadingCompetenze)
+    startLoadingCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingCompetenze: true
+        });
+    }
+
+    @Action(StopLoadingCompetenze)
+    stopLoadingCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingCompetenze: false
         });
     }
 }
