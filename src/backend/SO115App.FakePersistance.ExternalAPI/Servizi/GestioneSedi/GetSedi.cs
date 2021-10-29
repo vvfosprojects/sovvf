@@ -111,16 +111,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
 
-            var con = GetInfoSede("00");
+            var con = Task.Run(() => GetInfoSede("00"));
 
-            var conFiglio = GetInfoSede("001");
+            var conFiglio = Task.Run(() => GetInfoSede("001"));
             
             //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-            var result = new UnitaOperativa(con.Id, con.Descrizione);
+            var result = new UnitaOperativa(con.Result.Id, con.Result.Descrizione);
 
             try
             {
-                result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
+                result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione));
 
                 //REGIONI
                 foreach (var regionale in lstRegionali.Result)
