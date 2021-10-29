@@ -92,13 +92,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 sede = f.Nome
             }));
 
+            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new ListaSedi()
+            {
+                Id = ff.Codice,
+                sede = ff.Nome
+            })));
+
             result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new ListaSedi()
             {
                 Id = fff.Codice,
                 sede = fff.Nome
             }))));
 
-            return result.ToList();
+            return result.Distinct().ToList();
         }
 
         public UnitaOperativa ListaSediAlberata()
