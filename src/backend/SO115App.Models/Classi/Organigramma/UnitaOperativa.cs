@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,7 +48,7 @@ namespace SO115App.API.Models.Classi.Organigramma
 
             this.Codice = codice;
             this.Nome = nome;
-            this.Figli = new HashSet<UnitaOperativa>();
+            this.Figli = new ConcurrentBag<UnitaOperativa>();
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
-        public ISet<UnitaOperativa> Figli { get; set; }
+        public ConcurrentBag<UnitaOperativa> Figli { get; set; }
 
 
         /// <summary>

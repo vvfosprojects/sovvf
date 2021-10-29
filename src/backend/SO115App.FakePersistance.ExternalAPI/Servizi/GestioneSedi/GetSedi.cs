@@ -117,13 +117,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var infoProvinciale = GetInfoSede(provinciale.id);
 
                     var lstComunali = GetFigliDirezione(provinciale.id).Result
-                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet();
+                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet().ToList();
 
                     var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
                     lstComunali.Remove(centrale);
 
+                    var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
+                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+
                     result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
-                        .AddFiglio(new UnitaOperativa(centrale?.Codice, provinciale?.descrizione) { Figli = lstComunali });
+                        .AddFiglio(unitaComunali);
                 });
             }
             catch (Exception e)
