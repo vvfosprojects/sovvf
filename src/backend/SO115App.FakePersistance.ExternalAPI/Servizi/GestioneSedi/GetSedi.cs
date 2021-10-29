@@ -127,16 +127,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                 var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
 
-            var con = GetInfoSede("00");
+                var con = GetInfoSede("00");
 
-            var conFiglio = GetInfoSede("001");
-            
-            //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-            var result = new UnitaOperativa(con.Id, con.Descrizione);
+                var conFiglio = GetInfoSede("001");
 
-            try
-            {
-                result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
+                //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
+                var result = new UnitaOperativa(con.Id, con.Descrizione);
+
+                try
+                {
+                    result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
 
                     //REGIONI
                     foreach (var regionale in lstRegionali.Result)
@@ -155,17 +155,40 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
                         lstComunali.Remove(centrale);
 
-                    var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
-                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                        var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
+                        lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
-                        .AddFiglio(unitaComunali);
-                });
+                        result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
+                            .AddFiglio(unitaComunali);
+                    });
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+
+                ListaSediAlberate = result;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
+                _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
+
+                return result;
             }
-            catch (Exception e)
+            else
             {
-                return null;
+                return ListaSediAlberate;
             }
+        }
+
+        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin)
+        {
+            var lstCodici = listaPin.Select(p => p.Codice).ToList();
+
+            var result = GetAll().Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
+            {
+                Id = s.Id,
+                CodSede = s.Id,
+                DescDistaccamento = s.sede
+            }).ToList();
 
             return result;
         }
