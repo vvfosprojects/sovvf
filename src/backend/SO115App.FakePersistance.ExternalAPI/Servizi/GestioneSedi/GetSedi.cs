@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Condivise;
@@ -18,12 +19,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetSedi(IHttpRequestManager<List<SedeUC>> serviceDirezioni, IHttpRequestManager<DistaccamentoUC> serviceSedi, IConfiguration config)
+        public GetSedi(IHttpRequestManager<List<SedeUC>> serviceDirezioni,
+                       IHttpRequestManager<DistaccamentoUC> serviceSedi,
+                       IConfiguration config,
+                       IMemoryCache memoryCache)
         {
             _serviceDirezioni = serviceDirezioni;
             _serviceSedi = serviceSedi;
             _config = config;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
@@ -109,43 +115,47 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public UnitaOperativa ListaSediAlberata()
         {
-            //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
+            UnitaOperativa ListaSediAlberate = new UnitaOperativa("00", "00");
 
-            var lstRegionali = GetDirezioniRegionali();
+            if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
+            {
+                //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
 
-            var lstProvinciali = GetDirezioniProvinciali();
+                var lstRegionali = GetDirezioniRegionali();
 
-            var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
+                var lstProvinciali = GetDirezioniProvinciali();
 
-            var con = Task.Run(() => GetInfoSede("00"));
+                var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
 
-            var conFiglio = Task.Run(() => GetInfoSede("001"));
+            var con = GetInfoSede("00");
+
+            var conFiglio = GetInfoSede("001");
             
             //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-            var result = new UnitaOperativa(con.Result.Id, con.Result.Descrizione);
+            var result = new UnitaOperativa(con.Id, con.Descrizione);
 
             try
             {
-                result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione));
+                result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
 
-                //REGIONI
-                foreach (var regionale in lstRegionali.Result)
-                {
-                    result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
-                }
+                    //REGIONI
+                    foreach (var regionale in lstRegionali.Result)
+                    {
+                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
+                    }
 
-                //PROVINCE
-                Parallel.ForEach(lstProvinciali.Result, provinciale =>
-                {
-                    var infoProvinciale = GetInfoSede(provinciale.id);
+                    //PROVINCE
+                    Parallel.ForEach(lstProvinciali.Result, provinciale =>
+                    {
+                        var infoProvinciale = GetInfoSede(provinciale.id);
 
-                    var lstComunali = GetFigliDirezione(provinciale.id).Result
-                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet().ToList();
+                        var lstComunali = GetFigliDirezione(provinciale.id).Result
+                            .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet().ToList();
 
-                    var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
-                    lstComunali.Remove(centrale);
+                        var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
+                        lstComunali.Remove(centrale);
 
-                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione);
+                    var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
                     lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
                     result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
@@ -156,20 +166,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             {
                 return null;
             }
-
-            return result;
-        }
-
-        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin)
-        {
-            var lstCodici = listaPin.Select(p => p.Codice).ToList();
-
-            var result = GetAll().Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
-            {
-                Id = s.Id,
-                CodSede = s.Id,
-                DescDistaccamento = s.sede
-            }).ToList();
 
             return result;
         }

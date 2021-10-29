@@ -247,7 +247,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         const mezzoDirection = {
             idMezzo: mezzoComp.id,
-            coordinateMezzo: mezzoComp.mezzo.coordinate
+            coordinateMezzo: mezzoComp.mezzo.coordinate,
+            genereMezzo: mezzoComp.mezzo.genere
         } as MezzoDirection;
         this.mezzoCoordinate.emit(mezzoDirection);
     }
@@ -255,7 +256,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     mezzoDirectionClear(mezzoComp: MezzoComposizione): void {
         const mezzoDirection = {
             idMezzo: mezzoComp.id,
-            coordinateMezzo: mezzoComp.mezzo.coordinate
+            coordinateMezzo: mezzoComp.mezzo.coordinate,
+            genereMezzo: mezzoComp.mezzo.genere
         } as MezzoDirection;
         this.mezzoCoordinateClear.emit(mezzoDirection);
     }

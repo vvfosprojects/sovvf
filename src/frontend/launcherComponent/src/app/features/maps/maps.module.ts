@@ -23,6 +23,7 @@ import { SediMarkersState } from './store/states/sedi-markers.state';
 import { CentroMappaState } from './store/states/centro-mappa.state';
 import { ChiamateMarkersState } from './store/states/chiamate-markers.state';
 import { AreaMappaState } from './store/states/area-mappa.state';
+import { TravelModeService } from './map-service/travel-mode.service';
 
 @NgModule({
     imports: [
@@ -51,7 +52,8 @@ import { AreaMappaState } from './store/states/area-mappa.state';
     providers: [
         SediMarkerService,
         ChiamateMarkerService,
-        MapService
+        MapService,
+        TravelModeService
     ]
 })
 export class MapsModule {

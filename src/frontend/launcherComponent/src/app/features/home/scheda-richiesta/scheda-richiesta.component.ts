@@ -43,6 +43,9 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     // Loading
     @Select(SchedaTelefonataState.loadingSchedaRichiesta) loadingSchedaRichiesta$: Observable<boolean>;
     loadingSchedaRichiesta: boolean;
+    // Loading
+    @Select(SchedaTelefonataState.loadingCompetenze) loadingCompetenze$: Observable<boolean>;
+    loadingCompetenze: boolean;
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
@@ -61,7 +64,8 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     private subscription = new Subscription();
 
     constructor() {
-        this.getLoadingNuovaChiamata();
+        this.getLoadingSchedaRichiesta();
+        this.getLoadingCompetenze();
     }
 
     ngOnInit(): void {
@@ -72,10 +76,18 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
         console.log('Componente Scheda Richiesta distrutto');
     }
 
-    getLoadingNuovaChiamata(): void {
+    getLoadingSchedaRichiesta(): void {
         this.subscription.add(
             this.loadingSchedaRichiesta$.subscribe((loading: boolean) => {
                 this.loadingSchedaRichiesta = loading;
+            })
+        );
+    }
+
+    getLoadingCompetenze(): void {
+        this.subscription.add(
+            this.loadingCompetenze$.subscribe((loading: boolean) => {
+                this.loadingCompetenze = loading;
             })
         );
     }
