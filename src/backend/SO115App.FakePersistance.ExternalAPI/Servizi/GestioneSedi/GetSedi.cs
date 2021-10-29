@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Condivise;
@@ -115,7 +116,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public UnitaOperativa ListaSediAlberata()
         {
-            UnitaOperativa ListaSediAlberate = new UnitaOperativa("00", "00");
+            var ListaSediAlberate = new UnitaOperativa("00", "00", new Coordinate(0.0, 0.0));
 
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
@@ -141,7 +142,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     //REGIONI
                     foreach (var regionale in lstRegionali.Result)
                     {
-                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione));
+                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione/*, regionale.Coordinate*/));
                     }
 
                     //PROVINCE
@@ -150,12 +151,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         var infoProvinciale = GetInfoSede(provinciale.id);
 
                         var lstComunali = GetFigliDirezione(provinciale.id).Result
-                            .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione)).ToHashSet().ToList();
+                            .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
                         var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
                         lstComunali.Remove(centrale);
 
-                        var unitaComunali = new UnitaOperativa(centrale?.Codice, provinciale?.descrizione);
+                        var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione/*, provinciale.Coordinate*/);
                         lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
                         result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
@@ -187,6 +188,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             {
                 Id = s.Id,
                 CodSede = s.Id,
+                Coordinate = new Coordinate(0.0, 0.0),
                 DescDistaccamento = s.sede
             }).ToList();
 
