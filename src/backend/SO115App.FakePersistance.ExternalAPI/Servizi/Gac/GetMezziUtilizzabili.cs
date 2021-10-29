@@ -167,7 +167,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 _clientMezzi.SetCache("GacMezzi_" + codici);
 
-                var data = _clientMezzi.GetAsync(url, _getToken.GeneraToken()).Result;
+                var token = _getToken.GeneraToken();
+
+                var data = _clientMezzi.GetAsync(url, token).Result;
 
                 lstMezziDto.AddRange(data);
             }
@@ -193,7 +195,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             try
             {
                 return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate.Latitudine, distaccamento.Coordinate.Longitudine))
+                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(0.0, 0.0))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
                 };

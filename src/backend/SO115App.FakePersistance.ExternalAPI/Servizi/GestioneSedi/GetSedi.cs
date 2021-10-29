@@ -123,7 +123,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     lstComunali.Remove(centrale);
 
                     result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
-                        .AddFiglio(new UnitaOperativa(centrale.Codice, provinciale.descrizione) { Figli = lstComunali });
+                        .AddFiglio(new UnitaOperativa(centrale?.Codice, provinciale?.descrizione) { Figli = lstComunali });
                 });
             }
             catch (Exception e)

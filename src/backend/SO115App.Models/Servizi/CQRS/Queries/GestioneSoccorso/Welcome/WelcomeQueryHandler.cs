@@ -85,7 +85,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var filtri = _filtriHandler.Get();
 
-            if (query.CodiceSede[0].Equals("CON"))
+            if (query.CodiceSede.First().Equals("CON"))
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
             else
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);

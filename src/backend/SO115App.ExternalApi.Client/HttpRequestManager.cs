@@ -139,13 +139,17 @@ namespace SO115App.ExternalAPI.Client
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
+            var options = new JsonSerializerOptions();
+
+            options.IgnoreNullValues = true;
+
             try
             {
-                var result = JsonSerializer.Deserialize<ResponseObject>(data);
+                var result = JsonSerializer.Deserialize<ResponseObject>(data, options);
 
-#if (DEBUG)
-                Console.WriteLine($"({DateTime.Now}) HTTP_CLIENT - {response.StatusCode}: {response.RequestMessage.RequestUri.AbsoluteUri}");
-#endif
+//#if (DEBUG)
+                //Console.WriteLine($"({DateTime.Now}) HTTP_CLIENT - {response.StatusCode}: {response.RequestMessage.RequestUri.AbsoluteUri}");
+//#endif
 
                 return result;
             }

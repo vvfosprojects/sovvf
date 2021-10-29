@@ -36,7 +36,6 @@ using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Servizi.STATRI;
 using SO115App.ExternalAPI.Fake.Territorio;
-using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;

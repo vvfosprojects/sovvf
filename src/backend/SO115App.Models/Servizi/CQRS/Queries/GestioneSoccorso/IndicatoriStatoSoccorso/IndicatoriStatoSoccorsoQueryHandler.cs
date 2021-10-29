@@ -24,7 +24,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoS
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriStatoSoccorso
@@ -34,11 +33,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
     /// </summary>
     public class IndicatoriStatoSoccorsoQueryHandler : IQueryHandler<IndicatoriStatoSoccorsoQuery, IndicatoriStatoSoccorsoResult>
     {
-        /// <summary>
-        ///   Handler del servizio
-        /// </summary>
-        private readonly IGetUnitaOperativaPerCodice _getUnitaOperativaPerCodice;
-
         /// <summary>
         ///   Handler del servizio
         /// </summary>
@@ -57,17 +51,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.IndicatoriSt
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
-        /// <param name="getUnitaOperativaPerCodice">Istanza del servizio <see cref="IGetUnitaOperativaPerCodice" /></param>
         /// <param name="cercaRichiesteAssistenza">Istanza del servizio <see cref="ICercaRichiesteAssistenza" /></param>
         /// <param name="getNumeroMezziSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroMezziSoccorsoOraInServizio" /></param>
         /// <param name="getNumeroSquadreSoccorsoOraInServizio">Istanza del servizio <see cref="IGetNumeroSquadreSoccorsoOraInServizio" /></param>
         public IndicatoriStatoSoccorsoQueryHandler(
-                IGetUnitaOperativaPerCodice getUnitaOperativaPerCodice,
                 ICercaRichiesteAssistenza cercaRichiesteAssistenza,
                 IGetNumeroMezziSoccorsoOraInServizio getNumeroMezziSoccorsoOraInServizio,
                 IGetNumeroSquadreSoccorsoOraInServizio getNumeroSquadreSoccorsoOraInServizio)
         {
-            this._getUnitaOperativaPerCodice = getUnitaOperativaPerCodice;
             this._cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             this._getNumeroMezziSoccorsoOraInServizio = getNumeroMezziSoccorsoOraInServizio;
             this._getNumeroSquadreSoccorsoOraInServizio = getNumeroSquadreSoccorsoOraInServizio;
