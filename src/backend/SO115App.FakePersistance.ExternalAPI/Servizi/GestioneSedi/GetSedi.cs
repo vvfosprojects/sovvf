@@ -80,29 +80,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstSedi = ListaSediAlberata();
 
-            result.AddRange(lstSedi.Figli.Select(f => new ListaSedi() 
-            { 
-                attiva = 1,  
-                idsede = int.Parse(f.Codice),
-                sede = f.Nome                
+            result.AddRange(lstSedi.Figli.Select(f => new ListaSedi()
+            {
+                Id = f.Codice,
+                sede = f.Nome
             }));
 
             result.AddRange(lstSedi.Figli.First().Figli.Select(f => new ListaSedi()
             {
-                attiva = 1,
-                idsede = int.Parse(f.Codice),
+                Id = f.Codice,
                 sede = f.Nome
             }));
 
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f =>
-            f.Figli.Select(ff => new ListaSedi()
+            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new ListaSedi()
             {
-                attiva = 1,
-                idsede = int.Parse(f.Codice),
-                sede = f.Nome
-            })));
+                Id = fff.Codice,
+                sede = fff.Nome
+            }))));
 
-            return result;
+            return result.Distinct().ToList();
         }
 
         public UnitaOperativa ListaSediAlberata()
