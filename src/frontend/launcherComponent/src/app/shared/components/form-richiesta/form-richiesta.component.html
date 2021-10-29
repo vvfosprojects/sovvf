@@ -123,7 +123,8 @@
                         </div>
                         <!-- COMPETENZE -->
                         <ng-template [ngIf]="!loadingCompetenze && competenze?.length">
-                            <div class="float-left font-xxlarge">
+                            <div class="float-left"
+                                 style="font-size: xx-large">
                                 <app-competenza *ngFor="let c of competenze; let i = index"
                                                 [competenza]="c" [i]="i">
                                 </app-competenza>
