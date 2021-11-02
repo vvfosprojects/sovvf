@@ -36,6 +36,9 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
             if (_currentUser.Identity.IsAuthenticated)
             {
+                if (command.Richiesta.TestoStatoRichiesta.Equals("X"))
+                    yield return new AuthorizationResult(Costanti.ErroreRichiestaChiusa);
+
                 if (command.Utente == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
