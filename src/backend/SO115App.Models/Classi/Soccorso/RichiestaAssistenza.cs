@@ -946,7 +946,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && sostituzione == null
                 && statri == null
                 && trasferimento == null)
-                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
+                && evento.Istante/*.AddHours(2)*/ > DateTime.UtcNow/*.AddSeconds(1)*/)
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
