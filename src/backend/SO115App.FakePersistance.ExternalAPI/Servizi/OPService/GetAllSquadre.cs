@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 foreach (var sede in listaSedi)
                     pinNodi.Add(new PinNodo(sede, true));
 
-                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+                foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                     pinNodi.Add(new PinNodo(figlio.Codice, true));
 
                 var result = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());

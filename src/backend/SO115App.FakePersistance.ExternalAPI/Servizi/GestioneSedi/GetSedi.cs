@@ -89,31 +89,31 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return sede;
         }
 
-        public List<ListaSedi> GetAll()
+        public async Task<List<ListaSedi>> GetAll()
         {
             var result = new List<ListaSedi>();
 
             var lstSedi = ListaSediAlberata();
 
-            result.AddRange(lstSedi.Figli.Select(f => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.Select(f => new ListaSedi()
             {
                 Id = f.Codice,
                 sede = f.Nome
             }));
 
-            result.AddRange(lstSedi.Figli.First().Figli.Select(f => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.Select(f => new ListaSedi()
             {
                 Id = f.Codice,
                 sede = f.Nome
             }));
 
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new ListaSedi()
             {
                 Id = ff.Codice,
                 sede = ff.Nome
             })));
 
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new ListaSedi()
             {
                 Id = fff.Codice,
                 sede = fff.Nome
@@ -122,7 +122,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return result.Distinct().ToList();
         }
 
-        public UnitaOperativa ListaSediAlberata()
+        public async Task<UnitaOperativa> ListaSediAlberata()
         {
             var ListaSediAlberate = new UnitaOperativa("00", "00", new Coordinate(0.0, 0.0));
 
@@ -196,7 +196,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var lstCodici = listaPin.Select(p => p.Codice).ToList();
 
-            var result = GetAll().Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
+            var result = GetAll().Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
             {
                 Id = s.Id,
                 CodSede = s.Id,
@@ -237,7 +237,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var listaSedi = GetAll();
 
-            Parallel.ForEach(listaSedi, sede =>
+            Parallel.ForEach(listaSedi.Result, sede =>
             {
                 var sedeMarker = new SedeMarker();
 

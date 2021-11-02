@@ -79,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll().Select(s => new DistaccamentoComposizione()
+            var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => new DistaccamentoComposizione()
             {
                 Codice = s.Id,
                 Coordinate = new Coordinate(s.latitudine, s.longitudine),

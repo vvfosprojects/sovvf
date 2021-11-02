@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti
     public interface IGetSedi
     {
         Task<DistaccamentoUC> GetInfoSede(string codSede);
-        List<ListaSedi> GetAll();
+        Task<List<ListaSedi>> GetAll();
     }
 }

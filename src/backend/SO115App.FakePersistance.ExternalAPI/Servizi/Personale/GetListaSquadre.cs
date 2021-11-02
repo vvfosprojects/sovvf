@@ -58,7 +58,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             var ListaCodiciSedi = new List<string>();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             {
                 var codice = figlio.Codice;
                 string codiceE = "";

@@ -80,7 +80,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
             }
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
             var filtri = _filtriHandler.Get();

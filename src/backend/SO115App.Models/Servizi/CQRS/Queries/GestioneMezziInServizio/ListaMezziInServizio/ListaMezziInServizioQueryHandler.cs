@@ -59,7 +59,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             /// <summary>
             ///   Aggiungo alla Sede principale gli eventuali sotto Nodi
             /// </summary>
-            pinNodi.AddRange(listaSediAlberate.GetSottoAlbero(pinNodi).Select(figlio => new PinNodo(figlio.Codice, true)));
+            pinNodi.AddRange(listaSediAlberate.Result.GetSottoAlbero(pinNodi).Select(figlio => new PinNodo(figlio.Codice, true)));
 
             var listaMezzi = _getListaMezzi.Get(query.CodiciSede) //FILTRI
                 .Where(c =>

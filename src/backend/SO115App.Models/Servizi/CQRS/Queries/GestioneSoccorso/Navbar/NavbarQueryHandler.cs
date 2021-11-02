@@ -67,7 +67,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 
             var navbars = new Classi.NavBar.Navbar
             {
-                ListaSedi = lstSedi,
+                ListaSedi = lstSedi.Result,
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
                 infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
                 CentroMappaMarker = centroMappaMarker,

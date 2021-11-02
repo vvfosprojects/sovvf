@@ -17,7 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSedi
         {
             var lstSedi = _service.GetAll();
 
-            var result = lstSedi.Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
+            var result = lstSedi.Result.Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
                 .Select(s => new Sede($"{s.codProv}.{s.codFiglio_TC}", s.sede, "", new Coordinate(s.latitudine, s.longitudine)))
                 .OrderBy(s => s.Codice)
                 .ToList();

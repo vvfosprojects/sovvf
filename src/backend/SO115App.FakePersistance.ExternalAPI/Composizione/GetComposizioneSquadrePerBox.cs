@@ -55,7 +55,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll()
+            var lstSedi = Task.Run(() => _getSedi.GetAll().Result
                 .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
                 .Distinct()
                 .Select(s => new DistaccamentoComposizione()
