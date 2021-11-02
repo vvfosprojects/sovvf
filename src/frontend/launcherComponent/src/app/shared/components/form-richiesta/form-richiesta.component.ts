@@ -121,6 +121,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void {
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
+            this.f.indirizzo.disable();
+            this.f.latitudine.disable();
+            this.f.longitudine.disable();
         }
     }
 
@@ -347,10 +350,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new Localita(coordinate ? coordinate : null, address),
             null
         );
-
-        this.f.indirizzo.patchValue(address);
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lon);
 
         this.reducerSchedaTelefonata('cerca');
     }

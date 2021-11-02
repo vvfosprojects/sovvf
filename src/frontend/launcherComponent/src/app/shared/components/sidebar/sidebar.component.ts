@@ -8,7 +8,6 @@ import { ToggleSidebarOpened } from '../../../features/navbar/store/actions/navb
 import { Store } from '@ngxs/store';
 import { AzioniAreaDocumentaleModalComponent } from '../../modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { FiltriAreaDocumentaleState } from '../../store/states/filtri-area-documentale/filtri-area-documentale.state';
-import { OpserviceModalComponent } from '../../modal/opservice-modal/opservice-modal.component';
 
 @Component({
     selector: 'app-sidebar',
@@ -79,11 +78,7 @@ export class SidebarComponent {
     }
 
     onOpenOpservice(): void {
-        this.modalService.open(OpserviceModalComponent, {
-            windowClass: 'modal-holder xxlModal',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-        });
+        window.open('https://opservice-test.dipvvf.it', '_blank', 'toolbar=0,location=0,menubar=0,height=' + screen.availHeight + ',width=' + screen.availWidth);
     }
 
     onLogout(): void {
