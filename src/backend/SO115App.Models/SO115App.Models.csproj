@@ -44,6 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Servizi\CQRS\Commands\GestioneEmergenza\DeleteEmergenza\" />
+    <Folder Include="Servizi\CQRS\Commands\GestioneEmergenza\UpdateEmergenza\" />
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
+    <Folder Include="Servizi\CQRS\Queries\GestioneEmergenza\GetListaEmergenzeByCodComando\" />
   </ItemGroup>
 </Project>

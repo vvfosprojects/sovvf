@@ -32,12 +32,14 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
+using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
@@ -138,6 +140,19 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Evento>();
             BsonClassMap.RegisterClassMap<InsertSchedaNueRequest>();
             BsonClassMap.RegisterClassMap<Esri_Params>();
+
+            EmergenzaMap.Map();
+            BsonClassMap.RegisterClassMap<CreazioneEmergenza>();
+            BsonClassMap.RegisterClassMap<ModificaEmergenza>();
+            BsonClassMap.RegisterClassMap<AnnullamentoEmergenza>();
+        }
+
+        public IMongoCollection<Emergenza> EmergenzaCollection
+        {
+            get
+            {
+                return database.GetCollection<Emergenza>("emergenza");
+            }
         }
 
         public IMongoCollection<PosDAO> DtoPosCollection
