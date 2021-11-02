@@ -148,15 +148,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione));
 
                     //REGIONI
-                    Task.Run(() => Parallel.ForEach(lstRegionali.Result, regionale =>
+                    Parallel.ForEach(lstRegionali.Result, regionale =>
                     {
                         var info = GetInfoSede(regionale.id);
 
                         result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, info.Result.Coordinate));
-                    }));
+                    });
 
                     //PROVINCE
-                    Task.Run(() => Parallel.ForEach(lstProvinciali.Result, provinciale =>
+                    Parallel.ForEach(lstProvinciali.Result, provinciale =>
                     {
                         var info = GetInfoSede(provinciale.id);
 
@@ -173,7 +173,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                         result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.Result.IdSedePadre) ?? false)?
                             .AddFiglio(unitaComunali);
-                    }));
+                    });
                 }
                 catch (Exception e)
                 {

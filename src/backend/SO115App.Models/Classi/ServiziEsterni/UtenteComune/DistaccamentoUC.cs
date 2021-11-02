@@ -33,7 +33,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 
         [JsonPropertyName("coordinate")]
         public string coordinate { get; set; }
-        public Coordinate Coordinate => new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+        public Coordinate Coordinate => string.IsNullOrEmpty(coordinate) ? new Coordinate() : new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
 
         /// <summary>
         ///   l'id della sede padre
