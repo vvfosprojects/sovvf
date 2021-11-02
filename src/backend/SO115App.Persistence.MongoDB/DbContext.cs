@@ -17,11 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
@@ -33,7 +31,6 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
 using SO115App.Models.Classi.Marker;
-using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
@@ -42,10 +39,6 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Evento = SO115App.Models.Classi.NUE.Evento;
 

@@ -44,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Classi\MongoDTO\" />
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
     <Folder Include="Servizi\Infrastruttura\Anagrafiche\" />
     <Folder Include="Servizi\Infrastruttura\SistemiEsterni\Distaccamenti\CoordinateTask\" />

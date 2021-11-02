@@ -36,9 +36,19 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                     return new Coordinate(0, 0);
                 }
             }
-            set { }
         }
-            
-            
+
+        public string codice { get; set; }
+        public string codDistaccamento { get; set; }
+        public string tipo { get; set; }
+        public string tipoOriginale { get; set; }
+        public TipologiaDistaccamentoUC tipologiaDistaccamento { get; set; }
+        public string provincia { get; set; }
+    }
+
+    public class TipologiaDistaccamentoUC
+    {
+        public string codice { get; set; }
+        public string descrizione { get; set; }
     }
 }

@@ -6,7 +6,6 @@ using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -89,34 +88,42 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return sede;
         }
 
-        public async Task<List<ListaSedi>> GetAll()
+        public async Task<List<Sede>> GetAll()
         {
-            var result = new List<ListaSedi>();
+            var result = new List<Sede>();
 
             var lstSedi = ListaSediAlberata();
 
-            result.AddRange(lstSedi.Result.Figli.Select(f => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.Select(f => new Sede()
             {
-                Id = f.Codice,
-                sede = f.Nome
+                Codice = f.Codice,
+                Descrizione = f.Nome,
+                Coordinate = f.Coordinate,
+                Indirizzo = null
             }));
 
-            result.AddRange(lstSedi.Result.Figli.First().Figli.Select(f => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.Select(f => new Sede()
             {
-                Id = f.Codice,
-                sede = f.Nome
+                Codice = f.Codice,
+                Descrizione = f.Nome,
+                Coordinate = f.Coordinate,
+                Indirizzo = null
             }));
 
-            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
             {
-                Id = ff.Codice,
-                sede = ff.Nome
+                Codice = ff.Codice,
+                Descrizione = ff.Nome,
+                Coordinate = ff.Coordinate,
+                Indirizzo = null
             })));
 
-            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new ListaSedi()
+            result.AddRange(lstSedi.Result.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
             {
-                Id = fff.Codice,
-                sede = fff.Nome
+                Codice = fff.Codice,
+                Descrizione = fff.Nome,
+                Coordinate = fff.Coordinate,
+                Indirizzo = null
             }))));
 
             return result.Distinct().ToList();
@@ -124,7 +131,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<UnitaOperativa> ListaSediAlberata()
         {
-            var ListaSediAlberate = new UnitaOperativa("00", "00", new Coordinate(0.0, 0.0));
+            var ListaSediAlberate = new UnitaOperativa("00", "00", new Coordinate());
 
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
@@ -196,12 +203,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var lstCodici = listaPin.Select(p => p.Codice).ToList();
 
-            var result = GetAll().Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Id.ToUpper()))).Select(s => new Distaccamento()
+            var result = GetAll().Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Codice.ToUpper()))).Select(s => new Distaccamento()
             {
-                Id = s.Id,
-                CodSede = s.Id,
-                Coordinate = new Coordinate(0.0, 0.0),
-                DescDistaccamento = s.sede
+                Id = s.Codice,
+                CodSede = s.Codice,
+                Coordinate = s.Coordinate,
+                DescDistaccamento = s.Descrizione
             }).ToList();
 
             return result;
@@ -245,15 +252,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 {
                     listaSediMarker.Add(sedeMarker);
                 }
-                else if ((sede.latitudine >= Filtro.BottomLeft.Latitudine)
-                        && (sede.latitudine <= Filtro.TopRight.Latitudine)
-                        && (sede.longitudine >= Filtro.BottomLeft.Longitudine)
-                        && (sede.longitudine <= Filtro.TopRight.Longitudine))
+                else if ((sede.Coordinate.Latitudine >= Filtro.BottomLeft.Latitudine)
+                        && (sede.Coordinate.Latitudine <= Filtro.TopRight.Latitudine)
+                        && (sede.Coordinate.Longitudine >= Filtro.BottomLeft.Longitudine)
+                        && (sede.Coordinate.Longitudine <= Filtro.TopRight.Longitudine))
                 {
-                    sedeMarker.Codice = sede.codProv + "." + sede.codFiglio_TC;
-                    sedeMarker.Coordinate = new Coordinate(sede.latitudine, sede.longitudine);
-                    sedeMarker.Descrizione = sede.sede;
-                    sedeMarker.Provincia = sede.codProv;
+                    sedeMarker.Codice = sede.Codice;
+                    sedeMarker.Coordinate = sede.Coordinate;
+                    sedeMarker.Descrizione = sede.Descrizione;
+                    sedeMarker.Provincia = null;
                     sedeMarker.Tipo = GetTipoSede(sede);
 
                     listaSediMarker.Add(sedeMarker);
@@ -263,11 +270,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return listaSediMarker;
         }
 
-        private string GetTipoSede(ListaSedi sede)
+        private string GetTipoSede(Sede sede)
         {
-            if (sede.sede.Contains("Comando"))
+            if (sede.Descrizione.Contains("Comando"))
                 return "Comando";
-            else if (sede.sede.Contains("Distaccamento"))
+            else if (sede.Descrizione.Contains("Distaccamento"))
                 return "Distaccamento";
             else
                 return "Direzione";

@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 
@@ -31,6 +32,14 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo
+        };
+
+        public static DistaccamentoComposizione MapDistaccamento(this Sede distaccamento) => new DistaccamentoComposizione()
+        {
+            Codice = distaccamento.Codice,
+            Coordinate = distaccamento.Coordinate,
+            Descrizione = distaccamento.Descrizione,
+            Indirizzo = distaccamento.Indirizzo,
         };
     }
 }
