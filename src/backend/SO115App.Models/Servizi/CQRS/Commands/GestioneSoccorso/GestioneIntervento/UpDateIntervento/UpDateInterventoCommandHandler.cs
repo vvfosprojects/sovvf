@@ -142,6 +142,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             if (richiesta.PrioritaRichiesta != prioritaRichiesta)
                 new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
+            new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
+
             if (modificaInterventoChiuso)
             {
                 _modificaInterventoChiuso.Send(modificheMovimentiGAC);
