@@ -928,6 +928,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             var uscitaPartenza = evento as UscitaPartenza;
             var composizionePartenza = evento as ComposizionePartenze;
             var telefonata = evento as Telefonata;
+            var chiusuraRichiesta = evento as ChiusuraRichiesta;
             var assegnazionePriorita = evento as AssegnazionePriorita;
             var marcaRilevante = evento as MarcaRilevante;
             var richiestaSoccorsoAereo = evento as RichiestaSoccorsoAereo;
@@ -936,11 +937,12 @@ namespace SO115App.API.Models.Classi.Soccorso
             var entiIntervenuti = evento as InserimentoEnteIntervenuto;
             var sostituzione = evento as SostituzionePartenzaFineTurno;
             var statri = evento as STATRI_InivioRichiesta;
+
             var trasferimento = evento as SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata;
 
             if ((composizionePartenza == null
                 && telefonata == null
-
+                && chiusuraRichiesta == null
                 && uscitaPartenza == null
                 && richiestaSoccorsoAereo == null
                 && inviareFonogramma == null
