@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InsertEmergenzaCommandHandler.cs" company="CNVVF">
+// <copyright file="UpdateEmergenzaCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,24 +22,21 @@ using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using System;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenza
 {
-    public class InsertEmergenzaCommandHandler : ICommandHandler<InsertEmergenzaCommand>
+    public class UpdateEmergenzaCommandHandler : ICommandHandler<UpdateEmergenzaCommand>
     {
-        private readonly IInsertEmergenza _insertEmergenza;
-        private readonly IGetCodiceEmergenza _getCodiceEmergenza;
+        private readonly IUpDateEmergenza _upDateEmergenza;
 
-        public InsertEmergenzaCommandHandler(IInsertEmergenza insertEmergenza, IGetCodiceEmergenza getCodiceEmergenza)
+        public UpdateEmergenzaCommandHandler(IUpDateEmergenza upDateEmergenza)
         {
-            _insertEmergenza = insertEmergenza;
-            _getCodiceEmergenza = getCodiceEmergenza;
+            _upDateEmergenza = upDateEmergenza;
         }
 
-        public void Handle(InsertEmergenzaCommand command)
+        public void Handle(UpdateEmergenzaCommand command)
         {
-            command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.Get(command.InfoEmergenza.CodComandoRichiedente, command.InfoEmergenza.Tipologia.ToString());
-            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.Tipologia));
-            _insertEmergenza.Insert(command.InfoEmergenza);
+            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.Tipologia));
+            _upDateEmergenza.Update(command.InfoEmergenza);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace SO115App.Models.Classi.Emergenza
         public string CodComandoRichiedente { get; set; }
         public TipologieEmergenza Tipologia { get; set; }
         public PresaInCarico PresaInCarico { get; set; }
+        public bool Annullata { get; set; }
 
         public List<Evento> Eventi
         {

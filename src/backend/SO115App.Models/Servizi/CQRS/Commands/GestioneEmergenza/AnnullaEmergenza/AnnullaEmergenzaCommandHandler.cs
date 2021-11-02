@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InsertEmergenzaCommandHandler.cs" company="CNVVF">
+// <copyright file="AnnullaEmergenzaCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,24 +22,25 @@ using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using System;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergenza
 {
-    public class InsertEmergenzaCommandHandler : ICommandHandler<InsertEmergenzaCommand>
+    public class AnnullaEmergenzaCommandHandler : ICommandHandler<AnnullaEmergenzaCommand>
     {
-        private readonly IInsertEmergenza _insertEmergenza;
-        private readonly IGetCodiceEmergenza _getCodiceEmergenza;
+        private readonly IUpDateEmergenza _upDateEmergenza;
+        private readonly IGetEmergenzaById _getEmergenzaById;
 
-        public InsertEmergenzaCommandHandler(IInsertEmergenza insertEmergenza, IGetCodiceEmergenza getCodiceEmergenza)
+        public AnnullaEmergenzaCommandHandler(IUpDateEmergenza upDateEmergenza,
+                                              IGetEmergenzaById getEmergenzaById)
         {
-            _insertEmergenza = insertEmergenza;
-            _getCodiceEmergenza = getCodiceEmergenza;
+            _upDateEmergenza = upDateEmergenza;
+            _getEmergenzaById = getEmergenzaById;
         }
 
-        public void Handle(InsertEmergenzaCommand command)
+        public void Handle(AnnullaEmergenzaCommand command)
         {
-            command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.Get(command.InfoEmergenza.CodComandoRichiedente, command.InfoEmergenza.Tipologia.ToString());
-            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.Tipologia));
-            _insertEmergenza.Insert(command.InfoEmergenza);
+            command.InfoEmergenza = _getEmergenzaById.Get(command.Id);
+            command.InfoEmergenza.AddEvento(new AnnullamentoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.Motivazione, command.InfoEmergenza.Tipologia));
+            _upDateEmergenza.Update(command.InfoEmergenza);
         }
     }
 }

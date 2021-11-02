@@ -2,6 +2,6 @@
 {
     public interface IGetCodiceEmergenza
     {
-        public string Get();
+        public string Get(string codComando, string Tipologia);
     }
 }
