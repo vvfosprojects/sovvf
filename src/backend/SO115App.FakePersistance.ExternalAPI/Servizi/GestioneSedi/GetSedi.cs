@@ -65,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return lstSediRegionali;
         }
 
-        public async Task<List<SedeUC>> GetFigliDirezione(string codSede = null)
+        public async Task<List<SedeUC>> GetFigli(string codSede = null)
         {
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
@@ -77,7 +77,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return lstFigli;
         }
 
-        public DistaccamentoUC GetInfoSede(string codSede)
+        public async Task<DistaccamentoUC> GetInfoSede(string codSede)
         {
             var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
@@ -134,42 +134,46 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                 var lstProvinciali = GetDirezioniProvinciali();
 
-                var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigliDirezione(provinciale.id).Result).ToList());
+                var lstFigli = Task.Run(() => lstProvinciali.Result.SelectMany(provinciale => GetFigli(provinciale.id).Result).ToList());
 
                 var con = GetInfoSede("00");
 
                 var conFiglio = GetInfoSede("001");
 
                 //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-                var result = new UnitaOperativa(con.Id, con.Descrizione);
+                var result = new UnitaOperativa(con.Result.Id, con.Result.Descrizione);
 
                 try
                 {
-                    result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione));
+                    result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione));
 
                     //REGIONI
-                    foreach (var regionale in lstRegionali.Result)
+                    Task.Run(() => Parallel.ForEach(lstRegionali.Result, regionale =>
                     {
-                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione/*, regionale.Coordinate*/));
-                    }
+                        var info = GetInfoSede(regionale.id);
+
+                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, info.Result.Coordinate));
+                    }));
 
                     //PROVINCE
-                    Parallel.ForEach(lstProvinciali.Result, provinciale =>
+                    Task.Run(() => Parallel.ForEach(lstProvinciali.Result, provinciale =>
                     {
+                        var info = GetInfoSede(provinciale.id);
+
                         var infoProvinciale = GetInfoSede(provinciale.id);
 
-                        var lstComunali = GetFigliDirezione(provinciale.id).Result
+                        var lstComunali = GetFigli(provinciale.id).Result
                             .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
                         var centrale = lstComunali.First(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
                         lstComunali.Remove(centrale);
 
-                        var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione/*, provinciale.Coordinate*/);
+                        var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Result.Coordinate);
                         lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                        result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.IdSedePadre) ?? false)?
+                        result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.Result.IdSedePadre) ?? false)?
                             .AddFiglio(unitaComunali);
-                    });
+                    }));
                 }
                 catch (Exception e)
                 {
@@ -213,7 +217,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var sede = GetInfoSede(codiceSede);
 
-            var result = sede.MapDistaccamento();
+            var result = sede.Result.MapDistaccamento();
 
             return result;
         }
@@ -222,7 +226,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var dist = GetInfoSede(codiceSede);
 
-            var result = dist.MapSede();
+            var result = dist.Result.MapSede();
 
             return result;
         }
@@ -247,7 +251,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         && (sede.longitudine <= Filtro.TopRight.Longitudine))
                 {
                     sedeMarker.Codice = sede.codProv + "." + sede.codFiglio_TC;
-                    sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
+                    sedeMarker.Coordinate = new Coordinate(sede.latitudine, sede.longitudine);
                     sedeMarker.Descrizione = sede.sede;
                     sedeMarker.Provincia = sede.codProv;
                     sedeMarker.Tipo = GetTipoSede(sede);
