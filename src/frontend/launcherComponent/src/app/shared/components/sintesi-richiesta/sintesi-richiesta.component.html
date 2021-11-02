@@ -270,7 +270,7 @@
                                 <button *ngIf="!partenza && composizionePartenza"
                                         class="btn btn-light border py-0 px-2"
                                         ngbTooltip="Invio partenza"
-                                        [disabled]="disabledComposizionePartenza"
+                                        [disabled]="disabledComposizionePartenza || richiesta.stato === StatoRichiesta.Chiusa"
                                         [class.cursor-not-allowed]="disabledComposizionePartenza"
                                         (click)="invioPartenza(richiesta); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-arrow-right text-secondary"></i>
