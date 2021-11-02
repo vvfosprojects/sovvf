@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Tipologia } from '../../../shared/model/tipologia.model';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { Utente } from '../../../shared/model/utente.model';
 import { AuthState } from '../../auth/store/auth.state';
@@ -18,6 +18,8 @@ import { TriageSummaryState } from '../../../shared/store/states/triage-summary/
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { PosInterface } from '../../../shared/interface/pos.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { ViewComponentState } from '../../home/store/states/view/view.state';
+import { ToggleChiamata } from '../../home/store/actions/view/view.actions';
 
 @Component({
     selector: 'app-modal-nuova-chiamata',
@@ -56,7 +58,12 @@ export class ModalNuovaChiamataComponent {
 
     permessiFeature = PermissionFeatures;
 
-    constructor(private activeModal: NgbActiveModal) {
+    constructor(private activeModal: NgbActiveModal,
+                private store: Store) {
+        const formChiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+        if (formChiamataStatus) {
+            this.store.dispatch(new ToggleChiamata(false));
+        }
     }
 
     close(): void {
