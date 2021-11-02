@@ -31,23 +31,19 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public NotificationUpDateChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend,
-            IGetCompetenzeByCoordinateIntervento getCompetenze)
+            GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = NotificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
-            _getCompetenze = getCompetenze;
         }
 
         public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
+            var Competenze = chiamata.Competenze;
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
-            //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
