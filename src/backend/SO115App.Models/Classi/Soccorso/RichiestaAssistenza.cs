@@ -928,6 +928,8 @@ namespace SO115App.API.Models.Classi.Soccorso
             var uscitaPartenza = evento as UscitaPartenza;
             var composizionePartenza = evento as ComposizionePartenze;
             var telefonata = evento as Telefonata;
+            var assegnazionePriorita = evento as AssegnazionePriorita;
+            var marcaRilevante = evento as MarcaRilevante;
             var richiestaSoccorsoAereo = evento as RichiestaSoccorsoAereo;
             var inviareFonogramma = evento as InviareFonogramma;
             var fonogrammaInviato = evento as FonogrammaInviato;
@@ -938,6 +940,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             if ((composizionePartenza == null
                 && telefonata == null
+
                 && uscitaPartenza == null
                 && richiestaSoccorsoAereo == null
                 && inviareFonogramma == null
@@ -945,7 +948,9 @@ namespace SO115App.API.Models.Classi.Soccorso
                 && entiIntervenuti == null
                 && sostituzione == null
                 && statri == null
-                && trasferimento == null)
+                && trasferimento == null
+                && assegnazionePriorita == null
+                && marcaRilevante == null)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
