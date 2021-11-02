@@ -23,6 +23,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManageme
 {
     public interface IGetDistaccamentoByCodiceSede
     {
-        public Sede Get(string codiceSede);
+        public Sede GetSede(string codiceSede);
     }
 }

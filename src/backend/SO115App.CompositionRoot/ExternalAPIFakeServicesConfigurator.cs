@@ -20,6 +20,7 @@
 using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.AFM;
@@ -39,6 +40,7 @@ using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -186,6 +188,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetDirezioni, GetSedi>();
             container.Register<IGetSedi, GetSedi>();
             container.Register<IGetListaDistaccamentiByPinListaSedi, GetSedi>();
+            container.Register<IGetSediMarker, GetSedi>();
+            container.Register<IGetCoordinateByCodSede, GetSedi>();
+            container.Register<IGetListaDistaccamentiByCodiceSede, GetDistaccamentiByCodSede>();
 
             #endregion Sedi
 
@@ -283,18 +288,12 @@ namespace SO115App.CompositionRoot
             #region Distaccamenti
 
             container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
-                SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni.GetDistaccamentoByCodiceSede>();
+                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede, GetSedi>();
 
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede, GetSedi>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
-                SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
-            container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC,
-                GetDistaccamentoByCodiceSede>();
-            container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento,
-                ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetSedi>();
 
             #endregion Distaccamenti
 

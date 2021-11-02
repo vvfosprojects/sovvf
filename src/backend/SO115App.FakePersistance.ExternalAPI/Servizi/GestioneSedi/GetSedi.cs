@@ -1,12 +1,18 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
@@ -15,7 +21,9 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
-    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi
+    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi, 
+        IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
+        IGetSediMarker, IGetCoordinateByCodSede, IGetCompetenzeByCoordinateIntervento
     {
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
@@ -193,6 +201,82 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             }).ToList();
 
             return result;
+        }
+
+
+        /// <summary>
+        ///   metodo della classe che restituisce un Distaccamento
+        /// </summary>
+        /// <param name="codiceSede"></param>
+        /// <returns>un task contenente il distaccamento</returns>
+        public async Task<Distaccamento> Get(string codiceSede)
+        {
+            var sede = GetInfoSede(codiceSede);
+
+            var result = sede.MapDistaccamento();
+
+            return result;
+        }
+
+        public Sede GetSede(string codiceSede)
+        {
+            var dist = GetInfoSede(codiceSede);
+
+            var result = dist.MapSede();
+
+            return result;
+        }
+
+        public List<SedeMarker> GetListaSediMarker(AreaMappa Filtro)
+        {
+            var listaSediMarker = new List<SedeMarker>();
+
+            var listaSedi = GetAll();
+
+            Parallel.ForEach(listaSedi, sede =>
+            {
+                var sedeMarker = new SedeMarker();
+
+                if (Filtro == null)
+                {
+                    listaSediMarker.Add(sedeMarker);
+                }
+                else if ((sede.latitudine >= Filtro.BottomLeft.Latitudine)
+                        && (sede.latitudine <= Filtro.TopRight.Latitudine)
+                        && (sede.longitudine >= Filtro.BottomLeft.Longitudine)
+                        && (sede.longitudine <= Filtro.TopRight.Longitudine))
+                {
+                    sedeMarker.Codice = sede.codProv + "." + sede.codFiglio_TC;
+                    sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
+                    sedeMarker.Descrizione = sede.sede;
+                    sedeMarker.Provincia = sede.codProv;
+                    sedeMarker.Tipo = GetTipoSede(sede);
+
+                    listaSediMarker.Add(sedeMarker);
+                }
+            });
+
+            return listaSediMarker;
+        }
+
+        private string GetTipoSede(ListaSedi sede)
+        {
+            if (sede.sede.Contains("Comando"))
+                return "Comando";
+            else if (sede.sede.Contains("Distaccamento"))
+                return "Distaccamento";
+            else
+                return "Direzione";
+        }
+
+        Coordinate IGetCoordinateByCodSede.Get(string codiceSede)
+        {
+            return new Coordinate(41.89996, 12.49104);
+        }
+
+        public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
+        {
+            return new string[] { "RM.1000", "RM.1001", "RM.1004" };
         }
     }
 }

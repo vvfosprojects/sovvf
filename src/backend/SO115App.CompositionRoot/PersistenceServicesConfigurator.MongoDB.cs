@@ -82,17 +82,8 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
                 SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
-                SO115App.Persistence.MongoDB.Marker.GetSediMarker>();
-
             #endregion MARKER
 
-            #region Gestione Sedi
-
-            container.Register<IGetCoordinateByCodSede, GetCoordinateByCodSede>();
-
-            #endregion Gestione Sedi
 
             #region GestioneChiamataInCorso
 

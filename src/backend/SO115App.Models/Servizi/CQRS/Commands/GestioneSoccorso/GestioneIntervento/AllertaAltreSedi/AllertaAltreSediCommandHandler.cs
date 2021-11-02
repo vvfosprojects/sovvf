@@ -48,7 +48,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
-            var lstSedi = command.CodSediAllertate.Select(s => _getSede.Get(s).Descrizione).ToList();
+            var lstSedi = command.CodSediAllertate.Select(s => _getSede.GetSede(s).Descrizione).ToList();
             if(!lstSedi.All(s => s.ToUpper().Contains("CENTRALE")))
                 throw new Exception("Puoi allertare solo le centrali");
 

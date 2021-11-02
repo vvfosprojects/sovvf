@@ -84,7 +84,6 @@ namespace Persistence.MongoDB
             CodiceMap.Map();
             EventiMap.Map();
             UtenteMap.Map();
-            SediMap.Map();
             FiltriMap.Map();
             SchedeNueMap.Map();
             RubricaMap.Map();
@@ -235,13 +234,13 @@ namespace Persistence.MongoDB
             }
         }
 
-        public IMongoCollection<ListaSedi> SediCollection
-        {
-            get
-            {
-                return database.GetCollection<ListaSedi>("listasedi");
-            }
-        }
+        //public IMongoCollection<ListaSedi> SediCollection
+        //{
+        //    get
+        //    {
+        //        return database.GetCollection<ListaSedi>("listasedi");
+        //    }
+        //}
 
         public IMongoCollection<StatoOperativoSquadra> StatoSquadraCollection
         {

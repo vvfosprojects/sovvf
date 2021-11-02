@@ -29,12 +29,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         public void Handle(AddTrasferimentoCommand command)
         {
             //GESTIONE RICHIESTA E TRASFERIMENTO
-            var sedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione;
+            var sedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione;
 
             if (!sedeA.ToUpper().Contains("CENTRALE"))
                 throw new Exception("Puoi trasferire la chiamata solo verso le centrali");
 
-            var sedeDa = _getSede.Get(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
+            var sedeDa = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
 
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
 
