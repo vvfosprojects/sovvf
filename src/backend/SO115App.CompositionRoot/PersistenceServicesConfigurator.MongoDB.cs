@@ -314,6 +314,7 @@ namespace SO115App.CompositionRoot
             container.Register<IInsertEmergenza, InsertEmergenza>();
             container.Register<IUpDateEmergenza, UpDateEmergenza>();
             container.Register<IGetCodiceEmergenza, GetCodiceEmergenza>();
+            container.Register<IGetEmergenzeByCodComando, GetEmergenzeByCodiceComando>();
 
             #endregion Emergenza
         }
