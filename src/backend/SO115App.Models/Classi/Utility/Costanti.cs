@@ -60,6 +60,8 @@ namespace SO115App.Models.Classi.Utility
         public const string RichiestaChiusa = "Chiusa";
         public const string RichiestaSospesa = "Sospesa";
         public const string RichiestaRiaperta = "Riaperta";
+        public const string RichiestaModificata = "Modificata";
+        public const string ErroreRichiestaChiusa = "L'operazione richiesta non più essere eseguita. L'intervento risulta chiuso. Riaprirlo per poter operare. ";
 
         #endregion StatiRichiesta
 
