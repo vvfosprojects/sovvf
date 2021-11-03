@@ -167,8 +167,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(provinciale.id);
 
-                        var infoProvinciale = GetInfoSede(provinciale.id);
-
                         var lstComunali = GetFigli(provinciale.id).Result
                             .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
@@ -178,7 +176,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Result.Coordinate);
                         lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                        result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(infoProvinciale.Result.IdSedePadre) ?? false)?
+                        result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.Result.IdSedePadre) ?? false)?
                             .AddFiglio(unitaComunali);
                     });
                 }
