@@ -30,7 +30,7 @@ import { MezziComposizioneState } from '../../shared/store/states/mezzi-composiz
 import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import { ZoneEmergenzaState } from './store/states/filterbar/zone-emergenza.state';
+import { FiltroZoneEmergenzaState } from './store/states/filterbar/filtro-zone-emergenza.state';
 import { BarChartModule } from '@swimlane/ngx-charts';
 import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
 import { BoxPersonaleService } from '../../core/service/box-service/box-personale.service';
@@ -74,7 +74,7 @@ import { BoxRichiesteService } from '../../core/service/box-service/box-richiest
                 MezziComposizioneState,
                 SquadreComposizioneState,
                 FiltriComposizioneState,
-                ZoneEmergenzaState
+                FiltroZoneEmergenzaState
             ]
         ),
         BarChartModule,

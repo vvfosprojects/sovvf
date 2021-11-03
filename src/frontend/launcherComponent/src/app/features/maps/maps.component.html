@@ -2,7 +2,8 @@
     <div *ngIf="centroMappa" class="col-12 h-100">
         <div class="col-12 h-100">
             <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
-            <app-map-esri [pCenter]="centroMappa"
+            <app-map-esri [activeRoute]="activeRoute"
+                          [pCenter]="centroMappa"
                           [chiamateMarkers]="chiamataMarkers$ | async"
                           [sediMarkers]="sediMarkers$ | async"
                           [direction]="direction$ | async"

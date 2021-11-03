@@ -85,6 +85,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./features/dashboard-portale/dashboard-portale.module').then(m => m.DashboardPortaleModule),
     },
     {
+        path: RoutesPath.ZoneEmergenza,
+        loadChildren: () => import('./features/zone-emergenza/zone-emergenza.module').then(m => m.ZoneEmergenzaModule),
+    },
+    {
         path: RoutesPath.Profilo,
         loadChildren: () => import('./features/profilo/profilo.module').then(m => m.ProfiloModule),
         canActivate: [AuthGuard]
