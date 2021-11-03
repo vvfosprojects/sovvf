@@ -15,6 +15,7 @@ import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import { TravelModeService } from '../map-service/travel-mode.service';
+import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -39,6 +40,8 @@ import RouteResult from '@arcgis/core/tasks/support/RouteResult';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import esriId from '@arcgis/core/identity/IdentityManager';
+import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 
 @Component({
@@ -52,8 +55,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];
-    @Input() tastoChiamataMappaActive: boolean;
     @Input() direction: DirectionInterface;
+    @Input() tastoChiamataMappaActive: boolean;
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
@@ -64,7 +67,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
     operatore: Utente;
-    token: string;
 
     map: Map;
     view: any = null;
@@ -77,6 +79,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     chiamateMarkersGraphics = [];
     sediOperativeFeatureLayer: FeatureLayer;
     sediOperativeMarkersGraphics = [];
+
+    RoutesPath = RoutesPath;
 
     @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
     @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
@@ -98,7 +102,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.operatore = this.store.selectSnapshot(AuthState.currentUser);
-        this.token = this.store.selectSnapshot(AuthState.currentEsriToken);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -310,6 +313,29 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     // Inizializza la mappa
     async initializeMap(): Promise<any> {
         const container = this.mapViewEl.nativeElement;
+
+        const serverUrl = 'https://gis.dipvvf.it/portal/sharing/rest';
+        const username = this.store.selectSnapshot(AuthState.currentUserEsri);
+        const password = this.store.selectSnapshot(AuthState.currentPswEsri);
+        let token = null;
+
+        const formDataGenerateToken = new FormData();
+        formDataGenerateToken.set('username', username);
+        formDataGenerateToken.set('password', password);
+        formDataGenerateToken.set('expiration', '' + (60 * 24));
+        formDataGenerateToken.set('f', 'json');
+        formDataGenerateToken.set('client', 'referer');
+        formDataGenerateToken.set('referer', location.protocol + '//' + location.host);
+
+        await this.http.post(serverUrl + '/generateToken', formDataGenerateToken).subscribe((res: { expires: number, ssl: boolean, token: string }) => {
+            token = res.token;
+
+            if (token) {
+                const props = { server: serverUrl, token } as IdentityManagerRegisterTokenProperties;
+
+                esriId.registerToken(props);
+            }
+        });
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
 
@@ -651,6 +677,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // Altre possibili posizioni standard o manuale
         // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
+
         this.view.ui.add(llExpand, 'top-right');
         this.view.ui.add(leExpand, 'top-right');
         this.view.ui.add(bgExpand, 'top-right');
