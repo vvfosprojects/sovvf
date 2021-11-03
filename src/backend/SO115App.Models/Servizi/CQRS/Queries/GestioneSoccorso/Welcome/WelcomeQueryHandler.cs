@@ -85,10 +85,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var filtri = _filtriHandler.Get();
 
-            if (query.CodiceSede.First().Equals("CON"))
-                filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
-            else
-                filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
+            filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti();
+
+            //if (query.CodiceSede.First().Equals("CON"))
+            //    filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodi.ToHashSet().ToList());
+            //else
+            //    filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
             var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
             var ListaZoneEmergenza = _getZoneEmergenza.GetAll();

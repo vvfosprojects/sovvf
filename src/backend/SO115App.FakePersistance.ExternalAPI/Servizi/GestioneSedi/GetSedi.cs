@@ -197,19 +197,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             }
         }
 
-        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin)
+        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin = null)
         {
-            var lstCodici = listaPin.Select(p => p.Codice).ToList();
+            var lstCodici = listaPin?.Select(p => p.Codice).ToList();
 
-            var result = GetAll().Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Codice.ToUpper()))).Select(s => new Distaccamento()
-            {
-                Id = s.Codice,
-                CodSede = s.Codice,
-                Coordinate = s.Coordinate,
-                DescDistaccamento = s.Descrizione
-            }).ToList();
+            var result = GetAll();
 
-            return result;
+            if (listaPin == null)
+                return result.Result.Select(s => s.MapDistaccamento()).ToList();
+            else
+                return result.Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Codice.ToUpper()))).Select(s => s.MapDistaccamento()).ToList();
         }
 
 

@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => s.MapDistaccamento()));
+            var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => s.MapDistaccamentoComposizione()));
 
             //GESTIONE CODICI SEDI
             if (query.CodiciSedi.Contains("CON"))

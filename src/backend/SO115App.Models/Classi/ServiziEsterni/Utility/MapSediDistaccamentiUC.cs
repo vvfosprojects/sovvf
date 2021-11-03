@@ -34,7 +34,16 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             Indirizzo = distaccamento.Indirizzo
         };
 
-        public static DistaccamentoComposizione MapDistaccamento(this Sede distaccamento) => new DistaccamentoComposizione()
+        public static Distaccamento MapDistaccamento(this Sede sede) => new Distaccamento()
+        {
+            Id = sede.Codice,
+            CodSede = sede.Codice,
+            Coordinate = sede.Coordinate,
+            Indirizzo = sede.Indirizzo,
+            DescDistaccamento = sede.Descrizione
+        };
+
+        public static DistaccamentoComposizione MapDistaccamentoComposizione(this Sede distaccamento) => new DistaccamentoComposizione()
         {
             Codice = distaccamento.Codice,
             Coordinate = distaccamento.Coordinate,
