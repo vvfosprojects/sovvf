@@ -274,6 +274,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     return true;
                 case RoutesPath.AreaDocumentale:
                     return true;
+                case RoutesPath.ZoneEmergenza:
+                    return true;
                 default:
                     return false;
             }
@@ -316,6 +318,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 case RoutesPath.DashboardPortale:
                     return true;
                 case RoutesPath.AreaDocumentale:
+                    return true;
+                case RoutesPath.ZoneEmergenza:
                     return true;
                 default:
                     return false;

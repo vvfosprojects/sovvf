@@ -48,6 +48,7 @@ import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtil
 })
 export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
+    @Input() activeRoute: string;
     @Input() pCenter: CentroMappa;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];

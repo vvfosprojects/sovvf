@@ -191,7 +191,7 @@ export class SintesiRichiesta {
          */
         public triageSummary?: TriageSummary[],
         /**
-         * eventi-richiesta-richiesta relativi a mezzi e velivoli
+         * eventi richiesta relativi a mezzi e velivoli
          */
         public eventi?: any
     ) {

@@ -1,0 +1,58 @@
+<table *ngIf="zoneEmergenza?.length"
+       class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Tipologia</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let zE of zoneEmergenza">
+        <td style="width:12%" class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                    ngbTooltip="Rimuovi POS"
+                    placement="bottom"
+                    (click)="onDelete(zE?.id, zE?.codiceEmergenza)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                    ngbTooltip="Modifica POS"
+                    placement="bottom"
+                    (click)="onEdit(zE)">
+                <i class="fas fa-edit"></i>
+            </button>
+        </td>
+        <td style="width:22%" class="align-middle">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;">
+                {{ zE?.tipologia }}
+            </a>
+        </td>
+        <td style="width:22%" class="align-middle">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;">
+                {{ zE?.descrizione }}
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="zoneEmergenza?.length <= 0">
+    <div class="alert alert-danger">
+        <ng-template [ngIf]="!loading">Nessuna Emergenza trovata</ng-template>
+        <ng-template [ngIf]="loading">Caricamento Emergenze in corso...</ng-template>
+    </div>
+</div>
+<div *ngIf="zoneEmergenza?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
+</div>

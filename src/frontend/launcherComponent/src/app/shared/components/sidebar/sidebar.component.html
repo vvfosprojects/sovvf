@@ -51,6 +51,13 @@
         Area Documentale
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+            [class.btn-sidebar-selected]="url === '/zone-emergenza'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-exclamation-triangle"></i>
+        Gestione Emergenze
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
             (click)="onRiepilogoInterventi()">
         <i class="fas fa-print"></i>
         Riepilogo Interventi

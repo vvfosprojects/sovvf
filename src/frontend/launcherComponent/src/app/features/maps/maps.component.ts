@@ -20,6 +20,8 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import { ActivatedRoute } from '@angular/router';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-maps',
@@ -50,6 +52,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
 
     mapsFullyLoaded = false;
+    activeRoute: string;
 
     private subscription: Subscription = new Subscription();
 
@@ -58,6 +61,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.activeRoute = this.store.selectSnapshot(RouterState.url);
         console.log('Componente Maps creato');
     }
 
