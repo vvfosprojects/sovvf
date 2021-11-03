@@ -8,7 +8,7 @@ namespace SO115App.Persistence.MongoDB.Marker
     {
         public CentroMappa GetCentroMappaMarker(string codiceSede)
         {
-            if (!codiceSede.Equals("CON"))
+            if (!(codiceSede.Equals("00") || codiceSede.Equals("001")))
             {
                 var coordinate = new Coordinate(0.0, 0.0);
 

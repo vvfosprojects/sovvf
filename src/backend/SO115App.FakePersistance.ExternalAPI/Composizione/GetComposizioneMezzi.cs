@@ -47,7 +47,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => s.MapDistaccamentoComposizione()));
 
             //GESTIONE CODICI SEDI
-            if (query.CodiciSedi.Contains("CON"))
+            if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
                 query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).Where(s => s.Contains('.')).Distinct().ToArray();
             else
                 query.CodiciSedi = query.CodiciSedi.Where(s => s.Contains('.')).Distinct().ToArray();
