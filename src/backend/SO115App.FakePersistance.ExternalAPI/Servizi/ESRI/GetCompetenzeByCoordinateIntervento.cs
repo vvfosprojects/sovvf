@@ -15,18 +15,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 {
     public class GetCompetenzeByCoordinateIntervento : IGetCompetenzeByCoordinateIntervento
     {
-        private readonly IHttpRequestManager<ESRI_IdCompetenze> _jobIdClient;
-        private readonly IHttpRequestManager<ESRI_Competenze> _competenzeClient;
+        private readonly IHttpRequestManager<ESRI_Competenze> _getCompetenze;
         private readonly IGetToken_ESRI _getToken_ESRI;
         private readonly IConfiguration _configuration;
 
-        public GetCompetenzeByCoordinateIntervento(IHttpRequestManager<ESRI_IdCompetenze> jobIdClient,
-                                                   IHttpRequestManager<ESRI_Competenze> competenzeClient,
+        public GetCompetenzeByCoordinateIntervento(IHttpRequestManager<ESRI_Competenze> getCompetenze,
                                                    IGetToken_ESRI getToken_ESRI,
                                                    IConfiguration configuration)
         {
-            _jobIdClient = jobIdClient;
-            _competenzeClient = competenzeClient;
+            _getCompetenze = getCompetenze;
             _getToken_ESRI = getToken_ESRI;
             _configuration = configuration;
         }
@@ -55,42 +52,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                     String.Format("\"{0}\"", keyValuePair.Key));
             }
 
-            var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/submitJob");
+            var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/execute");
 
-            var jobIdResponse = _jobIdClient.PostAsyncFormData(url, multipartFormDataContent).Result;
+            var response = _getCompetenze.PostAsyncFormData(url, multipartFormDataContent).Result;
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            while (true)
+            if (response != null)
             {
-                //some other processing to do possible
-                if (stopwatch.ElapsedMilliseconds >= 5000)
-                {
-                    break;
-                }
-            }
+                var codCom = response.results.Find(x => x.paramName.Equals("cod_com")).value;
 
-            if (jobIdResponse != null)
-            {
-                var urlCodCom = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/Jobs/{jobIdResponse.jobId}/results/cod_com?f=json&token={token}");
-                var CodComResponse = _competenzeClient.GetAsync(urlCodCom).Result;
+                competenze[0] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_1")).value}";
 
-                var urlComp1 = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/Jobs/{jobIdResponse.jobId}/results/rank_1?f=json&token={token}");
-                var Comp1Response = _competenzeClient.GetAsync(urlComp1).Result;
+                if (response.results.Find(x => x.paramName.Equals("rank_2")) != null)
+                    competenze[1] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_2")).value}";
 
-                if (Comp1Response != null)
-                    competenze[0] = $"{CodComResponse.value}.{Comp1Response.value}";
-
-                var urlComp2 = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/Jobs/{jobIdResponse.jobId}/results/rank_2?f=json&token={token}");
-                var Comp2Response = _competenzeClient.GetAsync(urlComp2).Result;
-
-                if (Comp2Response != null)
-                    competenze[1] = $"{CodComResponse.value}.{Comp2Response.value}";
-
-                var urlComp3 = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/Jobs/{jobIdResponse.jobId}/results/rank_3?f=json&token={token}");
-                var Comp3Response = _competenzeClient.GetAsync(urlComp3).Result;
-
-                if (Comp3Response != null)
-                    competenze[2] = $"{CodComResponse.value}.{Comp3Response.value}";
+                if (response.results.Find(x => x.paramName.Equals("rank_3")) != null)
+                    competenze[2] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_3")).value}";
             }
 
             return competenze;
