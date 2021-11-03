@@ -9,11 +9,11 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Emergenza
         public ModificaEmergenza(DateTime istante,
                          string codiceFonte,
                          string codice,
-                         TipologieEmergenza tipologiaEmergenza) : base(istante, codiceFonte, codice, "ModificaEmergenza")
+                         string tipologiaEmergenza) : base(istante, codiceFonte, codice, "ModificaEmergenza")
         {
             TipologiaEmergenza = tipologiaEmergenza;
         }
 
-        public TipologieEmergenza TipologiaEmergenza;
+        public string TipologiaEmergenza;
     }
 }

@@ -10,13 +10,13 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Emergenza
                          string codiceFonte,
                          string codice,
                          string motivazione,
-                         TipologieEmergenza tipologia) : base(istante, codiceFonte, codice, "AnnullamentoEmergenza")
+                         string tipologia) : base(istante, codiceFonte, codice, "AnnullamentoEmergenza")
         {
             Motivazione = motivazione;
             TipologiaEmergenza = tipologia;
         }
 
         public string Motivazione;
-        public TipologieEmergenza TipologiaEmergenza;
+        public string TipologiaEmergenza;
     }
 }

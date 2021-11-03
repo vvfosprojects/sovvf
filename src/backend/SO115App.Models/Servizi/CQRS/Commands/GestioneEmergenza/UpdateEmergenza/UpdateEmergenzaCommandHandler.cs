@@ -35,7 +35,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
 
         public void Handle(UpdateEmergenzaCommand command)
         {
-            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.Tipologia));
+            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.Emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);
         }
     }

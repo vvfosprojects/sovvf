@@ -38,7 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenz
         public void Handle(InsertEmergenzaCommand command)
         {
             command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.Get(command.InfoEmergenza.CodComandoRichiedente, command.InfoEmergenza.Tipologia.ToString());
-            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.Tipologia));
+            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.Emergenza)));
             _insertEmergenza.Insert(command.InfoEmergenza);
         }
     }

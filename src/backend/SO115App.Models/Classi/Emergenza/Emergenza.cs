@@ -10,7 +10,7 @@ namespace SO115App.Models.Classi.Emergenza
 
         public Emergenza(string codEmergenza, Localita localita,
                          string codComandoRichiedente,
-                         TipologieEmergenza tipologia)
+                         TipologiaEmergenza tipologia)
         {
             CodEmergenza = codEmergenza;
             Localita = localita;
@@ -24,7 +24,7 @@ namespace SO115App.Models.Classi.Emergenza
         public string Descrizione { get; set; }
         public Localita Localita { get; set; }
         public string CodComandoRichiedente { get; set; }
-        public TipologieEmergenza Tipologia { get; set; }
+        public TipologiaEmergenza Tipologia { get; set; }
         public PresaInCarico PresaInCarico { get; set; }
         public bool Annullata { get; set; }
 
@@ -40,12 +40,6 @@ namespace SO115App.Models.Classi.Emergenza
         {
             this._eventi.Add(evento);
         }
-    }
-
-    public enum TipologieEmergenza
-    {
-        Terremoto,
-        Alluvione
     }
 
     public enum PresaInCarico
