@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { StartBigLoading, StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
 import { SetInitCentroMappa } from '../../../maps/store/actions/centro-mappa.actions';
 import { SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
-import { SetCurrentEsriToken } from '../../../auth/store/auth.actions';
+import { SetCurrentPswEsri, SetCurrentUserEsri } from '../../../auth/store/auth.actions';
 
 export interface NavbarStateModel {
     loaded: boolean;
@@ -67,7 +67,8 @@ export class NavbarState {
             new SetRuoliUtenteLoggato(action.settings.utente.ruoli),
             new SetListaSediTreeview(action.settings.listaSedi),
             new SetInitCentroMappa(action.settings.centroMappaMarker),
-            new SetCurrentEsriToken(action.settings.tokenESRI)
+            new SetCurrentPswEsri(action.settings.pwESRI),
+            new SetCurrentUserEsri(action.settings.userESRI)
         ]);
     }
 

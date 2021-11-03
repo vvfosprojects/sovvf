@@ -309,6 +309,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case STATRI_InivioRichiesta _:
                     return Costanti.STATRI_InivioRichiesta;
 
+                case RichiestaModificata _:
+                    return Costanti.RichiestaModificata;
+
                 default:
                     return Costanti.EventoGenerico;
             }

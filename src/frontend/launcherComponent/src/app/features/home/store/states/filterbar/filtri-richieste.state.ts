@@ -7,13 +7,20 @@ import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
 import {
     ApplyFiltriTipologiaSelezionatiRichieste,
     ClearFiltriTipologiaSelezionatiRichieste,
-    ClearFiltroSelezionatoRichieste, ClearFiltroSenzaEsecuzione,
+    ClearFiltroSelezionatoRichieste,
+    ClearFiltroSenzaEsecuzione,
     ClearFiltroTipologiaSelezionatoRichieste,
-    GetFiltriRichieste, RemoveChiuseRichiesta, RemovePeriodoChiuse, RemoveSelezioneStatoRichiesta,
-    ResetFiltriSelezionatiRichieste, SetChiuseRichiesta,
+    GetFiltriRichieste,
+    RemoveChiuseRichiesta,
+    RemovePeriodoChiuse,
+    RemoveSelezioneStatoRichiesta,
+    ResetFiltriSelezionatiRichieste,
+    SetChiuseRichiesta,
     SetFiltroBoxRichieste,
     SetFiltroSelezionatoRichieste,
-    SetFiltroTipologiaSelezionatoRichieste, SetPeriodoChiuse, SetSelezioneStatoRichiesta
+    SetFiltroTipologiaSelezionatoRichieste,
+    SetPeriodoChiuse,
+    SetSelezioneStatoRichiesta
 } from '../../actions/filterbar/filtri-richieste.actions';
 import { Injectable } from '@angular/core';
 import produce from 'immer';

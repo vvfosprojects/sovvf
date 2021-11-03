@@ -26,8 +26,9 @@
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             (click)="onOpenOpservice()">
-        <i class="fas fa-clock mr-1"></i>
+        <i class="fas fa-users mr-1"></i>
         Servizi Operativi
+        <i class="fas fa-external-link-alt"></i>
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.DashboardPortale]"
@@ -48,6 +49,13 @@
             (click)="onShowAzioniAreaDocumentale()">
         <i class="far fa-folder-open mr-1"></i>
         Area Documentale
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+            [class.btn-sidebar-selected]="url === '/zone-emergenza'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-exclamation-triangle"></i>
+        Gestione Emergenze
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             (click)="onRiepilogoInterventi()">

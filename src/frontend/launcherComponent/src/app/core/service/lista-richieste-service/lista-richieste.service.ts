@@ -7,7 +7,7 @@ import { FiltersInterface } from '../../../shared/interface/filters/filters.inte
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 import { Store } from '@ngxs/store';
-import { ZoneEmergenzaState } from '../../../features/home/store/states/filterbar/zone-emergenza.state';
+import { FiltroZoneEmergenzaState } from '../../../features/home/store/states/filterbar/filtro-zone-emergenza.state';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { FiltriRichiesteState } from '../../../features/home/store/states/filterbar/filtri-richieste.state';
 
@@ -34,7 +34,7 @@ export class SintesiRichiesteService {
             filtriTipologia = filtriTipologieRichiesta[0]?.codice;
         }
         const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.selezioneStatoRichiesta);
-        const zoneEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenzaSelezionate);
+        const zoneEmergenza = this.store.selectSnapshot(FiltroZoneEmergenzaState.filtriZoneEmergenzaSelezionate);
         const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
         const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
         const periodoChiusiInterventi = this.store.selectSnapshot(FiltriRichiesteState.periodoChiusiInterventi);

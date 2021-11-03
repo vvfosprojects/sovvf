@@ -925,28 +925,11 @@ namespace SO115App.API.Models.Classi.Soccorso
             const string OrarioFuturo = "Impossibile aggiungere un evento con data futura.";
             const string EventoGiaPresente = "Impossibile aggiungere l'evento specificato. L'evento è già presente.";
 
-            var uscitaPartenza = evento as UscitaPartenza;
-            var composizionePartenza = evento as ComposizionePartenze;
-            var telefonata = evento as Telefonata;
-            var richiestaSoccorsoAereo = evento as RichiestaSoccorsoAereo;
-            var inviareFonogramma = evento as InviareFonogramma;
-            var fonogrammaInviato = evento as FonogrammaInviato;
-            var entiIntervenuti = evento as InserimentoEnteIntervenuto;
-            var sostituzione = evento as SostituzionePartenzaFineTurno;
-            var statri = evento as STATRI_InivioRichiesta;
-            var trasferimento = evento as SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata;
-
-            if ((composizionePartenza == null
-                && telefonata == null
-                && uscitaPartenza == null
-                && richiestaSoccorsoAereo == null
-                && inviareFonogramma == null
-                && fonogrammaInviato == null
-                && entiIntervenuti == null
-                && sostituzione == null
-                && statri == null
-                && trasferimento == null)
-                && evento.Istante/*.AddHours(2)*/ > DateTime.UtcNow/*.AddSeconds(1)*/)
+            if ((evento is AbstractPartenza
+                || evento is ArrivoSulPosto
+                || evento is PartenzaInRientro
+                || evento is PartenzaRientrata)
+                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)

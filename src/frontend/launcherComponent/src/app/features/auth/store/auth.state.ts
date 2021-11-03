@@ -8,10 +8,12 @@ import {
     ClearDataUser,
     GetAuth,
     Logout,
-    RecoveryUrl, SetCurrentEsriToken,
+    RecoveryUrl,
     SetCurrentJwt,
+    SetCurrentPswEsri,
     SetCurrentTicket,
     SetCurrentUser,
+    SetCurrentUserEsri,
     SetLogged,
     SetLoggedCas,
     UpdateCurrentUser,
@@ -35,7 +37,8 @@ import { GestioneUtentiService } from '../../../core/service/gestione-utenti-ser
 
 export interface AuthStateModel {
     currentJwt: string;
-    currentEsriToken: string;
+    currentPswEsri: string;
+    currentUserEsri: string;
     currentTicket: string;
     currentUser: Utente;
     logged: boolean;
@@ -44,7 +47,8 @@ export interface AuthStateModel {
 
 export const AuthStateDefaults: AuthStateModel = {
     currentJwt: null,
-    currentEsriToken: null,
+    currentPswEsri: null,
+    currentUserEsri: null,
     currentTicket: null,
     currentUser: null,
     logged: false,
@@ -68,8 +72,12 @@ export class AuthState {
     }
 
     @Selector()
-    static currentEsriToken(state: AuthStateModel): string {
-        return state.currentEsriToken;
+    static currentPswEsri(state: AuthStateModel): string {
+        return state.currentPswEsri;
+    }
+    @Selector()
+    static currentUserEsri(state: AuthStateModel): string {
+        return state.currentUserEsri;
     }
 
     @Selector()
@@ -125,11 +133,20 @@ export class AuthState {
         }
     }
 
-    @Action(SetCurrentEsriToken)
-    setCurrentEsriToken({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentEsriToken): void {
-        if (action.currentEsriToken) {
+    @Action(SetCurrentPswEsri)
+    setCurrentPswEsri({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentPswEsri): void {
+        if (action.psw) {
             patchState({
-                currentEsriToken: action.currentEsriToken
+                currentPswEsri: action.psw
+            });
+        }
+    }
+
+    @Action(SetCurrentUserEsri)
+    setCurrentUserEsri({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentUserEsri): void {
+        if (action.user) {
+            patchState({
+                currentUserEsri: action.user
             });
         }
     }

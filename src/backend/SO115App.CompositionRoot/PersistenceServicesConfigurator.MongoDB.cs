@@ -8,6 +8,7 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
+using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -18,6 +19,7 @@ using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneDocumentale;
+using SO115App.Persistence.MongoDB.GestioneEmergenza;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
@@ -293,6 +295,16 @@ namespace SO115App.CompositionRoot
             container.Register<IEditDoc, EditDoc>();
 
             #endregion Documentale
+
+            #region Emergenza
+
+            container.Register<IInsertEmergenza, InsertEmergenza>();
+            container.Register<IUpDateEmergenza, UpDateEmergenza>();
+            container.Register<IGetCodiceEmergenza, GetCodiceEmergenza>();
+            container.Register<IGetEmergenzeByCodComando, GetEmergenzeByCodiceComando>();
+            container.Register<IGetEmergenzaById, GetEmergenzeById>();
+
+            #endregion Emergenza
         }
     }
 }

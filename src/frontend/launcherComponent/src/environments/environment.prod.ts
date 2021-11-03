@@ -59,7 +59,8 @@ export const environment = {
         dettagliTipologie: '/api/GestioneDettaglioTipologia',
         triage: '/api/GestioneTriage',
         pos: '/api/GestionePos',
-        areaDocumentale: '/api/GestioneDocumentale'
+        areaDocumentale: '/api/GestioneDocumentale',
+        zoneEmergenza: '/api/ZoneEmergenza'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas/login?service=',

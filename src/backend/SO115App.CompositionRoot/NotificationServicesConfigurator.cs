@@ -3,6 +3,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipologia;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDocumentale;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEntiIntervenuti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
@@ -12,6 +13,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
 using SO115App.SignalR.Sender.ComposizionePartenza;
 using SO115App.SignalR.Sender.GestioneDettaglioTipologia;
 using SO115App.SignalR.Sender.GestioneDocumentale;
+using SO115App.SignalR.Sender.GestioneEmergenze;
 using SO115App.SignalR.Sender.GestioneEnti;
 using SO115App.SignalR.Sender.GestioneFonogramma;
 using SO115App.SignalR.Sender.GestioneIntervento;
@@ -151,6 +153,12 @@ namespace SO115App.CompositionRoot
                 SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationContatoreSchedeNue>();
 
             #endregion SchedeContatto
+
+            #region Emergenza
+
+            container.Register<INotifyInsertEmergenza, NotificationInsertEmergenza>();
+
+            #endregion Emergenza
         }
     }
 }

@@ -9,7 +9,8 @@ export interface AppSettings {
     utente: Utente;
     infoNue: ContatoriSchedeContatto;
     centroMappaMarker: CentroMappa;
-    tokenESRI: string;
+    pwESRI: string;
+    userESRI: string;
 }
 
 export interface AppSettingsAPI {
@@ -18,5 +19,6 @@ export interface AppSettingsAPI {
     utente: Utente;
     infoNue: ContatoriSchedeContatto;
     centroMappaMarker: CentroMappa;
-    tokenESRI: string;
+    pwESRI: string;
+    userESRI: string;
 }

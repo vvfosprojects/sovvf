@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -37,20 +38,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
-        private readonly IGetToken_ESRI _getToken;
+        private readonly IConfiguration _configuration;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
         public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
                                   IGetConteggioSchede getConteggioSchedeHandler,
                                   IGetUtenteById getUtenteById,
                                   IGetCentroMappaMarker centroMappaMarkerHandler,
-                                  IGetToken_ESRI getToken)
+                                  IConfiguration configuration)
         {
             _alberaturaUO = alberaturaUO;
             _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
-            _getToken = getToken;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -71,7 +72,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
                 infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
                 CentroMappaMarker = centroMappaMarker,
-                TokenESRI = _getToken.Get()
+                UserESRI = _configuration.GetSection("ESRI").GetSection("User").Value,
+                PwESRI = _configuration.GetSection("ESRI").GetSection("Password").Value
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

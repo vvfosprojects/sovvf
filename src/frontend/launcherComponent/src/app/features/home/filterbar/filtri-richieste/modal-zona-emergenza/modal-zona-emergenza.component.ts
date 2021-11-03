@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
-import { ZoneEmergenzaState } from '../../../store/states/filterbar/zone-emergenza.state';
+import { FiltroZoneEmergenzaState } from '../../../store/states/filterbar/filtro-zone-emergenza.state';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 
 @Component({
@@ -18,7 +18,7 @@ export class ModalZonaEmergenzaComponent {
     zonaEmergenzaArrayFake: any = [];
 
     constructor(private modal: NgbActiveModal, private store: Store) {
-        const zoneEmergenza = makeCopy(this.store.selectSnapshot(ZoneEmergenzaState.zoneEmergenza));
+        const zoneEmergenza = makeCopy(this.store.selectSnapshot(FiltroZoneEmergenzaState.filtriZoneEmergenza));
         this.zonaEmergenzaArrayFake = zoneEmergenza;
     }
 

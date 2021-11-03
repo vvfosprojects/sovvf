@@ -11,8 +11,9 @@ export class RpcInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         const localIp = this.rcpStore.currentLocalIpValue;
+        const generateTokenEsriUrl = 'https://gis.dipvvf.it/portal/sharing/rest/generateToken';
 
-        if (localIp) {
+        if (localIp && request.url !== generateTokenEsriUrl) {
             request = request.clone({
                 setHeaders: {
                     LocalIp: `${localIp}`

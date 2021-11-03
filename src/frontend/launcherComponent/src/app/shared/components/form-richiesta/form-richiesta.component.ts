@@ -338,6 +338,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.latitudine.patchValue(latitudine);
         this.f.longitudine.patchValue(longitudine);
         this.f.indirizzo.patchValue(address);
+        this.f.latitudine.disable();
+        this.f.longitudine.disable();
+        this.f.indirizzo.disable();
 
         const coordinate = new Coordinate(lat, lon);
         this.chiamataMarker = new ChiamataMarker(
@@ -347,10 +350,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new Localita(coordinate ? coordinate : null, address),
             null
         );
-
-        this.f.indirizzo.patchValue(address);
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lon);
 
         this.reducerSchedaTelefonata('cerca');
     }

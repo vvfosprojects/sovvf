@@ -18,7 +18,7 @@ import { ModalZonaEmergenzaComponent } from './modal-zona-emergenza/modal-zona-e
 import { Observable, Subscription } from 'rxjs';
 import { FiltriRichiesteState } from '../../store/states/filterbar/filtri-richieste.state';
 import { FiltroChiuseDettaglio } from '../../../../shared/interface/filtro-chiuse-dettaglio.interface';
-import { ResetFiltriStatiZone, ResetFiltriZoneSelezionate, SetZoneEmergenzaSelezionate } from '../../store/actions/filterbar/zone-emergenza.actions';
+import { ResetFiltriStatiZone, ResetFiltriZoneSelezionate, SetFiltroZoneEmergenzaSelezionate } from '../../store/actions/filterbar/filtro-zone-emergenza.actions';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -124,7 +124,7 @@ export class FiltriRichiesteComponent implements OnDestroy {
                 } else {
                     this.listaZoneEmergenzaSelezionate[0] = 'Nessuna zona emergenza';
                 }
-                this.store.dispatch(new SetZoneEmergenzaSelezionate(res));
+                this.store.dispatch(new SetFiltroZoneEmergenzaSelezionate(res));
                 this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
             } else {
                 const filtro = {

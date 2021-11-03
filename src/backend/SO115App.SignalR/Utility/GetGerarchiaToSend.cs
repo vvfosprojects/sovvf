@@ -28,7 +28,7 @@ namespace SO115App.SignalR.Utility
                 Figli = UnitaOperativaAnagrafica.ToList()[0].Figli
             };
 
-            foreach (var direzioneRegionale in listaSediAlberata.Result.Figli)
+            foreach (var direzioneRegionale in listaSediAlberata.Figli.First().Figli)
             {
                 if (direzioneRegionale.Figli.ToList().Contains(unitaperativa))
                 {

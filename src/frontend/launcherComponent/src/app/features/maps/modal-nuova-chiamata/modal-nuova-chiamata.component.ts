@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Tipologia } from '../../../shared/model/tipologia.model';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { Utente } from '../../../shared/model/utente.model';
 import { AuthState } from '../../auth/store/auth.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SchedaTelefonataState } from '../../home/store/states/form-richiesta/scheda-telefonata.state';
 import { Sede } from '../../../shared/model/sede.model';
@@ -18,13 +18,15 @@ import { TriageSummaryState } from '../../../shared/store/states/triage-summary/
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { PosInterface } from '../../../shared/interface/pos.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { ViewComponentState } from '../../home/store/states/view/view.state';
+import { ToggleChiamata } from '../../home/store/actions/view/view.actions';
 
 @Component({
     selector: 'app-modal-nuova-chiamata',
     templateUrl: './modal-nuova-chiamata.component.html',
     styleUrls: ['./modal-nuova-chiamata.component.scss']
 })
-export class ModalNuovaChiamataComponent {
+export class ModalNuovaChiamataComponent implements OnDestroy {
 
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
@@ -34,6 +36,9 @@ export class ModalNuovaChiamataComponent {
     @Select(SchedaTelefonataState.countInterventiChiusiStessoIndirizzo) countInterventiChiusiStessoIndirizzo$: Observable<number>;
     @Select(SchedaTelefonataState.interventiChiusiStessoIndirizzo) interventiChiusiStessoIndirizzo$: Observable<SintesiRichiesta[]>;
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(SchedaTelefonataState.loadingSchedaRichiesta) loadingSchedaRichiesta$: Observable<boolean>;
+    loadingSchedaRichiesta: boolean;
+    @Select(SchedaTelefonataState.loadingCompetenze) loadingCompetenze$: Observable<boolean>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
@@ -56,7 +61,27 @@ export class ModalNuovaChiamataComponent {
 
     permessiFeature = PermissionFeatures;
 
-    constructor(private activeModal: NgbActiveModal) {
+    private subscriptions: Subscription = new Subscription();
+
+    constructor(private activeModal: NgbActiveModal,
+                private store: Store) {
+        this.getLoadingSchedaRichiesta();
+        const formChiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+        if (formChiamataStatus) {
+            this.store.dispatch(new ToggleChiamata(false));
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
+
+    getLoadingSchedaRichiesta(): void {
+        this.subscriptions.add(
+            this.loadingSchedaRichiesta$.subscribe((loading: boolean) => {
+                this.loadingSchedaRichiesta = loading;
+            })
+        );
     }
 
     close(): void {
