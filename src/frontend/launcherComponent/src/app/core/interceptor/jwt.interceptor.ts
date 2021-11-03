@@ -17,8 +17,9 @@ export class JwtInterceptor implements HttpInterceptor {
         const idUtente = this.store.selectSnapshot(SignalRState.idUtenteSignalR);
         const connectionId = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
         const codiceSede = this.store.selectSnapshot(SignalRState.codiceSedeSignalR);
+        const generateTokenEsriUrl = 'https://gis.dipvvf.it/portal/sharing/rest/generateToken';
 
-        if (jwt) {
+        if (jwt && request.url !== generateTokenEsriUrl) {
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${jwt}`,
