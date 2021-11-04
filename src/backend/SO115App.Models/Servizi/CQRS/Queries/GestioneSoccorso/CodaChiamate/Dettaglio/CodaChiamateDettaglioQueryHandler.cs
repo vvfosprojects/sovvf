@@ -66,7 +66,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             pinNodi.Add(new PinNodo(query.CodiceSede, false));
 
-            var listaSedi = listaSediAlberate.GetSottoAlbero(pinNodi);
+            var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
             foreach (var figlio in listaSedi)
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, false));

@@ -63,7 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     pinNodi.Add(new PinNodo(sede, true));
                 }
 
-                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+                foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 {
                     var codice = figlio.Codice;
                     string codiceE = "";

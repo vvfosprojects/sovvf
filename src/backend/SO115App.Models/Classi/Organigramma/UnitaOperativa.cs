@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         /// <param name="codice">Il codice dell'unità operativa</param>
         /// <param name="nome">Il nome dell'unità operativa</param>
-        public UnitaOperativa(string codice, string nome)
+        public UnitaOperativa(string codice, string nome, Coordinate coordinate = null)
         {
             if (string.IsNullOrWhiteSpace(codice))
             {
@@ -48,6 +49,7 @@ namespace SO115App.API.Models.Classi.Organigramma
 
             this.Codice = codice;
             this.Nome = nome;
+            this.Coordinate = coordinate;
             this.Figli = new ConcurrentBag<UnitaOperativa>();
         }
 
@@ -62,7 +64,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Nome
         {
-            get => _nome.Replace("COMANDO VV.F.", "Centrale");
+            get => _nome/*.Replace("Comando VV.F.", "Centrale").Replace("COMANDO VV.F.", "CENTRALE")*/;
             set => _nome = value;
         }
 
@@ -70,6 +72,8 @@ namespace SO115App.API.Models.Classi.Organigramma
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
         public ConcurrentBag<UnitaOperativa> Figli { get; set; }
+
+        public Coordinate Coordinate { get; set; }
 
 
         /// <summary>

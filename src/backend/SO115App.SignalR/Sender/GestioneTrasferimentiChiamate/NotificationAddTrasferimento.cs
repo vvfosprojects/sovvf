@@ -45,7 +45,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
         public async Task SendNotification(AddTrasferimentoCommand command)
         {
-            var mioComandoDes = _getSede.Get(command.CodiciSede[0]).Descrizione;
+            var mioComandoDes = _getSede.GetSede(command.CodiciSede[0]).Descrizione;
             var mioOperatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore);
             var totalItemsA = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeA);
             var totalItemsDa = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeDa);
@@ -73,7 +73,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
+                        SedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },
@@ -119,7 +119,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
+                        SedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },

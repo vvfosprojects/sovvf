@@ -24,6 +24,7 @@ using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -79,13 +80,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll().Select(s => new DistaccamentoComposizione()
-            {
-                Codice = $"{s.codProv}.{s.codFiglio_TC}",
-                Coordinate = new Coordinate(s.latitudine, s.longitudine),
-                Descrizione = s.sede.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
-                Provincia = s.codProv
-            }));
+            var lstSedi = _getSedi.GetAll();
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
@@ -140,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
-                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento)),
+                    Distaccamento = lstSedi.Result.Find(d => d.Codice.Equals(squadra.Distaccamento)).MapDistaccamentoComposizione(),
                     Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale.ToUpper()).Contains(a.CodiceFiscale.ToUpper()))?.Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,

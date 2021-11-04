@@ -14,7 +14,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
@@ -24,7 +23,6 @@ using SO115App.Persistence.MongoDB.GestioneEmergenza;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
-using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
@@ -84,19 +82,8 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
                 SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
-                SO115App.Persistence.MongoDB.Marker.GetSediMarker>();
-
             #endregion MARKER
 
-            #region Gestione Sedi
-
-            container.Register<IGetCoordinateByCodSede, GetCoordinateByCodSede>();
-
-            container.Register<IGetListaDistaccamentiByPinListaSedi, GetDistaccamentiByCodiciSede>();
-
-            #endregion Gestione Sedi
 
             #region GestioneChiamataInCorso
 

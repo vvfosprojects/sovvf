@@ -32,6 +32,8 @@ namespace SO115App.API.Models.Classi.Condivise
         [JsonConstructor]
         public Sede(string desc) => Descrizione = desc;
 
+        public Sede() { }
+
         public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, bool visualizzazioneCentrale = true)
         {
             this.Codice = codice;

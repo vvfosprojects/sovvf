@@ -21,6 +21,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -55,16 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = Task.Run(() => _getSedi.GetAll()
-                .Where(s => s.attiva == 1 && s.codFiglio_TC >= 1000)
-                .Distinct()
-                .Select(s => new DistaccamentoComposizione()
-                {
-                    Codice = $"{s.codProv}.{s.codFiglio_TC}",
-                    Coordinate = new Coordinate(s.latitudine, s.longitudine),
-                    Descrizione = s.sede,
-                    Provincia = s.codProv
-                }));
+            var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => s.MapDistaccamentoComposizione()).ToList());
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
 

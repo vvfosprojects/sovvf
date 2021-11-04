@@ -27,7 +27,7 @@ namespace SO115App.Models.Classi.Organigramma
                 pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
             }
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
@@ -48,7 +48,7 @@ namespace SO115App.Models.Classi.Organigramma
             var pinNodi = new List<PinNodo>();
             pinNodi.Add(pin);
 
-            var UnitaOperativaAnagrafica = listaSediAlberata.GetSottoAlbero(pinNodi);
+            var UnitaOperativaAnagrafica = listaSediAlberata.Result.GetSottoAlbero(pinNodi);
 
             List<string> ListaCodiciSediInteressate = new List<string>();
 
@@ -57,7 +57,7 @@ namespace SO115App.Models.Classi.Organigramma
                 Figli = UnitaOperativaAnagrafica.ToList()[0].Figli
             };
 
-            foreach (var direzioneRegionale in listaSediAlberata.Figli)
+            foreach (var direzioneRegionale in listaSediAlberata.Result.Figli)
             {
                 if (direzioneRegionale.Figli.ToList().Contains(unitaperativa))
                 {

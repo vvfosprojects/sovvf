@@ -35,9 +35,6 @@ namespace SO115App.CompositionRoot
                 API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
             container.Register<
-                API.Models.Servizi.Infrastruttura.Anagrafiche.IGetTipoInterventoByCodice,
-                API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche.GetTipoInterventoByCodice_Fake>();
-            container.Register<
                 API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.ITestAndSetSelezioneDisponibilitaSquadra,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaSquadra_Fake>();
             container.Register<
@@ -61,9 +58,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetNumeroSquadreSoccorsoOraInServizio_Fake>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.CompetenzeTerritoriali.IGetCompetenzeByPunto,
-                API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali.GetCompetenzeByPunto_Fake_Hardcoded>();
         }
     }
 }

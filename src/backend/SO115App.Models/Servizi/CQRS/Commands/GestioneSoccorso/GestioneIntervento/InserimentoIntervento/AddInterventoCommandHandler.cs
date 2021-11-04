@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -99,7 +100,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = command.CodCompetenze.ToArray(),
-                Competenze = lstCompetenze.Select(d => new Sede(d.CodSede, d.DescDistaccamento, d.Indirizzo, d.Coordinate)).ToList(),
+                Competenze = lstCompetenze.Select(d => d.MapSede()).ToList(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodCompetenze.ToList()[0],
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
@@ -110,7 +111,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
-            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.CodSede.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate)).ToList();
+            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.Id.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate)).ToList();
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
@@ -127,10 +128,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
-            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
+            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
-                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
+                new MarcaRilevante(richiesta, DateTime.UtcNow, command.CodUtente, "", command.Chiamata.RilevanteGrave,
 
             command.Chiamata.RilevanteStArCu);
 

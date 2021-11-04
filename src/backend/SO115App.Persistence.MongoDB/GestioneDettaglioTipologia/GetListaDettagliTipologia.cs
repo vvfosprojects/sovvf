@@ -64,7 +64,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             foreach (var sede in CodSede)
             {
                 listaPin.Add(new PinNodo(sede, true));
-                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
+                foreach (var figlio in sediAlberate.Result.GetSottoAlbero(listaPin))
                 {
                     PinNodo fgl = new PinNodo(figlio.Codice, true);
                     listaPin.Add(fgl);

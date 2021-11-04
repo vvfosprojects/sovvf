@@ -6,6 +6,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti
 {
     public interface IGetListaDistaccamentiByPinListaSedi
     {
-        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin);
+        public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin = null);
     }
 }

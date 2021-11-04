@@ -54,7 +54,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             {
                 if (mezzoDTO.Movimentazione.StatoOperativo.Equals(Costanti.MezzoDisponibile)) mezzoDTO.Movimentazione.StatoOperativo = Costanti.MezzoInSede;
                 var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(mezzoDTO.CodiceMezzo).Result;
-                var sede = _getDistaccamentoByCodiceSede.Get(mezzoDTO.CodiceDistaccamento);
+                var sede = _getDistaccamentoByCodiceSede.GetSede(mezzoDTO.CodiceDistaccamento);
                 if (coordinateMezzo != null)
                 {
                     var coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);

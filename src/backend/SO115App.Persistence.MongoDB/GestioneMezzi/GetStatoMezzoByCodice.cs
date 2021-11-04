@@ -31,7 +31,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
 
             pinNodi.AddRange(codiciSede.Select(c => new PinNodo(c, true)));
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
@@ -73,7 +73,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
 
             pinNodi.Add(new PinNodo(codiceSede, true));
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }

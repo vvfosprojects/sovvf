@@ -29,7 +29,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDocumentale
             var pinNodi = new List<PinNodo>();
             pinNodi.Add(new PinNodo(filtri.CodiceSede, true));
 
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
             var text = filtri.Filters.Search?.ToLower() ?? "";

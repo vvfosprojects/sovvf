@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using SO115App.API.Models.Classi.Condivise;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 {
@@ -30,6 +31,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
         [JsonPropertyName("provincia")]
         public string Provincia { get; set; }
 
+        [JsonPropertyName("coordinate")]
+        public string coordinate { get; set; }
+        public Coordinate Coordinate => string.IsNullOrEmpty(coordinate) ? new Coordinate() : new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+
         /// <summary>
         ///   l'id della sede padre
         /// </summary>
@@ -47,12 +52,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
         /// </summary>
         [JsonPropertyName("cap")]
         public string Cap { get; set; }
-
-        /// <summary>
-        ///   il comune del distaccamento
-        /// </summary>
-        [JsonPropertyName("comune")]
-        public string Comune { get; set; }
 
         /// <summary>
         ///   la descrizione del distaccamento

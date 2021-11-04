@@ -1,4 +1,6 @@
-﻿namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
+﻿using SO115App.API.Models.Classi.Condivise;
+
+namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 {
     /// <summary>
     ///   oggetto della sede associata ad una persona fisica del personale in arrivo dal servizio
@@ -16,9 +18,37 @@
         /// </summary>
         public string descrizione { get; set; }
 
-        ///// <summary>
-        ///// codice del distaccamento
-        ///// </summary>
-        //public string codDistaccamento { get; set; } = null;
+        /// <summary>
+        /// Coordinate della sede
+        /// </summary>
+        public string coordinate { get; set; }
+
+        public Coordinate Coordinate
+        {
+            get
+            {
+                try
+                {
+                    return new Coordinate(double.Parse(coordinate?.Split(',')[0] ?? "0"), double.Parse(coordinate?.Split(',')?[1] ?? "0"));
+                }
+                catch (System.Exception e)
+                {
+                    return new Coordinate(0, 0);
+                }
+            }
+        }
+
+        public string codice { get; set; }
+        public string codDistaccamento { get; set; }
+        public string tipo { get; set; }
+        public string tipoOriginale { get; set; }
+        public TipologiaDistaccamentoUC tipologiaDistaccamento { get; set; }
+        public string provincia { get; set; }
+    }
+
+    public class TipologiaDistaccamentoUC
+    {
+        public string codice { get; set; }
+        public string descrizione { get; set; }
     }
 }

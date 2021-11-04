@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede
     {
         Task<List<SedeUC>> GetDirezioniRegionali(string codSede = null);
         Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null);
-        Task<List<SedeUC>> GetFigliDirezione(string codSede = null);
+        Task<List<SedeUC>> GetFigli(string codSede = null);
     }
 }
