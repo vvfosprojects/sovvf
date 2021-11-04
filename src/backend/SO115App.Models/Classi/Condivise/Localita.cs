@@ -32,16 +32,19 @@ namespace SO115App.API.Models.Classi.Condivise
             prova(Indirizzo);
         }
 
-        private Localita() { }
+        private Localita()
+        {
+        }
 
         //Via Camillo Benso di Cavour 5, 00059, Tolfa, Roma
 
         [Required]
         public Coordinate Coordinate { get; set; }
+
         public string Indirizzo { get; set; }
         public string Citta { get; set; }
         public string Provincia { get; set; }
-
+        public string Regione { get; set; }
         public string Interno { get; set; }
         public string Palazzo { get; set; }
         public string Scala { get; set; }

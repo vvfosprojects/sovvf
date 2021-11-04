@@ -9,7 +9,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetEmergenzaByI
         /// <summary>
         ///   Il filtro utilizzato per la ricerca dei dettagli tipologia
         /// </summary>
-        public string[] IdSede { get; set; }
+        public string IdSede { get; set; }
 
         /// <summary>
         ///   L'id dell'Emergenza da restituire

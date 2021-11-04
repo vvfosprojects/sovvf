@@ -37,8 +37,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenz
 
         public void Handle(InsertEmergenzaCommand command)
         {
-            command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.Get(command.InfoEmergenza.CodComandoRichiedente, command.InfoEmergenza.Tipologia.ToString());
-            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.Emergenza)));
+            if (command.InfoEmergenza.CodComandoRichiedente.Equals("CON"))
+                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodCon(command.InfoEmergenza.Tipologia.ToString());
+            else if (command.InfoEmergenza.CodComandoRichiedente.Contains("."))
+                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodProvinciale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Localita.Provincia, command.InfoEmergenza.Tipologia.ToString());
+            else
+                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodRegionale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Tipologia.ToString());
+
+            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _insertEmergenza.Insert(command.InfoEmergenza);
         }
     }

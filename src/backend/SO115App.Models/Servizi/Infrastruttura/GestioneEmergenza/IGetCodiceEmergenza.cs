@@ -2,6 +2,10 @@
 {
     public interface IGetCodiceEmergenza
     {
-        public string Get(string codComando, string Tipologia);
+        public string GetCodProvinciale(string Regione, string Provincia, string Tipologia);
+
+        public string GetCodRegionale(string codRegione, string Tipologia);
+
+        public string GetCodCon(string Tipologia);
     }
 }

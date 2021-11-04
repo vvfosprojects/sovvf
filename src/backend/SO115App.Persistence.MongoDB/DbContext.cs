@@ -152,7 +152,7 @@ namespace Persistence.MongoDB
         {
             get
             {
-                return database.GetCollection<TipologiaEmergenza>("attivazioneprogressivamoduli");
+                return database.GetCollection<TipologiaEmergenza>("tipologiaEmergenza");
             }
         }
 

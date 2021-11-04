@@ -33,11 +33,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetEmergenzaByI
                 else
                 {
                     bool abilitato = false;
-                    foreach (var competenza in query.IdSede)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.IdSede, Costanti.GestoreRichieste))
+                        abilitato = true;
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

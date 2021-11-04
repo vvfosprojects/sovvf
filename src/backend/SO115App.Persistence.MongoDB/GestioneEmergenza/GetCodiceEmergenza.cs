@@ -16,18 +16,40 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
             _emergenzeByCodComando = emergenzeByCodComando;
         }
 
-        public string Get(string codComando, string Tipologia)
+        public string GetCodProvinciale(string Regione, string Provincia, string Tipologia)
         {
-            var MaxCodiceEmergenze = _emergenzeByCodComando.Get(codComando).FindAll(e => e.CodComandoRichiedente.Equals(codComando) && e.Tipologia.ToString().Equals(Tipologia)).LastOrDefault();
+            //Primi 2 identificano l'emergenza ( Es. Terremoto = TE )
+            //Successivi 3 identificano la Regione
+            //Successivi 2 identificano la Provincia
+            //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
+            return $"{Tipologia.ToString().Substring(0, 2)}{Regione.ToString().Substring(0, 3)}{Provincia.ToString().Substring(0, 2)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
+        }
 
-            if (MaxCodiceEmergenze != null)
+        public string GetCodRegionale(string Regione, string Tipologia)
+        {
+            //Primi 2 identificano l'emergenza ( Es. Terremoto = TE )
+            //Successivi 3 identificano la Regione
+            //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
+            return $"{Tipologia.ToString().Substring(0, 2)}{Regione.ToString().Substring(0, 3)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
+        }
+
+        public string GetCodCon(string Tipologia)
+        {
+            var CodEmergenzeEsistenti = _emergenzeByCodComando.Get("CON").Select(p => p.CodEmergenza);
+
+            List<int> ListaProgressivi = new List<int>();
+            foreach (var codice in CodEmergenzeEsistenti)
             {
-                return $"{Tipologia.ToString().Substring(0, 3)}{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}-{Convert.ToInt32(MaxCodiceEmergenze.CodEmergenza.Split('-')[1]) + 1}";
+                ListaProgressivi.Add(Convert.ToInt32(codice.Substring(5, 2)));
             }
-            else
-            {
-                return $"{Tipologia.ToString().Substring(0, 3)}{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}-1";
-            }
+
+            var NuovoProgressivo = ListaProgressivi.Max() + 1;
+
+            //Primi 2 identificano l'emergenza ( Es. Terremoto = TE )
+            //Successivi 3 identificano CON
+            //Successivi 2 identificano un progressivo da 01 a 99
+            //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
+            return $"{Tipologia.ToString().Substring(0, 2)}CON{string.Format("{0:D2}", NuovoProgressivo)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
         }
     }
 }

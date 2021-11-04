@@ -36,6 +36,8 @@ namespace SO115App.Models.Classi.Emergenza
             }
         }
 
+        public List<Emergenza> ListaEmergenzeFiglie { get; set; }
+
         public void AddEvento(Evento evento)
         {
             this._eventi.Add(evento);
