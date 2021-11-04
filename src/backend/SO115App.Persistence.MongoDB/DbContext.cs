@@ -134,9 +134,18 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Esri_Params>();
 
             EmergenzaMap.Map();
+            TipologieEmergenzaMap.Map();
             BsonClassMap.RegisterClassMap<CreazioneEmergenza>();
             BsonClassMap.RegisterClassMap<ModificaEmergenza>();
             BsonClassMap.RegisterClassMap<AnnullamentoEmergenza>();
+        }
+
+        public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection
+        {
+            get
+            {
+                return database.GetCollection<TipologiaEmergenza>("attivazioneprogressivamoduli");
+            }
         }
 
         public IMongoCollection<Emergenza> EmergenzaCollection

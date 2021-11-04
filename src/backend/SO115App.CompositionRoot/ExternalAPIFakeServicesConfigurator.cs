@@ -40,7 +40,7 @@ using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -87,6 +87,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadre, GetSquadre>();
             container.Register<IGetAllSquadre, GetAllSquadre>();
             container.Register<ISetStatoSquadra, SetStatoSquadra>();
+            container.Register<IGetModuliColonnaMobileByCodComando, GetModuliColonnaMobileByCodComando>();
 
             #endregion OPService
 
