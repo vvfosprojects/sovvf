@@ -26,14 +26,6 @@ namespace SO115App.Models.Classi.Emergenza
         public string PresaInCarico { get; set; }
         public bool Annullata { get; set; }
 
-        public IReadOnlyList<Evento> Eventi
-        {
-            get
-            {
-                return this._eventi;
-            }
-        }
-
         public void AddEvento(Evento evento)
         {
             this._eventi.Add(evento);
