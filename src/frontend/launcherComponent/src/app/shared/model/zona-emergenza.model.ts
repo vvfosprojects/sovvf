@@ -11,7 +11,7 @@ export class ZonaEmergenza {
         /**
          * E' il codice della zona emergenza
          */
-        public codiceEmergenza: string,
+        public codEmergenza: string,
         /**
          * E' il codice del comando richiedente
          */
@@ -44,9 +44,25 @@ export class ZonaEmergenza {
     }
 }
 
-export enum TipologiaEmergenza {
-    'Terremoto',
-    'Alluvione'
+export class TipologiaEmergenza {
+    constructor(
+        id: string,
+        emergenza: string[],
+        interventi: Interventi[]
+    ) {
+    }
+}
+
+export class Interventi {
+    constructor(
+        // tslint:disable-next-line:variable-name
+        mob_Immediata: string[],
+        // tslint:disable-next-line:variable-name
+        mob_Pot_Int: string[],
+        // tslint:disable-next-line:variable-name
+        mob_Consolidamento: string[]
+    ) {
+    }
 }
 
 export enum PresaInCaricoEmergenza {

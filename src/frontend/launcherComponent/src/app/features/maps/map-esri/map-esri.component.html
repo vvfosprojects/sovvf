@@ -1,6 +1,6 @@
 <!-- ESRI Map Container -->
 <div #mapViewNode
-     [class.cursor-crosshair]="tastoChiamataMappaActive">
+     [class.cursor-crosshair]="tastoChiamataMappaActive || tastoZonaEmergenzaMappaActive">
     <!-- ContextMenu ESRI Container -->
     <div #contextMenu
          class="p-2 bg-tasto-nuova-chiamata"
@@ -14,7 +14,7 @@
             </li>
             <li *ngIf="eventClick?.mapPoint && activeRoute === '/' + RoutesPath.ZoneEmergenza"
                 class="cursor-pointer item-contextMenu bg-tasto-nuova-chiamata"
-                (click)="startNuovaChiamata()">
+                (click)="createNuovaEmergenza()">
                 Crea Emergenza
                 <span>({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
             </li>

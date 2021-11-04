@@ -16,6 +16,9 @@ import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import { TravelModeService } from '../map-service/travel-mode.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
+import { ZonaEmergenzaModalComponent } from '../../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
+import { SetZonaEmergenzaFromMappaActiveValue } from '../../zone-emergenza/store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
+import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emergenza/zone-emergenza.state';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -57,6 +60,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
     @Input() tastoChiamataMappaActive: boolean;
+    @Input() tastoZonaEmergenzaMappaActive: boolean;
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
@@ -138,25 +142,32 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     // Gestisco l'evento "click"
                     this.view.on('click', (event) => {
                         this.eventClick = event;
-                        if (this.tastoChiamataMappaActive && event.button === 0) {
+                        if ((this.tastoChiamataMappaActive || this.tastoZonaEmergenzaMappaActive) && event.button === 0) {
                             const screenPoint = this.eventClick.screenPoint;
                             // Controllo se dove ho fatto click sono presenti dei graphics facendo un "HitTest"
                             this.view.hitTest(screenPoint)
                                 .then((resHitTest) => {
                                     const graphic = resHitTest.results[0]?.graphic;
-                                    // Se non ci sono graphics posso aprire il "Form Chiamata"
                                     if (!graphic) {
-                                        this.startNuovaChiamata();
+                                        if (this.tastoChiamataMappaActive) {
+                                            this.startNuovaChiamata();
+                                        } else if (this.tastoZonaEmergenzaMappaActive) {
+                                            this.createNuovaEmergenza();
+                                        }
                                     }
                                 });
-                        } else if (!this.tastoChiamataMappaActive && event.button === 2) {
+                        } else if ((!this.tastoChiamataMappaActive || !this.tastoZonaEmergenzaMappaActive) && event.button === 2) {
                             if (this.contextMenuVisible) {
                                 this.setContextMenuVisible(false);
                             } else {
                                 this.setContextMenuVisible(true);
                             }
-                        } else if (this.tastoChiamataMappaActive && event.button !== 0) {
-                            this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                        } else if (event.button !== 0) {
+                            if (this.tastoChiamataMappaActive) {
+                                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                            } else if (this.tastoZonaEmergenzaMappaActive) {
+                                this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(false));
+                            }
                         } else if (event.button !== 2) {
                             this.setContextMenuVisible(false);
                         }
@@ -593,7 +604,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Aggiunge i widget sulla mappa
     async initializeWidget(): Promise<any> {
-
         const layerList = new LayerList({
             view: this.view,
         });
@@ -714,19 +724,19 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Effettua il toggle di un layer
     async toggleLayer(layerTitle: string, valueToSet?: boolean): Promise<any> {
-        const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
-        if (layerExists) {
-            if (valueToSet === null) {
-                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
-            } else {
-                this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = valueToSet;
+        if (this.map) {
+            const layerExists = !!(this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0]);
+            if (layerExists) {
+                if (valueToSet === null) {
+                    this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = !this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible;
+                } else {
+                    this.map.allLayers.toArray().filter((l: Layer) => l.title === layerTitle)[0].visible = valueToSet;
+                }
             }
         }
     }
 
-    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     startNuovaChiamata(): void {
-        // Controllo se è stato scelto un punto ppure un poligono complesso
         let lat: number;
         let lon: number;
 
@@ -779,6 +789,42 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.result.then(() => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
             });
+        });
+    }
+
+    // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
+    createNuovaEmergenza(): void {
+        let lat: number;
+        let lon: number;
+
+        const mapPoint = this.eventClick.mapPoint;
+
+        if (this.eventClick?.mapPoint) {
+            lat = mapPoint.latitude;
+            lon = mapPoint.longitude;
+        }
+
+        // Se il "contextMenu" è aperto lo chiudo
+        if (this.contextMenuVisible) {
+            this.setContextMenuVisible(false);
+        }
+
+        this.changeCenter([lon, lat]).then();
+        this.changeZoom(19).then();
+
+        const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'md'
+        });
+
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
+
+        modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
+        modalNuovaEmergenza.componentInstance.lat = lat;
+        modalNuovaEmergenza.componentInstance.lon = lon;
+        modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
+
+        modalNuovaEmergenza.result.then(() => {
         });
     }
 
