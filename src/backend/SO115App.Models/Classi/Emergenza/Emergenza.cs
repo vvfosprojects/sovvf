@@ -8,27 +8,25 @@ namespace SO115App.Models.Classi.Emergenza
     {
         private List<Evento> _eventi;
 
-        public Emergenza(string codEmergenza, Localita localita,
-                         string codComandoRichiedente,
-                         TipologiaEmergenza tipologia)
+        public IEnumerable<Evento> ListaEventi { get { return _eventi.ToArray(); } }
+
+        public Emergenza()
         {
-            CodEmergenza = codEmergenza;
-            Localita = localita;
-            CodComandoRichiedente = codComandoRichiedente;
-            Tipologia = tipologia;
-            _eventi = new List<Evento>();
+            this._eventi = new List<Evento>();
         }
 
         public string Id { get; set; }
         public string CodEmergenza { get; set; }
+
         public string Descrizione { get; set; }
+
         public Localita Localita { get; set; }
         public string CodComandoRichiedente { get; set; }
         public TipologiaEmergenza Tipologia { get; set; }
-        public PresaInCarico PresaInCarico { get; set; }
+        public string PresaInCarico { get; set; }
         public bool Annullata { get; set; }
 
-        public List<Evento> Eventi
+        public IReadOnlyList<Evento> Eventi
         {
             get
             {
@@ -36,17 +34,9 @@ namespace SO115App.Models.Classi.Emergenza
             }
         }
 
-        public List<Emergenza> ListaEmergenzeFiglie { get; set; }
-
         public void AddEvento(Evento evento)
         {
             this._eventi.Add(evento);
         }
-    }
-
-    public enum PresaInCarico
-    {
-        Con,
-        DirezioneRegionale
     }
 }

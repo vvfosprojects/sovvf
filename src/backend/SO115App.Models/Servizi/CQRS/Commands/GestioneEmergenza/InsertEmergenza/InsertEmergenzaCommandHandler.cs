@@ -40,9 +40,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenz
             if (command.InfoEmergenza.CodComandoRichiedente.Equals("CON"))
                 command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodCon(command.InfoEmergenza.Tipologia.ToString());
             else if (command.InfoEmergenza.CodComandoRichiedente.Contains("."))
-                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodProvinciale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Localita.Provincia, command.InfoEmergenza.Tipologia.ToString());
+                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodProvinciale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Localita.Provincia, String.Join(",", command.InfoEmergenza.Tipologia.emergenza));
             else
-                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodRegionale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Tipologia.ToString());
+                command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodRegionale(command.InfoEmergenza.Localita.Regione, String.Join(",", command.InfoEmergenza.Tipologia.emergenza));
 
             command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _insertEmergenza.Insert(command.InfoEmergenza);

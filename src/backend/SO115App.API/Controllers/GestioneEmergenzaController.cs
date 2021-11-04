@@ -39,7 +39,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("InsertEmergenza")]
-        public async Task<IActionResult> InsertEmergenza([FromForm] Emergenza emergenza)
+        public async Task<IActionResult> InsertEmergenza([FromBody] Emergenza emergenza)
         {
             emergenza.CodComandoRichiedente = Request.Headers["codicesede"].ToString().Split(',')[0];
 
@@ -63,7 +63,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpDateEmergenza")]
-        public async Task<IActionResult> UpDateEmergenza([FromForm] Emergenza emergenza)
+        public async Task<IActionResult> UpDateEmergenza([FromBody] Emergenza emergenza)
         {
             emergenza.CodComandoRichiedente = Request.Headers["codicesede"].ToString().Split(',')[0];
 
@@ -87,7 +87,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AnnullaEmergenza")]
-        public async Task<IActionResult> AnnullaEmergenza([FromForm] Emergenza emergenza)
+        public async Task<IActionResult> AnnullaEmergenza([FromBody] Emergenza emergenza)
         {
             emergenza.CodComandoRichiedente = Request.Headers["codicesede"].ToString().Split(',')[0];
 
@@ -120,8 +120,7 @@ namespace SO115App.API.Controllers
                     IdSede = Request.Headers["codicesede"].ToString().Split(',')[0]
                 };
 
-                _getTipologieHandler.Handle(query);
-                return Ok();
+                return Ok(_getTipologieHandler.Handle(query));
             }
             catch (Exception ex)
             {
@@ -142,8 +141,7 @@ namespace SO115App.API.Controllers
                     IdEmergenza = Id
                 };
 
-                _getEmergenzaByIdHandler.Handle(query);
-                return Ok();
+                return Ok(_getEmergenzaByIdHandler.Handle(query));
             }
             catch (Exception ex)
             {
@@ -153,7 +151,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetListaEmergenzeByCodSede")]
+        [HttpPost("GetListaEmergenzeByCodSede")]
         public async Task<IActionResult> GetListaEmergenzeByCodSede(GetListaEmergenzeByCodComandoQuery query)
         {
             try
@@ -161,8 +159,7 @@ namespace SO115App.API.Controllers
                 query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
                 query.IdOperatore = Request.Headers["IdUtente"].ToString();
 
-                _getListaEmergenzeByCodComandoHandler.Handle(query);
-                return Ok();
+                return Ok(_getListaEmergenzeByCodComandoHandler.Handle(query));
             }
             catch (Exception ex)
             {

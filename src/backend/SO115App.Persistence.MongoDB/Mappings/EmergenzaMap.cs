@@ -13,6 +13,7 @@ namespace SO115App.Persistence.MongoDB.Mappings
             BsonClassMap.RegisterClassMap<Emergenza>(cm =>
             {
                 cm.AutoMap();
+                cm.MapField("_eventi").SetElementName("listaEventi");
                 cm.MapIdMember(c => c.Id)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));

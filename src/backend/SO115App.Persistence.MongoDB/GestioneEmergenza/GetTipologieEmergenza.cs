@@ -1,4 +1,5 @@
-﻿using Persistence.MongoDB;
+﻿using MongoDB.Driver;
+using Persistence.MongoDB;
 using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using System;
@@ -18,7 +19,9 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
 
         public List<TipologiaEmergenza> Get()
         {
-            throw new NotImplementedException();
+            var lista = _dbContext.TipologieEmergenzaCollection.Find(Builders<TipologiaEmergenza>.Filter.Empty).ToList();
+
+            return lista;
         }
     }
 }

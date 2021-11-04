@@ -22,7 +22,7 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
             //Successivi 3 identificano la Regione
             //Successivi 2 identificano la Provincia
             //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
-            return $"{Tipologia.ToString().Substring(0, 2)}{Regione.ToString().Substring(0, 3)}{Provincia.ToString().Substring(0, 2)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
+            return $"{Tipologia.ToString().Substring(0, 2).ToUpper()}{Regione.ToString().Substring(0, 3).ToUpper()}{Provincia.ToString().Substring(0, 2).ToUpper()}{string.Format("{0:D2}", DateTime.Now.Day)}{string.Format("{0:D2}", DateTime.Now.Month)}{DateTime.Now.Year}";
         }
 
         public string GetCodRegionale(string Regione, string Tipologia)
@@ -30,7 +30,7 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
             //Primi 2 identificano l'emergenza ( Es. Terremoto = TE )
             //Successivi 3 identificano la Regione
             //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
-            return $"{Tipologia.ToString().Substring(0, 2)}{Regione.ToString().Substring(0, 3)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
+            return $"{Tipologia.ToString().Substring(0, 2).ToUpper()}{Regione.ToString().Substring(0, 3).ToUpper()}{string.Format("{0:D2}", DateTime.Now.Day)}{string.Format("{0:D2}", DateTime.Now.Month)}{DateTime.Now.Year}";
         }
 
         public string GetCodCon(string Tipologia)
@@ -49,7 +49,7 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
             //Successivi 3 identificano CON
             //Successivi 2 identificano un progressivo da 01 a 99
             //Successivi 8 identificano Giorno/Mese/Anno (ggMMAAAA)
-            return $"{Tipologia.ToString().Substring(0, 2)}CON{string.Format("{0:D2}", NuovoProgressivo)}{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}";
+            return $"{Tipologia.ToString().Substring(0, 2).ToUpper()}CON{string.Format("{0:D2}", NuovoProgressivo)}{string.Format("{0:D2}", DateTime.Now.Day)}{string.Format("{0:D2}", DateTime.Now.Month)}{DateTime.Now.Year}";
         }
     }
 }

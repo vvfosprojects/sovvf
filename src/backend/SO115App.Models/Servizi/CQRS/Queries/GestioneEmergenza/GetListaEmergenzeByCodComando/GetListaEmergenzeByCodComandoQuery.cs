@@ -26,6 +26,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetListaEmergen
         ///   Search è un testo libero che l'utente digita per ricercare un determinato record in
         ///   dettaglioTipologia Ricerca Full-Text sul campo DESCRIZIONE della basedati
         /// </summary>
-        public FiltriDettaglioTipologia? Filters { get; set; }
+        //public FiltriDettaglioTipologia? Filters { get; set; }
     }
 }

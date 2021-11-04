@@ -4,10 +4,10 @@
     {
         public string Id { get; set; }
         public string[] emergenza { get; set; }
-        public Interventi[] moduli { get; set; }
+        public MobilitazioniEmergenza moduli { get; set; }
     }
 
-    public class Interventi
+    public class MobilitazioniEmergenza
     {
         public string[] mob_Immediata { get; set; }
         public string[] mob_Pot_Int { get; set; }
