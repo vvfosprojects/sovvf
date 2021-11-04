@@ -25,7 +25,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
-using SO115App.API.Models.Classi.Soccorso.Fonogramma;
+using SO115App.API.Models.Classi.Soccorso.Fonogramma; 
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
@@ -929,7 +929,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 || evento is ArrivoSulPosto
                 || evento is PartenzaInRientro
                 || evento is PartenzaRientrata)
-                && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
+                && evento.Istante > DateTime.UtcNow)
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
