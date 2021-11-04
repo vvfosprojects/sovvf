@@ -223,7 +223,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var sede = GetInfoSede(codiceSede);
 
-            var result = sede.Result.MapDistaccamento();
+            var result = sede.Result?.MapDistaccamento();
 
             return result;
         }
