@@ -925,8 +925,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             const string OrarioFuturo = "Impossibile aggiungere un evento con data futura.";
             const string EventoGiaPresente = "Impossibile aggiungere l'evento specificato. L'evento è già presente.";
 
-            if ((evento is AbstractPartenza
-                || evento is ArrivoSulPosto
+            if ((evento is ArrivoSulPosto
                 || evento is PartenzaInRientro
                 || evento is PartenzaRientrata)
                 && evento.Istante.AddHours(2) > DateTime.Now.AddSeconds(1))
