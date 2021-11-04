@@ -186,7 +186,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 }
                 catch (Exception e)
                 {
-                    return null;
+                    throw new Exception("Errore costruzione alberatura sedi di servizio.");
                 }
 
                 ListaSediAlberate = result;
