@@ -48,17 +48,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             //GESTIONE CODICI SEDI
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
-                query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).Where(s => s.Contains('.')).Distinct().ToArray();
-            else
-                query.CodiciSedi = query.CodiciSedi.Where(s => s.Contains('.')).Distinct().ToArray();
+                query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).ToArray();
 
             var lstSquadre = Task.Run(() => query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift.Result.Squadre).ToList());  
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList()));  
-
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList())); 
             var lstSquadrePreaccoppiate = Task.Run(() => lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList());
 
             var statiOperativiMezzi = Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
-            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.ToArray()) //OTTENGO I DATI
+
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();

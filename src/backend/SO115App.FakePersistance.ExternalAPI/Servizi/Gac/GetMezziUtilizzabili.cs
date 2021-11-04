@@ -188,14 +188,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
-            var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result;
-
-            var sede = new Sede(mezzoDto.CodiceDistaccamento, distaccamento?.DescDistaccamento ?? "", distaccamento?.Indirizzo ?? "", distaccamento?.Coordinate ?? null);
-
             try
             {
+                var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result; //
+
+                var sede = new Sede(mezzoDto.CodiceDistaccamento, distaccamento?.DescDistaccamento ?? "", distaccamento?.Indirizzo ?? "", distaccamento?.Coordinate ?? null);
+
                 return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento.Coordinate?.Latitudine ?? 0.0, distaccamento.Coordinate?.Longitudine ?? 0.0))
+                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento?.Coordinate?.Latitudine ?? 0.0, distaccamento?.Coordinate?.Longitudine ?? 0.0))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
                 };
