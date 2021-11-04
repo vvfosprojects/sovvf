@@ -31,6 +31,14 @@ export class Localita {
          * contatto del condominio / palazzo
          */
         public contatto?: string,
+        /**
+         * provincia
+         */
+        public provincia?: string,
+        /**
+         * regione
+         */
+        public regione?: string
     ) {
     }
 }

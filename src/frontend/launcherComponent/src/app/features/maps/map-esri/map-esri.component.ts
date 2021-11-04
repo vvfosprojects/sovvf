@@ -46,6 +46,7 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { AddZonaEmergenza } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -817,14 +818,21 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             size: 'md'
         });
 
-        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
 
         modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
         modalNuovaEmergenza.componentInstance.lat = lat;
         modalNuovaEmergenza.componentInstance.lon = lon;
         modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
 
-        modalNuovaEmergenza.result.then(() => {
+        modalNuovaEmergenza.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.store.dispatch(new AddZonaEmergenza());
+                    break;
+                case 'ko':
+                    break;
+            }
         });
     }
 

@@ -22,6 +22,7 @@ import { Localita } from '../../../../../shared/model/localita.model';
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
     tipologieZonaEmergenza: TipologiaEmergenza[];
+    allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
         model: ZonaEmergenzaForm,
         dirty: boolean,
@@ -35,6 +36,7 @@ export interface ZoneEmergenzaStateModel {
 export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     zoneEmergenza: null,
     tipologieZonaEmergenza: null,
+    allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
         model: undefined,
         dirty: false,
@@ -69,6 +71,11 @@ export class ZoneEmergenzaState {
     @Selector()
     static tipologieZonaEmergenza(state: ZoneEmergenzaStateModel): TipologiaEmergenza[] {
         return state.tipologieZonaEmergenza;
+    }
+
+    @Selector()
+    static allTipologieZonaEmergenza(state: ZoneEmergenzaStateModel): { id: string, desc: string }[] {
+        return state.allTipologieZonaEmergenza;
     }
 
     @Selector()
@@ -130,8 +137,19 @@ export class ZoneEmergenzaState {
 
     @Action(SetTipologieEmergenza)
     setTipologieEmergenza({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetTipologieEmergenza): void {
+        const tipologieEmergenza = action.tipologieEmergenza;
+        const allTipologieEmergenza = [];
+        tipologieEmergenza.forEach((t: any) => {
+            t.emergenza.forEach((e: any) => {
+                allTipologieEmergenza.push({
+                    id: t.id,
+                    desc: e
+                });
+            });
+        });
         patchState({
-            tipologieZonaEmergenza: action.tipologieEmergenza
+            tipologieZonaEmergenza: tipologieEmergenza,
+            allTipologieZonaEmergenza: allTipologieEmergenza
         });
     }
 
@@ -140,66 +158,31 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
         const formValue = state.zonaEmergenzaForm.model;
-        // TODO: prendere i dati dalla form "zonaEmergenzaForm" (formValue)
+        const tipologiaZoneEmergenza = state.tipologieZonaEmergenza.filter((t: any) => t.id === formValue.tipologia)[0];
         const zonaEmergenza = new ZonaEmergenza(
             null,
             null,
-            'Terremoti vicino Roma',
-            'RM.1000',
-            {
-                id: '6183b448bac2c0842de1b50f',
-                emergenza: [
-                    'Alluvione',
-                    'Maltempo',
-                    'Neve'
-                ],
-                moduli: {
-                    mob_Immediata: [
-                        'MC.PCA',
-                        'MC.ASS',
-                        'MO.TAST',
-                        'MA.TAS',
-                        'MO.CRAB',
-                        'MO.SMTZ',
-                        'MO.NEGH',
-                        'MO.Valanghe',
-                        'MO.MCP',
-                        'MO.ACP',
-                        'ML.LG1',
-                        'MA.AER',
-                        'MA. APR'
-                    ],
-                    mob_Pot_Int: [
-                        'MO.HCP',
-                        'MO.ACP',
-                        'ML.MED',
-                        'MA.ICT',
-                        'MA.AMM',
-                        'MA.MTM',
-                        'MA.AER',
-                        'ML.KTP'
-                    ],
-                    mob_Consolidamento: [
-                        'ML.PES',
-                        'ML.KTP',
-                        'MA.MTP',
-                        'MC.ICS.OP',
-                        'MC.ICS.PIA',
-                        'MC.ICS.LOG',
-                        'MC.ICS.AMM',
-                        'MC.ICS.SAN'
-                    ]
-                }
-            },
+            null,
+            formValue.descrizione ? formValue.descrizione : null,
+            tipologiaZoneEmergenza,
             null,
             new Localita(
                 {
-                    latitudine: 41.847675,
-                    longitudine: 12.4843
+                    latitudine: formValue.latitudine,
+                    longitudine: formValue.longitudine
                 },
-                'Via Fontanellato'
+                formValue.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                'sostituire_provincia',
+                'sostituire_regione'
             ),
-            null
+            null,
+            false
         );
         this.zoneEmergenzaService.add(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([

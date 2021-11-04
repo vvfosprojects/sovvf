@@ -45,7 +45,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
             this.indirizzo = response.attributes.Match_addr;
-            this.patchForm();
+            this.patchIndirizzo();
         });
     }
 
@@ -54,10 +54,12 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             indirizzo: [null, Validators.required],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            tipologia: [null, [Validators.required]],
+            descrizione: [null],
         });
     }
 
-    patchForm(): void {
+    patchIndirizzo(): void {
         this.zonaEmergenzaForm.patchValue({
             indirizzo: this.indirizzo,
             latitudine: this.lat,

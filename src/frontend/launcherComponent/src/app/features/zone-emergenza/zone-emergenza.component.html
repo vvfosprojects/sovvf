@@ -14,13 +14,13 @@
                         <button class="btn btn-no-hover mb-2 font-weight-bold"
                                 [class.btn-danger]="tastoZonaEmergenzaMappaActive$ | async"
                                 [class.btn-primary]="!(tastoZonaEmergenzaMappaActive$ | async)"
-                                (click)="onAdd()">
+                                (click)="onSetZonaEmergenzaFromMappaActiveValue()">
                             <span *ngIf="!(tastoZonaEmergenzaMappaActive$ | async)">
-                                <i class="fas fa-close"></i>
+                                <i class="fas fa-plus"></i>
                                 Crea Emergenza
                             </span>
                             <span *ngIf="tastoZonaEmergenzaMappaActive$ | async">
-                                <i class="fas fa-plus"></i>
+                                <i class="fas fa-times"></i>
                                 Annulla creazione Emergenza
                             </span>
                         </button>

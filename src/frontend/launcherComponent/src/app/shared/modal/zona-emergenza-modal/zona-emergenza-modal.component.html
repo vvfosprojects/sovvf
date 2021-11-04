@@ -10,7 +10,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <form [formGroup]="zonaEmergenzaForm">
+    <form [formGroup]="zonaEmergenzaForm" ngxsForm="zoneEmergenza.zonaEmergenzaForm">
         <div class="form-group">
             <label for="indirizzo">Indirizzo</label>
             <input id="indirizzo"
@@ -39,8 +39,20 @@
             <label for="tipologia">Tipologia</label>
             <ng-select id="tipologia"
                        [items]="tipologieEmergenza"
+                       bindValue="id"
+                       bindLabel="desc"
+                       placeholder="Seleziona una Tipologia"
+                       formControlName="tipologia"
                        [hideSelected]="true">
             </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="descrizione">Descrizione</label>
+            <input id="descrizione"
+                   class="form-control"
+                   type="text"
+                   placeholder="Descrizione (Opzionale)"
+                   formControlName="descrizione"/>
         </div>
     </form>
 </div>

@@ -29,6 +29,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     @Select(ZoneEmergenzaState.tipologieZonaEmergenza) tipologieZonaEmergenza$: Observable<TipologiaEmergenza[]>;
     @Select(ZoneEmergenzaState.loadingTipologieEmergenza) loadingTipologieEmergenza$: Observable<boolean>;
     @Select(TastoZonaEmergenzaMappaState.tastoZonaEmergenzaMappaActive) tastoZonaEmergenzaMappaActive$: Observable<boolean>;
+    tastoZonaEmergenzaMappaActive: boolean;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
@@ -47,6 +48,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         }
         this.getDoubleMonitorMode();
         this.getZoneEmergenza(true);
+        this.getTastoZonaEmergenzaMappaActive();
     }
 
     ngOnInit(): void {
@@ -73,6 +75,14 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getTastoZonaEmergenzaMappaActive(): void {
+        this.subscriptions.add(
+            this.tastoZonaEmergenzaMappaActive$.subscribe((tastoZonaEmergenzaMappaActive: boolean) => {
+                this.tastoZonaEmergenzaMappaActive = tastoZonaEmergenzaMappaActive;
+            })
+        );
+    }
+
     getZoneEmergenza(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
@@ -91,9 +101,14 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         }
     }
 
-    onAdd(): void {
-        this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(true));
-        this.mapActive = true;
+    onSetZonaEmergenzaFromMappaActiveValue(): void {
+        if (!this.tastoZonaEmergenzaMappaActive) {
+            this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(true));
+            this.mapActive = true;
+        } else {
+            this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(false));
+            this.mapActive = false;
+        }
     }
 
     onEdit(zonaEmergenza: ZonaEmergenza): void {

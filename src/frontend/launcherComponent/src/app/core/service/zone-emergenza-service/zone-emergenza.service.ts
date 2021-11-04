@@ -39,7 +39,7 @@ export class ZoneEmergenzaService {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/UpdateEmergenza', zonaEmergenza);
     }
 
-    delete(zonaEmergenza: ZonaEmergenza): Observable<any> {
-        return this.http.post<any>(API_ZONE_EMERGENZA + '/AnnullaEmergenza', zonaEmergenza);
+    delete(params: { id: string, motivazione: string}): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/AnnullaEmergenza', params);
     }
 }
