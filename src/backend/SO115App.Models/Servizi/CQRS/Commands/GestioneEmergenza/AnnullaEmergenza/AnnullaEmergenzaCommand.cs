@@ -25,6 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergen
     public class AnnullaEmergenzaCommand
     {
         public string CodOperatore { get; set; }
+        public string CodSede { get; set; }
 
         public string Motivazione { get; set; }
         public string Id { get; set; }

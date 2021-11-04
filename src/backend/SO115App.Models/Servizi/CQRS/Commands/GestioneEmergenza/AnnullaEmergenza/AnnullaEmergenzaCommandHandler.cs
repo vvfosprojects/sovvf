@@ -39,6 +39,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergen
         public void Handle(AnnullaEmergenzaCommand command)
         {
             command.InfoEmergenza = _getEmergenzaById.Get(command.Id);
+            command.InfoEmergenza.Annullata = true;
+
             command.InfoEmergenza.AddEvento(new AnnullamentoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.Motivazione, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);
         }

@@ -27,14 +27,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
     public class UpdateEmergenzaCommandHandler : ICommandHandler<UpdateEmergenzaCommand>
     {
         private readonly IUpDateEmergenza _upDateEmergenza;
+        private readonly IGetEmergenzaById _getEmergenza;
 
-        public UpdateEmergenzaCommandHandler(IUpDateEmergenza upDateEmergenza)
+        public UpdateEmergenzaCommandHandler(IUpDateEmergenza upDateEmergenza, IGetEmergenzaById getEmergenza)
         {
             _upDateEmergenza = upDateEmergenza;
+            _getEmergenza = getEmergenza;
         }
 
         public void Handle(UpdateEmergenzaCommand command)
         {
+            var emergenza = _getEmergenza.Get(command.InfoEmergenza.Id);
+
+            foreach (var evento in emergenza.ListaEventi)
+            {
+                command.InfoEmergenza.AddEvento(evento);
+            }
+
             command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);
         }
