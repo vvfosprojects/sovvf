@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
+using System;
 using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
@@ -33,7 +34,27 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 
         [JsonPropertyName("coordinate")]
         public string coordinate { get; set; }
-        public Coordinate Coordinate => string.IsNullOrEmpty(coordinate) ? new Coordinate() : new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+        public Coordinate Coordinate
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(coordinate))
+                    return new Coordinate();
+                else
+                {
+                    try
+                    {
+                        return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+
+                    }
+                    catch (System.Exception e)
+                    {
+                        //TODO GESTIRE COORDINATE DMS IN DD
+                        return new Coordinate();
+                    }
+                }
+            }
+        }
 
         /// <summary>
         ///   l'id della sede padre
