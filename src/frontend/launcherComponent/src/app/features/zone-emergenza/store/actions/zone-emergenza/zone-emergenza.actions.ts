@@ -44,3 +44,7 @@ export class StartLoadingTipologieEmergenza {
 export class StopLoadingTipologieEmergenza {
     static readonly type = '[ZoneEmergenza] Stop Loading Tipologie Emergenza';
 }
+
+export class ResetZonaEmergenzaForm {
+    static readonly type = '[ZoneEmergenza] Reset Zona Emergenza Form';
+}

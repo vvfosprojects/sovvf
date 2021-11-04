@@ -46,9 +46,9 @@ export class ZonaEmergenza {
 
 export class TipologiaEmergenza {
     constructor(
-        id: string,
-        emergenza: string[],
-        interventi: Interventi[]
+        public id: string,
+        public emergenza: string[],
+        public interventi: Interventi[]
     ) {
     }
 }
@@ -56,11 +56,11 @@ export class TipologiaEmergenza {
 export class Interventi {
     constructor(
         // tslint:disable-next-line:variable-name
-        mob_Immediata: string[],
+        public mob_Immediata: string[],
         // tslint:disable-next-line:variable-name
-        mob_Pot_Int: string[],
+        public mob_Pot_Int: string[],
         // tslint:disable-next-line:variable-name
-        mob_Consolidamento: string[]
+        public mob_Consolidamento: string[]
     ) {
     }
 }

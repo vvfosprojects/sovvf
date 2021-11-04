@@ -19,6 +19,7 @@ import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { ZonaEmergenzaModalComponent } from '../../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
 import { SetZonaEmergenzaFromMappaActiveValue } from '../../zone-emergenza/store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emergenza/zone-emergenza.state';
+import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -46,7 +47,6 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { AddZonaEmergenza } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -831,6 +831,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.store.dispatch(new AddZonaEmergenza());
                     break;
                 case 'ko':
+                    this.store.dispatch(new ResetZonaEmergenzaForm());
+                    break;
+                default:
+                    this.store.dispatch(new ResetZonaEmergenzaForm());
                     break;
             }
         });

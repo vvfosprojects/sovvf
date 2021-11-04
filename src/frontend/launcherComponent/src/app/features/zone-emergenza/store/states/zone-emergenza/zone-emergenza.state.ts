@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { PresaInCaricoEmergenza, TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
     AddZonaEmergenza,
     GetTipologieEmergenza,
     GetZoneEmergenza,
+    ResetZonaEmergenzaForm,
     SetTipologieEmergenza,
     SetZoneEmergenza,
     StartLoadingTipologieEmergenza,
@@ -18,6 +19,7 @@ import {
 } from '../../actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenzaForm } from '../../../../../shared/interface/zona-emergenza-form.interface';
 import { Localita } from '../../../../../shared/model/localita.model';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -159,12 +161,14 @@ export class ZoneEmergenzaState {
         const state = getState();
         const formValue = state.zonaEmergenzaForm.model;
         const tipologiaZoneEmergenza = state.tipologieZonaEmergenza.filter((t: any) => t.id === formValue.tipologia)[0];
+        const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
+        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[0]];
         const zonaEmergenza = new ZonaEmergenza(
             null,
             null,
             null,
             formValue.descrizione ? formValue.descrizione : null,
-            tipologiaZoneEmergenza,
+            tipologiaZoneEmergenzaCopy,
             null,
             new Localita(
                 {
@@ -187,10 +191,14 @@ export class ZoneEmergenzaState {
         this.zoneEmergenzaService.add(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([
                 new GetZoneEmergenza(),
+                new ResetZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
             ]);
         }, error => {
-            dispatch(new StopLoadingZoneEmergenza());
+            dispatch([
+                new ResetZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
         });
     }
 
@@ -206,5 +214,12 @@ export class ZoneEmergenzaState {
         patchState({
             loadingTipologieEmergenza: false
         });
+    }
+
+    @Action(ResetZonaEmergenzaForm)
+    resetZonaEmergenzaForm({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
+         patchState({
+             zonaEmergenzaForm: ZoneEmergenzaStateModelDefaults.zonaEmergenzaForm
+         });
     }
 }

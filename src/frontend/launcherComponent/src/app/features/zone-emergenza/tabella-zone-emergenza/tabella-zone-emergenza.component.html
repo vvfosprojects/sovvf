@@ -3,39 +3,43 @@
     <thead>
     <tr>
         <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Tipologia</th>
-        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:14%"><i class="fas fa-hashtag mr-2"></i>Codice Emergenza</th>
+        <th scope="col" style="width:14%"><i class="fas fa-file mr-2"></i>Richiedente</th>
+        <th scope="col" style="width:14%"><i class="fas fa-file mr-2"></i>Tipologia</th>
+        <th scope="col" style="width:26%"><i class="fas fa-map-marker mr-2"></i>Indirizzo</th>
+        <th scope="col" style="width:19%"><i class="fas fa-file mr-2"></i>Descrizione</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let zE of zoneEmergenza">
         <td style="width:12%" class="align-middle">
             <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
-                    ngbTooltip="Rimuovi POS"
-                    placement="bottom"
+                    ngbTooltip="Annulla Emergenza"
+                    placement="right"
                     (click)="onDelete(zE?.id, zE?.codEmergenza)">
                 <i class="fas fa-trash"></i>
             </button>
             <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
-                    ngbTooltip="Modifica POS"
-                    placement="bottom"
+                    ngbTooltip="Modifica Emergenza"
+                    placement="right"
                     (click)="onEdit(zE)">
                 <i class="fas fa-edit"></i>
             </button>
         </td>
-        <td style="width:22%" class="align-middle">
-            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
-               href="javascript:void(0)"
-               style="max-width: 400px;">
-                {{ zE?.tipologia }}
-            </a>
+        <td style="width:14%" class="align-middle">
+            {{ zE?.codEmergenza }}
         </td>
-        <td style="width:22%" class="align-middle">
-            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
-               href="javascript:void(0)"
-               style="max-width: 400px;">
-                {{ zE?.descrizione }}
-            </a>
+        <td style="width:14%" class="align-middle">
+            {{ zE?.codComandoRichiedente }}
+        </td>
+        <td style="width:14%" class="align-middle">
+            {{ zE?.tipologia?.emergenza[0] }}
+        </td>
+        <td style="width:26%" class="align-middle">
+            {{ zE?.localita.indirizzo }} - Lat: {{ zE?.localita.coordinate.latitudine }} - Lon: {{ zE?.localita.coordinate.latitudine }}
+        </td>
+        <td style="width:19%" class="align-middle">
+            {{ zE?.descrizione ? zE?.descrizione : 'Nessuna Descrizione' }}
         </td>
     </tr>
     </tbody>
