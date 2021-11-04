@@ -2,60 +2,59 @@
     <div class="row">
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
-            <div class="row">
-                <div class="col-12 col-md-9 mx-auto mb-2">
-                    <h2>
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Gestione Emergenze
-                    </h2>
-                </div>
-                <div class="col-12 col-md-9 mx-auto mb-2">
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary mb-2 font-weight-bold"
-                                    (click)="onAdd()">
-                                <i class="fas fa-plus mr-1"></i>
-                                Crea Emergenza
-                            </button>
-                        </div>
-                        <div class="col">
-                            <div class="text-right">
-                                <div class="btn-group" role="group">
-                                    <button type="button"
-                                            class="btn"
-                                            [class.btn-secondary]="!mapActive"
-                                            [class.btn-outline-secondary]="mapActive"
-                                            ngbTooltip="Visualizzazione Tabella Zone Emergenza"
-                                            (click)="onChangeVisualizzazione()">
-                                        <i class="fas fa-list-ul"></i>
-                                        Tabella
-                                    </button>
-                                    <button type="button"
-                                            class="btn"
-                                            [class.btn-secondary]="mapActive"
-                                            [class.btn-outline-secondary]="!mapActive"
-                                            ngbTooltip="Visualizzazione Mappa Zone Emergenza"
-                                            (click)="onChangeVisualizzazione()">
-                                        <i class="fas fa-globe-europe"></i>
-                                        Mappa
-                                    </button>
-                                </div>
+            <div class="mb-2">
+                <h2>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Gestione Emergenze
+                </h2>
+            </div>
+            <div class="mb-2">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn mb-2 font-weight-bold"
+                                [class.btn-danger]="tastoZonaEmergenzaMappaActive$ | async"
+                                [class.btn-primary]="!(tastoZonaEmergenzaMappaActive$ | async)"
+                                (click)="onAdd()">
+                            <i class="fas fa-plus mr-1"></i>
+                            Crea Emergenza
+                        </button>
+                    </div>
+                    <div class="col">
+                        <div class="text-right">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn"
+                                        [class.btn-secondary]="!mapActive"
+                                        [class.btn-outline-secondary]="mapActive"
+                                        ngbTooltip="Visualizzazione Tabella Zone Emergenza"
+                                        (click)="onChangeVisualizzazione()">
+                                    <i class="fas fa-list-ul"></i>
+                                    Tabella
+                                </button>
+                                <button type="button"
+                                        class="btn"
+                                        [class.btn-secondary]="mapActive"
+                                        [class.btn-outline-secondary]="!mapActive"
+                                        ngbTooltip="Visualizzazione Mappa Zone Emergenza"
+                                        (click)="onChangeVisualizzazione()">
+                                    <i class="fas fa-globe-europe"></i>
+                                    Mappa
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div *ngIf="!mapActive"
-                     class="col-12 col-md-9 mx-auto">
-                    <app-tabella-zone-emergenza [zoneEmergenza]="zoneEmergenza$ | async"
-                                                [page]="page$ | async"
-                                                [pageSize]="pageSize$ | async"
-                                                [totalItems]="totalItems$ | async"
-                                                [loading]="loading$ | async"
-                                                (edit)="onEdit($event)"
-                                                (delete)="onDelete($event)"
-                                                (pageChange)="onPageChange($event)">
-                    </app-tabella-zone-emergenza>
-                </div>
+            </div>
+            <div *ngIf="!mapActive">
+                <app-tabella-zone-emergenza [zoneEmergenza]="zoneEmergenza$ | async"
+                                            [page]="page$ | async"
+                                            [pageSize]="pageSize$ | async"
+                                            [totalItems]="totalItems$ | async"
+                                            [loading]="loading$ | async"
+                                            (edit)="onEdit($event)"
+                                            (delete)="onDelete($event)"
+                                            (pageChange)="onPageChange($event)">
+                </app-tabella-zone-emergenza>
             </div>
         </div>
         <div *ngIf="doubleMonitor || mapActive"
@@ -64,7 +63,8 @@
             <div class="mt-2"
                  [class.map-active]="mapActive"
                  [class.map-double-monitor]="!mapActive">
-                <app-maps></app-maps>
+                <app-maps [tastoZonaEmergenzaMappaActive]="tastoZonaEmergenzaMappaActive$ | async">
+                </app-maps>
             </div>
         </div>
     </div>

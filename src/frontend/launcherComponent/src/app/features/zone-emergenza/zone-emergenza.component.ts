@@ -9,9 +9,11 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
-import { ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
-import { GetZoneEmergenza } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import { GetTipologieEmergenza, GetZoneEmergenza } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
+import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -24,6 +26,9 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     doubleMonitor: boolean;
     @Select(ZoneEmergenzaState.zoneEmergenza) zoneEmergenza$: Observable<ZonaEmergenza[]>;
     @Select(ZoneEmergenzaState.loadingZoneEmergenza) loading$: Observable<boolean>;
+    @Select(ZoneEmergenzaState.tipologieZonaEmergenza) tipologieZonaEmergenza$: Observable<TipologiaEmergenza[]>;
+    @Select(ZoneEmergenzaState.loadingTipologieEmergenza) loadingTipologieEmergenza$: Observable<boolean>;
+    @Select(TastoZonaEmergenzaMappaState.tastoZonaEmergenzaMappaActive) tastoZonaEmergenzaMappaActive$: Observable<boolean>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
@@ -48,6 +53,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.ZoneEmergenza),
             new SetSediNavbarVisible(false),
+            new GetTipologieEmergenza(),
             new StopBigLoading()
         ]);
     }
@@ -86,7 +92,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     }
 
     onAdd(): void {
-        // TODO: logica per l'add della Zona Emergenza
+        this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(true));
         this.mapActive = true;
     }
 

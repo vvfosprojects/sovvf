@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Creazione Emergenza' | uppercase }}
+    </h4>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="zonaEmergenzaForm">
+        <div class="form-group">
+            <label for="indirizzo">Indirizzo</label>
+            <input id="indirizzo"
+                   class="form-control"
+                   type="text"
+                   placeholder="Indirizzo"
+                   formControlName="indirizzo"/>
+        </div>
+        <div class="form-group">
+            <label for="latitudine">Latitudine</label>
+            <input id="latitudine"
+                   class="form-control"
+                   type="tel"
+                   placeholder="Latitudine"
+                   formControlName="latitudine"/>
+        </div>
+        <div class="form-group">
+            <label for="longitudine">Longitudine</label>
+            <input id="longitudine"
+                   class="form-control"
+                   type="tel"
+                   placeholder="Longitudine"
+                   formControlName="longitudine"/>
+        </div>
+        <div class="form-group">
+            <label for="tipologia">Tipologia</label>
+            <ng-select id="tipologia"
+                       [items]="tipologieEmergenza"
+                       [hideSelected]="true">
+            </ng-select>
+        </div>
+    </form>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+            (click)="close('ok')"
+            [disabled]="!zonaEmergenzaForm?.valid">
+        {{ 'Crea Emergenza' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+</div>

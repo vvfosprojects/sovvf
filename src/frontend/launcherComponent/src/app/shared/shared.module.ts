@@ -81,6 +81,7 @@ import { ChiamataService } from '../core/service/chiamata-service/chiamata.servi
 import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
+import { ZonaEmergenzaModalComponent } from './modal/zona-emergenza-modal/zona-emergenza-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -155,6 +156,7 @@ const COMPONENTS = [
     FormRichiestaComponent,
     RicercaIndirizzoComponent,
     AzioniAreaDocumentaleModalComponent,
+    ZonaEmergenzaModalComponent
 ];
 const MODULES = [
     PipeModule

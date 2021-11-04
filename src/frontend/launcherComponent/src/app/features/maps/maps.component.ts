@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { SedeMarker } from './maps-model/sede-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
@@ -19,9 +19,8 @@ import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { SetAreaMappa } from './store/actions/area-mappa.actions';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
-import { ActivatedRoute } from '@angular/router';
 import { RouterState } from '@ngxs/router-plugin';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
     selector: 'app-maps',
@@ -33,6 +32,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() boxAttivi: boolean;
     @Input() tastoChiamataMappaActive: boolean;
+    @Input() tastoZonaEmergenzaMappaActive: boolean;
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     centroMappa: CentroMappa;
