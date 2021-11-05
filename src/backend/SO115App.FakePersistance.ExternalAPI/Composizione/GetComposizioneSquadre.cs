@@ -184,7 +184,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
-                return distaccamento && ricerca && diEmergenza && stato /*&& turno*/;
+                return distaccamento && ricerca && diEmergenza && stato && turno;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
@@ -221,7 +221,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             TurnoRelativo.Precedente => TurnoPrecedente.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
             TurnoRelativo.Successivo => TurnoSuccessivo.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
             null => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
-            //TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
+
+            //IN DISUSO
+            TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra), 
+            _ => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
         };
     }
 }
