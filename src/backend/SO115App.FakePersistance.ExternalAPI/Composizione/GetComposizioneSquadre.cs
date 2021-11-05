@@ -136,7 +136,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
                     Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione(),
-                    Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale.ToUpper()).Contains(a.CodiceFiscale.ToUpper()))?.Select(a => new MembroComposizione()
+                    Membri = lstAnagrafiche.Result.Where(a => squadra.Membri.Any(m => m.CodiceFiscale.Equals(a.CodiceFiscale))).Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,
                         Nominativo = a.Nominativo,
@@ -184,7 +184,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
 
-                return distaccamento && ricerca && diEmergenza && stato /*&& turno*/;
+                return distaccamento && ricerca && diEmergenza && stato && turno;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {
@@ -221,7 +221,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             TurnoRelativo.Precedente => TurnoPrecedente.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
             TurnoRelativo.Successivo => TurnoSuccessivo.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
             null => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
-            //TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
+
+            //IN DISUSO
+            TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra), 
+            _ => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
         };
     }
 }

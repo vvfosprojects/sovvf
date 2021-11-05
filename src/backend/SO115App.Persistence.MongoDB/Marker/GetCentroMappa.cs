@@ -1,37 +1,25 @@
-﻿using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Geo;
+﻿using SO115App.API.Models.Classi.Geo;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 
 namespace SO115App.Persistence.MongoDB.Marker
 {
     public class GetCentroMappa : IGetCentroMappaMarker
     {
+        private readonly IGetCoordinateByCodSede _service;
+        public GetCentroMappa(IGetCoordinateByCodSede service) => _service = service;
+
         public CentroMappa GetCentroMappaMarker(string codiceSede)
         {
-            if (!(codiceSede.Equals("00") || codiceSede.Equals("001")))
+            var coordinate = _service.Get(codiceSede);
+
+            var centroMappa = new CentroMappa()
             {
-                var coordinate = new Coordinate(0.0, 0.0);
+                CoordinateCentro = coordinate,
+                Zoom = 10
+            };
 
-                var centroMappa = new CentroMappa()
-                {
-                    CoordinateCentro = coordinate,
-                    Zoom = 10
-                };
-
-                return centroMappa;
-            }
-            else
-            {
-                var coordinate = new Coordinate(41.87194, 12.56738);
-
-                var centroMappa = new CentroMappa()
-                {
-                    CoordinateCentro = coordinate,
-                    Zoom = 6
-                };
-
-                return centroMappa;
-            }
+            return centroMappa;
         }
     }
 }

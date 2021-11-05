@@ -53,6 +53,8 @@ import {
 import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
 import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
+import { GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
+import { ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -342,6 +344,22 @@ export class SignalRService {
                 this.store.dispatch(new Navigate(['/login']));
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));
+        });
+
+        /**
+         * Zone Emergenza
+         */
+        this.hubNotification.on('NotifyCreazioneEmergenza', (emergenza: ZonaEmergenza) => {
+            console.log('NotifyCreazioneEmergenza', emergenza);
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            const page = pagination?.page ? pagination.page : null;
+            this.store.dispatch(new GetZoneEmergenza(page));
+        });
+        this.hubNotification.on('NotifyModificaEmergenza', (emergenza: ZonaEmergenza) => {
+            console.log('NotifyModificaEmergenza', emergenza);
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            const page = pagination?.page ? pagination.page : null;
+            this.store.dispatch(new GetZoneEmergenza(page));
         });
 
         /**
