@@ -196,7 +196,7 @@ export class ZoneEmergenzaState {
             null,
             null,
             null,
-            formValue.descrizione ? formValue.descrizione : null,
+            formValue.descrizione,
             tipologiaZoneEmergenzaCopy,
             null,
             new Localita(
@@ -252,7 +252,7 @@ export class ZoneEmergenzaState {
             formValue.id,
             formValue.codEmergenza,
             formValue.codComandoRichiedente,
-            formValue.descrizione ? formValue.descrizione : null,
+            formValue.descrizione,
             tipologiaZoneEmergenzaCopy,
             formValue.presaInCarico,
             new Localita(
