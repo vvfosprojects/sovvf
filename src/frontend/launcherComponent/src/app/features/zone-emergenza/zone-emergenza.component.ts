@@ -11,11 +11,13 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { TipologiaEmergenza, ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
-import { EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import { AnnullaZonaEmergenza, EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetAnnullaZonaEmergenzaForm, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { AnnullaZonaEmergenzaModalComponent } from '../../shared/modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -150,16 +152,35 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
-    onDelete(event: { codiceZonaEmergenza: string, descrizioneZonaEmergenza: string }): void {
-        // TODO: apertura modale di conferma annullamento con motivazione
+    onDelete(zonaEmergenza: ZonaEmergenza): void {
+        const confirmAnnullaEmergenzaModal = this.modalService.open(AnnullaZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg'
+        });
+
+        confirmAnnullaEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
+
+        confirmAnnullaEmergenzaModal.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.delete();
+                    break;
+                case 'ko':
+                    this.store.dispatch(new ResetAnnullaZonaEmergenzaForm());
+                    break;
+                default:
+                    this.store.dispatch(new ResetAnnullaZonaEmergenzaForm());
+                    break;
+            }
+        });
     }
 
     edit(): void {
         this.store.dispatch(new EditZonaEmergenza());
     }
 
-    delete(id: string): void {
-        // TODO: richiamo l'action per l'annullamento della Zona Emergenza
+    delete(): void {
+        this.store.dispatch(new AnnullaZonaEmergenza());
     }
 
     onPageChange(page: number): void {

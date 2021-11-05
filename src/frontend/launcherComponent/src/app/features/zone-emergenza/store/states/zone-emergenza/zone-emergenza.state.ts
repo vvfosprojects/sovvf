@@ -6,9 +6,9 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
-    AddZonaEmergenza, EditZonaEmergenza,
+    AddZonaEmergenza, AnnullaZonaEmergenza, EditZonaEmergenza,
     GetTipologieEmergenza,
-    GetZoneEmergenza,
+    GetZoneEmergenza, ResetAnnullaZonaEmergenzaForm,
     ResetZonaEmergenzaForm, SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZoneEmergenza,
@@ -17,9 +17,10 @@ import {
     StopLoadingTipologieEmergenza,
     StopLoadingZoneEmergenza
 } from '../../actions/zone-emergenza/zone-emergenza.actions';
-import { ZonaEmergenzaForm } from '../../../../../shared/interface/zona-emergenza-form.interface';
+import { ZonaEmergenzaForm } from '../../../../../shared/interface/forms/zona-emergenza-form.interface';
 import { Localita } from '../../../../../shared/model/localita.model';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { AnnullaZonaEmergenzaForm } from '../../../../../shared/interface/forms/annulla-zona-emergenza-form.interface';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -27,6 +28,12 @@ export interface ZoneEmergenzaStateModel {
     allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
         model: ZonaEmergenzaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    annullaZonaEmergenzaForm: {
+        model: AnnullaZonaEmergenzaForm,
         dirty: boolean,
         status: string,
         errors: any
@@ -41,6 +48,12 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     tipologieZonaEmergenza: null,
     allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    annullaZonaEmergenzaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -204,7 +217,6 @@ export class ZoneEmergenzaState {
             null,
             false
         );
-        console.warn('zonaEmergenza', zonaEmergenza);
         this.zoneEmergenzaService.add(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([
                 new GetZoneEmergenza(),
@@ -275,6 +287,29 @@ export class ZoneEmergenzaState {
         });
     }
 
+    @Action(AnnullaZonaEmergenza)
+    annullaZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+        const formValue = state.annullaZonaEmergenzaForm.model;
+        const params = {
+            id: formValue.id,
+            motivazione: formValue.motivazione ? formValue.motivazione : null
+        };
+        this.zoneEmergenzaService.annulla(params).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new GetZoneEmergenza(),
+                new ResetAnnullaZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch([
+                new ResetAnnullaZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
     @Action(StartLoadingTipologieEmergenza)
     startLoadingTipologieEmergenza({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
         patchState({
@@ -293,6 +328,13 @@ export class ZoneEmergenzaState {
     resetZonaEmergenzaForm({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
         patchState({
             zonaEmergenzaForm: ZoneEmergenzaStateModelDefaults.zonaEmergenzaForm
+        });
+    }
+
+    @Action(ResetAnnullaZonaEmergenzaForm)
+    resetAnnullaZonaEmergenzaForm({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
+        patchState({
+            annullaZonaEmergenzaForm: ZoneEmergenzaStateModelDefaults.annullaZonaEmergenzaForm
         });
     }
 
