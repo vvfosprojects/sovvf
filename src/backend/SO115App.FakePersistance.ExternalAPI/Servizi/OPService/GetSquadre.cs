@@ -34,11 +34,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             {
                 var result = await _service.GetAsync(url);
 
-                return result ?? JsonSerializer.Deserialize<WorkShift>(mock);
+                return result;
             }
             catch (Exception e)
             {
-                return JsonSerializer.Deserialize<WorkShift>(mock);
+                //return JsonSerializer.Deserialize<WorkShift>(mock);
+                return null;
             }
         }
 
