@@ -45,15 +45,39 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                     try
                     {
                         return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
-
                     }
-                    catch (System.Exception e)
+                    catch 
                     {
-                        //TODO GESTIRE COORDINATE DMS IN DD
-                        return new Coordinate();
+                        return DmsToDd(coordinate);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Converte da "40°08'08.7\"N,8°48'48.8\"E" a 40.2425425454
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        private Coordinate DmsToDd(string coordinate)
+        {
+            string lat = coordinate.Split(',')[0];
+            string lon = coordinate.Split(',')[1];
+
+            double ddLat = double.Parse(lat.Split('°')[0]) + (double.Parse(lat.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lat.Split("'")[1].Split("\"")[0]) / 3600);
+            double ddLon = double.Parse(lon.Split('°')[0]) + (double.Parse(lon.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lon.Split("'")[1].Split("\"")[0]) / 3600);
+
+            if (lat.Contains('W') || lat.Contains('S'))
+            {
+                ddLat *= -1;
+            }
+
+            if (lon.Contains('W') || lon.Contains('S'))
+            {
+                ddLon *= -1;
+            }
+
+            return new Coordinate(ddLat, ddLon);
         }
 
         /// <summary>
