@@ -1,4 +1,5 @@
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
+import { SetZonaEmergenzaFromMappaActiveValue } from '../tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 
 export class GetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Get Zone Emergenza';
@@ -37,6 +38,10 @@ export class AddZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Add Zona Emergenza';
 }
 
+export class EditZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
+}
+
 export class StartLoadingTipologieEmergenza {
     static readonly type = '[ZoneEmergenza] Start Loading Tipologie Emergenza';
 }
@@ -47,4 +52,11 @@ export class StopLoadingTipologieEmergenza {
 
 export class ResetZonaEmergenzaForm {
     static readonly type = '[ZoneEmergenza] Reset Zona Emergenza Form';
+}
+
+export class SetMappaActiveValue {
+    static readonly type = '[ZoneEmergenza] Set Mappa Active Value';
+
+    constructor(public value: boolean) {
+    }
 }

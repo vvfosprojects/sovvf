@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TipologiaEmergenza } from '../../model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../model/zona-emergenza.model';
 import Locator from '@arcgis/core/tasks/Locator';
 
 @Component({
@@ -19,6 +19,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
     indirizzo: number;
 
     zonaEmergenzaForm: FormGroup;
+    zonaEmergenzaEdit: ZonaEmergenza;
 
     constructor(public modal: NgbActiveModal,
                 private formBuilder: FormBuilder) {
@@ -47,6 +48,10 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             this.indirizzo = response.attributes.Match_addr;
             this.patchIndirizzo();
         });
+
+        if (this.zonaEmergenzaEdit) {
+            this.patchForm();
+        }
     }
 
     initForm(): void {
@@ -56,6 +61,12 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             tipologia: [null, [Validators.required]],
             descrizione: [null],
+            id: [null],
+            codEmergenza: [null],
+            codComandoRichiedente: [null],
+            listaEventi: [null],
+            presaInCarico: [null],
+            annullata: [null]
         });
     }
 
@@ -64,6 +75,22 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             indirizzo: this.indirizzo,
             latitudine: this.lat,
             longitudine: this.lon
+        });
+    }
+
+    patchForm(): void {
+        this.zonaEmergenzaForm.patchValue({
+            indirizzo: this.zonaEmergenzaEdit.localita.indirizzo,
+            latitudine: this.zonaEmergenzaEdit.localita.coordinate.latitudine,
+            longitudine: this.zonaEmergenzaEdit.localita.coordinate.longitudine,
+            tipologia: this.zonaEmergenzaEdit.tipologia.id,
+            descrizione: this.zonaEmergenzaEdit?.descrizione ? this.zonaEmergenzaEdit?.descrizione : null,
+            id: this.zonaEmergenzaEdit.id,
+            codEmergenza: this.zonaEmergenzaEdit.codEmergenza,
+            codComandoRichiedente: this.zonaEmergenzaEdit.codComandoRichiedente,
+            listaEventi: this.zonaEmergenzaEdit.listaEventi,
+            presaInCarico: this.zonaEmergenzaEdit.presaInCarico,
+            annullata: this.zonaEmergenzaEdit.annullata
         });
     }
 

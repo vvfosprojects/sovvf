@@ -14,6 +14,7 @@ export class TabellaZoneEmergenzaComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() zoneEmergenza: ZonaEmergenza[];
+    @Input() nightMode: boolean;
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
