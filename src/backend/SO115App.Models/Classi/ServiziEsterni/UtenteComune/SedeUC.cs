@@ -29,11 +29,11 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
             {
                 try
                 {
-                    return new Coordinate(double.Parse(coordinate?.Split(',')[0] ?? "0"), double.Parse(coordinate?.Split(',')?[1] ?? "0"));
+                    return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
                 }
                 catch (System.Exception e)
                 {
-                    return new Coordinate(0, 0);
+                    return new Coordinate();
                 }
             }
         }

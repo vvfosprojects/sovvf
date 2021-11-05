@@ -4,4 +4,10 @@ export interface ZonaEmergenzaForm {
     longitudine: number;
     tipologia: string;
     descrizione?: string;
+    id?: string;
+    codEmergenza?: string;
+    codComandoRichiedente?: string;
+    listaEventi?: any[];
+    presaInCarico?: any;
+    annullata?: boolean;
 }

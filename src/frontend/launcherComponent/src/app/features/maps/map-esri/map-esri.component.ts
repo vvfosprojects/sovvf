@@ -828,13 +828,22 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         modalNuovaEmergenza.result.then((result: string) => {
             switch (result) {
                 case 'ok':
-                    this.store.dispatch(new AddZonaEmergenza());
+                    this.store.dispatch([
+                        new AddZonaEmergenza(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
                     break;
                 case 'ko':
-                    this.store.dispatch(new ResetZonaEmergenzaForm());
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
                     break;
                 default:
-                    this.store.dispatch(new ResetZonaEmergenzaForm());
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
                     break;
             }
         });
