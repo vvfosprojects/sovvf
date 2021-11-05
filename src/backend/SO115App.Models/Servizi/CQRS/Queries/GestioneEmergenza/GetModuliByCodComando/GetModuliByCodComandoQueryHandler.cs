@@ -17,7 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetModuliByCodC
 
         public GetModuliByCodComandoResult Handle(GetModuliByCodComandoQuery query)
         {
-            var listaColonneMobili = _getModuli.Get(query.IdSede, query.Tipologia);
+            var listaColonneMobili = _getModuli.Get(query.IdSede, query.NomeModulo);
 
             //PAGINAZIONE
             List<ModuliColonnaMobile> ListaModuliColonnaMobile = null;

@@ -29,6 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string ServiziComponentiJson = "Servizi/Personale/Mock/Json/Componenti.json";
         public static string IdentityManagementJson = "Servizi/Identity/Mock/Json/Anagrafica.json";
         public static string ServiziSquadreJson = "Servizi/Personale/Mock/Json/SquadreNelTurno.json";
+        public static string ModuliColonnaMobileJson = "Fake/MockOpService/MockModuliColonnaMobile.json";
 
         #endregion Json
 

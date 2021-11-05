@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza
 {
     public interface IGetModuliColonnaMobileByCodComando
     {
-        public List<ModuliColonnaMobile> Get(string codComando, TipologiaEmergenza Tipologia);
+        public List<ModuliColonnaMobile> Get(string codComando, string NomeModulo);
     }
 }
