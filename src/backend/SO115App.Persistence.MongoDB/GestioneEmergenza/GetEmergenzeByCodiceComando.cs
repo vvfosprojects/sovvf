@@ -35,7 +35,7 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
 
             var ListaEmergenze = _dbContext.EmergenzaCollection.Find(Builders<Emergenza>.Filter.Empty).ToList();
 
-            return ListaEmergenze.FindAll(c => arrayCodiciSede.Any(s => s.Contains(c.CodComandoRichiedente)));
+            return ListaEmergenze.FindAll(c => arrayCodiciSede.Any(s => s.Contains(c.CodComandoRichiedente) && !c.Annullata));
         }
     }
 }
