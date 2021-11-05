@@ -29,13 +29,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
     public class InsertEmergenzaNotifier : ICommandNotifier<UpdateEmergenzaCommand>
     {
         private readonly ICallMatrix _callMatrix;
-        private readonly INotifyInsertEmergenza _sender;
+        private readonly INotifyUpDateEmergenza _sender;
         private readonly INotify_ESRIAddRichiesta _notify_ESRIAddRichiesta;
         private readonly IMappingESRIMessage _mappingESRIMessage;
 
         public InsertEmergenzaNotifier(
                                      ICallMatrix callMatrix,
-                                     INotifyInsertEmergenza sender,
+                                     INotifyUpDateEmergenza sender,
                                      INotify_ESRIAddRichiesta notify_ESRIAddRichiesta,
                                      IMappingESRIMessage mappingESRIMessage)
         {
