@@ -31,18 +31,18 @@ export class ConfirmModalComponent {
 
     onSubmit(key: string): void {
         switch (key) {
-            case 'ok': {
-                let result = 'ok';
+            case 'ok':
+                let resultOK = 'ok';
                 // tslint:disable-next-line:no-unused-expression
-                this.stampa ? result = result + this.azioneStampa : null;
-                this.modal.close(result);
-            }          break;
-            case 'ko': {
-                let result = 'ko';
+                this.stampa ? resultOK = resultOK + this.azioneStampa : null;
+                this.modal.close(resultOK);
+                break;
+            case 'ko':
+                let resultKO = 'ko';
                 // tslint:disable-next-line:no-unused-expression
-                this.stampa ? result = result + this.azioneStampa : null;
-                this.modal.close(result);
-            }          break;
+                this.stampa ? resultKO = resultKO + this.azioneStampa : null;
+                this.modal.close(resultKO);
+                break;
         }
     }
 

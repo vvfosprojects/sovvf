@@ -3,7 +3,7 @@ export interface ZonaEmergenzaForm {
     latitudine: number;
     longitudine: number;
     tipologia: string;
-    descrizione?: string;
+    descrizione: string;
     id?: string;
     codEmergenza?: string;
     codComandoRichiedente?: string;
