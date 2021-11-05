@@ -131,7 +131,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<UnitaOperativa> ListaSediAlberata()
         {
-            var ListaSediAlberate = new UnitaOperativa("00", "00", new Coordinate());
+            UnitaOperativa ListaSediAlberate = null;
 
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
@@ -148,11 +148,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 var conFiglio = GetInfoSede("001");
 
                 //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-                var result = new UnitaOperativa(con.Result.Id, con.Result.Descrizione);
+                var result = new UnitaOperativa(con.Result.Id, con.Result.Descrizione, con.Result.Coordinate);
 
                 try
                 {
-                    result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione));
+                    result.AddFiglio(new UnitaOperativa(conFiglio.Result.Id, conFiglio.Result.Descrizione, conFiglio.Result.Coordinate));
 
                     //REGIONI
                     Parallel.ForEach(lstRegionali.Result, regionale =>
