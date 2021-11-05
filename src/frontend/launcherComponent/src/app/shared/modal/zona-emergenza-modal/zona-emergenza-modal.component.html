@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ 'Creazione Emergenza' | uppercase }}
+        {{ (!zonaEmergenzaEdit ? 'Creazione Emergenza' : 'Modifica Emergenza') | uppercase }}
     </h4>
     <button type="button"
             class="btn btn-light close"
@@ -39,7 +39,7 @@
             <label for="tipologia">Tipologia</label>
             <ng-select id="tipologia"
                        [items]="tipologieEmergenza"
-                       bindValue="id"
+                       bindValue="desc"
                        bindLabel="desc"
                        placeholder="Seleziona una Tipologia"
                        formControlName="tipologia"
@@ -60,7 +60,7 @@
     <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
             (click)="close('ok')"
             [disabled]="!zonaEmergenzaForm?.valid">
-        {{ 'Crea Emergenza' | uppercase }}
+        {{ (!zonaEmergenzaEdit ? 'Crea Emergenza' : 'Salva Modifiche') | uppercase }}
     </button>
     <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
             (click)="close('ko')">

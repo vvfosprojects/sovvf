@@ -83,7 +83,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             indirizzo: this.zonaEmergenzaEdit.localita.indirizzo,
             latitudine: this.zonaEmergenzaEdit.localita.coordinate.latitudine,
             longitudine: this.zonaEmergenzaEdit.localita.coordinate.longitudine,
-            tipologia: this.zonaEmergenzaEdit.tipologia.id,
+            tipologia: this.zonaEmergenzaEdit.tipologia.emergenza[0],
             descrizione: this.zonaEmergenzaEdit?.descrizione ? this.zonaEmergenzaEdit?.descrizione : null,
             id: this.zonaEmergenzaEdit.id,
             codEmergenza: this.zonaEmergenzaEdit.codEmergenza,

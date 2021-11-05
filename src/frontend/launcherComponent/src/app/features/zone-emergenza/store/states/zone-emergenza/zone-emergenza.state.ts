@@ -167,9 +167,18 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
         const formValue = state.zonaEmergenzaForm.model;
-        const tipologiaZoneEmergenza = state.tipologieZonaEmergenza.filter((t: any) => t.id === formValue.tipologia)[0];
+        let tipologiaZoneEmergenza: TipologiaEmergenza;
+        let indexEmergenza: number;
+        state.tipologieZonaEmergenza.forEach((t: TipologiaEmergenza) => {
+            t.emergenza.forEach((e: string, i: number) => {
+                if (e === formValue.tipologia) {
+                    tipologiaZoneEmergenza = t;
+                    indexEmergenza = i;
+                }
+            });
+        });
         const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
-        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[0]];
+        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
         const zonaEmergenza = new ZonaEmergenza(
             null,
             null,
@@ -195,6 +204,7 @@ export class ZoneEmergenzaState {
             null,
             false
         );
+        console.warn('zonaEmergenza', zonaEmergenza);
         this.zoneEmergenzaService.add(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([
                 new GetZoneEmergenza(),
@@ -214,9 +224,18 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
         const formValue = state.zonaEmergenzaForm.model;
-        const tipologiaZoneEmergenza = state.tipologieZonaEmergenza.filter((t: any) => t.id === formValue.tipologia)[0];
+        let tipologiaZoneEmergenza: TipologiaEmergenza;
+        let indexEmergenza: number;
+        state.tipologieZonaEmergenza.forEach((t: TipologiaEmergenza) => {
+            t.emergenza.forEach((e: string, i: number) => {
+                if (e === formValue.tipologia) {
+                    tipologiaZoneEmergenza = t;
+                    indexEmergenza = i;
+                }
+            });
+        });
         const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
-        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[0]];
+        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
         const zonaEmergenza = new ZonaEmergenza(
             formValue.id,
             formValue.codEmergenza,
