@@ -6,10 +6,10 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
-    AddZonaEmergenza,
+    AddZonaEmergenza, EditZonaEmergenza,
     GetTipologieEmergenza,
     GetZoneEmergenza,
-    ResetZonaEmergenzaForm,
+    ResetZonaEmergenzaForm, SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZoneEmergenza,
     StartLoadingTipologieEmergenza,
@@ -33,6 +33,7 @@ export interface ZoneEmergenzaStateModel {
     };
     loadingZoneEmergenza: boolean;
     loadingTipologieEmergenza: boolean;
+    mappaActive: boolean;
 }
 
 export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
@@ -46,7 +47,8 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
         errors: {}
     },
     loadingZoneEmergenza: false,
-    loadingTipologieEmergenza: false
+    loadingTipologieEmergenza: false,
+    mappaActive: false
 };
 
 @Injectable()
@@ -83,6 +85,11 @@ export class ZoneEmergenzaState {
     @Selector()
     static loadingTipologieEmergenza(state: ZoneEmergenzaStateModel): boolean {
         return state.loadingTipologieEmergenza;
+    }
+
+    @Selector()
+    static mappaActive(state: ZoneEmergenzaStateModel): boolean {
+        return state.mappaActive;
     }
 
     @Action(GetZoneEmergenza)
@@ -202,6 +209,53 @@ export class ZoneEmergenzaState {
         });
     }
 
+    @Action(EditZonaEmergenza)
+    editZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+        const formValue = state.zonaEmergenzaForm.model;
+        const tipologiaZoneEmergenza = state.tipologieZonaEmergenza.filter((t: any) => t.id === formValue.tipologia)[0];
+        const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
+        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[0]];
+        const zonaEmergenza = new ZonaEmergenza(
+            formValue.id,
+            formValue.codEmergenza,
+            formValue.codComandoRichiedente,
+            formValue.descrizione ? formValue.descrizione : null,
+            tipologiaZoneEmergenzaCopy,
+            formValue.presaInCarico,
+            new Localita(
+                {
+                    latitudine: formValue.latitudine,
+                    longitudine: formValue.longitudine
+                },
+                formValue.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                'sostituire_provincia',
+                'sostituire_regione'
+            ),
+            formValue.listaEventi,
+            formValue.annullata
+        );
+        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new GetZoneEmergenza(),
+                new ResetZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch([
+                new ResetZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
     @Action(StartLoadingTipologieEmergenza)
     startLoadingTipologieEmergenza({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
         patchState({
@@ -218,8 +272,15 @@ export class ZoneEmergenzaState {
 
     @Action(ResetZonaEmergenzaForm)
     resetZonaEmergenzaForm({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
-         patchState({
-             zonaEmergenzaForm: ZoneEmergenzaStateModelDefaults.zonaEmergenzaForm
-         });
+        patchState({
+            zonaEmergenzaForm: ZoneEmergenzaStateModelDefaults.zonaEmergenzaForm
+        });
+    }
+
+    @Action(SetMappaActiveValue)
+    setMappaActiveValue({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetMappaActiveValue): void {
+        patchState({
+            mappaActive: action.value
+        });
     }
 }
