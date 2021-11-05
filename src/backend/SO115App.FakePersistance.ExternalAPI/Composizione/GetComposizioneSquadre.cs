@@ -135,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     Turno = squadra.TurnoAttuale.ToCharArray()[0],
                     Nome = squadra.Descrizione,
                     DiEmergenza = squadra.Emergenza,
-                    Distaccamento = lstSedi.Result.Find(d => d.Codice.Equals(squadra.Distaccamento)).MapDistaccamentoComposizione(),
+                    Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione(),
                     Membri = lstAnagrafiche.Result.FindAll(a => squadra.Membri.Select(m => m.CodiceFiscale.ToUpper()).Contains(a.CodiceFiscale.ToUpper()))?.Select(a => new MembroComposizione()
                     {
                         CodiceFiscale = a.CodiceFiscale,
