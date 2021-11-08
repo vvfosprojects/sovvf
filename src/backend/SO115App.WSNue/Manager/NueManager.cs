@@ -26,8 +26,8 @@ namespace SO115App.WSNue.Manager
         public string InserisciSchedaNue(InsertSchedaNueRequest insertSchedaNueRequest)
         {
             var conAppo = ConfigurationManager.ConnectionStrings["MongoDbConn"].ConnectionString;
-            var conDB = conAppo.Split(',')[0];
-            var DbName = conAppo.Split(',')[1];
+            var conDB = conAppo;
+            var DbName = ConfigurationManager.ConnectionStrings["MongoDbConnDBName"].ConnectionString;
 
             var client = new MongoClient(conDB);
             var database = client.GetDatabase(DbName.Trim());
@@ -286,32 +286,24 @@ namespace SO115App.WSNue.Manager
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:Address", namespaces).InnerText} " +
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:CivicNumber", namespaces).InnerText}";
 
-            Coordinate coordinate = new Coordinate(Convert.ToDouble(Latitudine), Convert.ToDouble(Longitudine));
+            Coordinate coordinate = new Coordinate(Convert.ToDouble(Latitudine.Replace(".",",")), Convert.ToDouble(Longitudine.Replace(".", ",")));
 
-            var Competenza = SchedaXml.SelectSingleNode("//nue:Companies/nue:Competence/nue:Primary/nue:Company/nue:Code", namespaces).InnerText;
             var ListaConoscenza = SchedaXml.SelectNodes("//nue:Companies/nue:ForwardedTo/nue:Company", namespaces);
 
-            bool conoscenza = false;
-
-            if (!Competenza.Equals(scheda.sedeDestinataria))
-            {
-                foreach (XmlNode nodo in ListaConoscenza)
-                {
-                    if (nodo.SelectSingleNode("//nue:Code", namespaces).InnerText.Equals(scheda.sedeDestinataria))
-                    {
-                        conoscenza = true;
-                    }
-                }
-            }
+            var Competenza = SchedaXml.SelectSingleNode("//nue:CompetenceType", namespaces).InnerText;
+            var DettaglioCompetenza = SchedaXml.SelectSingleNode("//nue:ClassificationDetail", namespaces).InnerText;
 
             string classificazione = "";
 
-            if (conoscenza)
+            if (Competenza.Equals("VVF"))
+            {
+                if(DettaglioCompetenza.Contains("SOLO SK"))
+                    classificazione = "Deferibile";
+                else
+                    classificazione = "Competenza";
+            }else
                 classificazione = "Conoscenza";
-            else if (Competenza.Equals(scheda.sedeDestinataria))
-                classificazione = "Competenza";
-            else
-                classificazione = "Deferibile";
+
 
             SchedaContatto schedaMapped = new SchedaContatto()
             {
