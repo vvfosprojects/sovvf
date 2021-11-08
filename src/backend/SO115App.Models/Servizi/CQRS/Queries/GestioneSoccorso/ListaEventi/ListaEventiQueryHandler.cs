@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Utility;
@@ -311,6 +312,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RichiestaModificata _:
                     return Costanti.RichiestaModificata;
+
+                case CreazioneEmergenza _:
+                    return Costanti.EmergenzaCreazione;
+
+                case ModificaEmergenza _:
+                    return Costanti.EmergenzaModifica;
+
+                case AnnullamentoEmergenza _:
+                    return Costanti.EmergenzaAnnulla;
+
+                case PresaInCaricoEmergenza _:
+                    return Costanti.EmergenzaPresaInCarico;
+
+                case InserimentoModuliColonnaMobileEmergenza _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobili;
+
 
                 default:
                     return Costanti.EventoGenerico;
