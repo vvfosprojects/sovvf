@@ -16,10 +16,11 @@ import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 import { Injectable } from '@angular/core';
+import { LSNAME } from '../../../../core/settings/config';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
-    listaSediNavbar: any; // ListaSedi
+    listaSediNavbar: ListaSedi;
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
     sediNavbarVisible: boolean;
@@ -80,8 +81,29 @@ export class SediTreeviewState {
     }
 
     @Selector()
-    static isCON(state: SediTreeviewStateModel): boolean {
-        return state.sediNavbarSelezionate?.iniziali?.length && state.sediNavbarSelezionate.iniziali.indexOf('CON') !== -1;
+    static isCON(): boolean {
+        const sediSelezionate = sessionStorage.getItem(LSNAME.cacheSedi);
+        const sediSelezionateObj = JSON.parse(sediSelezionate) as string[];
+        let CON = false;
+        sediSelezionateObj.forEach((sedeSelezionata: string) => {
+            if (sedeSelezionata === '00') {
+                CON = true;
+            }
+        });
+        return CON;
+    }
+
+    @Selector()
+    static isDirRegionale(): boolean {
+        const sediSelezionate = sessionStorage.getItem(LSNAME.cacheSedi);
+        const sediSelezionateObj = JSON.parse(sediSelezionate) as string[];
+        const dirRegionaliSelezionate = [];
+        sediSelezionateObj.forEach((sedeSelezionata: string) => {
+            if (sedeSelezionata.indexOf('.') === -1) {
+                dirRegionaliSelezionate.push(sedeSelezionata);
+            }
+        });
+        return !!(dirRegionaliSelezionate?.length);
     }
 
     @Action(SetListaSediTreeview)

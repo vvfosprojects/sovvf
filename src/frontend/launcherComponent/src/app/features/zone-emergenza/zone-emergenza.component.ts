@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -16,8 +16,8 @@ import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
-import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { AnnullaZonaEmergenzaModalComponent } from '../../shared/modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -41,6 +41,9 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
+
+    @Select(SediTreeviewState.isDirRegionale) isDirRegionale$: Observable<boolean>;
+    @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
 
     mapActive: boolean;
 
