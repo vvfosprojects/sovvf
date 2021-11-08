@@ -1,3 +1,5 @@
+import { RuoloFunzionarioSo } from "./ruolo-funzionario-so.enum";
+
 export class BoxFunzionariSo {
     constructor(
         /**
@@ -13,25 +15,9 @@ export class BoxFunzionariSo {
          */
         public nominativo: string,
         /**
-         * Indica se la persona ha il ruolo di funzionario di Guardia (UDS)
+         * Indica se il ruolo del Funzionario
          */
-        public funGuardia: boolean,
-        /**
-         * Indica se la persona ha il ruolo di 1° tecnico di guardia (UTS1)
-         */
-        public tecnicoGuardia1: boolean,
-        /**
-         * Indica se la persona ha il ruolo di 2° tecnico di guardia (UTS2)
-         */
-        public tecnicoGuardia2: boolean,
-        /**
-         * Indica se la persona ha il ruolo di Capo Turno
-         */
-        public capoTurno: boolean,
-        /**
-         * il numero di telefono della persona
-         */
-        public telefono?: string
+        public ruolo: RuoloFunzionarioSo
     ) {
     }
 }

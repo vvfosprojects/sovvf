@@ -20,10 +20,9 @@ import {
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
-import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
-import { wipeStringUppercase } from '../../shared/helper/function';
+import { wipeStringUppercase } from '../../shared/helper/function-generiche';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
@@ -31,6 +30,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -39,6 +39,8 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 })
 export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
@@ -50,13 +52,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
     @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggatoConDistaccamenti$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
-    subscriptions: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -64,6 +66,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
@@ -86,6 +89,14 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
+    }
+
     onRicercaUtenti(ricerca: any): void {
         this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
@@ -99,7 +110,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onAddUtente(): void {
-        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+        let aggiungiUtenteModal;
+        aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -122,7 +134,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }): void {
-        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+        let aggiungiRuoloUtenteModal;
+        aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -151,7 +164,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
@@ -159,10 +173,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         modalConfermaAnnulla.result.then(
             (val) => {
                 switch (val) {
@@ -180,7 +191,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true

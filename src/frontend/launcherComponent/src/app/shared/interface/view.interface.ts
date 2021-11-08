@@ -9,6 +9,7 @@ export interface ViewLayout {
 
 export interface ViewLayouts {
     richieste: ViewLayout;
+    codaChiamate: ViewLayout;
     mappa: ViewLayout;
     chiamata: ViewLayout;
     composizione: ViewLayout;

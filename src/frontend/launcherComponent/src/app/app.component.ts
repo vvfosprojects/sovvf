@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -13,12 +13,22 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthService } from './core/auth/auth.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
-import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
+import { SetAvailHeight, SetContentHeight, SetInnerWidth } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
-import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
+import { Logout, SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
+import { ViewComponentState } from './features/home/store/states/view/view.state';
+import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
+import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { GetDataNavbar, ToggleSidebarOpened } from './features/navbar/store/actions/navbar.actions';
+import { NavbarState } from './features/navbar/store/states/navbar.state';
+import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
+import { NotificaInterface } from './shared/interface/notifica.interface';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-root',
@@ -31,10 +41,21 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private imgs = [];
     private height;
     private availHeight;
+    private width;
     private currentUrl: string;
+
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    viewState: ViewLayouts;
+    @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
+
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+    nightMode: boolean;
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -44,53 +65,77 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     user: Utente;
 
+    @Select(RouterState.url) url$: Observable<string>;
+    url: string;
+
+    @Select(NotificheState.listaNotifiche) listaNotifiche$: Observable<NotificaInterface[]>;
+    @Select(NotificheState.nuoveNotifiche) nuoveNotifiche$: Observable<number>;
+
+    @Select(NavbarState.sidebarOpened) sidebarOpened$: Observable<boolean>;
+    sidebarOpened: boolean;
+
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
+    animateSidebar = false;
 
-    ngxLoaderConfiguration = {
-        hasProgressBar: false,
-        overlayColor: 'rgba(206,43,55,0.85)',
-        logoUrl: '../assets/img/logo_vvf_200x.png',
-        logoSize: 300,
-        logoPosition: 'center-center',
-        fgsColor: '#FFFFFF',
-        fgsSize: 50,
-        gap: 60,
-        text: 'ATTENDI, STO CARICANDO I DATI...',
-        textColor: '#FFFFFF',
-        textPosition: 'top-center'
-    };
+    ngxLoaderConfiguration: any = {};
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 
     @HostListener('window:resize')
     onResize(): void {
         this.getHeight();
+        this.getWidth();
     }
 
     constructor(private router: Router,
                 private authService: AuthService,
                 private store: Store,
                 private permessiService: PermessiService,
-                private versionCheckService: VersionCheckService) {
+                private versionCheckService: VersionCheckService,
+                private render: Renderer2,
+                private ngbAccordionconfig: NgbAccordionConfig,
+                private cdRef: ChangeDetectorRef) {
+        ngbAccordionconfig.type = 'dark';
+        this.getUrl();
+        this.getSidebarOpened();
+        this.getNightMode();
+        this.getDoubleMonitorMode();
         this.getRouterEvents();
+        this.getViewState();
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
     }
 
-
     ngOnInit(): void {
-        this.versionCheckService.initVersionCheck(3);
+        // tslint:disable-next-line:no-unused-expression
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
         this.preloadImage(Images.Disconnected);
+        this.setLoaderPosition();
     }
 
     ngAfterViewChecked(): void {
         this.getHeight();
+        this.getWidth();
+        this.animateSidebar = true;
+        this.cdRef.detectChanges();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    getUrl(): void {
+        this.subscription.add(
+            this.url$.subscribe((url: string) => {
+                this.url = url;
+                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
+                    this.store.dispatch(new GetDataNavbar());
+                }
+                this.store.dispatch(new ToggleSidebarOpened(false));
+            })
+        );
     }
 
     getRouterEvents(): void {
@@ -103,8 +148,61 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
     }
 
+    getSidebarOpened(): void {
+        this.subscription.add(
+            this.sidebarOpened$.subscribe((sidebarOpened: boolean) => {
+                this.sidebarOpened = sidebarOpened;
+            })
+        );
+    }
+
+    getNightMode(): void {
+        this.subscription.add(
+            this.nightMode$.subscribe((nightMode: boolean) => {
+                this.nightMode = nightMode;
+                const body = document.querySelectorAll('body')[0];
+                if (!this.nightMode) {
+                    this.render.addClass(body, 'sun-mode');
+                    this.render.removeClass(body, 'moon-mode');
+                } else {
+                    this.render.addClass(body, 'moon-mode');
+                    this.render.removeClass(body, 'sun-mode');
+                }
+            })
+        );
+    }
+
+    getDoubleMonitorMode(): void {
+        this.subscription.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+                const body = document.querySelectorAll('body')[0];
+                if (!this.doubleMonitor) {
+                    this.render.addClass(body, 'single-monitor');
+                    this.render.removeClass(body, 'double-monitor');
+                } else {
+                    this.render.addClass(body, 'double-monitor');
+                    this.render.removeClass(body, 'single-monitor');
+                }
+            })
+        );
+    }
+
+    getViewState(): void {
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+    }
+
     getImpostazioniLocalStorage(): void {
         this.store.dispatch(new GetImpostazioniLocalStorage());
+    }
+
+    toggleSidebar(value?: boolean): void {
+        this.store.dispatch(new ToggleSidebarOpened(value));
+    }
+
+    onLogout(): void {
+        const homeUrl = this.store.selectSnapshot(RouterState.url);
+        this.store.dispatch(new Logout(homeUrl));
     }
 
     private initSubscription(): void {
@@ -123,10 +221,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            if (r) {
-                this.store.dispatch(
-                    new PatchListaSediNavbar([this.user.sede.codice])
-                );
+            const cS = sessionStorage.getItem(LSNAME.cacheSedi);
+            const cSArray = JSON.parse(cS) as string[];
+            if (r && this.user) {
+                cS ? this.store.dispatch(new PatchListaSediNavbar(cSArray)) : this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
             }
         }));
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
@@ -154,15 +252,74 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             switch (currentUrl) {
                 case RoutesPath.Home:
                     return true;
+                case RoutesPath.Profilo:
+                    return true;
                 case RoutesPath.GestioneUtenti:
+                    return true;
+                case RoutesPath.ImpostazioniSede:
+                    return true;
+                case RoutesPath.POS:
+                    return true;
+                case RoutesPath.Changelog:
                     return true;
                 case RoutesPath.TrasferimentoChiamata:
                     return true;
                 case RoutesPath.Rubrica:
                     return true;
+                case RoutesPath.RubricaPersonale:
+                    return true;
+                case RoutesPath.Preferenze:
+                    return true;
+                case RoutesPath.DashboardPortale:
+                    return true;
+                case RoutesPath.AreaDocumentale:
+                    return true;
+                case RoutesPath.ZoneEmergenza:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
+    private getWidth(): void {
+        if (_isActive(this.currentUrl)) {
+            const innerWidth = window.innerWidth;
+            if (innerWidth) {
+                if (this.width !== innerWidth) {
+                    this.width = innerWidth;
+                    this.store.dispatch(new SetInnerWidth(innerWidth));
+                }
+            }
+        }
+
+        function _isActive(currentUrl): boolean {
+            switch (currentUrl) {
+                case RoutesPath.Home:
+                    return true;
+                case RoutesPath.Profilo:
+                    return true;
+                case RoutesPath.GestioneUtenti:
+                    return true;
+                case RoutesPath.ImpostazioniSede:
+                    return true;
+                case RoutesPath.POS:
+                    return true;
                 case RoutesPath.Changelog:
                     return true;
-                case RoutesPath.Impostazioni:
+                case RoutesPath.TrasferimentoChiamata:
+                    return true;
+                case RoutesPath.Rubrica:
+                    return true;
+                case RoutesPath.RubricaPersonale:
+                    return true;
+                case RoutesPath.Preferenze:
+                    return true;
+                case RoutesPath.DashboardPortale:
+                    return true;
+                case RoutesPath.AreaDocumentale:
+                    return true;
+                case RoutesPath.ZoneEmergenza:
                     return true;
                 default:
                     return false;
@@ -192,4 +349,40 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
     }
 
+    private setLoaderPosition(): void {
+        const innerWidth = window.innerWidth;
+        let config: any;
+        if (innerWidth && innerWidth > 3700) {
+            config = {
+                hasProgressBar: false,
+                overlayColor: 'rgb(52,58,64)',
+                logoUrl: '../assets/img/logo_vvf_200x.png',
+                logoSize: 300,
+                logoPosition: 'center-center loader-position-img-left',
+                fgsColor: '#FFFFFF',
+                fgsPosition: 'center-center loader-position-fgs-left',
+                fgsSize: 50,
+                gap: '60',
+                text: 'ATTENDI, STO CARICANDO I DATI...',
+                textColor: '#FFFFFF',
+                textPosition: 'top-center loader-position-left'
+            };
+        } else {
+            config = {
+                hasProgressBar: false,
+                overlayColor: 'rgb(52,58,64)',
+                logoUrl: '../assets/img/logo_vvf_200x.png',
+                logoSize: 300,
+                logoPosition: 'center-center',
+                fgsColor: '#FFFFFF',
+                fgsPosition: 'center-center',
+                fgsSize: 50,
+                gap: '60',
+                text: 'ATTENDI, STO CARICANDO I DATI...',
+                textColor: '#FFFFFF',
+                textPosition: 'top-center'
+            };
+        }
+        this.ngxLoaderConfiguration = config;
+    }
 }

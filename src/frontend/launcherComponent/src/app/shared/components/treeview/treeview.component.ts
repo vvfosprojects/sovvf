@@ -1,14 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { arrayUnique } from '../../helper/function';
+import { arrayUnique } from '../../helper/function-generiche';
 import { isNil, reverse } from 'lodash';
 import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.interface';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
-import { LSNAME } from '../../../core/settings/config';
-
 
 @Component({
     selector: 'app-shared-treeview',
@@ -17,9 +15,11 @@ import { LSNAME } from '../../../core/settings/config';
     encapsulation: ViewEncapsulation.Emulated,
     providers: [
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
-    ]
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
+
     @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
     @Input() testoSedeSelezionata$: Observable<string>;
@@ -48,6 +48,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     });
 
     constructor(config: NgbDropdownConfig) {
+        config.container = 'body';
         config.autoClose = 'outside';
     }
 
@@ -61,11 +62,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-            console.log('Componente Shared Treeview creato');
+        console.log('Componente Shared Treeview creato');
     }
 
     ngOnDestroy(): void {
-            console.log('Componente Shared Treeview distrutto');
+        console.log('Componente Shared Treeview distrutto');
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -182,11 +183,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                 };
             }
         }
-        if (unique[0] && this.cache) {
-            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
-        } else {
-            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
-        }
+        // if (unique[0] && this.cache) {
+        //     sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
+        // } else {
+        //     sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
+        // }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);
             this.patch(eventEmitter);

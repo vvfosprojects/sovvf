@@ -4,7 +4,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
 {
@@ -17,7 +16,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
             _getSchedeContatto = getSchedeContatto;
         }
 
-        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede)
+        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede, string classificazione, string codiceSede)
         {
             var ListaSchede = _getSchedeContatto.ListaSchedeContatto(codSede);
 

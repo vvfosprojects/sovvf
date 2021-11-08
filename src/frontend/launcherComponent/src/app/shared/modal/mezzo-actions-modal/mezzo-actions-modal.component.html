@@ -1,37 +1,70 @@
 <div class="modal-header">
-  <h4 class="modal-title" style="font-weight: 700">
-      {{ 'Conferma Orario' | uppercase }}
+  <h4 class="modal-title font-weight-bold">
+      {{ title + ' Orario' + titleStato | uppercase }}
   </h4>
   <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
           (click)="modal.dismiss('cross')">
-      <i class="fa fa-times text-danger"></i>
+      <i class="fas fa-times text-danger"></i>
   </button>
 </div>
 <div class="modal-body">
   <form [formGroup]="timeActionForm">
-
-      <div class="form-group" style="text-align: center;">
-        <label for="default-picker">Seleziona un orario</label>          
-        <div class="md-form md-outline" id="default-picker" style="display: flex; justify-content: center;">
-          <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
-          <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
-          
-          <!-- 
-           <input type="time" class="form-control" placeholder="Seleziona ora" 
-          formControlName="time" style="width: 225px;">
-          -->
-
+      <div style="text-align: center"><label class="font-xxlarge" for="default-picker">Seleziona Data e Ora</label></div>
+      <div class="d-flex" style="place-content: center">
+        <form class="align-self-center">
+          <div class="form-group">
+            <div class="input-group" style="width: 180px;" >
+              <input class="form-control" placeholder="aaaa-mm-gg"
+                     name="dp" [displayMonths]="1" [navigation]="navigation" [outsideDays]="outsideDays" [(ngModel)]="todayDate"
+                     [showWeekNumbers]="false" ngbDatepicker #d="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-no-hover calendar" (click)="d.toggle()" type="button"><i class="fas fa-calendar"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="form-group">
+          <div class="md-form md-outline" id="default-picker" style="display: flex; justify-content: center;">
+            <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+            <i class="far fa-clock" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+          </div>
         </div>
       </div>
-    <small class="text-muted">* Il cambiamento di stato del mezzo risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+      <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo && !titleStato" class="mb-4 alert alert-warning">
+        <span class="mr-4">Scegliere azione Intervento:</span>
+          <div class="form-check-inline">
+              <input class="form-check-input radio-custom" type="radio" id="sospesa" name="sospesa" [checked]="checkbox.sospesa"
+                     (click)="onCheck('sospesa')">
+              <label class="form-check-label" for="sospesa">
+                  Sospendi
+              </label>
+          </div>
+          <div class="form-check-inline">
+              <input class="form-check-input radio-custom" type="radio" id="chiusa" name="chiusa" [checked]="checkbox.chiusa"
+                     (click)="onCheck('chiusa')">
+              <label class="form-check-label" for="chiusa">
+                  Chiudi
+              </label>
+          </div>
+<!--          <div class="form-check-inline">-->
+<!--              <input class="form-check-input radio-custom" type="radio" id="aperta" name="aperta" [checked]="checkbox.aperta"-->
+<!--                     (click)="onCheck('aperta')">-->
+<!--              <label class="form-check-label" for="aperta">-->
+<!--                  Mantieni Aperto-->
+<!--              </label>-->
+<!--          </div>-->
+      </div>
   </form>
 </div>
-<div class="modal-footer">
-  <button class="btn btn-lg btn-secondary text-right" style="font-weight:600" (click)="onCancel()">
-      {{ 'Annulla' | uppercase }}
-  </button>
-  <button class="btn btn-lg btn-danger text-right" style="font-weight:600" [disabled]="!timeActionForm?.valid"
+<div class="alert alert-warning mb-0" role="alert">
+    Il cambiamento di stato risulterà il {{todayDate?.day + '/' + todayDate?.month + '/' + todayDate?.year}} alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+  <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge" [disabled]="!timeActionForm?.valid"
           (click)="onSubmit()">
-      {{ 'Conferma' | uppercase }}
+    {{ title | uppercase }}
+  </button>
+  <button class="btn btn-lg btn-secondary btn-no-hover font-xxlarge" (click)="onCancel()">
+      {{ 'Annulla' | uppercase }}
   </button>
 </div>

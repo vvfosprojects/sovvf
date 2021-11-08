@@ -11,10 +11,25 @@ export class SetFiltroSelezionatoRichieste {
     }
 }
 
-export class ClearFiltroSelezionatoRichieste {
-    static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
+export class ClearFiltroSenzaEsecuzione {
+    static readonly type = '[FiltriRichieste] Clear Filtro Richieste Senza Esecuzione';
 
     constructor(public filtro: VoceFiltro) {
+    }
+}
+
+export class ClearFiltroSelezionatoRichieste {
+  static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
+
+  constructor(public filtro: VoceFiltro) {
+  }
+}
+
+
+export class SetFiltroBoxRichieste {
+    static readonly type = '[FiltriRichieste] Set Filtro Box Richieste';
+
+    constructor(public statoRichiesta: string) {
     }
 }
 
@@ -36,13 +51,56 @@ export class ApplyFiltriTipologiaSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Apply Filtri Tipologia Richieste Selezionati';
 }
 
-export class ClearAllFiltriTipologiaSelezionatiRichieste {
-    static readonly type = '[FiltriRichieste] Clear All Filtri Tipologia Richieste Selezionati';
+export class ClearFiltriTipologiaSelezionatiRichieste {
+    static readonly type = '[FiltriRichieste] Clear Filtri Tipologia Richieste Selezionati';
 }
 
 export class ResetFiltriSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Reset Filtri Richieste Selezionati';
 
     constructor(public options?: { preventGetList: boolean }) {
+    }
+}
+
+export class SetPeriodoChiuse {
+    static readonly type = '[FiltriRichieste] Set Periodo Chiuse Filtri';
+
+    constructor(public periodo: any, public tipologiaRichiesta: string) {
+    }
+}
+
+export class RemovePeriodoChiuse {
+    static readonly type = '[FiltriRichieste] Remove Periodo Chiuse Filtri';
+
+    constructor(public tipologiaRichiesta?: string) {
+    }
+}
+
+export class SetChiuseRichiesta {
+    static readonly type = '[FiltriRichieste] Set Chiuse Richiesta';
+
+    constructor(public chiuse: string) {
+    }
+}
+
+
+export class RemoveChiuseRichiesta {
+    static readonly type = '[FiltriRichieste] Remove Chiuse Richiesta';
+
+    constructor(public chiuse: string) {
+    }
+}
+
+export class SetSelezioneStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Set Selezione Stato Richiesta';
+
+    constructor(public statoRichiesta: string) {
+    }
+}
+
+export class RemoveSelezioneStatoRichiesta {
+    static readonly type = '[FiltriRichieste] Remove Selezione Stato Richiesta';
+
+    constructor(public statoRichiesta: string) {
     }
 }

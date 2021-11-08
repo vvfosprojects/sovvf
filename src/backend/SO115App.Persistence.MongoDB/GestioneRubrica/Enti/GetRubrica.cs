@@ -47,7 +47,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             foreach (var sede in CodSede)
             {
                 listaPin.Add(new PinNodo(sede, true));
-                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
+                foreach (var figlio in sediAlberate.Result.GetSottoAlbero(listaPin))
                 {
                     PinNodo fgl = new PinNodo(figlio.Codice, true);
                     listaPin.Add(fgl);
@@ -64,11 +64,9 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede) 
-                && (c.Descrizione.ToLower().Contains(text) 
-                    //|| c.Telefoni.Any(c => c.Numero.ToLower().Contains(text ?? ""))
-                    || c.Email.ToLower().Contains(text) 
-                    || c.Indirizzo.ToLower().Contains(text))).ToList();
+
+            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList()
+                .Where(c => c.Descrizione.ToLower().Contains(text) || c.Email.ToLower().Contains(text) || c.Indirizzo.ToLower().Contains(text)).ToList();
 
             //GESTIONE RICORSIVITA'
             var result = FiltraByRicorsività(listaPin, lstEnti);

@@ -76,7 +76,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 if (ruolo.Ricorsivo)
                 {
                     listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-                    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                    foreach (var figli in sediAlberate.Result.GetSottoAlbero(listaPin))
                     {
                         listaCodiciSedeRuoloAdmin.Add(figli.Codice);
                     }

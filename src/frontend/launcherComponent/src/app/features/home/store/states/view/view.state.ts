@@ -1,6 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { makeCopy } from '../../../../../shared/helper/function';
-import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -13,16 +12,12 @@ import {
     TurnOffComposizione,
     ToggleMezziInServizio,
     ToggleSchedeContatto,
-    ClearViewState
+    ClearViewState,
+    ToggleCodaChiamate,
+    ToggleRichieste
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
-import {
-    Grids,
-    ViewComponentStateModel,
-    ViewInterfaceButton,
-    ViewInterfaceMaps,
-    ViewLayouts
-} from '../../../../../shared/interface/view.interface';
+import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
 import {
     activeChiamata,
     activeComposizione,
@@ -34,12 +29,13 @@ import {
     updateView,
     viewStateMaps,
     activeMezziInServizio,
-    activeSchedeContatto
+    activeSchedeContatto,
+    activeCodaChiamate,
+    activeRichieste
 } from '../../helper/view-state-function';
-import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearDirection } from '../../actions/maps/maps-direction.actions';
-import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
-import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
+import { GetInitCentroMappa, SetCoordCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
+import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
+import { ResetChiamata } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
@@ -49,12 +45,15 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
         richieste: {
             active: true,
-            split: true,
+            split: false
+        },
+        codaChiamate: {
+            active: false,
+            split: false
         },
         mappa: {
-            active: true,
-            split: true,
-            options: [AppFeatures.Richieste]
+            active: false,
+            split: false
         },
         chiamata: {
             active: false
@@ -115,6 +114,11 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static codaChiamateStatus(state: ViewComponentStateModel): boolean {
+        return state.view.codaChiamate.active;
+    }
+
+    @Selector()
     static composizioneStatus(state: ViewComponentStateModel): boolean {
         return state.view.composizione.active;
     }
@@ -135,7 +139,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static mezziInServizio(state: ViewComponentStateModel): boolean {
+    static mezziInServizioStatus(state: ViewComponentStateModel): boolean {
         return state.view.mezziInServizio.active;
     }
 
@@ -155,7 +159,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static richiesteIsActive(state: ViewComponentStateModel): boolean {
+    static richiesteStatus(state: ViewComponentStateModel): boolean {
         return state.view.richieste.active;
     }
 
@@ -171,6 +175,23 @@ export class ViewComponentState {
         });
     }
 
+    @Action(ToggleCodaChiamate)
+    toggleCodaChiamate({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        if (!state.view.codaChiamate.active) {
+            dispatch(new SaveView(makeCopy(state)));
+            const newState = activeCodaChiamate(stateDefault);
+            patchState({
+                ...state,
+                view: newState.view,
+                column: newState.column
+            });
+        } else {
+            patchState(ViewComponentStateDefault);
+        }
+    }
+
     @Action(ToggleChiamata)
     toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata): void {
         const state = getState();
@@ -179,10 +200,11 @@ export class ViewComponentState {
          * se lo stato della chiamata non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
          */
         if (!state.view.chiamata.active && !action.toggle) {
-            dispatch(new ClearDirection());
-            dispatch(new ClearMarkerRichiestaSelezionato());
-            dispatch(new GetInitCentroMappa());
-            dispatch(new SaveView(makeCopy(state)));
+            dispatch([
+                new ClearDirection(),
+                new GetInitCentroMappa(),
+                new SaveView(makeCopy(state))
+            ]);
             const newState = activeChiamata(stateDefault);
             patchState({
                 ...state,
@@ -211,7 +233,6 @@ export class ViewComponentState {
          */
         if (!state.view.modifica.active && !action.toggle) {
             dispatch(new ClearDirection());
-
             dispatch(new SaveView(currentState));
             const newState = activeModifica(stateDefault);
             patchState({
@@ -220,7 +241,6 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            dispatch(new ClearMarkerRichiestaSelezionato());
             dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             const newState = turnOffModifica(currentState, lastState);
@@ -230,6 +250,19 @@ export class ViewComponentState {
                 column: newState.column
             });
         }
+    }
+
+    @Action(ToggleRichieste)
+    toggleRichieste({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleRichieste): void {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        dispatch(new SaveView(makeCopy(state)));
+        const newState = activeRichieste(stateDefault);
+        patchState({
+            ...state,
+            view: newState.view,
+            column: newState.column
+        });
     }
 
     @Action(ToggleComposizione)
@@ -287,10 +320,11 @@ export class ViewComponentState {
          * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
          */
         if (!state.view.mezziInServizio.active) {
-            dispatch(new ClearDirection());
-            dispatch(new ClearMarkerRichiestaSelezionato());
-            dispatch(new GetInitCentroMappa());
-            dispatch(new SaveView(makeCopy(state)));
+            dispatch([
+                new ClearDirection(),
+                new GetInitCentroMappa(),
+                new SaveView(makeCopy(state))
+            ]);
             const newState = activeMezziInServizio(stateDefault);
             patchState({
                 ...state,
@@ -315,8 +349,10 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            dispatch(new ClearSchedaContattoTelefonata());
-            dispatch(new ClearListaSchedeContatto());
+            dispatch([
+                new ClearSchedaContattoTelefonata(),
+                new ClearListaSchedeContatto()
+            ]);
             patchState(ViewComponentStateDefault);
         }
     }

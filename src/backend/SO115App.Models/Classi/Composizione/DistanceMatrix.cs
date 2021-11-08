@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Google_API
 {
@@ -8,40 +8,43 @@ namespace Google_API
     /// </summary>
     public partial class DistanceMatrix
     {
-        [JsonProperty("originAddresses")]
+        [JsonPropertyName("origin_addresses")]
         public string[] OriginAddresses { get; set; }
 
-        [JsonProperty("destinationAddresses")]
+        [JsonPropertyName("destination_addresses")]
         public string[] DestinationAddresses { get; set; }
 
-        [JsonProperty("rows")]
+        [JsonPropertyName("rows")]
         public Row[] Rows { get; set; }
+
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
     }
 
     public partial class Row
     {
-        [JsonProperty("elements")]
+        [JsonPropertyName("elements")]
         public Element[] Elements { get; set; }
     }
 
     public partial class Element
     {
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public Distance Duration { get; set; }
 
-        [JsonProperty("distance")]
+        [JsonPropertyName("distance")]
         public Distance Distance { get; set; }
     }
 
     public partial class Distance
     {
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public long Value { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 }

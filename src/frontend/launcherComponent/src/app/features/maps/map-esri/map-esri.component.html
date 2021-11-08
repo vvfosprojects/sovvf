@@ -1,0 +1,30 @@
+<!-- ESRI Map Container -->
+<div #mapViewNode
+     [class.cursor-crosshair]="tastoChiamataMappaActive || tastoZonaEmergenzaMappaActive">
+    <!-- ContextMenu ESRI Container -->
+    <div #contextMenu
+         class="p-2 bg-tasto-nuova-chiamata"
+         style="display: none; position: absolute; z-index: 9999999999999">
+        <ul class="list-unstyled m-0">
+            <li *ngIf="eventClick?.mapPoint && activeRoute !== '/' + RoutesPath.ZoneEmergenza"
+                class="cursor-pointer item-contextMenu bg-tasto-nuova-chiamata"
+                (click)="startNuovaChiamata()">
+                Nuova Chiamata
+                <span>({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
+            </li>
+            <li *ngIf="eventClick?.mapPoint && activeRoute === '/' + RoutesPath.ZoneEmergenza"
+                class="cursor-pointer item-contextMenu bg-tasto-nuova-chiamata"
+                (click)="createNuovaEmergenza()">
+                Crea Emergenza
+                <span>({{ eventClick.mapPoint?.latitude }}, {{ eventClick.mapPoint?.longitude }})</span>
+            </li>
+            <li *ngIf="!eventClick?.mapPoint"
+                class="cursor-pointer item-contextMenu"
+                (click)="saveDrawedPolygon()">
+                Salva Poligono
+            </li>
+        </ul>
+    </div>
+    <!-- End ContextMenu ESRI Container -->
+</div>
+<!-- End ESRI Map Container -->

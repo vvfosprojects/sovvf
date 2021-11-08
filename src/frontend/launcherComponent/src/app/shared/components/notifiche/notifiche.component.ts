@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NotificaInterface } from '../../interface/notifica.interface';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TipoNotifica } from '../../enum/tipo-notifica.enum';
@@ -6,7 +6,8 @@ import { TipoNotifica } from '../../enum/tipo-notifica.enum';
 @Component({
     selector: 'app-notifiche',
     templateUrl: './notifiche.component.html',
-    styleUrls: ['./notifiche.component.css']
+    styleUrls: ['./notifiche.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificheComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class NotificheComponent implements OnInit {
     }
 
     getClasses(): string {
-        return this.nuoveNotifiche ? 'btn-primary' : 'btn-outline-light';
+        return this.nuoveNotifiche ? 'btn-primary' : 'btn-light';
     }
 
     onToggleDropdown(open: boolean): void {

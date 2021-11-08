@@ -62,7 +62,7 @@ namespace SO115App.FakePersistenceJSon.Box
                     interventi.Assegnati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Assegnata).Count;
                     interventi.Chiamate = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is InAttesa).Count;
                     interventi.Presidiati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Presidiata).Count;
-                    interventi.Sospesi = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Sospesa).Count;
+                    interventi.Chiusi = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Sospesa).Count;
                     interventi.TotAnnoCorrente = listaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
                     interventi.TotTurnoCorrente = listaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
                     interventi.TotTurnoPrecedente = 0;

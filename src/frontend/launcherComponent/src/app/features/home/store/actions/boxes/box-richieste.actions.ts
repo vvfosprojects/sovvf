@@ -1,5 +1,9 @@
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 
+export class GetBoxRichieste {
+    static readonly type = '[BoxRichieste] Get all data';
+}
+
 export class SetBoxRichieste {
     static readonly type = '[BoxRichieste] Set data';
 

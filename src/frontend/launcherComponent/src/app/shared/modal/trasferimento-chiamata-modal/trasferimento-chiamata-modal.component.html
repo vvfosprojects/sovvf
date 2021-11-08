@@ -1,8 +1,10 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+    <h4 class="modal-title font-weight-bold">
+        {{ getTitle() | uppercase }}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
@@ -10,14 +12,8 @@
         <form [formGroup]="trasferimentoChiamataForm" ngxsForm="trasferimentoChiamataModal.trasferimentoChiamataForm"
               autocomplete="off">
             <div class="form-group">
-                <label for="operatore">Operatore
-                    <small class="text-danger">*</small>
-                </label>
-                <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
-            </div>
-            <div class="form-group">
                 <label for="codiceRichesta">
-                    Codice Richiesta da Trasferire
+                    Codice Chiamata da trasferire
                     <small class="text-danger">*</small>
                 </label>
                 <ng-select
@@ -25,34 +21,37 @@
                         formControlName="codiceRichiesta"
                         [items]="codiciRichiesteTrasferibili$ | async"
                         [clearable]="false"
-                        placeholder="Seleziona un Codice Richiesta"
+                        placeholder="Seleziona un Codice Chiamata"
                         [closeOnSelect]="true"
                         [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'">
                 </ng-select>
             </div>
             <div class="form-group">
-                <label for="sede">Dove vuoi trasferire la Chiamata?</label>
-                <div class="border rounded">
-                    <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
-                                         [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
-                                         [visualizzaTasti]="false" [disabled]="false"
-                                         (confermaSelezione)="onPatchSedi($event)">
-                    </app-shared-treeview>
-                </div>
-                <div *ngIf="f.sedeA.errors" class="text-danger mt-1">
-                    <div *ngIf="f.sedeA.errors.required">Campo Obbligatorio</div>
-                </div>
+                <label for="sede">Dove vuoi trasferire la Chiamata?
+                    <small class="text-danger">*</small>
+                </label>
+                    <ng-select class="align-self-center"
+                               id="sede"
+                               [items]="distaccamenti"
+                               bindLabel="descrizione"
+                               bindValue="id"
+                               [closeOnSelect]="true"
+                               [hideSelected]="false"
+                               [loading]="!distaccamenti"
+                               (change)="onPatchSedi($event)"
+                               placeholder="Seleziona Comando">
+                    </ng-select>
             </div>
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
+<div class="modal-footer" style="place-content: space-between;">
     <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
         {{ 'Conferma Trasferimento' | uppercase }}
+    </button>
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+      {{ 'Annulla' | uppercase }}
     </button>
 </div>

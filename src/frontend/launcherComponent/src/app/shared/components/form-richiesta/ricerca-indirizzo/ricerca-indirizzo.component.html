@@ -1,0 +1,25 @@
+<div class="position-relative">
+    <label for="indirizzo"
+           class="d-none">Indirizzo</label>
+    <input id="indirizzo"
+           class="form-control required-field"
+           [(ngModel)]="indirizzo"
+           [class.is-invalid]="invalid"
+           type="text"
+           placeholder="Ricerca indirizzo"
+           appDebounceKeyUp
+           (debounceKeyUp)="onChangeIndirizzo()"
+           (keyup)="changeIndirizzo.emit(true)">
+    <ng-container *ngIf="addressCandidates?.length">
+        <div class="position-absolute pt-1 w-100"
+             style="top: 40px; left: 0; z-index: 99999">
+            <ul class="list-unstyled">
+                <li *ngFor="let candidate of addressCandidates"
+                    class="item-lista-indirizzo"
+                    (click)="onSelectCandidate(candidate)">
+                    {{ candidate?.address }}
+                </li>
+            </ul>
+        </div>
+    </ng-container>
+</div>

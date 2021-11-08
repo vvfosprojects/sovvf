@@ -1,37 +1,99 @@
 <div class="btn-group w-100">
-    <div ngbDropdown autoClose="outside" class="btn-group w-100">
-        <button ngbDropdownToggle class="btn btn-block app-shadow"
-                [ngClass]="{'btn-outline-primary': !filtriSelezionati || filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati &&filtriSelezionati.length > 0}"
-                type="button" id="dropdownMenuButton" data-toggle="dropdown">
-            <i class="fa fa-filter mr-1"></i>Filtri
-            <span *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="badge badge-success text-light">
-              {{filtriSelezionati.length}}
+    <div ngbDropdown autoClose="outside">
+        <button ngbDropdownToggle class="btn btn-block btn-secondary"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                [disabled]="disableFilters"
+                [ngbTooltip]="tipFiltriSelezionati">
+            <i class="fas fa-filter"></i>
+            {{ 'Filtri' | uppercase }}
+            <span class="badge text-light badge-success">
+              {{ filtriSelezionati?.length }}
             </span>
         </button>
-        <div ngbDropdownMenu class="bg-light px-3">
+        <ng-template #tipFiltriSelezionati>
+          <div>
+            <b>
+              FILTRI ATTIVI:
+            </b>
+          </div>
+          <div *ngFor="let t of filtriAttiviToolTip">
+            {{ t.descrizione }}
+          </div>
+          <div *ngIf="filtriAttiviToolTip.length <= 0">
+            Nessun filtro attivo
+          </div>
+        </ng-template>
+        <div ngbDropdownMenu class="bg-light px-3" style="width: max-content">
             <div class="card-block pt-1 pb-0">
-                <h6 class="font-weight-bold">Visualizza solo:</h6>
+                <h6 class="font-weight-bold">Visualizza:</h6>
                 <div class="py-1">
-                    <div *ngFor="let f of filtri" class="cursor-pointer mb-2">
+                    <div *ngFor="let f of filtri; let index = index" class="cursor-pointer mb-2">
                         <app-filtro *ngIf="f.star === true"
                                     [filtro]="f"
+                                    [disableFiltri]="lockFiltri$ | async"
                                     [useCheckbox]="true"
-                                    [selezionato]="f | selectedFilterRichieste"
+                                    [selezionato]="specialSelected[index]"
                                     [disabled]="disableFilters"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
                     </div>
+                    <app-filtro *ngIf="chiuse && chiuse[1].star === true"
+                                [filtro]="chiuse[1]"
+                                [useCheckbox]="true"
+                                [disableFiltri]="lockFiltri$ | async"
+                                [selezionato]="chiuse[1] | selectedFilterRichieste"
+                                [disabled]="disableFilters"
+                                [periodoChiuseChiamate]="periodoChiuseChiamate"
+                                [periodoChiusiInterventi]="periodoChiusiInterventi"
+                                (filtroSelezionato)="onSelezioneFiltro($event)"
+                                (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                                (chiusiModal)="openChiusiModal($event)"></app-filtro>
                 </div>
             </div>
-            <div class="text-center">
-                <button class="btn btn-sm btn-block btn-secondary" (click)="openFiltersModal()">
-                    Visualizza altri
-                </button>
+            <h6 class="font-weight-bold">Stati:</h6>
+            <div class="py-1">
+              <div *ngFor="let f of statiRichiesta" class="cursor-pointer mb-2">
+                <app-filtro *ngIf="f.star === true"
+                            [filtro]="f"
+                            [useCheckbox]="true"
+                            [disableFiltri]="lockFiltri$ | async"
+                            [selezionato]="f | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+              </div>
+            </div>
+            <h6 class="font-weight-bold">Altri:</h6>
+            <div class="py-1">
+              <div *ngFor="let f of altriFiltri" class="cursor-pointer mb-2">
+                <app-filtro *ngIf="f.star === true"
+                            [disableFiltri]="lockFiltri$ | async"
+                            [filtro]="f"
+                            [listaZoneEmergenzaSelezionate]="listaZoneEmergenzaSelezionate"
+                            [useCheckbox]="true"
+                            [selezionato]="f | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                            (zonaEmergenzaModal)="openZonaEmergenzaModal($event)"></app-filtro>
+              </div>
+                <app-filtro *ngIf="chiuse && chiuse[0].star === true"
+                            [filtro]="chiuse[0]"
+                            [useCheckbox]="true"
+                            [disableFiltri]="lockFiltri$ | async"
+                            [selezionato]="chiuse[0] | selectedFilterRichieste"
+                            [disabled]="disableFilters"
+                            [periodoChiuseChiamate]="periodoChiuseChiamate"
+                            [periodoChiusiInterventi]="periodoChiusiInterventi"
+                            (filtroSelezionato)="onSelezioneFiltro($event)"
+                            (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                            (chiusiModal)="openChiusiModal($event)"></app-filtro>
             </div>
         </div>
     </div>
-    <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1 altri-filtri"
-            (click)="resetFiltri()" [disabled]="disableFilters">
-        <i class="fa fa-undo text-dark px-1"></i>
+    <button class="btn btn-outline-secondary p-1" (click)="resetFiltri()" [disabled]="disableFilters">
+        <i class="fas fa-undo px-1" style="font-size: 20px"></i>
     </button>
 </div>

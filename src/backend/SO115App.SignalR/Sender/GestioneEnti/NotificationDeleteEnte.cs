@@ -37,10 +37,10 @@ namespace SO115App.SignalR.Sender.GestioneEnti
 
             foreach (var sede in SediDaNotificare)
             {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteEnte", new 
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteEnte", new
                 {
-                    Data = command.Id, 
-                    Pagination = new Paginazione() { TotalItems = count } 
+                    Data = command.Id,
+                    Pagination = new Paginazione() { TotalItems = count }
                 });
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChangeEnti", lstEnti);

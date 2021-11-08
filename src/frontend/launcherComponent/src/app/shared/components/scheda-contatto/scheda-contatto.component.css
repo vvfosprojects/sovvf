@@ -1,0 +1,38 @@
+.circle {
+  font-size: 1rem;
+  color: #e2e2e2;
+}
+
+.filled {
+  color: #9b9b9b;
+}
+
+.bad {
+  color: #c23535;
+}
+
+.non_letta_warning {
+  border-top: 2px solid #ffc107;
+  border-right: 2px solid #ffc107;
+  border-bottom: 2px solid #ffc107;
+}
+
+.non_letta_danger {
+  border-top: 2px solid #dc3545;
+  border-right: 2px solid #dc3545;
+  border-bottom: 2px solid #dc3545;
+}
+
+.non_letta_secondary {
+  border-top: 2px solid #868e96;
+  border-right: 2px solid #868e96;
+  border-bottom: 2px solid #868e96;
+}
+
+.btn-gestita:not(:hover) {
+  background-color: #f8f8f8;
+}
+
+.btn-outline-warning:hover {
+  color: #ffffff !important;
+}

@@ -32,7 +32,8 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
             BoxRichiesteState,
             BoxMezziState,
             BoxPersonaleState,
-        ])
+        ]),
+        SharedModule
     ],
     declarations: [
         InfoAggregateComponent,

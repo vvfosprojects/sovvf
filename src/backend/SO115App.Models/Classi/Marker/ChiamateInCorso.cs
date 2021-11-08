@@ -30,6 +30,7 @@ namespace SO115App.Models.Classi.Marker
         public string CodiceSedeOperatore { get; set; }
 
         public Localita Localita { get; set; }
+        public string[] Competenze { get; set; }
 
         public string Label { get; set; }
     }

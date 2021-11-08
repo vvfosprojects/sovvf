@@ -1,0 +1,85 @@
+<div class="h-100 bg-sidebar sidebar-border-right p-3">
+    <app-operatore [user]="user"
+                   [ruoliUtenteLoggato]="ruoliUtenteLoggato"
+                   [url]="url">
+    </app-operatore>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover mt-3"
+            [routerLink]="['/' + RoutesPath.Profilo]"
+            [class.btn-sidebar-selected]="url === '/profilo'"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+        <i class="far fa-user mr-1"></i>
+        Dettaglio Profilo
+    </button>
+    <button class="btn btn-block btn-secondary btn-no-hover"
+            ngbTooltip="Disconnettiti"
+            placement="bottom"
+            (click)="onLogout()">
+        <i class="fas fa-sign-out"></i>
+        Disconnettiti
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover mt-5"
+            [routerLink]="['/' + RoutesPath.GestioneUtenti]"
+            [class.btn-sidebar-selected]="url === '/gestione-utenti'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-users mr-1"></i>
+        Gestione Utenti
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            (click)="onOpenOpservice()">
+        <i class="fas fa-users mr-1"></i>
+        Servizi Operativi
+        <i class="fas fa-external-link-alt"></i>
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.DashboardPortale]"
+            [class.btn-sidebar-selected]="url === '/dashboard-portale'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-columns"></i>
+        Dashboard Portale
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
+            [class.btn-sidebar-selected]="url === '/impostazioni-sede'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-building mr-1"></i>
+        Impostazioni Sede
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [class.btn-sidebar-selected]="url === '/area-documentale' || url === '/POS'"
+            (click)="onShowAzioniAreaDocumentale()">
+        <i class="far fa-folder-open mr-1"></i>
+        Area Documentale
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+            [class.btn-sidebar-selected]="url === '/zone-emergenza'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-exclamation-triangle"></i>
+        Gestione Emergenze
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            (click)="onRiepilogoInterventi()">
+        <i class="fas fa-print"></i>
+        Riepilogo Interventi
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.Preferenze]"
+            [class.btn-sidebar-selected]="url === '/preferenze'"
+            [routerLinkActive]="['text-dark']">
+        <i class="fas fa-cogs mr-1"></i>
+        Preferenze
+    </button>
+    <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [routerLink]="['/' + RoutesPath.Changelog]"
+            [class.btn-sidebar-selected]="url === '/changelog'"
+            [routerLinkActive]="['text-dark']">
+        <i class="far fa-newspaper mr-1"></i>
+        Aggiornamenti
+    </button>
+    <hr class="mt-5">
+    <button class="btn btn-danger btn-block btn-no-hover"
+            (click)="onToggleSidebar()">
+        <i class="fas fa-arrow-left mr-1"></i>
+        Chiudi
+    </button>
+</div>

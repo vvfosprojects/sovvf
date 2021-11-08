@@ -15,7 +15,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
 
             else
             {
-                if(command.Ente.Id == null || command.Ente.Id == "0" || command.Ente.Id == "")
+                if (command.Ente.Id == null || command.Ente.Id == "0" || command.Ente.Id == "")
                     yield return new ValidationResult(Costanti.IdRichiestaNonValida);
 
                 else
@@ -26,9 +26,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
                     if (command.Ente.CodCategoria == 0)
                         yield return new ValidationResult("Nessuna categoria selezionata");
 
-                    if (command.Ente.Telefoni == null || command.Ente.Telefoni.Count == 0
-                        || command.Ente.Telefoni.Any(c => c.Numero.ToList().Any(x => !new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', ' ' }.Contains(x))))
-                        yield return new ValidationResult("Telefoni non validi");
+                    //if (command.Ente.Telefoni == null || command.Ente.Telefoni.Count == 0
+                    //    || command.Ente.Telefoni.Any(c => c.Numero.ToList().Any(x => !new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', ' ' }.Contains(x))))
+                    //    yield return new ValidationResult("Telefoni non validi");
 
                     if (command.Ente.Descrizione == "" || command.Ente.Descrizione == null)
                         yield return new ValidationResult("Nessuna descrizione selezionata");

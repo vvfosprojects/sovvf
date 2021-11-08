@@ -18,11 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
-using SO115App.FakePersistence.JSon.GestioneIntervento;
-using SO115App.FakePersistenceJSon.Box;
-using SO115App.FakePersistenceJSon.Composizione;
-using SO115App.FakePersistenceJSon.GestioneMezzi;
-using SO115App.FakePersistenceJSon.Marker;
+using SO115App.Persistence.File.CSVManagement;
+using SO115App.Persistence.File.PDFManagement;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -30,24 +28,12 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
-                API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni.GetUnitaOperativaPerCodice>();
+            container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
+            container.Register(typeof(ICSVTemplateManager<>), typeof(ICSVTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("CSVTemplateManager")).ToArray()[0]);
+
             container.Register<
                 API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
                 API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaRadice,
-                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativaRadice_CON_Direzioni_ComLazio>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativeVisibiliPerSoccorso,
-                API.SOVVF.FakeImplementations.Modello.Organigramma.GetUnitaOperativeVisibiliPerSoccorso_OperatoreDirezioneRegionaleLazio>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetSituazioneMezzi,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetSituazioneMezzi_RandomFake>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Anagrafiche.IGetTipoInterventoByCodice,
-                API.SOVVF.FakeImplementations.Modello.Infrastruttura.Anagrafiche.GetTipoInterventoByCodice_Fake>();
             container.Register<
                 API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.ITestAndSetSelezioneDisponibilitaSquadra,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaSquadra_Fake>();
@@ -72,9 +58,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio,
                 API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetNumeroSquadreSoccorsoOraInServizio_Fake>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.CompetenzeTerritoriali.IGetCompetenzeByPunto,
-                API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali.GetCompetenzeByPunto_Fake_Hardcoded>();
         }
     }
 }

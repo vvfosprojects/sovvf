@@ -1,0 +1,87 @@
+<table class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:12%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:22%"><i class="fas fa-file mr-2"></i>Nome</th>
+        <th scope="col" style="width:33%"><i class="fas fa-cog mr-2"></i>Tipologie</th>
+        <th scope="col" style="width:33%"><i class="fas fa-cogs mr-2"></i>Dettagli Tipologie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of pos">
+        <td style="width:12%" class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                    ngbTooltip="Rimuovi POS"
+                    placement="bottom"
+                    (click)="onDeletePos(p?.id, p?.descrizionePos)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                    ngbTooltip="Modifica POS"
+                    placement="bottom"
+                    (click)="onEditPos(p)">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-success font-weight-bold float-left"
+                    ngbTooltip="Scarica POS"
+                    placement="bottom"
+                    (click)="onDownloadPos(p)">
+                <i class="fas fa-download"></i>
+            </button>
+        </td>
+        <td style="width:22%" class="align-middle">
+            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
+               href="javascript:void(0)"
+               style="max-width: 400px;"
+               (click)="onViewPos(p)">
+                {{ p?.descrizionePos }}
+            </a>
+        </td>
+        <td style="width:33%" class="align-middle">
+            <ul class="mb-0">
+                <li *ngFor="let t of getTipologieFromListaTipologie(p, tipologie)">
+                    {{ t?.descrizione }}
+                </li>
+            </ul>
+        </td>
+        <td style="width:33%" class="align-middle">
+            <ng-template [ngIf]="getDettagliTipologieFromListaTipologie(p, dettagliTipologie)?.length">
+                <ul class="mb-0">
+                    <li *ngFor="let t of getDettagliTipologieFromListaTipologie(p, dettagliTipologie)">
+                        {{ t?.descrizione }}
+                    </li>
+                </ul>
+            </ng-template>
+            <ng-template [ngIf]="!getDettagliTipologieFromListaTipologie(p, dettagliTipologie)?.length">
+                <div class="text-danger font-weight-bold">
+                    {{ 'Nessun Dettaglio Tipologia associato' | uppercase }}
+                </div>
+            </ng-template>
+        </td>
+    </tr>
+    <tr *ngIf="pos?.length <= 0">
+        <td></td>
+        <td class="align-middle" style="width:22%">
+            <ng-template [ngIf]="!loading">Nessuna Pos trovata</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="pos?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <app-select-elementi-per-pagina [pageSize]="pageSize"
+                                    [pageSizes]="pageSizes"
+                                    [placeholderElementi]="'pos'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)">
+    </app-select-elementi-per-pagina>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
+</div>

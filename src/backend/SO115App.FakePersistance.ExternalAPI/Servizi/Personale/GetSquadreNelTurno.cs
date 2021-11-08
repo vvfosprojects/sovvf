@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
-using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Servizi.Personale.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
@@ -36,8 +34,8 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
-                        squadra.Componenti = new List<Componente>();
-                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
+                        squadra.Membri = new List<Componente>();
+                        squadra.Membri = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
                     }
                     listaSquadreTurno.Add(turno);
                 }

@@ -3,10 +3,8 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
-using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {
@@ -32,10 +30,25 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+                    foreach (var competenza in query.IdSede)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
+                            abilitato = true;
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.Amministratore))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
 }
-

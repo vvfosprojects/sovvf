@@ -51,6 +51,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: RoutesPath.RubricaPersonale,
+        loadChildren: () => import('./features/rubrica-personale/rubrica-personale.module').then(m => m.RubricaPersonaleModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: RoutesPath.TrasferimentoChiamata,
         loadChildren: () => import('./features/trasferimento-chiamata/trasferimento-chiamata.module').then(m => m.TrasferimentoChiamataModule),
         canActivate: [AuthGuard]
@@ -61,8 +66,36 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: RoutesPath.Impostazioni,
-        loadChildren: () => import('./features/impostazioni/impostazioni.module').then(m => m.ImpostazioniModule),
+        path: RoutesPath.ImpostazioniSede,
+        loadChildren: () => import('./features/impostazioni-sede/impostazioni-sede.module').then(m => m.ImpostazioniSedeModule),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: RoutesPath.POS,
+        loadChildren: () => import('./features/pos/pos.module').then(m => m.PosModule),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: RoutesPath.AreaDocumentale,
+        loadChildren: () => import('./features/area-documentale/area-documentale.module').then(m => m.AreaDocumentaleModule),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: RoutesPath.DashboardPortale,
+        loadChildren: () => import('./features/dashboard-portale/dashboard-portale.module').then(m => m.DashboardPortaleModule),
+    },
+    {
+        path: RoutesPath.ZoneEmergenza,
+        loadChildren: () => import('./features/zone-emergenza/zone-emergenza.module').then(m => m.ZoneEmergenzaModule),
+    },
+    {
+        path: RoutesPath.Profilo,
+        loadChildren: () => import('./features/profilo/profilo.module').then(m => m.ProfiloModule),
+        canActivate: [AuthGuard]
+    },
+    {
+        path: RoutesPath.Preferenze,
+        loadChildren: () => import('./features/preferenze/preferenze.module').then(m => m.PreferenzeModule),
         canActivate: [AuthGuard]
     },
     {

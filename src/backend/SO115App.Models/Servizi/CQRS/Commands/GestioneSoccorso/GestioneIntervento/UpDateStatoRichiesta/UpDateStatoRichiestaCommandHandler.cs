@@ -24,18 +24,19 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
     public class UpDateStatoRichiestaCommandHandler : ICommandHandler<UpDateStatoRichiestaCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IUpdateStatoPartenze _upDatePartenza;
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IUpdateStatoPartenze upDatePartenza)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
@@ -49,33 +50,38 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
             if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
             {
-                foreach (var composizione in richiesta.Partenze)
+                foreach (var composizione in richiesta.lstPartenzeInCorso)
                 {
-                    if (!composizione.Partenza.Sganciata && !composizione.Partenza.PartenzaAnnullata)
+                    if (!composizione.Sganciata && !composizione.PartenzaAnnullata)
                     {
-                        if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                        if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                         {
-                            if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                                composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                            if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                                composizione.Mezzo.Stato = Costanti.MezzoInRientro;
 
-                            composizione.Partenza.Mezzo.IdRichiesta = null;
+                            composizione.Mezzo.IdRichiesta = null;
 
                             AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
                             statoMezzo.CodiciSede = new string[] { command.CodiceSede };
-                            statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
+                            statoMezzo.IdMezzo = composizione.Mezzo.Codice;
                             statoMezzo.Richiesta = richiesta;
-                            statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
+                            statoMezzo.StatoMezzo = Costanti.MezzoRientrato;
                             _upDatePartenza.Update(statoMezzo);
                         }
                     }
 
                     if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
-                        composizione.Partenza.Terminata = true;
+                        composizione.Terminata = true;
                 }
             }
 
-            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note, DateTime.UtcNow);
-            
+            if (command.EntiIntervenuti != null)
+            {
+                richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice).ToList();
+            }
+
+            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Motivazione.ToString(), DateTime.UtcNow, command.EntiIntervenuti);
+
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;
 

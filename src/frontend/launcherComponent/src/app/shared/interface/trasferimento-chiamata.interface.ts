@@ -3,15 +3,16 @@ import { PaginationInterface } from './pagination.interface';
 
 export interface TrasferimentoChiamata {
     id: string;
-    codRichiesta: string;
-    codSedeDa: string;
-    codSedeA: string;
+    codChiamata: string;
+    sedeDa: string;
+    sedeA: string;
     operatore: Utente;
     data: string;
 }
 
 export interface AddTrasferimentoChiamata {
     codChiamata: string;
+    codSedeDa: string;
     codSedeA: string;
 }
 

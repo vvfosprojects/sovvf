@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
@@ -23,6 +22,7 @@ import { RubricaRouting } from './rubrica.routing';
  */
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
+import { MapsModule } from '../maps/maps.module';
 
 
 @NgModule({
@@ -43,8 +43,9 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgxPaginationModule,
-        NgbModule
+        NgbModule,
+        SharedModule,
+        MapsModule
     ],
     providers: []
 })

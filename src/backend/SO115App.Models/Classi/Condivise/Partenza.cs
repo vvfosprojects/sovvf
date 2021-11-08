@@ -24,6 +24,11 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Partenza
     {
         /// <summary>
+        ///   Codice incrementale univoco legato alla partenza
+        /// </summary>
+        public string Codice { get; set; }
+
+        /// <summary>
         ///   Lista delle squadre coinvolte
         /// </summary>
         public List<Squadra> Squadre { get; set; }
@@ -38,11 +43,17 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public bool Sganciata { get; set; }
 
+        /// <summary>
+        ///   Indica se la partenza è stata annullata
+        /// </summary>
         public bool PartenzaAnnullata
         {
             get; set;
         } = false;
 
+        /// <summary>
+        ///   Indica se la partenza è terminata
+        /// </summary>
         public bool Terminata { get; set; } = false;
     }
 }

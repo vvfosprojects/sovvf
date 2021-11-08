@@ -12,7 +12,6 @@ import {
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma,
-    PatchRichiesta,
     SetIdChiamataInviaPartenza,
     SetNeedRefresh,
     SetRichiestaById,
@@ -31,48 +30,42 @@ import {
     VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { RichiestaModificaState } from './richiesta-modifica.state';
-import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
-import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
-import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
-import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewComponentState } from '../view/view.state';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function-mezzo';
+import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
-    loadingActionMezzo: string;
+    loadingActionMezzo: string[];
     loadingEliminaPartenza: boolean;
-    loadingActionRichiesta: string;
+    loadingActionRichiesta: string[];
     loadingModificaFonogramma: boolean;
     needRefresh: boolean;
 }
@@ -97,10 +90,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
         RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
-        RichiestaModificaState,
-        RichiesteEspanseState,
-        RichiestaGestioneState,
-        RichiestaAttivitaUtenteState
+        RichiestaGestioneState
     ]
 })
 export class RichiesteState {
@@ -131,12 +121,12 @@ export class RichiesteState {
     }
 
     @Selector()
-    static loadingActionMezzo(state: RichiesteStateModel): string {
+    static loadingActionMezzo(state: RichiesteStateModel): string[] {
         return state.loadingActionMezzo;
     }
 
     @Selector()
-    static loadingActionRichiesta(state: RichiesteStateModel): string {
+    static loadingActionRichiesta(state: RichiesteStateModel): string[] {
         return state.loadingActionRichiesta;
     }
 
@@ -162,55 +152,49 @@ export class RichiesteState {
         if (utente) {
             dispatch(new StartLoadingRichieste());
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
+            const richiestaFissata = this.store.selectSnapshot(RichiestaFissataState.richiestaFissata);
+            let richiestePerPagina;
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
-                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
+                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
+            boxesVisibili ? richiestePerPagina = 7 : richiestePerPagina = 8;
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: boxesVisibili ? 7 : 8
+                pageSize: richiestePerPagina,
             };
+
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                /* response.sintesiRichiesta.forEach( e => {
-                    e.listaEnti = e.listaEntiIntervenuti;
-                }) */
-                dispatch([
-                    new AddRichieste(response.sintesiRichiesta),
-                    new PatchPagination(response.pagination),
-                    new StopLoadingRichieste()
-                ]);
+                const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
+                const listaRichieste = makeCopy(response.sintesiRichiesta);
+                if (richiestaFissata && listaRichieste.length >= 7) {
+                    let skipRemove;
+                    listaRichieste.forEach(x => x.codice === richiestaFissata.codice ? skipRemove = true : null);
+                    if (!skipRemove) {
+                        listaRichieste.pop();
+                    }
+                }
+                if (richiesteActive) {
+                    dispatch([
+                        new AddRichieste(listaRichieste),
+                        new PatchPagination(response.pagination),
+                    ]);
+                }
+                dispatch(new StopLoadingRichieste());
                 if (state.needRefresh) {
                     dispatch(new SetNeedRefresh(false));
                 }
             }, () => {
                 dispatch(new StopLoadingRichieste());
             });
-
             // Clear dei dati presenti nella pagina che si sta lasciando
-            dispatch([
-                new ClearRichiestaSelezionata(),
-                new ClearRichiestaHover(),
-                new ClearRichiesteEspanse()
-            ]);
+            dispatch(new ClearRichiestaHover());
             const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
             if (richiestaGestione) {
                 dispatch(new ClearRichiestaGestione(richiestaGestione.id));
             }
         }
-    }
-
-    @Action(PatchRichiesta)
-    patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta): void {
-        action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
-        this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
-            dispatch(new SuccessRichiestaModifica());
-        }, () => {
-            dispatch([
-                new ClearIndirizzo(),
-                new ClearRichiestaMarkerModifica(),
-                new GetInitCentroMappa()
-            ]);
-        });
     }
 
     @Action(AddRichieste)
@@ -221,8 +205,7 @@ export class RichiesteState {
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>): void {
-        dispatch(new ClearRichiesteEspanse());
+    clearRichieste({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState(RichiesteStateDefaults);
     }
 
@@ -262,8 +245,8 @@ export class RichiesteState {
                 dispatch(new UpdateRichiestaFissata(action.richiesta));
             }
 
-            if (state.loadingActionRichiesta && (action.richiesta.id === state.loadingActionRichiesta)) {
-                dispatch(new StopLoadingActionRichiesta());
+            if (state.loadingActionRichiesta?.includes(action.richiesta.id)) {
+                dispatch(new StopLoadingActionRichiesta(action.richiesta.id));
             }
 
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
@@ -321,8 +304,7 @@ export class RichiesteState {
         dispatch([
             new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
-            new SetMarkerRichiestaSelezionato(action.richiesta.id),
-            new RichiestaComposizione(action.richiesta)
+            new SetRichiestaComposizione(action.richiesta)
         ]);
     }
 
@@ -334,15 +316,25 @@ export class RichiesteState {
             idMezzo: action.mezzoAction.mezzo.codice,
             statoMezzo: action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             dataOraAggiornamento: action.mezzoAction.data
-        };
+        } as any;
+        if (action.mezzoAction.azioneIntervento) {
+            obj.azioneIntervento = action.mezzoAction.azioneIntervento;
+        }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+                this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                setTimeout(x => {
+                    this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                }, 60000);
+
+                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
-            error => dispatch(new StopLoadingActionMezzo())
+            error => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
         );
     }
 
     @Action(EliminaPartenzaRichiesta)
     eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta): void {
+        // TODO: DA RIMUOVERE POICHè IL BTN ASSOCIATO è STATO RIMOSSO
         dispatch(new StartLoadingEliminaPartenza());
         const obj = {
             idRichiesta: action.idRichiesta,
@@ -351,18 +343,18 @@ export class RichiesteState {
             testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
             codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
         };
-        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            dispatch(new StopLoadingEliminaPartenza());
-        }, error => dispatch(new StopLoadingEliminaPartenza()));
+        // this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
+        //     dispatch(new StopLoadingEliminaPartenza());
+        // }, error => dispatch(new StopLoadingEliminaPartenza()));
     }
 
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta): void {
         dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
         const obj = action.richiestaAction;
-        console.log('Obj', obj);
+        console.log('ActionRichiesta Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        }, error => dispatch(new StopLoadingActionRichiesta()));
+        }, error => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
     }
 
     @Action(ModificaStatoFonogramma)
@@ -382,9 +374,13 @@ export class RichiesteState {
 
     @Action(AllertaSede)
     allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede): void {
+        const codSediAllertate = [];
+        action.event.sedi.forEach(x => codSediAllertate.push(x.codice));
         const obj = {
             codiceRichiesta: action.event.codRichiesta,
-            codSediAllertate: action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
+            codSediAllertate,
+            motivazione: action.event.motivazione,
+            generiMezzi: action.event.generiMezzi,
         };
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });
@@ -407,12 +403,16 @@ export class RichiesteState {
     }
 
     @Action(VisualizzaListaSquadrePartenza)
-    visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+    visualizzaListaSquadrePartenza({}: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
+        let modal;
+        modal = this.modalService.open(ListaSquadrePartenzaComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            size: 'xl',
+            backdrop: true,
         });
+        modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
@@ -433,17 +433,21 @@ export class RichiesteState {
     }
 
     @Action(StartLoadingActionMezzo)
-    startLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo): void {
-        patchState({
-            loadingActionMezzo: action.idMezzo
-        });
+    startLoadingActionMezzo({ setState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo): void {
+        setState(
+            patch({
+                loadingActionMezzo: append([action.idMezzo])
+            })
+        );
     }
 
     @Action(StopLoadingActionMezzo)
-    stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingActionMezzo: null
-        });
+    stopLoadingActionMezzo({ setState }: StateContext<RichiesteStateModel>, action: StopLoadingActionMezzo): void {
+        setState(
+            patch({
+                loadingActionMezzo: removeItem<string>(idMezzo => idMezzo === action.idMezzo)
+            })
+        );
     }
 
 
@@ -462,17 +466,21 @@ export class RichiesteState {
     }
 
     @Action(StartLoadingActionRichiesta)
-    startLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta): void {
-        patchState({
-            loadingActionRichiesta: action.idRichiesta
-        });
+    startLoadingActionRichiesta({ setState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta): void {
+        setState(
+            patch({
+                loadingActionRichiesta: append([action.idRichiesta])
+            })
+        );
     }
 
     @Action(StopLoadingActionRichiesta)
-    stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingActionRichiesta: null
-        });
+    stopLoadingActionRichiesta({ setState }: StateContext<RichiesteStateModel>, action: StopLoadingActionRichiesta): void {
+        setState(
+            patch({
+                loadingActionRichiesta: removeItem<string>(idRichiesta => idRichiesta === action.idRichiesta)
+            })
+        );
     }
 
     @Action(StartLoadingModificaFonogramma)
@@ -488,5 +496,4 @@ export class RichiesteState {
             loadingModificaFonogramma: false
         });
     }
-
 }

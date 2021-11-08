@@ -17,12 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
@@ -31,6 +27,9 @@ using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Principal;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
@@ -64,12 +63,22 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
         {
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.ChiamataInCorso.Localita.Coordinate).ToHashSet();
+            var Competenze = command.Competenze;  //_getCompetenze.GetCompetenzeByCoordinateIntervento(command.ChiamataInCorso.Localita.Coordinate).ToHashSet(); //
 
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    bool abilitato = false;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, Competenze[0], Costanti.GestoreChiamate))
+                        abilitato = true;
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
 
                 var listaPin = _getPinNodoByCodSede.GetListaPin(Competenze.ToArray());
                 FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza()

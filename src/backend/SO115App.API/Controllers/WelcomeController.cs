@@ -44,7 +44,7 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var codiceSede = Request.Headers["codicesede"].ToString().Split(',');
+            var codiceSede = Request.Headers["CodiceSede"].ToString().Split(',');
             var idUtente = Request.Headers["IdUtente"];
 
             try
@@ -56,14 +56,16 @@ namespace SO115App.API.Controllers
                     idOperatore = idUtente
                 };
 
-                return Ok(this._handler.Handle(query).WelcomeRes);
+                return Ok(_handler.Handle(query).WelcomeRes);
             }
             catch (Exception ex)
             {
+                ex = ex.GetBaseException();
+
                 if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                 else
-                    return BadRequest(new { message = ex.Message });
+                    return BadRequest(new { message = $"{ex.Message}: {ex.StackTrace}"});
             }
         }
     }

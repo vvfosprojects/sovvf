@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
 import { Observable, Subscription } from 'rxjs';
-import { LoadingState } from 'src/app/shared/store/states/loading/loading.state';
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
@@ -10,13 +9,14 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
-import { Ente } from '../../shared/interface/ente.interface';
+import { EnteInterface } from '../../shared/interface/ente.interface';
 import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -25,7 +25,10 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 })
 export class RubricaComponent implements OnInit, OnDestroy {
 
-    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
+    @Select(RubricaState.loadingRubrica) loading$: Observable<boolean>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -33,9 +36,10 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-    subscriptions: Subscription = new Subscription();
+    RoutesPath = RoutesPath;
+
+    private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -43,11 +47,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
         }
+        this.getDoubleMonitorMode();
         this.getRicerca();
         this.getPageSize();
         this.getRubrica(true);
     }
-
 
     ngOnInit(): void {
         this.store.dispatch([
@@ -64,6 +68,14 @@ export class RubricaComponent implements OnInit, OnDestroy {
         ]);
         this.subscriptions.unsubscribe();
     }
+    
+    getDoubleMonitorMode(): void {
+        this.subscriptions.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
+                this.doubleMonitor = doubleMonitor;
+            })
+        );
+    }
 
     getRubrica(pageAttuale: boolean): void {
         let page = null;
@@ -74,7 +86,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
     onAddVoceRubrica(): void {
-        const addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+        let addVoceRubricaModal;
+        addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -100,10 +113,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestAddEnte());
     }
 
-    onEditVoceRubrica(voceRubrica: Ente): void {
+    onEditVoceRubrica(voceRubrica: EnteInterface): void {
         console.log('onEditVoceRubrica', voceRubrica);
-        const editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder',
+        let editVoceRubricaModal;
+        editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder ',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -130,7 +144,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
@@ -138,10 +153,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
-        ];
+
         modalConfermaAnnulla.result.then(
             (val) => {
                 switch (val) {
@@ -177,7 +189,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca !== null) {
+                if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetRubrica());
                 }

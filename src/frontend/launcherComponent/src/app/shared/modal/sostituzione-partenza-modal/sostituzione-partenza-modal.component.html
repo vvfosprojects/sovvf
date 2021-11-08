@@ -1,15 +1,17 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+    <h4 class="modal-title font-weight-bold">
+        {{ getTitle() | uppercase }}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body">
     <div class="row">
         <!-- Anteprima mezzo e squadra/e da sostituire -->
         <div class="col-12 mb-1">
-            <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="partenzaDaSostituire"
+            <app-box-anteprima-partenza [partenza]="singolaPartenza.partenza" [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()">
             </app-box-anteprima-partenza>
@@ -30,7 +32,7 @@
                             *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left pt-2">
-                            <i class="fa fa-users mr-2"></i>
+                            <i class="fas fa-users mr-2"></i>
                             <span class="h6">Squadre</span>
                         </div>
                         <div class="float-right w-50">
@@ -41,7 +43,7 @@
                                    (debounceKeyUp)="changeRicercaSquadre()"
                                    [debounceTime]="1000">
                             <i *ngIf="ricercaSquadre" (click)="onClearSearchSquadre()"
-                               class="fa fa-times clear-search-squadre"></i>
+                               class="fas fa-times clear-search-squadre"></i>
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border-bottom scroll-y"
@@ -52,10 +54,10 @@
                         <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                             <app-squadra-composizione
                                     *ngFor="let sC of squadreComposizione"
-                                    [squadraComp]="sC"
+                                    [squadraComposizione]="sC"
                                     [richiesta]="richiesta"
-                                    [itemSelezionato]="checkSquadraSelezione(sC.id)"
-                                    [itemHover]="sC.id === idSquadraHover"
+                                    [itemSelezionato]="checkSquadraSelezione(sC.codice)"
+                                    [itemHover]="sC.codice === idSquadraHover"
                                     (selezionata)="squadraSelezionata($event)"
                                     (deselezionata)="squadraDeselezionata($event)"
                                     (hoverIn)="squadraHoverIn($event)"
@@ -81,7 +83,7 @@
                             *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left pt-2">
-                            <i class="fa fa-truck mr-2"></i>
+                            <i class="fas fa-truck mr-2"></i>
                             <span class="h6">Mezzi</span>
                         </div>
                         <div class="float-right">
@@ -92,7 +94,7 @@
                                    (debounceKeyUp)="changeRicercaMezzi()"
                                    [debounceTime]="1000">
                             <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()"
-                               class="fa fa-times clear-search-mezzi"></i>
+                               class="fas fa-times clear-search-mezzi"></i>
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border-bottom scroll-y"
@@ -144,18 +146,18 @@
             </form>
         </div>
         <div class="col-6" style="max-height: 146px; transform: translate(70px, 0px);">
-            <div class="form-group" style="margin-bottom: 0px !important;">
+            <div class="form-group" style="margin-bottom: 0 !important;">
                 <label>Seleziona Orario Annullamento</label>
                 <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}"
                                 style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
-                <i class="fa fa-clock-o"
+                <i class="far fa-clock"
                    style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(160px, -83px);"
                    size="small"></i>
             </div>
         </div>
     </div>
     <div class="alert alert-info text-uppercase font-weight-bold mb-0" role="alert">Il
-        mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato
+        mezzo {{singolaPartenza?.partenza?.mezzo.descrizione}} {{singolaPartenza?.partenza?.mezzo.genere}} sarà annullato
         alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
     </div>
 </div>

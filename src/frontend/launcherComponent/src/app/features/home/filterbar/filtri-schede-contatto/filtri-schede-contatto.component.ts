@@ -1,11 +1,13 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-filtri-schede-contatto',
     templateUrl: './filtri-schede-contatto.component.html',
-    styleUrls: ['./filtri-schede-contatto.component.css']
+    styleUrls: ['./filtri-schede-contatto.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltriSchedeContattoComponent {
 
@@ -13,13 +15,16 @@ export class FiltriSchedeContattoComponent {
 
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
+    @Input() disableFilters: boolean;
+    @Input() nightMode: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
     Categoria = Categoria;
 
-    constructor() {
+    constructor(private dropdownConfig: NgbDropdownConfig) {
+        dropdownConfig.placement = 'bottom-right';
     }
 
     onSelezioneFiltro(filtro: VoceFiltro): void {
@@ -36,9 +41,7 @@ export class FiltriSchedeContattoComponent {
         this.filtriReset.emit();
     }
 
-
     _isSelezionato(filtro: VoceFiltro): boolean {
-        return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
+        return !!this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length;
     }
-
 }

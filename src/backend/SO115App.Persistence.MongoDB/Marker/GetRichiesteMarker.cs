@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MongoDB.Driver;
 using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso;
@@ -45,7 +44,7 @@ namespace SO115App.Persistence.MongoDB.Marker
             };
 
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(query.Filtro.UnitaOperative))
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(query.Filtro.UnitaOperative))
             {
                 listaSintesiRichieste.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodSOCompetente, figlio.Codice)).ToList());
             }

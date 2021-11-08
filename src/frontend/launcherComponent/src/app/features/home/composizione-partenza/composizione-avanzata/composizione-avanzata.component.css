@@ -1,32 +1,11 @@
-.m-h-boxes-avanzata {
-    height: 345px;
-    max-height: 345px;
-}
-
-.m-h-no-boxes-avanzata {
-    height: 445px;
-    max-height: 445px;
-}
-
-.align-center-custom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    min-height: 100%;
-    align-items: center;
-}
-
-.clear-search-mezzi {
-    transform: translate(175px, -26px);
+.clear-search-squadre {
+    transform: translate(225px, -32px);
     position: fixed;
     cursor: pointer
 }
 
-.clear-search-squadre {
-  transform: translate(78px, -26px);
-  position: fixed;
-  cursor: pointer
+.clear-search-mezzi {
+    transform: translate(265px, -32px);
+    position: fixed;
+    cursor: pointer
 }

@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title" style="font-weight: 700">
+        {{ 'Dettaglio intervento' | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="close('ko')">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div *ngIf="sintesiRichiesta" class="modal-body">
+    <app-partial-loader *ngIf="!sintesiRichiesta"></app-partial-loader>
+    <app-sintesi-richiesta class="rounded"
+                           [richiesta]="sintesiRichiesta"
+                           [fissata]="false"
+                           [fissabile]="false"
+                           [inGestione]="true"
+                           [gestibile]="false"
+                           [modificabile]="false"
+                           [boxAzioni]="false"
+                           [composizionePartenza]="false"
+                           [borderTop]="false"
+                           (actionMezzo)="onActionMezzo($event)">
+    </app-sintesi-richiesta>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="close('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div>

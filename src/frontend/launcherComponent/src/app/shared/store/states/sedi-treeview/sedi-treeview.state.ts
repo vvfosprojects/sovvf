@@ -9,18 +9,18 @@ import {
     SetSediNavbarSelezionate,
     SetSediNavbarVisible
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
-import { arraysEqual, makeCopy } from '../../../helper/function';
+import { arraysEqual, makeCopy } from '../../../helper/function-generiche';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
-import { LSNAME } from '../../../../core/settings/config';
 import { Injectable } from '@angular/core';
+import { LSNAME } from '../../../../core/settings/config';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
-    listaSediNavbar: any; // ListaSedi
+    listaSediNavbar: ListaSedi;
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
     sediNavbarVisible: boolean;
@@ -80,6 +80,32 @@ export class SediTreeviewState {
         }
     }
 
+    @Selector()
+    static isCON(): boolean {
+        const sediSelezionate = sessionStorage.getItem(LSNAME.cacheSedi);
+        const sediSelezionateObj = JSON.parse(sediSelezionate) as string[];
+        let CON = false;
+        sediSelezionateObj.forEach((sedeSelezionata: string) => {
+            if (sedeSelezionata === '00') {
+                CON = true;
+            }
+        });
+        return CON;
+    }
+
+    @Selector()
+    static isDirRegionale(): boolean {
+        const sediSelezionate = sessionStorage.getItem(LSNAME.cacheSedi);
+        const sediSelezionateObj = JSON.parse(sediSelezionate) as string[];
+        const dirRegionaliSelezionate = [];
+        sediSelezionateObj.forEach((sedeSelezionata: string) => {
+            if (sedeSelezionata.indexOf('.') === -1) {
+                dirRegionaliSelezionate.push(sedeSelezionata);
+            }
+        });
+        return !!(dirRegionaliSelezionate?.length);
+    }
+
     @Action(SetListaSediTreeview)
     setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview): void {
         patchState({
@@ -89,13 +115,6 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar): void {
-        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
-        if (cS) {
-          cS = JSON.parse(cS);
-        }
-        if (action.selected && cS) {
-            action.selected = cS;
-        }
         const state = getState();
         if (state.listeSedi) {
             const listeChecked = makeCopy(state.listeSedi);

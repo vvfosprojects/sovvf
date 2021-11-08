@@ -21,12 +21,14 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
@@ -39,34 +41,35 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     public class NotificationAggiornaStatoMezzo : INotifyAggiornaStatoMezzo
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IMapperRichiestaSuSintesi _mapperRichiesta;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzahandler;
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _listaMezziMarkerHandler;
-        private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationAggiornaStatoMezzo(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           IQueryHandler<MezziMarkerQuery, MezziMarkerResult> listaMezziMarkerHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          IMapperRichiestaSuSintesi mapperRichiesta)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
-            _sintesiRichiesteAssistenzahandler = sintesiRichiesteAssistenzahandler;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _listaMezziMarkerHandler = listaMezziMarkerHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _mapperRichiesta = mapperRichiesta;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -87,8 +90,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 },
                 CodiciSede = SediDaNotificare.ToArray()
             };
-            var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
+
+            intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
 
             Task.Factory.StartNew(() =>
             {
@@ -110,7 +113,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
 
                 Task.Factory.StartNew(() =>
-                { 
+                {
                     var boxMezziQuery = new BoxMezziQuery()
                     {
                         CodiciSede = new string[] { sede }
@@ -137,6 +140,23 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     };
                     var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+
+                    var counterCodaChiamate = new CounterNotifica()
+                    {
+                        codDistaccamento = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
+                        count = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Squadre.Count
+                    };
+
+                    if (intervento.StatoMezzo.Equals("InSede") || intervento.StatoMezzo.Equals("Rientrato"))
+                    {
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreLibereCodaChiamate", counterCodaChiamate);
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreOccupateCodaChiamate", counterCodaChiamate);
+                    }
+                    else
+                    {
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                    }
                 });
 
                 if (intervento.Chiamata != null)

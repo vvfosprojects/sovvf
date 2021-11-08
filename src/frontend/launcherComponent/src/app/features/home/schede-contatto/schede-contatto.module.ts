@@ -5,13 +5,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsModule } from '@ngxs/store';
-import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import { SchedeContattoComponent } from './schede-contatto.component';
-import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
-import { SchedaContattoComponent } from './scheda-contatto/scheda-contatto.component';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
-import { SchedaCollegataComponent } from './scheda-collegata/scheda-collegata.component';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { RichiesteModule } from '../richieste/richieste.module';
 
 @NgModule({
     imports: [
@@ -20,25 +15,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
         NgbModule,
         ReactiveFormsModule,
         SharedModule,
-        NgxsModule.forFeature(
-            [
-                SchedeContattoState,
-                MergeSchedeContattoState
-            ]
-        ),
-        NgxPaginationModule
-    ],
-    declarations: [
-        SchedeContattoComponent,
-        DettaglioSchedaModalComponent,
-        SchedaContattoComponent,
-        SchedaCollegataComponent
-    ],
-    exports: [
-        SchedeContattoComponent
-    ],
-    entryComponents: [
-        DettaglioSchedaModalComponent
+        NgxsModule.forFeature([
+            MergeSchedeContattoState
+        ]),
+        RichiesteModule
     ]
 })
 export class SchedeContattoModule {

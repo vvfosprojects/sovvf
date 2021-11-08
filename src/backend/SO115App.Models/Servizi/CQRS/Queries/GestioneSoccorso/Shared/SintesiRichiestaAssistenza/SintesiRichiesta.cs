@@ -17,26 +17,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Utenti;
+using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Fonogramma;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Triage;
+using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
-using SO115App.Models.Classi.Fonogramma;
-using SO115App.Models.Classi.RubricaDTO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -44,7 +44,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
     ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
-    public class SintesiRichiesta : IGetListaSintesiRichieste
+    public class SintesiRichiesta //: IGetListaSintesiRichieste
     {
         /// <summary>
         ///   Costruttore della classe
@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             this.ZoneEmergenza = new string[0];
             this.Tags = new HashSet<string>();
-            this.Eventi = new List<Evento>();
+            this.Eventi = new List<EventoSintesiRichiesta>();
             this.Competenze = new List<Sede>();
         }
 
@@ -100,7 +100,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
-        public Utente Operatore { get; set; }
+        public Operatore Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
@@ -112,6 +112,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public DateTime? IstanteChiusura { get; internal set; }
 
+        #region GESTIONE STATI
+
         /// <summary>
         ///   Indica se la richiesta è sospesa
         /// </summary>
@@ -119,20 +121,100 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   La richiesta è sospesa se, prima del termine della sua evasione, tutte le risorse le
         ///   sono state sottratte e dirottate presso altro intervento
         /// </remarks>
-        public bool Sospesa
-        {
-            get; set;
-        }
+        public bool Sospesa => TestoStatoRichiesta == "S";
 
         /// <summary>
         ///   Indica se la richiesta è aperta
         /// </summary>
-        public bool Chiusa { get; set; }
+        public bool Chiusa => TestoStatoRichiesta == "X";
 
         /// <summary>
         ///   Indica se la richiesta è chiusa
         /// </summary>
-        public bool Aperta { get; set; }
+        public bool Aperta => TestoStatoRichiesta != "X";
+
+        /// <summary>
+        ///   Indica se la richiesta è presidiata
+        /// </summary>
+        public bool Presidiata => TestoStatoRichiesta == "P";
+
+        /// <summary>
+        ///   Indica lo stato della richiesta
+        /// </summary>
+        public string TestoStatoRichiesta { get; set; }
+
+        /// <summary>
+        ///   Stato della richiesta
+        /// </summary>
+        /// <summary>
+        ///   Restituisce lo stato della Richiesta
+        /// </summary>
+        public string Stato
+        {
+            get
+            {
+                if (this.TestoStatoRichiesta != null)
+                {
+                    if (this.TestoStatoRichiesta.Equals("C"))
+                        return Costanti.Chiamata;
+                    else if (this.TestoStatoRichiesta.Equals("A"))
+                        return Costanti.AssegnataRichiesta;
+                    else if (this.TestoStatoRichiesta.Equals("P"))
+                        return Costanti.RichiestaPresidiata;
+                    else if (this.TestoStatoRichiesta.Equals("X"))
+                        return Costanti.RichiestaChiusa;
+                    else if (this.TestoStatoRichiesta.Equals("S"))
+                        return Costanti.RichiestaSospesa;
+                    else
+                        return Costanti.Chiamata;
+                }
+                else
+                {
+                    var partenze = this.Partenze;
+
+                    if (partenze != null && partenze.Count > 0)
+                    {
+                        if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
+                        {
+                            var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
+
+                            if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 &&
+                                partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0)
+                                return Costanti.AssegnataRichiesta;
+                            else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
+                            {
+                                TestoStatoRichiesta = "P";
+                                return Costanti.RichiestaPresidiata;
+                            }
+                            else
+                            {
+                                TestoStatoRichiesta = "S";
+                                return Costanti.RichiestaSospesa;
+                            }
+                        }
+                        else
+                        {
+                            if (Eventi.OrderByDescending(p => p.Ora).First().Stato.Equals("Chiusa"))
+                            {
+                                TestoStatoRichiesta = "X";
+                                return Costanti.RichiestaChiusa;
+                            }
+                            else
+                            {
+                                TestoStatoRichiesta = "S";
+                                return Costanti.RichiestaSospesa;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Costanti.Chiamata;
+                    }
+                }
+            }
+        }
+
+        #endregion GESTIONE STATI
 
         /// <summary>
         ///   Priorita della richiesta
@@ -140,6 +222,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public Priorita PrioritaRichiesta { get; set; }
 
         public List<Tipologia> Tipologie { get; set; }
+
+        public TipologiaDettaglio DettaglioTipologia { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
@@ -161,13 +245,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public string trnInsChiamata { get; set; }
 
-        //public Turno TurnoInserimentoChiamata { get; set; }
-
-        /// <summary>
-        ///   Il turno nel quale viene lavorato l'intervento
-        /// </summary>
-        //public Turno TurnoIntervento { get; set; }
-
         /// <summary>
         ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
         /// </summary>
@@ -176,7 +253,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EnteDTO> ListaEntiIntervenuti { get; set; }
+        public List<int> CodEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -256,7 +333,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Codice della scheda Nue
         /// </summary>
-        public virtual string CodiceSchedaNue { get; set; }
+        public string CodiceSchedaNue { get; set; }
 
         /// <summary>
         ///   Descrizione delle zone di emergenza
@@ -267,46 +344,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
         ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma StatoInvioFonogramma
-        {
-            get
-            {
-                if (this.Eventi == null) return new Classi.Soccorso.Fonogramma.NonNecessario();
-                var ultimoEventoFonogramma = this.Eventi
-                    .LastOrDefault(e => e is IFonogramma);
+        public IStatoFonogramma StatoInvioFonogramma => new NonNecessario();
 
-                switch (ultimoEventoFonogramma)
-                {
-                    case FonogrammaInviato _:
-                        return new Classi.Soccorso.Fonogramma.Inviato();
-
-                    case InviareFonogramma _:
-                        return new Classi.Soccorso.Fonogramma.DaInviare();
-                }
-
-                return new Classi.Soccorso.Fonogramma.NonNecessario();
-            }
-        }
-
-        public IList<ComposizionePartenze> Partenze
-        {
-            get; set;
-        }
-
-        /// <summary>
-        ///   Lista eventi associato alla richiesta
-        /// </summary>
-        public List<Partenza> PartenzeRichiesta
-        {
-            get
-            {
-                if (this.Partenze != null && this.Partenze.Count > 0)
-                {
-                    return Partenze.Select(x => x.Partenza).ToList();
-                }
-                else { return null; }
-            }
-        }
+        public IList<ComposizionePartenze> Partenze { get; set; }
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
@@ -320,57 +360,30 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista eventi associato alla richiesta
         /// </summary>
-        public List<Evento> Eventi { get; set; }
-
-        public virtual bool Presidiata
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        ///   Stato della richiesta
-        /// </summary>
-        /// <summary>
-        ///   Restituisce lo stato della Richiesta
-        /// </summary>
-        public string Stato
-        {
-            get
-            {
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-                var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
-
-                foreach (var partenza in PartenzeSelect)
-                {
-                    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
-                        return Costanti.RichiestaPresidiata;
-                }
-
-                if (this.Chiusa)
-                {
-                    return Costanti.RichiestaChiusa;
-                }
-                if (eventoAssegnata.Count > 0)
-                {
-                    return Costanti.RichiestaAssegnata;
-                }
-                if (Sospesa)
-                {
-                    return Costanti.RichiestaSospesa;
-                }
-                return Costanti.Chiamata;
-            }
-        }
-
-        public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
-        {
-            throw new NotImplementedException();
-        }
+        public List<EventoSintesiRichiesta> Eventi { get; set; }
 
         public string Motivazione { get; set; }
 
         public Fonogramma Fonogramma { get; set; }
+
         public List<int> listaEnti { get; set; }
+
+        /// <summary>
+        ///   Contiene il risultato del Triage, con domande,risposte e i dati aggiutivi(es. Mezzi
+        ///   consigliati, Priorità,ecc....)
+        /// </summary>
+        public List<TriageSummary> TriageSummary { get; set; }
+
+        /// <summary>
+        ///   Indica se la chiamata è stata definita urgente durante il triage
+        /// </summary>
+        public bool ChiamataUrgente { get; set; }
+
+        /// <summary>
+        ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
+        /// </summary>
+        public bool Esercitazione { get; set; }
+
+        public ESRI Esri_Param { get; set; }
     }
 }

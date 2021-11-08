@@ -1,6 +1,6 @@
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 export class AddBoxPartenza {
     static readonly type = '[BoxPartenza] Add Box Partenza';
@@ -31,10 +31,10 @@ export class RemoveBoxPartenzaByMezzoId {
     }
 }
 
-export class AddSquadraBoxPartenza {
-    static readonly type = '[BoxPartenza] Add Squadra Box Partenza';
+export class AddSquadreBoxPartenza {
+    static readonly type = '[BoxPartenza] Add Squadre Box Partenza';
 
-    constructor(public squadra: SquadraComposizione) {
+    constructor(public squadre: SquadraComposizione[], public preAccoppiato?: boolean) {
     }
 }
 
@@ -77,13 +77,20 @@ export class RequestSelectBoxPartenza {
 export class SelectBoxPartenza {
     static readonly type = '[BoxPartenza] Select Box Partenza';
 
-    constructor(public idBoxPartenza: string) {
+    constructor(public idBoxPartenza: string, public inRientro?: boolean, public preaccoppiato?: boolean) {
     }
 }
 
-export class UnselectBoxPartenza {
-    static readonly type = '[BoxPartenza] Unselect Box Partenza';
+export class AddBoxesPartenzaInRientro {
+    static readonly type = '[BoxPartenza] Add Boxes Partenza In Rientro';
 
-    constructor(public idBoxPartenza: string) {
+    constructor(public squadraComp: SquadraComposizione) {
     }
+}
+
+export class AddBoxesPartenzaPreAccoppiato {
+  static readonly type = '[BoxPartenza] Add Boxes Partenza Pre Accoppiato';
+
+  constructor(public squadraComp: SquadraComposizione) {
+  }
 }

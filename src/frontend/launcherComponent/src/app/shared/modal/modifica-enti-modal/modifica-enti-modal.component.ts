@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Ente } from '../../interface/ente.interface';
+import { EnteInterface } from '../../interface/ente.interface';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Select, Store } from '@ngxs/store';
@@ -15,10 +15,10 @@ import { ClearFormEnte, RequestAddEnte } from '../../store/actions/enti/enti.act
 })
 export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
-    @Select(EntiState.enti) enti$: Observable<Ente[]>;
-    enti: Ente[];
+    @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
+    enti: EnteInterface[];
 
-    listaEntiIntervenuti: Ente[];
+    listaEntiIntervenuti: number[];
 
     modificaEntiIntervenutiForm: FormGroup;
     submitted: boolean;
@@ -37,21 +37,22 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.modificaEntiIntervenutiForm = this.fb.group({
-            listaEnti: [this.listaEntiIntervenuti ? this.listaEntiIntervenuti.map(e => e.codice) : null],
+            listaEnti: [this.listaEntiIntervenuti],
         });
         this.getEnti();
     }
 
     getEnti(): void {
         this.subscription.add(
-            this.enti$.subscribe((enti: Ente[]) => {
+            this.enti$.subscribe((enti: EnteInterface[]) => {
                 this.enti = enti;
             })
         );
     }
 
     aggiungiNuovoEnte(): void {
-        const addEnteModal = this.modalService.open(EnteModalComponent, {
+        let addEnteModal;
+        addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,

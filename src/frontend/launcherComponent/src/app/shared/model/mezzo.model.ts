@@ -1,6 +1,7 @@
 import { Sede } from './sede.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { Coordinate } from './coordinate.model';
+import { IstanteCambioStato } from '../interface/istante-cambio-stato.interface';
 
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
@@ -23,7 +24,7 @@ export class Mezzo {
          * Codice dello stato del mezzo (InSede, InViaggio, SulPosto,
          * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */
-        public stato: StatoMezzo, // diventerà StatoMezzo
+        public stato: StatoMezzo,
         /**
          * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
          * Utile a definire il colore della segnalazione sullo stato di appartenenza.
@@ -83,7 +84,15 @@ export class Mezzo {
         /**
          * Richiesta sul quale è collocato il mezzo
          */
-        public idRichiesta?: string
+        public idRichiesta?: string,
+        /**
+         * Se il mezzo ha squadre pre accoppiate
+         */
+        public preAccoppiato?: boolean,
+        /**
+         * Istanti cambi stato del mezzo
+         */
+        public istantiCambiStato?: IstanteCambioStato[],
     ) {
     }
 }

@@ -1,27 +1,35 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import {
     AddSquadraComposizione,
+    ClearIdSquadreSelezionate,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     RemoveSquadraComposizione,
-    SelectSquadra,
     SelectSquadraComposizione,
+    SelectSquadraComposizioneInRientro,
+    SelectSquadraComposizionePreAccoppiati,
+    SelectSquadreComposizione,
     SetListaSquadreComposizione,
-    UnselectSquadra,
     UnselectSquadraComposizione,
+    UnselectSquadraComposizioneInRientro,
+    UnselectSquadraComposizionePreAccoppiati,
     UpdateSquadraComposizione
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { AddSquadraBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import {
+    AddBoxesPartenzaInRientro,
+    AddBoxesPartenzaPreAccoppiato,
+    AddSquadreBoxPartenza
+} from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -61,8 +69,12 @@ export class SquadreComposizioneState {
         const squadreSelez = [];
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
             state.idSquadreSelezionate.forEach((idS: string) => {
-                if (s.id === idS) {
-                    squadreSelez.push(s);
+                if (s.codice === idS) {
+                    let duplicate = false;
+                    squadreSelez.forEach(x => x.id === s.codice ? duplicate = true : null);
+                    if (!duplicate) {
+                        squadreSelez.push(s);
+                    }
                 }
             });
         });
@@ -99,6 +111,13 @@ export class SquadreComposizioneState {
         });
     }
 
+    @Action(ClearIdSquadreSelezionate)
+    clearIdSquadreSelezionate({ patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
+        patchState({
+            idSquadreSelezionate: []
+        });
+    }
+
     @Action(AddSquadraComposizione)
     addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione): void {
         console.log(action.squadraComp);
@@ -116,24 +135,111 @@ export class SquadreComposizioneState {
 
     @Action(SelectSquadraComposizione)
     selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione): void {
-        const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
-        const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
-        const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
+        const state = getState();
         const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
+        const boxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaSelezionato);
+        const squadraComp = action.squadraComp;
+        const squadra = action.squadraComp;
+
+        if (action.dividiSquadra) {
+            // Ripulisco lo store se sto dividendo squadra tramite shortcut
+            setState(
+                patch({
+                    idSquadreComposizioneSelezionate: SquadreComposizioneStateDefaults.idSquadreComposizioneSelezionate,
+                    idSquadreSelezionate: SquadreComposizioneStateDefaults.idSquadreSelezionate,
+                })
+            );
+        }
+
+        if (richiestaComposizione) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());
         }
-        // Aggiorno lo store
+
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([action.squadraComp.id]),
-                idSquadreSelezionate: append([action.squadraComp.squadra.id])
+                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
             })
         );
-        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(action.squadraComp)) {
-            this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
+        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(squadraComp)) {
+            this.store.dispatch(new AddSquadreBoxPartenza([squadraComp]));
+        }
+    }
+
+    @Action(SelectSquadraComposizioneInRientro)
+    selectSquadraComposizioneInRientro({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizioneInRientro): void {
+        const state = getState();
+        const squadraComp = action.squadraComp;
+        const squadra = action.squadraComp;
+        const noAddBox = action.noAddBox;
+        setState(
+            patch({
+                idSquadreComposizioneSelezionate: [squadraComp.codice],
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
+            })
+        );
+        if (!noAddBox) {
+            dispatch(new AddBoxesPartenzaInRientro(squadraComp));
+        }
+    }
+
+    @Action(SelectSquadraComposizionePreAccoppiati)
+    selectSquadraComposizionePreAccoppiati({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizionePreAccoppiati): void {
+        const state = getState();
+        const squadraComp = action.squadraComp;
+        const squadra = action.squadraComp;
+        const noAddBox = action.noAddBox;
+
+        setState(
+            patch({
+                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
+            })
+        );
+
+        if (!noAddBox) {
+            dispatch(new AddBoxesPartenzaPreAccoppiato(squadraComp));
+        }
+    }
+
+    @Action(SelectSquadreComposizione)
+    selectSquadreComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadreComposizione): void {
+        const state = getState();
+        if (action.squadreComp) {
+            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+            const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
+
+            if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato?.mezzoComposizione && boxPartenzaSelezionato?.squadreComposizione?.length <= 0))) {
+                dispatch(new GetListeComposizioneAvanzata());
+            } else if (!richiestaComposizione) {
+                dispatch(new GetListaMezziSquadre());
+            }
+            if (action.preAccoppiato) {
+                setState(
+                    patch({
+                        idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                        idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                    })
+                );
+                if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
+                    this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp, true));
+                }
+                this.store.dispatch(new GetListeComposizioneAvanzata(null, null, null, true));
+            } else {
+                setState(
+                    patch({
+                        idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)),
+                        idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)) : state.idSquadreSelezionate,
+                    })
+                );
+                if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
+                    this.store.dispatch(new AddSquadreBoxPartenza(action.squadreComp));
+                }
+            }
         }
     }
 
@@ -141,12 +247,12 @@ export class SquadreComposizioneState {
     unselectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione): void {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
-        if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
+        if (idSquadreSelezionate) {
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-            if (richiestaComposizione && (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
+            if (richiestaComposizione && !(boxPartenzaSelezionato && boxPartenzaSelezionato.mezzoComposizione && boxPartenzaSelezionato.squadreComposizione && boxPartenzaSelezionato.squadreComposizione.length === 1) && !action.preventGet) {
                 dispatch(new GetListeComposizioneAvanzata());
             } else if (!richiestaComposizione) {
                 dispatch(new GetListaMezziSquadre());
@@ -154,26 +260,55 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }
 
-    @Action(SelectSquadra)
-    selectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadra): void {
+    @Action(UnselectSquadraComposizioneInRientro)
+    unselectSquadraComposizioneInRientro({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizioneInRientro): void {
+        const state = getState();
+        const idSquadreSelezionate = state.idSquadreSelezionate;
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
+            const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+            const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
+            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            if (richiestaComposizione && ((boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
+                dispatch(new GetListeComposizioneAvanzata());
+            } else if (!richiestaComposizione) {
+                dispatch(new GetListaMezziSquadre());
+            }
+        }
         setState(
             patch({
-                idSquadreSelezionate: append([action.idSquadra])
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }
 
-    @Action(UnselectSquadra)
-    unselectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadra): void {
+    @Action(UnselectSquadraComposizionePreAccoppiati)
+    unselectSquadraComposizionePreAccoppiati({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizioneInRientro): void {
+        // TODO: Deselezione mezzo pre accoppiato alla squadra
+        const state = getState();
+        const idSquadreSelezionate = state.idSquadreSelezionate;
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
+            const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+            const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
+            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            if (richiestaComposizione && ((boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione))) {
+                dispatch(new GetListeComposizioneAvanzata());
+            } else if (!richiestaComposizione) {
+                dispatch(new GetListaMezziSquadre());
+            }
+        }
         setState(
             patch({
-                idSquadreSelezionate: removeItem(id => id === action.idSquadra)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
             })
         );
     }

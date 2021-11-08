@@ -1,0 +1,11 @@
+h6, .h6 {
+  font-size: 1.15rem;
+}
+
+.box-personale {
+  height: 123px;
+}
+
+.popover-body {
+  min-width: 280px !important;
+}

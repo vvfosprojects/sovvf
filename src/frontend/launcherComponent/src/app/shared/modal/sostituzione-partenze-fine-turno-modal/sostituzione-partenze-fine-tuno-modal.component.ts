@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Partenza } from '../../model/partenza.model';
+import { DettaglioPartenza, Partenza } from '../../model/partenza.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { SostituzionePartenzeFineTurnoModalState } from '../../store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
@@ -23,7 +23,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     @Select(SostituzionePartenzeFineTurnoModalState.partenze) partenze$: Observable<Partenza[]>;
     partenze: Partenza[];
     @Select(SostituzionePartenzeFineTurnoModalState.partenzaMontante) partenzaMontante$: Observable<Partenza>;
-    partenzaMontante: Partenza;
+    partenzaMontante: DettaglioPartenza;
     @Select(SostituzionePartenzeFineTurnoModalState.sostituzioni) sostituzioni$: Observable<SostituzioneInterface[]>;
     sostituzioni: SostituzioneInterface[];
     @Select(SostituzionePartenzeFineTurnoModalState.disableButtonConferma) disableButtonConferma$: Observable<boolean>;
@@ -31,6 +31,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
 
     idRichiesta: string;
     codRichiesta: string;
+    squadraSmontanteCheck = [];
 
     private subscriptions: Subscription = new Subscription();
 
@@ -61,7 +62,9 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     getPartenzaMontante(): void {
         this.subscriptions.add(
             this.partenzaMontante$.subscribe((partenzaMontante: Partenza) => {
-                this.partenzaMontante = partenzaMontante;
+                if (partenzaMontante) {
+                    this.partenzaMontante = partenzaMontante.partenza;
+                }
             })
         );
     }
@@ -91,11 +94,11 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     getSquadrePartenze(): any[] {
-        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.squadre);
+        return this.partenze.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.partenza.squadre);
     }
 
     getPartenzeSostituzione(): Partenza[] {
-        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.mezzo.stato === StatoMezzo.SulPosto);
+        return this.partenze.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto);
     }
 
     getSostituzioneBySquadraMontante(squadraMontante: string): SostituzioneInterface {
@@ -116,10 +119,12 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     onSelezioneSquadraSmontate(squadraMontante: string, squadraSmontante: string, codMezzoSmontante: string): void {
+        this.squadraSmontanteCheck.push(squadraSmontante);
         this.store.dispatch(new UpdateSostituzione(squadraMontante, squadraSmontante, codMezzoSmontante));
     }
 
-    onDeselezioneSquadraSmontate(squadraMontante: string): void {
+    onDeselezioneSquadraSmontate(squadraMontante: string, squadraSmontante: string): void {
+        this.squadraSmontanteCheck = this.squadraSmontanteCheck.filter( x => x !== squadraSmontante);
         this.store.dispatch(new UpdateSostituzione(squadraMontante, null, null));
     }
 

@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
@@ -31,19 +32,19 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
         {
             //GESTIONE RICORSIVITA'
-            var lstPin = new List<string>();
+            var lstPin = new List<PinNodo>();
 
             foreach (var sede in query.CodiciSede)
-                lstPin.AddRange(_getGerarchia.GetGerarchiaSede(sede).ToList());
+                lstPin.AddRange(_getGerarchia.GetGerarchiaFull(sede).ToList());
 
             //MAPPING
-            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.ToArray(), query.Filters.Search)
+            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.Select(p => p.Codice).ToArray(), query.Filters.Search)
                 .Select(c => new TrasferimentoChiamataFull()
                 {
                     Id = c.Id,
                     CodChiamata = c.CodChiamata,
-                    SedeA = _getDistaccamentoByCodiceSede.Get(c.CodSedeA).Descrizione,
-                    SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
+                    SedeA = _getDistaccamentoByCodiceSede.GetSede(c.CodSedeA).Descrizione,
+                    SedeDa = _getDistaccamentoByCodiceSede.GetSede(c.CodSedeDa).Descrizione,
                     Data = c.Data,
                     Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
                 }).ToList();
@@ -54,7 +55,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
             if (query.Pagination != default)
             {
                 lstTrasferimenti.Reverse();
-                trasferimentiPaginati = lstTrasferimenti.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
+                trasferimentiPaginati = lstTrasferimenti
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList();
                 query.Pagination.TotalItems = lstTrasferimenti.Count;
             }
             else trasferimentiPaginati = lstTrasferimenti;

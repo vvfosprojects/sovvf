@@ -22,6 +22,8 @@ using Newtonsoft.Json;
 using Persistence.MongoDB;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -35,46 +37,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     {
         private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly DbContext _context;
+        private readonly IGetSchedeContatto _getSchedeContatto;
 
-        public SetSchedaContatto(DbContext context)
+        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto)
         {
             _context = context;
+            _getSchedeContatto = getSchedeContatto;
         }
 
         /// <summary>
-        ///   Metodo che restituisce la lista di tutte le schede contatto sul json
-        /// </summary>
-        public List<SchedaContatto> Get()
-        {
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
-        }
-
-        /// <summary>
-        ///   Metodo che aggiorna la lista delle schede contatto sul Json accettanto in firma la
-        ///   lista delle schede contatto.
+        ///   Metodo che aggiorna la lista delle schede contatto accettanto in firma la lista delle
+        ///   schede contatto.
         /// </summary>
         /// <param name="lista">La lista di schede contatto</param>
-        public void Set(List<SchedaContatto> lista, string codiceSchedaModificata)
+        public void Set(SchedaContatto scheda, string codiceSchedaModificata)
         {
-            var updatedList = JsonConvert.SerializeObject(lista);
-            File.WriteAllText(filepath, updatedList);
-
             var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
 
-            foreach (SchedaContatto scheda in lista)
+            if (scheda.CodiceScheda.Equals(codiceSchedaModificata))
             {
-                if (scheda.CodiceScheda.Equals(codiceSchedaModificata))
+                if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                 {
-                    if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                    {
-                        _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
-                    }
+                    _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
+                }
+                else
+                {
+                    _context.SchedeContattoCollection.InsertOne(scheda);
                 }
             }
         }
@@ -88,16 +76,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="gestita">la booleana gestita</param>
         public void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
-            var schedeContatto = Get();
+            var schedeContatto = _getSchedeContatto.ListaSchedeContatto(codiceSede);
 
-            foreach (var schedaContatto in schedeContatto.FindAll(x => x.CodiceScheda.Equals(codiceScheda)))
+            var schedaContatto = schedeContatto.Find(x => x.CodiceScheda.Equals(codiceScheda));
+
+            if (schedaContatto.OperatoreChiamata != null)
             {
                 schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
                 schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-                schedaContatto.Gestita = gestita;
             }
+            else
+            {
+                schedaContatto.OperatoreChiamata = new Operatore();
+                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
+                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
+            }
+            schedaContatto.Gestita = gestita;
 
-            Set(schedeContatto, codiceScheda);
+            Set(schedaContatto, codiceScheda);
         }
     }
 }

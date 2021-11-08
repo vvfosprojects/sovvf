@@ -1,0 +1,68 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col" style="width:33%">
+            <i class="fas fa-question-circle mr-2"></i>
+            Domande/Risposte
+        </th>
+        <th scope="col" style="width:33%">
+            <i class="fas fa-file-o mr-2"></i>
+            P.O.S.
+        </th>
+        <th scope="col" style="width:33%">
+            <i class="fas fa-file-text-o mr-2"></i>
+            Note NUE
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width:33%" class="align-middle">
+            <ng-template [ngIf]="triageSummary?.length">
+                <ul class="list-group px-3 mb-0">
+                    <li *ngFor="let s of triageSummary, let i = index" class="font-weight-bold">
+                        <h5 class="mb-0">
+                            {{ s.domanda }}
+                        </h5>
+                        <h5 class="font-weight-bolder mb-0">
+                            {{ s.risposta }}
+                        </h5>
+                    </li>
+                </ul>
+            </ng-template>
+            <ng-template [ngIf]="!triageSummary?.length">
+
+            </ng-template>
+        </td>
+        <td style="width:33%" class="align-middle">
+            <ng-template [ngIf]="pos?.length">
+                <div *ngFor="let p of pos; let i = index"
+                     class="clearfix"
+                     [class.mb-2]="(i + 1) < pos.length">
+                    <div class="float-left pt-2">
+                        <h5 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h5>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn-primary mr-2"
+                                [ngbTooltip]="'Visualizza ' + p.descrizionePos"
+                                (click)="onViewPos(p)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-info"
+                                [ngbTooltip]="'Scarica ' + p.descrizionePos"
+                                (click)="onDownloadPos(p)">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template [ngIf]="!pos?.length">
+
+            </ng-template>
+        </td>
+        <td style="width:33%" class="align-middle">
+
+        </td>
+    </tr>
+    </tbody>
+</table>

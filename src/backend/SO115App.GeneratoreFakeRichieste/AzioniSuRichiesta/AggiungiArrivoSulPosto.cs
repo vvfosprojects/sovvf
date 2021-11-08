@@ -89,7 +89,7 @@ namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
             }
 
             mezzo.ContestoMezzo.SulPosto();
-            new ArrivoSulPosto(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Mezzo.Codice, istanteEffettivo, "Fonte");
+            new ArrivoSulPosto(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Mezzo.Codice, istanteEffettivo, "Fonte", 0);
             this.eseguita = true;
 
             yield return new AggiungiPartenzaDalPosto(

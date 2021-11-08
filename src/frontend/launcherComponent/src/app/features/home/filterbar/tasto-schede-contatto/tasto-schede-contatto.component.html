@@ -1,0 +1,30 @@
+<button type="button"
+        class="btn btn-light border-secondary"
+        [ngClass]="coloreTasto()"
+        [ngbTooltip]="tipToggleSchedeContatto"
+        placement="bottom-right"
+        [disabled]="disabled"
+        (click)="toggleSchedeContatto()">
+    <i class="fas fa-address-card mr-2"></i>
+    <span class="badge"
+          [ngClass]="coloreBadgeContatore()">
+        {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire ? contatoriSchedeContatto.totaleSchede.contatoreDaGestire : 0 }}
+    </span>
+</button>
+<ng-template #tipToggleSchedeContatto>
+    <div>
+        Differibili: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte ? contatoriSchedeContatto.differibileSchede.contatoreTutte : 0 }}
+    </div>
+    <div>
+        Competenza: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte ? contatoriSchedeContatto.competenzaSchede.contatoreTutte : 0 }}
+    </div>
+    <div>
+        Conoscenza: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte ? contatoriSchedeContatto.conoscenzaSchede.contatoreTutte : 0 }}
+    </div>
+    <div>
+        <b>
+            TOTALE DA GESTIRE:
+            {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte ? contatoriSchedeContatto.totaleSchede.contatoreTutte : 0 }}
+        </b>
+    </div>
+</ng-template>

@@ -1,17 +1,21 @@
-<div *ngIf="checkNumeroPartenze(partenze) <= 0">
-    <h6 class="mt-1">Non ci sono mezzi su questa richiesta di intervento</h6>
+<div *ngIf="checkNumeroPartenzeAttive(partenze) <= 0">
+    <div class="mt-1">Non sono presenti partenze.</div>
 </div>
-<ul *ngIf="checkNumeroPartenze(partenze) > 0" class="list-unstyled">
+<ul *ngIf="checkNumeroPartenzeAttive(partenze) > 0" class="list-unstyled">
     <div *ngFor="let p of partenze; let index = index">
-        <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
+        <li *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata" class="border-bottom">
             <app-partial-loader
-                    *ngIf="loadingActionMezzoArray.includes(p.mezzo.codice)"></app-partial-loader>
-            <app-partenza [partenza]="p"
+                    *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
+            <app-partenza [partenza]="p.partenza"
+                          [infoPartenza]="p"
+                          [listaEventi]="listaEventi"
                           [inGestione]="inGestione"
                           [statoRichiesta]="statoRichiesta"
                           [idDaSganciare]="idDaSganciare"
-                          [index]="index"
-                          (listaSquadre)="onListaSquadrePartenza($event)"
+                          [index]="'' + index"
+                          [annullaStatoMezzo]="annullaStatoMezzi?.includes(p?.partenza?.mezzo?.codice)"
+                          [dateDiffMezzi]="diffDateInfoMezzo"
+                          (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"
                           (eliminaPartenza)="eliminaPartenza.emit($event)"
                           (modificaPartenza)="modificaPartenza.emit($event)">
@@ -22,7 +26,7 @@
         <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
                 style="position:absolute; top:-14px; left:-14px"
                 (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
-            <i class="fa fa-refresh"></i>
+            <i class="fas fa-sync-alt"></i>
         </button>
     </ng-template>
 </ul>

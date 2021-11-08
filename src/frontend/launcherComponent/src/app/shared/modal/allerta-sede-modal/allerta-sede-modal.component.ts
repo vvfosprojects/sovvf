@@ -3,12 +3,17 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
-import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
-import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
-import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
+import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
+import { Sede } from '../../model/sede.model';
+import { AuthState } from '../../../features/auth/store/auth.state';
+import { Utente } from '../../model/utente.model';
+import { makeCopy } from '../../helper/function-generiche';
+import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
+import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -20,13 +25,23 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(AllertaSedeModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(AllertaSedeModalState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
-    sediSelezionate: string;
-    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
-    listeSediNavbar: TreeviewItem[];
+    @Select(DistaccamentiState.sediAllerta) distaccamenti$: Observable<Sede[]>;
+    distaccamenti: Sede[];
+    @Select(AuthState.currentUser) user$: Observable<Utente>;
+    codiceSedeUser: any;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
+    generiMezzi: TipologicaComposizionePartenza[];
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
+    sediSelezionate: string[] = [];
+    checkbox: { conoscenza: boolean, allerta: boolean } = {
+        conoscenza: false,
+        allerta: true,
+    };
+    motivazione = 'allerta';
+    generiMezzoSelezionati: string[] = [];
+
 
     codRichiesta: string;
 
@@ -37,8 +52,9 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
                 private store: Store) {
         this.initForm();
         this.getFormValid();
-        this.inizializzaSediTreeview();
-        this.getSediSelezionate();
+        this.getSedi();
+        this.getCodiceSedeUser();
+        this.getGenereMezzo();
     }
 
     initForm(): void {
@@ -48,15 +64,18 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         });
         this.allertaSedeForm = this.fb.group({
             codRichiesta: [null, Validators.required],
-            sedi: [null]
+            sedi: [null, Validators.required]
         });
     }
 
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
+        this.store.dispatch(new GetFiltriComposizione());
+        this.removeSedeUser();
     }
 
     ngOnDestroy(): void {
+        this.sediSelezionate = [];
         this.subscriptions.unsubscribe();
     }
 
@@ -72,50 +91,60 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         return this.allertaSedeForm.controls;
     }
 
-    inizializzaSediTreeview(): void {
+    getSedi(): void {
         this.subscriptions.add(
-            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
-                this.listeSediNavbar = [];
-                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
+            this.distaccamenti$.subscribe((sedi: Sede[]) => {
+                this.distaccamenti = sedi;
             })
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]): void {
+    getGenereMezzo(): void {
+        this.subscriptions.add(
+            this.filtri$.subscribe((filtri: ListaTipologicheMezzi) => {
+                this.generiMezzi = filtri.generiMezzi;
+            })
+        );
+    }
+
+    removeSedeUser(): void {
+        const distaccamentiUnique = makeCopy(this.distaccamenti);
+        const codiciDistaccamenti = [];
+        distaccamentiUnique.forEach(x => codiciDistaccamenti.push(x.codice));
+        const indexRemove = codiciDistaccamenti.indexOf(this.codiceSedeUser);
+        distaccamentiUnique.splice(indexRemove, 1);
+        this.distaccamenti = distaccamentiUnique;
+    }
+
+    getCodiceSedeUser(): void {
+        this.subscriptions.add(
+            this.user$.subscribe((user: any) => {
+                this.codiceSedeUser = user.sede.codice;
+            })
+        );
+
+    }
+
+    onPatchSedi(event: Sede[]): void {
+        if (event.length) {
+            event.forEach(x => this.sediSelezionate.push(x.codice));
+        }
         this.f.sedi.patchValue(event);
     }
 
-    getSediSelezionate(): void {
-        this.subscriptions.add(
-            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
-                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-                if (listaSediNavbar && sedi && sedi.length >= 0) {
-                    switch (sedi.length) {
-                        case 0:
-                            this.sediSelezionate = 'nessuna sede selezionata';
-                            break;
-                        case 1:
-                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
-                            break;
-                        default:
-                            this.sediSelezionate = 'più sedi selezionate';
-                            break;
-                    }
-                } else {
-                    this.sediSelezionate = 'Seleziona una o più sedi';
-                }
-            })
-        );
+    onClearSedi(): void {
+        this.sediSelezionate = [];
     }
 
     onConferma(): void {
         this.submitted = true;
-
+        const obj = this.allertaSedeForm.value;
+        obj.motivazione = this.motivazione;
+        obj.generiMezzi = this.generiMezzoSelezionati;
         if (!this.allertaSedeForm.valid) {
             return;
         }
-
-        this.modal.close({ status: 'ok', result: this.allertaSedeForm.value });
+        this.modal.close({ status: 'ok', result: obj });
     }
 
     onDismiss(): void {
@@ -124,5 +153,15 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     closeModal(type: string): void {
         this.modal.close(type);
+    }
+
+    onCheck(key: string): void {
+        if (this.checkbox[key]) {
+            this.checkbox[key] = false;
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x !== key);
+        } else {
+            Object.keys(this.checkbox).forEach(x => this.checkbox[x] = x === key);
+        }
+        this.motivazione = key;
     }
 }

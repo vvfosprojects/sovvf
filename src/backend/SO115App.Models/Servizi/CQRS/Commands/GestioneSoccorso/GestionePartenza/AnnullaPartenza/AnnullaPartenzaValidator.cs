@@ -17,9 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
@@ -29,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public IEnumerable<ValidationResult> Validate(AnnullaPartenzaCommand command)
         {
             // Controlli sul richiedente
-            if (command.IdRichiesta.Length == 0)
+            if (command.CodiceRichiesta.Length == 0)
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }

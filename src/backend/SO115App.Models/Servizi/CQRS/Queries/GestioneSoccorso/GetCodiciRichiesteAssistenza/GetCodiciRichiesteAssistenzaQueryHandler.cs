@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
@@ -33,14 +32,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichies
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
+        private readonly IGetRichiesta _getRichiestaAssistenzaById;
 
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
         /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="IGetSintesiRichiestaAssistenzaByCodice" /></param>
         public GetCodiciRichiesteAssistenzaQueryHandler(
-                IGetRichiestaById getRichiestaAssistenzaById)
+                IGetRichiesta getRichiestaAssistenzaById)
         {
             _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }

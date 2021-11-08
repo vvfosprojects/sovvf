@@ -18,29 +18,56 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Localita
     {
-        public Localita(Coordinate _coordinate, string Indirizzo, string Note)
+        public Localita(Coordinate _coordinate, string Indirizzo, string Note = null)
         {
             this.Coordinate = _coordinate;
-            this.Indirizzo = Indirizzo;
             this.Note = Note;
+
+            prova(Indirizzo);
         }
+
+        private Localita()
+        {
+        }
+
+        //Via Camillo Benso di Cavour 5, 00059, Tolfa, Roma
 
         [Required]
         public Coordinate Coordinate { get; set; }
 
         public string Indirizzo { get; set; }
-
         public string Citta { get; set; }
-
         public string Provincia { get; set; }
-
+        public string Regione { get; set; }
+        public string Interno { get; set; }
+        public string Palazzo { get; set; }
+        public string Scala { get; set; }
         public string Note { get; set; }
-
         public string Piano { get; set; }
+
+        public void prova(string indirizzo = null)
+        {
+            if (string.IsNullOrEmpty(indirizzo))
+                indirizzo = Indirizzo;
+
+            string[] dati = indirizzo.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(dato => dato.Trim()).ToArray();
+
+            if (dati.Count() > 1)
+            {
+                this.Indirizzo = dati.FirstOrDefault() ?? Indirizzo;
+                this.Citta = dati[2] ?? Citta;
+                this.Provincia = dati.LastOrDefault() ?? Provincia;
+            }
+            else
+            {
+                this.Indirizzo = indirizzo;
+            }
+        }
     }
 }

@@ -18,13 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Classi.Matrix;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
-using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using System;
 
 namespace DomainModel.CQRS.Commands.ConfermaPartenze
@@ -33,20 +32,35 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
     {
         private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
+        private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
+        private readonly IMappingESRIMessage _mappingESRIMessage;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender, ICallMatrix callMatrix)
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
+                                            ICallMatrix callMatrix,
+                                            INotifyUpDateRichiesta notifyUpDateRichiesta,
+                                            IMappingESRIMessage mappingESRIMessage,
+                                            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _sender = sender;
             _callMatrix = callMatrix;
+            _notifyUpDateRichiesta = notifyUpDateRichiesta;
+            _mappingESRIMessage = mappingESRIMessage;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         public void Notify(ConfermaPartenzeCommand command)
         {
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
             _sender.SendNotification(command);
+
+            var infoESRI = _mappingESRIMessage.Map(sintesi);
+
+            _notifyUpDateRichiesta.UpDate(infoESRI);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.ConfermaPartenze.richiesta.Localita.Indirizzo}. Codice Intervento: {command.ConfermaPartenze.richiesta.CodRichiesta}";
+                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
                 var infoMatrix = new MessageMatrix()
                 {
                     Messaggio = messaggio,

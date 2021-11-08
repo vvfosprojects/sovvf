@@ -17,20 +17,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Boxes
 {
     public class BoxPersonale
     {
-        public int PersonaleTotale { get; set; }
+        public ConteggioPersonale PersonaleTotale { get; set; }
 
-        public List<Componente> Funzionari { get; set; }
+        public ConteggioFunzionari Funzionari { get; set; }
 
-        public int SquadreServizio { get; set; }
+        public ConteggioPersonale SquadreServizio { get; set; }
 
         public int SquadreAssegnate { get; set; }
     }
 
+    public class ConteggioFunzionari
+    {
+        public List<Componente> Previous { get; set; }
+        public List<Componente> Current { get; set; }
+        public List<Componente> Next { get; set; }
+    }
+
+    public class ConteggioPersonale
+    {
+        public int Previous { get; set; }
+        public int Current { get; set; }
+        public int Next { get; set; }
+    }
 }

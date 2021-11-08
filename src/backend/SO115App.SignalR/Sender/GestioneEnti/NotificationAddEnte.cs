@@ -5,7 +5,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneEnti

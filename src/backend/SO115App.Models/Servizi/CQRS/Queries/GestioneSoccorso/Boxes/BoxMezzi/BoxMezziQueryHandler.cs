@@ -19,7 +19,11 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
 {
@@ -29,10 +33,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     public class BoxMezziQueryHandler : IQueryHandler<BoxMezziQuery, BoxMezziResult>
     {
         private readonly IGetBoxMezzi _iGetbox;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public BoxMezziQueryHandler(IGetBoxMezzi iGetbox)
+        public BoxMezziQueryHandler(IGetBoxMezzi iGetbox, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            this._iGetbox = iGetbox;
+            _iGetbox = iGetbox;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -44,8 +50,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         {
             Log.Debug("Inizio elaborazione Box Mezzi Handler");
 
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
+
+            foreach (var sede in query.CodiciSede)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+                pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+
             // preparazione del DTO
-            var boxes = _iGetbox.Get(query.CodiciSede);
+
+            var boxes = _iGetbox.Get(pinNodi.Select(p => p.Codice).ToArray());
 
             Log.Debug("Fine elaborazione Box Mezzi Handler");
 

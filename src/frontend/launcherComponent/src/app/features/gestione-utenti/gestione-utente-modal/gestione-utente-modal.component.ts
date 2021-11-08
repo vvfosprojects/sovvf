@@ -2,18 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
-import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
-import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role, Ruolo } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { DistaccamentiState } from '../../../shared/store/states/distaccamenti/distaccamenti.state';
+import { Sede } from '../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -22,21 +18,18 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
     @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
     @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(GestioneUtentiState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
-    sediSelezionate: string;
-    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
-    listeSediNavbar: TreeviewItem[];
+    @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
+    distaccamenti: Sede[];
 
     ruoli: string[] = [];
 
     addUtenteRuoloForm: FormGroup;
     typeahead = new Subject<string>();
     checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
-    treeviewState: { disabled: boolean };
     submitted: boolean;
 
     // aggiungi ruolo utente
@@ -51,11 +44,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder) {
         this.initForm();
         this.getFormValid();
-        this.checkUtenteValueChanges();
+        this.getUtenteValueChanges();
         this.getUtentiVVF();
-        this.inizializzaSediTreeview();
-        this.getSediSelezionate();
         this.getSearchUtentiVVF();
+        this.getDistaccamenti();
     }
 
     initForm(): void {
@@ -73,7 +65,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
         // Init disabled input
         this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
-        this.treeviewState = { disabled: true };
         this.f.ruolo.disable();
     }
 
@@ -82,13 +73,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             this.setRuoli({ removeVisualizzatore: true });
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
             this.f.utente.clearValidators();
-            this.store.dispatch(new UpdateFormValue({
-                value: {
-                    ...this.addUtenteRuoloForm.value,
-                    utente: this.codFiscaleUtenteVVF
-                },
-                path: 'gestioneUtenti.addUtenteRuoloForm'
-            }));
         } else if (!this.codFiscaleUtenteVVF) {
             this.setRuoli();
         }
@@ -110,42 +94,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         return this.addUtenteRuoloForm.controls;
     }
 
-    inizializzaSediTreeview(): void {
-        this.subscription.add(
-            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
-                this.listeSediNavbar = [];
-                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
-            })
-        );
-    }
-
-    onPatchSedi(event: TreeviewSelezione[]): void {
-        this.f.sedi.patchValue(event);
-    }
-
-    getSediSelezionate(): void {
-        this.subscription.add(
-            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
-                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-                if (listaSediNavbar && sedi && sedi.length >= 0) {
-                    switch (sedi.length) {
-                        case 0:
-                            this.sediSelezionate = 'nessuna sede selezionata';
-                            break;
-                        case 1:
-                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
-                            break;
-                        default:
-                            this.sediSelezionate = 'più sedi selezionate';
-                            break;
-                    }
-                } else {
-                    this.sediSelezionate = 'Caricamento...';
-                }
-            })
-        );
-    }
-
     getUtentiVVF(search?: string): void {
         if (search && search.length >= 3) {
             this.store.dispatch(new GetUtentiVVF(search));
@@ -163,6 +111,14 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    getDistaccamenti(): void {
+        this.subscription.add(
+            this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
+                this.distaccamenti = distaccamenti;
+            })
+        );
+    }
+
     setRuoli(opts?: { removeVisualizzatore?: boolean }): void {
         Object.values(Role).forEach((role: string) => {
             if (opts && opts.removeVisualizzatore && role === Role.Visualizzatore) {
@@ -175,25 +131,28 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     setRicorsivoValue(value: { id: string, status: boolean }): void {
         this.checkboxState.status = value.status;
         this.f[value.id].patchValue(value.status);
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                ...this.addUtenteRuoloForm.value,
-                ricorsivo: value.status
-            },
-            path: 'gestioneUtenti.addUtenteRuoloForm'
-        }));
     }
 
-    checkUtenteValueChanges(): void {
+    getUtenteValueChanges(): void {
         this.f.utente.valueChanges.subscribe((value: any) => {
             if (value) {
                 this.checkboxState.disabled = false;
-                this.treeviewState.disabled = false;
+                this.f.sedi.enable();
                 this.f.ruolo.enable();
             } else {
                 this.checkboxState.disabled = true;
-                this.treeviewState.disabled = true;
+                this.f.sedi.disable();
                 this.f.ruolo.disable();
+            }
+        });
+    }
+
+    getSediValueChanges(): void {
+        this.f.sedi.valueChanges.subscribe((value: any) => {
+            if (value) {
+                this.checkboxState.disabled = false;
+            } else {
+                this.checkboxState.disabled = true;
             }
         });
     }

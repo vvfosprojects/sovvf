@@ -45,11 +45,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <param name="dataDa">la data di partenza</param>
         /// <param name="dataA">la data di fine</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> SchedeContattoTimeSpan(DateTime dataDa, DateTime dataA)
+        public List<SchedaContatto> SchedeContattoTimeSpan(DateTime dataDa, DateTime dataA, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetSchedeContattoTimeSpan(dataDa, dataA);
+            return _getSchedeMethods.GetSchedeContattoTimeSpan(dataDa, dataA, codiceSede);
 
             //---------------------------------------------------------------------------------------
         }

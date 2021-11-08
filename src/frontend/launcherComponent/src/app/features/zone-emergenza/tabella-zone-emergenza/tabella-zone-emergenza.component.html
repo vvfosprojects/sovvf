@@ -1,0 +1,67 @@
+<table *ngIf="zoneEmergenza?.length"
+       class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:8%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:14%"><i class="fas fa-hashtag mr-2"></i>Codice Emergenza</th>
+        <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Richiedente</th>
+        <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Tipologia</th>
+        <th scope="col" style="width:36%"><i class="fas fa-map-marker mr-2"></i>Indirizzo</th>
+        <th scope="col" style="width:23%"><i class="fas fa-file mr-2"></i>Descrizione</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let zE of zoneEmergenza">
+        <td style="width:8%" class="align-middle">
+            <button class="btn btn-sm float-left mr-2"
+                    [class.btn-outline-dark]="!nightMode"
+                    [class.btn-outline-light]="nightMode"
+                    ngbTooltip="Annulla Emergenza"
+                    placement="right"
+                    (click)="onDelete(zE)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn btn-sm float-left mr-2"
+                    [class.btn-outline-dark]="!nightMode"
+                    [class.btn-outline-light]="nightMode"
+                    ngbTooltip="Modifica Emergenza"
+                    placement="right"
+                    (click)="onEdit(zE)">
+                <i class="fas fa-edit"></i>
+            </button>
+        </td>
+        <td style="width:14%" class="align-middle">
+            {{ zE?.codEmergenza }}
+        </td>
+        <td style="width:10%" class="align-middle">
+            {{ zE?.codComandoRichiedente }}
+        </td>
+        <td style="width:10%" class="align-middle">
+            {{ zE?.tipologia?.emergenza[0] }}
+        </td>
+        <td style="width:36%" class="align-middle">
+            {{ zE?.localita.indirizzo }} - Lat: {{ zE?.localita.coordinate.latitudine }} -
+            Lon: {{ zE?.localita.coordinate.longitudine }}
+        </td>
+        <td style="width:23%" class="align-middle">
+            {{ zE?.descrizione ? zE?.descrizione : 'Nessuna Descrizione' }}
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="zoneEmergenza?.length <= 0">
+    <div class="alert alert-danger">
+        <ng-template [ngIf]="!loading">Nessuna Emergenza trovata</ng-template>
+        <ng-template [ngIf]="loading">Caricamento Emergenze in corso...</ng-template>
+    </div>
+</div>
+<div *ngIf="zoneEmergenza?.length > 0" class="d-flex justify-content-between pt-2 px-2">
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
+</div>

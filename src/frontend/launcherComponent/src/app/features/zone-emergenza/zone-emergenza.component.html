@@ -1,0 +1,82 @@
+<div class="container-fluid pt-3 pb-2">
+    <div class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="mb-2">
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <h4 class="mb-0">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Gestione Emergenze
+                        </h4>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-sm btn-no-hover mb-2 font-weight-bold"
+                                [class.btn-dark]="tastoZonaEmergenzaMappaActive && !nightMode"
+                                [class.btn-outline-dark]="!tastoZonaEmergenzaMappaActive && !nightMode"
+                                [class.btn-light]="tastoZonaEmergenzaMappaActive && nightMode"
+                                [class.btn-outline-light]="!tastoZonaEmergenzaMappaActive && nightMode"
+                                (click)="onSetZonaEmergenzaFromMappaActiveValue()">
+                            <span *ngIf="!tastoZonaEmergenzaMappaActive">
+                                <i class="fas fa-plus"></i>
+                                Crea Emergenza
+                            </span>
+                            <span *ngIf="tastoZonaEmergenzaMappaActive">
+                                <i class="fas fa-times"></i>
+                                Annulla creazione Emergenza
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <div class="text-right">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn btn-sm btn-no-hover"
+                                        [class.btn-dark]="!mapActive && !nightMode"
+                                        [class.btn-outline-dark]="mapActive && !nightMode"
+                                        [class.btn-light]="!mapActive && nightMode"
+                                        [class.btn-outline-light]="mapActive && nightMode"
+                                        (click)="onChangeVisualizzazione()">
+                                    <i class="fas fa-list-ul"></i>
+                                    Lista Emergenze
+                                </button>
+                                <button type="button"
+                                        class="btn btn-sm btn-no-hover"
+                                        [class.btn-dark]="mapActive && !nightMode"
+                                        [class.btn-outline-dark]="!mapActive && !nightMode"
+                                        [class.btn-light]="mapActive && nightMode"
+                                        [class.btn-outline-light]="!mapActive && nightMode"
+                                        (click)="onChangeVisualizzazione()">
+                                    <i class="fas fa-globe-europe"></i>
+                                    Mappa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!mapActive">
+                <app-tabella-zone-emergenza [zoneEmergenza]="zoneEmergenza$ | async"
+                                            [page]="page$ | async"
+                                            [pageSize]="pageSize$ | async"
+                                            [totalItems]="totalItems$ | async"
+                                            [loading]="loading$ | async"
+                                            [nightMode]="nightMode"
+                                            (edit)="onEdit($event)"
+                                            (delete)="onDelete($event)"
+                                            (pageChange)="onPageChange($event)">
+                </app-tabella-zone-emergenza>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor || mapActive"
+             [class.col-12]="mapActive"
+             [class.col-6]="!mapActive">
+            <div class="mt-2"
+                 [class.map-active]="mapActive"
+                 [class.map-double-monitor]="!mapActive">
+                <app-maps [tastoZonaEmergenzaMappaActive]="tastoZonaEmergenzaMappaActive$ | async">
+                </app-maps>
+            </div>
+        </div>
+    </div>
+</div>

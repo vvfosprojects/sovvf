@@ -1,0 +1,27 @@
+text {
+  font-size: x-large !important;
+}
+
+.chart-legend .legend-title {
+  font-size: x-large !important;
+}
+
+.chart-legend .legend-title-text {
+  line-height: normal !important;
+}
+
+ngx-charts-legend-entry {
+  line-height: normal !important;
+}
+
+.chart-legend .legend-label-text {
+  line-height: normal !important;
+}
+
+.legend-labels li ngx-charts-legend-entry span {
+  font-size: x-large !important;
+}
+
+.textDataLabel {
+  font-size: 90% !important;
+}

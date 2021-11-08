@@ -18,22 +18,21 @@ export class Squadra {
          */
         public stato: StatoSquadra,
         /**
-         * I componenti della squadra
-         */
-        public componenti: Componente[],
-        /**
          * Distaccamento di appartenza
          */
         public distaccamento: Sede,
         /**
-         * E' l'istante in cui la squadra ha terminato il suo impegno sulla richiesta.
-         * Se è null, la squadra è ancora impegnata sulla richiesta.
-         */
-        public istanteTermineImpegno?: Date,
-        /**
          * Turno di appartenza
          */
         public turno?: string,
+        /**
+         * Se la squadra ha mezzo pre accoppiato
+         */
+        public preAccoppiato?: boolean,
+        /**
+         * I membri della squadra
+         */
+        public membri?: Componente[],
     ) {
     }
 }

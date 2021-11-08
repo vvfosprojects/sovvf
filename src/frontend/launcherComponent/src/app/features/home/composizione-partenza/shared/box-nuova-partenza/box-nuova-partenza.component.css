@@ -1,6 +1,6 @@
 #elimina {
   position: absolute;
-  color: rgba(224, 14, 14, 0.74);
+  color: rgba(220, 53, 78, 0.74);
   width: 20px;
   height: 20px;
   top: 4px;
@@ -9,5 +9,9 @@
 }
 
 #elimina:hover {
-  color: rgb(224, 14, 14);
+  color: #dc3545;
+}
+
+.font-comp-xl {
+  font-size: 130% !important;
 }

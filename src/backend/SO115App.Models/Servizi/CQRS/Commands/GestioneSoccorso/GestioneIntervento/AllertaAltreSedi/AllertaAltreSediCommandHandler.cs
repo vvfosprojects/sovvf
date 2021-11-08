@@ -19,14 +19,11 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AllertaAltreSedi
@@ -34,19 +31,26 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
     public class AllertaAltreSediCommandHandler : ICommandHandler<AllertaAltreSediCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetDistaccamentoByCodiceSede _getSede;
 
         public AllertaAltreSediCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById,
+            IGetDistaccamentoByCodiceSede getSede)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
+            _getSede = getSede;
         }
 
         public void Handle(AllertaAltreSediCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
+
+            var lstSedi = command.CodSediAllertate.Select(s => _getSede.GetSede(s).Descrizione).ToList();
+            if(!lstSedi.All(s => s.ToUpper().Contains("CENTRALE")))
+                throw new Exception("Puoi allertare solo le centrali");
 
             if (richiesta.CodSOAllertate != null && richiesta.CodSOAllertate.Count > 0)
                 command.CodSediAllertateOld = richiesta.CodSOAllertate.ToArray();

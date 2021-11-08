@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +35,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         /// <param name="codice">Il codice dell'unità operativa</param>
         /// <param name="nome">Il nome dell'unità operativa</param>
-        public UnitaOperativa(string codice, string nome)
+        public UnitaOperativa(string codice, string nome, Coordinate coordinate = null)
         {
             if (string.IsNullOrWhiteSpace(codice))
             {
@@ -47,7 +49,8 @@ namespace SO115App.API.Models.Classi.Organigramma
 
             this.Codice = codice;
             this.Nome = nome;
-            this.Figli = new HashSet<UnitaOperativa>();
+            this.Coordinate = coordinate;
+            this.Figli = new ConcurrentBag<UnitaOperativa>();
         }
 
         /// <summary>
@@ -55,21 +58,23 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Codice { get; private set; }
 
+        private string _nome;
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
-        public string Nome { get; private set; }
+        public string Nome
+        {
+            get => _nome/*.Replace("Comando VV.F.", "Centrale").Replace("COMANDO VV.F.", "CENTRALE")*/;
+            set => _nome = value;
+        }
 
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
-        public ISet<UnitaOperativa> Figli { get; set; }
+        public ConcurrentBag<UnitaOperativa> Figli { get; set; }
 
-        /// <summary>
-        ///   L'unità operativa padre
-        /// </summary>
-        /// <remarks>Il valore è null per le unità operative radice</remarks>
-        //public UnitaOperativa Padre { get; set; }
+        public Coordinate Coordinate { get; set; }
+
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
@@ -128,7 +133,7 @@ namespace SO115App.API.Models.Classi.Organigramma
             {
                 foreach (var f in this.Figli)
                 {
-                    foreach (var n in f.GetSottoAlbero(pins))
+                    foreach (var n in f?.GetSottoAlbero(pins))
                     {
                         yield return n;
                     }

@@ -1,9 +1,9 @@
 <ul *ngIf="telefoni.length <= 1" class=" mb-0" style="list-style-type: none; padding-left: 5px;">
     <li>
         <span class="font-weight-bolder ml-1">
-            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
+            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fas fa-fax pr-2"></i>
             <i *ngIf="telefoni[0]?.tipo.startsWith('Tel')"
-               class="fa fa-phone pr-2"></i>
+               class="fas fa-phone-alt pr-2"></i>
             <a href="{{'tel:+39'+ telefoni[0]?.numero}}">{{telefoni[0]?.numero}}</a>
         </span>
     </li>
@@ -12,27 +12,27 @@
     style="list-style-type: none; padding-left: 5px;">
     <li style="padding-right: 5px">
         <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
-            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2" ngbTooltip="Fax"></i>
+            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fas fa-fax pr-2" ngbTooltip="Fax"></i>
             <i *ngIf="telefoni[0]?.tipo?.toLowerCase().startsWith('tel')"
-               class="fa fa-phone pr-2" ngbTooltip="Telefono"></i>
+               class="fas fa-phone-alt pr-2" ngbTooltip="Telefono"></i>
             <a href="{{'tel:+39'+ telefoni[0]?.numero}}">{{telefoni[0]?.numero}}</a>
         </span>
     </li>
     <li style="display: flex; align-self: center;">
         <button ngbTooltip="Visualizza tutti i numeri" class="badge badge-primary"
                 [ngbPopover]="tel" placement="bottom"
-                style="height: 18px; width: 25px; outline: none; border: none; height:18px; display: flex; align-items: center;">
-            <span><i class="fa fa-eye" style="font-size: 15px; padding: 0;"></i></span>
+                style="height: 25px; width: 30px; outline: none; border: none; display: flex; align-items: center; padding: 5px;">
+            <span><i class="fas fa-eye" style="font-size: 17px;"></i></span>
         </button>
         <ng-template #tel>
             <small class="d-block font-weight-bold">Numeri:</small>
             <div *ngFor="let tel of telefoni" class="clearfix">
                 <div class="float-left mt-1">
                     <span class="font-weight-bolder ml-1">
-                        <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2" ngbTooltip="Fax"></i>
-                        <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fa fa-phone pr-2"
+                        <i *ngIf="tel?.tipo === 'Fax'" class="fas fa-fax pr-2" ngbTooltip="Fax"></i>
+                        <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fas fa-phone-alt pr-2"
                            ngbTooltip="Telefono"></i>
-                        <a href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
+                        <a class="numero-tel" href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
                     </span>
                 </div>
             </div>

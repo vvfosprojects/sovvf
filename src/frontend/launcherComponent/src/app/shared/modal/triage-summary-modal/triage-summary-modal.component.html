@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Dettaglio Triage ' + titolo + ':' | uppercase }}
+        <span class="font-weight-bolder">{{ this.codRichiesta }}</span>
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="closeModal('ko')">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height bg-light py-4 px-5">
+    <div class="px-4">
+        <app-triage-summary [tipologia]="tipologia"
+                            [dettaglioTipologia]="dettaglioTipologia"
+                            [schedaContatto]="schedaContatto"
+                            [triageSummary]="triageSummary">
+        </app-triage-summary>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="clearfix w-100">
+        <div class="float-right">
+            <button type="button"
+                    class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
+                    (click)="closeModal('ko')">
+                {{ 'Chiudi' | uppercase }}
+            </button>
+        </div>
+    </div>
+</div>

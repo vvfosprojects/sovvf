@@ -18,28 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Geo;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Classi.ServiziEsterni.NUE;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Condivise
 {
     public class Welcome
     {
-        public BoxMezzi BoxListaMezzi { get; set; }
-        public BoxPersonale BoxListaPersonale { get; set; }
-        public BoxInterventi BoxListaInterventi { get; set; }
-        public SintesiRichiesteAssistenzaResult ListaSintesi { get; set; }
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
-        public CentroMappa CentroMappaMarker { get; set; }
+
+        //public InfoNue InfoNue { get; set; }
         public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
-        public InfoNue InfoNue { get; set; }
-        public List<Tipologia> Tipologie { get; set; }
+
+        //public List<Tipologia> Tipologie { get; set; }
         public List<EnteDTO> Rubrica { get; set; }
+
+        public List<string> ZoneEmergenza { get; set; }
     }
 }

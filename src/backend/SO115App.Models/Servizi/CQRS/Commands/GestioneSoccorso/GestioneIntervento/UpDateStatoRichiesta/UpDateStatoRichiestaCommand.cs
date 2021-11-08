@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.Models.Classi.RubricaDTO;
+using System.Collections.Generic;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
@@ -25,9 +27,19 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     {
         public string IdRichiesta { get; set; }
         public string Stato { get; set; }
-        public string Note { get; set; }
         public string IdOperatore { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
         public string CodiceSede { get; set; }
+        public Motivazione Motivazione { get; set; }
+        public List<EnteDTO> EntiIntervenuti { get; set; }
+    }
+
+    public enum Motivazione
+    {
+        TrasmessaAdEnte,
+        InterventoNonNecessario,
+        FalsoAllarme,
+        InterventoConcluso,
+        Riapertura
     }
 }

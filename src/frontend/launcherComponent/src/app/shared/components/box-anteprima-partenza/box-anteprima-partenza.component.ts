@@ -1,18 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Partenza } from '../../model/partenza.model';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { DettaglioPartenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
-import { statoMezzoColor } from '../../helper/function';
+import { statoMezzoColor } from '../../helper/function-mezzo';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 
 @Component({
     selector: 'app-box-anteprima-partenza',
     templateUrl: './box-anteprima-partenza.component.html',
-    styleUrls: ['./box-anteprima-partenza.component.css']
+    styleUrls: ['./box-anteprima-partenza.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoxAnteprimaPartenzaComponent {
 
-    @Input() partenza: Partenza;
+    @Input() partenza: DettaglioPartenza;
     @Input() title: string;
     @Input() testoModifica: string;
     @Input() nonModificabile: boolean;
@@ -54,5 +56,13 @@ export class BoxAnteprimaPartenzaComponent {
         }
         this.annullaPartenza.emit();
         this.nuoveSquadre = [];
+    }
+
+    _iconaStatiClass(statoMezzo: any): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 }

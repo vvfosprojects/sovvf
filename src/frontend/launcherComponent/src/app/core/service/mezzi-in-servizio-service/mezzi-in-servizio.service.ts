@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_MEZZI_IN_SERVIZIO = BASE_URL + environment.apiUrl.mezziInServizio;
@@ -27,5 +27,9 @@ export class MezziInServizioService {
             pagination
         };
         return this.http.post<ResponseInterface>(`${API_MEZZI_IN_SERVIZIO}/GetListaMezzi`, obj);
+    }
+
+    public getGeneriMezzo(): Observable<any> {
+        return this.http.get<any>(`${API_MEZZI_IN_SERVIZIO}/GetGeneriMezzo`);
     }
 }

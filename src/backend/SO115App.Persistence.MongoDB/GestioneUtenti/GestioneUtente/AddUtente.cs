@@ -33,7 +33,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         }
 
         public void Add(Utente utente)
-        {            
+        {
             _dbContext.UtenteCollection.InsertOne(utente);
         }
     }

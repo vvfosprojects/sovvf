@@ -1,22 +1,25 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { Composizione } from '../../../enum/composizione.enum';
 import {
-  AddFiltroSelezionatoComposizione,
-  GetFiltriComposizione,
-  ResetFiltriComposizione,
-  RemoveFiltroSelezionatoComposizione,
-  SetFiltriComposizione, ClearFiltriComposizione
+    AddFiltroSelezionatoComposizione,
+    GetFiltriComposizione,
+    ResetFiltriComposizione,
+    RemoveFiltroSelezionatoComposizione,
+    SetFiltriComposizione,
+    ClearFiltriComposizione,
+    SetFiltriDistaccamentoDefault,
+    SetGenereMezzoDefault,
+    SetFiltriGeneriMezzoTriage
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { Injectable } from '@angular/core';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
-import { makeCopy } from '../../../helper/function';
-import {FiltroTurnoSquadre} from '../../../enum/filtro-turno-composizione-partenza.enum';
+import { TipologicaComposizionePartenza } from '../../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { makeCopy } from '../../../helper/function-generiche';
+import { FiltroTurnoSquadre } from '../../../enum/filtro-turno-composizione-partenza.enum';
 
 export interface FiltriComposizioneStateStateModel {
     filtri: ListaTipologicheMezzi;
@@ -70,22 +73,47 @@ export class FiltriComposizioneState {
         dispatch(new SetFiltriComposizione());
     }
 
+    @Action(SetFiltriDistaccamentoDefault)
+    setFiltriDistaccamentoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetFiltriDistaccamentoDefault): void {
+        patchState({
+            codiceDistaccamento: action.distaccamenti
+        });
+    }
+
+    @Action(SetFiltriGeneriMezzoTriage)
+    setFiltriGeneriMezzoTriage({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetFiltriGeneriMezzoTriage): void {
+        console.log('SetFiltriGeneriMezzoTriage', action.generiMezzo);
+        patchState({
+            tipoMezzo: action.generiMezzo
+        });
+    }
+
+    @Action(SetGenereMezzoDefault)
+    setGenereMezzoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: any): void {
+        patchState({
+            tipoMezzo: action.genereMezzo,
+        });
+    }
+
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
         if (composizioneMode === Composizione.Avanzata && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
-            dispatch(new GetListeComposizioneAvanzata());
+            // Lista loadata in filterbar-composizione per distaccamenti di competenza default.
+            // dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());
         }
         const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
-        filtri.distaccamenti = filtri.distaccamenti.map((d: DescrizioneTipologicaMezzo) => {
-            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
-            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
-            return d;
-        });
-        filtri.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+        if (filtri) {
+            filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {
+                d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
+                d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
+                return d;
+            });
+            filtri.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+        }
         patchState({
             filtri
         });
@@ -103,28 +131,20 @@ export class FiltriComposizioneState {
                 );
                 break;
             case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: removeItem(codiceDistaccamento => codiceDistaccamento !== action.id)
-                    })
-                );
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: insertItem(action.id)
-                    })
-                );
+                const codiciDistaccamento = [];
+                const copyCodici = makeCopy(action.id);
+                copyCodici.forEach(x => codiciDistaccamento.push(x.id));
+                ctx.patchState({
+                    codiceDistaccamento: codiciDistaccamento
+                });
                 break;
             case 'tipoMezzo':
-                ctx.setState(
-                    patch({
-                        tipoMezzo: removeItem(tipoMezzo => tipoMezzo !== action.id)
-                    })
-                );
-                ctx.setState(
-                    patch({
-                        tipoMezzo: insertItem(action.id)
-                    })
-                );
+                const tipoMezzo = [];
+                const copyTipoMezzo = makeCopy(action.id);
+                copyTipoMezzo.forEach(x => tipoMezzo.push(x.descrizione));
+                ctx.patchState({
+                    tipoMezzo,
+                });
                 break;
             case 'statoMezzo':
                 ctx.setState(
@@ -203,18 +223,15 @@ export class FiltriComposizioneState {
     }
 
     @Action(ClearFiltriComposizione)
-    clearFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
-      patchState({
-        filtri: {
-          turni: null,
-          distaccamenti: [],
-          generiMezzi: [],
-          stati: []
-        },
-        turno: undefined,
-        codiceDistaccamento: [],
-        tipoMezzo: [],
-        statoMezzo: [],
-      });
+    clearFiltriComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>): void {
+        ctx.setState(
+            patch({
+                    turno: FiltriComposizioneStateDefaults.turno,
+                    codiceDistaccamento: FiltriComposizioneStateDefaults.codiceDistaccamento,
+                    tipoMezzo: FiltriComposizioneStateDefaults.tipoMezzo,
+                    statoMezzo: FiltriComposizioneStateDefaults.statoMezzo
+                }
+            )
+        );
     }
 }

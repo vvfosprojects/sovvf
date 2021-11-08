@@ -19,50 +19,101 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoCommandHandler : ICommandHandler<UpDateInterventoCommand>
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
+        private readonly IModificaInterventoChiuso _modificaInterventoChiuso;
+        private readonly IGetTipologieByCodice _getTipologie;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiesta getRichiestaById,
+            IModificaInterventoChiuso modificaInterventoChiuso,
+            IGetTipologieByCodice getTipologie)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
+            _modificaInterventoChiuso = modificaInterventoChiuso;
+            _getTipologie = getTipologie;
         }
 
         public void Handle(UpDateInterventoCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.Chiamata.Codice);
-            var priorita = command.Chiamata.PrioritaRichiesta;
-            var listaCodiciTipologie = new List<string>();
-            var utentiInLavorazione = new List<string>();
-            var utentiPresaInCarico = new List<string>();
-            foreach (var tipologia in command.Chiamata.Tipologie)
+
+            bool modificaInterventoChiuso = false;
+            ModificaMovimentoGAC modificheMovimentiGAC = null;
+
+            if (richiesta.Chiusa && !string.IsNullOrEmpty(command.Chiamata.CodiceRichiesta) && (command.Chiamata.Tipologie.Select(t => t.Codice) != richiesta.Tipologie || command.Chiamata.Localita != richiesta.Localita))
             {
-                listaCodiciTipologie.Add(tipologia.Codice);
-            }
-            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
-            {
-                utentiInLavorazione.Add(utente.Nominativo);
-            }
-            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
-            {
-                utentiPresaInCarico.Add(utente.Nominativo);
+                var tipologia = _getTipologie.Get(new List<string> { command.Chiamata.Tipologie.First().Codice }).First();
+
+                modificheMovimentiGAC = richiesta.ListaEventi?.OfType<ComposizionePartenze>()?.Select(partenza => new ModificaMovimentoGAC()
+                {
+                    comune = new ComuneGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Chiamata.Localita.Citta
+                    },
+                    idPartenza = partenza.CodicePartenza,
+                    dataIntervento = command.Chiamata.IstanteRicezioneRichiesta,
+                    latitudine = command.Chiamata.Localita.Coordinate.Latitudine.ToString(),
+                    longitudine = command.Chiamata.Localita.Coordinate.Longitudine.ToString(),
+                    localita = command.Chiamata.Localita.Citta,
+                    numeroIntervento = command.Chiamata.CodiceRichiesta,
+                    provincia = new ProvinciaGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Chiamata.Localita.Provincia
+                    },
+                    targa = partenza.CodiceMezzo.Split('.')[1],
+                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                    autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
+                    dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante,
+                    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale, //RICONTROLLARE
+                    dataUscita = richiesta.ListaEventi.OfType<AbstractPartenza>().Last(p => p.CodicePartenza == partenza.CodicePartenza).Istante,
+                    tipoUscita = new TipoUscita()
+                    {
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
+                    }
+                }).Last();
+
+                modificaInterventoChiuso = true;
             }
 
+            var priorita = command.Chiamata.PrioritaRichiesta;
+
+            var listaCodiciTipologie = command.Chiamata.Tipologie.Select(t => t.Codice).ToList();
+
+            var utentiInLavorazione = new List<string>();
+            if (command.Chiamata.ListaUtentiInLavorazione != null)
+                foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+                    utentiInLavorazione.Add(utente.Nominativo);
+
+            var utentiPresaInCarico = new List<string>();
+            if (command.Chiamata.ListaUtentiPresaInCarico != null)
+                foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+                    utentiPresaInCarico.Add(utente.Nominativo);
+
             richiesta.Tipologie = listaCodiciTipologie;
+            richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
             richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
@@ -73,26 +124,29 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
-            richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti.Select(c => c.ToString()).ToList();
+            richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c).ToList() : null;
+            richiesta.TriageSummary = command.Chiamata.TriageSummary;
+            richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
+            richiesta.Esercitazione = command.Chiamata.Esercitazione;
 
             if (command.Chiamata.Tags != null)
-            {
-                foreach (var t in command.Chiamata.Tags)
-                {
-                    richiesta.Tags.Add(t);
-                }
-            }
+                richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
 
-            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione, DateTime.UtcNow);
+            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione, DateTime.UtcNow, null);
 
             if (command.Chiamata.RilevanteGrave != richiesta.RilevanteGrave || command.Chiamata.RilevanteStArCu != richiesta.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu);
 
-            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
+            var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
             if (richiesta.PrioritaRichiesta != prioritaRichiesta)
-            {
                 new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
+
+            new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
+
+            if (modificaInterventoChiuso)
+            {
+                _modificaInterventoChiuso.Send(modificheMovimentiGAC);
             }
 
             _updateRichiestaAssistenza.UpDate(richiesta);

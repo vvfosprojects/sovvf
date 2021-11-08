@@ -1,9 +1,13 @@
 <ng-container *ngIf="sediNavbarVisible">
-    <app-shared-treeview [items]="items" [testoSedeSelezionata$]="testoSedeSelezionata$"
+    <app-shared-treeview [items]="items"
+                         [testoSedeSelezionata$]="testoSedeSelezionata$"
                          [tastoConferma$]="tastoConferma$"
                          [placement]="'bottom-left'"
-                         (annullaSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
-                         (patchSelezione)="onPatch($event)" [colorButton]="colorButton"
-                         [visualizzaTasti]="true" [cache]="cache">
+                         [colorButton]="colorButton"
+                         [visualizzaTasti]="true"
+                         [cache]="cache"
+                         (annullaSelezione)="onAnnulla()"
+                         (confermaSelezione)="onConferma()"
+                         (patchSelezione)="onPatch($event)">
     </app-shared-treeview>
 </ng-container>

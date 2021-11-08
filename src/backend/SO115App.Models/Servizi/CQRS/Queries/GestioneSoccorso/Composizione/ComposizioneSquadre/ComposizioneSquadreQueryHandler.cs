@@ -17,11 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
 using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
 {
@@ -46,16 +45,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = _iGetComposizioneSquadre.Get(query)
-                .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
-                .Take(query.Filtro.SquadrePagination.PageSize)
-                .ToList();
-
+            var composizioneSquadre = _iGetComposizioneSquadre.Get(query);
+                
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 
             return new ComposizioneSquadreResult()
             {
-                ComposizioneSquadre = composizioneSquadre
+                DataArray = composizioneSquadre
+                    .Skip((query.Filtro.Pagination.Page - 1) * query.Filtro.Pagination.PageSize)
+                    .Take(query.Filtro.Pagination.PageSize)
+                    .ToList(),
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Filtro.Pagination.Page,
+                    PageSize = query.Filtro.Pagination.PageSize,
+                    TotalItems = composizioneSquadre.Count
+                }
             };
         }
     }

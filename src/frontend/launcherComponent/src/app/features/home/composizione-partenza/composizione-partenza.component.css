@@ -6,5 +6,17 @@
     width: 100%;
     text-align: center;
     min-height: 100%;
-    align-items: center;
+}
+
+.circle {
+    font-size: 1rem;
+    color: #e2e2e2;
+}
+
+.filled {
+    color: #9b9b9b;
+}
+
+.bad {
+    color: #c23535;
 }

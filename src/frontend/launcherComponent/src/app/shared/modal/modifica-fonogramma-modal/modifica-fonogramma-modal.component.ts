@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Fonogramma } from '../../model/fonogramma.model';
-import { getStatoFonogrammaStringByEnum } from '../../helper/function';
+import { getStatoFonogrammaStringByEnum } from '../../helper/function-fonogramma';
 
 @Component({
     selector: 'app-modifica-fonogramma-modal',
@@ -13,6 +13,7 @@ export class ModificaFonogrammaModalComponent implements OnInit {
 
     codiceRichiesta: string;
     idRichiesta: string;
+    titolo: string;
     fonogramma: Fonogramma;
 
     modificaStatoFonogrammaForm: FormGroup;

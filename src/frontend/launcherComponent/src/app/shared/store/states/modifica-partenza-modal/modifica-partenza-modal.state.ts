@@ -1,14 +1,12 @@
 import { Selector, State } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
 import { Injectable } from '@angular/core';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
         model?: {
-            operatore: string;
-            sede: string;
             codRichiesta: string;
             annullamento: boolean;
             codMezzoDaAnnullare: string;
@@ -28,8 +26,6 @@ export interface ModificaPartenzaModalStateModel {
 export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel = {
     modificaPartenzaForm: {
         model: {
-            operatore: undefined,
-            sede: undefined,
             codRichiesta: undefined,
             annullamento: undefined,
             codMezzoDaAnnullare: undefined,

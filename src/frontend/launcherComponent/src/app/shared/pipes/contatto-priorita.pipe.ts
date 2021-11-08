@@ -7,7 +7,7 @@ import { Priorita } from '../model/sintesi-richiesta.model';
 export class ContattoPrioritaPipe implements PipeTransform {
 
     transform(value: any, args?: any): string {
-        return value === Priorita.Altissima ? 'fa fa-exclamation-triangle text-danger' : 'fa fa-exclamation-circle text-muted';
+        return value === Priorita.Altissima ? 'fas fa-exclamation-triangle text-danger' : 'fas fa-exclamation-circle';
     }
 
 }

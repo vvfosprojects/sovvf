@@ -1,41 +1,87 @@
-<div class="row mt-1">
+<div class="row">
     <div class="col-12">
-        <div *ngIf="richiesta" class="mb-2">
-            <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
+        <div *ngIf="richiesta"
+             class="my-1">
+            <div class="w-100 rounded"
+                 [class.card-shadow]="!nightMode"
+                 [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta"
                                        [fissata]="false"
-                                       [isEspanso]="true"
+                                       [inGestione]="true"
                                        [partenza]="true"
-                                       [listaEventi]="true"
                                        [modificabile]="false"
                                        [gestibile]="false"
-                                       [inGestione]="false"
-                                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                                       [boxAzioni]="false"
+                                       [nightMode]="nightMode"
                                        (actionMezzo)="onActionMezzo($event)">
                 </app-sintesi-richiesta>
             </div>
         </div>
-        <div class="py-1">
-            <app-filterbar-composizione [filtri]="filtri$ | async"
-                                        [disableComposizioneMode]="loadingListe"
-                                        [composizionePartenza]="true"
-                                        [prenotato]="prenotato"
-                                        (confirmPrenota)="onPrenota($event)">
-            </app-filterbar-composizione>
-        </div>
-        <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
+    </div>
+    <div class="col-12">
+        <app-filterbar-composizione [filtri]="filtri$ | async"
+                                    [nightMode]="nightMode"
+                                    [competenze]="richiesta?.competenze"
+                                    [disableComposizioneMode]="loadingListe"
+                                    [composizionePartenza]="true"
+                                    [loadingSquadre]="loadingSquadre$ | async"
+                                    [loadingMezzi]="loadingMezzi$ | async"
+                                    [triageSummary]="summary$ | async">
+        </app-filterbar-composizione>
+    </div>
+    <div class="col-12">
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce"
+             class="px-3">
             <app-composizione-veloce [richiesta]="richiesta"
+                                     [nightMode]="nightMode"
                                      [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                      [boxAttivi]="boxAttivi"
+                                     [triageSummary]="summary$ | async"
+                                     [preAccoppiati]="preAccoppiati$ | async"
+                                     [idPreAccoppiatoSelezionato]="idPreAccoppiatoSelezionato$ | async"
+                                     [idPreAccoppiatiSelezionati]="idPreAccoppiatiSelezionati$ | async"
+                                     [idPreAccoppiatiOccupati]="idPreAccoppiatiOccupati$ | async"
+                                     [idPreaccoppiatoHover]="idPreaccoppiatoHover$ | async"
+                                     [currentPagePreaccoppiati]="currentPagePreaccoppiati$ | async"
+                                     [totalItemsPreaccoppiati]="totalItemsPreaccoppiati$ | async"
+                                     [pageSizePreaccoppiati]="pageSizePreaccoppiati$ | async"
                                      (sendDirection)="onSendDirection($event)"
                                      (clearDirection)="onClearDirection()"
                                      (centraMappa)="centraMappa()">
             </app-composizione-veloce>
         </div>
-        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
+    </div>
+    <div class="col-12">
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata"
+             class="px-3">
             <app-composizione-avanzata [richiesta]="richiesta"
+                                       [nightMode]="nightMode"
                                        [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                        [boxAttivi]="boxAttivi"
+                                       [triageSummary]="summary$ | async"
+                                       [mezziComposizione]="mezziComposizione$ | async"
+                                       [idMezzoSelezionato]="idMezzoSelezionato$ | async"
+                                       [idMezziInPrenotazione]="idMezziInPrenotazione$ | async"
+                                       [idMezziPrenotati]="idMezziPrenotati$ | async"
+                                       [idMezziBloccati]="idMezziBloccati$ | async"
+                                       [idMezzoHover]="idMezzoHover$ | async"
+                                       [squadreComposizione]="squadraComposizione$ | async"
+                                       [idSquadreSelezionate]="idSquadreSelezionate$ | async"
+                                       [idSquadraHover]="idSquadraHover$ | async"
+                                       [filtriSelezionati]="filtriSelezionati$ | async"
+                                       [boxPartenzaList]="boxPartenzaList$ | async"
+                                       [idBoxPartenzaSelezionato]="idBoxPartenzaSelezionato$ | async"
+                                       [loadingListe]="loadingListe$ | async"
+                                       [loadingSquadre]="loadingSquadre$ | async"
+                                       [loadingMezzi]="loadingMezzi$ | async"
+                                       [currentPageMezzi]="currentPageMezzi$ | async"
+                                       [totalItemsMezzi]="totalItemsMezzi$ | async"
+                                       [pageSizeMezzi]="pageSizeMezzi$ | async"
+                                       [currentPageSquadre]="currentPageSquadre$ | async"
+                                       [totalItemsSquadre]="totalItemsSquadre$ | async"
+                                       [pageSizeSquadre]="pageSizeSquadre$ | async"
+                                       [disableNuovaPartenza]="disableNuovaPartenza$ | async"
+                                       [disableConfirmPartenza]="disableConfirmPartenza$ | async"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()"
                                        (centraMappa)="centraMappa()"

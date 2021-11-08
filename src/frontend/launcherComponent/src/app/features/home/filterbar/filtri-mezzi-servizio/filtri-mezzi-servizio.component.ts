@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +6,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-filtri-mezzi-servizio',
     templateUrl: './filtri-mezzi-servizio.component.html',
-    styleUrls: ['./filtri-mezzi-servizio.component.css']
+    styleUrls: ['./filtri-mezzi-servizio.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltriMezziServizioComponent {
 
@@ -14,6 +15,8 @@ export class FiltriMezziServizioComponent {
 
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
+    @Input() disableFilters: boolean;
+    @Input() nightMode: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();

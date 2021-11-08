@@ -1,0 +1,22 @@
+<div class="px-3 m-h-820-richiesta">
+    <app-partial-loader *ngIf="loadingSchedaRichiesta"></app-partial-loader>
+    <app-form-richiesta [tipologie]="(tipologie$ | async)"
+                        [operatore]="(utente$ | async)"
+                        [enti]="enti$ | async"
+                        [loadingSchedaRichiesta]="loadingSchedaRichiesta"
+                        [loadingCompetenze]="loadingCompetenze"
+                        [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
+                        [competenze]="competenze$ | async"
+                        [countInterventiProssimita]="countInterventiProssimita$ | async"
+                        [interventiProssimita]="interventiProssimita$ | async"
+                        [countInterventiStessaVia]="countInterventiStessaVia$ | async"
+                        [interventiStessaVia]="interventiStessaVia$ | async"
+                        [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo$ | async"
+                        [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo$ | async"
+                        [schedaContatto]="schedaContattoTelefonata$ | async"
+                        [richiestaModifica]="richiestaModifica$ | async"
+                        [modifica]="!!(richiestaModifica$ | async)"
+                        [triageSummary]="triageSummary$ | async"
+                        [pos]="pos$ | async">
+    </app-form-richiesta>
+</div>

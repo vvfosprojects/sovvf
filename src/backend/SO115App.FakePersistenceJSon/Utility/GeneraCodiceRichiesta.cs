@@ -7,7 +7,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 {
     public class GeneraCodiceRichiesta : IGeneraCodiceRichiesta
     {
-        public string Genera(string codiceProvincia, int anno)
+        public string GeneraCodiceIntervento(string codiceProvincia, int anno)
         {
             int ultimeDueCifreAnno = anno % 100;
             int nuovoNumero = GetMaxCodice.GetMax();
@@ -23,6 +23,11 @@ namespace SO115App.FakePersistence.JSon.Utility
             int nuovoNumero = GetMaxCodice.GetMaxCodiceChiamata();
             string returnString = string.Format("{0}{1}{2}{3}{4:D5}", codiceProvincia.Split('.')[0], giorno, mese, ultimeDueCifreAnno, nuovoNumero);
             return returnString;
+        }
+
+        public int GeneraCodicePartenza()
+        {
+            throw new NotImplementedException();
         }
     }
 }

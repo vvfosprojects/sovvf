@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 
 @Component({
     selector: '[app-evento-richiesta]',
     templateUrl: './evento-richiesta.component.html',
-    styleUrls: ['./evento-richiesta.component.css']
+    styleUrls: ['./evento-richiesta.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventoRichiestaComponent implements OnInit {
 
@@ -57,8 +58,10 @@ export class EventoRichiestaComponent implements OnInit {
             ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
             ['RevocaPerSostituzioneMezzo', ['fa-refresh']],
             ['AllertaAltreSedi', ['fa-exclamation-triangle']],
+            ['RichiestaSoccorsoAereo', ['fa-plane']],
+            ['AnnullamentoRichiestaSoccorsoAereo', ['fa-plane', 'fa-times']],
 
-            // Default per gli eventi non gestiti
+            // Default per gli eventi-richiesta-richiesta non gestiti
             ['EventoGenerico', ['fa-question-circle']],
 
             // Per adesso non utilizzqti

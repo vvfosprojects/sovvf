@@ -10,4 +10,6 @@ export class BoxMeteoComponent {
 
     @Input() datimeteo: Meteo;
 
+    constructor() {
+    }
 }

@@ -17,12 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Linq;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -35,16 +42,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly IUpDateRichiestaAssistenza _upDateRichiesta;
+        private readonly ISetUscitaMezzo _setUscitaMezzo;
+        private readonly ISetRientroMezzo _setRientroMezzo;
+        private readonly IGetTipologieByCodice _getTipologie;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
-            ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta)
+            ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta,
+            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _upDateRichiesta = upDateRichiesta;
+
+            _setRientroMezzo = setRientroMezzo;
+            _setUscitaMezzo = setUscitaMezzo;
+
+            _getTipologie = getTipologie;
         }
 
         /// <summary>
@@ -59,15 +75,72 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var codiceSedeMezzo = command.CodiciSede.First();
 
-            _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
-
-            foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
+            if (CheckStatoMezzoCronologicamenteOk(command))
             {
-                foreach (var squadra in partenza.Partenza.Squadre)
+                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
+
+                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
+                
+                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
+                    foreach (var squadra in partenza.Partenza.Squadre)
+                    {
+                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
+                    }
+                }
+
+                var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
+
+                if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                {
+                    var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
+
+                    _setRientroMezzo.Set(new RientroGAC()
+                    {
+                        targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
+                        tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
+                        idPartenza = partenzaRientro.Partenza.Codice.ToString(),
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataIntervento = dataIntervento,
+                        dataRientro = dataRientro,
+                        autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
+                    });
                 }
             }
+        }
+
+        private bool CheckStatoMezzoCronologicamenteOk(AggiornaStatoMezzoCommand command)
+        {
+            var statoAttualeMezzo = command.Richiesta.Partenze.ToList().Find(p => p.CodiceMezzo.Equals(command.IdMezzo)).Partenza.Mezzo.Stato;
+
+            switch (statoAttualeMezzo)
+            {
+                case "In Viaggio":
+
+                    if (!statoAttualeMezzo.Equals("In Viaggio") && !statoAttualeMezzo.Equals("Sul Posto") && !statoAttualeMezzo.Equals("In Rientro") && !statoAttualeMezzo.Equals("Rientrato"))
+                        return true;
+                    break;
+
+                case "Sul Posto":
+                    if (!statoAttualeMezzo.Equals("Sul Posto") && statoAttualeMezzo.Equals("In Viaggio"))
+                        return true;
+                    break;
+
+                case "In Rientro":
+                    if (!statoAttualeMezzo.Equals("In Rientro") && statoAttualeMezzo.Equals("Sul Posto"))
+                        return true;
+                    break;
+
+                case "Rientrato":
+                    if (!statoAttualeMezzo.Equals("Rientrato") && statoAttualeMezzo.Equals("In Rientro"))
+                        return true;
+                    break;
+
+                default:
+                    return true;
+            };
+
+            return true;
         }
     }
 }

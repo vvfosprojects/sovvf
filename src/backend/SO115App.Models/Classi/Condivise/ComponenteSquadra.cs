@@ -18,20 +18,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Utenti;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Componente
     {
-        public Componente(string DescrizioneQualifica, string Nominativo, string Tooltip, bool CapoPartenza, bool Autista, bool Rimpiazzo)
+        public Componente(string DescrizioneQualifica, string Nominativo)
         {
             this.DescrizioneQualifica = DescrizioneQualifica;
             this.Nominativo = Nominativo;
-            this.Tooltip = Tooltip;
-            this.CapoPartenza = CapoPartenza;
-            this.Autista = Autista;
-            this.Rimpiazzo = Rimpiazzo;
+        }
+
+        public Componente()
+        {
         }
 
         /// <summary>
@@ -45,16 +46,9 @@ namespace SO115App.API.Models.Classi.Condivise
         public string DescrizioneQualifica { get; set; }
 
         /// <summary>
-        ///   Descrizione lunga qualifica Componente
-        /// </summary>
-        public string DescrizioneQualificaLunga { get; set; }
-
-        /// <summary>
         ///   Ruolo ricoperto dall'operatore nel turno indicato
         /// </summary>
         public string Ruolo { get; set; }
-
-        public Turno CodiceTurno { get; set; }
 
         /// <summary>
         ///   Nominativo Componente
@@ -65,49 +59,6 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public DateTime OrarioFine { get; set; }
 
-        /// <summary>
-        ///   ToolTip Componente
-        /// </summary>
-        public string Tooltip { get; set; }
-
-        /// <summary>
-        ///   Indica se il Componente è un capo Partenza
-        /// </summary>
-        public bool CapoPartenza { get; set; }
-
-        /// <summary>
-        ///   Indica se è un autista
-        /// </summary>
-        public bool Autista { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un rimpiazzo
-        /// </summary>
-        public bool Rimpiazzo { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un funzionario di guardia
-        /// </summary>
-        public bool FunGuardia { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un tecnino di guardia 1
-        /// </summary>
-        public bool TecnicoGuardia1 { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un tecnico di guardia 2
-        /// </summary>
-        public bool TecnicoGuardia2 { get; set; }
-
-        /// <summary>
-        ///   Indica se il componente è un capoturno
-        /// </summary>
-        public bool CapoTurno { get; set; }
-
-        /// <summary>
-        ///   descrive il numero di telefono del componente
-        /// </summary>
-        public string Telefono { get; set; }
+        public Qualifiche[] qualifications { get; set; }
     }
 }

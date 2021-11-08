@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { TurnoExtra } from '../../../features/navbar/turno/turno-extra.model';
+import { TurnoExtra } from '../../../features/navbar/turno/model/turno-extra.model';
 
 @Injectable({
     providedIn: 'root'

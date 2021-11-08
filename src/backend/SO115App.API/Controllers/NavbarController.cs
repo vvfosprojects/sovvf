@@ -17,12 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
@@ -52,16 +52,22 @@ namespace SO115App.API.Controllers
             var query = new NavbarQuery()
             {
                 FiltroBox = "",
+                CodSedi = Request.Headers["codiceSede"].ToString().Split(','),
                 IdUtente = Request.Headers["idUtente"]
             };
 
             try
             {
-                return Ok(handler.Handle(query).Navbar);
+                var result = handler.Handle(query);
+
+                return Ok(result.Navbar);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    ex.Message
+                });
             }
         }
     }

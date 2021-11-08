@@ -18,21 +18,29 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
+    [BsonIgnoreExtraElements]
     public class Sede
     {
-        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, string tipoSede, string label, string icona, string regione, string provincia)
+        private bool VisualizzazioneCentrale = true;
+        private string _descrizione;
+
+        [JsonConstructor]
+        public Sede(string desc) => Descrizione = desc;
+
+        public Sede() { }
+
+        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, bool visualizzazioneCentrale = true)
         {
             this.Codice = codice;
             this.Descrizione = descrizione;
             this.Indirizzo = indirizzo;
             this.Coordinate = coordinate;
-            this.Tipo = tipoSede;
-            this.Label = label;
-            this.Icona = icona;
-            this.Regione = regione;
-            this.Provincia = provincia;
+            this.VisualizzazioneCentrale = visualizzazioneCentrale;
         }
 
         /// <summary>
@@ -43,7 +51,18 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Descrizione Sede
         /// </summary>
-        public string Descrizione { get; set; }
+        public string Descrizione
+        {
+            get
+            {
+                if (VisualizzazioneCentrale) return _descrizione
+                    .Replace("Comando VV.F.", "Centrale")
+                    .Replace("COMANDO VV.F.", "CENTRALE");
+                else return _descrizione;
+            }
+
+            set => _descrizione = value;
+        }
 
         /// <summary>
         ///   Coordinate
@@ -54,30 +73,5 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indirizzo della Sede
         /// </summary>
         public string Indirizzo { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Tipo { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Regione { get; set; }
-
-        /// <summary>
-        ///   Tipologia Sede
-        /// </summary>
-        public string Provincia { get; set; }
-
-        /// <summary>
-        ///   Label
-        /// </summary>
-        public string Label { get; set; }
-
-        /// <summary>
-        ///   Icona
-        /// </summary>
-        public string Icona { get; set; }
     }
 }

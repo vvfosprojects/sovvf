@@ -1,4 +1,4 @@
-<div ngbDropdown #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
+<div ngbDropdown display="dynamic" #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
     <button class="btn btn-block btn-no-hover" [ngClass]="colorButton" ngbDropdownToggle
             [disabled]="disabled">{{testoSedeSelezionata}}</button>
     <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
@@ -9,12 +9,12 @@
             <div class="px-4 pb-2 pt-3">
                 <button class="btn btn-sm btn-danger px-3"
                         (click)="$event.stopPropagation(); treeviewSedi.close(); annulla()">
-                    <i class="fa fa-times pr-2"></i>Annulla
+                    <i class="fas fa-times pr-2"></i>Annulla
                 </button>
                 <button class="btn btn-sm btn-success px-2 float-right"
                         (click)="$event.stopPropagation(); treeviewSedi.close(); conferma()"
                         [disabled]="tastoConferma">
-                    <i class="fa fa-check-square-o pr-2"></i>Conferma
+                    <i class="fas fa-check-square-o pr-2"></i>Conferma
                 </button>
             </div>
         </ng-container>

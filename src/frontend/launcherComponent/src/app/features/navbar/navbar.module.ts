@@ -12,13 +12,10 @@ import { TurnoExtraServiceFake } from '../../core/service/turno-service/turno-ex
 /**
  * Component
  */
-import { OperatoreComponent } from './operatore/operatore.component';
 import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.component';
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
-import { AnnuncioNuovaVersioneModalComponent } from '../../shared/modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
-import { NuoveFeaturesInfoModalComponent } from '../../shared/modal/nuove-features-info-modal/nuove-features-info-modal.component';
 /**
  * Module
  */
@@ -33,16 +30,18 @@ import { NgxsModule } from '@ngxs/store';
  */
 import { TurnoState } from './store/states/turno.state';
 import { NavbarState } from './store/states/navbar.state';
+import { TreeviewI18n } from 'ngx-treeview';
+import { SediTreeviewI18n } from '../../shared/store/states/sedi-treeview/sedi-treeview-i18n.service';
 
 @NgModule({
     imports: [
         CommonModule,
         NgbModule,
-        SharedModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
         FormsModule,
         RouterModule,
+        SharedModule,
         NgxsModule.forFeature(
             [
                 NavbarState,
@@ -54,12 +53,12 @@ import { NavbarState } from './store/states/navbar.state';
         NavbarComponent,
         TurnoComponent,
         ClockComponent,
-        OperatoreComponent,
         UnitaOperativaComponent
     ],
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoExtraService, useClass: TurnoExtraServiceFake },
+        { provide: TreeviewI18n, useClass: SediTreeviewI18n }
     ]
 })
 export class NavbarModule {

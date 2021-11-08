@@ -1,125 +1,312 @@
-<div *ngIf="personaleQty" class="row p-2">
+<div *ngIf="personaleQtyPrevious || personaleQtyCurrent || personaleQtyNext" class="row px-2 pt-2 pb-0 box-personale">
     <div class="col-12">
         <!-- Funzionario in Servizio -->
         <div class="row">
-            <div class="col-7">
-                <i class="fa fa-users mb-2 mr-1"></i>
+            <div class="clearfix float-left ml-4">
+                <i class="fas fa-users mb-2 mr-1"></i>
                 <span class="font-weight-bold"
                       ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
                 <span class="font-weight-bold"
-                   (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</span>
+                      (click)="onClickServizi()">{{personaleQtyCurrent?.totale}}</span>
             </div>
-            <div class="col-5 ml-auto text-right text-secondary">
+            <div class="clearfix float-right ml-4 ml-auto text-right">
                 <ng-template #funzionariGuardia>
-                    <!-- Funzionario Guardia -->
-                    <div *ngIf="personalePresenze.funGuardia">
-                        <div class="h6">Funz. Guardia</div>
-                        <div *ngIf="personalePresenze.funGuardia.descrizione" title="Nominativo" class="h6 mb-2">
-                            <i class="fa fa-user mr-1"></i>
-                            {{personalePresenze.funGuardia?.descrizione}}
-                        </div>
-                        <div *ngIf="personalePresenze.funGuardia.qualifica" title="Qualifica" class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
-                            {{personalePresenze.funGuardia?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.funGuardia.telefono" title="Telefono" class="h6 text-secondary">
-                            <i class="fa fa-mobile mr-1"></i>
-                            {{personalePresenze.funGuardia?.telefono}}
-                        </div>
-                    </div>
-                    <div *ngIf="!personalePresenze.funGuardia">
-                        <div class="h6 font-weight-bold">Nessun Funzionario</div>
-                    </div>
-
-                    <hr class="m-0 mb-2">
-
-                    <!-- Capo Turno -->
-                    <div *ngIf="personalePresenze.capoTurno">
-                        <div class="h6">Capo Turno</div>
-                        <div *ngIf="personalePresenze.capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
-                            <i class="fa fa-user mr-1"></i>
-                            {{personalePresenze.capoTurno?.descrizione}}
-                        </div>
-                        <div *ngIf="personalePresenze.capoTurno.qualifica" title="Qualifica" class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
-                            {{personalePresenze.capoTurno?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.capoTurno.telefono" title="Telefono" class="h6 text-secondary">
-                            <i class="fa fa-mobile mr-1"></i>
-                            {{personalePresenze.capoTurno?.telefono}}
-                        </div>
-                    </div>
-                    <div *ngIf="!personalePresenze.capoTurno">
-                        <div class="h6 font-weight-bold">Nessun Capo Turno</div>
-                    </div>
+                    <ul #nav="ngbNav" ngbNav
+                        class="nav-tabs"
+                        [(activeId)]="tabFunzionariActive">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink>
+                                <span class="text-dark">Turno {{ turnoPrev }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Funzionario Guardia -->
+                                <div *ngIf="personalePresenzePrevious.guardia">
+                                    <div class="h6">Funz. Guardia</div>
+                                    <div *ngIf="personalePresenzePrevious.guardia[0]?.descrizione" title="Nominativo"
+                                         class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzePrevious.guardia[0].descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzePrevious.guardia[0]?.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzePrevious.guardia[0].qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzePrevious.guardia?.length">
+                                    <div class="h6 font-weight-bold">Nessun Funzionario</div>
+                                </div>
+                                <hr class="m-0 mb-2">
+                                <!-- Capo Turno -->
+                                <div *ngFor="let capoTurno of personalePresenzePrevious.capoTurno">
+                                    <div class="h6">Capo Turno</div>
+                                    <div *ngIf="capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{capoTurno?.descrizione}}
+                                    </div>
+                                    <div *ngIf="capoTurno.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{capoTurno?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzePrevious.capoTurno?.length">
+                                    <div class="h6 font-weight-bold">Nessun Capo Turno</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <a ngbNavLink>
+                                <span class="text-dark">Turno {{ turnoCurrent }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Funzionario Guardia -->
+                                <div *ngIf="personalePresenzeCurrent.guardia">
+                                    <div class="h6">Funz. Guardia</div>
+                                    <div *ngIf="personalePresenzeCurrent.guardia[0]?.descrizione" title="Nominativo"
+                                         class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeCurrent.guardia[0].descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeCurrent.guardia[0]?.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeCurrent.guardia[0].qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeCurrent.guardia?.length">
+                                    <div class="h6 font-weight-bold">Nessun Funzionario</div>
+                                </div>
+                                <hr class="m-0 mb-2">
+                                <!-- Capo Turno -->
+                                <div *ngFor="let capoTurno of personalePresenzeCurrent.capoTurno">
+                                    <div class="h6">Capo Turno</div>
+                                    <div *ngIf="capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{capoTurno?.descrizione}}
+                                    </div>
+                                    <div *ngIf="capoTurno.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{capoTurno?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeCurrent.capoTurno?.length">
+                                    <div class="h6 font-weight-bold">Nessun Capo Turno</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                            <a ngbNavLink>
+                                <span class="text-dark">Turno {{ turnoNext }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Funzionario Guardia -->
+                                <div *ngIf="personalePresenzeNext.guardia">
+                                    <div class="h6">Funz. Guardia</div>
+                                    <div *ngIf="personalePresenzeNext.guardia[0]?.descrizione" title="Nominativo"
+                                         class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeNext.guardia[0].descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeNext.guardia[0]?.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeNext.guardia[0].qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeNext.guardia?.length">
+                                    <div class="h6 font-weight-bold">Nessun Funzionario</div>
+                                </div>
+                                <hr class="m-0 mb-2">
+                                <!-- Capo Turno -->
+                                <div *ngFor="let capoTurno of personalePresenzeNext.capoTurno">
+                                    <div class="h6">Capo Turno</div>
+                                    <div *ngIf="capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{capoTurno?.descrizione}}
+                                    </div>
+                                    <div *ngIf="capoTurno.qualifica" title="Qualifica" class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{capoTurno?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeNext.capoTurno?.length">
+                                    <div class="h6 font-weight-bold">Nessun Capo Turno</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
                 </ng-template>
 
                 <!-- Tecnici Guardia -->
                 <ng-template #tecniciGuardia>
-                    <div *ngIf="personalePresenze.tecnicoGuardia1">
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.descrizione" title="Nominativo" class="h6 mb-2">
-                            <i class="fa fa-user mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia1?.descrizione}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.qualifica" title="Qualifica"
-                             class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
-                            {{personalePresenze.tecnicoGuardia1?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia1.telefono" title="Telefono"
-                             class="h6 text-secondary">
-                            <i class="fa fa-mobile mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia1?.telefono}}
-                        </div>
-                    </div>
-                    <div *ngIf="personalePresenze.tecnicoGuardia2" class="mt-1">
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.descrizione" title="Nominativo" class="h6 mb-2">
-                            <i class="fa fa-user mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia2?.descrizione}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.qualifica" title="Qualifica"
-                             class="h6 text-secondary">
-                            <i class="fa fa-cog mr-1 text-secondary"></i>
-                            {{personalePresenze.tecnicoGuardia2?.qualifica}}
-                        </div>
-                        <div *ngIf="personalePresenze.tecnicoGuardia2.telefono" title="Telefono"
-                             class="h6 text-secondary">
-                            <i class="fa fa-mobile mr-1"></i>
-                            {{personalePresenze.tecnicoGuardia2?.telefono}}
-                        </div>
-                    </div>
-                    <div *ngIf="!personalePresenze.tecnicoGuardia1 && !personalePresenze.tecnicoGuardia2">
-                        <div class="h6 font-weight-bold">Nessun Tecnico di Guardia</div>
-                    </div>
+                    <ul #nav="ngbNav" ngbNav
+                        class="nav-tabs"
+                        [(activeId)]="tabTecniciActive">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink (click)="$event.stopPropagation()">
+                                <span class="text-dark">Turno {{ turnoPrev }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Primo -->
+                                <div *ngIf="personalePresenzePrevious.primoTecnico">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzePrevious.primoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzePrevious.primoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzePrevious.primoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzePrevious.primoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <!-- Secondo  -->
+                                <div *ngIf="personalePresenzePrevious.secondoTecnico" class="mt-1">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzePrevious.secondoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzePrevious.secondoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzePrevious.secondoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzePrevious.secondoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzePrevious.primoTecnico && !personalePresenzePrevious.secondoTecnico">
+                                    <div class="h6 font-weight-bold">Nessun Tecnico di Guardia</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <a ngbNavLink (click)="$event.stopPropagation()">
+                                <span class="text-dark">Turno {{ turnoCurrent }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Primo -->
+                                <div *ngIf="personalePresenzeCurrent.primoTecnico">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzeCurrent.primoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeCurrent.primoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeCurrent.primoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeCurrent.primoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <!-- Secondo  -->
+                                <div *ngIf="personalePresenzeCurrent.secondoTecnico" class="mt-1">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzeCurrent.secondoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeCurrent.secondoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeCurrent.secondoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeCurrent.secondoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeCurrent.primoTecnico && !personalePresenzeCurrent.secondoTecnico">
+                                    <div class="h6 font-weight-bold">Nessun Tecnico di Guardia</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3">
+                            <a ngbNavLink (click)="$event.stopPropagation()">
+                                <span class="text-dark">Turno {{ turnoNext }}</span>
+                            </a>
+                            <ng-template ngbNavContent>
+                                <!-- Primo -->
+                                <div *ngIf="personalePresenzeNext.primoTecnico">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzeNext.primoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeNext.primoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeNext.primoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeNext.primoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <!-- Secondo  -->
+                                <div *ngIf="personalePresenzeNext.secondoTecnico" class="mt-1">
+                                    <div class="h6">Tecnico</div>
+                                    <div *ngIf="personalePresenzeNext.secondoTecnico.descrizione" title="Nominativo" class="h6 mb-2">
+                                        <i class="fas fa-user mr-1"></i>
+                                        {{personalePresenzeNext.secondoTecnico?.descrizione}}
+                                    </div>
+                                    <div *ngIf="personalePresenzeNext.secondoTecnico.qualifica" title="Qualifica"
+                                         class="h6">
+                                        <i class="fas fa-cog mr-1"></i>
+                                        {{personalePresenzeNext.secondoTecnico?.qualifica}}
+                                    </div>
+                                </div>
+                                <div *ngIf="!personalePresenzeNext.primoTecnico && !personalePresenzeNext.secondoTecnico">
+                                    <div class="h6 font-weight-bold">Nessun Tecnico di Guardia</div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
                 </ng-template>
             </div>
         </div>
         <hr class="m-0 mb-2">
     </div>
     <!-- sinistra -->
-    <div class="col-7">
+    <div class="col-6">
         <div class="row">
-            <div class="col-12 mx-auto">
+            <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col-7 pr-0 text-secondary">
+                    <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Squadre attualmente in servizio">Squadre in servizio</span>
-                            </li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Squadre impegnate sugli interventi">di cui impegnate</span>
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                      ngbTooltip="Squadre attualmente in servizio"
+                                      placement="top">
+                                    Squadre
+                                </span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col-5 px-0 text-secondary text-center">
+                    <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('squadreServizio')"><span
-                                    class="position-relative badge badge-secondary h6 w-50"><i *ngIf="personaleDiff"
-                                                                                               class="blink-i-aggregate fa"
-                                                                                               [ngClass]="realDiff('squadreServizio')"></i>{{personaleQty?.squadreServizio}}</span>
+                            <li [ngClass]="checkDiff('squadreServizio')">
+                                <span class="position-relative badge badge-mod-secondary h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                       class="blink-i-aggregate fas"
+                                       [ngClass]="realDiff('squadreServizio')">
+                                    </i>
+                                    {{personaleQtyCurrent?.squadreServizio}}
+                                </span>
                             </li>
-                            <li [ngClass]="checkDiff('squadreAssegnate')"><span
-                                    class="position-relative badge badge-success h6 w-50"><i *ngIf="personaleDiff"
-                                                                                             class="blink-i-aggregate fa"
-                                                                                             [ngClass]="realDiff('squadreAssegnate')"></i>{{personaleQty?.squadreAssegnate}}</span>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pr-0">
+                        <ul class="list-unstyled m-0">
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                      ngbTooltip="Squadre impegnate sugli interventi"
+                                      placement="bottom">
+                                    Impegnate
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col px-0 text-center">
+                        <ul class="list-unstyled m-0">
+                            <li [ngClass]="checkDiff('squadreAssegnate')">
+                                <span class="position-relative badge badge-mod-danger h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                       class="blink-i-aggregate fas"
+                                       [ngClass]="realDiff('squadreAssegnate')">
+                                    </i>
+                                    {{personaleQtyCurrent?.squadreAssegnate}}
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -128,35 +315,66 @@
         </div>
     </div>
     <!-- destra -->
-    <div class="col-5">
+    <div class="col-6">
         <div class="row">
-            <div class="col-11 mx-auto">
+            <div class="col-10 mx-auto">
                 <div class="row">
-                    <div class="col pr-0 text-secondary">
+                    <div class="col pr-0">
                         <ul class="list-unstyled m-0">
-                            <li><span
-                                    class="d-inline-block h6"
-                                    ngbTooltip="Funzionari di guardia">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
-                            </li>
-                            <li><span class="d-inline-block h6"
-                                      ngbTooltip="Tecnici di guardia">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                      ngbTooltip="Funzionari di guardia"
+                                      placement="top">
+                                    {{personaleQtyCurrent?.funzionari | personale:'funzionari'}}
+                                </span>
                             </li>
                         </ul>
                     </div>
-                    <div class="col px-0 text-secondary text-center">
+                    <div class="col px-0 text-center">
                         <ul class="list-unstyled m-0">
-                            <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
-                                triggers="mouseenter:mouseleave" container="body"
-                                placement="bottom"><span
-                                    class="position-relative badge badge-dark h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fa"
-                                    [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
-                            <li [ngClass]="checkDiff('tecnici')" [ngbPopover]="tecniciGuardia"
-                                triggers="mouseenter:mouseleave" container="body"
-                                placement="bottom"><span
-                                    class="position-relative badge badge-secondary h6 w-75"><i
-                                    *ngIf="personaleDiff" class="blink-i-aggregate fa"
-                                    [ngClass]="realDiff('tecnici')"></i>{{personaleQty?.tecnici}}</span></li>
+                            <li [ngClass]="checkDiff('funzionari')"
+                                [ngbPopover]="funzionariGuardia"
+                                [autoClose]="'outside'"
+                                container="body"
+                                placement="bottom">
+                                <span class="position-relative badge badge-mod-secondary cursor-pointer h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                       class="blink-i-aggregate fas"
+                                       [ngClass]="realDiff('funzionari')">
+                                    </i>
+                                    {{personaleQtyCurrent?.funzionari}}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pr-0">
+                        <ul class="list-unstyled m-0">
+                            <li>
+                                <span class="d-inline-block n-li-box h6"
+                                      ngbTooltip="Tecnici di guardia"
+                                      placement="bottom">
+                                      {{personaleQtyCurrent?.tecnici | personale:'tecnici'}}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col px-0 text-center">
+                        <ul class="list-unstyled m-0">
+                            <li [ngClass]="checkDiff('tecnici')"
+                                [ngbPopover]="tecniciGuardia"
+                                [autoClose]="'outside'"
+                                container="body"
+                                placement="bottom">
+                                <span class="position-relative badge badge-mod-secondary cursor-pointer h6 w-75">
+                                    <i *ngIf="personaleDiff"
+                                       class="blink-i-aggregate fas"
+                                       [ngClass]="realDiff('tecnici')">
+                                    </i>
+                                    {{personaleQtyCurrent?.tecnici}}
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -164,8 +382,6 @@
         </div>
     </div>
 </div>
-<div *ngIf="!personaleQty" class="row" style="min-height: 113px">
-    <div class="w-100 text-center">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw my-4"></i>
-    </div>
+<div *ngIf="!personaleQtyPrevious && !personaleQtyCurrent && !personalePresenzeNext" class="box-personale">
+    <app-partial-loader></app-partial-loader>
 </div>

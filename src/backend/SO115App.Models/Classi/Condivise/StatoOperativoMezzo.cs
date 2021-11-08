@@ -43,7 +43,7 @@ namespace SO115App.Models.Classi.Condivise
         /// <summary>
         ///   l'istante della prenotazione
         /// </summary>
-        public DateTime? IstantePrenotazione { get; set; }
+        public DateTime? IstantePrenotazione { get; set; } = DateTime.Now;
 
         /// <summary>
         ///   l'istante scandenza selezione

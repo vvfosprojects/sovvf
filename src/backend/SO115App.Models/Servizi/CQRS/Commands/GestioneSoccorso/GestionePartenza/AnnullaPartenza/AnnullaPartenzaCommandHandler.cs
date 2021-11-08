@@ -18,68 +18,126 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
 {
     public class AnnullaPartenzaCommandHandler : ICommandHandler<AnnullaPartenzaCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
-        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
+        private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetTipologieByCodice _getTipologie;
 
-        public AnnullaPartenzaCommandHandler(
-            IGetRichiestaById getRichiestaById,
-            IUpDateRichiestaAssistenza upDateRichiestaAssistenza,
-            IUpdateStatoPartenze updateStatoPartenze
-        )
+        private readonly ISendSTATRIItem _statri;
+        private readonly ICheckCongruitaPartenze _check;
+
+        private readonly IModificaInterventoChiuso _modificaGAC;
+
+        public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze,
+                                             IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
+                                             IModificaInterventoChiuso modificaGAC)
         {
-            _getRichiestaById = getRichiestaById;
-            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _updateStatoPartenze = updateStatoPartenze;
+            _getStatoMezzi = getStatoMezzi;
+            _statri = statri;
+            _check = check;
+            _getTipologie = getTipologie;
+            _modificaGAC = modificaGAC;
         }
 
         public void Handle(AnnullaPartenzaCommand command)
         {
-            var PartenzaToDelete = command.Richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo)).FirstOrDefault();
+            var date = DateTime.UtcNow;
+            var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza));
+            var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
-            switch (command.CodMotivazione)
+            if (date >= ultimoMovimento.Istante.AddMinutes(1))
+                throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
+
+            string statoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
+
+            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzo))
             {
-                case 1:
-                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
-                    break;
+                string nuovoStatoMezzo = Costanti.MezzoInRientro;
+                string nomeAzione = "AnnullamentoPartenza";
 
-                case 2:
-                    var richiestaSubentrata = _getRichiestaById.GetByCodice(command.CodRichiestaSubentrata);
-                    if (richiestaSubentrata == null)
-                        richiestaSubentrata = _getRichiestaById.GetByCodiceRichiesta(command.CodRichiestaSubentrata);
+                new AnnullamentoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, nomeAzione, command.CodicePartenza);
 
-                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore);
-                    break;
+                partenza.Partenza.PartenzaAnnullata = true;
 
-                case 3:
-                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
-                    break;
+                command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                {
+                    Istante = date,
+                    CodMezzo = command.TargaMezzo,
+                    Stato = nuovoStatoMezzo
+                }, _statri, _check);
 
-                case 4:
-                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione);
-                    break;
+                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+
+                //SEGNALO LA MODIFICA A GAC
+                //var movimento = new ModificaMovimentoGAC()
+                //{
+                //    targa = command.TargaMezzo,
+                //    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                //    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                //    dataIntervento = command.Richiesta.dataOraInserimento,
+                //    dataRientro = date,
+                //    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
+                //    idPartenza = command.CodicePartenza,
+                //    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                //    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                //    numeroIntervento = command.Richiesta.CodRichiesta,
+                //    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                //    localita = "",
+                //    comune = new ComuneGAC()
+                //    {
+                //        codice = "",
+                //        descrizione = command.Richiesta.Localita.Citta
+                //    },
+                //    provincia = new ProvinciaGAC()
+                //    {
+                //        codice = "",
+                //        descrizione = command.Richiesta.Localita.Provincia
+                //    },
+                //    tipoUscita = new TipoUscita()
+                //    {
+                //        codice = tipologia.Codice,
+                //        descrizione = tipologia.Descrizione
+                //    }
+                //};
+
+                //_modificaGAC.Send(movimento);
+
+                //AGGIORNO STATO MEZZO E RICHIESTA
+                var commandStatoMezzo = new AggiornaStatoMezzoCommand()
+                {
+                    Richiesta = command.Richiesta,
+                    CodiciSede = command.CodiciSedi,
+                    Chiamata = command.Chiamata,
+                    CodRichiesta = command.CodiceRichiesta,
+                    DataOraAggiornamento = date,
+                    IdMezzo = command.TargaMezzo,
+                    IdUtente = command.IdOperatore,
+                    StatoMezzo = nuovoStatoMezzo,
+                    AzioneIntervento = "AnnullamentoPartenza"
+                };
+
+                _updateStatoPartenze.Update(commandStatoMezzo);
             }
-            _upDateRichiestaAssistenza.UpDate(command.Richiesta);
-
-            AggiornaStatoMezzoCommand commandStatoMezzo = new AggiornaStatoMezzoCommand();
-            commandStatoMezzo.CodiciSede = new string[] { PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice };
-            commandStatoMezzo.IdMezzo = command.TargaMezzo;
-            commandStatoMezzo.StatoMezzo = Costanti.MezzoInSede;
-            commandStatoMezzo.Richiesta = command.Richiesta;
-            _updateStatoPartenze.Update(commandStatoMezzo);
         }
     }
 }

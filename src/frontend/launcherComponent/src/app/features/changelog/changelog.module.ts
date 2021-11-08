@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
@@ -12,6 +11,7 @@ import { ChangelogComponent } from './changelog.component';
 import { ChangelogRoutingModule } from './changelog.routing';
 import { ChangelogState } from './store/changelog.state';
 import { ChangelogItemComponent } from './changelog-item/changelog-item.component';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
     declarations: [
@@ -29,8 +29,8 @@ import { ChangelogItemComponent } from './changelog-item/changelog-item.componen
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgxPaginationModule,
-        NgbModule
+        NgbModule,
+        MapsModule
     ]
 })
 

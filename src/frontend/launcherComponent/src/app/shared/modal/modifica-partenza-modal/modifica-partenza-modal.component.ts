@@ -1,25 +1,22 @@
-import { Component, OnDestroy, OnInit, } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Store, Select } from '@ngxs/store';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Observable } from 'rxjs';
-import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
-import { Partenza } from './../../model/partenza.model';
+import { Partenza } from '../../model/partenza.model';
 import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
-import { makeCopy } from '../../helper/function';
-import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
+import { makeCopy } from '../../helper/function-generiche';
+import { ModificaPartenzaDto } from '../../interface/dto/partenze/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -28,21 +25,16 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 })
 export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-    operatore: string;
-    sede: string;
-    partenza: Partenza;
+    singolaPartenza: Partenza;
     richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
-    public time = { hour: 13, minute: 30, second: 30 };
-    public timeAnnullamento = { hour: 13, minute: 30 };
+    time = { hour: 13, minute: 30, second: 30 };
+    timeAnnullamento = { hour: 13, minute: 30 };
     listaStatoMezzo: string[];
-    statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
     hideBox = true;
@@ -72,7 +64,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modificaPartenzaService: ModificaPartenzaService) {
         this.initForm();
         this.getFormValid();
-        this.inizializzaUser();
         this.formatTime();
     }
 
@@ -80,15 +71,17 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.listaStatoMezzo = Object.values(StatoMezzoSequenze);
         this.modificaPartenzaForm.reset();
         this.f.codRichiesta.patchValue(this.codRichiesta);
-        this.f.mezzo.patchValue(this.partenza.mezzo);
-        this.f.squadre.patchValue(this.partenza.squadre);
+        this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
+        this.f.squadre.patchValue(this.singolaPartenza.partenza.squadre);
         this.checkStatoMezzoSequenza();
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     initForm(): void {
         this.modificaPartenzaForm = new FormGroup({
-            operatore: new FormControl(),
-            sede: new FormControl(),
             codRichiesta: new FormControl(),
             annullamento: new FormControl(),
             codMezzoDaAnnullare: new FormControl(),
@@ -100,8 +93,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             dataAnnullamento: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
-            operatore: [null],
-            sede: [null],
             codRichiesta: [null],
             annullamento: [null],
             codMezzoDaAnnullare: [null],
@@ -118,10 +109,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         return this.modificaPartenzaForm.controls;
     }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
     getFormValid(): void {
         this.subscription.add(
             this.formValid$.subscribe((valid: boolean) => {
@@ -132,7 +119,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     checkStatoMezzoSequenza(): void {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
-            if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
+            if (this.singolaPartenza.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i + 1].disabled = false;
                 this.statiMezzo.splice(0, i + 1);
             }
@@ -140,24 +127,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return 'Modifica Partenza - Richiesta ' + this.codRichiesta;
-    }
-
-    inizializzaUser(): void {
-        this.subscription.add(
-            this.user$.subscribe((user: Utente) => {
-                console.log('inizializzaUser', user);
-                this.store.dispatch(
-                    new UpdateFormValue({
-                        path: 'modificaPartenzaModal.modificaPartenzaForm',
-                        value: {
-                            operatore: user.nome + ' ' + user.cognome,
-                            sede: user.sede.descrizione
-                        }
-                    })
-                );
-            })
-        );
+        return 'Modifica Partenza - Intervento ' + this.codRichiesta;
     }
 
     formatTime(): void {
@@ -206,8 +176,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzoDaAnnullare: null,
                 codSquadreDaAnnullare: null,
                 motivazioneAnnullamento: null,
-                mezzo: this.partenza.mezzo,
-                squadre: this.partenza.squadre,
+                mezzo: this.singolaPartenza.partenza.mezzo,
+                squadre: this.singolaPartenza.partenza.squadre,
                 sequenzaStati: [],
                 dataAnnullamento: null,
             },
@@ -219,7 +189,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     openSostituzioneModal(): void {
-        const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+        let sostituzioneModal;
+        sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true,
@@ -229,7 +200,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
-        sostituzioneModal.componentInstance.partenza = this.partenza;
+        sostituzioneModal.componentInstance.partenza = this.singolaPartenza;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
@@ -247,8 +218,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                         this.nuoveSquadre = nuovaPartenza.squadre.map(x => x);
                         this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
-                        this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);
-                        this.f.codSquadreDaAnnullare.patchValue(this.partenza.squadre.map(x => x.id));
+                        this.f.codMezzoDaAnnullare.patchValue(this.singolaPartenza.partenza.mezzo.codice);
+                        this.f.codSquadreDaAnnullare.patchValue(this.singolaPartenza.partenza.squadre.map(x => x.id));
                         this.f.dataAnnullamento.patchValue(nuovaPartenza.dataAnnullamento);
                     }
                     break;
@@ -260,9 +231,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
-        listaSquadre.idPartenza = this.partenza.id;
-        listaSquadre.squadre = this.partenza.squadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
+        listaSquadre.squadre = this.singolaPartenza.partenza.squadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(this.singolaPartenza.partenza.mezzo.codice, listaSquadre));
     }
 
     onListaSquadrePartenzaSostitutiva(): void {
@@ -270,9 +241,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             idPartenza: '',
             squadre: [],
         };
-        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
         listaSquadre.squadre = this.nuoveSquadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(this.singolaPartenza.partenza.mezzo.codice, listaSquadre));
     }
 
     onConferma(): void {
@@ -285,10 +256,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.formatTimeForCallBack();
         this.f.sequenzaStati.patchValue(makeCopy(this.sequenze));
         if (!this.f.codMezzoDaAnnullare.value) {
-            this.f.mezzo.patchValue(this.partenza.mezzo);
+            this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
         }
         if (!this.f.codSquadreDaAnnullare.value || this.f.codSquadreDaAnnullare.value.length <= 0) {
-            this.f.squadre.patchValue(this.partenza.squadre);
+            this.f.squadre.patchValue(this.singolaPartenza.partenza.squadre);
         }
         const sequenze = this.f.sequenzaStati.value;
         if (sequenze) {
@@ -303,39 +274,32 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 s.dataOraAggiornamento = data;
             });
         }
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                operatore: this.f.operatore.value,
-                sede: this.f.sede.value,
-                codRichiesta: this.f.codRichiesta.value,
-                annullamento: !!this.f.annullamento.value,
-                codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
-                codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
-                mezzo: !this.f.sede.annullamento ? this.f.mezzo.value : this.partenza.mezzo,
-                squadre: !this.f.sede.annullamento ? this.f.squadre.value : this.partenza.squadre,
-                motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
-                sequenzaStati: sequenze,
-                dataAnnullamento: this.f.dataAnnullamento.value,
-            },
-            path: 'modificaPartenzaModal.modificaPartenzaForm'
-        }));
-        const form = this.store.selectSnapshot(ModificaPartenzaModalState.formValue);
+        this.modificaPartenzaForm.patchValue({
+            codRichiesta: this.codRichiesta,
+            annullamento: !!this.f.annullamento.value,
+            codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
+            codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
+            mezzo: !this.f.annullamento ? this.f.mezzo.value : this.singolaPartenza.partenza.mezzo,
+            squadre: !this.f.annullamento ? this.f.squadre.value : this.singolaPartenza.partenza.squadre,
+            motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
+            sequenzaStati: sequenze,
+            dataAnnullamento: this.f.dataAnnullamento.value,
+        });
         const obj = {
-            codRichiesta: form.codRichiesta,
-            annullamento: form.annullamento,
-            codMezzoDaAnnullare: form.codMezzoDaAnnullare,
-            codSquadreDaAnnullare: form.codSquadreDaAnnullare,
-            mezzo: form.mezzo.mezzo ? form.mezzo.mezzo : form.mezzo,
-            squadre: form.squadre,
-            motivazioneAnnullamento: form.motivazioneAnnullamento,
-            sequenzaStati: form.sequenzaStati.map(x => ({
-                dataOraAggiornamento: x.dataOraAggiornamento,
-                stato: x.stato ? x.stato : undefined,
-                codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
+            codRichiesta: this.codRichiesta,
+            annullamento: this.f.annullamento.value,
+            codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
+            codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
+            mezzo: this.f.mezzo?.mezzo?.value ? this.f.mezzo.mezzo.value : this.f.mezzo.value,
+            squadre: this.f.squadre.value,
+            motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
+            sequenzaStati: this.f.sequenzaStati.value.map((sequenza: any) => ({
+                istante: sequenza.dataOraAggiornamento,
+                stato: sequenza.stato ? sequenza.stato : null,
+                codMezzo: sequenza.codMezzo ? sequenza.codMezzo.codice : null,
             })),
-            dataAnnullamento: form.dataAnnullamento,
+            dataAnnullamento: this.f.dataAnnullamento.value,
         } as ModificaPartenzaDto;
-        console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
             this.modal.close({ status: 'ok' });
         }, () => this.submitted = false);

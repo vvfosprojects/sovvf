@@ -1,5 +1,9 @@
 import { BoxMezzi } from '../../../boxes/boxes-model/box-mezzi.model';
 
+export class GetBoxMezzi {
+    static readonly type = '[BoxMezzi] Get all data';
+}
+
 export class SetBoxMezzi {
     static readonly type = '[BoxMezzi] Set data';
 

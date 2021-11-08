@@ -1,0 +1,58 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="row">
+                <div class="col-12 col-md-9 mx-auto mb-2">
+                    <h2>
+                        <i class="far fa-file-alt"></i>
+                        P.O.S.
+                    </h2>
+                </div>
+                <div class="col-12 col-md-9 mx-auto mb-2">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary mb-2 font-weight-bold"
+                                    (click)="onAddPos()">
+                                <i class="fas fa-plus mr-1"></i>
+                                Aggiungi P.O.S.
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <app-ricerca-pos [loading]="loading$ | async"
+                                            (ricercaChange)="onRicercaPos($event)">
+                            </app-ricerca-pos>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
+                    <app-risultati-ricerca [ricerca]="ricerca">
+                    </app-risultati-ricerca>
+                </div>
+                <div class="col-12 col-md-9 mx-auto">
+                    <app-tabella-pos [pos]="pos$ | async"
+                                    [tipologie]="tipologie"
+                                    [dettagliTipologie]="dettagliTipologie"
+                                    [page]="page$ | async"
+                                    [pageSize]="pageSize$ | async"
+                                    [pageSizes]="pageSizes$ | async"
+                                    [totalItems]="totalItems$ | async"
+                                    [loading]="loading$ | async"
+                                    (download)="onDownloadPos($event)"
+                                    (view)="onViewPos($event)"
+                                    (editPos)="onEditPos($event)"
+                                    (deletePos)="onDeletePos($event)"
+                                    (pageChange)="onPageChange($event)"
+                                    (pageSizeChange)="onPageSizeChange($event)">
+                    </app-tabella-pos>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>

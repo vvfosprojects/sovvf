@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using MongoDB.Driver;
-using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
@@ -55,7 +54,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
                     var listaPin = new List<PinNodo>();
                     PinNodo pin = new PinNodo(ruolo.CodSede, ruolo.Ricorsivo);
                     listaPin.Add(pin);
-                    foreach (var unita in listaSediAlberate.GetSottoAlbero(listaPin))
+                    foreach (var unita in listaSediAlberate.Result.GetSottoAlbero(listaPin))
                     {
                         Role ruoloEsploso = new Role(ruolo.Descrizione, unita.Codice);
                         listaRuoliEsplosaPerRicorsivita.Add(ruoloEsploso);

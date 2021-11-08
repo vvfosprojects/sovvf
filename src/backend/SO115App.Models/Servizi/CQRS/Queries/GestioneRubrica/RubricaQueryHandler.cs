@@ -1,5 +1,4 @@
 ﻿using CQRS.Queries;
-using Microsoft.AspNetCore.JsonPatch.Internal;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using System.Collections.Generic;

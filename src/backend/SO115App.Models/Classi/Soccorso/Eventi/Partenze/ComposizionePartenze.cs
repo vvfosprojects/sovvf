@@ -17,13 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {
@@ -37,16 +36,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica
     ///   categoria (risorsa strumentale).
     /// </remarks>
-    public class ComposizionePartenze : Evento, IPartenza
+    public class ComposizionePartenze : AbstractPartenza, IPartenza
     {
-        [JsonConstructor]
-        public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
-        {
-            this.Partenza = new Partenza();
-            this.Componenti = new HashSet<ComponentePartenza>();
-            this.FuoriSede = fuoriSede;
-        }
-
         /// <summary>
         ///   Costruttore che inizializza l'attributo Componenti.
         /// </summary>
@@ -60,57 +51,16 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede) : base(richiesta, istante, codiceFonte, "ComposizionePartenza")
+            bool fuoriSede, Partenza partenza) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
         {
-            this.Partenza = new Partenza();
-            this.Componenti = new HashSet<ComponentePartenza>();
-            this.FuoriSede = fuoriSede;
-        }
-
-        /// <summary>
-        ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
-        /// </summary>
-        public string CodiceFiscaleCapopartenza
-        {
-            get
-            {
-                try
-                {
-                    var componenteCapopartenza = this.Componenti.SingleOrDefault(c => c.Ruoli.Contains(ComponentePartenza.Ruolo.CapoPartenza));
-
-                    if (componenteCapopartenza != null)
-                    {
-                        return componenteCapopartenza.CodiceFiscale;
-                    }
-
-                    return null;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    throw new ComposizionePartenzaException("Esiste più di un Capo Partenza", ex);
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Restituisce l'insieme dei codici fiscali relativi alla partenza
-        /// </summary>
-        public ISet<string> CodiciFiscaliComponenti
-        {
-            get
-            {
-                return new HashSet<string>(this
-                    .Componenti
-                    .Select(c => c.CodiceFiscale));
-            }
+            Partenza = partenza;
+            FuoriSede = fuoriSede;
         }
 
         /// <summary>
         ///   E' la lista dei componenti della partenza
         /// </summary>
         public Partenza Partenza { get; set; }
-
-        public ISet<ComponentePartenza> Componenti { get; set; }
 
         /// <summary>
         ///   Indica se l'evento si verifica mentre il mezzo è fuori sede o in sede. Questa
@@ -120,42 +70,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// </summary>
         public bool FuoriSede { get; private set; }
 
-        /// <summary>
-        ///   Restituisce il numero di componenti della <see cref="ComposizionePartenze" />
-        /// </summary>
-        public int NumeroComponenti
-        {
-            get
-            {
-                return this.Componenti.Count;
-            }
-        }
-
-        /// <summary>
-        ///   Restituisce i codici dei mezzi coinvolti in questo evento
-        /// </summary>
-        ISet<string> IPartenza.CodiciMezzo
-        {
-            get
-            {
-                return new HashSet<string>(this.Componenti
-                    .Select(c => c.CodiceMezzo)
-                    .Where(cm => cm != null)
-                    .Distinct());
-            }
-        }
-
-        public bool PartenzaAnnullata
-        {
-            get; set;
-        } = false;
+        public bool InviataSTATRI { get; set; }
 
         /// <summary>
         ///   Metodo di visita
         /// </summary>
         /// <param name="stato">Lo stato da visitare</param>
         /// <returns>Il nuovo stato a seguito della transizione di stato</returns>
-        IStatoMezzo IVisitorStatoMezzo.Visit(ICanAcceptVisitorStatoMezzo stato)
+        public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
         {
             return stato.AcceptVisitor(this);
         }

@@ -1,15 +1,31 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Persistence.MongoDB;
 using SimpleInjector;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
+using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
+using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
+using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
+using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
+using SO115App.Persistence.MongoDB.GestioneDocumentale;
+using SO115App.Persistence.MongoDB.GestioneEmergenza;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
+using SO115App.Persistence.MongoDB.GestionePOS;
+using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
+using SO115App.Persistence.MongoDB.GestioneTriage;
+using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
 
 namespace SO115App.CompositionRoot
 {
@@ -24,14 +40,23 @@ namespace SO115App.CompositionRoot
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
+            container.Register<IWatchChangeSchedeNue, DbWatchForChange>();
+
+            container.Register<ISetTipologie, SetTipologie>();
+
+            container.Register<ICheckCongruitaPartenze, CheckCongruitaPartenze>();
+
+            container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
 
             #region Gestione richiesta di assistenza
 
+            container.Register<IGetMaxCodicePartenza, GetMaxCodicePartenza>();
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
             container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
-            container.Register<IGetRichiestaById, GetRichiesta>();
+            container.Register<IGetRichiesta, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
+            container.Register<IGetRiepilogoInterventi, GetRichiesta>();
 
             container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,
                 Persistence.MongoDB.GestioneInterventi.GestioneTipologie.GetTipologieByCodice>();
@@ -57,24 +82,8 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
                 SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
-                SO115App.Persistence.MongoDB.Marker.GetSediMarker>();
-
             #endregion MARKER
 
-            #region Gestione Sedi
-
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetCoordinateByCodSede,
-                               Persistence.MongoDB.GestioneSedi.GetCoordinateByCodSede>();
-
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento,
-                               Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
-
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByPinListaSedi,
-                               Persistence.MongoDB.GestioneSedi.GetDistaccamentiByCodiciSede>();
-
-            #endregion Gestione Sedi
 
             #region GestioneChiamataInCorso
 
@@ -108,8 +117,9 @@ namespace SO115App.CompositionRoot
 
             #region StatoSquadra
 
-            container.Register<ISetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.SetStatoSquadra>();
-            container.Register<IGetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.GetStatoSquadra>();
+            container.Register<ISetStatoSquadra, SetStatoSquadra>();
+            container.Register<IGetStatoSquadra, GetStatoSquadra>();
+            container.Register<IGetSquadraByCodiceMezzo, GetSquadreByCodiceMezzo>();
 
             #endregion StatoSquadra
 
@@ -121,6 +131,9 @@ namespace SO115App.CompositionRoot
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IUndoSchedeContattoMerge,
                 Persistence.MongoDB.GestioneSchedeContatto.UndoSchedeContattoMerge>();
+
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeContatto_WSNUE,
+                                Persistence.MongoDB.GestioneSchedeContatto.GetSchedeContatto>();
 
             #endregion Schede Contatto
 
@@ -171,10 +184,6 @@ namespace SO115App.CompositionRoot
             #region Utility
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
-                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetNavBar>();
-
-            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
                 SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetTurno>();
 
@@ -193,6 +202,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
                 SO115App.Persistence.MongoDB.GestioneInterventi.GeneraCodiceRichiesta>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneLog.IWriteLog,
+                SO115App.Persistence.MongoDB.GestioneLog.WriteLog>();
 
             #endregion Utility
 
@@ -218,8 +231,13 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IDeleteEnte,
                 SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
 
-
             #endregion Rubrica
+
+            #region ZoneEmergenza
+
+            container.Register<IGetZoneEmergenza, GetZoneEmergenza>();
+
+            #endregion ZoneEmergenza
 
             #region TrasferimentoChiamata
 
@@ -239,7 +257,55 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate.IGetCodiciChiamate,
                 Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
 
-            #endregion
+            #endregion TrasferimentoChiamata
+
+            #region Dettaglio Tipologia
+
+            container.Register<IAddDettaglioTipologia, AddDettaglioTipologia>();
+            container.Register<IDeleteDettaglioTipologia, DeleteDettaglioTipologia>();
+            container.Register<IModifyDettaglioTipologia, UpDateDettaglioTipologia>();
+            container.Register<IGetListaDettaglioTipologia, GetListaDettagliTipologia>();
+            container.Register<IGetListaDettagliTipologieByIdTipologia, GetListaDettagliTipologiaByIdTipologia>();
+
+            #endregion Dettaglio Tipologia
+
+            #region Triage
+
+            container.Register<IAddTriage, AddTriage>();
+            container.Register<IUpDateTriage, UpDateTriage>();
+            container.Register<IGetTriage, GetTriage>();
+            container.Register<IGetTriageData, GetTriageData>();
+
+            #endregion Triage
+
+            #region POS
+
+            container.Register<ISavePos, SavePOS>();
+            container.Register<IDeletePos, DeletePOS>();
+            container.Register<IGetPOS, GetPOS>();
+            container.Register<IEditPos, EditPOS>();
+
+            #endregion POS
+
+            #region Documentale
+
+            container.Register<ISaveDoc, SaveDoc>();
+            container.Register<IDeleteDoc, DeleteDoc>();
+            container.Register<IGetDoc, GetDoc>();
+            container.Register<IEditDoc, EditDoc>();
+
+            #endregion Documentale
+
+            #region Emergenza
+
+            container.Register<IInsertEmergenza, InsertEmergenza>();
+            container.Register<IUpDateEmergenza, UpDateEmergenza>();
+            container.Register<IGetCodiceEmergenza, GetCodiceEmergenza>();
+            container.Register<IGetEmergenzeByCodComando, GetEmergenzeByCodiceComando>();
+            container.Register<IGetEmergenzaById, GetEmergenzeById>();
+            container.Register<IGetTipologieIntervento, GetTipologieEmergenza>();
+
+            #endregion Emergenza
         }
     }
 }

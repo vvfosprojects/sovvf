@@ -12,8 +12,7 @@ import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-
 import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
-import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
-import { makeCopy } from '../../helper/function';
+import { makeCopy } from '../../helper/function-generiche';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {
     ClearListaMezziComposizione,
@@ -44,12 +43,12 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
 import { Mezzo } from '../../model/mezzo.model';
-import { Squadra } from '../../model/squadra.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { PaginationComposizionePartenzaState } from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SganciamentoInterface } from '../../interface/sganciamento.interface';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -110,7 +109,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
-    partenza: Partenza;
+    singolaPartenza: Partenza;
     sostituzionePartenzaForm: FormGroup;
     submitted: boolean;
 
@@ -127,7 +126,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         distaccamento: null,
         coordinate: null,
     };
-    nuoveSquadre: Squadra[] = [];
+    nuoveSquadre: SquadraComposizione[] = [];
     public time = { hour: 13, minute: 30, second: 30 };
 
     subscription: Subscription = new Subscription();
@@ -305,9 +304,9 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
-        listaSquadre.idPartenza = this.partenza.id;
-        listaSquadre.squadre = this.partenza.squadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
+        listaSquadre.squadre = this.singolaPartenza.partenza.squadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(this.singolaPartenza.partenza.mezzo.codice, listaSquadre));
     }
 
 
@@ -356,8 +355,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             this.store.dispatch(new AddBoxPartenza());
         }
         if (squadraComposizione) {
-            if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
-                this.nuoveSquadre.push(squadraComposizione.squadra);
+            if (!this.nuoveSquadre.includes(squadraComposizione)) {
+                this.nuoveSquadre.push(squadraComposizione);
                 this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
             }
         }
@@ -366,7 +365,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
             new UnselectSquadraComposizione(squadraComposizione)]);
-        const r = squadraComposizione.squadra;
+        const r = squadraComposizione;
         const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
         if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {
@@ -376,11 +375,11 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
+        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
     }
 
     checkSquadraSelezione(idSquadra: string): boolean {
@@ -454,7 +453,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const squadreUnique = [];
         const uniqueObject = {};
         for (const i in squadre) {
-            const objTitle = squadre[i].id;
+            const objTitle = squadre[i].codice;
             uniqueObject[objTitle] = squadre[i];
         }
         for (const i in uniqueObject) {

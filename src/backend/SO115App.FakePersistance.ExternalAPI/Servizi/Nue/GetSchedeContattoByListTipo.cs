@@ -42,11 +42,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// </summary>
         /// <param name="classificazione">una lista di stringhe</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> SchedeContattoFromListTipo(List<string> classificazione)
+        public List<SchedaContatto> SchedeContattoFromListTipo(List<string> classificazione, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetSchedeContattoFromListTipo(classificazione);
+            return _getSchedeMethods.GetSchedeContattoFromListTipo(classificazione, codiceSede);
 
             //---------------------------------------------------------------------------------------
         }

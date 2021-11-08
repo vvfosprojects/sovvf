@@ -1,12 +1,7 @@
-﻿using Bogus;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+﻿using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace SO115App.SignalR.Utility
 {
@@ -25,7 +20,7 @@ namespace SO115App.SignalR.Utility
             var pin = new PinNodo(codSedeDiPartenza);
             var pinNodi = new List<PinNodo>();
             pinNodi.Add(pin);
-            var UnitaOperativaAnagrafica = listaSediAlberata.GetSottoAlbero(pinNodi);
+            var UnitaOperativaAnagrafica = listaSediAlberata.Result.GetSottoAlbero(pinNodi);
             List<string> ListaCodiciSediInteressate = new List<string>();
 
             UnitaOperativa unitaperativa = new UnitaOperativa(codSedeDiPartenza, UnitaOperativaAnagrafica.ToList()[0].Nome)
@@ -33,7 +28,7 @@ namespace SO115App.SignalR.Utility
                 Figli = UnitaOperativaAnagrafica.ToList()[0].Figli
             };
 
-            foreach (var direzioneRegionale in listaSediAlberata.Figli)
+            foreach (var direzioneRegionale in listaSediAlberata.Result.Figli.First().Figli)
             {
                 if (direzioneRegionale.Figli.ToList().Contains(unitaperativa))
                 {

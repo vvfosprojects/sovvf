@@ -1,0 +1,76 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="row">
+                <div class="col-12 col-md-7 mx-auto mb-2">
+                    <h2>
+                        <i class="fas fa-cogs"></i>
+                        Preferenze
+                    </h2>
+                </div>
+                <div class="col-12 col-md-7 mx-auto">
+                    <div [class.bg-dark]="(nightMode$ | async)">
+                        <ngb-accordion [closeOthers]="true" activeIds="interfaccia">
+                            <ngb-panel id="interfaccia">
+                                <ng-template ngbPanelTitle>
+                                    <div class="font-weight-bold text-white">
+                                        <i class="far fa-window-maximize"></i>
+                                        Impostazioni Interfaccia
+                                    </div>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div *ngFor="let impostazione of listaImpostazioni; let i = index"
+                                         class="card p-3"
+                                         [class.bg-moon-light]="(nightMode$ | async)"
+                                         [class.mb-4]="i !== (listaImpostazioni.length - 1)">
+                                        <div class="clearfix">
+                                            <div class="float-left">
+                                                <h4 class="mb-0">
+                                                    <i class=" far fas {{ impostazione?.icona }} mr-1"></i>
+                                                    {{ impostazione?.tipo }}
+                                                </h4>
+                                            </div>
+                                            <div class="float-right">
+                                                <div *ngFor="let opzione of impostazione?.opzioni"
+                                                     class="clearfix px-3">
+                                                    <ng-template [ngIf]="opzione?.singleValue">
+                                                        <label [for]="opzione?.label"
+                                                               class="d-none">{{ opzione?.label }}</label>
+                                                        <input [id]="opzione?.label"
+                                                               type="checkbox"
+                                                               [checked]="opzione?.singleValue?.value"
+                                                               (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
+                                                    </ng-template>
+                                                    <ng-template [ngIf]="opzione?.select">
+                                                        <label [for]="opzione?.label"
+                                                               class="d-none">{{ opzione?.label }}</label>
+                                                        <ng-select [id]="opzione?.label"
+                                                                   bindValue="id"
+                                                                   bindLabel="desc"
+                                                                   [ngModel]="opzione?.select?.selected"
+                                                                   [items]="opzione?.select?.itemsSelect"
+                                                                   [multiple]="false"
+                                                                   [clearable]="false"
+                                                                   (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
+                                                        </ng-select>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>

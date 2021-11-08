@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Meteo } from '../model/meteo.model';
 import { Coordinate } from '../model/coordinate.model';
-import { degToCompass, wipeCoordinate } from '../helper/function';
+import { degToCompass, wipeCoordinate } from '../helper/mappa/function-mappa';
 
 const API_METEO = environment.apiUrl.meteo;
 const CFG = {
@@ -34,10 +34,10 @@ export class MeteoService {
                     data.weather[0].description,
                     data.weather[0].icon,
                     data.main.humidity,
-                    Math.floor(data.main['temp'] * 10) / 10,
+                    Math.floor(data.main.temp * 10) / 10,
                     Math.floor(data.wind.speed * 3.6), {
-                        gradi: Math.floor(data.wind['deg']),
-                        cardinali: degToCompass(Math.floor(data.wind['deg']))
+                        gradi: Math.floor(data.wind.deg),
+                        cardinali: degToCompass(Math.floor(data.wind.deg))
                     }
                 );
             })

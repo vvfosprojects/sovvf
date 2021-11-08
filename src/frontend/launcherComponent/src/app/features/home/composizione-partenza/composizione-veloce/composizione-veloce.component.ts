@@ -1,21 +1,19 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
-import { BoxPartenza } from '../interface/box-partenza-interface';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { Observable, Subscription } from 'rxjs';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
+    ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
     HoverOutPreAccoppiatoComposizione,
     SelectPreAccoppiatoComposizione,
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
-import { makeCopy } from '../../../../shared/helper/function';
-import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
+import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
@@ -23,118 +21,82 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
+import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
+import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
+import { Partenza } from '../../../../shared/model/partenza.model';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-composizione-veloce',
     templateUrl: './composizione-veloce.component.html',
-    styleUrls: ['./composizione-veloce.component.css']
+    styleUrls: ['./composizione-veloce.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FasterComponent implements OnInit, OnDestroy {
+export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
+    @Input() nightMode: boolean;
+    @Input() triageSummary: TriageSummary[];
 
-    @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    preAccoppiati: BoxPartenza[];
-    @Select(ComposizioneVeloceState.idPreAccoppiatoSelezionato) idPreAccoppiatoSelezionato$: Observable<string>;
-    idPreAccoppiatoSelezionato: string;
-    @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
-    idPreAccoppiatiSelezionati: string[];
-    @Select(ComposizioneVeloceState.idPreAccoppiatiOccupati) idPreAccoppiatiOccupati$: Observable<string[]>;
-    idPreAccoppiatiOccupati: string[];
-    @Select(ComposizioneVeloceState.idPreAccoppiatoHover) idPreaccoppiatoHover$: Observable<string>;
-    idPreaccoppiatoHover: string;
+    @Input() preAccoppiati: BoxPartenzaPreAccoppiati[];
+    @Input() idPreAccoppiatoSelezionato: string;
+    @Input() idPreAccoppiatiSelezionati: string[];
+    @Input() idPreAccoppiatiOccupati: string[];
+    @Input() idPreaccoppiatoHover: string;
 
     // Paginazione
-    @Select(PaginationComposizionePartenzaState.pagePreaccoppiati) currentPagePreaccoppiati$: Observable<number>;
-    currentPagePreaccoppiati: number;
-    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsPreaccoppiati$: Observable<number>;
-    totalItemsPreaccoppiati: number;
-    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizePreaccoppiati$: Observable<number>;
-    pageSizePreaccoppiati: number;
-
-    Composizione = Composizione;
-
-    subscription = new Subscription();
+    @Input() currentPagePreaccoppiati: number;
+    @Input() totalItemsPreaccoppiati: number;
+    @Input() pageSizePreaccoppiati: number;
 
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() centraMappa = new EventEmitter();
 
-    constructor(private store: Store) {
-        // Prendo i preaccoppiati da visualizzare nella lista
-        this.subscription.add(
-            this.preAccoppiati$.subscribe((preAcc: BoxPartenza[]) => {
-                this.preAccoppiati = preAcc;
-                console.log('preAccoppiati', this.preAccoppiati);
-                this.totalItemsPreaccoppiati = this.preAccoppiati ? this.preAccoppiati.length : null;
-            })
-        );
-        // Prendo gli id dei preAccoppiati selezionati
-        this.subscription.add(
-            this.idPreAccoppiatiSelezionati$.subscribe((idPreAccoppiatiSelezionati: string[]) => {
-                this.idPreAccoppiatiSelezionati = idPreAccoppiatiSelezionati;
-                // console.log(this.idPreAccoppiatiSelezionati);
-            })
-        );
-        // Prendo l'id del preAccoppiato selezionato
-        this.subscription.add(
-            this.idPreAccoppiatoSelezionato$.subscribe((idPreAccoppiatoSelezionato: string) => {
-                this.idPreAccoppiatoSelezionato = idPreAccoppiatoSelezionato;
-                // console.log(this.idPreAccoppiatoSelezionato);
-            })
-        );
-        this.subscription.add(
-            this.idPreaccoppiatoHover$.subscribe((idPreAccoppiatoHover: string) => {
-                this.idPreaccoppiatoHover = idPreAccoppiatoHover;
-            })
-        );
-        this.subscription.add(
-            this.idPreAccoppiatiOccupati$.subscribe((idPreAccoppiatiOccupati: string[]) => {
-                this.idPreAccoppiatiOccupati = idPreAccoppiatiOccupati;
-            })
-        );
+    Composizione = Composizione;
 
-        // Prendo Pagina Corrente Preaccoppiati
-        this.subscription.add(
-            this.currentPagePreaccoppiati$.subscribe((currentPagePreaccoppiati: number) => {
-                this.currentPagePreaccoppiati = currentPagePreaccoppiati;
-            })
-        );
-        // Prendo Totale Items Preaccoppiati
-        this.subscription.add(
-            this.totalItemsPreaccoppiati$.subscribe((totalItemsPreaccoppiati: number) => {
-                // this.totalItemsPreaccoppiati = totalItemsPreaccoppiati;
-            })
-        );
-        // Prendo Pagina Size Preaccoppiati
-        this.subscription.add(
-            this.pageSizePreaccoppiati$.subscribe((pageSizePreaccoppiati: number) => {
-                this.pageSizePreaccoppiati = pageSizePreaccoppiati;
-            })
-        );
+    partenzeRichiesta: Partenza[];
+
+    constructor(private store: Store) {
     }
 
     ngOnInit(): void {
         this.store.dispatch(new GetFiltriComposizione());
     }
 
-    ngOnDestroy(): void {
-        this.store.dispatch(new ResetPaginationPreaccoppiati());
-        this.subscription.unsubscribe();
-    }
-
-    selezionaPreaccoppiato(preAcc: BoxPartenza): void {
-        if (!preAcc.mezzoComposizione.mezzo.coordinateFake) {
-            this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.richiesta?.currentValue) {
+            const richiesta = changes?.richiesta?.currentValue;
+            this.partenzeRichiesta = richiesta.partenze;
         }
-        this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
     }
 
-    deselezionaPreaccoppiato(preAcc: BoxPartenza): void {
+    ngOnDestroy(): void {
+        this.store.dispatch([
+            new ClearPreAccoppiatiSelezionatiComposizione(),
+            new ResetPaginationPreaccoppiati()
+        ]);
+    }
+
+    getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
+        return getSoccorsoAereoTriage(triageSummary);
+    }
+
+    selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
+        // TODO: Verificare condizione
+        // if (!preAcc.coordinateFake) {
+        //     this.mezzoCoordinate(preAcc.coordinate);
+        // }
+        if (preAcc && preAcc.statoMezzo === 'In Sede') {
+            this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
+        }
+    }
+
+    deselezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
         this.onClearDirection();
         this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
@@ -163,64 +125,39 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     confermaPartenzeInViaggio(): void {
-        const boxPartenzaList: BoxPartenza[] = [];
+        const boxPartenzaList: BoxPartenzaPreAccoppiati[] = [];
         this.preAccoppiati.forEach(result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
                 boxPartenzaList.push(result);
             }
         });
         const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
+        const partenzeMappedArray = partenze.map((obj: BoxPartenzaPreAccoppiati) => {
             const rObj = {
-                mezzo: null,
+                mezzo: {
+                    codice: null,
+                    descrizione: null,
+                    stato: null,
+                    genere: null,
+                    distaccamento: {
+                        descrizione: null,
+                    },
+                },
                 squadre: null
             };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
+            if (obj.codiceMezzo) {
+                obj.statoMezzo = StatoMezzo.InViaggio;
+                rObj.mezzo.codice = obj.codiceMezzo;
+                rObj.mezzo.descrizione = obj.descrizioneMezzo;
+                rObj.mezzo.stato = obj.statoMezzo;
+                rObj.mezzo.genere = obj.genereMezzo;
+                rObj.mezzo.distaccamento.descrizione = obj.distaccamento;
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj.squadre = [];
-            }
-            return rObj;
-        });
-        const partenzeObj: ConfermaPartenze = {
-            partenze: partenzeMappedArray,
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        // console.log('mappedArray', partenzeMappedArray);
-        this.store.dispatch(new ConfirmPartenze(partenzeObj));
-    }
-
-    confermaPartenzeInUscita(): void {
-        const boxPartenzaList: BoxPartenza[] = [];
-        this.preAccoppiati.forEach(result => {
-            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
-                boxPartenzaList.push(result);
-            }
-        });
-        const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
-            const rObj = {
-                mezzo: null,
-                squadre: null
-            };
-            if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj.mezzo = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj.mezzo = null;
-            }
-            if (obj.squadreComposizione.length > 0) {
-                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
+            if (obj.squadre.length > 0) {
+                rObj.squadre = obj.squadre.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp;
                 });
             } else {
                 rObj.squadre = [];

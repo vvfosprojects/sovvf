@@ -6,8 +6,19 @@ import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
-import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
+import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
+import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { TastoChiamataMappaState } from '../maps/store/states/tasto-chiamata-mappa.state';
+import { GetBoxPersonale } from './store/actions/boxes/box-personale.actions';
+import { GetBoxMezzi } from './store/actions/boxes/box-mezzi.actions';
+import { GetBoxRichieste } from './store/actions/boxes/box-richieste.actions';
+import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -17,6 +28,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     columnState: Grids;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
+    @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
+
+    // Chiamata From Mappa Active Value
+    @Select(TastoChiamataMappaState.tastoChiamataMappaActive) tastoChiamataMappaActive$: Observable<boolean>;
 
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     @Select(ViewComponentState.columnGrid) columnState$: Observable<Grids>;
@@ -24,18 +39,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+
     constructor(private store: Store) {
+        this.getDettagliTipologie(true);
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
+        this.getTipologie();
+        this.getDistaccamenti();
+        this.getSediAllerta();
+        this.getSediTrasferimenti();
     }
 
     ngOnInit(): void {
         console.log('Componente Home creato');
-        this.store.dispatch(new GetDataHome());
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.Home),
+            new GetDataHome(),
+            new GetBoxRichieste(),
+            new GetBoxMezzi(),
+            new GetBoxPersonale(),
+        ]);
     }
 
     ngOnDestroy(): void {
@@ -44,8 +74,28 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearDataHome());
     }
 
-    onMapFullLoaded(): void {
-        this.store.dispatch(new SetMapLoaded(true));
+    getTipologie(): void {
+        this.store.dispatch(new GetTipologie());
+    }
+
+    getDistaccamenti(): void {
+        this.store.dispatch(new GetDistaccamenti());
+    }
+
+    getSediAllerta(): void {
+        this.store.dispatch(new GetSediAllerta());
+    }
+
+    getSediTrasferimenti(): void {
+        this.store.dispatch(new GetSediTrasferimenti());
+    }
+
+    getDettagliTipologie(pageAttuale: boolean): void {
+        let page = null;
+        if (pageAttuale) {
+            page = this.store.selectSnapshot(PaginationState.page);
+        }
+        this.store.dispatch(new GetDettagliTipologie(page));
     }
 
     getViewState(): void {

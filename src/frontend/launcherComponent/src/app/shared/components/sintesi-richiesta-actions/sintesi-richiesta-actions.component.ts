@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../../modal/action-richiesta-modal/action-richiesta-modal.component';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
+import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 
 @Component({
     selector: 'app-sintesi-richiesta-actions',
     templateUrl: './sintesi-richiesta-actions.component.html',
-    styleUrls: ['./sintesi-richiesta-actions.component.css']
+    styleUrls: ['./sintesi-richiesta-actions.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaActionsComponent implements OnInit {
 
@@ -34,7 +35,8 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        let modalConferma;
+        modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
@@ -42,20 +44,20 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere la richiesta?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler chiudere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
+                modalConferma.componentInstance.messaggioAttenzione = 'Lo stato di tutti i mezzi sarà "Rientrato"';
                 break;
 
             case StatoRichiestaActions.Sospesa:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere la richiesta?';
-                modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi di questa richiesta diventeranno "In Rientro"';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler sospendere ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
+                modalConferma.componentInstance.messaggioAttenzione = 'Lo stato di tutti i mezzi sarà "Rientrato"';
                 break;
 
             case StatoRichiestaActions.Riaperta:
-                modalConferma.componentInstance.titolo = 'Cambio Stato Richiesta';
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire la richiesta?';
+                modalConferma.componentInstance.titolo = 'Cambio Stato ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta);
+                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + '?';
                 break;
 
             default:

@@ -15,10 +15,13 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
 
-        public ConfermaPartenzeAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
-                                             IGetAutorizzazioni getAutorizzazioni, IGetRichiestaById getRichiestaById)
+        public ConfermaPartenzeAuthorization(
+            IPrincipal currentUser,
+            IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetRichiesta getRichiestaById)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -33,6 +36,9 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
             if (_currentUser.Identity.IsAuthenticated)
             {
+                if (command.Richiesta.TestoStatoRichiesta.Equals("X"))
+                    yield return new AuthorizationResult(Costanti.ErroreRichiestaChiusa);
+
                 if (command.Utente == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else

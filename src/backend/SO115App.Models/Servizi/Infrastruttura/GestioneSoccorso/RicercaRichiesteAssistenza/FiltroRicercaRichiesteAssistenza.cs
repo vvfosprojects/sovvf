@@ -17,10 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Organigramma;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza
 {
@@ -33,7 +34,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   Indica lo stato in cui può trovarsi una richiesta con riferimento all'avanzamento
         ///   nella sua gestione.
         /// </summary>
-        public enum StatoRichiesta { Qualsiasi, Chiamata, Intervento }
+        public List<string> StatiRichiesta { get; set; }
 
         /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
@@ -52,24 +53,24 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public ISet<PinNodo> UnitaOperative { get; set; }
 
         /// <summary>
-        ///   Indica se si vogliono includere le richieste aperte
+        ///   Indica se si vogliono includere le richieste aperte andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteAperte { get; set; } = true;
 
         /// <summary>
-        ///   Indica se si vogliono includere le richieste chiuse
+        ///   Indica se si vogliono includere le richieste chiuse andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteChiuse { get; set; } = false;
+
+        /// <summary>
+        ///   Indica la volontà di visualizzare solo le richieste Chiuse
+        /// </summary>
+        public bool SoloChiuse { get; set; } = false;
 
         /// <summary>
         ///   Contiene eventuali filtri delle tipologie
         /// </summary>
         public string[] FiltriTipologie { get; set; }
-
-        /// <summary>
-        ///   Indica quali richieste si vogliono includere nel risultato.
-        /// </summary>
-        public StatoRichiesta StatoRichieste { get; set; }
 
         /// <summary>
         ///   Indica una chiave di ricerca full-text
@@ -78,8 +79,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
 
         /// <summary>
         ///   Indica l'estensione territoriale delle richieste da cercare
-        /// </summary>
-        public Geolocalizzazione GeoLocalizzazione { get; set; }
+        ///// </summary>
+        //public Geolocalizzazione GeoLocalizzazione { get; set; }
 
         /// <summary>
         ///   L'id dell'operatore che sta facendo la richiesta
@@ -87,5 +88,28 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public string idOperatore { get; set; }
 
         public Localita IndirizzoIntervento { get; set; }
+
+        /// <summary>
+        ///   Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
+        /// </summary>
+        public string TipologiaRichiesta { get; set; } = "ChiamateInterventi";
+
+        public string[] Chiuse { get; set; }
+
+        public PeriodoChiuse PeriodoChiuseChiamate { get; set; } = null;
+
+        public PeriodoChiuse PeriodoChiusiInterventi { get; set; } = null;
+
+        public List<string> ZoneEmergenza { get; set; }
+
+        public bool SoloboxRichieste { get; set; } = false;
+    }
+
+    public class PeriodoChiuse
+    {
+        public string Turno { get; set; }
+        public DateTime? Da { get; set; }
+        public DateTime? A { get; set; }
+        public DateTime? Data { get; set; }
     }
 }

@@ -70,3 +70,11 @@ export class RemoveRuoloUtente {
 export class ClearDataModalAddUtenteModal {
     static readonly type = '[GestioneUtenti] Clear Data Modal "AddUtenteModal"';
 }
+
+export class StartLoadingGestioneUtenti {
+    static readonly type = '[GestioneUtenti] Start Loading Gestione Utenti';
+}
+
+export class StopLoadingGestioneUtenti {
+    static readonly type = '[GestioneUtenti] Stop Loading Gestione Utenti';
+}

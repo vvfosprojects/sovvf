@@ -18,14 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Newtonsoft.Json;
-
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Coordinate
     {
 
-        public Coordinate(double Latitudine, double Longitudine)
+        public Coordinate(double Latitudine = 0.0, double Longitudine = 0.0)
         {
             this.Latitudine = Latitudine;
             this.Longitudine = Longitudine;

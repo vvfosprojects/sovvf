@@ -17,25 +17,47 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.AFM;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
+using SO115App.ExternalAPI.Fake.Servizi.ESRI;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
+using SO115App.ExternalAPI.Fake.Servizi.GestioneSedi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.OPService;
+using SO115App.ExternalAPI.Fake.Servizi.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
+using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
+using SO115App.ExternalAPI.Fake.Servizi.STATRI;
 using SO115App.ExternalAPI.Fake.Territorio;
-using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
+using System.Linq;
 
 namespace SO115App.CompositionRoot
 {
@@ -50,8 +72,36 @@ namespace SO115App.CompositionRoot
                 }
                 ), Lifestyle.Singleton);
 
+            //SERVIZI GENERICI
+            container.Register(typeof(ExternalAPI.Client.IHttpRequestManager<>), typeof(ExternalAPI.Client.IHttpRequestManager<>).Assembly.DefinedTypes.First(n => n.Name.Contains("HttpRequestManager")));
+
+            container.Register<IGetToken, GetToken>();
+
+            #region IdentityManagement
+
+            container.Register<IGetAnagraficaComponente, GetAnagraficaComponente>();
+
+            #endregion IdentityManagement
+
+            #region OPService
+
+            container.Register<IGetSquadre, GetSquadre>();
+            container.Register<IGetAllSquadre, GetAllSquadre>();
+            container.Register<ISetStatoSquadra, SetStatoSquadra>();
+            container.Register<IGetModuliColonnaMobileByCodComando, GetModuliColonnaMobileByCodComando>();
+
+            #endregion OPService
+
+            #region Qualifiche
+
+            container.Register<IGetPercorsoByIdQualifica, GetPercorsoByIdQualifica>();
+            container.Register<IGetDettaglioQualificaByIdDipendenteByDate, GetDettaglioQualificaByIdDipendenteByDate>();
+
+            #endregion Qualifiche
+
             #region NUE
 
+            container.Register<IGetRubrica, RubricaExt>();
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
@@ -62,6 +112,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
             container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoByCodiciScheda, GetSchedeContattoByCodiciScheda>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
                 GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
@@ -71,18 +122,21 @@ namespace SO115App.CompositionRoot
 
             #region Territorio
 
+            container.Register<IGetDescComuneProvincia, GetDescComuneProvincia>();
             container.Register<IGetAlberaturaISTAT, GetListaAlberaturaRegioni>();
 
             #endregion Territorio
 
             #region Personale
 
+            container.Register<IGetIdDipendentiByCodUnitaOrg, GetIdDipendentiByCodUnitaOrg>();
+            container.Register<IGetDettaglioDipendenteById, GetDettaglioDipendenteById>();
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
-            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleVVF>();
-            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleByCF>();
-            container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
+            container.Register<IGetPersonaleVVF, GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, GetPersonaleByCF>();
+            container.Register<IGetPersonaleByCodSede, GetPersonaleByCodSede>();
 
             #endregion Personale
 
@@ -97,14 +151,17 @@ namespace SO115App.CompositionRoot
 
             #region Gac
 
+            container.Register<IModificaInterventoChiuso, ModificaInterventoChiuso>();
+            container.Register<ISetRientroMezzo, SetRientroMezzo>();
+            container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
+                GetMezziInServizio>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
@@ -128,7 +185,14 @@ namespace SO115App.CompositionRoot
 
             #region Sedi
 
-            container.Register<IGetAlberaturaUnitaOperative, GetListaSediAlberata>();
+            container.Register<IGetSedeAssociazioniByCodSede, GetSedeAssociazioniByCodSede>();
+            container.Register<IGetAlberaturaUnitaOperative, GetSedi>();
+            container.Register<IGetDirezioni, GetSedi>();
+            container.Register<IGetSedi, GetSedi>();
+            container.Register<IGetListaDistaccamentiByPinListaSedi, GetSedi>();
+            container.Register<IGetSediMarker, GetSedi>();
+            container.Register<IGetCoordinateByCodSede, GetSedi>();
+            container.Register<IGetListaDistaccamentiByCodiceSede, GetDistaccamentiByCodSede>();
 
             #endregion Sedi
 
@@ -162,17 +226,17 @@ namespace SO115App.CompositionRoot
 
             #region Mezzi
 
-            container.Register<
-               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            //container.Register<
+            //   SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+            //   SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+            container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
-                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac.IGetMezziUtilizzabiliByAreaMappa,
+                IGetMezziUtilizzabiliByAreaMappa,
                 ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliByAreaMappa>();
 
             #endregion Mezzi
@@ -226,18 +290,12 @@ namespace SO115App.CompositionRoot
             #region Distaccamenti
 
             container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
-                SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni.GetDistaccamentoByCodiceSede>();
+                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede, GetSedi>();
 
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede, GetSedi>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
-                SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
-            container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC,
-                GetDistaccamentoByCodiceSede>();
-            container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento,
-                ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetSedi>();
 
             #endregion Distaccamenti
 
@@ -246,6 +304,36 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie, ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
 
             #endregion Tipologie
+
+            #region AFM
+
+            container.Register<IGetCategorieSoccorsoAereo, GetCategorieSoccorsoAereo>();
+            container.Register<IGetInfoRichiestaSoccorsoAereo, GetInfoRichiestaSoccorsoAereo>();
+            container.Register<IGetTipologieRichiestaSoccorsoAereo, GetTipologieSoccorsoAereo>();
+            container.Register<IAggiornaRichiestaSoccorsoAereo, AggiornaRichiestaSoccorsoAereo>();
+            container.Register<IAnnullaRichiestaSoccorsoAereo, AnnullaRichiestaSoccorsoAereo>();
+            container.Register<IInserisciRichiestaSoccorsoAereo, InserisciRichiestaSoccorsoAereo>();
+            container.Register<IGetHistoryRichiestaSoccorsoAereo, GetHistoryRichiestaSoccorsoAereo>();
+
+            #endregion AFM
+
+            #region STATRI
+
+            container.Register<ISendSTATRIItem, SendSTATRIItem>();
+            container.Register<IMapperSintesiInSchedeSO115, MapperSintesiRichiestaSuSTATRI>();
+
+            #endregion STATRI
+
+            #region ESRI
+
+            container.Register<INotify_ESRIAddRichiesta, SendNewRichiestaAssistena>();
+            container.Register<IGetToken_ESRI, GetToken_ESRI>();
+            container.Register<INotifyUpDateRichiesta, SendUpDateRichiestaAssistenza>();
+            container.Register<IMappingESRIMessage, MappingESRIMessage>();
+            container.Register<INotifyUpDateSchedaContatto, SendUpDateSchedaContatto>();
+            container.Register<IGetCompetenzeByCoordinateIntervento, GetCompetenzeByCoordinateIntervento>();
+
+            #endregion ESRI
         }
     }
 }

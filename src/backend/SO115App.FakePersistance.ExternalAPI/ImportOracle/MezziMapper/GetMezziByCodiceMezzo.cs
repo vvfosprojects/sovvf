@@ -1,14 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
 using System.Net.Http;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
@@ -51,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(OraM.COD_COMANDO);
                 var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
 
-                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
+                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, d.Coordinate);
 
                 Mezzo mezzo = new Mezzo(OraM.TIPO_MEZZO + "." + OraM.TARGA,
                     OraM.TARGA,

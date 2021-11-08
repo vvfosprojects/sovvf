@@ -6,11 +6,12 @@ import { ColoriStatoMezzo } from '../../../../shared/helper/_colori';
 import { TipoTerrenoEnum } from '../../../../shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
-import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
-import { round1decimal } from '../../../../shared/helper/function';
+import { AttivitaUtente } from 'src/app/shared/model/attivita-utente.model';
+import { round1decimal } from '../../../../shared/helper/function-generiche';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { EnteInterface } from '../../../../shared/interface/ente.interface';
 
 export class HelperSintesiRichiesta {
 
@@ -22,38 +23,38 @@ export class HelperSintesiRichiesta {
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
-      // const nomiSquadre: string[] = [];
-      const squadre = [];
+        // const nomiSquadre: string[] = [];
+        const squadre = [];
 
-      if (richiesta.partenzeRichiesta) {
-        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-          if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-            partenza.squadre.forEach((squadra: Squadra) => {
-              squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.squadre && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    p.partenza.squadre.forEach((squadra: Squadra) => {
+                        squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+                    });
+                }
             });
-          }
-        });
-      } else {
-        return [];
-      }
+        } else {
+            return [];
+        }
 
-      function getUnique(arr, comp): any[] {
-        return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
-      }
+        function getUnique(arr, comp): any[] {
+            return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
+        }
 
-      // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+        // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
 
-      return squadre;
+        return squadre;
     }
 
 
-  /* Restituisce il mezzo */
+    /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    mezzi.push(partenza.mezzo);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    mezzi.push(p.partenza.mezzo);
                 }
             });
         }
@@ -63,10 +64,10 @@ export class HelperSintesiRichiesta {
     /* Restituisce i nomi dei mezzi  */
     nomiMezzi(richiesta: SintesiRichiesta): string[] {
         const nomiMezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    nomiMezzi.push(partenza.mezzo.codice);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    nomiMezzi.push(p.partenza.mezzo.codice);
                 }
             });
         }
@@ -76,10 +77,10 @@ export class HelperSintesiRichiesta {
     /* Restituisce la descrizione dei mezzi */
     descscrizioneMezzi(richiesta: SintesiRichiesta): string[] {
         const nomiMezzi = [];
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-                    nomiMezzi.push(partenza.mezzo.descrizione);
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                    nomiMezzi.push(p.partenza.mezzo.descrizione);
                 }
             });
         }
@@ -89,9 +90,22 @@ export class HelperSintesiRichiesta {
     /* Restituisce il numero dei mezzi */
     numeroMezzi(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
-        if (richiesta.partenzeRichiesta) {
-            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato !== 'In Rientro') {
+                    numeroMezzi++;
+                }
+            });
+        }
+        return numeroMezzi;
+    }
+
+    /* Restituisce il numero dei mezzi in rientro */
+    numeroMezziInRietro(richiesta: SintesiRichiesta): number {
+        let numeroMezzi = 0;
+        if (richiesta.partenze) {
+            richiesta.partenze.forEach((p: Partenza) => {
+                if (p.partenza && p.partenza.mezzo.stato === 'In Rientro' && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
                     numeroMezzi++;
                 }
             });
@@ -102,35 +116,35 @@ export class HelperSintesiRichiesta {
     /* Permette di colorare l'icona della tipologia */
     coloraIcona(tipologia: Tipologia): string {
         if (!tipologia) {
-            return 'fa fa-exclamation-triangle text-warning';
+            return 'fas fa-exclamation-triangle text-warning';
         }
         const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {
-                    icon: 'fa fa-fire',
+                    icon: 'fas fa-fire',
                     color: 'text-danger'
                 },
                 {
-                    icon: 'fa fa-exclamation-triangle',
+                    icon: 'fas fa-exclamation-triangle',
                     color: 'text-warning'
                 },
                 {
-                    icon: 'fa fa-medkit',
+                    icon: 'fas fa-medkit',
                     color: 'text-primary'
                 }
             ];
 
             const colore = nome ? colori.find(x => x.icon === nome) : undefined;
             if (!nome || nome === '') {
-                return 'fa fa-exclamation-triangle text-warning';
+                return 'fas fa-exclamation-triangle text-warning';
             } else if (colore !== undefined) {
                 return nome + ' ' + colore.color;
             } else {
                 return nome + ' guida';
             }
         } else {
-            return 'fa fa-exclamation-triangle text-warning';
+            return 'fas fa-exclamation-triangle text-warning';
         }
     }
 
@@ -143,12 +157,12 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    toggleEspansoClass(espanso: boolean): string {
+    toggleGestioneClass(gestione: boolean): string {
         let returnClass = '';
-        if (!espanso) {
-            returnClass = 'fa-long-arrow-down text-secondary';
+        if (!gestione) {
+            returnClass = 'fa-long-arrow-alt-down text-secondary';
         } else {
-            returnClass = 'fa-long-arrow-up text-light';
+            returnClass = 'fa-long-arrow-alt-up text-success';
         }
         return returnClass;
     }
@@ -156,9 +170,9 @@ export class HelperSintesiRichiesta {
     complessitaClass(richiesta: any): any {
         if (richiesta.complessita) {
             return {
-                'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
-                'badge-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
-                'badge-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
+                'badge-mod-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
+                'badge-mod-warning': this.match(richiesta.complessita.descrizione, 'media', 1),
+                'badge-mod-danger': this.match(richiesta.complessita.descrizione, 'alta', 1)
             };
         }
     }
@@ -171,10 +185,9 @@ export class HelperSintesiRichiesta {
                 // 'card-shadow-info': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
                 'card-shadow-success': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-orange': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Sospesa,
-                'card-shadow-warning': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-warning': ((r.id === richiestaHover || r.id === richiestaSelezionata)) && (r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa),
                 'card-shadow-secondary': (r.id === richiestaHover || r.id === richiestaSelezionata) && r.stato === StatoRichiesta.Chiusa,
-                'bg-light': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
+                '': (r.id === richiestaSelezionata || r.id === richiestaHover) && r.stato !== StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
             const cardBorder = this.cardBorder(r);
@@ -182,14 +195,14 @@ export class HelperSintesiRichiesta {
         }
     }
 
+// 1px solid #dc3545
     /* NgClass Card Fissata Status */
     cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {
             const classes = {
-                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata,
+                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa,
                 'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
                 'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-orange': r.stato === StatoRichiesta.Sospesa,
                 'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
                 'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
             };
@@ -200,22 +213,13 @@ export class HelperSintesiRichiesta {
 
     cardBorder(r: SintesiRichiesta): any {
         if (r) {
-            let classes = null;
-            if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                classes = {
-                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
-                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
-                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
-                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
-                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
-                };
-                return classes;
-            } else {
-                classes = {
-                    status_in_lavorazione: true
-                };
-                return classes;
-            }
+            return {
+                status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                status_chiuso: r.stato === StatoRichiesta.Chiusa,
+            };
         }
     }
 
@@ -246,12 +250,12 @@ export class HelperSintesiRichiesta {
             let value = 0;
             let terrenoString = '';
             tipoTerreno.forEach(result => {
-                if (result.mq > value) {
+                if (result.ha > value) {
                     terrenoString = TipoTerrenoEnum[result.descrizione];
-                    value = result.mq;
+                    value = result.ha;
                 }
             });
-            return { terrenoHa: `${terrenoString} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${terrenoString} (${value} mq)` };
+            return { terrenoHa: `${terrenoString} (${value} ha)`, terrenoMq: `${terrenoString} (${round1decimal(value * 10000)} mq)` };
         } else {
             return null;
         }
@@ -259,13 +263,8 @@ export class HelperSintesiRichiesta {
 
     _terreniMinori(tipoTerreno: TipoTerreno[]): TipoTerreno[] {
         if (tipoTerreno && tipoTerreno.length > 1) {
-            let value = 0;
-            tipoTerreno.forEach(terreno => {
-                if (terreno.mq > value) {
-                    value = terreno.mq;
-                }
-            });
-            return tipoTerreno.filter(terreno => terreno.mq !== value);
+            const tipoTerrenoShow = tipoTerreno.filter(terreno => terreno.ha > 0);
+            return tipoTerrenoShow;
         } else {
             return null;
         }
@@ -273,7 +272,23 @@ export class HelperSintesiRichiesta {
 
     _tipoTerreno(tipoTerreno: TipoTerreno): string {
         if (tipoTerreno) {
-            return `${TipoTerrenoEnum[tipoTerreno.descrizione]} (${tipoTerreno.mq} mq / ${round1decimal(tipoTerreno.mq / 10000)} ha)`;
+            return `${TipoTerrenoEnum[tipoTerreno.descrizione]} (${round1decimal(tipoTerreno.ha * 10000)} mq / ${tipoTerreno.ha} ha)`;
+        }
+    }
+
+    _getEntiByCod(listEnti: EnteInterface[], codEnti: number[]): EnteInterface[] {
+        if (listEnti?.length && codEnti?.length) {
+            const enti = [];
+            codEnti.forEach((codEnte: number) => {
+                listEnti.forEach((e: EnteInterface) => {
+                    if (e.codice === codEnte) {
+                        enti.push(e);
+                    }
+                });
+            });
+            return enti;
+        } else {
+            return null;
         }
     }
 
@@ -287,20 +302,6 @@ export class HelperSintesiRichiesta {
     }
 
     _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
-        if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const a in attivita) {
-                /**
-                 * eventuale logica di controllo
-                 */
-                if (a) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    _isInLavorazione(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
             for (const a in attivita) {
                 /**

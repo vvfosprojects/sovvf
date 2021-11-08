@@ -9,16 +9,17 @@ import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 import { TipoTerreno } from './tipo-terreno';
-import { EnteIntervenuto } from './ente-intervenuto';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
-import { Ente } from '../interface/ente.interface';
+import { EnteInterface } from '../interface/ente.interface';
+import { TriageSummary } from '../interface/triage-summary.interface';
+import { DettaglioTipologia } from '../interface/dettaglio-tipologia.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
  * ad alimentare il primo ed il secondo livello di zoom. Non include il dettaglio
- * degli eventi della richiesta.
+ * degli eventi-richiesta-richiesta della richiesta.
  */
 export class SintesiRichiesta {
 
@@ -57,6 +58,10 @@ export class SintesiRichiesta {
          */
         public tipologie: Tipologia[],
         /**
+         * dettaglio della tipologia
+         */
+        public dettaglioTipologia: DettaglioTipologia,
+        /**
          * descrizione della richiesta
          */
         public descrizione: string,
@@ -73,7 +78,7 @@ export class SintesiRichiesta {
          */
         public competenze: Sede[],
         /**
-         * indice di complessità dell'intervento (per es. numero di eventi collegati alla richiesta)
+         * indice di complessità dell'intervento (per es. numero di eventi-richiesta-richiesta collegati alla richiesta)
          */
         public complessita: Complessita,
         /**
@@ -104,7 +109,7 @@ export class SintesiRichiesta {
         /**
          * lista delle partenze
          */
-        public partenzeRichiesta?: Partenza[],
+        public partenze?: Partenza[],
         /**
          * etichette associate all'intervento (per es. aPagamento, imp, ecc.)
          */
@@ -134,13 +139,13 @@ export class SintesiRichiesta {
          */
         public tipoTerreno?: TipoTerreno[],
         /**
-         * lista enti intervenuti
+         * lista codici Enti intervenuti
          */
-        public listaEntiIntervenuti?: Ente[],
+        public codEntiIntervenuti?: number[],
         /**
          * lista enti presa in carico
          */
-        public listaEntiPresaInCarico?: Ente[],
+        public listaEntiPresaInCarico?: EnteInterface[],
         /**
          * obiettivo sensibile
          */
@@ -154,21 +159,41 @@ export class SintesiRichiesta {
          */
         public motivazione?: string,
         /**
-         * lista di lavorazioni utente
-         */
-        public listaUtentiInLavorazione?: AttivitaUtente[],
-        /**
          * lista di prese in carico utente
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],
+        /**
+         * codici UO di competenza
+         */
         public codUOCompetenza?: string[],
+        /**
+         * codici SO allertate
+         */
         public codSOAllertate?: string[],
+        /**
+         * codici Sedi Allertate
+         */
         public sediAllertate?: Sede[],
+        /**
+         * codice SO competente
+         */
         public codSOCompetente?: string,
         /**
-         * lista Enti intervenuti
+         * richiesta inviata in stato di emergenza
          */
-        public listaEnti?: Ente[],
+        public chiamataUrgente?: boolean,
+        /**
+         * richiesta creata per esercitazione
+         */
+        public esercitazione?: boolean,
+        /**
+         * resoconto triage
+         */
+        public triageSummary?: TriageSummary[],
+        /**
+         * eventi richiesta relativi a mezzi e velivoli
+         */
+        public eventi?: any
     ) {
     }
 }

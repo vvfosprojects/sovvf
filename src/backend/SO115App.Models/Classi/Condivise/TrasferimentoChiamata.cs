@@ -1,4 +1,5 @@
-﻿using SO115App.API.Models.Classi.Autenticazione;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using SO115App.API.Models.Classi.Autenticazione;
 using System;
 
 namespace SO115App.Models.Classi.Condivise

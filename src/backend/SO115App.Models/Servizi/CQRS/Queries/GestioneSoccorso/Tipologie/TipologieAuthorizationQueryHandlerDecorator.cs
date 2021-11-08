@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;

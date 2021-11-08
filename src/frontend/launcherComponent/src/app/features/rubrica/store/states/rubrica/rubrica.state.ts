@@ -1,27 +1,30 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { Ente } from '../../../../../shared/interface/ente.interface';
+import { EnteInterface } from '../../../../../shared/interface/ente.interface';
 import {
     GetRubrica,
     SetRubrica,
     AddVoceRubrica,
     UpdateVoceRubrica,
-    DeleteVoceRubrica
+    DeleteVoceRubrica,
+    StartLoadingRubrica,
+    StopLoadingRubrica
 } from '../../actions/rubrica/rubrica.actions';
 import { RubricaService } from '../../../../../core/service/rubrica-service/rubrica.service';
 import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { Injectable } from '@angular/core';
 
 export interface RubricaStateModel {
-    vociRubrica: Ente[];
+    vociRubrica: EnteInterface[];
+    loadingRubrica: boolean;
 }
 
 export const RubricaStateModelDefaults: RubricaStateModel = {
-    vociRubrica: undefined
+    vociRubrica: undefined,
+    loadingRubrica: false,
 };
 
 @Injectable()
@@ -37,13 +40,18 @@ export class RubricaState {
     }
 
     @Selector()
-    static vociRubrica(state: RubricaStateModel): Ente[] {
+    static vociRubrica(state: RubricaStateModel): EnteInterface[] {
         return state.vociRubrica;
+    }
+
+    @Selector()
+    static loadingRubrica(state: RubricaStateModel): boolean {
+        return state.loadingRubrica;
     }
 
     @Action(GetRubrica)
     getRubrica({ dispatch }: StateContext<RubricaStateModel>, action: GetRubrica): void {
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingRubrica());
         const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
         const filters = {
             search: ricerca
@@ -56,7 +64,7 @@ export class RubricaState {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetRubrica(response.dataArray),
-                new StopLoading()
+                new StopLoadingRubrica()
             ]);
         });
     }
@@ -79,7 +87,7 @@ export class RubricaState {
     updateVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: UpdateVoceRubrica): void {
         setState(
             patch({
-                vociRubrica: updateItem<Ente>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
+                vociRubrica: updateItem<EnteInterface>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
             })
         );
     }
@@ -93,8 +101,22 @@ export class RubricaState {
         }
         setState(
             patch({
-                vociRubrica: removeItem<Ente>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
+                vociRubrica: removeItem<EnteInterface>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
             })
         );
+    }
+
+    @Action(StartLoadingRubrica)
+    startLoadingRubrica({ patchState }: StateContext<RubricaStateModel>): void {
+        patchState({
+            loadingRubrica: true
+        });
+    }
+
+    @Action(StopLoadingRubrica)
+    stopLoadingRubrica({ patchState }: StateContext<RubricaStateModel>): void {
+        patchState({
+            loadingRubrica: false
+        });
     }
 }

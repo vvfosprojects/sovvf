@@ -1,11 +1,8 @@
-﻿using MongoDB.Driver;
-using Persistence.MongoDB;
+﻿using Persistence.MongoDB;
 using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue
 {
@@ -31,11 +28,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// <param name="letta">booleana letta</param>
         /// <param name="codiceFiscale">stringa codicefiscale</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede)
+        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre, string codSede, string classificazione, string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            var ListaSchede = _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre);
+            var ListaSchede = _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre, classificazione, codiceSede);
             //var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
 
             //List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();

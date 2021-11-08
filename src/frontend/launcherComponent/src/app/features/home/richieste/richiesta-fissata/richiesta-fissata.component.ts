@@ -1,39 +1,38 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
-import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { EnteInterface } from '../../../../shared/interface/ente.interface';
 
 @Component({
     selector: 'app-richiesta-fissata',
     templateUrl: './richiesta-fissata.component.html',
-    styleUrls: ['./richiesta-fissata.component.css']
+    styleUrls: ['./richiesta-fissata.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
-    @Input() splitted: boolean;
+
     @Input() richiestaFissata: SintesiRichiesta;
-    @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() listaEnti: EnteInterface[];
+    @Input() nightMode: boolean;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledComposizionePartenza = false;
 
-    @Input() loadingActionRichiesta: string;
+    @Input() loadingActionRichiesta: string[];
 
-    @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() defissa = new EventEmitter<any>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
-    @Output() outEspansoId = new EventEmitter<string>();
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
 
@@ -49,16 +48,14 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-            console.log('Componente RichiestaFissata creato');
+        console.log('Componente RichiestaFissata creato');
         if (this.richiestaFissata) {
             this.animazioneIn();
-            const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
-            setTimeout(() => this.outEspanso.emit(result));
         }
     }
 
     ngOnDestroy(): void {
-            console.log('Componente RichiestaFissata distrutto');
+        console.log('Componente RichiestaFissata distrutto');
     }
 
     // Ritorna la richiesta nella lista, defissandola
@@ -138,10 +135,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         }
     }
 
-    visualizzaEventiRichiesta(idRichiesta: string): void {
-        this.eventiRichiesta.emit(idRichiesta);
-    }
-
     /* Apre il componente per la creazione della partenza */
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.composizionePartenza.emit(richiesta);
@@ -161,15 +154,15 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.outEspanso.emit();
     }
 
-    /* NgClass Template */
-    cardFissataClasses(r: any): void {
-        return this.methods.cardFissataClasses(r);
+    cardFissataClasses(): any {
+        return this.methods.cardFissataClasses(this.richiestaFissata);
     }
 
-    isEspanso(id: string): boolean {
-        if (this.idRichiesteEspanse && id) {
-            return this.idRichiesteEspanse.includes(id);
+    translatePositionRichiesta(r: SintesiRichiesta): string {
+        let output = '';
+        if (r) {
+            output = output + ' z-index-1 position absolute';
         }
+        return output;
     }
-
 }

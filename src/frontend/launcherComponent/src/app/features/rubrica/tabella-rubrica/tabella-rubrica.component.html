@@ -1,96 +1,99 @@
-<div style="height: 760px; max-height: 760px; overflow-y: auto; overflow-x: hidden">
-    <table class="table table-striped app-shadow mt-2 bg-white">
-        <thead>
-        <tr>
-            <th scope="col" width="10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
-            <th scope="col" width="20%"><i class="fa fa-university mr-2"></i>Nome</th>
-            <th scope="col" width="15%"><i class="fa fa-microphone mr-2"></i>Telefono</th>
-            <th scope="col" width="20%"><i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
-            <th scope="col" width="15%"><i class="fa fa-envelope mr-2"></i>Email</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-            <td class="align-middle">
-                <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                        placement="bottom" (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
-                    <i class="fa fa-trash"></i>
-                </button>
-                <button class="btn btn-sm btn-warning font-weight-bold float-left mt-1 mr-2" ngbTooltip="Modifica Voce"
-                        placement="bottom" style="color: white;" (click)="onEditVoceRubrica(voce)">
-                    <i class="fa fa-pencil-square-o"></i>
-                </button>
-            </td>
-            <td width="25%" class="align-middle">
-                <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                    <span>{{voce?.descrizione}}</span>
+<table class="table table-striped bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width:10%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:20%"><i class="fas fa-university mr-2"></i>Nome</th>
+        <th scope="col" style="width:15%"><i class="fas fa-microphone mr-2"></i>Telefono</th>
+        <th scope="col" style="width:20%"><i class="fas fa-map-marker-alt mr-2"></i>Indirizzo</th>
+        <th scope="col" style="width:15%"><i class="fas fa-envelope mr-2"></i>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let voce of vociRubrica">
+        <td class="align-middle">
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
+                    placement="bottom" (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
+                <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-warning font-weight-bold float-left mt-1 mr-2" ngbTooltip="Modifica Voce"
+                    placement="bottom" style="color: white;" (click)="onEditVoceRubrica(voce)">
+                <i class="far fa-edit"></i>
+            </button>
+        </td>
+        <td style="width:25%" class="align-middle">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span>{{voce?.descrizione}}</span>
+            </div>
+        </td>
+        <td style="width:20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
+            <div class="row">
+                <div class="col-11">
+                    <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0"
+                                     [telefoni]="voce?.telefoni"></app-numeri-ente>
+                    <small *ngIf="!voce?.telefoni || voce?.telefoni?.length <= 0" class="ml-1 text-muted">
+                        Non presente/i
+                    </small>
                 </div>
-            </td>
-            <td width="20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
-                <div class="row">
-                    <div class="col-11">
-                        <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0"
-                                         [telefoni]="voce?.telefoni"></app-numeri-ente>
-                        <small *ngIf="!voce?.telefoni || voce?.telefoni?.length <= 0" class="ml-1 text-muted">
-                            Non presente/i
-                        </small>
-                    </div>
+            </div>
+        </td>
+        <td style="width:20%" class="align-middle">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
+                            <span class="ml-1" [ngbTooltip]="voce?.indirizzo?.length > 14 ? voce?.indirizzo : null">
+                                {{voce?.indirizzo | truncate: 14}}</span>
+                            <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span>
+                            <span class="ml-1">{{voce?.cap}}</span>
+                            <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 text-muted">
+                                Non presente
+                            </small>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-            <td width="20%" class="align-middle">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span class="ml-1">{{voce?.indirizzo}}</span>
-                                <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span>
-                                <span class="ml-1">{{voce?.cap}}</span>
-                                <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 text-muted">
-                                    Non presente
-                                </small>
-                            </li>
-                        </ul>
-                    </div>
+            </div>
+        </td>
+        <td style="width:15%" class="align-middle">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
+                            <span *ngIf="voce?.email" class="ml-1">{{voce?.email}}</span>
+                            <small *ngIf="!voce?.email" class="ml-1 text-muted">
+                                Non presente
+                            </small>
+                            <i [ngbTooltip]="'In profondità'" placement="top" class="mx-3 far fa-clone"
+                               [ngClass]="{'fa-clone': voce.ricorsivo, 'fa-square': !voce.ricorsivo}"
+                            ></i>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-            <td width="15%" class="align-middle">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span *ngIf="voce?.email" class="ml-1">{{voce?.email}}</span>
-                                <small *ngIf="!voce?.email" class="ml-1 text-muted">
-                                    Non presente
-                                </small>
-                                <span class="mr-3 font-weight-bold" style="font-size:1.3rem; float: right;"
-                                      [ngClass]="{'icon-recursive': voce.ricorsivo, 'icon-not-recursive-single': !voce.ricorsivo}"
-                                      [ngbTooltip]="voce.ricorsivo ? 'In profondità' : 'Non in profondità'"
-                                      placement="top"></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr *ngIf="vociRubrica?.length <= 0">
-            <td></td>
-            <td>
-                <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
-                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between p-2">
+            </div>
+        </td>
+    </tr>
+    <tr *ngIf="vociRubrica?.length <= 0">
+        <td></td>
+        <td>
+            <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)">
-    </pagination-controls>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
 </div>

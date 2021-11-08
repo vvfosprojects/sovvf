@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.NotificheNavbar;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
@@ -44,7 +45,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
         public async Task SendNotification(AddTrasferimentoCommand command)
         {
-            var mioComandoDes = _getSede.Get(command.CodiciSede[0]).Descrizione;
+            var mioComandoDes = _getSede.GetSede(command.CodiciSede[0]).Descrizione;
             var mioOperatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore);
             var totalItemsA = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeA);
             var totalItemsDa = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeDa);
@@ -64,7 +65,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 }).BoxRichieste;
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamataTrasferita", richiesta);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()
@@ -72,7 +73,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
+                        SedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },
@@ -90,6 +91,14 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     Tipo = TipoNotifica.TrasferimentoChiamata,
                     Data = command.TrasferimentoChiamata.Data
                 });
+
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = command.TrasferimentoChiamata.CodSedeA,
+                    count = boxInterventi.Chiamate
+                };
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
             }
 
             //GESTIONE SEDI DA
@@ -110,7 +119,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
+                        SedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },
@@ -119,6 +128,14 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         TotalItems = totalItemsDa
                     }
                 });
+
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = command.TrasferimentoChiamata.CodSedeA,
+                    count = 1
+                };
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
             }
         }
     }

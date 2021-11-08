@@ -92,7 +92,7 @@ namespace SO115App.GeneratoreRichiesteFake.AzioniSuRichiesta
             try
             {
                 mezzo.ContestoMezzo.InSede();
-                new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Mezzo.Codice, istanteEffettivo, "Fonte");
+                new PartenzaRientrata(this.richiesta.Richiesta, this.parametriMezzo.MezzoUtilizzato.Mezzo.Codice, istanteEffettivo, "Fonte", 0);
                 this.richiesta.MezziAncoraDaInviare--;
                 if (this.richiesta.MezziAncoraDaInviare == 0)
                     new ChiusuraRichiesta("Risolto", this.richiesta.Richiesta, istanteEffettivo, "Fonte");

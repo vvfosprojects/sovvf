@@ -1,6 +1,27 @@
-import { Squadra } from 'src/app/shared/model/squadra.model';
+import { MezzoComposizione, MezzoPreaccoppiato } from './mezzo-composizione-interface';
+import { StatoSquadra } from '../enum/stato-squadra.enum';
+import { Sede } from '../model/sede.model';
+import { Componente } from '../model/componente.model';
 
 export interface SquadraComposizione {
-    id: string;
-    squadra: Squadra;
+    codice: string;
+    diEmergenza: boolean;
+    nome: string;
+    stato: StatoSquadra;
+    membri: Componente[];
+    distaccamento: Sede;
+    turno: string;
+    mezziPreaccoppiati: MezzoPreaccoppiato[];
+    listaMezzi?: MezzoComposizione[];
+    idOpService?: string;
+    spotId?: string;
+    spotType?: string;
+    workshiftId?: string;
+    version?: number;
+}
+
+export interface Qualifica {
+    name?: string;
+    description?: string;
+    group?: string;
 }

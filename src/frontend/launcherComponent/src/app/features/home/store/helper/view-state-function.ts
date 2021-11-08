@@ -1,4 +1,9 @@
-import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps } from '../../../../shared/interface/view.interface';
+import {
+    Grids,
+    ViewComponentStateModel,
+    ViewInterfaceButton,
+    ViewInterfaceMaps
+} from '../../../../shared/interface/view.interface';
 import { ChangeView } from '../actions/view/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../shared/enum/layout.enum';
@@ -18,13 +23,27 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
     switch (action.modalita) {
         case AppFeatures.Mappa:
             stateDefault.view.richieste.active = false;
+            stateDefault.view.mappa.active = true;
             break;
         case AppFeatures.Richieste:
             stateDefault.view.mappa.active = false;
+            stateDefault.view.richieste.active = true;
             break;
         default:
             break;
     }
+    return stateDefault;
+}
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di coda chiamate
+ * @param: stateDefault
+ */
+export function activeCodaChiamate(stateDefault: any): ViewComponentStateModel {
+    stateDefault.view.richieste.active = false;
+    stateDefault.view.codaChiamate.active = true;
+    stateDefault.view.mappa.options = [AppFeatures.CodaChiamate];
+    stateDefault.view.filterbar.options = [Grid.Col6];
     return stateDefault;
 }
 
@@ -37,6 +56,17 @@ export function activeChiamata(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.chiamata.active = true;
     stateDefault.view.mappa.options = [AppFeatures.Chiamata];
     stateDefault.view.filterbar.options = [Grid.Col6];
+    return stateDefault;
+}
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di richieste
+ * @param: stateDefault
+ */
+export function activeRichieste(stateDefault: any): ViewComponentStateModel {
+    stateDefault.view.richieste.active = true;
+    stateDefault.view.mappa.active = false;
+    stateDefault.view.mappa.options = [AppFeatures.Richieste];
     return stateDefault;
 }
 
@@ -70,7 +100,7 @@ export function switchComposizione(state: any, modalita: Composizione): ViewComp
  * @param: lastState
  */
 export function turnOffComposizione(state: any, lastState: ViewComponentStateModel): ViewComponentStateModel {
-    if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
+    if (lastState.column && lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
         state.view.mappa.active = false;
         state.view.richieste.split = false;
         state.view.mappa.split = false;
@@ -89,7 +119,7 @@ export function turnOffComposizione(state: any, lastState: ViewComponentStateMod
  * @param: lastState
  */
 export function turnOffModifica(state: any, lastState: ViewComponentStateModel): ViewComponentStateModel {
-    if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
+    if (lastState.column && lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
         state.view.mappa.active = false;
         state.view.richieste.split = false;
         state.view.mappa.split = false;

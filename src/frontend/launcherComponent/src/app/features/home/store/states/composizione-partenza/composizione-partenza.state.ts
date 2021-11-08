@@ -3,7 +3,7 @@ import {
     ClearPartenza,
     ConfirmPartenze,
     ReducerFilterListeComposizione,
-    RichiestaComposizione,
+    SetRichiestaComposizione,
     SetComposizioneMode,
     StartInvioPartenzaLoading,
     StartListaComposizioneLoading,
@@ -12,47 +12,35 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListeComposizione,
-    UpdateRichiestaComposizione
+    UpdateRichiestaComposizione,
+    StartListaSquadreComposizioneLoading,
+    StartListaMezziComposizioneLoading,
+    StopListaSquadreComposizioneLoading,
+    StopListaMezziComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import {
-    ClearComposizioneVeloce,
-    ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
-} from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
+import { ClearComposizioneVeloce, ClearPreaccoppiati, ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import {
-    ClearComposizioneAvanzata,
-    GetListeComposizioneAvanzata,
-    UnselectMezziAndSquadreComposizioneAvanzata
-} from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import {
-    ClearListaMezziComposizione,
-    ClearMezzoComposizione,
-    ClearSelectedMezziComposizione
-} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {
-    ClearListaSquadreComposizione,
-    ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione
-} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
-import { ClearDirection } from '../../actions/maps/maps-direction.actions';
-import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
+import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
+import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
-import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../../../maps/store/actions/area-mappa.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
-import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
     loadingListe: boolean;
+    loadingSquadre: boolean;
+    loadingMezzi: boolean;
     loadingInvioPartenza: boolean;
     loaded: boolean;
 }
@@ -61,6 +49,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     loadingListe: false,
+    loadingSquadre: false,
+    loadingMezzi: false,
     loadingInvioPartenza: false,
     loaded: null
 };
@@ -104,6 +94,16 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
+    static loadingSquadre(state: ComposizionePartenzaStateModel): boolean {
+        return state.loadingSquadre;
+    }
+
+    @Selector()
+    static loadingMezzi(state: ComposizionePartenzaStateModel): boolean {
+        return state.loadingMezzi;
+    }
+
+    @Selector()
     static loadingInvioPartenza(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingInvioPartenza;
     }
@@ -118,34 +118,45 @@ export class ComposizionePartenzaState {
     }
 
     @Action(UpdateListeComposizione)
-    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
-        console.warn('UpdateListeComposizione');
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
-    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione): void {
+    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: any): void {
         const state = getState();
         const compMode = state.composizioneMode;
+
         if (compMode === Composizione.Avanzata) {
-            dispatch(new GetListeComposizioneAvanzata());
+            if (action.tipo === 'tipoMezzo') {
+                dispatch(new GetListeComposizioneAvanzata(null, true));
+            } else if (action.tipo === 'turno') {
+                dispatch(new GetListeComposizioneAvanzata(null, false, true));
+            } else {
+                dispatch(new GetListeComposizioneAvanzata());
+            }
         } else if (compMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());
         }
     }
 
-    @Action(RichiestaComposizione)
-    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione): void {
+    @Action(SetRichiestaComposizione)
+    setRichiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetRichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
-        dispatch(new AddInLavorazione(action.richiesta));
+
+        dispatch([
+            new SetTriageSummary(action.richiesta.triageSummary)
+        ]);
     }
 
     @Action(ToggleComposizioneMode)
     toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
-        if (state.composizioneMode === Composizione.Avanzata) {
+        const composizioneMode = state.composizioneMode as Composizione;
+
+        if (composizioneMode === Composizione.Avanzata) {
             dispatch(new ClearListaMezziComposizione());
             dispatch(new ClearListaSquadreComposizione());
             dispatch(new UnselectMezziAndSquadreComposizioneAvanzata());
@@ -176,9 +187,9 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze): void {
+        const state = getState();
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
-            const state = getState();
             if (state.composizioneMode === Composizione.Avanzata) {
                 dispatch([
                     new ClearBoxPartenze(),
@@ -191,23 +202,43 @@ export class ComposizionePartenzaState {
             } else if (state.composizioneMode === Composizione.Veloce) {
                 dispatch([
                     new ClearPreAccoppiatiSelezionatiComposizione(),
-                    new ClearPreaccoppiati()
+                    new ClearPreaccoppiati(),
+                    new GetListaComposizioneVeloce()
                 ]);
             }
             dispatch([
                 new StopInvioPartenzaLoading(),
-                new ClearMarkerMezzoSelezionato(),
                 new ClearDirection()
             ]);
             const composizioneActive = !!(getState().richiesta);
-            if (composizioneActive) {
+            if (composizioneActive && state.composizioneMode !== Composizione.Veloce) {
                 dispatch(new GetListeComposizioneAvanzata());
-            } else {
-                dispatch(new GetListaMezziSquadre());
             }
+            /*else {
+                dispatch(new GetListaMezziSquadre());
+            }*/
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
-            dispatch(new StopInvioPartenzaLoading());
+            dispatch([
+                new StopInvioPartenzaLoading(),
+            ]);
+            if (state.composizioneMode === Composizione.Avanzata) {
+                dispatch([
+                    new ClearBoxPartenze(),
+                    new ClearSelectedMezziComposizione(),
+                    new ClearSelectedSquadreComposizione(),
+                    new UnselectMezziAndSquadreComposizioneAvanzata(),
+                    new ClearListaMezziComposizione(),
+                    new ClearListaSquadreComposizione(),
+                    new GetListeComposizioneAvanzata()
+                ]);
+            } else if (state.composizioneMode === Composizione.Veloce) {
+                dispatch([
+                    new ClearPreAccoppiatiSelezionatiComposizione(),
+                    new ClearPreaccoppiati(),
+                    new GetListaComposizioneVeloce()
+                ]);
+            }
         });
     }
 
@@ -215,15 +246,13 @@ export class ComposizionePartenzaState {
     terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         dispatch([
-            new DeleteInLavorazione(state.richiesta),
             new ClearDirection(),
             new GetInitCentroMappa(),
             new ClearComposizioneVeloce(),
             new ClearComposizioneAvanzata(),
             new ClearMezzoComposizione(),
             new ClearSquadraComposizione(),
-            new ClearPartenza(),
-            new ClearMarkerState(),
+            new ClearPartenza()
         ]);
     }
 
@@ -238,6 +267,27 @@ export class ComposizionePartenzaState {
             loadingListe: true,
             loaded: false
         });
+
+        dispatch(new StartLoadingAreaMappa());
+    }
+
+    @Action(StartListaSquadreComposizioneLoading)
+    startListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingSquadre: true,
+            loaded: false
+        });
+
+        dispatch(new StartLoadingAreaMappa());
+    }
+
+    @Action(StartListaMezziComposizioneLoading)
+    startListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingMezzi: true,
+            loaded: false
+        });
+
         dispatch(new StartLoadingAreaMappa());
     }
 
@@ -247,7 +297,37 @@ export class ComposizionePartenzaState {
             loadingListe: false,
             loaded: true
         });
-        dispatch([new StopLoadingAreaMappa(), new GetMarkersMappa()]);
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
+    }
+
+    @Action(StopListaSquadreComposizioneLoading)
+    stopListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingSquadre: false,
+            loaded: true
+        });
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
+    }
+
+    @Action(StopListaMezziComposizioneLoading)
+    stopListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingMezzi: false,
+            loaded: true
+        });
+
+        dispatch([
+            new StopLoadingAreaMappa(),
+            new GetMarkersMappa()
+        ]);
     }
 
     @Action(StartInvioPartenzaLoading)

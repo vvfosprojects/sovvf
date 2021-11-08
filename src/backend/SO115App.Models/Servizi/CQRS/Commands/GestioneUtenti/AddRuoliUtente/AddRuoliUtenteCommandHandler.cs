@@ -20,7 +20,6 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 
@@ -52,7 +51,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
             foreach (var ruolo in command.Ruoli)
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-                foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                foreach (var figli in sediAlberate.Result.GetSottoAlbero(listaPin))
                 {
                     if (figli.Codice.Equals(ruolo.CodSede))
                     {

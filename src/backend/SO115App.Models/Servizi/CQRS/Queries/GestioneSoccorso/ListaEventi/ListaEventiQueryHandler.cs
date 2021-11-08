@@ -19,18 +19,17 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -131,7 +130,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case TrasferimentoChiamata _:
                     return ((TrasferimentoChiamata)evento).Note;
 
+                case RichiestaSoccorsoAereo _:
+                    return ((RichiestaSoccorsoAereo)evento).Note;
+
+                case AnnullamentoRichiestaSoccorsoAereo _:
+                    return ((AnnullamentoRichiestaSoccorsoAereo)evento).Note;
+
+                case ChiusuraRichiesta _:
+                    return ((ChiusuraRichiesta)evento).Motivazione;
+
+                case InserimentoEnteIntervenuto _:
+                    return ((InserimentoEnteIntervenuto)evento).Note;
+
                 case AllertaSedi _:
+
+                case STATRI_InivioRichiesta _:
+                    return ((STATRI_InivioRichiesta)evento).Messaggio;
 
                 default:
                     return "";
@@ -191,6 +205,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             if (evento is SostituzionePartenzaFineTurno)
             {
                 targa = ((SostituzionePartenzaFineTurno)evento).CodiceMezzo;
+            }
+            if (evento is RichiestaSoccorsoAereo)
+            {
+                targa = ((RichiestaSoccorsoAereo)evento).Targa;
+            }
+            if (evento is AnnullamentoRichiestaSoccorsoAereo)
+            {
+                targa = ((AnnullamentoRichiestaSoccorsoAereo)evento).Targa;
             }
 
             return targa.Contains('.') ? targa.Split('.')[1] : targa;
@@ -274,6 +296,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case TrasferimentoChiamata _:
                     return Costanti.TrasferimentoChiamata;
+
+                case RichiestaSoccorsoAereo _:
+                    return Costanti.RichiestaSoccorsoAereo;
+
+                case AnnullamentoRichiestaSoccorsoAereo _:
+                    return Costanti.AnnullamentoRichiestaSoccorsoAereo;
+
+                case InserimentoEnteIntervenuto _:
+                    return Costanti.InserimentoEnteInterenuto;
+
+                case STATRI_InivioRichiesta _:
+                    return Costanti.STATRI_InivioRichiesta;
+
+                case RichiestaModificata _:
+                    return Costanti.RichiestaModificata;
 
                 default:
                     return Costanti.EventoGenerico;

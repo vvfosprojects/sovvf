@@ -20,14 +20,16 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -37,12 +39,16 @@ namespace SO115App.API.Controllers
     public class GestioneSchedeContattoController : ControllerBase
     {
         private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
+        private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _queryhandlerSchede;
+        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _queryhandlerContatoriSchede;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
         private readonly ICommandHandler<UndoMergeSchedeNueCommand> _undoMergeSchede;
 
         public GestioneSchedeContattoController(
             IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
+            IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> queryhandlerSchede,
+            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> queryhandlerContatoriSchede,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
             ICommandHandler<MergeSchedeNueCommand> setMerge,
             ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede)
@@ -51,6 +57,8 @@ namespace SO115App.API.Controllers
             _setGestita = setGestita ?? throw new ArgumentNullException(nameof(_setGestita));
             _setMerge = setMerge;
             _undoMergeSchede = undoMergeSchede ?? throw new ArgumentNullException(nameof(_undoMergeSchede));
+            _queryhandlerSchede = queryhandlerSchede;
+            _queryhandlerContatoriSchede = queryhandlerContatoriSchede;
         }
 
         [HttpPost("GetSchede")]
@@ -62,6 +70,43 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_queryHandler.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetContatoriSchede")]
+        public async Task<IActionResult> GetContatoriSchede()
+        {
+            var query = new GetConteggioSchedeQuery()
+            {
+                CodiciSede = Request.Headers["codiceSede"].ToArray()
+            };
+
+            try
+            {
+                return Ok(_queryhandlerContatoriSchede.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetByCodiceScheda")]
+        public async Task<IActionResult> Get(string codice)
+        {
+            var query = new GetSchedeContattoQuery() { CodiceSede = Request.Headers["codiceSede"].ToArray()[0] };
+
+            try
+            {
+                return Ok(_queryhandlerSchede.Handle(query).SchedeContatto.FirstOrDefault(s => s.CodiceScheda == codice));
             }
             catch (Exception ex)
             {
@@ -91,7 +136,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("MergeSchede")]
-        public async Task<IActionResult> MergeSchede([FromBody] SchedaContatto scheda)
+        public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
             string idUtente = Request.Headers["IdUtente"];
 
@@ -99,7 +144,7 @@ namespace SO115App.API.Controllers
             {
                 CodiceSede = Request.Headers["codiceSede"],
                 IdUtente = idUtente,
-                SchedaNue = scheda
+                schedeSelezionateID = scheda
             };
 
             try

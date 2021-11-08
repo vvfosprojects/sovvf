@@ -17,98 +17,49 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
-    /// <summary>
-    ///   Controller per l'accesso alla sintesi sulle richieste di assistenza
-    /// </summary>
-
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ComposizioneMezziController : ControllerBase
     {
-        /// <summary>
-        ///   Handler del servizio
-        /// </summary>
-        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler;
+        private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _handler;
 
-        private readonly IPrincipal _currentUser;
-
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
-        /// <param name="handler">L'handler iniettato del servizio</param>
-        public ComposizioneMezziController(IPrincipal currentUser,
-            IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler)
+        public ComposizioneMezziController(IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> handler)
         {
-            this.handler = handler;
-            _currentUser = currentUser;
+            _handler = handler;
         }
 
-        /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
-        /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
-        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
+        public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {
-            var codiceSede = Request.Headers["codicesede"];
-            var headerValues = Request.Headers["HubConnectionId"];
-            string ConId = headerValues.FirstOrDefault();
+            query.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
+            query.IdOperatore = Request.Headers["idUtente"].ToString();
 
-            var query = new ComposizioneMezziQuery()
+            try
             {
-                Filtro = filtri,
-                CodiceSede = codiceSede
-            };
+                var result = _handler.Handle(query);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    List<ComposizioneMezzi> composizioneMezzi = handler.Handle(query).ComposizioneMezzi;
-                    return Ok();
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                        return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                    else if (ex.Message.Contains("404"))
-                        return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
-                    else
-                        return BadRequest(new { message = ex.Message });
-                }
+                return Ok(result);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else if (ex.Message.Contains("404"))
+                    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
+                else
+                    return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
             }
-        }
-
-        [HttpGet("{filtro}")]
-        public ComposizioneMezziResult GetMarkerFromId(FiltriComposizionePartenza filtro)
-        {
-            var query = new ComposizioneMezziQuery()
-            {
-                Filtro = filtro
-            };
-
-            return handler.Handle(query);
         }
     }
 }

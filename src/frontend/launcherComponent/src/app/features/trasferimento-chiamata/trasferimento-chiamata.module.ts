@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
@@ -14,6 +13,7 @@ import { RicercaTrasferimentoChiamataComponent } from './ricerca-trasferimento-c
 import { TabellaTrasferimentoChiamataComponent } from './tabella-trasferimento-chiamata/tabella-trasferimento-chiamata.component';
 import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamata/trasferimento-chiamata.state';
 import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
+import { MapsModule } from '../maps/maps.module';
 
 @NgModule({
   declarations: [
@@ -33,9 +33,9 @@ import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasfe
         NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
-        NgxPaginationModule,
         NgbModule,
-        SharedModule
+        SharedModule,
+        MapsModule
     ],
   providers: []
 })

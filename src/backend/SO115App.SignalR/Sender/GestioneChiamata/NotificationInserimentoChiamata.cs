@@ -21,17 +21,12 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.AddIntervento;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.Matrix;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
@@ -45,46 +40,53 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
-        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                               IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
+                                               IMapperRichiestaSuSintesi mapperSintesi,
                                                GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
-            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
+            _mapperSintesi = mapperSintesi;
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(AddInterventoCommand intervento)
+        public async Task SendNotification(AddInterventoCommand command)
         {
-            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(intervento.Chiamata.Codice);
+            var sintesi = _mapperSintesi.Map(command.Intervento);
 
             var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
-            foreach (var sede in SediDaNotificare)
+            Parallel.ForEach(SediDaNotificare, sede =>
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery
                 {
                     CodiciSede = new string[] { sede }
                 };
-                var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
                     CodiciSedi = new string[] { sede }
                 };
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
-            }
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = command.Chiamata.Competenze[0].Codice,
+                    count = 1
+                };
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
+            });
         }
     }
 }

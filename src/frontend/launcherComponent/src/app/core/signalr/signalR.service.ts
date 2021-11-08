@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -12,45 +12,26 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
-import {
-    AddBookMezzoComposizione,
-    RemoveBookingMezzoComposizione,
-    RemoveBookMezzoComposizione,
-    UpdateMezzoComposizione,
-    UpdateMezzoComposizioneScadenzaByCodiceMezzo
-} from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
-import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
-import {
-    InsertSchedeContatto,
-    RemoveSchedeContatto,
-    SetContatoriSchedeContatto,
-    SetListaSchedeContatto,
-    UpdateSchedaContatto
-} from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
-import { RichiestaMarker } from '../../features/home/maps/maps-model/richiesta-marker.model';
-import { MezzoMarker } from '../../features/home/maps/maps-model/mezzo-marker.model';
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
 import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
-import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
+import { ChiamataMarker } from '../../features/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
-import { ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface, Ente } from '../../shared/interface/ente.interface';
+import { EnteInterface, ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface } from '../../shared/interface/ente.interface';
 import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
@@ -59,7 +40,21 @@ import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.acti
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
-import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { BoxPartenzaPreAccoppiati } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import {
+    AddChiamateDistaccamentoCodaChiamate,
+    AddSquadreLibereDistaccamentoCodaChiamate,
+    AddSquadreOccupateDistaccamentoCodaChiamate,
+    RemoveChiamateDistaccamentoCodaChiamate,
+    RemoveSquadreLibereDistaccamentoCodaChiamate,
+    RemoveSquadreOccupateDistaccamentoCodaChiamate
+} from '../../features/home/store/actions/coda-chiamate/coda-chiamate.actions';
+import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
+import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
+import { GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
+import { ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -130,8 +125,35 @@ export class SignalRService {
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
-            this.store.dispatch(new UpdateRichiesta(data.chiamata));
+            const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
+            this.store.dispatch(new UpdateRichiesta(updateRichiesta));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
+        });
+
+        /**
+         * Soccorso Aereo
+         */
+        // Todo: tipicizzare
+        this.hubNotification.on('NotifySuccessAFM', (data: any) => {
+            console.log('NotifySuccessAFM', data);
+            this.store.dispatch(new UpdateRichiesta(data.richiesta));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
+        });
+
+        this.hubNotification.on('NotifyErrorAFM', (data: string) => {
+            console.log('NotifyErrorAFM:', data);
+            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
+        });
+
+        this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
+            console.log('NotifySuccessAnnullamentoAFM:', data);
+            this.store.dispatch(new UpdateRichiesta(data.richiesta));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+        });
+
+        this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
+            console.log('NotifyErrorAnnullamentoAFM:', data);
+            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         /**
@@ -148,37 +170,18 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: MezzoInServizio[]) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
-            this.store.dispatch(new StopLoadingActionMezzo());
+            this.store.dispatch(new StopLoadingMezziInServizio());
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
-            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
             const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (mezziInServizioActive) {
                 this.store.dispatch(new UpdateMezzoInServizio(data));
             } else if (composizionePartenzaActive) {
                 this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
             }
-            this.store.dispatch(new StopLoadingActionMezzo());
-        });
-
-        /**
-         * Markers Mappa
-         */
-        this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaMarker', data);
-            this.store.dispatch(new InsertRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
-            console.log('NotifyGetRichiestaUpdateMarker', data);
-            this.store.dispatch(new UpdateRichiestaMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
-        });
-        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
-            console.log('NotifyGetMezzoUpdateMarker', data);
-            this.store.dispatch(new UpdateMezzoMarker(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+            this.store.dispatch(new StopLoadingMezziInServizio());
         });
 
         /**
@@ -222,20 +225,25 @@ export class SignalRService {
         /**
          * Inserimento Chiamata
          */
-        this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
-            console.log('NotifyDoppioneChiamataInCorso', message);
-            this.store.dispatch(new ApriModaleRichiestaDuplicata(message));
-        });
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
-            this.store.dispatch(new InsertChiamataSuccess(data));
+            this.store.dispatch([
+                new InsertChiamataSuccess(data),
+                new RefreshMappa(true)
+            ]);
+        });
+        this.hubNotification.on('SaveAndNotifySuccessChiamataTrasferita', (data: SintesiRichiesta) => {
+            console.log('SaveAndNotifySuccessChiamataTrasferita', data);
+            this.store.dispatch([
+                new InsertChiamataSuccess(data, { trasferimento: true }),
+            ]);
         });
 
         /**
          * Schede Contatto
          */
-        this.hubNotification.on('NotifyGetContatoriSchedeContatto', (data: ContatoriSchedeContatto) => {
-            console.log('NotifyGetContatoriSchedeContatto', data);
+        this.hubNotification.on('NotifySetContatoriSchedeContatto', (data: ContatoriSchedeContatto) => {
+            console.log('NotifySetContatoriSchedeContatto', data);
             this.store.dispatch(new SetContatoriSchedeContatto(data));
         });
         this.hubNotification.on('NotifyGetListaSchedeContatto', (data: SchedaContatto[]) => {
@@ -243,8 +251,8 @@ export class SignalRService {
             this.store.dispatch(new SetListaSchedeContatto(data));
         });
         this.hubNotification.on('NotifyInsertSchedeContatto', (data: SchedaContatto[]) => {
-            console.log('NotifyGetListaSchedeContatto', data);
-            this.store.dispatch(new InsertSchedeContatto(data));
+            console.log('NotifyInsertSchedeContatto', data);
+            this.store.dispatch(new GetListaSchedeContatto());
         });
         this.hubNotification.on('NotifyUpdateSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyUpdateSchedaContatto', data);
@@ -252,7 +260,14 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyRemoveSchedeContatto', (data: string[]) => {
             console.log('NotifyRemoveSchedeContatto', data);
-            this.store.dispatch(new RemoveSchedeContatto(data));
+            this.store.dispatch(new GetListaSchedeContatto());
+        });
+        this.hubNotification.on('NotifyNewSchedaContatto', (data: SchedaContatto) => {
+            console.log('NotifyNewSchedaContatto', data);
+            this.store.dispatch([
+                new GetContatoriSchedeContatto(),
+                new GetListaSchedeContatto()
+            ]);
         });
 
         /**
@@ -270,33 +285,37 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenzaPreAccoppiati[]) => {
             this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
-        // Todo: tipicizzare
-        this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
-            if (!data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new AddBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new RemoveBookingMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, data.istanteScadenzaSelezione));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo prenotato signalr', data);
-            } else if (data.sbloccaMezzo) {
-                const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new RemoveBookMezzoComposizione(data.codiceMezzo));
-                    this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, null));
-                } else if (compMode === Composizione.Veloce) {
-                    this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
-                }
-                console.log('Mezzo remove prenotato signalr', data);
-            }
+        /**
+         * Coda Chiamate
+         */
+        this.hubNotification.on('NotifyAddChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddChiamateCodaChiamate', changes);
+            this.store.dispatch(new AddChiamateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyAddSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddSquadreLibereCodaChiamate', changes);
+            this.store.dispatch(new AddSquadreLibereDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyAddSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyAddSquadreOccupateCodaChiamate', changes);
+            this.store.dispatch(new AddSquadreOccupateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveChiamateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveChiamateCodaChiamate', changes);
+            this.store.dispatch(new RemoveChiamateDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveSquadreLibereCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveSquadreLibereCodaChiamate', changes);
+            this.store.dispatch(new RemoveSquadreLibereDistaccamentoCodaChiamate(changes));
+        });
+        this.hubNotification.on('NotifyRemoveSquadreOccupateCodaChiamate', (changes: ChangeCodaChiamate) => {
+            console.log('NotifyRemoveSquadreOccupateCodaChiamate', changes);
+            this.store.dispatch(new RemoveSquadreOccupateDistaccamentoCodaChiamate(changes));
         });
 
         /**
@@ -309,11 +328,11 @@ export class SignalRService {
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
+                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
+
                 const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
                 if (idUtente === utenteAttuale.id) {
                     this.store.dispatch(new UpdateRuoliPersonali(idUtente));
-                } else {
-                    this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
                 }
             }
         });
@@ -328,9 +347,25 @@ export class SignalRService {
         });
 
         /**
+         * Zone Emergenza
+         */
+        this.hubNotification.on('NotifyCreazioneEmergenza', (emergenza: ZonaEmergenza) => {
+            console.log('NotifyCreazioneEmergenza', emergenza);
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            const page = pagination?.page ? pagination.page : null;
+            this.store.dispatch(new GetZoneEmergenza(page));
+        });
+        this.hubNotification.on('NotifyModificaEmergenza', (emergenza: ZonaEmergenza) => {
+            console.log('NotifyModificaEmergenza', emergenza);
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            const page = pagination?.page ? pagination.page : null;
+            this.store.dispatch(new GetZoneEmergenza(page));
+        });
+
+        /**
          * Rubrica
          */
-        this.hubNotification.on('NotifyChangeEnti', (enti: Ente[]) => {
+        this.hubNotification.on('NotifyChangeEnti', (enti: EnteInterface[]) => {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });
@@ -365,6 +400,28 @@ export class SignalRService {
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
             this.store.dispatch(new GetListaRichieste());
+        });
+
+        /**
+         * Dettagli Tipologie
+         */
+        this.hubNotification.on('NotifyAddDettaglioTipologia', (response: any) => {
+            console.log('NotifyAddDettaglioTipologia', response);
+            this.store.dispatch(new AddDettaglioTipologia());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyModifyDettaglioTipologia', (response: any) => {
+            console.log('NotifyModifyDettaglioTipologia', response);
+            this.store.dispatch(new UpdateDettaglioTipologia(response.data.dettaglioTipologia));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteDettaglioTipologia', (response: any) => {
+            console.log('NotifyDeleteDettaglioTipologia', response);
+            this.store.dispatch(new DeleteDettaglioTipologia(response.data));
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
 
         /**
@@ -404,10 +461,9 @@ export class SignalRService {
         }
     }
 
-
     addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.log('addToGroup', notification);
+            console.warn('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(
@@ -418,7 +474,7 @@ export class SignalRService {
 
     removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.log('removeToGroup', notification);
+            console.warn('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(
@@ -426,5 +482,4 @@ export class SignalRService {
             );
         }
     }
-
 }

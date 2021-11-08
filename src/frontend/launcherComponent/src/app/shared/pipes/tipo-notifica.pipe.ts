@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { getDescrizioneTipoNotifica } from '../helper/notifiche-helper';
+import { getDescrizioneTipoNotifica } from '../helper/function-notifiche';
 import { TipoNotifica } from '../enum/tipo-notifica.enum';
 
 @Pipe({ name: 'tipoNotifica' })

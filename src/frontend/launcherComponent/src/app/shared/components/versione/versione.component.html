@@ -1,0 +1,11 @@
+<div>
+    <div class="d-inline-block font-weight-bolder">Sala Operativa VV.F. Web</div>
+    - Direzione Centrale per le Risorse Logistiche e Strumentali
+</div>
+<div>
+    <a (click)="goToListaChangelog()">vers. {{ version?.number }}</a>
+    <div class="d-inline-block ml-1" style="opacity: .75">
+        - {{ version?.date | date :'dd/MM/yyyy' }} alle
+        {{ version?.date | date :'HH:mm' }}
+    </div>
+</div>

@@ -10,8 +10,10 @@ import {
     Logout,
     RecoveryUrl,
     SetCurrentJwt,
+    SetCurrentPswEsri,
     SetCurrentTicket,
     SetCurrentUser,
+    SetCurrentUserEsri,
     SetLogged,
     SetLoggedCas,
     UpdateCurrentUser,
@@ -29,12 +31,14 @@ import { ClearIdUtente, LogoffUtenteSignalR } from '../../../core/signalr/store/
 import { ClearRuoliUtenteLoggato, UpdateRuoliUtenteLoggato } from '../../../shared/store/actions/ruoli/ruoli.actions';
 import { ClearViewState } from '../../home/store/actions/view/view.actions';
 import { ClearRichieste } from '../../home/store/actions/richieste/richieste.actions';
-import { _isAdministrator } from '../../../shared/helper/function';
+import { _isAdministrator } from '../../../shared/helper/function-generiche';
 import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
 
 export interface AuthStateModel {
     currentJwt: string;
+    currentPswEsri: string;
+    currentUserEsri: string;
     currentTicket: string;
     currentUser: Utente;
     logged: boolean;
@@ -43,6 +47,8 @@ export interface AuthStateModel {
 
 export const AuthStateDefaults: AuthStateModel = {
     currentJwt: null,
+    currentPswEsri: null,
+    currentUserEsri: null,
     currentTicket: null,
     currentUser: null,
     logged: false,
@@ -63,6 +69,15 @@ export class AuthState {
     @Selector()
     static currentJwt(state: AuthStateModel): string {
         return state.currentJwt;
+    }
+
+    @Selector()
+    static currentPswEsri(state: AuthStateModel): string {
+        return state.currentPswEsri;
+    }
+    @Selector()
+    static currentUserEsri(state: AuthStateModel): string {
+        return state.currentUserEsri;
     }
 
     @Selector()
@@ -118,19 +133,37 @@ export class AuthState {
         }
     }
 
+    @Action(SetCurrentPswEsri)
+    setCurrentPswEsri({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentPswEsri): void {
+        if (action.psw) {
+            patchState({
+                currentPswEsri: action.psw
+            });
+        }
+    }
+
+    @Action(SetCurrentUserEsri)
+    setCurrentUserEsri({ patchState, dispatch }: StateContext<AuthStateModel>, action: SetCurrentUserEsri): void {
+        if (action.user) {
+            patchState({
+                currentUserEsri: action.user
+            });
+        }
+    }
+
     @Action(SetCurrentUser)
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser): void {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
         let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
         if (cS) {
-          cS = JSON.parse(cS);
+            cS = JSON.parse(cS);
         }
-        let codice = currentUser.sede.codice;
+        let codice = [currentUser.sede.codice];
         if (cS) {
             codice = cS;
         }
-        dispatch(new SetVistaSedi([codice]));
+        dispatch(new SetVistaSedi(codice));
     }
 
     @Action(UpdateCurrentUser)
@@ -268,5 +301,4 @@ export class AuthState {
         localStorage.removeItem(LSNAME.redirectUrl);
         sessionStorage.removeItem(LSNAME.cacheSedi);
     }
-
 }

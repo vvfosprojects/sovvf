@@ -17,16 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati
 {
     public interface IGetPreAccoppiati
     {
-        List<PreAccoppiati> Get(PreAccoppiatiQuery query);
-
-        List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query);
+        Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query);
     }
 }

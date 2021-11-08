@@ -17,18 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -67,19 +64,21 @@ namespace SO115App.API.Controllers
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
-        public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
+        public async Task<IActionResult> Post(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()
             {
-                Filtro = filtri
-            };
+                Filtro = filtri,
+                CodiciSede = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries)
+        };
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    List<ComposizioneSquadre> composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
-                    return Ok();
+                    var result = handler.Handle(query);
+
+                    return Ok(result);
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +87,7 @@ namespace SO115App.API.Controllers
                     else if (ex.Message.Contains("404"))
                         return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                     else
-                        return BadRequest(new { message = ex.Message });
+                        return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
                 }
             }
             else
@@ -98,7 +97,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("{filtro}")]
-        public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizionePartenza filtri)
+        public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()
             {

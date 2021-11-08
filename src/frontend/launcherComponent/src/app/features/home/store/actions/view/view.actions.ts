@@ -9,8 +9,19 @@ export class ChangeView {
     }
 }
 
+export class ToggleCodaChiamate {
+    static readonly type = '[Chiamata] Toggle coda chiamate';
+}
+
 export class ToggleChiamata {
     static readonly type = '[Chiamata] Toggle chiamata';
+
+    constructor(public toggle?: boolean) {
+    }
+}
+
+export class ToggleRichieste {
+    static readonly type = '[Richieste] Toggle richieste';
 
     constructor(public toggle?: boolean) {
     }
@@ -34,13 +45,6 @@ export class SwitchComposizione {
     }
 }
 
-export class SaveView {
-    static readonly type = '[ChangeView] Stato visualizzazione salvata';
-
-    constructor(public state: any) {
-    }
-}
-
 export class ToggleModifica {
     static readonly type = '[Modifica] Toggle modifica';
 
@@ -54,6 +58,13 @@ export class ToggleMezziInServizio {
 
 export class ToggleSchedeContatto {
     static readonly type = '[SchedeContatto] Toggle schede contatto';
+}
+
+export class SaveView {
+    static readonly type = '[ChangeView] Stato visualizzazione salvata';
+
+    constructor(public state: any) {
+    }
 }
 
 export class ClearViewState {

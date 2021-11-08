@@ -18,12 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Microsoft.Extensions.Configuration;
 using Serilog;
-using SO115App.API.Models.Classi.NavBar;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
-using SO115App.Models.Servizi.Infrastruttura.NavBar;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 {
@@ -33,14 +36,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     public class NavbarQueryHandler : IQueryHandler<NavbarQuery, NavbarResult>
     {
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
-        private readonly IGetRuoliById _getRuoliById;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
+        private readonly IConfiguration _configuration;
+        private readonly IGetConteggioSchede _getConteggioSchedeHandler;
 
-        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById, IGetUtenteById getUtenteById)
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
+                                  IGetConteggioSchede getConteggioSchedeHandler,
+                                  IGetUtenteById getUtenteById,
+                                  IGetCentroMappaMarker centroMappaMarkerHandler,
+                                  IConfiguration configuration)
         {
-            this._alberaturaUO = alberaturaUO;
-            _getRuoliById = getRuoliById;
+            _alberaturaUO = alberaturaUO;
+            _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
+            _centroMappaMarkerHandler = centroMappaMarkerHandler;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -52,10 +63,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         {
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
-            var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
+            var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodSedi[0]);
+            var lstSedi = _alberaturaUO.ListaSediAlberata();
+
+            var navbars = new Classi.NavBar.Navbar
             {
-                ListaSedi = _alberaturaUO.ListaSediAlberata(),
-                Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente)
+                ListaSedi = lstSedi.Result,
+                Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
+                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
+                CentroMappaMarker = centroMappaMarker,
+                UserESRI = _configuration.GetSection("ESRI").GetSection("User").Value,
+                PwESRI = _configuration.GetSection("ESRI").GetSection("Password").Value
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

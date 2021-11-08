@@ -1,0 +1,25 @@
+<ng-container *ngIf="user">
+    <div class="text-center">
+        <div class="container mt-2">
+            <div class="d-flex justify-content-center h-100">
+                <div class="img-fuori-container">
+                    <div class="icona-verde"></div>
+                    <div class="img-dentro-container">
+                        <img src="../../../../assets/img/logo_vvf_200x.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="mb-1">
+            {{ (user.nome + ' ' + user.cognome) | uppercase }}
+        </h3>
+        <div class="divider-custom">
+            <div class="divider-custom-line"
+                 style="height: 0.09rem;"></div>
+        </div>
+        <h6 class="mt-1">
+            <span class="font-weight-bold">CF:</span>
+            {{ user?.codiceFiscale | uppercase }}
+        </h6>
+    </div>
+</ng-container>

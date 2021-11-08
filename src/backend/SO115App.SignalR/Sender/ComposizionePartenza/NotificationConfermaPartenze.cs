@@ -22,10 +22,11 @@ using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.SignalR.Utility;
@@ -38,22 +39,24 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
     public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
-        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetListaMezzi _getListaMezzi;
+        private readonly IGetMezziInServizio _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
-            MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
+            IMapperRichiestaSuSintesi mapperSintesi,
+            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
@@ -154,6 +157,18 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                     });
                 }
+
+                foreach (var partenza in conferma.ConfermaPartenze.Partenze)
+                {
+                    var counterCodaChiamate = new CounterNotifica()
+                    {
+                        codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                        count = partenza.Squadre.Count
+                    };
+
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                }
             });
         }
 
@@ -166,7 +181,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 if (i <= 3)
                 {
                     var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
+                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
                     listaSedi.Add(sede);
                 }
 

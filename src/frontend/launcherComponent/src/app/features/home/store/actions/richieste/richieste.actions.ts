@@ -13,13 +13,6 @@ export class GetListaRichieste {
     }
 }
 
-export class PatchRichiesta {
-    static readonly type = '[Richieste] Modifica Richiesta API';
-
-    constructor(public richiesta: SintesiRichiesta) {
-    }
-}
-
 export class AddRichieste {
     static readonly type = '[Richieste] Add Richieste';
 
@@ -129,7 +122,7 @@ export class ClearRichiestaById {
 export class VisualizzaListaSquadrePartenza {
     static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
 
-    constructor(public listaSquadre: ListaSquadre) {
+    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre) {
     }
 }
 
@@ -150,6 +143,9 @@ export class StartLoadingActionMezzo {
 
 export class StopLoadingActionMezzo {
     static readonly type = '[Richieste] Stop Loading Action Mezzo';
+
+    constructor(public idMezzo: string) {
+    }
 }
 
 export class StartLoadingEliminaPartenza {
@@ -169,6 +165,9 @@ export class StartLoadingActionRichiesta {
 
 export class StopLoadingActionRichiesta {
     static readonly type = '[Richieste] Stop Loading Action Richiesta';
+
+    constructor(public idRichiesta: string) {
+    }
 }
 
 export class StartLoadingModificaFonogramma {

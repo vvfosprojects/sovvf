@@ -11,12 +11,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
     public class AddTrasferimentoCommandHandler : ICommandHandler<AddTrasferimentoCommand>
     {
         private readonly IAddTrasferimento _addTrasferimento;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
         private readonly IGetUtenteById _getUtenteById;
 
         public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento,
-            IGetRichiestaById getRichiestaById,
+            IGetRichiesta getRichiestaById,
             IGetDistaccamentoByCodiceSede getSede,
             IGetUtenteById getUtenteById)
         {
@@ -29,15 +29,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         public void Handle(AddTrasferimentoCommand command)
         {
             //GESTIONE RICHIESTA E TRASFERIMENTO
+            var sedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione;
+
+            if (!sedeA.ToUpper().Contains("CENTRALE"))
+                throw new Exception("Puoi trasferire la chiamata solo verso le centrali");
+
+            var sedeDa = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
+
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
 
             command.TrasferimentoChiamata.CodSedeDa = richiesta.CodSOCompetente;
             richiesta.CodSOCompetente = command.TrasferimentoChiamata.CodSedeA;
             command.TrasferimentoChiamata.IdOperatore = command.IdOperatore;
             command.TrasferimentoChiamata.Data = DateTime.Now;
-
-            var sedeDa = _getSede.Get(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
-            var sedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione;
 
             var codSedeUtente = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore).Sede.Descrizione;
 

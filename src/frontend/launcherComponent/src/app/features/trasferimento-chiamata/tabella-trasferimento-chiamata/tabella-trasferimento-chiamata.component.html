@@ -1,107 +1,112 @@
-<div style="height: 760px; max-height: 760px; overflow-y: auto; overflow-x: hidden">
-    <table class="table table-striped app-shadow mt-2 bg-white">
-        <thead>
-        <tr>
-            <th scope="col" style="width: 24%">
-                <i class="fa fa-hashtag mr-2"></i>
-                Cod.Richiesta
-            </th>
-            <th scope="col" style="width: 22%">
-                <i class="fa fa-circle-o" style="margin-right: 2px;"></i>
-                <i class="fa fa-ellipsis-h mr-2"></i>
-                Sede da
-            </th>
-            <th scope="col" style="width: 22%">
-                <i class="fa fa-ellipsis-h" style="margin-right: 2px;"></i>
-                <i class="fa fa-map-marker mr-2"></i>Sede a
-            </th>
-            <th scope="col" style="width: 16%">
-                <i class="fa fa-calendar mr-2"></i>
-                Quando
-            </th>
-            <th scope="col" style="width: 16%">
-                <i class="fa fa-user mr-2"></i>
-                Operatore
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let trasferimento of listaTrasferimentiChiamate | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-            <td class="align-middle" style="width: 24%">
-                <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                    <span>{{trasferimento?.codRichiesta}}</span>
+<table class="table table-striped mt-2 bg-white">
+    <thead>
+    <tr>
+        <th scope="col" style="width: 24%">
+            <i class="fas fa-hashtag mr-2"></i>
+            Cod.Chiamata
+        </th>
+        <th scope="col" style="width: 22%">
+            <i class="fas fa-map-marker-alt mr-1"></i>
+            <i class="fas fa-ellipsis-h mr-2"></i>
+            Sede da
+        </th>
+        <th scope="col" style="width: 22%">
+            <span class="d-inline-block mr-2">Sede a</span>
+            <i class="fas fa-ellipsis-h mr-1" style="margin-right: 2px;"></i>
+            <i class="fas fa-map-marker-alt"></i>
+        </th>
+        <th scope="col" style="width: 16%">
+            <i class="fas fa-calendar mr-2"></i>
+            Quando
+        </th>
+        <th scope="col" style="width: 16%">
+            <i class="fas fa-user mr-2"></i>
+            Operatore
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let trasferimento of listaTrasferimentiChiamate">
+        <td class="align-middle" style="width: 24%">
+            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
+                <span>{{trasferimento?.codChiamata}}</span>
+            </div>
+        </td>
+        <td class="align-middle" style="width: 22%">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
+                            <span ngbTooltip="{{trasferimento?.sedeDa }}"
+                                  class="ml-1">{{trasferimento?.sedeDa | truncate: 40}}</span>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-            <td class="align-middle" style="width: 22%">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span ngbTooltip="{{trasferimento?.sedeDa }}"
-                                      class="ml-1">{{trasferimento?.sedeDa | truncate: 40}}</span>
-                            </li>
-                        </ul>
-                    </div>
+            </div>
+        </td>
+        <td class="align-middle" style="width: 22%">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
+                            <span ngbTooltip="{{trasferimento?.sedeA }}"
+                                  class="ml-1">{{trasferimento?.sedeA | truncate: 40}}</span>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-            <td class="align-middle" style="width: 22%">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span ngbTooltip="{{trasferimento?.sedeA }}"
-                                      class="ml-1">{{trasferimento?.sedeA | truncate: 40}}</span>
-                            </li>
-                        </ul>
-                    </div>
+            </div>
+        </td>
+        <td class="align-middle" style="width: 16%">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
+                            <span class="ml-1" [ngbTooltip]="(trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss')" placement="top">
+                                {{ (trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss').slice(0, (trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss')?.length - 3 ) }}</span>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-            <td class="align-middle" style="width: 16%">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span class="ml-1">{{ trasferimento?.data | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </td>
-            <td class="align-middle" style="width: 16%">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0"
-                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
-                            <li>
+            </div>
+        </td>
+        <td class="align-middle" style="width: 16%">
+            <div class="row">
+                <div class="col-11">
+                    <ul class=" mb-0"
+                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
+                        <li>
                                 <span [ngbTooltip]="trasferimento?.operatore?.nome + ' ' + trasferimento?.operatore?.cognome"
                                       class="ml-1">{{trasferimento?.operatore?.nome + ' ' + trasferimento?.operatore?.cognome}}</span>
-                            </li>
-                        </ul>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
-            </td>
-        </tr>
-        <tr *ngIf="listaTrasferimentiChiamate?.length <= 0">
-            <td>
-                <ng-template [ngIf]="!loading">Nessun risultato trovato</ng-template>
-                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between p-2">
+            </div>
+        </td>
+    </tr>
+    <tr *ngIf="listaTrasferimentiChiamate?.length <= 0">
+        <td>
+            <ng-template [ngIf]="!loading">Nessun risultato trovato</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between pt-2 px-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                     [placeholderElementi]="'trasferimenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)">
-    </pagination-controls>
+    <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalItems"
+            [maxSize]="5"
+            [disabled]="loading"
+            (pageChange)="pageChange.emit($event)">
+    </ngb-pagination>
 </div>

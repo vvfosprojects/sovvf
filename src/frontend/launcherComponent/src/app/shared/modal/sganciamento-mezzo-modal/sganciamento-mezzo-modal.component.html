@@ -1,21 +1,37 @@
-<div>
-  <div class="modal-header">
-    <h4 class="modal-title font-weight-bolder text-uppercase" id="modal-basic-title"><i
-        class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> {{titolo}}</h4>
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold text-uppercase" id="modal-basic-title">
+        <i class="fas fa-fw fa-{{icona.descrizione}} guida"></i>
+        {{titolo}}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-      (click)="modal.dismiss('cross')">
-      <span class="text-danger"><i class="fa fa-times"></i></span>
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
     </button>
-  </div>
-  <div *ngIf="richiestaDa" class="modal-body">
-    <app-sintesi-richiesta [richiesta]="richiestaDa" [fissata]="false" [fissabile]="false" [isEspanso]="true"
-                           [gestibile]="false" [modificabile]="false" [espandibile]="false" [listaEventi]="false"
-                           [composizionePartenza]="false" [idDaSganciare]="idDaSganciare" ></app-sintesi-richiesta>
-  </div>
-  <div class="modal-footer">
-    <button style="min-width:126px; font-weight: 600;" type="button" class="btn btn-lg btn-secondary text-uppercase"
-      (click)="modal.close(bottoni[0].type)">{{bottoni[0].descrizione}}</button>
-      <button style="min-width:142px; font-weight: 600;" type="button" class="btn btn-lg btn-danger text-uppercase"
-      (click)="modal.close(bottoni[1].type)">{{bottoni[1].descrizione}}</button>
-  </div>
+</div>
+
+<div *ngIf="richiestaDa" class="modal-body">
+    <app-sintesi-richiesta [richiesta]="richiestaDa"
+                           [fissata]="false"
+                           [fissabile]="false"
+                           [inGestione]="true"
+                           [gestibile]="false"
+                           [modificabile]="false"
+                           [disabledGestisciRichiesta]="true"
+                           [boxAzioni]="false"
+                           [composizionePartenza]="false"
+                           [idDaSganciare]="idDaSganciare">
+    </app-sintesi-richiesta>
+</div>
+
+<div class="modal-footer" style="place-content: space-between">
+    <button style="min-width:200px; font-weight: 600;" type="button"
+            class="btn btn-lg btn-danger btn-no-hover text-uppercase font-xxlarge"
+            (click)="modal.close(bottoni[1].type)">
+        {{ bottoni[1].descrizione }}
+    </button>
+    <button style="min-width:126px; font-weight: 600;" type="button"
+            class="btn btn-lg btn-secondary btn-no-hover text-uppercase font-xxlarge"
+            (click)="modal.close(bottoni[0].type)">
+        {{ bottoni[0].descrizione }}
+    </button>
 </div>

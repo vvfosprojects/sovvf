@@ -1,41 +1,35 @@
-<div class="row mt-2 px-0">
-    <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
-    <div class="col-12 border-bottom border-light shadown-sm scroll-y"
-         [ngClass]="{'m-h-705-mezziinservizio': boxAttivi, 'm-h-805-mezziinservizio': !boxAttivi}">
-        <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+<div class="row">
+    <div class="col-12" [ngClass]="heightListaMezzi()">
+        <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
+        <ng-template [ngIf]="ricerca">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-        </div>
-        <div *ngIf="mezziInServizio" class="row">
-            <div *ngFor="let m of mezziInServizio" class="col-6 pl-4 mb-1">
-                <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
-                                       [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
-                                       [loading]="(loadingActionMezzo$ | async)"
-                                       (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
-                                       (selezionato)="selezionato($event)"
-                                       (dettaglioRichiesta)="onDettaglioRichiesta($event)"
-                                       (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                                       (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="row">
-            <div class="col-4">
-                <button class="btn btn-block btn-primary mt-2 btn-no-hover" (click)="tornaIndietro()">
-                    <i class="fa fa-arrow-left mr-2"></i>
-                    Torna Indietro
-                </button>
-            </div>
-            <div class="col-8">
-                <div *ngIf="mezziInServizio?.length > 0" class="d-flex justify-content-between p-2">
-                    <pagination-controls class="mt-1 mb-0"
-                                         [previousLabel]="'Precedente'"
-                                         [nextLabel]="'Successiva'"
-                                         [autoHide]="true"
-                                         (pageChange)="onPageChange($event)">
-                    </pagination-controls>
+        </ng-template>
+        <ng-template [ngIf]="mezziInServizio">
+            <div class="px-3 cursor-pointer">
+                <div *ngFor="let m of mezziInServizio">
+                    <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
+                                           [nightMode]="nightMode"
+                                           [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
+                                           [loading]="(loadingActionMezzo$ | async)"
+                                           (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
+                                           (selezionato)="selezionato($event)"
+                                           (dettaglioRichiesta)="onDettaglioRichiesta($event)"
+                                           (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                                           (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
                 </div>
             </div>
+        </ng-template>
+    </div>
+    <div class="col-12">
+        <div class="float-right mt-3">
+            <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="totalItems"
+                    [maxSize]="5"
+                    [disabled]="loading$ | async"
+                    (pageChange)="onPageChange($event)">
+            </ngb-pagination>
         </div>
     </div>
 </div>

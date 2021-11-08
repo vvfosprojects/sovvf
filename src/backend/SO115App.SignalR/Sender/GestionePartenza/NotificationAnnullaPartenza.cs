@@ -28,7 +28,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
@@ -47,7 +46,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzahandler;
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _listaMezziMarkerHandler;
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationAnnullaPartenza(IHubContext<NotificationHub> notificationHubContext,
@@ -58,7 +56,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           IQueryHandler<MezziMarkerQuery, MezziMarkerResult> listaMezziMarkerHandler,
-                                          IGetRichiestaById getRichiestaById,
                                           GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
@@ -69,7 +66,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _sintesiRichiesteAssistenzahandler = sintesiRichiesteAssistenzahandler;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _listaMezziMarkerHandler = listaMezziMarkerHandler;
-            _getRichiestaById = getRichiestaById;
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
@@ -95,7 +91,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                         CodiciSede = new string[] { sede }
                     };
                     var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-                    command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.IdRichiesta);
+                    command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.CodiceRichiesta);
                     var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                     {
                         CodiciSedi = new string[] { sede }
@@ -164,7 +160,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
                 });
 
-                
+
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
             });
         }

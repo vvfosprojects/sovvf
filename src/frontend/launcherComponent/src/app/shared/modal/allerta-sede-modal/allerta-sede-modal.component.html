@@ -1,32 +1,84 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ 'Allerta Sede' | uppercase }}</h4>
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Allerta Comando' | uppercase }}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
-        <i class="fa fa-times text-danger"></i>
+        <i class="fas fa-times text-danger"></i>
     </button>
 </div>
-<div class="modal-body height py-4 px-5">
+<div class="modal-body height pt-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
-            <label for="sede">Quale sede vuoi allertare?</label>
-            <div class="border rounded">
-                <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
-                                     [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
-                                     [visualizzaTasti]="false" [disabled]="false"
-                                     (confermaSelezione)="onPatchSedi($event)">
-                </app-shared-treeview>
+            <label for="sede">Quale Comando vuoi allertare?
+            </label>
+                <ng-select class="align-self-center"
+                           id="sede"
+                           [items]="distaccamenti"
+                           bindLabel="descrizione"
+                           bindValue="id"
+                           [clearSearchOnAdd]="true"
+                           [closeOnSelect]="false"
+                           [hideSelected]="false"
+                           [multiple]="true"
+                           [(ngModel)]="sediSelezionate"
+                           [ngModelOptions]="{standalone: true}"
+                           [loading]="!distaccamenti"
+                           (change)="onPatchSedi($event)"
+                           (clear)="onClearSedi()"
+                           placeholder="Seleziona Comando">
+                    <ng-template ng-option-tmp let-item="item">
+                        <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>
+                        {{ item.descrizione }}
+                    </ng-template>
+                </ng-select>
+        </div>
+        <label for="genereMezzo" class="mt-2">Genere mezzo necessario?
+        </label>
+        <ng-select class="align-self-center custom"
+                   style="max-height: 45px; overflow: auto"
+                   id="genereMezzo"
+                   [items]="generiMezzi"
+                   bindLabel="descrizione"
+                   bindValue="descrizione"
+                   [clearSearchOnAdd]="true"
+                   [multiple]="true"
+                   [closeOnSelect]="false"
+                   [hideSelected]="false"
+                   [ngModelOptions]="{standalone: true}"
+                   [appendTo]="'body'"
+                   [(ngModel)]="generiMezzoSelezionati"
+                   [loading]="!generiMezzi"
+                   placeholder="Seleziona Genere Mezzo">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                <input type="checkbox" [checked]="generiMezzoSelezionati && generiMezzoSelezionati?.includes(item.descrizione)"/>
+                {{item.descrizione}}
+            </ng-template>
+        </ng-select>
+        <div class="alert alert-warning mt-5">
+            <span class="mr-4">Scegli motivazione:</span>
+            <div class="form-check-inline">
+                <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza" [checked]="checkbox.conoscenza"
+                       (click)="onCheck('conoscenza')">
+                <label class="form-check-label" for="conoscenza">
+                    Per conoscenza
+                </label>
             </div>
-            <div *ngIf="f.sedi.errors" class="text-danger mt-1">
-                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+            <div class="form-check-inline">
+                <input class="form-check-input radio-custom" type="radio" id="allerta" name="allerta" [checked]="checkbox.allerta"
+                       (click)="onCheck('allerta')">
+                <label class="form-check-label" for="allerta">
+                    Per allerta
+                </label>
             </div>
         </div>
     </form>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" style="place-content: space-between;">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!formValid" (click)="onConferma()">
+      {{ 'Conferma Allerta' | uppercase }}
+    </button>
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!formValid" (click)="onConferma()">
-        {{ 'Conferma Allerta' | uppercase }}
     </button>
 </div>

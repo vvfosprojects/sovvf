@@ -1,0 +1,7 @@
+<div [ngClass]="_boxStatiClass(stato)" class="clearfix badge"
+     style="width: 27px; height: 27px; vertical-align: text-bottom; font-size: large; border-radius: initial;"
+     [ngbTooltip]="stato" placement="top">
+  <span *ngIf="stato === 'In Viaggio'">V</span>
+  <span *ngIf="stato === 'Sul Posto'">P</span>
+  <span *ngIf="stato === 'In Rientro'">R</span>
+</div>

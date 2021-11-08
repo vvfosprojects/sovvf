@@ -92,19 +92,19 @@ namespace SO115App.FakePersistenceJSon.Utility
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.ArrivoSulPosto))
                     {
                         var arrivoSulPosto = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<ArrivoSulPosto>());
-                        new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.CodSOCompetente);
+                        new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.CodSOCompetente, arrivoSulPosto.CodicePartenza);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoInRientro))
                     {
                         var partenzaInRientro = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaInRientro>());
-                        new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.CodSOCompetente);
+                        new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.CodSOCompetente, partenzaInRientro.CodicePartenza);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoRientrato))
                     {
                         var partenzaRientrata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaRientrata>());
-                        new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.CodSOCompetente);
+                        new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.CodSOCompetente, partenzaRientrata.CodicePartenza);
                     }
 
                     ///Gestione Stato Richiesta

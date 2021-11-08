@@ -1,8 +1,10 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
 {
@@ -27,17 +29,17 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
         /// <returns>un risultato</returns>
         public PersonaleVVFResult Handle(PersonaleVVFQuery query)
         {
-            var listaPersonaleVVF = _getPersonaleVVF.Get(query.Text, query.CodiceSede).Result;
+            var listaPersonaleVVF = _getPersonaleVVF.Get(query.Text, query.CodiceSede);
             var listaUtenti = _getUtenti.Get(query.CodiceSede);
-            var listaUtentiNonCensiti = new List<PersonaleVVF>();
-            foreach (var personale in listaPersonaleVVF)
+
+            var listaUtentiNonCensiti = new ConcurrentQueue<PersonaleVVF>();
+            Parallel.ForEach(listaPersonaleVVF.Result, personale =>
             {
-                if (listaUtenti.Where(x => x.CodiceFiscale == personale.CodFiscale).ToList().Count == 0)
-                {
-                    listaUtentiNonCensiti.Add(personale);
-                }
-            }
-            return new PersonaleVVFResult { ListaPersonale = listaUtentiNonCensiti };
+                if (listaUtenti.Where(x => x.CodiceFiscale == personale.codiceFiscale).ToList().Count == 0)
+                    listaUtentiNonCensiti.Enqueue(personale);
+            });
+
+            return new PersonaleVVFResult { ListaPersonale = listaUtentiNonCensiti.ToList().OrderBy(n => n.nome).ToList() };
         }
     }
 }

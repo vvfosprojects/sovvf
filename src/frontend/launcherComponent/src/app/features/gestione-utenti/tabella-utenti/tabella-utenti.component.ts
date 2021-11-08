@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
-import { wipeStringUppercase } from '../../../shared/helper/function';
+import { wipeStringUppercase } from '../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-tabella-utenti',

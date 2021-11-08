@@ -22,20 +22,6 @@ namespace SO115App.ExternalAPI.Fake.Classi
 {
     public static class Costanti
     {
-        #region Url
-
-        public static string TerritorioUrl = "http://172.16.25.10:7002/api/";
-        public static string UosUrl = "http://172.16.25.10:7002/api/";
-
-        public static string ServiziUrl = "http://172.16.15.34:7000/api/";
-        public static string IdentityManagementUrl = "http://172.16.25.10:7000/api/PersonaFisica";
-
-        public static string NueUrl = "http://localhost:5001/api/SchedaContatto/";
-        public static string GeoFleetUrl = "http://geofleet-ws.dipvvf.it/api/";
-        public static string GacUrl = "http://localhost:5002/api/AnagraficaMezzi/";
-
-        #endregion Url
-
         #region Json
 
         public static string GacJson = "Servizi/Gac/Mock/Json/Mezzo.json";
@@ -43,6 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string ServiziComponentiJson = "Servizi/Personale/Mock/Json/Componenti.json";
         public static string IdentityManagementJson = "Servizi/Identity/Mock/Json/Anagrafica.json";
         public static string ServiziSquadreJson = "Servizi/Personale/Mock/Json/SquadreNelTurno.json";
+        public static string ModuliColonnaMobileJson = "Fake/MockOpService/MockModuliColonnaMobile.json";
 
         #endregion Json
 
@@ -73,15 +60,21 @@ namespace SO115App.ExternalAPI.Fake.Classi
 
         #region GacMethods
 
+        public static string GacGetToken = "/SO115/AnagraficaMezzi/GenerazioneToken";
         public static string GacGetMezziUtilizzabili = "/SO115/AnagraficaMezzi/MezziUtilizzabili";
+        public static string GacGetAnagraficaMezzi = "/SO115/AnagraficaMezzi/CodiceMezzo";
         public static string GacGetMezziFuoriServizio = "MezziFuoriServizio";
         public static string GacGetID = "ID";
         public static string GacGetICCID = "ICCID";
         public static string GacGetSELETTIVA = "SELETTIVA";
         public static string GacPutMovimentazione = "Movimentazione";
+
         public static string GacGetCodiceMezzo = "/SO115/AnagraficaMezzi/CodiceMezzo";
         public static string GacSetMezzoLibero = "/SO115/AnagraficaMezzi/SetMezzoLibero";
         public static string GacSetMezzoOccupato = "/SO115/AnagraficaMezzi/SetMezzoOccupato";
+        public static string GacUscitaMezzo = "/SO115/AnagraficaMezzi/UscitaMezzo";
+        public static string GacRientroMezzo = "/SO115/AnagraficaMezzi/RientroMezzo";
+        public static string ModificaMovimento = "/SO115/AnagraficaMezzi/ModificaMovimento";
 
         #endregion GacMethods
 
@@ -114,5 +107,22 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string MezzoInSede = "In Sede";
 
         #endregion Utility
+
+        public class ES
+        {
+            #region Eccezioni
+
+            public static string ServizioNonRaggiungibile = "Servizio non raggiungibile. Consultare il log e contattare il supporto tecnico.";
+
+            public static string AutorizzazioneNegata = "Il servizio ha negato l'autorizzazione ad eseguire l'operazione richiesta. Consultare il log e contattare il supporto tecnico.";
+            public static string DatiMancanti = "Il servizio segnala dati mancanti inviati da SO115. Consultare il log e contattare il supporto tecnico.";
+
+            public static string ErroreInternoAlServer = "Il servizio ha segnalato un errore interno. Consultare il log e contattare il supporto tecnico.";
+            public static string NonTuttiIDatiInviatiSonoStatiProcessati = "Il servizio non è riuscito a processare tutti i dati che sono stati inviati. Consultare il log e contattare il supporto tecnico.";
+
+            public static string OggettoNonValido = "E' stato inviato un oggetto al servizio diverso da quello atteso. Consultare il log e contattare il supporto tecnico.";
+
+            #endregion Eccezioni
+        }
     }
 }

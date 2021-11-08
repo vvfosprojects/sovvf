@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'coda chiamate di ' + descDistaccamento | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="close({ status:'ko' })">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+
+<div class="modal-body px-1">
+    <div *ngIf="squadre?.length" class="clearfix font-xxlarge mb-4 px-2">
+        <div class="float-right card bg-dark-light w-25">
+            <div class="border-bottom px-3 pt-1 pb-2">
+                <span class="font-weight-bold">{{ squadre?.length }}</span> squadre
+            </div>
+            <div class="scroll-y"
+                 style="max-height: 200px">
+                <div *ngFor="let s of squadre"
+                     class="clearfix px-4">
+                    <div class="float-left">
+                        {{ s.nome }} ({{ s?.turno }})
+                    </div>
+                    <div class="float-right">
+                        <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="richieste?.length" class="px-2">
+        <div class="card bg-dark-light">
+            <div class="border-bottom font-xxlarge px-3 pt-1 pb-2">
+                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ richieste?.length > 1 ? 'Interventi' : 'Intervento' }}
+            </div>
+            <div class="scroll-y"
+                 style="max-height: 350px">
+                <div *ngFor="let r of richieste"
+                     class="border-bottom">
+                    <app-sintesi-richiesta [richiesta]="r"
+                                           [modificabile]="false"
+                                           [gestibile]="false"
+                                           (nuovaPartenza)="onNuovaPartenza($event)">
+                    </app-sintesi-richiesta>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
+            (click)="close({ status:'ko' })">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div>

@@ -23,7 +23,6 @@ using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
-using System;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
@@ -48,7 +47,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
-            SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
+            //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerDelete", chiamata.ChiamataInCorso.Id);

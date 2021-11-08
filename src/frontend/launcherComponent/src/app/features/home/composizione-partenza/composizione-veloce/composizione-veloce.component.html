@@ -1,43 +1,97 @@
-<div class="card card-shadow mx-auto" [ngClass]="{'m-h-boxes-veloce': boxAttivi, 'm-h-no-boxes-veloce': !boxAttivi}">
-    <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
-    <div class="card-header">
-        <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
-    </div>
-    <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
-        <div class="col-4 px-1" *ngFor="let preAcc of preAccoppiati">
-            <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
-                                    [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
-                                    [itemHover]="preAcc.id === idPreaccoppiatoHover"
-                                    [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
-                                    [compPartenzaMode]="Composizione.Veloce"
-                                    (selezionato)="selezionaPreaccoppiato($event)"
-                                    (deselezionato)="deselezionaPreaccoppiato($event)" (hoverIn)="onHoverIn($event)"
-                                    (hoverOut)="onHoverOut()">
-            </app-box-nuova-partenza>
-        </div>
-        <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
-             style="display: flex; place-content: center; margin-top: 10px;">
-            <ngb-pagination
-                    [(page)]="currentPagePreaccoppiati"
-                    [pageSize]="pageSizePreaccoppiati"
-                    [collectionSize]="totalItemsPreaccoppiati"
-                    (pageChange)="preAccoppiatiPageChange($event)"
-                    [maxSize]="2">
-            </ngb-pagination>
-        </div>
-    </div>
-    <div class="row">
-        <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-3">
-            <div class="text-center">
-                <h6 class="m-0 mt-2">Nessun Pre-Accoppiato trovato con i filtri selezionati</h6>
+<div class="row min-h-comp">
+    <div class="col-8 pl-0">
+        <div class="card card-shadow h-100"
+             [class.moon-text]="nightMode"
+             [class.moon-card-light]="nightMode">
+            <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
+            <div class="card-header"
+                 [class.moon-border-bottom]="nightMode">
+                <i class="fas fa-truck mr-2"></i>
+                Pre-Accoppiati
+            </div>
+            <div class="card-body p-0">
+                <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
+                    <div class="col-6" *ngFor="let preAcc of preAccoppiati">
+                        <app-box-preaccoppiato  [partenzaPreAccopiati]="preAcc" [richiesta]="richiesta"
+                                                [nightMode]="nightMode"
+                                                [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
+                                                [itemHover]="preAcc.id === idPreaccoppiatoHover"
+                                                [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
+                                                [compPartenzaMode]="Composizione.Veloce"
+                                                (selezionato)="selezionaPreaccoppiato($event)"
+                                                (deselezionato)="deselezionaPreaccoppiato($event)"
+                                                (hoverIn)="onHoverIn($event)"
+                                                (hoverOut)="onHoverOut()">
+                        </app-box-preaccoppiato>
+                    </div>
+                    <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
+                         style="display: flex; place-content: center; margin-top: 10px;">
+                        <ngb-pagination
+                                [(page)]="currentPagePreaccoppiati"
+                                [pageSize]="pageSizePreaccoppiati"
+                                [collectionSize]="totalItemsPreaccoppiati"
+                                (pageChange)="preAccoppiatiPageChange($event)"
+                                [maxSize]="2">
+                        </ngb-pagination>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="preAccoppiati && preAccoppiati?.length <= 0" class="col-12 my-2">
+                        <div class="text-center">
+                            <div class="m-0 mt-1">Nessun Pre-Accoppiato trovato con i filtri selezionati</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div  *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="btn-stick-bottom">
-      <app-composizione-confirm-button (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
-                                       (confirmPartenzaInUscita)="confermaPartenzeInUscita()"
-                                       [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
-                                       [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
-      </app-composizione-confirm-button>
+    <div class="col-4 pr-0">
+        <!-- Lista Partenze Richiesta -->
+        <div class="card card-shadow scroll-y"
+             [class.moon-text]="nightMode"
+             [class.moon-card-light]="nightMode"
+             style="height: 85%">
+            <div class="card-header py-2">
+                <i class="fas fa-list-ul mr-2" style="vertical-align:sub"></i>
+                <span style="vertical-align:sub">
+                        Partenze
+                        <span *ngIf="richiesta.codiceRichiesta" style="float: right">{{ richiesta.codiceRichiesta.slice(0, -5)}}
+                            <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
+                        </span>
+                        <span *ngIf="!richiesta.codiceRichiesta" style="float: right">{{ richiesta.codice.slice(0, -5) }}
+                            <span style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
+                        </span>
+                    </span>
+            </div>
+            <div class="card-body px-3 py-2">
+                <app-lista-partenze [partenze]="partenzeRichiesta">
+                </app-lista-partenze>
+            </div>
+        </div>
+        <!-- Soccorso aereo triage-->
+        <div class="clearfix mt-3">
+            <div class="float-left w-100 pl-2" style="width: 2%">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <ngb-rating [rate]="getSoccorsoAereoTriage(triageSummary)?.value"
+                                    [max]="4"
+                                    [readonly]="true">
+                            <ng-template let-fill="fill" let-index="index">
+                                <div class="circle d-inline-block font-double-monitor"
+                                     [class.filled]="fill === 100"
+                                     [class.bad]="index > 2 && fill === 100">
+                                    <i class="fas fa-circle mr-1"></i>
+                                </div>
+                            </ng-template>
+                        </ngb-rating>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bottoni Composizione -->
+        <app-composizione-confirm-button (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                         [boxPartenzaLenght]="idPreAccoppiatiSelezionati?.length"
+                                         [disableConfirmPartenza]="idPreAccoppiatiSelezionati?.length <= 0">
+        </app-composizione-confirm-button>
     </div>
 </div>

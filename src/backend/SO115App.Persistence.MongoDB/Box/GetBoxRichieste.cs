@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,18 +33,24 @@ namespace SO115App.Persistence.MongoDB
     public class GetBoxRichieste : IGetBoxRichieste
     {
         private readonly IGetListaSintesi _getListaSintesi;
+        private readonly IGetTurno _getTurni;
 
-        public GetBoxRichieste(IGetListaSintesi getListaSintesi)
+        public GetBoxRichieste(IGetListaSintesi getListaSintesi, IGetTurno getTurni)
         {
             _getListaSintesi = getListaSintesi;
+            _getTurni = getTurni;
         }
 
         public BoxInterventi Get(ISet<PinNodo> listaPin)
         {
-            var interventi = new BoxInterventi();
+            var turnoAttuale = _getTurni.Get();
+            var turnoPrecedente = _getTurni.Get(turnoAttuale.DataOraInizio.AddMinutes(-1));
+            var turnoSuccessivo = _getTurni.Get(turnoAttuale.DataOraInizio.AddMinutes(1));
 
-            var filtro = new FiltroRicercaRichiesteAssistenza { UnitaOperative = listaPin, IncludiRichiesteChiuse = true };
+            var filtro = new FiltroRicercaRichiesteAssistenza { UnitaOperative = listaPin, Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }, SoloboxRichieste = true };
             var listaSintesi = _getListaSintesi.GetListaSintesiRichieste(filtro);
+
+            var interventi = new BoxInterventi();
 
             if (listaSintesi.Count > 0)
             {
@@ -54,12 +61,15 @@ namespace SO115App.Persistence.MongoDB
                     (x.Partenze.Count == 0 || x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata))
                     && !x.Chiusa && !x.Sospesa);
                 interventi.Presidiati = listaSintesi.Count(x => x.Presidiata);
-                interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
+                interventi.Chiusi = listaSintesi.Count(x => x.Chiusa);
+
                 interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year && x.Chiusa);
-                interventi.TotTurnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year);
-                interventi.TotTurnoPrecedente = 0;
-                interventi.Totale = listaSintesi.Count(x => x.Aperta);
                 interventi.AnnoCorrente = DateTime.Now.Year;
+
+                interventi.TotTurnoCorrente = listaSintesi.Count(x => x.trnInsChiamata.Contains(turnoAttuale.Codice.ToCharArray()[0]));
+                interventi.TotTurnoPrecedente = listaSintesi.Count(x => x.trnInsChiamata.Contains(turnoPrecedente.Codice.ToCharArray()[0]));
+
+                interventi.Totale = listaSintesi.Count(x => x.Aperta);
             }
 
             return interventi;

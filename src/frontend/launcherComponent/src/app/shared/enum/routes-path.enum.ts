@@ -11,7 +11,14 @@ export enum RoutesPath {
     CasLogout = 'caslogout',
     UtenteNonAbilitato = 'utente-non-abilitato',
     Rubrica = 'rubrica',
+    RubricaPersonale = 'rubrica-personale',
     TrasferimentoChiamata = 'trasferimento-chiamata',
     Changelog = 'changelog',
-    Impostazioni = 'impostazioni'
+    Profilo = 'profilo',
+    Preferenze = 'preferenze',
+    ImpostazioniSede = 'impostazioni-sede',
+    POS = 'POS',
+    AreaDocumentale = 'area-documentale',
+    DashboardPortale = 'dashboard-portale',
+    ZoneEmergenza = 'zone-emergenza'
 }

@@ -1,6 +1,8 @@
 /**
  * Modella il generico componente della squadra
  */
+import { Qualifica } from '../interface/squadra-composizione-interface';
+
 export class Componente {
     constructor(
         /**
@@ -11,10 +13,6 @@ export class Componente {
          * Il nominativo esteso del componente
          */
         public nominativo: string,
-        /**
-         * Il tooltip, utile specialmente per sanare problemi di omonimia
-         */
-        public tooltip: string,
         /**
          * Indicazione del ruolo di capopartenza
          */
@@ -30,7 +28,15 @@ export class Componente {
         /**
          * Codice Fiscale del componente
          */
-        public codiceFiscale?: string
+        public codiceFiscale?: string,
+        /**
+         * Il tooltip, utile specialmente per sanare problemi di omonimia
+         */
+        public tooltip?: string,
+        /**
+         * Funzioni del componenete
+         */
+        public qualifications?: Qualifica[],
     ) {
     }
 }

@@ -6,6 +6,10 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
+import { Store } from '@ngxs/store';
+import { FiltroZoneEmergenzaState } from '../../../features/home/store/states/filterbar/filtro-zone-emergenza.state';
+import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
+import { FiltriRichiesteState } from '../../../features/home/store/states/filterbar/filtri-richieste.state';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -13,23 +17,39 @@ const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;
 const API_GESTIONE_RICHIESTA = BASE_URL + environment.apiUrl.gestioneRichiesta;
 const API_GESTIONE_PARTENZA = BASE_URL + environment.apiUrl.gestionePartenza;
 const API_GESTIONE_FONOGRAMMA = BASE_URL + environment.apiUrl.gestioneFonogramma;
+const API_ENTI = BASE_URL + environment.apiUrl.enti;
 
 @Injectable({
     providedIn: 'root'
 })
 export class SintesiRichiesteService {
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private store: Store) {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
+        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri' && f.categoria !== 'Chiuse');
+        let filtriTipologia;
+        if (filtriTipologieRichiesta?.length) {
+            filtriTipologia = filtriTipologieRichiesta[0]?.codice;
+        }
+        const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.selezioneStatoRichiesta);
+        const zoneEmergenza = this.store.selectSnapshot(FiltroZoneEmergenzaState.filtriZoneEmergenzaSelezionate);
+        const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
+        const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
+        const periodoChiusiInterventi = this.store.selectSnapshot(FiltriRichiesteState.periodoChiusiInterventi);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
+            filtriTipologie: null,
+            statiRichiesta: filtroStato && filtroStato.length ? filtroStato : null,
+            tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
+            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
+            chiuse: chiuse && chiuse.length ? chiuse : null,
+            periodoChiuseChiamate: periodoChiuseChiamate.da || periodoChiuseChiamate.data || periodoChiuseChiamate.turno ? periodoChiuseChiamate : null,
+            periodoChiusiInterventi: periodoChiusiInterventi.da || periodoChiusiInterventi.data || periodoChiusiInterventi.turno ? periodoChiusiInterventi : null,
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }
@@ -42,7 +62,7 @@ export class SintesiRichiesteService {
         return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta);
     }
 
-    public aggiornaStatoRichiesta(obj: any): Observable<any> {
+    public aggiornaStatoRichiesta(obj: RichiestaActionInterface): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj);
     }
 
@@ -69,5 +89,10 @@ export class SintesiRichiesteService {
     public allertaSede(obj: any): Observable<any> {
         console.log('allertaSede', obj);
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AllertaAltreSedi`, obj);
+    }
+
+    public modificaEntiIntervenutiRichiesta(obj: any): Observable<any> {
+        console.log('modificaEntiIntervenutiRichiesta', obj);
+        return this.http.post<any>(`${API_ENTI}/AddEnteIntervenuto`, obj);
     }
 }

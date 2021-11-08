@@ -4,6 +4,10 @@ import { ContatoriSchedeContatto } from '../../../../../shared/interface/contato
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
+export class GetContatoriSchedeContatto {
+    static readonly type = '[Schede Contatto] Get Contatori Schede Contatto';
+}
+
 export class SetContatoriSchedeContatto {
     static readonly type = '[Schede Contatto] Set Contatori Schede Contatto';
 
@@ -23,10 +27,6 @@ export class SetListaSchedeContatto {
 
     constructor(public schedeContatto: SchedaContatto[]) {
     }
-}
-
-export class GeneraListaSchedeContatto {
-    static readonly type = '[SchedeContatto] Genera Lista Schede Contatto';
 }
 
 export class ClearListaSchedeContatto {
@@ -138,10 +138,6 @@ export class SetTabAttivo {
 
     constructor(public tabAttivo: ClassificazioneSchedaContatto) {
     }
-}
-
-export class SetIdVisualizzati {
-    static readonly type = '[SchedeContatto] Set Id Visualizzati';
 }
 
 export class ToggleCollapsed {

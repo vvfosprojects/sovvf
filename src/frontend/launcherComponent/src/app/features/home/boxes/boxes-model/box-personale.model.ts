@@ -5,15 +5,27 @@ export class BoxPersonale {
         /**
          * il totale del personale in servizio
          */
-        public personaleTotale: number,
+        public personaleTotale: {
+            previous: number,
+            current: number,
+            next: number
+        },
         /**
          * i funzionari presenti
          */
-        public funzionari: BoxFunzionariSo[],
+        public funzionari: {
+            previous: BoxFunzionariSo[],
+            current: BoxFunzionariSo[],
+            next: BoxFunzionariSo[]
+        },
         /**
          * numero squadre in servizio
          */
-        public squadreServizio: number,
+        public squadreServizio: {
+            previous: number,
+            current: number,
+            next: number
+        },
         /**
          * numero squadre assegnate
          */

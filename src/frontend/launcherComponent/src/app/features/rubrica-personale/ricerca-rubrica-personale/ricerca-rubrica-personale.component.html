@@ -1,0 +1,14 @@
+<form class="m-0" autocomplete="off">
+    <div class="input-group">
+        <label for="ricercaRubrica" class="d-none"></label>
+        <input id="ricercaRubrica" name="ricercaRichieste" [(ngModel)]="ricerca" style="font-size: 21px"
+               class="form-control" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
+               (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
+        <div class="input-group-append">
+            <span class="input-group-text">
+                <i *ngIf="!loading" class="fas fa-search"></i>
+                <i *ngIf="loading" class="fas fa-spinner fa-spin"></i>
+            </span>
+        </div>
+    </div>
+</form>

@@ -27,14 +27,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class AnnullaPartenzaCommand
     {
         public string IdOperatore { get; set; }
-        public string IdRichiesta { get; set; }
-        public string TargaMezzo { get; set; }
-        public int CodMotivazione { get; set; }
-        public string TestoMotivazione { get; set; }
-        public string CodRichiestaSubentrata { get; set; }
+        public string[] CodiciSedi { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
+        public Utente Operatore { get; set; }
 
         public RichiestaAssistenza Richiesta { get; set; }
-        public Utente Operatore { get; set; }
+        public string CodiceRichiesta { get; set; }
+        public string CodicePartenza { get; set; }
+        public string TargaMezzo { get; set; }
     }
 }

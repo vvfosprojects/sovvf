@@ -10,6 +10,11 @@ export const environment = {
     versionCheckURL: 'version.json',
     apiUrl: {
         welcome: '/api/Welcome',
+        box: {
+            mezzi: '/api/Box/GetBoxMezzi',
+            personale: '/api/Box/GetBoxPersonale',
+            richieste: '/api/Box/GetBoxRichieste'
+        },
         markers: '/api/Marker',
         markerChiamataInCorso: '/api/ChiamataInCorso',
         rigaElencoRichieste: '/api/GestioneRichiesta/GetRichieste',
@@ -17,6 +22,7 @@ export const environment = {
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestioneFonogramma: '/api/GestioneFonogramma',
+        gestioneSoccorsoAereo: '/api/GestioneSoccorsoAereo',
         gestionePartenza: '/api/GestionePartenza',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
@@ -24,10 +30,14 @@ export const environment = {
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
+            squadre: '/api/ComposizioneSquadre',
+            mezzi: '/api/ComposizioneMezzi',
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
+        codaChiamate: '/api/GestioneCodaChiamate',
+        competenze: '/api/GestioneCompetenze',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
         gestioneRuolo: '/api/GestioneRuolo',
@@ -36,9 +46,21 @@ export const environment = {
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
+        rubricaPersonale: '/api/GestioneRubricaPersonale',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
+        stampaRichiesta: '/api/GestioneFile/DettaglioRichiesta',
+        stampaRiepilogoInterventi: '/api/GestioneFile/RiepilogoInterventi',
+        squadreRiepilogoInterventi: '/api/GestioneSquadre/GetAllSquadre',
+        distaccamentiRiepilogoInterventi: '/api/Distaccamenti/GetDistaccamentiByCodSede',
         modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
-        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza',
+        distaccamenti: '/api/Distaccamenti',
+        tipologie: '/api/GestioneTipologie',
+        dettagliTipologie: '/api/GestioneDettaglioTipologia',
+        triage: '/api/GestioneTriage',
+        pos: '/api/GestionePos',
+        areaDocumentale: '/api/GestioneDocumentale',
+        zoneEmergenza: '/api/GestioneEmergenza'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

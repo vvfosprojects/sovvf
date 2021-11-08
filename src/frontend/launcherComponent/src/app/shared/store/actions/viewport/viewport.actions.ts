@@ -12,3 +12,16 @@ export class SetContentHeight {
     }
 }
 
+export class SetInnerWidth {
+    static readonly type = '[Viewport] Set Inner Width';
+
+    constructor(public innerWidth: number) {
+    }
+}
+
+export class SunMode {
+  static readonly type = '[SunMode] Sun Mode visualizzazione';
+
+  constructor(public sunMode?: boolean) {
+  }
+}

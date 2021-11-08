@@ -64,12 +64,20 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.Nome = Nome;
             this.Stato = Stato;
-            this.Componenti = Componenti;
+            this.Membri = Componenti;
             this.Distaccamento = Distaccamento;
             this.Turno = Turno;
         }
 
+        public Squadra()
+        {
+        }
+
         public string Id { get; set; }
+
+        public bool ColonnaMobile { get; set; }
+
+        public bool DiEmergenza { get; set; }
 
         public string Codice { get; set; }
 
@@ -86,22 +94,31 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Lista dei componenti della squadra
         /// </summary>
-        public List<Componente> Componenti { get; set; }
+        public List<Componente> Membri { get; set; }
 
         /// <summary>
         ///   Indica il distaccamento della squadra
         /// </summary>
         public Sede Distaccamento { get; set; }
 
-        /// <summary>
-        ///   Indica l'istante in cui la squadra termina il suo impegno
-        /// </summary>
-        public DateTime? IstanteTermineImpegno { get; set; }
-
-        public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
-
-        public int IndiceOrdinamento { get; set; }
-
         public string Turno { get; set; }
+
+        /// <summary>
+        ///   Definisce se la squadra è preaccoppiata con un mezzo
+        /// </summary>
+        public bool PreAccoppiato { get; set; } = false;
+
+        #region Info per OPService
+
+        public string IdOPService { get; set; }
+        public string spotId { get; set; }
+
+        public string spotType { get; set; }
+
+        public int version { get; set; }
+
+        public string workshiftId { get; set; }
+
+        #endregion Info per OPService
     }
 }

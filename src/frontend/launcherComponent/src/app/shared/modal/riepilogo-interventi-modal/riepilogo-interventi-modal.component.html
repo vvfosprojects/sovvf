@@ -1,0 +1,169 @@
+<div class="modal-header">
+    <h4 class="modal-title" style="font-weight: 700">
+        {{ 'STAMPA RIEPILOGO INTERVENTI: SCELTA PARAMETRI' | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="chiudiRiepilogoInterventiModal('ko')">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+
+<div class="modal-body px-0 py-3">
+    <!-- FILTRI SUGLI INTERVENTI -->
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
+        <span class="float-left">Filtri sugli interventi</span>
+        <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+    </div>
+    <div *ngIf="showFiltriInterventi" class="row px-4 pt-1 pb-3">
+        <div class="col" style="justify-content: center; font-size: x-large">
+            <div class="pl-0 form-check">
+                <input (click)="onCheckFiltro('DaA')" class="checkbox-size" type="checkbox" id="DaA" name="DaA"
+                       [checked]="prefix['DaA']" disabled>
+                <label class="ml-1 mb-0" for="DaA" style="cursor: pointer">Da - A</label>
+            </div>
+        </div>
+        <div class="col" style="justify-content: center;">
+            <form *ngIf="prefix['DaA']" class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+                        </ngb-datepicker>
+
+                        <ng-template #t let-date let-focused="focused">
+          <span class="custom-day"
+                [class.focused]="focused"
+                [class.range]="isRange(date)"
+                [class.faded]="isHovered(date) || isInside(date)"
+                (mouseenter)="hoveredDate = date"
+                (mouseleave)="hoveredDate = null">
+            {{ date.day }}
+          </span>
+                        </ng-template>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FILTRI AGGIUNTIVI SULLA SQUADRA -->
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
+        <span class="float-left">Filtri aggiuntivi sulla squadra</span>
+        <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+    </div>
+    <div *ngIf="showFiltriSquadre" class="row px-4 pt-2 pb">
+        <div class="col-4" style="justify-content: center; font-size: x-large">
+            <label for="distaccamenti">Distaccamento
+            </label>
+        </div>
+        <div class="col" style="justify-content: center;">
+            <ng-select class="align-self-center"
+                       id="distaccamenti"
+                       [items]="distaccamenti"
+                       bindLabel="descrizione"
+                       bindValue="codice"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
+                       [hideSelected]="false"
+                       [(ngModel)]="distaccamentoSelezionati"
+                       [ngModelOptions]="{standalone: true}"
+                       [loading]="!distaccamenti"
+                       (change)="onPatchFiltriSquadre($event, 'distaccamenti')"
+                       placeholder="Seleziona Distaccamento">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="distaccamentoSelezionati && distaccamentoSelezionati?.includes(item.codice)"/>
+                    {{item.descrizione}}
+                </ng-template>
+            </ng-select>
+        </div>
+    </div>
+    <div *ngIf="showFiltriSquadre" class="row px-4 py-2">
+        <div class="col-4" style="justify-content: center; font-size: x-large">
+            <label for="turno">Turno
+            </label>
+        </div>
+        <div class="col" style="justify-content: center;">
+            <ng-select class="align-self-center"
+                       id="turno"
+                       [items]="turno"
+                       bindLabel="descrizione"
+                       bindValue="id"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
+                       [hideSelected]="false"
+                       [loading]="!turno"
+                       [(ngModel)]="turnoSelezionati"
+                       [ngModelOptions]="{standalone: true}"
+                       (change)="onPatchFiltriSquadre($event, 'turno')"
+                       placeholder="Seleziona Turno">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="turnoSelezionati && turnoSelezionati?.includes(item)"/>
+                    {{item}}
+                </ng-template>
+            </ng-select>
+        </div>
+    </div>
+    <div *ngIf="showFiltriSquadre" class="row px-4 pb-3">
+        <div class="col-4" style="justify-content: center; font-size: x-large">
+            <label for="squadre">Squadra
+            </label>
+        </div>
+        <div class="col" style="justify-content: center;">
+            <ng-select class="align-self-center"
+                       id="squadre"
+                       [items]="squadre"
+                       bindLabel="nome"
+                       bindValue="codice"
+                       [(ngModel)]="squadreSelezionate"
+                       [ngModelOptions]="{standalone: true}"
+                       [multiple]="true"
+                       [closeOnSelect]="false"
+                       [hideSelected]="false"
+                       [loading]="!squadre"
+                       (change)="onPatchFiltriSquadre($event, 'squadra')"
+                       placeholder="Seleziona Squadra">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <input type="checkbox" [checked]="squadreSelezionate && squadreSelezionate?.includes(item.codice)"/>
+                    {{item.nome}}
+                </ng-template>
+            </ng-select>
+        </div>
+    </div>
+
+    <!-- ALTRI FILTRI -->
+    <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
+        <span class="float-left">Altri filtri</span>
+        <span *ngIf="showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+    </div>
+    <div *ngIf="showAltriFiltri" class="px-3 pt-2 pb-4">
+        <div class="col w-100">
+            <input (click)="onCheckAltriFiltri('tipologia')" class="checkbox-size" type="checkbox" id="tipologiaIntervento" name="tipologiaIntervento"
+                   [checked]="altriFiltri.tipologia">
+            <label class="ml-1 mb-0" for="tipologiaIntervento" style="cursor: pointer">Raggruppati per tipologia intervento</label>
+        </div>
+        <div class="col w-100 my-3">
+            <input (click)="onCheckAltriFiltri('trasmessi')" class="checkbox-size" type="checkbox" id="trasmessi" name="trasmessi"
+                   [checked]="altriFiltri.trasmessi">
+            <label class="ml-1 mb-0" for="trasmessi" style="cursor: pointer">Stampa trasmessi ad altro comando</label>
+        </div>
+        <div class="col w-100">
+            <input (click)="onCheckAltriFiltri('interventi')"  class="checkbox-size" type="checkbox" id="soloInterventi" name="soloInterventi"
+                   [checked]="altriFiltri.interventi">
+            <label class="ml-1 mb-0" for="soloInterventi" style="cursor: pointer">Solo interventi (non vengono riportate le partenze)</label>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer" style="place-content: space-between;">
+    <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
+            (click)="chiudiRiepilogoInterventiModal('ok')">
+        {{ 'Stampa' | uppercase }}
+    </button>
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
+            (click)="chiudiRiepilogoInterventiModal('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div>
+

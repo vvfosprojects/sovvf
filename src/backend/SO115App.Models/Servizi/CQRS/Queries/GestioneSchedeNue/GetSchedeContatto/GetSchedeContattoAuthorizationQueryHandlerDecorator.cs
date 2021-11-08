@@ -1,13 +1,10 @@
 ﻿using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
-using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto
 {
@@ -35,11 +32,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContat
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreChiamate))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreChiamate))
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
             else
