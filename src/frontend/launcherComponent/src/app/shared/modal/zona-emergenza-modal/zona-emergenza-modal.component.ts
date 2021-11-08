@@ -65,7 +65,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             codEmergenza: [null],
             codComandoRichiedente: [null],
             listaEventi: [null],
-            presaInCarico: [null],
             annullata: [null]
         });
     }
@@ -89,7 +88,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             codEmergenza: this.zonaEmergenzaEdit.codEmergenza,
             codComandoRichiedente: this.zonaEmergenzaEdit.codComandoRichiedente,
             listaEventi: this.zonaEmergenzaEdit.listaEventi,
-            presaInCarico: this.zonaEmergenzaEdit.presaInCarico,
             annullata: this.zonaEmergenzaEdit.annullata
         });
     }

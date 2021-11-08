@@ -8,6 +8,5 @@ export interface ZonaEmergenzaForm {
     codEmergenza?: string;
     codComandoRichiedente?: string;
     listaEventi?: any[];
-    presaInCarico?: any;
     annullata?: boolean;
 }
