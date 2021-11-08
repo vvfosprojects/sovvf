@@ -44,12 +44,12 @@ export class TipologiaEmergenza {
     constructor(
         public id: string,
         public emergenza: string[],
-        public interventi: Interventi[]
+        public moduli: ModuliColonnaMobile
     ) {
     }
 }
 
-export class Interventi {
+export class ModuliColonnaMobile {
     constructor(
         // tslint:disable-next-line:variable-name
         public mob_Immediata: string[],

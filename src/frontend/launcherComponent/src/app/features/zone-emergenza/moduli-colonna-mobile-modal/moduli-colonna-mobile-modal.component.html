@@ -1,0 +1,99 @@
+<div class="modal-header">
+    <div class="modal-title font-weight-bold">
+        {{ 'Colonne Mobili Emergenza #' + zonaEmergenza.codEmergenza  | uppercase }}
+    </div>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body p-0">
+    <ng-wizard [config]="config"
+               (stepChanged)="stepChanged($event)">
+        <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Immediata; let i = index">
+            <ng-wizard-step
+                    [title]="m"
+                    [description]="''"
+                    [canEnter]="true"
+                    [canExit]="true">
+                <div class="row pt-2">
+                    <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
+                        <div class="col-3">
+                            <div class="card cursor-pointer"
+                                 (click)="onSelectModulo(m, mCM)">
+                                <div class="card-header">
+                                    <div class="clearfix">
+                                        <div class="float-left">
+                                            <h6 class="mb-0">{{ mCM.nomeModulo }}</h6>
+                                        </div>
+                                        <div class="float-right">
+                                            <h6 class="mb-0">{{ mCM.codComando }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="clearfix mb-2">
+                                        <div class="float-left pt-1">
+                                            <h6 class="mb-0">Componenti</h6>
+                                        </div>
+                                        <div class="float-right">
+                                            <div class="badge badge-success"
+                                                 [ngbTooltip]="tooltipComponenti"
+                                                 placement="bottom">
+                                                {{ mCM.componenti?.length }}
+                                            </div>
+                                        </div>
+                                        <ng-template #tooltipComponenti>
+                                            <div *ngFor="let m of mCM.componenti">
+                                                {{ m.nominativo }}
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                    <div class="clearfix">
+                                        <div class="float-left pt-1">
+                                            <h6 class="mb-0">Mezzi</h6>
+                                        </div>
+                                        <div class="float-right">
+                                            <div class="badge badge-success"
+                                                 [ngbTooltip]="tooltipMezzi"
+                                                 placement="bottom">
+                                                {{ mCM.mezzi?.length }}
+                                            </div>
+                                        </div>
+                                        <ng-template #tooltipMezzi>
+                                            <div *ngFor="let m of mCM.mezzi">
+                                                {{ m.descrizione }}
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <h6 class="mb-0">{{ mCM.stato }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-wizard-step>
+        </ng-container>
+        <ng-wizard-step
+                [title]="'RIEPILOGO'"
+                [description]="''"
+                [canEnter]="true"
+                [canExit]="true">
+            <div class="row">
+                <div class="col-12">
+                    Riepilogo
+                </div>
+            </div>
+        </ng-wizard-step>
+    </ng-wizard>
+</div>
+<!-- <div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div> -->

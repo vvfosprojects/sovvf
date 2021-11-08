@@ -60,7 +60,8 @@ export const environment = {
         triage: '/api/GestioneTriage',
         pos: '/api/GestionePos',
         areaDocumentale: '/api/GestioneDocumentale',
-        zoneEmergenza: '/api/GestioneEmergenza'
+        zoneEmergenza: '/api/GestioneEmergenza',
+        moduliColonnaMobile: '/api/GestioneModuliColonnaMobile'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas/login?service=',
