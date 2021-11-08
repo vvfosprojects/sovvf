@@ -198,7 +198,6 @@ export class ZoneEmergenzaState {
             null,
             formValue.descrizione,
             tipologiaZoneEmergenzaCopy,
-            null,
             new Localita(
                 {
                     latitudine: formValue.latitudine,
@@ -254,7 +253,6 @@ export class ZoneEmergenzaState {
             formValue.codComandoRichiedente,
             formValue.descrizione,
             tipologiaZoneEmergenzaCopy,
-            formValue.presaInCarico,
             new Localita(
                 {
                     latitudine: formValue.latitudine,

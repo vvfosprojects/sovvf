@@ -25,10 +25,6 @@ export class ZonaEmergenza {
          */
         public tipologia: TipologiaEmergenza,
         /**
-         * Descrizione di cloui/coloro che ha/hanno preso in carico la Zona Emergenza
-         */
-        public presaInCarico: PresaInCaricoEmergenza[],
-        /**
          * Descrizione della località della Zona Emergenza
          */
         public localita: Localita,
@@ -63,9 +59,4 @@ export class Interventi {
         public mob_Consolidamento: string[]
     ) {
     }
-}
-
-export enum PresaInCaricoEmergenza {
-    'CON',
-    'DirezioneRegionale'
 }
