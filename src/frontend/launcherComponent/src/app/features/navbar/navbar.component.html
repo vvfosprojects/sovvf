@@ -44,8 +44,14 @@
                         </div>
                     </ng-template>
                     <!-- Turno -->
-                    <div class="float-left mr-5">
+                    <div class="float-left mr-5 d-inline-flex">
                         <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
+                        <!-- Countdown fine turno -->
+                        <div class="ml-2 py-2" style="max-width: 50px; min-width: 50px">
+                            <span *ngIf="(minutiCambioTurno >= 0) && (secondiCambioTurno >= 0)"
+                                  ngbTooltip="Tempo rimanente al cambio turno" placement="bottom">
+                                {{minutiCambioTurno}}:{{secondiCambioTurno}}</span>
+                        </div>
                     </div>
                     <!-- Data/Ora -->
                     <div class="float-left mr-5">

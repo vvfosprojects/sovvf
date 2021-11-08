@@ -40,11 +40,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
             var emergenza = _getEmergenza.Get(command.InfoEmergenza.Id);
 
             foreach (var evento in emergenza.ListaEventi)
-            {
                 command.InfoEmergenza.AddEvento(evento);
+            
+            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
+
+            if (emergenza.ListaModuli == null && command.InfoEmergenza.ListaModuli != null)
+            {
+                command.InfoEmergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));
+                command.InfoEmergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));                
             }
 
-            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);
         }
     }
