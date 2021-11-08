@@ -148,6 +148,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case STATRI_InivioRichiesta _:
                     return ((STATRI_InivioRichiesta)evento).Messaggio;
 
+                case AllertaEmergenza _:
+                    return ((AllertaEmergenza)evento).DescrizioneEmergenza;
                 default:
                     return "";
             }
@@ -328,6 +330,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case InserimentoModuliColonnaMobileEmergenza _:
                     return Costanti.EmergenzaInserimentoModuliColonnaMobili;
 
+                case AllertaEmergenza _:
+                    return Costanti.EmergenzaAllerta;
 
                 default:
                     return Costanti.EventoGenerico;
