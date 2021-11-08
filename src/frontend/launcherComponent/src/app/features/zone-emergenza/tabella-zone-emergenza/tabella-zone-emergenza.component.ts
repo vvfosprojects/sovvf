@@ -15,11 +15,14 @@ export class TabellaZoneEmergenzaComponent {
     @Input() loading: boolean;
     @Input() zoneEmergenza: ZonaEmergenza[];
     @Input() nightMode: boolean;
+    @Input() isDirRegionale: boolean;
+    @Input() isCON: boolean;
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() edit: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
     @Output() delete: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
+    @Output() colonneMobili: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
 
     constructor() {
     }
@@ -30,5 +33,9 @@ export class TabellaZoneEmergenzaComponent {
 
     onDelete(zonaEmergenza: ZonaEmergenza): void {
         this.delete.emit(zonaEmergenza);
+    }
+
+    onColonneMobili(zonaEmergenza: ZonaEmergenza): void {
+        this.colonneMobili.emit(zonaEmergenza);
     }
 }

@@ -2,7 +2,7 @@
        class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:8%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
+        <th scope="col" style="width:10%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
         <th scope="col" style="width:14%"><i class="fas fa-hashtag mr-2"></i>Codice Emergenza</th>
         <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Richiedente</th>
         <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Tipologia</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let zE of zoneEmergenza">
-        <td style="width:8%" class="align-middle">
+        <td style="width:10%" class="align-middle">
             <button class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
@@ -28,6 +28,15 @@
                     placement="right"
                     (click)="onEdit(zE)">
                 <i class="fas fa-edit"></i>
+            </button>
+            <button *ngIf="isDirRegionale || isCON"
+                    class="btn btn-sm float-left mr-2"
+                    [class.btn-outline-dark]="!nightMode"
+                    [class.btn-outline-light]="nightMode"
+                    ngbTooltip="Colonne Mobili"
+                    placement="right"
+                    (click)="onColonneMobili(zE)">
+                <i class="fas fa-truck"></i>
             </button>
         </td>
         <td style="width:14%" class="align-middle">
