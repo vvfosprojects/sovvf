@@ -361,6 +361,12 @@ export class SignalRService {
             const page = pagination?.page ? pagination.page : null;
             this.store.dispatch(new GetZoneEmergenza(page));
         });
+        this.hubNotification.on('NotifyAllertaEmergenza', (emergenza: ZonaEmergenza) => {
+            console.log('NotifyAllertaEmergenza', emergenza);
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            const page = pagination?.page ? pagination.page : null;
+            this.store.dispatch(new GetZoneEmergenza(page));
+        });
 
         /**
          * Rubrica

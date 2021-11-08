@@ -6,10 +6,14 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
-    AddZonaEmergenza, AnnullaZonaEmergenza, EditZonaEmergenza,
+    AddZonaEmergenza,
+    AnnullaZonaEmergenza,
+    EditZonaEmergenza,
     GetTipologieEmergenza,
-    GetZoneEmergenza, ResetAnnullaZonaEmergenzaForm,
-    ResetZonaEmergenzaForm, SetMappaActiveValue,
+    GetZoneEmergenza,
+    ResetAnnullaZonaEmergenzaForm,
+    ResetZonaEmergenzaForm,
+    SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZoneEmergenza,
     StartLoadingTipologieEmergenza,
@@ -67,7 +71,7 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
 @Injectable()
 @State<ZoneEmergenzaStateModel>({
     name: 'zoneEmergenza',
-    defaults: ZoneEmergenzaStateModelDefaults,
+    defaults: ZoneEmergenzaStateModelDefaults
 })
 export class ZoneEmergenzaState {
 

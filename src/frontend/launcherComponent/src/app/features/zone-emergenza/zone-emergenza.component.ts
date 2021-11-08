@@ -18,6 +18,7 @@ import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-m
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { AnnullaZonaEmergenzaModalComponent } from '../../shared/modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -132,7 +133,8 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     onEdit(zonaEmergenza: ZonaEmergenza): void {
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
-            size: 'md'
+            size: 'md',
+            centered: true
         });
 
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
@@ -158,7 +160,8 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     onDelete(zonaEmergenza: ZonaEmergenza): void {
         const confirmAnnullaEmergenzaModal = this.modalService.open(AnnullaZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
-            size: 'lg'
+            size: 'lg',
+            centered: true
         });
 
         confirmAnnullaEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
@@ -173,6 +176,27 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
                     break;
                 default:
                     this.store.dispatch(new ResetAnnullaZonaEmergenzaForm());
+                    break;
+            }
+        });
+    }
+
+    onColonneMobili(zonaEmergenza: ZonaEmergenza): void {
+        const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'xl',
+            centered: true
+        });
+
+        colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
+
+        colonneMobiliEmergenzaModal.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    break;
+                case 'ko':
+                    break;
+                default:
                     break;
             }
         });

@@ -92,10 +92,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
         });
     }
 
-    onCopiaCoordinate(): void {
-        // TODO: creare logica per la copia delle coordinate come in FormChiamata
-    }
-
     close(esito: string): void {
         this.modal.close(esito);
     }

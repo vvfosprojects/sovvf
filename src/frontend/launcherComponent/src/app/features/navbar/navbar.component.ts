@@ -5,7 +5,7 @@ import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno.state';
 import { Ruolo, Utente } from '../../shared/model/utente.model';
 import { TurnoExtra } from './turno/model/turno-extra.model';
-import { ClearDataNavbar, GetDataNavbar, ToggleSidebarOpened } from './store/actions/navbar.actions';
+import { ClearDataNavbar, ToggleSidebarOpened } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TurnoCalendario } from './turno/model/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/function-turno';
@@ -68,6 +68,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     colorButtonUnitaOperativa = 'btn-dark';
     permessiFeature = PermissionFeatures;
     RoutesPath = RoutesPath;
+    minutiCambioTurno: number;
+    secondiCambioTurno: number;
 
     private subscription = new Subscription();
 
@@ -100,6 +102,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.clock$.subscribe((tick: Date) => {
                 this.time = tick;
                 this.checkTurno();
+                const nowHour = this.time.getHours();
+                const nowMin = this.time.getMinutes();
+                const nowSeconds = this.time.getSeconds();
+                if ((nowHour === 7) || (nowHour === 19) && nowMin === 45 && nowSeconds === 0) {
+                    this.checkCambioTurnoSquadre();
+                }
             })
         );
     }
@@ -223,6 +231,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new Navigate([RoutesPath.Home])
         ]);
+    }
+
+    checkCambioTurnoSquadre(): void {
+        // Setto la durata a 15 minuti
+        let distance = 900000;
+        const interlId = setInterval(() => {
+
+            // Setto lo switch a 1 secondo
+            distance = distance - 1000;
+
+            // Calcolo i minuti ed i secondi
+            this.minutiCambioTurno = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            this.secondiCambioTurno = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Finito il count lo interrompo
+            if (distance <= 0) {
+                clearInterval(interlId);
+            }
+        }, 1000);
     }
 
 }
