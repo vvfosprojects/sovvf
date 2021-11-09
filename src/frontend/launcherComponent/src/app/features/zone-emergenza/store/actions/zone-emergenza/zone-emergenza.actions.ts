@@ -46,6 +46,10 @@ export class AnnullaZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Annulla Zona Emergenza';
 }
 
+export class AllertaCONZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Allerta CON Zona Emergenza';
+}
+
 export class StartLoadingTipologieEmergenza {
     static readonly type = '[ZoneEmergenza] Start Loading Tipologie Emergenza';
 }
@@ -60,6 +64,10 @@ export class ResetZonaEmergenzaForm {
 
 export class ResetAnnullaZonaEmergenzaForm {
     static readonly type = '[ZoneEmergenza] Reset Annulla Zona Emergenza Form';
+}
+
+export class ResetAllertaCONZonaEmergenzaForm {
+    static readonly type = '[ZoneEmergenza] Reset Allerta CON Zona Emergenza Form';
 }
 
 export class SetMappaActiveValue {

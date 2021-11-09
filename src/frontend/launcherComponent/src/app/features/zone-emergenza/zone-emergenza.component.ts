@@ -11,14 +11,15 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { TipologiaEmergenza, ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
-import { AnnullaZonaEmergenza, EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetAnnullaZonaEmergenzaForm, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import { AllertaCONZonaEmergenza, AnnullaZonaEmergenza, EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetAllertaCONZonaEmergenzaForm, ResetAnnullaZonaEmergenzaForm, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
-import { AnnullaZonaEmergenzaModalComponent } from '../../shared/modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
+import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
+import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -202,12 +203,40 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
+    onAllertaCON(zonaEmergenza: ZonaEmergenza): void {
+        const allertaCONModal = this.modalService.open(AllertaCONZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg',
+            centered: true
+        });
+
+        allertaCONModal.componentInstance.zonaEmergenza = zonaEmergenza;
+
+        allertaCONModal.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.allertaCON();
+                    break;
+                case 'ko':
+                    this.store.dispatch(new ResetAllertaCONZonaEmergenzaForm());
+                    break;
+                default:
+                    this.store.dispatch(new ResetAllertaCONZonaEmergenzaForm());
+                    break;
+            }
+        });
+    }
+
     edit(): void {
         this.store.dispatch(new EditZonaEmergenza());
     }
 
     delete(): void {
         this.store.dispatch(new AnnullaZonaEmergenza());
+    }
+
+    allertaCON(): void {
+        this.store.dispatch(new AllertaCONZonaEmergenza());
     }
 
     onPageChange(page: number): void {

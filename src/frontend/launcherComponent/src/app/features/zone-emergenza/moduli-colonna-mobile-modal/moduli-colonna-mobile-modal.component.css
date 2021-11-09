@@ -19,5 +19,12 @@ i {
 }
 
 .nav-item .nav-link {
-    font-size: .7rem!important;
+    font-size: .7rem !important;
+}
+
+.step-content {
+    max-height: 650px;
+    min-height: 650px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
