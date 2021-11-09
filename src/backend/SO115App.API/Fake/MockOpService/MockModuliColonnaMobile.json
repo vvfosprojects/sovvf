@@ -1,4 +1,5 @@
 [
+  //PRIMA FASE
   {
     "Id": "1",
     "NomeModulo": "MC.PCA",
@@ -3384,6 +3385,2143 @@
   {
     "Id": "39",
     "NomeModulo": "MA.APR",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  //SECONDA FASE
+  {
+    "Id": "40",
+    "NomeModulo": "MO.HCP",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "41",
+    "NomeModulo": "MO.HCP",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "42",
+    "NomeModulo": "MO.HCP",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "43",
+    "NomeModulo": "MO.ACP",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "44",
+    "NomeModulo": "MO.ACP",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "45",
+    "NomeModulo": "MO.ACP",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "46",
+    "NomeModulo": "ML.MED",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "47",
+    "NomeModulo": "ML.MED",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "48",
+    "NomeModulo": "ML.MED",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "49",
+    "NomeModulo": "MA.ICT",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "50",
+    "NomeModulo": "MA.ICT",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "51",
+    "NomeModulo": "MA.ICT",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "52",
+    "NomeModulo": "MA.AMM",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "53",
+    "NomeModulo": "MA.AMM",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "54",
+    "NomeModulo": "MA.AMM",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "55",
+    "NomeModulo": "MA.MTM",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "56",
+    "NomeModulo": "MA.MTM",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "57",
+    "NomeModulo": "MA.MTM",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "58",
+    "NomeModulo": "MA.AER",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "59",
+    "NomeModulo": "MA.AER",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "60",
+    "NomeModulo": "MA.AER",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "61",
+    "NomeModulo": "ML.KTP",
+    "CodComando": "RM.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RM.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RM.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "62",
+    "NomeModulo": "ML.KTP",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "63",
+    "NomeModulo": "ML.KTP",
     "CodComando": "LT.1000",
     "Stato": "In Sede",
     "Componenti": [
