@@ -1,18 +1,22 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ModuliColonnaMobileService } from '../../../../../core/service/moduli-colonna-mobile-service/moduli-colonna-mobile.service';
-import { GetModuliColonnaMobile, SetModuliColonnaMobile, StartLoadingModuliColonnaMobile, StopLoadingModuliColonnaMobile } from '../../actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import { GetModuliColonnaMobile, SetModuliColonnaMobile, SetModuloDeselezionato, SetModuloSelezionato, StartLoadingModuliColonnaMobile, StopLoadingModuliColonnaMobile } from '../../actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 
 export interface ModuliColonnaMobileStateModel {
     moduliColonnaMobile: any;
     loadingModuliColonnaMobile: boolean;
+    moduliSelezionati: ModuloColonnaMobile[];
 }
 
 export const moduliColonnaMobileStateModelDefaults: ModuliColonnaMobileStateModel = {
     moduliColonnaMobile: null,
-    loadingModuliColonnaMobile: false
+    loadingModuliColonnaMobile: false,
+    moduliSelezionati: []
 };
 
 @Injectable()
@@ -27,8 +31,13 @@ export class ModuliColonnaMobileState {
     }
 
     @Selector()
-    static moduliColonnaMobile(state: ModuliColonnaMobileStateModel): any[] {
+    static moduliColonnaMobile(state: ModuliColonnaMobileStateModel): any {
         return state.moduliColonnaMobile;
+    }
+
+    @Selector()
+    static moduliSelezionati(state: ModuliColonnaMobileStateModel): ModuloColonnaMobile[] {
+        return state.moduliSelezionati;
     }
 
     @Selector()
@@ -65,6 +74,26 @@ export class ModuliColonnaMobileState {
         patchState({
             moduliColonnaMobile: moduliColonnaMobileCopy
         });
+    }
+
+    @Action(SetModuloSelezionato)
+    setModuloSelezionato({ setState }: StateContext<ModuliColonnaMobileStateModel>, action: SetModuloSelezionato): void {
+        const modulo = action.modulo;
+        setState(
+            patch({
+                moduliSelezionati: insertItem<ModuloColonnaMobile>(modulo)
+            })
+        );
+    }
+
+    @Action(SetModuloDeselezionato)
+    setModuloDeselezionato({ setState }: StateContext<ModuliColonnaMobileStateModel>, action: SetModuloDeselezionato): void {
+        const idModulo = action.idModulo;
+        setState(
+            patch({
+                moduliSelezionati: removeItem<ModuloColonnaMobile>((m: ModuloColonnaMobile) => m.id === idModulo)
+            })
+        );
     }
 
     @Action(StartLoadingModuliColonnaMobile)

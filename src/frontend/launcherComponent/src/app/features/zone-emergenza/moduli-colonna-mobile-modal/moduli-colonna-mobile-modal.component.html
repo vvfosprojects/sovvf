@@ -22,7 +22,8 @@
                     <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                         <div class="col-3">
                             <div class="card cursor-pointer"
-                                 (click)="onSelectModulo(m, mCM)">
+                                 [class.border-danger]="isSelezionatoModulo(mCM.id)"
+                                 (click)="onSelezioneModulo(mCM)">
                                 <div class="card-header">
                                     <div class="clearfix">
                                         <div class="float-left">
@@ -86,6 +87,10 @@
             <div class="row">
                 <div class="col-12">
                     Riepilogo
+                    <button class="btn btn-primary"
+                            (click)="onConfermaModuli()">
+                        Conferma Moduli
+                    </button>
                 </div>
             </div>
         </ng-wizard-step>

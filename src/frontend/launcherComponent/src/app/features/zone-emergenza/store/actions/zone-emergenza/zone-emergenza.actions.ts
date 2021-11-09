@@ -1,5 +1,6 @@
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { SetZonaEmergenzaFromMappaActiveValue } from '../tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
 
 export class GetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Get Zone Emergenza';
@@ -40,6 +41,13 @@ export class AddZonaEmergenza {
 
 export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
+}
+
+export class UpdateModuliZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduli: ModuloColonnaMobile[]) {
+    }
 }
 
 export class AnnullaZonaEmergenza {

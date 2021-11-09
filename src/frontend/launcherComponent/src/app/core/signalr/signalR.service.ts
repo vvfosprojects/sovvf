@@ -54,7 +54,7 @@ import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
 import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
 import { GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
-import { ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
+import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;

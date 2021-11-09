@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { Select, Store } from '@ngxs/store';
-import { GetModuliColonnaMobile } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import { GetModuliColonnaMobile, SetModuloDeselezionato, SetModuloSelezionato } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { NgWizardConfig, STEP_STATE, THEME } from 'ng-wizard';
 import { Observable, Subscription } from 'rxjs';
 import { ModuliColonnaMobileState } from '../store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
+import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-moduli-colonna-mobile-modal',
@@ -16,8 +17,10 @@ import { ModuliColonnaMobileState } from '../store/states/moduli-colonna-mobile/
 })
 export class ModuliColonnaMobileModalComponent implements OnInit {
 
-    @Select(ModuliColonnaMobileState.moduliColonnaMobile) moduliColonnaMobile$: Observable<any>;
-    moduliColonnaMobile: any;
+    @Select(ModuliColonnaMobileState.moduliColonnaMobile) moduliColonnaMobile$: Observable<ModuloColonnaMobile>;
+    moduliColonnaMobile: ModuloColonnaMobile;
+    @Select(ModuliColonnaMobileState.moduliSelezionati) moduliSelezionati$: Observable<ModuloColonnaMobile[]>;
+    moduliSelezionati: ModuloColonnaMobile[];
     @Select(ModuliColonnaMobileState.loadingModuliColonnaMobile) loadingModuliColonnaMobile$: Observable<boolean>;
     loadingModuliColonnaMobile: boolean;
 
@@ -43,6 +46,7 @@ export class ModuliColonnaMobileModalComponent implements OnInit {
     constructor(public modal: NgbActiveModal,
                 private store: Store) {
         this.getModuliColonnaMobile();
+        this.getModuliSelezionati();
         this.getLoadingModuliColonnaMobile();
     }
 
@@ -64,10 +68,18 @@ export class ModuliColonnaMobileModalComponent implements OnInit {
         );
     }
 
+    getModuliSelezionati(): void {
+        this.subscriptions.add(
+            this.moduliSelezionati$.subscribe((moduliSelezionati: any) => {
+                this.moduliSelezionati = moduliSelezionati;
+            })
+        );
+    }
+
     getLoadingModuliColonnaMobile(): void {
         this.subscriptions.add(
             this.loadingModuliColonnaMobile$.subscribe((loadingModuliColonnaMobile: boolean) => {
-                this.loadingModuliColonnaMobile = true;
+                this.loadingModuliColonnaMobile = loadingModuliColonnaMobile;
             })
         );
     }
@@ -76,8 +88,21 @@ export class ModuliColonnaMobileModalComponent implements OnInit {
         // TODO: logica prossimo step wizard
     }
 
-    onSelectModulo(nomeModulo: string, moduloColonnaMobile: any): void {
+    isSelezionatoModulo(idModulo: string): boolean {
+        return !!(this.moduliSelezionati.filter((m: ModuloColonnaMobile) => m.id === idModulo)[0]);
+    }
 
+    onSelezioneModulo(moduloColonnaMobile: ModuloColonnaMobile): void {
+        const isSelezionato = this.moduliSelezionati.filter((m: ModuloColonnaMobile) => m.id === moduloColonnaMobile.id)[0];
+        if (!isSelezionato) {
+            this.store.dispatch(new SetModuloSelezionato(moduloColonnaMobile));
+        } else {
+            this.store.dispatch(new SetModuloDeselezionato(moduloColonnaMobile.id));
+        }
+    }
+
+    onConfermaModuli(): void {
+        this.close('ok');
     }
 
     close(esito: string): void {
