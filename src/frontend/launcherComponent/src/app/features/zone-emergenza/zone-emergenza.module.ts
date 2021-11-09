@@ -16,6 +16,7 @@ import { ZoneEmergenzaComponent } from './zone-emergenza.component';
 import { TabellaZoneEmergenzaComponent } from './tabella-zone-emergenza/tabella-zone-emergenza.component';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
+import { ModuloColonnaMobileComponent } from './moduli-colonna-mobile-modal/modulo-colonna-mobile/modulo-colonna-mobile.component';
 /**
  * Routing
  */
@@ -37,7 +38,8 @@ const ngWizardConfig: NgWizardConfig = {
         TabellaZoneEmergenzaComponent,
         ModuliColonnaMobileModalComponent,
         AnnullaZonaEmergenzaModalComponent,
-        AllertaCONZonaEmergenzaModalComponent
+        AllertaCONZonaEmergenzaModalComponent,
+        ModuloColonnaMobileComponent
     ],
     imports: [
         CommonModule,

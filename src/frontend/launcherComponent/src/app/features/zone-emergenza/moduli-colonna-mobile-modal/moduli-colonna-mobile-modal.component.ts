@@ -24,6 +24,8 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     @Select(ModuliColonnaMobileState.loadingModuliColonnaMobile) loadingModuliColonnaMobile$: Observable<boolean>;
     loadingModuliColonnaMobile: boolean;
 
+    fase = 'fase 1';
+
     zonaEmergenza: ZonaEmergenza;
     tipologiaEmergenza: TipologiaEmergenza;
 
@@ -38,7 +40,18 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         theme: THEME.default,
         selected: 0,
         lang: { next: 'Avanti', previous: 'Indietro' },
-        cycleSteps: false
+        cycleSteps: false,
+        toolbarSettings: {
+            toolbarExtraButtons: [
+                {
+                    text: 'CONFERMA COLONNE MOBILI',
+                    class: 'btn btn-success',
+                    event: () => {
+                        this.onConfermaModuli();
+                    }
+                }
+            ],
+        }
     };
 
     private subscriptions: Subscription = new Subscription();
@@ -86,6 +99,24 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
                 this.loadingModuliColonnaMobile = loadingModuliColonnaMobile;
             })
         );
+    }
+
+    getStepDescription(nomeModulo: string): string {
+        const count = this.moduliSelezionati?.filter((m: ModuloColonnaMobile) => m.nomeModulo === nomeModulo)?.length;
+        let description: string;
+        if (count === 1) {
+            description = '' + count + ' selezionato';
+        }
+        if (count > 1) {
+            description = '' + count + ' selezionati';
+        }
+        return description;
+    }
+
+    getRiepilogoStepDescription(): string {
+        const count = this.moduliSelezionati?.length;
+        const description = count ? count + ' totali' : '';
+        return description;
     }
 
     stepChanged(event: any): void {

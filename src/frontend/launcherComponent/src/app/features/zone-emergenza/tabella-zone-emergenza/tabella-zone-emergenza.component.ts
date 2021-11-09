@@ -28,8 +28,8 @@ export class TabellaZoneEmergenzaComponent {
     constructor() {
     }
 
-    onEdit(pos: ZonaEmergenza): void {
-        this.edit.emit(pos);
+    onEdit(zonaEmergenza: ZonaEmergenza): void {
+        this.edit.emit(zonaEmergenza);
     }
 
     onDelete(zonaEmergenza: ZonaEmergenza): void {
