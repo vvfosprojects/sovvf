@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenza;
@@ -26,13 +27,15 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetTipologieEmergenzaQuery, GetTipologieEmergenzaResult> _getTipologieHandler;
         private readonly IQueryHandler<GetEmergenzaByIdQuery, GetEmergenzaByIdResult> _getEmergenzaByIdHandler;
         private readonly IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> _getListaEmergenzeByCodComandoHandler;
+        private readonly ICommandHandler<AllertaCommand> _allertaHandler;
 
         public GestioneEmergenzaController(ICommandHandler<InsertEmergenzaCommand> InsertHandler,
                                            ICommandHandler<UpdateEmergenzaCommand> UpdateHandler,
                                            ICommandHandler<AnnullaEmergenzaCommand> AnnullaHandler,
                                            IQueryHandler<GetTipologieEmergenzaQuery, GetTipologieEmergenzaResult> GetTipologieHandler,
                                            IQueryHandler<GetEmergenzaByIdQuery, GetEmergenzaByIdResult> GetEmergenzaByIdHandler,
-                                           IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> GetListaEmergenzeByCodComandoHandler)
+                                           IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> GetListaEmergenzeByCodComandoHandler,
+                                           ICommandHandler<AllertaCommand> AllertaHandler)
         {
             _insertHandler = InsertHandler;
             _updateHandler = UpdateHandler;
@@ -40,6 +43,7 @@ namespace SO115App.API.Controllers
             _getTipologieHandler = GetTipologieHandler;
             _getEmergenzaByIdHandler = GetEmergenzaByIdHandler;
             _getListaEmergenzeByCodComandoHandler = GetListaEmergenzeByCodComandoHandler;
+            _allertaHandler = AllertaHandler;
         }
 
         [HttpPost("InsertEmergenza")]
@@ -98,6 +102,24 @@ namespace SO115App.API.Controllers
             try
             {
                 _annullaHandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AllertaEmergenza")]
+        public async Task<IActionResult> AllertaEmergenza([FromBody] AllertaCommand command)
+        {
+            command.CodOperatore = Request.Headers["IdUtente"].ToString();
+            command.CodSede = Request.Headers["codicesede"].ToString().Split(',')[0];
+            try
+            {
+                _allertaHandler.Handle(command);
                 return Ok();
             }
             catch (Exception ex)
