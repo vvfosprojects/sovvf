@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -30,14 +30,13 @@ import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-mod
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
-import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { ResetModuliSelezionati } from './store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { ModuloColonnaMobile } from './interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-zone-emergenza',
     templateUrl: './zone-emergenza.component.html',
-    styleUrls: ['./zone-emergenza.component.scss']
+    styleUrls: ['./zone-emergenza.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
