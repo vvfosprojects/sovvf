@@ -87,5 +87,183 @@
         "statoEfficenza": 0
       }
     ]
+  },
+  {
+    "Id": "2",
+    "NomeModulo": "MC.PCA",
+    "CodComando": "RI.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "RI.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "RI.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
+  },
+  {
+    "Id": "3",
+    "NomeModulo": "MC.PCA",
+    "CodComando": "LT.1000",
+    "Stato": "In Sede",
+    "Componenti": [
+      {
+        "codiceFiscale": "CCCCCC66P66R111X",
+        "descrizioneQualifica": "DRIVER",
+        "nominativo": "Nome Cognome 1",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "TTTTTT55Y55R222X",
+        "descrizioneQualifica": "TEAM_LEADER",
+        "nominativo": "Nome Cognome 2",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "XXXXXX44Y44R333X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 3",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "JJJJJJ33Y33R444X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 4",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      },
+      {
+        "codiceFiscale": "AAAAA22Y22R555X",
+        "descrizioneQualifica": "OTHER",
+        "nominativo": "Nome Cognome 5",
+        "capoPartenza": false,
+        "autista": true,
+        "rimpiazzo": false,
+        "qualifications": null
+      }
+    ],
+    "Mezzi": [
+      {
+        "appartenenza": "LT.1000",
+        "codice": "N.BRM63",
+        "coordinate": {
+          "latitudine": 4189996,
+          "longitudine": 1249104
+        },
+        "coordinateFake": false,
+        "descrizione": "BRM63",
+        "descrizioneAppartenenza": "ASSEGNATO AL COMANDO",
+        "distaccamento": {
+          "codice": "LT.1000",
+          "coordinate": {
+            "latitudine": 4189996,
+            "longitudine": 1249104
+          },
+          "descrizione": "CENTRALE",
+          "indirizzo": "Via Genova, 3/a"
+        },
+        "genere": "FB",
+        "idRichiesta": null,
+        "istanteAcquisizione": null,
+        "istantiCambiStato": [
+          {
+            "stato": "In Sede",
+            "istante": null
+          }
+        ],
+        "istante": null,
+        "stato": "In Sede",
+        "preAccoppiato": false,
+        "stato": "In Sede",
+        "statoEfficenza": 0
+      }
+    ]
   }
 ]
