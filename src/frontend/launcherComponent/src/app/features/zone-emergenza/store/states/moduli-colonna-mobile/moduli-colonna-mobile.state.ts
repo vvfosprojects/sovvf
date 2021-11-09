@@ -1,7 +1,16 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ModuliColonnaMobileService } from '../../../../../core/service/moduli-colonna-mobile-service/moduli-colonna-mobile.service';
-import { GetModuliColonnaMobile, ResetModuliSelezionati, SetModuliColonnaMobile, SetModuloDeselezionato, SetModuloSelezionato, StartLoadingModuliColonnaMobile, StopLoadingModuliColonnaMobile } from '../../actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import {
+    GetModuliColonnaMobile,
+    ResetModulii,
+    ResetModuliSelezionati,
+    SetModuliColonnaMobile,
+    SetModuloDeselezionato,
+    SetModuloSelezionato,
+    StartLoadingModuliColonnaMobile,
+    StopLoadingModuliColonnaMobile
+} from '../../actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
@@ -94,6 +103,13 @@ export class ModuliColonnaMobileState {
                 moduliSelezionati: removeItem<ModuloColonnaMobile>((m: ModuloColonnaMobile) => m.id === idModulo)
             })
         );
+    }
+
+    @Action(ResetModulii)
+    resetModulii({ patchState }: StateContext<ModuliColonnaMobileStateModel>): void {
+        patchState({
+            moduliColonnaMobile: ModuliColonnaMobileStateDefaults.moduliColonnaMobile
+        });
     }
 
     @Action(ResetModuliSelezionati)

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -19,8 +19,8 @@ import {
     GetZoneEmergenza,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
-    ResetZonaEmergenzaForm,
-    UpdateModuliZonaEmergenza
+    ResetZonaEmergenzaForm, UpdateModuliMobConsolidamentoZonaEmergenza, UpdateModuliMobImmediataZonaEmergenza, UpdateModuliMobPotIntZonaEmergenza,
+
 } from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
@@ -30,14 +30,13 @@ import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-mod
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
-import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { ResetModuliSelezionati } from './store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { ModuloColonnaMobile } from './interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-zone-emergenza',
     templateUrl: './zone-emergenza.component.html',
-    styleUrls: ['./zone-emergenza.component.scss']
+    styleUrls: ['./zone-emergenza.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
@@ -195,22 +194,36 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
-    onColonneMobili(zonaEmergenza: ZonaEmergenza): void {
+    onColonneMobili(event: { zonaEmergenza: ZonaEmergenza, fase: string }): void {
         const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
             windowClass: 'modal-holder',
             size: 'xl',
             centered: true
         });
 
-        colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
+        colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = event.zonaEmergenza;
+        colonneMobiliEmergenzaModal.componentInstance.fase = event.fase;
 
-        colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[] }) => {
+        colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
             switch (result.esito) {
                 case 'ok':
-                    const moduliSelezionati = result.moduliSelezionati;
-                    this.store.dispatch([
-                        new UpdateModuliZonaEmergenza(zonaEmergenza, moduliSelezionati)
-                    ]);
+                    switch (result.fase) {
+                        case '1':
+                            this.store.dispatch([
+                                new UpdateModuliMobImmediataZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                        case '2':
+                            this.store.dispatch([
+                                new UpdateModuliMobPotIntZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                        case '3':
+                            this.store.dispatch([
+                                new UpdateModuliMobConsolidamentoZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                    }
                     break;
                 case 'ko':
                     break;

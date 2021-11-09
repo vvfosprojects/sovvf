@@ -28,6 +28,10 @@ export class SetModuloDeselezionato {
     }
 }
 
+export class ResetModulii {
+    static readonly type = '[Moduli Colonna Mobile] Reset Moduli';
+}
+
 export class ResetModuliSelezionati {
     static readonly type = '[Moduli Colonna Mobile] Reset Moduli Selezionati';
 }

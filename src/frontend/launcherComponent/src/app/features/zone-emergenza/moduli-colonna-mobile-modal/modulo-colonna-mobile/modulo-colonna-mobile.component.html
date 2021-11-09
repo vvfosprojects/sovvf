@@ -1,0 +1,53 @@
+<div class="card cursor-pointer"
+     [class.border-danger]="selezionato"
+     (click)="onSelezione(modulo)">
+    <div class="card-header">
+        <div class="clearfix">
+            <div class="float-left">
+                <h6 class="mb-0">{{ modulo.nomeModulo }}</h6>
+            </div>
+            <div class="float-right">
+                <h6 class="mb-0">{{ modulo.codComando }}</h6>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-2">
+        <div class="clearfix mb-2">
+            <div class="float-left pt-1">
+                <h6 class="mb-0">Componenti</h6>
+            </div>
+            <div class="float-right">
+                <div class="badge badge-success"
+                     [ngbTooltip]="tooltipComponenti"
+                     placement="bottom">
+                    {{ modulo.componenti?.length }}
+                </div>
+            </div>
+            <ng-template #tooltipComponenti>
+                <div *ngFor="let m of modulo.componenti">
+                    {{ m.nominativo }}
+                </div>
+            </ng-template>
+        </div>
+        <div class="clearfix">
+            <div class="float-left pt-1">
+                <h6 class="mb-0">Mezzi</h6>
+            </div>
+            <div class="float-right">
+                <div class="badge badge-success"
+                     [ngbTooltip]="tooltipMezzi"
+                     placement="bottom">
+                    {{ modulo.mezzi?.length }}
+                </div>
+            </div>
+            <ng-template #tooltipMezzi>
+                <div *ngFor="let m of modulo.mezzi">
+                    {{ m.genere }} - {{ m.descrizione }}
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="card-footer">
+        <h6 class="mb-0">{{ modulo.stato }}</h6>
+    </div>
+</div>

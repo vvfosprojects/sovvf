@@ -43,10 +43,24 @@ export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
 }
 
-export class UpdateModuliZonaEmergenza {
-    static readonly type = '[ZoneEmergenza] Update Moduli Zona Emergenza';
+export class UpdateModuliMobImmediataZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Immediata Zona Emergenza';
 
-    constructor(public zonaEmergenza: ZonaEmergenza, public moduli: ModuloColonnaMobile[]) {
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobPotIntZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Pot_Int Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobPotInt: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobConsolidamentoZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
     }
 }
 
