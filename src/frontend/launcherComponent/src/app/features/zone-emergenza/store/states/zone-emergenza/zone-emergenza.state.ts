@@ -334,52 +334,8 @@ export class ZoneEmergenzaState {
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
             moduliMobImmediata,
-            zonaEmergenzaValue.moduliConsolidamento,
-            zonaEmergenzaValue.moduliPotInt
-        );
-        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
-            dispatch([
-                new GetZoneEmergenza(),
-                new StopLoadingZoneEmergenza()
-            ]);
-        }, error => {
-            dispatch([
-                new StopLoadingZoneEmergenza()
-            ]);
-        });
-    }
-
-    @Action(UpdateModuliMobConsolidamentoZonaEmergenza)
-    updateModuliMobConsolidamentoZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobConsolidamentoZonaEmergenza): void {
-        dispatch(new StartLoadingZoneEmergenza());
-        const zonaEmergenzaValue = action.zonaEmergenza;
-        const moduliMobConsolidamento = action.moduliMobConsolidamento;
-        const zonaEmergenza = new ZonaEmergenza(
-            zonaEmergenzaValue.id,
-            zonaEmergenzaValue.codEmergenza,
-            zonaEmergenzaValue.codComandoRichiedente,
-            zonaEmergenzaValue.descrizione,
-            zonaEmergenzaValue.tipologia,
-            new Localita(
-                {
-                    latitudine: zonaEmergenzaValue.localita.coordinate.latitudine,
-                    longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
-                },
-                zonaEmergenzaValue.localita.indirizzo,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                zonaEmergenzaValue.localita.provincia,
-                zonaEmergenzaValue.localita.regione
-            ),
-            zonaEmergenzaValue.listaEventi,
-            zonaEmergenzaValue.annullata,
-            zonaEmergenzaValue.moduliImmediata,
-            moduliMobConsolidamento,
-            zonaEmergenzaValue.moduliPotInt
+            zonaEmergenzaValue.listaModuliConsolidamento,
+            zonaEmergenzaValue.listaModuliPotInt
         );
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([
@@ -421,9 +377,53 @@ export class ZoneEmergenzaState {
             ),
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
-            zonaEmergenzaValue.moduliImmediata,
-            zonaEmergenzaValue.moduliConsolidamento,
+            zonaEmergenzaValue.listaModuliImmediata,
+            zonaEmergenzaValue.listaModuliConsolidamento,
             moduliMobPotInt
+        );
+        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new GetZoneEmergenza(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
+    @Action(UpdateModuliMobConsolidamentoZonaEmergenza)
+    updateModuliMobConsolidamentoZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobConsolidamentoZonaEmergenza): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const zonaEmergenzaValue = action.zonaEmergenza;
+        const moduliMobConsolidamento = action.moduliMobConsolidamento;
+        const zonaEmergenza = new ZonaEmergenza(
+            zonaEmergenzaValue.id,
+            zonaEmergenzaValue.codEmergenza,
+            zonaEmergenzaValue.codComandoRichiedente,
+            zonaEmergenzaValue.descrizione,
+            zonaEmergenzaValue.tipologia,
+            new Localita(
+                {
+                    latitudine: zonaEmergenzaValue.localita.coordinate.latitudine,
+                    longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
+                },
+                zonaEmergenzaValue.localita.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                zonaEmergenzaValue.localita.provincia,
+                zonaEmergenzaValue.localita.regione
+            ),
+            zonaEmergenzaValue.listaEventi,
+            zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.listaModuliImmediata,
+            moduliMobConsolidamento,
+            zonaEmergenzaValue.listaModuliPotInt
         );
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([

@@ -50,17 +50,17 @@ export class UpdateModuliMobImmediataZonaEmergenza {
     }
 }
 
-export class UpdateModuliMobConsolidamentoZonaEmergenza {
-    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
-
-    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
-    }
-}
-
 export class UpdateModuliMobPotIntZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Update Moduli Mob_Pot_Int Zona Emergenza';
 
     constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobPotInt: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobConsolidamentoZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
     }
 }
 

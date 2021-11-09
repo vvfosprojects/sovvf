@@ -215,12 +215,12 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
                             break;
                         case '2':
                             this.store.dispatch([
-                                new UpdateModuliMobConsolidamentoZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                                new UpdateModuliMobPotIntZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
                             ]);
                             break;
                         case '3':
                             this.store.dispatch([
-                                new UpdateModuliMobPotIntZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                                new UpdateModuliMobConsolidamentoZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
                             ]);
                             break;
                     }
