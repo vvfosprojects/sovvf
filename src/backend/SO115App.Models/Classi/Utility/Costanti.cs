@@ -67,7 +67,9 @@ namespace SO115App.Models.Classi.Utility
         public const string EmergenzaModifica = "Modificata Emergenza";
         public const string EmergenzaAnnulla = "Emergenza annullata";
         public const string EmergenzaPresaInCarico = "Emergenza presa in carico";
-        public const string EmergenzaInserimentoModuliColonnaMobili = "Inseriti Moduli di Colonna Mobile";
+        public const string EmergenzaInserimentoModuliColonnaMobiliImmediata = "Inseriti Moduli di Colonna Mobile (Immediata)";
+        public const string EmergenzaInserimentoModuliColonnaMobiliPotInt = "Inseriti Moduli di Colonna Mobile (Pot/Int)";
+        public const string EmergenzaInserimentoModuliColonnaMobiliConsolidamento = "Inseriti Moduli di Colonna Mobile (Consolidamento)";
         public const string EmergenzaAllerta = "Allerta CON per emergenza";
 
         #endregion StatiRichiesta

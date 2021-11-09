@@ -327,8 +327,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case PresaInCaricoEmergenza _:
                     return Costanti.EmergenzaPresaInCarico;
 
-                case InserimentoModuliColonnaMobileEmergenza _:
-                    return Costanti.EmergenzaInserimentoModuliColonnaMobili;
+                case InserimentoModuliColonnaMobileEmergenzaImmediata _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliImmediata;
+                
+                case InserimentoModuliColonnaMobileEmergenzaPotInt _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliPotInt;
+                
+                case InserimentoModuliColonnaMobileEmergenzaConsolidamento _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliConsolidamento;
 
                 case AllertaEmergenza _:
                     return Costanti.EmergenzaAllerta;

@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
             
             command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
 
-            if (emergenza.ListaModuli == null && command.InfoEmergenza.ListaModuli != null)
+            if (emergenza.ListaModuliImmediata == null && command.InfoEmergenza.ListaModuliImmediata != null)
             {
                 command.InfoEmergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));
                 command.InfoEmergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));                

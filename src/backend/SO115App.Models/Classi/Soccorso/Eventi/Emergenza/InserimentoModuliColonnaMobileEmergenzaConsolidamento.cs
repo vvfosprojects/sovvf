@@ -3,12 +3,12 @@ using System;
 
 namespace SO115App.Models.Classi.Soccorso.Eventi.Emergenza
 {
-    public class InserimentoModuliColonnaMobileEmergenza : Evento
+    public class InserimentoModuliColonnaMobileEmergenzaConsolidamento : Evento
     {
-        public InserimentoModuliColonnaMobileEmergenza(DateTime istante,
+        public InserimentoModuliColonnaMobileEmergenzaConsolidamento(DateTime istante,
                          string codiceFonte,
                          string codice,
-                         string codSedePresaInCarico) : base(istante, codiceFonte, codice, "InserimentoModuliColonnaMobileEmergenza")
+                         string codSedePresaInCarico) : base(istante, codiceFonte, codice, "InserimentoModuliColonnaMobileEmergenzaConsolidamento")
         {
             CodSedePresaInCarico = codSedePresaInCarico;
         }
