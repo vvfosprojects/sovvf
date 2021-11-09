@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
-    AddZonaEmergenza, AllertaCONZonaEmergenza,
+    AddZonaEmergenza,
+    AllertaCONZonaEmergenza,
     AnnullaZonaEmergenza,
     EditZonaEmergenza,
     GetTipologieEmergenza,
-    GetZoneEmergenza, ResetAllertaCONZonaEmergenzaForm,
+    GetZoneEmergenza,
+    ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
     ResetZonaEmergenzaForm,
     SetMappaActiveValue,
@@ -19,7 +21,8 @@ import {
     StartLoadingTipologieEmergenza,
     StartLoadingZoneEmergenza,
     StopLoadingTipologieEmergenza,
-    StopLoadingZoneEmergenza
+    StopLoadingZoneEmergenza,
+    UpdateModuliZonaEmergenza
 } from '../../actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenzaForm } from '../../../../../shared/interface/forms/zona-emergenza-form.interface';
 import { Localita } from '../../../../../shared/model/localita.model';
@@ -297,6 +300,48 @@ export class ZoneEmergenzaState {
         }, error => {
             dispatch([
                 new ResetZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
+    @Action(UpdateModuliZonaEmergenza)
+    updateModuliZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliZonaEmergenza): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const zonaEmergenzaValue = action.zonaEmergenza;
+        const moduli = action.moduli;
+        const zonaEmergenza = new ZonaEmergenza(
+            zonaEmergenzaValue.id,
+            zonaEmergenzaValue.codEmergenza,
+            zonaEmergenzaValue.codComandoRichiedente,
+            zonaEmergenzaValue.descrizione,
+            zonaEmergenzaValue.tipologia,
+            new Localita(
+                {
+                    latitudine: zonaEmergenzaValue.localita.coordinate.latitudine,
+                    longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
+                },
+                zonaEmergenzaValue.localita.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                zonaEmergenzaValue.localita.provincia,
+                zonaEmergenzaValue.localita.regione
+            ),
+            zonaEmergenzaValue.listaEventi,
+            zonaEmergenzaValue.annullata,
+            moduli
+        );
+        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new GetZoneEmergenza(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch([
                 new StopLoadingZoneEmergenza()
             ]);
         });

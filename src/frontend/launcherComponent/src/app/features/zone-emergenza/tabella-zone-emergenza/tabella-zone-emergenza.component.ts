@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ZonaEmergenza } from '../../../shared/model/zona-emergenza.model';
+import { ZonaEmergenza } from '../model/zona-emergenza.model';
 
 @Component({
     selector: 'app-tabella-zone-emergenza',

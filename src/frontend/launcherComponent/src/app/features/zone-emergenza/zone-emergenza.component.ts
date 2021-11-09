@@ -9,9 +9,19 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from './model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
-import { AllertaCONZonaEmergenza, AnnullaZonaEmergenza, EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetAllertaCONZonaEmergenzaForm, ResetAnnullaZonaEmergenzaForm, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import {
+    AllertaCONZonaEmergenza,
+    AnnullaZonaEmergenza,
+    EditZonaEmergenza,
+    GetTipologieEmergenza,
+    GetZoneEmergenza,
+    ResetAllertaCONZonaEmergenzaForm,
+    ResetAnnullaZonaEmergenzaForm,
+    ResetZonaEmergenzaForm,
+    UpdateModuliZonaEmergenza
+} from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
@@ -20,6 +30,7 @@ import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-mod
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
+import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -194,6 +205,8 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         colonneMobiliEmergenzaModal.result.then((result: string) => {
             switch (result) {
                 case 'ok':
+                    const moduliSelezionati = this.store.selectSnapshot(ModuliColonnaMobileState.moduliSelezionati);
+                    this.store.dispatch(new UpdateModuliZonaEmergenza(zonaEmergenza, moduliSelezionati));
                     break;
                 case 'ko':
                     break;

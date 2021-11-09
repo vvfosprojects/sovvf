@@ -1,3 +1,5 @@
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
+
 export class GetModuliColonnaMobile {
     static readonly type = '[Moduli Colonna Mobile] Get Moduli Colonna Mobile';
 
@@ -8,7 +10,21 @@ export class GetModuliColonnaMobile {
 export class SetModuliColonnaMobile {
     static readonly type = '[Moduli Colonna Mobile] Set Moduli Colonna Mobile';
 
-    constructor(public nomeModulo: string, public moduliColonnaMobile: any[]) {
+    constructor(public nomeModulo: string, public moduliColonnaMobile: ModuloColonnaMobile[]) {
+    }
+}
+
+export class SetModuloSelezionato {
+    static readonly type = '[Moduli Colonna Mobile] Set Modulo Selezionato';
+
+    constructor(public modulo: ModuloColonnaMobile) {
+    }
+}
+
+export class SetModuloDeselezionato {
+    static readonly type = '[Moduli Colonna Mobile] Set Modulo Deselezionato';
+
+    constructor(public idModulo: string) {
     }
 }
 

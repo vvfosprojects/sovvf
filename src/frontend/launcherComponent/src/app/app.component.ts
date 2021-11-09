@@ -29,6 +29,7 @@ import { NavbarState } from './features/navbar/store/states/navbar.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
 import { NotificaInterface } from './shared/interface/notifica.interface';
 import { RouterState } from '@ngxs/router-plugin';
+import { GetDistaccamenti } from './shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({
     selector: 'app-root',

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../features/zone-emergenza/model/zona-emergenza.model';
 
 const BASE_URL = environment.baseUrl;
 const API_ZONE_EMERGENZA = BASE_URL + environment.apiUrl.zoneEmergenza;

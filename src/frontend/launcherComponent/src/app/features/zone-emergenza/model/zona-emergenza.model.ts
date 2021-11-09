@@ -1,5 +1,6 @@
-import { Localita } from './localita.model';
-import { EventoRichiesta } from './evento-richiesta.model';
+import { Localita } from '../../../shared/model/localita.model';
+import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
+import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 
 export class ZonaEmergenza {
 
@@ -35,7 +36,11 @@ export class ZonaEmergenza {
         /**
          * Definisce se la Zona Emergenza è stata annullata
          */
-        public annullata?: boolean
+        public annullata?: boolean,
+        /**
+         * Moduli assegnati alla Zona Emergenza
+         */
+        public moduli?: ModuloColonnaMobile[]
     ) {
     }
 }
