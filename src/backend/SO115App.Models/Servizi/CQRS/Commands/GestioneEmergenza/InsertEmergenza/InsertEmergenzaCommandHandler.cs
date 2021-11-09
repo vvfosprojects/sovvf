@@ -37,7 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenz
 
         public void Handle(InsertEmergenzaCommand command)
         {
-            if (command.InfoEmergenza.CodComandoRichiedente.Equals("CON"))
+            if (command.InfoEmergenza.CodComandoRichiedente.Equals("00"))
                 command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodCon(command.InfoEmergenza.Tipologia.ToString());
             else if (command.InfoEmergenza.CodComandoRichiedente.Contains("."))
                 command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodProvinciale(command.InfoEmergenza.Localita.Regione, command.InfoEmergenza.Localita.Provincia, String.Join(",", command.InfoEmergenza.Tipologia.emergenza));
