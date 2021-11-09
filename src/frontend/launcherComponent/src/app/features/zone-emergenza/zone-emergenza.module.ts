@@ -17,6 +17,8 @@ import { TabellaZoneEmergenzaComponent } from './tabella-zone-emergenza/tabella-
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 import { ModuloColonnaMobileComponent } from './moduli-colonna-mobile-modal/modulo-colonna-mobile/modulo-colonna-mobile.component';
+import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
+import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
 /**
  * Routing
  */
@@ -26,7 +28,6 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -39,14 +40,14 @@ const ngWizardConfig: NgWizardConfig = {
         ModuliColonnaMobileModalComponent,
         AnnullaZonaEmergenzaModalComponent,
         AllertaCONZonaEmergenzaModalComponent,
-        ModuloColonnaMobileComponent
+        ModuloColonnaMobileComponent,
+        DettaglioZonaEmergenzaComponent
     ],
     imports: [
         CommonModule,
         ZoneEmergenzaRouting,
         NgWizardModule.forRoot(ngWizardConfig),
         TreeviewModule.forRoot(),
-        SharedModule.forRoot(),
         NgxsModule.forFeature([
             ZoneEmergenzaState,
             ModuliColonnaMobileState

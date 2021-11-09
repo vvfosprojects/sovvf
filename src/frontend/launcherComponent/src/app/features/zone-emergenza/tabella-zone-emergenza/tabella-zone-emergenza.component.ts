@@ -20,12 +20,17 @@ export class TabellaZoneEmergenzaComponent {
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() detail: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
     @Output() edit: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
     @Output() delete: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
     @Output() colonneMobili: EventEmitter<{ zonaEmergenza: ZonaEmergenza, fase: string }> = new EventEmitter<{ zonaEmergenza: ZonaEmergenza, fase: string }>();
     @Output() allertaCON: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
 
     constructor() {
+    }
+
+    onDetail(zonaEmergenza: ZonaEmergenza): void {
+        this.detail.emit(zonaEmergenza);
     }
 
     onEdit(zonaEmergenza: ZonaEmergenza): void {

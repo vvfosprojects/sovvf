@@ -31,6 +31,7 @@ import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 import { ModuloColonnaMobile } from './interface/modulo-colonna-mobile.interface';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -143,6 +144,10 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         }
     }
 
+    onDetail(zonaEmergenza: ZonaEmergenza): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail/' + zonaEmergenza.id]));
+    }
+
     onEdit(zonaEmergenza: ZonaEmergenza): void {
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
@@ -196,8 +201,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
     onColonneMobili(event: { zonaEmergenza: ZonaEmergenza, fase: string }): void {
         const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
-            windowClass: 'modal-holder',
-            size: 'xl',
+            windowClass: 'modal-holder xxlModal',
             centered: true
         });
 

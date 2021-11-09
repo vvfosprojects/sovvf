@@ -2,12 +2,12 @@
        class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:19%"><i class="fas fa-bolt mr-2"></i>Azioni</th>
-        <th scope="col" style="width:14%"><i class="fas fa-hashtag mr-2"></i>Codice Emergenza</th>
-        <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Richiedente</th>
-        <th scope="col" style="width:10%"><i class="fas fa-file mr-2"></i>Tipologia</th>
-        <th scope="col" style="width:36%"><i class="fas fa-map-marker mr-2"></i>Indirizzo</th>
-        <th scope="col" style="width:23%"><i class="fas fa-file mr-2"></i>Descrizione</th>
+        <th scope="col" style="width:19%">Azioni</th>
+        <th scope="col" style="width:14%">Codice Emergenza</th>
+        <th scope="col" style="width:10%">Cod. Sede Richiedente</th>
+        <th scope="col" style="width:10%">Tipologia</th>
+        <th scope="col" style="width:36%">Indirizzo</th>
+        <th scope="col" style="width:23%">Descrizione</th>
     </tr>
     </thead>
     <tbody>
@@ -42,7 +42,7 @@
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
-                    ngbTooltip="Assegna Colonne Mobili"
+                    ngbTooltip="Colonne Mobili: Fase 1"
                     placement="right"
                     (click)="onColonneMobili(zE, '1')">
                 <i class="fas fa-plus"></i>
@@ -52,7 +52,7 @@
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
-                    ngbTooltip="Assegna Colonne Mobili"
+                    ngbTooltip="Colonne Mobili: Fase 2"
                     placement="right"
                     [disabled]="!zE.listaModuliImmediata"
                     (click)="onColonneMobili(zE, '2')">
@@ -63,7 +63,7 @@
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
-                    ngbTooltip="Assegna Colonne Mobili"
+                    ngbTooltip="Colonne Mobili: Fase 3"
                     placement="right"
                     [disabled]="!zE.listaModuliImmediata || !zE.listaModuliPotInt"
                     (click)="onColonneMobili(zE, '3')">
@@ -71,7 +71,8 @@
                 F.3
             </button>
         </td>
-        <td style="width:14%" class="align-middle">
+        <td style="width:14%" class="align-middle cursor-pointer"
+            (click)="onDetail(zE)">
             {{ zE?.codEmergenza }}
         </td>
         <td style="width:10%" class="align-middle">
