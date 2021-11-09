@@ -16,7 +16,7 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
 
         public void Send(Emergenza emergenza)
         {
-            _notificationHubContext.Clients.Group("con").SendAsync("NotifyAllertaEmergenza", emergenza);
+            _notificationHubContext.Clients.Group("00").SendAsync("NotifyAllertaEmergenza", emergenza);
         }
     }
 }
