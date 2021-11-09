@@ -6,6 +6,7 @@ namespace SO115App.Models.Classi.Emergenza
 {
     public class ModuliColonnaMobile
     {
+        public string Id {get;set;}
         public string NomeModulo { get; set; }
         public string Stato { get; set; }
         public string CodComando { get; set; }
