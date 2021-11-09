@@ -24,7 +24,7 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     @Select(ModuliColonnaMobileState.loadingModuliColonnaMobile) loadingModuliColonnaMobile$: Observable<boolean>;
     loadingModuliColonnaMobile: boolean;
 
-    fase = 'fase 1';
+    fase: string;
 
     zonaEmergenza: ZonaEmergenza;
     tipologiaEmergenza: TipologiaEmergenza;
@@ -67,10 +67,23 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
         const tipologiaEmergenza = tipologieEmergenza?.filter((t: TipologiaEmergenza) => t.id === this.zonaEmergenza.tipologia.id)[0];
         this.tipologiaEmergenza = tipologiaEmergenza;
-
-        this.tipologiaEmergenza.moduli.mob_Immediata.forEach((m: string) => {
-            this.store.dispatch(new GetModuliColonnaMobile(m));
-        });
+        switch (this.fase) {
+            case '1':
+                this.tipologiaEmergenza.moduli.mob_Immediata.forEach((m: string) => {
+                    this.store.dispatch(new GetModuliColonnaMobile(m));
+                });
+                break;
+            case '2':
+                this.tipologiaEmergenza.moduli.mob_Consolidamento.forEach((m: string) => {
+                    this.store.dispatch(new GetModuliColonnaMobile(m));
+                });
+                break;
+            case '3':
+                this.tipologiaEmergenza.moduli.mob_Pot_Int.forEach((m: string) => {
+                    this.store.dispatch(new GetModuliColonnaMobile(m));
+                });
+                break;
+        }
     }
 
     ngOnDestroy(): void {
@@ -137,10 +150,10 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     }
 
     onConfermaModuli(): void {
-        this.close('ok', this.moduliSelezionati);
+        this.close('ok', this.moduliSelezionati, this.fase);
     }
 
-    close(esito: string, moduliSelezionati?: ModuloColonnaMobile[]): void {
-        this.modal.close({ esito, moduliSelezionati });
+    close(esito: string, moduliSelezionati?: ModuloColonnaMobile[], fase?: string): void {
+        this.modal.close({ esito, moduliSelezionati, fase });
     }
 }
