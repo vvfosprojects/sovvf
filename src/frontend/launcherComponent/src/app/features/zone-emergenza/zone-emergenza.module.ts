@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
@@ -15,6 +15,7 @@ import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard';
 import { ZoneEmergenzaComponent } from './zone-emergenza.component';
 import { TabellaZoneEmergenzaComponent } from './tabella-zone-emergenza/tabella-zone-emergenza.component';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
+import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 /**
  * Routing
  */
@@ -24,6 +25,7 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
+import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -33,7 +35,9 @@ const ngWizardConfig: NgWizardConfig = {
     declarations: [
         ZoneEmergenzaComponent,
         TabellaZoneEmergenzaComponent,
-        ModuliColonnaMobileModalComponent
+        ModuliColonnaMobileModalComponent,
+        AnnullaZonaEmergenzaModalComponent,
+        AllertaCONZonaEmergenzaModalComponent
     ],
     imports: [
         CommonModule,
@@ -51,6 +55,7 @@ const ngWizardConfig: NgWizardConfig = {
         NgbModule,
         SharedModule,
         MapsModule,
+        ReactiveFormsModule,
     ],
     providers: []
 })

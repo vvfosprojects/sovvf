@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ZonaEmergenza } from '../../model/zona-emergenza.model';
+import { ZonaEmergenza } from '../../../shared/model/zona-emergenza.model';
 
 @Component({
     selector: 'app-annulla-zona-emergenza-modal',

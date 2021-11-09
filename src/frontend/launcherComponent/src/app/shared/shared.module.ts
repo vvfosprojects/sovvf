@@ -82,7 +82,6 @@ import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-d
 import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { ZonaEmergenzaModalComponent } from './modal/zona-emergenza-modal/zona-emergenza-modal.component';
-import { AnnullaZonaEmergenzaModalComponent } from './modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -157,8 +156,7 @@ const COMPONENTS = [
     FormRichiestaComponent,
     RicercaIndirizzoComponent,
     AzioniAreaDocumentaleModalComponent,
-    ZonaEmergenzaModalComponent,
-    AnnullaZonaEmergenzaModalComponent
+    ZonaEmergenzaModalComponent
 ];
 const MODULES = [
     PipeModule
