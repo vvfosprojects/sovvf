@@ -43,7 +43,7 @@ export class ZoneEmergenzaService {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AnnullaEmergenza', params);
     }
 
-    allertaCON(params: { id: string, descrizioneEmergenza: string}): Observable<any> {
-        return this.http.post<any>(API_ZONE_EMERGENZA + '/Allerta', params);
+    allertaEmergenzaCON(params: { id: string, descrizioneEmergenza: string}): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/AllertaEmergenza', params);
     }
 }
