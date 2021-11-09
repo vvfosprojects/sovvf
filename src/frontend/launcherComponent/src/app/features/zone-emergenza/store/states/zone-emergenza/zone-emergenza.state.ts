@@ -334,7 +334,7 @@ export class ZoneEmergenzaState {
             id: formValue.id,
             descrizioneEmergenza: formValue.descrizioneEmergenza
         };
-        this.zoneEmergenzaService.allertaCON(params).subscribe((response: ResponseInterface) => {
+        this.zoneEmergenzaService.allertaEmergenzaCON(params).subscribe((response: ResponseInterface) => {
             dispatch([
                 new GetZoneEmergenza(),
                 new ResetAllertaCONZonaEmergenzaForm(),
