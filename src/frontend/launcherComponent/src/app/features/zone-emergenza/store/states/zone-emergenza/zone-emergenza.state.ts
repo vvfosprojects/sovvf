@@ -230,8 +230,8 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
-                'sostituire_provincia',
-                'sostituire_regione'
+                'RM',
+                'Lazio'
             ),
             null,
             false
@@ -285,8 +285,8 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
-                'sostituire_provincia',
-                'sostituire_regione'
+                'RM',
+                'Lazio'
             ),
             formValue.listaEventi,
             formValue.annullata

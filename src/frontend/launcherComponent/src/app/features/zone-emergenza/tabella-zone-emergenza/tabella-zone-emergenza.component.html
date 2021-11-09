@@ -29,15 +29,6 @@
                     (click)="onEdit(zE)">
                 <i class="fas fa-edit"></i>
             </button>
-            <button *ngIf="isDirRegionale || isCON"
-                    class="btn btn-sm float-left mr-2"
-                    [class.btn-outline-dark]="!nightMode"
-                    [class.btn-outline-light]="nightMode"
-                    ngbTooltip="Colonne Mobili"
-                    placement="right"
-                    (click)="onColonneMobili(zE)">
-                <i class="fas fa-truck"></i>
-            </button>
             <button *ngIf="isDirRegionale"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
@@ -46,6 +37,15 @@
                     placement="right"
                     (click)="onAllertaCON(zE)">
                 <i class="fas fa-exclamation-triangle"></i>
+            </button>
+            <button *ngIf="isDirRegionale || isCON"
+                    class="btn btn-sm float-left mr-2"
+                    [class.btn-outline-dark]="!nightMode"
+                    [class.btn-outline-light]="nightMode"
+                    ngbTooltip="Assegna Colonne Mobili"
+                    placement="right"
+                    (click)="onColonneMobili(zE)">
+                <i class="fas fa-plus"></i>
             </button>
         </td>
         <td style="width:14%" class="align-middle">

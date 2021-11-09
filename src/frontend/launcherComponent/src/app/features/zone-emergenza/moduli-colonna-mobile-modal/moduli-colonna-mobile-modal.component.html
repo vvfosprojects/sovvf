@@ -1,6 +1,16 @@
 <div class="modal-header">
-    <div class="modal-title font-weight-bold">
-        {{ 'Colonne Mobili Emergenza #' + zonaEmergenza.codEmergenza  | uppercase }}
+    <div class="modal-title">
+        <small class="text-muted d-block">
+            <i class="fas fa-plus" style="font-size: unset !important"></i>
+            {{ 'Colonne Mobili' | uppercase }}
+        </small>
+        <span  class="font-weight-bold">
+            {{ zonaEmergenza.tipologia.emergenza[0] + ' #' + zonaEmergenza.codEmergenza | uppercase }}
+        </span>
+        <small class="text-muted d-block mt-1">
+            <i class="fas fa-info-circle" style="font-size: unset !important"></i>
+            Selezione Colonne Mobili secondo cirolare numero EM-01/2020
+        </small>
     </div>
     <button type="button"
             class="btn btn-light close"
