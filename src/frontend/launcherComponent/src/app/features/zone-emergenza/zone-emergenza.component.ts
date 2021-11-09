@@ -31,6 +31,8 @@ import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
+import { ResetModuliSelezionati } from './store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import { ModuloColonnaMobile } from './interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-zone-emergenza',
@@ -202,11 +204,13 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
         colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
 
-        colonneMobiliEmergenzaModal.result.then((result: string) => {
-            switch (result) {
+        colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[] }) => {
+            switch (result.esito) {
                 case 'ok':
-                    const moduliSelezionati = this.store.selectSnapshot(ModuliColonnaMobileState.moduliSelezionati);
-                    this.store.dispatch(new UpdateModuliZonaEmergenza(zonaEmergenza, moduliSelezionati));
+                    const moduliSelezionati = result.moduliSelezionati;
+                    this.store.dispatch([
+                        new UpdateModuliZonaEmergenza(zonaEmergenza, moduliSelezionati)
+                    ]);
                     break;
                 case 'ko':
                     break;

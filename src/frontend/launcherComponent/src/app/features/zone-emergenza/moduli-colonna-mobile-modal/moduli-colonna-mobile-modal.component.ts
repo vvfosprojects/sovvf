@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { Select, Store } from '@ngxs/store';
-import { GetModuliColonnaMobile, SetModuloDeselezionato, SetModuloSelezionato } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import { GetModuliColonnaMobile, ResetModuliSelezionati, SetModuloDeselezionato, SetModuloSelezionato } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { NgWizardConfig, STEP_STATE, THEME } from 'ng-wizard';
 import { Observable, Subscription } from 'rxjs';
 import { ModuliColonnaMobileState } from '../store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
@@ -15,7 +15,7 @@ import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interfac
     styleUrls: ['./moduli-colonna-mobile-modal.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class ModuliColonnaMobileModalComponent implements OnInit {
+export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
 
     @Select(ModuliColonnaMobileState.moduliColonnaMobile) moduliColonnaMobile$: Observable<ModuloColonnaMobile>;
     moduliColonnaMobile: ModuloColonnaMobile;
@@ -60,6 +60,10 @@ export class ModuliColonnaMobileModalComponent implements OnInit {
         });
     }
 
+    ngOnDestroy(): void {
+        this.store.dispatch(new ResetModuliSelezionati());
+    }
+
     getModuliColonnaMobile(): void {
         this.subscriptions.add(
             this.moduliColonnaMobile$.subscribe((moduliColonnaMobile: any) => {
@@ -102,10 +106,10 @@ export class ModuliColonnaMobileModalComponent implements OnInit {
     }
 
     onConfermaModuli(): void {
-        this.close('ok');
+        this.close('ok', this.moduliSelezionati);
     }
 
-    close(esito: string): void {
-        this.modal.close(esito);
+    close(esito: string, moduliSelezionati?: ModuloColonnaMobile[]): void {
+        this.modal.close({ esito, moduliSelezionati });
     }
 }
