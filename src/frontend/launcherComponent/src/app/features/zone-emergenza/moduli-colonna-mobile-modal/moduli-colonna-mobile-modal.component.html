@@ -5,7 +5,7 @@
             {{ 'Colonne Mobili - Fase ' + fase | uppercase }}
         </small>
         <span class="font-weight-bold">
-            {{ zonaEmergenza.tipologia.emergenza[0] + ' #' + zonaEmergenza.codEmergenza | uppercase }}
+            {{ zonaEmergenza.tipologia.emergenza[0] + ' ' + zonaEmergenza.codEmergenza | uppercase }}
         </span>
         <small class="text-muted d-block mt-1">
             <i class="fas fa-info-circle" style="font-size: unset !important"></i>
@@ -29,7 +29,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile && moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
@@ -49,7 +49,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile && moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-3 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
@@ -69,7 +69,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile && moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
