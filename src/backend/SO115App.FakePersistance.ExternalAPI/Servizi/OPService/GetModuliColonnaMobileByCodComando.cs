@@ -8,11 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 {
     public class GetModuliColonnaMobileByCodComando : IGetModuliColonnaMobileByCodComando
     {
+        private readonly string ModuliJsonPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.ModuliColonnaMobileJson);
+
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
         public GetModuliColonnaMobileByCodComando(IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
@@ -31,9 +34,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
             var arrayCodiciSede = pinNodi.Select(n => n.Codice).ToArray();
 
-            string filepath = Costanti.ModuliColonnaMobileJson;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (StreamReader r = new StreamReader(ModuliJsonPath))
             {
                 json = r.ReadToEnd();
             }
