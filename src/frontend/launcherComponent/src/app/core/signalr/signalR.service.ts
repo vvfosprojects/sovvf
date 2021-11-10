@@ -53,7 +53,7 @@ import {
 import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
 import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
-import { GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
+import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
@@ -359,7 +359,10 @@ export class SignalRService {
             console.log('NotifyModificaEmergenza', emergenza);
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             const page = pagination?.page ? pagination.page : null;
-            this.store.dispatch(new GetZoneEmergenza(page));
+            this.store.dispatch([
+                new GetZoneEmergenza(page),
+                new GetZonaEmergenzaById(emergenza.id)
+            ]);
         });
         this.hubNotification.on('NotifyAllertaEmergenza', (emergenza: ZonaEmergenza) => {
             console.log('NotifyAllertaEmergenza', emergenza);

@@ -41,17 +41,6 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         selected: 0,
         lang: { next: 'Avanti', previous: 'Indietro' },
         cycleSteps: false,
-        toolbarSettings: {
-            toolbarExtraButtons: [
-                {
-                    text: 'CONFERMA COLONNE MOBILI',
-                    class: 'btn btn-success',
-                    event: () => {
-                        this.onConfermaModuli();
-                    }
-                }
-            ],
-        }
     };
 
     private subscriptions: Subscription = new Subscription();
