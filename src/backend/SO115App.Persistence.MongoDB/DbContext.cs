@@ -147,7 +147,6 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
-            CraDataMap.Map();
             BsonClassMap.RegisterClassMap<CraTree>();
         }
 
