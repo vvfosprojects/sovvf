@@ -45,7 +45,6 @@
                     ngbTooltip="Colonne Mobili: Fase 1"
                     placement="right"
                     (click)="onColonneMobili(zE, '1')">
-                <i class="fas fa-plus"></i>
                 F.1
             </button>
             <button *ngIf="isDirRegionale || isCON"
@@ -56,7 +55,6 @@
                     placement="right"
                     [disabled]="!zE.listaModuliImmediata"
                     (click)="onColonneMobili(zE, '2')">
-                <i class="fas fa-plus"></i>
                 F.2
             </button>
             <button *ngIf="isDirRegionale || isCON"
@@ -67,7 +65,6 @@
                     placement="right"
                     [disabled]="!zE.listaModuliImmediata || !zE.listaModuliPotInt"
                     (click)="onColonneMobili(zE, '3')">
-                <i class="fas fa-plus"></i>
                 F.3
             </button>
         </td>
@@ -97,13 +94,17 @@
         <ng-template [ngIf]="loading">Caricamento Emergenze in corso...</ng-template>
     </div>
 </div>
-<div *ngIf="zoneEmergenza?.length > 0" class="d-flex justify-content-between pt-2 px-2">
-    <ngb-pagination
-            [(page)]="page"
-            [pageSize]="pageSize"
-            [collectionSize]="totalItems"
-            [maxSize]="5"
-            [disabled]="loading"
-            (pageChange)="pageChange.emit($event)">
-    </ngb-pagination>
+<div *ngIf="zoneEmergenza?.length > 0" class="pt-2 px-2">
+    <div class="clearfix">
+        <div class="float-right">
+            <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="totalItems"
+                    [maxSize]="5"
+                    [disabled]="loading"
+                    (pageChange)="pageChange.emit($event)">
+            </ngb-pagination>
+        </div>
+    </div>
 </div>

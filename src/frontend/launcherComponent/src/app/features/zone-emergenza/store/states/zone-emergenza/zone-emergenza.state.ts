@@ -10,13 +10,13 @@ import {
     AllertaCONZonaEmergenza,
     AnnullaZonaEmergenza,
     EditZonaEmergenza,
-    GetTipologieEmergenza,
+    GetTipologieEmergenza, GetZonaEmergenzaById,
     GetZoneEmergenza,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
     ResetZonaEmergenzaForm,
     SetMappaActiveValue,
-    SetTipologieEmergenza,
+    SetTipologieEmergenza, SetZonaEmergenzaById,
     SetZoneEmergenza,
     StartLoadingTipologieEmergenza,
     StartLoadingZoneEmergenza,
@@ -32,6 +32,7 @@ import { AllertaCONZonaEmergenzaForm } from '../../../../../shared/interface/for
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
+    zonaEmergenzaById: ZonaEmergenza;
     tipologieZonaEmergenza: TipologiaEmergenza[];
     allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
@@ -59,6 +60,7 @@ export interface ZoneEmergenzaStateModel {
 
 export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     zoneEmergenza: null,
+    zonaEmergenzaById: null,
     tipologieZonaEmergenza: null,
     allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
@@ -101,6 +103,11 @@ export class ZoneEmergenzaState {
     }
 
     @Selector()
+    static zonaEmergenzaById(state: ZoneEmergenzaStateModel): ZonaEmergenza {
+        return state.zonaEmergenzaById;
+    }
+
+    @Selector()
     static loadingZoneEmergenza(state: ZoneEmergenzaStateModel): boolean {
         return state.loadingZoneEmergenza;
     }
@@ -130,7 +137,7 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+            pageSize: 7
         };
         this.zoneEmergenzaService.getZoneEmergenza(pagination).subscribe((response: ResponseInterface) => {
             dispatch([
@@ -147,6 +154,27 @@ export class ZoneEmergenzaState {
     setZoneEmergenza({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetZoneEmergenza): void {
         patchState({
             zoneEmergenza: action.zoneEmergenza
+        });
+    }
+
+    @Action(GetZonaEmergenzaById)
+    getZonaEmergenzaById({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: GetZonaEmergenzaById): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const idZonaEmergenza = action.id;
+        this.zoneEmergenzaService.getById(idZonaEmergenza).subscribe((response: { emergenza: ZonaEmergenza }) => {
+            dispatch([
+                new SetZonaEmergenzaById(response.emergenza),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch(new StopLoadingZoneEmergenza());
+        });
+    }
+
+    @Action(SetZonaEmergenzaById)
+    setZonaEmergenzaById({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetZonaEmergenzaById): void {
+        patchState({
+            zonaEmergenzaById: action.zonaEmergenza
         });
     }
 

@@ -16,6 +16,20 @@ export class SetZoneEmergenza {
     }
 }
 
+export class GetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Get Zona Emergenza By Id';
+
+    constructor(public id: string) {
+    }
+}
+
+export class SetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Set Zona Emergenza By Id';
+
+    constructor(public zonaEmergenza: ZonaEmergenza) {
+    }
+}
+
 export class StartLoadingZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Start Loading Zone Emergenza';
 }
