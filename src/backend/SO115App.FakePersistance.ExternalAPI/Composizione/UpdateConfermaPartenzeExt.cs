@@ -174,7 +174,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         });
                     }
 
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice ?? "", partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
             }
 
             _updateRichiesta.UpDate(command.Richiesta);
