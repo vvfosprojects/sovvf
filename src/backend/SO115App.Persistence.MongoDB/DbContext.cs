@@ -147,16 +147,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
-            CraDataMap.Map();
-            BsonClassMap.RegisterClassMap<CraTree>();
-        }
-
-        public IMongoCollection<CraTreeData> CraTreeDataCollection
-        {
-            get
-            {
-                return database.GetCollection<CraTreeData>("craTreeData");
-            }
+            BsonClassMap.RegisterClassMap<CraModel>();
         }
 
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection
