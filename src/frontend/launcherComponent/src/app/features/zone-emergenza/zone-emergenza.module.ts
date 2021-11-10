@@ -28,6 +28,7 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
+import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -41,7 +42,8 @@ const ngWizardConfig: NgWizardConfig = {
         AnnullaZonaEmergenzaModalComponent,
         AllertaCONZonaEmergenzaModalComponent,
         ModuloColonnaMobileComponent,
-        DettaglioZonaEmergenzaComponent
+        DettaglioZonaEmergenzaComponent,
+        ZonaEmergenzaModalComponent
     ],
     imports: [
         CommonModule,

@@ -289,7 +289,10 @@ export class ZoneEmergenzaState {
                 'Lazio'
             ),
             formValue.listaEventi,
-            formValue.annullata
+            formValue.annullata,
+            formValue.listaModuliImmediata,
+            formValue.listaModuliConsolidamento,
+            formValue.listaModuliPotInt
         );
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([

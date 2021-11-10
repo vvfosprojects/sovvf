@@ -31,7 +31,7 @@
                         [canExit]="true">
                     <div class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
-                            <div class="col-3 mb-2">
+                            <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
                                                            [selezionato]="isSelezionatoModulo(mCM.id)"
                                                            (selezione)="onSelezioneModulo($event)">
@@ -71,7 +71,7 @@
                         [canExit]="true">
                     <div class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
-                            <div class="col-3 mb-2">
+                            <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
                                                            [selezionato]="isSelezionatoModulo(mCM.id)"
                                                            (selezione)="onSelezioneModulo($event)">
