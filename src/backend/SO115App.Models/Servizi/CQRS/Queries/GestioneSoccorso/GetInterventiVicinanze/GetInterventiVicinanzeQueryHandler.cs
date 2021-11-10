@@ -41,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
             {
                 UnitaOperative = lstPinNodo,
                 Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }
-            });
+            }).Where(s => s.Localita.Indirizzo.Equals(query.Indirizzo)).ToList();
 
             return new GetInterventiVicinanzeResult()
             {
