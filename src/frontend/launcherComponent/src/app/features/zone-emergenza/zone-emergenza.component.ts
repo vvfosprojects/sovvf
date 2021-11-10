@@ -24,7 +24,7 @@ import {
 } from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
-import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
+import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';

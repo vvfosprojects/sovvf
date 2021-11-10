@@ -16,7 +16,7 @@ import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import { TravelModeService } from '../map-service/travel-mode.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
-import { ZonaEmergenzaModalComponent } from '../../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
+import { ZonaEmergenzaModalComponent } from '../../zone-emergenza/zona-emergenza-modal/zona-emergenza-modal.component';
 import { SetZonaEmergenzaFromMappaActiveValue } from '../../zone-emergenza/store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emergenza/zone-emergenza.state';
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
