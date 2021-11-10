@@ -390,6 +390,7 @@
                                 <div class="form-group mb-2">
                                     <label class="d-none" for="etichette">Tag</label>
                                     <tag-input id="etichette"
+                                               [removable]="!loadingSchedaRichiesta"
                                                formControlName="etichette"
                                                [modelAsStrings]="true"
                                                [placeholder]="'Inserisci Tag'"
