@@ -46,21 +46,19 @@ export class TriageComponent implements OnDestroy {
         maxHeight: 500
     } as TreeviewConfig;
 
+    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
-
     @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
     dettaglioTipologia: DettaglioTipologia;
-
     @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeviewItem>;
     tItems: any;
     @Select(TriageCrudState.triageDataByDettaglioTipologia) triageDataByDettaglioTipologia$: Observable<ItemTriageData[]>;
     tItemsData: ItemTriageData[];
     @Select(TriageCrudState.editMode) editMode$: Observable<boolean>;
     editMode: boolean;
-
-    @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
     @Select(TriageCrudState._backupTriageByDettaglioTipologia) backupTriageByDettaglioTipologia$: Observable<TreeItem>;
     tItemsBackup: TreeItem[];
