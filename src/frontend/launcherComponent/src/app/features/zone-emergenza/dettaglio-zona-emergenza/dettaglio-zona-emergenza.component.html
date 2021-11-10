@@ -1,0 +1,107 @@
+<div class="container-fluid pt-3 pb-2">
+    <div *ngIf="zonaEmergenzaById"
+         class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="col-12">
+                <h4>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Gestione Emergenze - Dettaglio Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                </h4>
+            </div>
+            <hr>
+            <div class="col-12">
+                <h5>
+                    <span class="text-muted">
+                        Tipologia:
+                    </span>
+                    {{ zonaEmergenzaById.tipologia.emergenza[0] }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Indirizzo:
+                    </span>
+                    {{ zonaEmergenzaById?.localita.indirizzo }} -
+                    Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
+                    Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Cod. Sede Richiedente:
+                    </span>
+                    {{ zonaEmergenzaById.codComandoRichiedente }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Descrizione:
+                    </span>
+                    {{ zonaEmergenzaById.descrizione }}
+                </h5>
+            </div>
+            <hr>
+            <div class="col-12">
+                <h5 class="mb-3">Moduli Assegnati - Fase 1</h5>
+                <div class="row">
+                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Nessun Modulo assegnato nella Fase 1
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length">
+                        <div *ngFor="let moduli_mob_Immediata of zonaEmergenzaById.listaModuliImmediata"
+                             class="col-2 mb-2">
+                            <app-modulo-colonna-mobile [modulo]="moduli_mob_Immediata">
+                            </app-modulo-colonna-mobile>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <h5 class="mb-3">Moduli Assegnati - Fase 2</h5>
+                <div class="row">
+                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliPotInt?.length">
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Nessun Modulo assegnato nella Fase 2
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliPotInt?.length">
+                        <div *ngFor="let moduli_mob_Pot_Int of zonaEmergenzaById.listaModuliPotInt"
+                             class="col-2 mb-2">
+                            <app-modulo-colonna-mobile [modulo]="moduli_mob_Pot_Int">
+                            </app-modulo-colonna-mobile>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <h5 class="mb-3">Moduli Assegnati - Fase 3</h5>
+                <div class="row">
+                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliConsolidamento?.length">
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Nessun Modulo assegnato nella Fase 3
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliConsolidamento?.length">
+                        <div *ngFor="let moduli_mob_Consolidamento of zonaEmergenzaById.listaModuliConsolidamento"
+                             class="col-2 mb-2">
+                            <app-modulo-colonna-mobile [modulo]="moduli_mob_Consolidamento">
+                            </app-modulo-colonna-mobile>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>

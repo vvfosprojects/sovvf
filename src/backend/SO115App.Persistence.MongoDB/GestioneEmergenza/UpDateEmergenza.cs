@@ -16,7 +16,7 @@ namespace SO115App.Persistence.MongoDB.GestioneEmergenza
 
         public void Update(Emergenza emergenza)
         {
-            var filter = Builders<Emergenza>.Filter.Eq(s => s.CodEmergenza, emergenza.CodEmergenza);
+            var filter = Builders<Emergenza>.Filter.Eq(s => s.Id, emergenza.Id);
             _dbContext.EmergenzaCollection.ReplaceOne(filter, emergenza);
         }
     }
