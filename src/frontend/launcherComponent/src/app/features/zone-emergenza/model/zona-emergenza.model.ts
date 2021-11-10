@@ -1,5 +1,6 @@
-import { Localita } from './localita.model';
-import { EventoRichiesta } from './evento-richiesta.model';
+import { Localita } from '../../../shared/model/localita.model';
+import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
+import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 
 export class ZonaEmergenza {
 
@@ -25,10 +26,6 @@ export class ZonaEmergenza {
          */
         public tipologia: TipologiaEmergenza,
         /**
-         * Descrizione di cloui/coloro che ha/hanno preso in carico la Zona Emergenza
-         */
-        public presaInCarico: PresaInCaricoEmergenza[],
-        /**
          * Descrizione della località della Zona Emergenza
          */
         public localita: Localita,
@@ -39,7 +36,19 @@ export class ZonaEmergenza {
         /**
          * Definisce se la Zona Emergenza è stata annullata
          */
-        public annullata?: boolean
+        public annullata?: boolean,
+        /**
+         * Moduli "mob_Immediata" assegnati alla Zona Emergenza
+         */
+        public listaModuliImmediata?: ModuloColonnaMobile[],
+        /**
+         * Moduli "mob_Consolidamento" assegnati alla Zona Emergenza
+         */
+        public listaModuliConsolidamento?: ModuloColonnaMobile[],
+        /**
+         * Moduli "mob_Pot_Int" assegnati alla Zona Emergenza
+         */
+        public listaModuliPotInt?: ModuloColonnaMobile[]
     ) {
     }
 }
@@ -48,12 +57,12 @@ export class TipologiaEmergenza {
     constructor(
         public id: string,
         public emergenza: string[],
-        public interventi: Interventi[]
+        public moduli: ModuliColonnaMobile
     ) {
     }
 }
 
-export class Interventi {
+export class ModuliColonnaMobile {
     constructor(
         // tslint:disable-next-line:variable-name
         public mob_Immediata: string[],
@@ -63,9 +72,4 @@ export class Interventi {
         public mob_Consolidamento: string[]
     ) {
     }
-}
-
-export enum PresaInCaricoEmergenza {
-    'CON',
-    'DirezioneRegionale'
 }

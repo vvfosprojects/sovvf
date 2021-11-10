@@ -63,6 +63,15 @@ namespace SO115App.Models.Classi.Utility
         public const string RichiestaModificata = "Modificata";
         public const string ErroreRichiestaChiusa = "L'operazione richiesta non più essere eseguita. L'intervento risulta chiuso. Riaprirlo per poter operare. ";
 
+        public const string EmergenzaCreazione = "Creata Emergenza";
+        public const string EmergenzaModifica = "Modificata Emergenza";
+        public const string EmergenzaAnnulla = "Emergenza annullata";
+        public const string EmergenzaPresaInCarico = "Emergenza presa in carico";
+        public const string EmergenzaInserimentoModuliColonnaMobiliImmediata = "Inseriti Moduli di Colonna Mobile (Immediata)";
+        public const string EmergenzaInserimentoModuliColonnaMobiliPotInt = "Inseriti Moduli di Colonna Mobile (Pot/Int)";
+        public const string EmergenzaInserimentoModuliColonnaMobiliConsolidamento = "Inseriti Moduli di Colonna Mobile (Consolidamento)";
+        public const string EmergenzaAllerta = "Allerta CON per emergenza";
+
         #endregion StatiRichiesta
 
         #region StatiMezzi

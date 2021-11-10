@@ -17,15 +17,15 @@ namespace SO115App.Models.Classi.Emergenza
 
         public string Id { get; set; }
         public string CodEmergenza { get; set; }
-
         public string Descrizione { get; set; }
-
         public Localita Localita { get; set; }
         public string CodComandoRichiedente { get; set; }
         public TipologiaEmergenza Tipologia { get; set; }
-        public string PresaInCarico { get; set; }
+        public string CodSedePresaInCarico { get; set; }
         public bool Annullata { get; set; }
-
+        public List<ModuliColonnaMobile> ListaModuliImmediata { get; set; }
+        public List<ModuliColonnaMobile> ListaModuliPotInt { get; set; }
+        public List<ModuliColonnaMobile> ListaModuliConsolidamento { get; set; }
         public void AddEvento(Evento evento)
         {
             this._eventi.Add(evento);

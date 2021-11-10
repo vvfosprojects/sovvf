@@ -1,3 +1,5 @@
+import { ModuloColonnaMobile } from '../../../features/zone-emergenza/interface/modulo-colonna-mobile.interface';
+
 export interface ZonaEmergenzaForm {
     indirizzo: string;
     latitudine: number;
@@ -8,6 +10,8 @@ export interface ZonaEmergenzaForm {
     codEmergenza?: string;
     codComandoRichiedente?: string;
     listaEventi?: any[];
-    presaInCarico?: any;
     annullata?: boolean;
+    listaModuliImmediata?: ModuloColonnaMobile[];
+    listaModuliConsolidamento?: ModuloColonnaMobile[];
+    listaModuliPotInt?: ModuloColonnaMobile[];
 }

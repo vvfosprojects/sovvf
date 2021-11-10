@@ -44,6 +44,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     noteOperatore: string[];
     methods = new HelperSintesiRichiesta();
     live = true;
+    descrizioneDettaglioTipologia: string;
 
     private subscription: Subscription = new Subscription();
 
@@ -67,6 +68,11 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.schedaContatto?.currentValue) {
             const schedaContatto = changes?.schedaContatto?.currentValue;
             this.schedaContatto = schedaContatto;
+        }
+        if (changes?.dettaglioTipologia) {
+            this.dettaglioTipologia && this.dettaglioTipologia.descrizione ? this.descrizioneDettaglioTipologia = this.dettaglioTipologia.descrizione : null;
+        } else if (!changes?.tipologia?.currentValue) {
+            this.descrizioneDettaglioTipologia = '';
         }
     }
 
@@ -96,7 +102,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }, error => console.log('Errore Stampa POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -121,7 +127,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }, error => console.log('Errore visualizzazione POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 }

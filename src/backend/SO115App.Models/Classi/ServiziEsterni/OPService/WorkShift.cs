@@ -23,7 +23,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
             .ToArray();
 
         [JsonIgnore()]
-        public Officer[] Funzionari => new List<Officer[]> { Attuale?.Funzionari, Precedente?.Funzionari, Successivo?.Funzionari }
+        public Officer[] Funzionari => new List<Officer[]> { Attuale?.Funzionari ?? new Officer[] { }, Precedente?.Funzionari ?? new Officer[] { }, Successivo?.Funzionari ?? new Officer[] { } }
             .SelectMany(l => l)
             .GroupBy(s => s.CodiceFiscale)
             .Select(s => s.First())

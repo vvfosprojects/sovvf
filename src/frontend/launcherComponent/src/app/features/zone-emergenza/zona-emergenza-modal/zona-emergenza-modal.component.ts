@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import Locator from '@arcgis/core/tasks/Locator';
+import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-zona-emergenza-modal',
@@ -65,8 +66,10 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             codEmergenza: [null],
             codComandoRichiedente: [null],
             listaEventi: [null],
-            presaInCarico: [null],
-            annullata: [null]
+            annullata: [null],
+            listaModuliImmediata: [null],
+            listaModuliConsolidamento: [null],
+            listaModuliPotInt: [null]
         });
     }
 
@@ -89,13 +92,12 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             codEmergenza: this.zonaEmergenzaEdit.codEmergenza,
             codComandoRichiedente: this.zonaEmergenzaEdit.codComandoRichiedente,
             listaEventi: this.zonaEmergenzaEdit.listaEventi,
-            presaInCarico: this.zonaEmergenzaEdit.presaInCarico,
-            annullata: this.zonaEmergenzaEdit.annullata
+            annullata: this.zonaEmergenzaEdit.annullata,
+            listaModuliImmediata: this.zonaEmergenzaEdit.listaModuliImmediata,
+            listaModuliConsolidamento: this.zonaEmergenzaEdit.listaModuliConsolidamento,
+            listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt,
         });
-    }
-
-    onCopiaCoordinate(): void {
-        // TODO: creare logica per la copia delle coordinate come in FormChiamata
+        this.f.tipologia.disable();
     }
 
     close(esito: string): void {

@@ -44,8 +44,14 @@
                         </div>
                     </ng-template>
                     <!-- Turno -->
-                    <div class="float-left mr-5">
+                    <div class="float-left mr-5 d-inline-flex">
                         <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
+                        <!-- Countdown fine turno -->
+                        <div class="ml-2 py-2" style="max-width: 50px; min-width: 50px">
+                            <span *ngIf="(minutiCambioTurno >= 0) && (secondiCambioTurno >= 0)"
+                                  ngbTooltip="Tempo rimanente al cambio turno" placement="bottom">
+                                {{minutiCambioTurno}}:{{secondiCambioTurno}}</span>
+                        </div>
                     </div>
                     <!-- Data/Ora -->
                     <div class="float-left mr-5">
@@ -58,7 +64,14 @@
                 <div class="clearfix">
                     <!-- Operatore e Bottono Destra -->
                     <div class="float-right">
-                        <button class="btn btn-light"
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Gestione Emergenze"
+                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
                                 [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"

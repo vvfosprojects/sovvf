@@ -1,0 +1,107 @@
+<div class="modal-header">
+    <div class="modal-title">
+        <small class="text-muted d-block">
+            <i class="fas fa-plus" style="font-size: unset !important"></i>
+            {{ 'Colonne Mobili - Fase ' + fase | uppercase }}
+        </small>
+        <span class="font-weight-bold">
+            {{ zonaEmergenza.tipologia.emergenza[0] + ' #' + zonaEmergenza.codEmergenza | uppercase }}
+        </span>
+        <small class="text-muted d-block mt-1">
+            <i class="fas fa-info-circle" style="font-size: unset !important"></i>
+            Selezione Colonne Mobili secondo cirolare numero EM-01/2020
+        </small>
+    </div>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body p-0">
+    <ng-wizard [config]="config"
+               (stepChanged)="stepChanged($event)">
+        <ng-container *ngIf="fase === '1'">
+            <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Immediata; let i = index">
+                <ng-wizard-step
+                        [title]="m"
+                        [description]="getStepDescription(m)"
+                        [canEnter]="true"
+                        [canExit]="true">
+                    <div class="row pt-2">
+                        <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
+                            <div class="col-2 mb-2">
+                                <app-modulo-colonna-mobile [modulo]="mCM"
+                                                           [selezionato]="isSelezionatoModulo(mCM.id)"
+                                                           (selezione)="onSelezioneModulo($event)">
+                                </app-modulo-colonna-mobile>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-wizard-step>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="fase === '2'">
+            <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Consolidamento; let i = index">
+                <ng-wizard-step
+                        [title]="m"
+                        [description]="getStepDescription(m)"
+                        [canEnter]="true"
+                        [canExit]="true">
+                    <div class="row pt-2">
+                        <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
+                            <div class="col-3 mb-2">
+                                <app-modulo-colonna-mobile [modulo]="mCM"
+                                                           [selezionato]="isSelezionatoModulo(mCM.id)"
+                                                           (selezione)="onSelezioneModulo($event)">
+                                </app-modulo-colonna-mobile>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-wizard-step>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="fase === '3'">
+            <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Pot_Int; let i = index">
+                <ng-wizard-step
+                        [title]="m"
+                        [description]="getStepDescription(m)"
+                        [canEnter]="true"
+                        [canExit]="true">
+                    <div class="row pt-2">
+                        <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
+                            <div class="col-2 mb-2">
+                                <app-modulo-colonna-mobile [modulo]="mCM"
+                                                           [selezionato]="isSelezionatoModulo(mCM.id)"
+                                                           (selezione)="onSelezioneModulo($event)">
+                                </app-modulo-colonna-mobile>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-wizard-step>
+            </ng-container>
+        </ng-container>
+        <ng-wizard-step
+                [title]="'RIEPILOGO'"
+                [description]="getRiepilogoStepDescription()"
+                [canEnter]="!!(moduliSelezionati?.length)"
+                [canExit]="true">
+            <div class="row pt-2">
+                <ng-container *ngFor="let mCM of moduliSelezionati">
+                    <div class="col-3 mb-2">
+                        <app-modulo-colonna-mobile [modulo]="mCM">
+                        </app-modulo-colonna-mobile>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!moduliSelezionati?.length">
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            Nessun Modulo di Colonna Mobile selezionato
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-wizard-step>
+    </ng-wizard>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -9,20 +9,35 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from './model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
-import { AnnullaZonaEmergenza, EditZonaEmergenza, GetTipologieEmergenza, GetZoneEmergenza, ResetAnnullaZonaEmergenzaForm, ResetZonaEmergenzaForm } from './store/actions/zone-emergenza/zone-emergenza.actions';
+import {
+    AllertaCONZonaEmergenza,
+    AnnullaZonaEmergenza,
+    EditZonaEmergenza,
+    GetTipologieEmergenza,
+    GetZoneEmergenza,
+    ResetAllertaCONZonaEmergenzaForm,
+    ResetAnnullaZonaEmergenzaForm,
+    ResetZonaEmergenzaForm, UpdateModuliMobConsolidamentoZonaEmergenza, UpdateModuliMobImmediataZonaEmergenza, UpdateModuliMobPotIntZonaEmergenza,
+
+} from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
-import { ZonaEmergenzaModalComponent } from '../../shared/modal/zona-emergenza-modal/zona-emergenza-modal.component';
+import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
-import { AnnullaZonaEmergenzaModalComponent } from '../../shared/modal/annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
+import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
+import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
+import { ModuloColonnaMobile } from './interface/modulo-colonna-mobile.interface';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-zone-emergenza',
     templateUrl: './zone-emergenza.component.html',
-    styleUrls: ['./zone-emergenza.component.scss']
+    styleUrls: ['./zone-emergenza.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
@@ -51,10 +66,6 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
-        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
-        if (pageSizeAttuale === 7) {
-            this.store.dispatch(new SetPageSize(10));
-        }
         this.getDoubleMonitorMode();
         this.getNightMode();
         this.getZoneEmergenza(true);
@@ -129,10 +140,15 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         }
     }
 
+    onDetail(zonaEmergenza: ZonaEmergenza): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail/' + zonaEmergenza.id]));
+    }
+
     onEdit(zonaEmergenza: ZonaEmergenza): void {
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
-            size: 'md'
+            size: 'md',
+            centered: true
         });
 
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
@@ -158,7 +174,8 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     onDelete(zonaEmergenza: ZonaEmergenza): void {
         const confirmAnnullaEmergenzaModal = this.modalService.open(AnnullaZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
-            size: 'lg'
+            size: 'lg',
+            centered: true
         });
 
         confirmAnnullaEmergenzaModal.componentInstance.zonaEmergenza = zonaEmergenza;
@@ -178,12 +195,78 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
+    onColonneMobili(event: { zonaEmergenza: ZonaEmergenza, fase: string }): void {
+        const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
+            windowClass: 'modal-holder xxlModal',
+            centered: true
+        });
+
+        colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = event.zonaEmergenza;
+        colonneMobiliEmergenzaModal.componentInstance.fase = event.fase;
+
+        colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
+            switch (result.esito) {
+                case 'ok':
+                    switch (result.fase) {
+                        case '1':
+                            this.store.dispatch([
+                                new UpdateModuliMobImmediataZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                        case '2':
+                            this.store.dispatch([
+                                new UpdateModuliMobPotIntZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                        case '3':
+                            this.store.dispatch([
+                                new UpdateModuliMobConsolidamentoZonaEmergenza(event.zonaEmergenza, result.moduliSelezionati)
+                            ]);
+                            break;
+                    }
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    onAllertaCON(zonaEmergenza: ZonaEmergenza): void {
+        const allertaCONModal = this.modalService.open(AllertaCONZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg',
+            centered: true
+        });
+
+        allertaCONModal.componentInstance.zonaEmergenza = zonaEmergenza;
+
+        allertaCONModal.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.allertaCON();
+                    break;
+                case 'ko':
+                    this.store.dispatch(new ResetAllertaCONZonaEmergenzaForm());
+                    break;
+                default:
+                    this.store.dispatch(new ResetAllertaCONZonaEmergenzaForm());
+                    break;
+            }
+        });
+    }
+
     edit(): void {
         this.store.dispatch(new EditZonaEmergenza());
     }
 
     delete(): void {
         this.store.dispatch(new AnnullaZonaEmergenza());
+    }
+
+    allertaCON(): void {
+        this.store.dispatch(new AllertaCONZonaEmergenza());
     }
 
     onPageChange(page: number): void {

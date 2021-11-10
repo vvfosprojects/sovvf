@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../features/zone-emergenza/model/zona-emergenza.model';
 
 const BASE_URL = environment.baseUrl;
 const API_ZONE_EMERGENZA = BASE_URL + environment.apiUrl.zoneEmergenza;
@@ -27,8 +27,8 @@ export class ZoneEmergenzaService {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/GetListaEmergenzeByCodSede ', obj);
     }
 
-    getById(idZonaEmergenza: string): Observable<any> {
-        return this.http.get<any>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
+    getById(idZonaEmergenza: string): Observable<{ emergenza: ZonaEmergenza }> {
+        return this.http.get<{ emergenza: ZonaEmergenza }>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
     }
 
     add(zonaEmergenza: ZonaEmergenza): Observable<any> {
@@ -41,5 +41,9 @@ export class ZoneEmergenzaService {
 
     annulla(params: { id: string, motivazione: string}): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AnnullaEmergenza', params);
+    }
+
+    allertaEmergenzaCON(params: { id: string, descrizioneEmergenza: string}): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/AllertaEmergenza', params);
     }
 }

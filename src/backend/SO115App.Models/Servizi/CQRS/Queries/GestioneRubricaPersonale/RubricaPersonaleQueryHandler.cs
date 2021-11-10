@@ -56,7 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
 
             var lstCodiciFiscali = lstDettaglio.Where(d => d?.dati?.codFiscale != null).Select(d => d.dati.codFiscale.ToUpper()).ToArray();
 
-            var lstPersonale = _getPersonaleByCF.Get(lstCodiciFiscali, query.IdSede).Result;
+            var lstPersonale = _getPersonaleByCF.Get(lstCodiciFiscali, query.IdSede.Select(s => s.Substring(0, 2)).Distinct().ToArray()).Result;
 
             var result = new ConcurrentQueue<PersonaleRubrica>();
 

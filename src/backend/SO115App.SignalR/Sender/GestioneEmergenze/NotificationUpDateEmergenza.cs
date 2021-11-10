@@ -22,7 +22,7 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
         {
             var ListaSediDestinatarie = _getGerarchiaToSend.Get(emergenza.CodComandoRichiedente);
 
-            _notificationHubContext.Clients.Group("con").SendAsync("NotifyModificaEmergenza", emergenza);
+            _notificationHubContext.Clients.Group("00").SendAsync("NotifyModificaEmergenza", emergenza);
 
             Parallel.ForEach(ListaSediDestinatarie, sede =>
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyModificaEmergenza", emergenza)

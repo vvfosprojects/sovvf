@@ -62,8 +62,13 @@
                                             [totalItems]="totalItems$ | async"
                                             [loading]="loading$ | async"
                                             [nightMode]="nightMode"
+                                            [isDirRegionale]="isDirRegionale$ | async"
+                                            [isCON]="isCON$ | async"
+                                            (detail)="onDetail($event)"
                                             (edit)="onEdit($event)"
                                             (delete)="onDelete($event)"
+                                            (colonneMobili)="onColonneMobili($event)"
+                                            (allertaCON)="onAllertaCON($event)"
                                             (pageChange)="onPageChange($event)">
                 </app-tabella-zone-emergenza>
             </div>

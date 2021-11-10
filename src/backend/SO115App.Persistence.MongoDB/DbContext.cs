@@ -139,6 +139,13 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ModificaEmergenza>();
             BsonClassMap.RegisterClassMap<AnnullamentoEmergenza>();
             BsonClassMap.RegisterClassMap<MobilitazioniEmergenza>();
+            BsonClassMap.RegisterClassMap<PresaInCaricoEmergenza>();
+            BsonClassMap.RegisterClassMap<AllertaEmergenza>();
+            BsonClassMap.RegisterClassMap<ModuliColonnaMobile>();
+
+            BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaImmediata>();
+            BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
+            BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
         }
 
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection

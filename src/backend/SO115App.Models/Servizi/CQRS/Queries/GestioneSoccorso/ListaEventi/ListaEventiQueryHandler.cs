@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Utility;
@@ -147,6 +148,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case STATRI_InivioRichiesta _:
                     return ((STATRI_InivioRichiesta)evento).Messaggio;
 
+                case AllertaEmergenza _:
+                    return ((AllertaEmergenza)evento).DescrizioneEmergenza;
                 default:
                     return "";
             }
@@ -311,6 +314,30 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RichiestaModificata _:
                     return Costanti.RichiestaModificata;
+
+                case CreazioneEmergenza _:
+                    return Costanti.EmergenzaCreazione;
+
+                case ModificaEmergenza _:
+                    return Costanti.EmergenzaModifica;
+
+                case AnnullamentoEmergenza _:
+                    return Costanti.EmergenzaAnnulla;
+
+                case PresaInCaricoEmergenza _:
+                    return Costanti.EmergenzaPresaInCarico;
+
+                case InserimentoModuliColonnaMobileEmergenzaImmediata _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliImmediata;
+                
+                case InserimentoModuliColonnaMobileEmergenzaPotInt _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliPotInt;
+                
+                case InserimentoModuliColonnaMobileEmergenzaConsolidamento _:
+                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliConsolidamento;
+
+                case AllertaEmergenza _:
+                    return Costanti.EmergenzaAllerta;
 
                 default:
                     return Costanti.EventoGenerico;

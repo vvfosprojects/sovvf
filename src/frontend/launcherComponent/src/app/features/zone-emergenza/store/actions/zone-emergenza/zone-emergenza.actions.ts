@@ -1,5 +1,6 @@
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../../../shared/model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { SetZonaEmergenzaFromMappaActiveValue } from '../tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
 
 export class GetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Get Zone Emergenza';
@@ -12,6 +13,20 @@ export class SetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Set Zone Emergenza';
 
     constructor(public zoneEmergenza: ZonaEmergenza[]) {
+    }
+}
+
+export class GetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Get Zona Emergenza By Id';
+
+    constructor(public id: string) {
+    }
+}
+
+export class SetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Set Zona Emergenza By Id';
+
+    constructor(public zonaEmergenza: ZonaEmergenza) {
     }
 }
 
@@ -42,8 +57,33 @@ export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
 }
 
+export class UpdateModuliMobImmediataZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Immediata Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobPotIntZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Pot_Int Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobPotInt: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobConsolidamentoZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
+    }
+}
+
 export class AnnullaZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Annulla Zona Emergenza';
+}
+
+export class AllertaCONZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Allerta CON Zona Emergenza';
 }
 
 export class StartLoadingTipologieEmergenza {
@@ -60,6 +100,10 @@ export class ResetZonaEmergenzaForm {
 
 export class ResetAnnullaZonaEmergenzaForm {
     static readonly type = '[ZoneEmergenza] Reset Annulla Zona Emergenza Form';
+}
+
+export class ResetAllertaCONZonaEmergenzaForm {
+    static readonly type = '[ZoneEmergenza] Reset Allerta CON Zona Emergenza Form';
 }
 
 export class SetMappaActiveValue {

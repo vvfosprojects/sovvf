@@ -31,6 +31,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
+import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -67,6 +68,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
             this.store.dispatch(new SetPageSize(10));
         }
         this.getDoubleMonitorMode();
+        this.getDistaccamenti();
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
@@ -95,6 +97,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                 this.doubleMonitor = doubleMonitor;
             })
         );
+    }
+
+    getDistaccamenti(): void {
+        this.store.dispatch(new GetDistaccamenti());
     }
 
     onRicercaUtenti(ricerca: any): void {

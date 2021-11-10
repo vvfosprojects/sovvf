@@ -29,6 +29,7 @@ import { NavbarState } from './features/navbar/store/states/navbar.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
 import { NotificaInterface } from './shared/interface/notifica.interface';
 import { RouterState } from '@ngxs/router-plugin';
+import { GetDistaccamenti } from './shared/store/actions/distaccamenti/distaccamenti.actions';
 
 @Component({
     selector: 'app-root',
@@ -231,98 +232,28 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        if (_isActive(this.currentUrl)) {
-            const availHeight = window.innerHeight;
-            const height = this.contentElement.nativeElement.offsetHeight;
-            if (height) {
-                if (this.height !== height) {
-                    this.height = height;
-                    this.store.dispatch(new SetContentHeight(height));
-                }
-            }
-            if (availHeight) {
-                if (this.availHeight !== availHeight) {
-                    this.availHeight = availHeight;
-                    this.store.dispatch(new SetAvailHeight(availHeight));
-                }
+        const availHeight = window.innerHeight;
+        const height = this.contentElement.nativeElement.offsetHeight;
+        if (height) {
+            if (this.height !== height) {
+                this.height = height;
+                this.store.dispatch(new SetContentHeight(height));
             }
         }
-
-        function _isActive(currentUrl): boolean {
-            switch (currentUrl) {
-                case RoutesPath.Home:
-                    return true;
-                case RoutesPath.Profilo:
-                    return true;
-                case RoutesPath.GestioneUtenti:
-                    return true;
-                case RoutesPath.ImpostazioniSede:
-                    return true;
-                case RoutesPath.POS:
-                    return true;
-                case RoutesPath.Changelog:
-                    return true;
-                case RoutesPath.TrasferimentoChiamata:
-                    return true;
-                case RoutesPath.Rubrica:
-                    return true;
-                case RoutesPath.RubricaPersonale:
-                    return true;
-                case RoutesPath.Preferenze:
-                    return true;
-                case RoutesPath.DashboardPortale:
-                    return true;
-                case RoutesPath.AreaDocumentale:
-                    return true;
-                case RoutesPath.ZoneEmergenza:
-                    return true;
-                default:
-                    return false;
+        if (availHeight) {
+            if (this.availHeight !== availHeight) {
+                this.availHeight = availHeight;
+                this.store.dispatch(new SetAvailHeight(availHeight));
             }
         }
     }
 
     private getWidth(): void {
-        if (_isActive(this.currentUrl)) {
-            const innerWidth = window.innerWidth;
-            if (innerWidth) {
-                if (this.width !== innerWidth) {
-                    this.width = innerWidth;
-                    this.store.dispatch(new SetInnerWidth(innerWidth));
-                }
-            }
-        }
-
-        function _isActive(currentUrl): boolean {
-            switch (currentUrl) {
-                case RoutesPath.Home:
-                    return true;
-                case RoutesPath.Profilo:
-                    return true;
-                case RoutesPath.GestioneUtenti:
-                    return true;
-                case RoutesPath.ImpostazioniSede:
-                    return true;
-                case RoutesPath.POS:
-                    return true;
-                case RoutesPath.Changelog:
-                    return true;
-                case RoutesPath.TrasferimentoChiamata:
-                    return true;
-                case RoutesPath.Rubrica:
-                    return true;
-                case RoutesPath.RubricaPersonale:
-                    return true;
-                case RoutesPath.Preferenze:
-                    return true;
-                case RoutesPath.DashboardPortale:
-                    return true;
-                case RoutesPath.AreaDocumentale:
-                    return true;
-                case RoutesPath.ZoneEmergenza:
-                    return true;
-                default:
-                    return false;
+        const innerWidth = window.innerWidth;
+        if (innerWidth) {
+            if (this.width !== innerWidth) {
+                this.width = innerWidth;
+                this.store.dispatch(new SetInnerWidth(innerWidth));
             }
         }
     }
