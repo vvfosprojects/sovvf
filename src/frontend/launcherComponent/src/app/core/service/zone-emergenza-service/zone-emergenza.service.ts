@@ -27,8 +27,8 @@ export class ZoneEmergenzaService {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/GetListaEmergenzeByCodSede ', obj);
     }
 
-    getById(idZonaEmergenza: string): Observable<any> {
-        return this.http.get<any>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
+    getById(idZonaEmergenza: string): Observable<{ emergenza: ZonaEmergenza }> {
+        return this.http.get<{ emergenza: ZonaEmergenza }>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
     }
 
     add(zonaEmergenza: ZonaEmergenza): Observable<any> {

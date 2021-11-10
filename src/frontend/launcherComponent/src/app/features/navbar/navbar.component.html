@@ -64,7 +64,14 @@
                 <div class="clearfix">
                     <!-- Operatore e Bottono Destra -->
                     <div class="float-right">
-                        <button class="btn btn-light"
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Gestione Emergenze"
+                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
                                 [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"

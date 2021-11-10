@@ -40,15 +40,15 @@ export class ZonaEmergenza {
         /**
          * Moduli "mob_Immediata" assegnati alla Zona Emergenza
          */
-        public moduliImmediata?: ModuloColonnaMobile[],
+        public listaModuliImmediata?: ModuloColonnaMobile[],
         /**
          * Moduli "mob_Consolidamento" assegnati alla Zona Emergenza
          */
-        public moduliConsolidamento?: ModuloColonnaMobile[],
+        public listaModuliConsolidamento?: ModuloColonnaMobile[],
         /**
          * Moduli "mob_Pot_Int" assegnati alla Zona Emergenza
          */
-        public moduliPotInt?: ModuloColonnaMobile[]
+        public listaModuliPotInt?: ModuloColonnaMobile[]
     ) {
     }
 }

@@ -25,11 +25,9 @@ using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,84 +38,71 @@ namespace SO115App.ExternalAPI.Fake.Box
     {
         private readonly IGetStatoSquadra _getStatoSquadra;
         private readonly IGetSquadre _getSquadre;
+        private readonly IGetSedi _sedi;
 
-        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi)
         {
             _getStatoSquadra = getStatoSquadra;
             _getSquadre = getSquadre;
+            _sedi = sedi;
         }
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            var filtroTurno = new ComposizioneSquadreQuery()
+            if(codiciSede.Any(s => s == "00" || s == "001"))
             {
-                CodiciSede = codiciSede,
-                Filtro = new FiltriComposizioneSquadra()
-                {
-                    CodiciDistaccamenti = codiciSede,
-                    Turno = Models.Classi.Condivise.TurnoRelativo.Attuale
-                }
-            };
-
-            var filtro = new ComposizioneSquadreQuery()
-            {
-                CodiciSede = codiciSede,
-                Filtro = new FiltriComposizioneSquadra()
-                {
-                    CodiciDistaccamenti = codiciSede,
-                    Turno = null
-                }
-            };
-
-            Task<WorkShift> workshift = null;
-
-            Parallel.ForEach(filtro.CodiciSede.Select(cod => cod.Split('.')[0]).Distinct(), codice => workshift = _getSquadre.GetAllByCodiceDistaccamento(codice));
+                codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
+            }
 
             var statoSquadre = _getStatoSquadra.Get(codiciSede.ToList());
 
-            var result = new BoxPersonale();
+            var lstCodici = codiciSede.Select(cod => cod.Split('.')[0]).Distinct();
 
-            result.Funzionari = new ConteggioFunzionari()
+            var workshift = new List<WorkShift>();
+
+            Parallel.ForEach(lstCodici, codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
+
+            workshift.RemoveAll(w => w == null);
+
+            var result = new BoxPersonale
             {
-                Current = workshift.Result.Attuale?.Funzionari.Select(m => new Componente()
+                Funzionari = new ConteggioFunzionari
                 {
-                    CodiceFiscale = m.CodiceFiscale,
-                    DescrizioneQualifica = m.Ruolo,
-                    Nominativo = $"{m.Nome} {m.Cognome}",
-                    Ruolo = m.Ruolo
-                }).ToList(),
-                Next = workshift.Result.Successivo?.Funzionari.Select(m => new Componente()
+                    Current = workshift.SelectMany(w => w.Attuale?.Funzionari?.Select(m => new Componente
+                    {
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList(),
+                    Next = workshift.SelectMany(w => w.Successivo?.Funzionari?.Select(m => new Componente
+                    {
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList(),
+                    Previous = workshift.SelectMany(w => w.Precedente?.Funzionari?.Select(m => new Componente
+                    {
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList()
+                },
+                PersonaleTotale = new ConteggioPersonale
                 {
-                    CodiceFiscale = m.CodiceFiscale,
-                    DescrizioneQualifica = m.Ruolo,
-                    Nominativo = $"{m.Nome} {m.Cognome}",
-                    Ruolo = m.Ruolo
-                }).ToList(),
-                Previous = workshift.Result.Precedente?.Funzionari.Select(m => new Componente()
+                    Current = workshift.Select(w => w.Attuale?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                    Next = workshift.Select(w => w.Successivo?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                    Previous = workshift.Select(w => w.Precedente?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                },
+                SquadreServizio = new ConteggioPersonale
                 {
-                    CodiceFiscale = m.CodiceFiscale,
-                    DescrizioneQualifica = m.Ruolo,
-                    Nominativo = $"{m.Nome} {m.Cognome}",
-                    Ruolo = m.Ruolo
-                }).ToList()
-            };
-
-            var statiAssegnati = new string[] { Costanti.MezzoInUscita, Costanti.MezzoSulPosto, Costanti.MezzoInViaggio, Costanti.MezzoInRientro };
-
-            result.SquadreAssegnate = statoSquadre.Count;
-
-            result.SquadreServizio = new ConteggioPersonale()
-            {
-                Current = workshift.Result.Attuale?.Squadre.Count() ?? 0,
-                Next = workshift.Result.Successivo?.Squadre.Count() ?? 0,
-                Previous = workshift.Result.Precedente?.Squadre.Count() ?? 0,
-            };
-
-            result.PersonaleTotale = new ConteggioPersonale()
-            {
-                Current = workshift.Result.Attuale?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
-                Next = workshift.Result.Successivo?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
-                Previous = workshift.Result.Precedente?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First()).Count() ?? 0,
+                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre).Count(),
+                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre).Count(),
+                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre).Count()
+                },
+                SquadreAssegnate = statoSquadre.Count
             };
 
             return result;

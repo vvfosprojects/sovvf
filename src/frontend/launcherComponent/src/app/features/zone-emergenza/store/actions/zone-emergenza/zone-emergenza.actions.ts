@@ -16,6 +16,20 @@ export class SetZoneEmergenza {
     }
 }
 
+export class GetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Get Zona Emergenza By Id';
+
+    constructor(public id: string) {
+    }
+}
+
+export class SetZonaEmergenzaById {
+    static readonly type = '[ZoneEmergenza] Set Zona Emergenza By Id';
+
+    constructor(public zonaEmergenza: ZonaEmergenza) {
+    }
+}
+
 export class StartLoadingZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Start Loading Zone Emergenza';
 }
@@ -50,17 +64,17 @@ export class UpdateModuliMobImmediataZonaEmergenza {
     }
 }
 
-export class UpdateModuliMobConsolidamentoZonaEmergenza {
-    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
-
-    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
-    }
-}
-
 export class UpdateModuliMobPotIntZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Update Moduli Mob_Pot_Int Zona Emergenza';
 
     constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobPotInt: ModuloColonnaMobile[]) {
+    }
+}
+
+export class UpdateModuliMobConsolidamentoZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Update Moduli Mob_Consolidamento Zona Emergenza';
+
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobConsolidamento: ModuloColonnaMobile[]) {
     }
 }
 

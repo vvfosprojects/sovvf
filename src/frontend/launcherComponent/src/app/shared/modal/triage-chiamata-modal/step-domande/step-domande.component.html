@@ -4,7 +4,7 @@
         <div *ngFor="let risposta of domandaVisualizzata?.children"
              class="float-left"
              (click)="setRisposta(risposta)">
-            <button class="btn btn-lg btn-primary mr-3"
+            <button *ngIf="risposta?.text" class="btn btn-lg btn-primary mr-3"
                     [class.btn-success]="risposta.text.toLowerCase() === 'si'"
                     [class.btn-danger]="risposta.text.toLowerCase() === 'no'"
                     [class.btn-secondary]="risposta.text.toLowerCase() === 'non lo so'">

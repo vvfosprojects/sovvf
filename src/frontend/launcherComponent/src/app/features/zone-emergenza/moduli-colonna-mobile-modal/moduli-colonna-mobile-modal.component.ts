@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { Select, Store } from '@ngxs/store';
-import { GetModuliColonnaMobile, ResetModuliSelezionati, SetModuloDeselezionato, SetModuloSelezionato } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
+import { GetModuliColonnaMobile, ResetModulii, ResetModuliSelezionati, SetModuloDeselezionato, SetModuloSelezionato } from '../store/actions/moduli-colonna-mobile/moduli-colonna-mobile.actions';
 import { NgWizardConfig, STEP_STATE, THEME } from 'ng-wizard';
 import { Observable, Subscription } from 'rxjs';
 import { ModuliColonnaMobileState } from '../store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
@@ -74,12 +74,12 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
                 });
                 break;
             case '2':
-                this.tipologiaEmergenza.moduli.mob_Consolidamento.forEach((m: string) => {
+                this.tipologiaEmergenza.moduli.mob_Pot_Int.forEach((m: string) => {
                     this.store.dispatch(new GetModuliColonnaMobile(m));
                 });
                 break;
             case '3':
-                this.tipologiaEmergenza.moduli.mob_Pot_Int.forEach((m: string) => {
+                this.tipologiaEmergenza.moduli.mob_Consolidamento.forEach((m: string) => {
                     this.store.dispatch(new GetModuliColonnaMobile(m));
                 });
                 break;
@@ -87,7 +87,10 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ResetModuliSelezionati());
+        this.store.dispatch([
+            new ResetModulii(),
+            new ResetModuliSelezionati()
+        ]);
     }
 
     getModuliColonnaMobile(): void {

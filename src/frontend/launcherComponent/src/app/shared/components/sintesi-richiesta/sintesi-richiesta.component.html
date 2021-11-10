@@ -11,13 +11,14 @@
                 <div class="col-md-12">
                     <!-- Icona Richiesta Sospesa -->
                     <div *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
+                         [ngStyle]="{'left':  richiesta?.esercitazione ? '25px' : '20px' }"
                          class="d-inline-block text-danger font-weight-bolder h4"
-                         style="position: absolute; left: 20px; top:22px">S
+                         style="position: absolute; top:22px">S
                     </div>
                     <!-- Icona Richiesta Esercitazione -->
                     <div *ngIf="richiesta?.esercitazione"
                          class="d-inline-block text-primary font-weight-bolder h4"
-                         style="position: absolute; left: 20px; top:22px">E
+                         style="position: absolute; left: 5px; top:22px">E
                     </div>
                     <!-- PRIMA RIGA -->
                     <div class="row">

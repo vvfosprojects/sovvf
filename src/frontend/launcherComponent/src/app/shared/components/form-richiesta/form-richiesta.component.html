@@ -390,6 +390,7 @@
                                 <div class="form-group mb-2">
                                     <label class="d-none" for="etichette">Tag</label>
                                     <tag-input id="etichette"
+                                               [removable]="!loadingSchedaRichiesta"
                                                formControlName="etichette"
                                                [modelAsStrings]="true"
                                                [placeholder]="'Inserisci Tag'"
@@ -548,8 +549,8 @@
                                 [interventiStessaVia]="interventiStessaVia"
                                 [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo"
                                 [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
-                                [triageSummary]="triageSummary"
-                                [pos]="pos"
+                                [triageSummary]="getTipologia(f.codTipologia.value) ? triageSummary : null"
+                                [pos]="getTipologia(f.codTipologia.value) ? pos : null"
                                 [schedaContatto]="schedaContatto">
             </app-triage-summary>
         </div>
