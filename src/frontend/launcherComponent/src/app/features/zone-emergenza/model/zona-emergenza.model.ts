@@ -1,6 +1,9 @@
 import { Localita } from '../../../shared/model/localita.model';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
+import { TreeviewItem } from 'ngx-treeview';
+import { TreeItem } from 'ngx-treeview/lib/models/treeview-item';
+import { Cra } from '../interface/cra.interface';
 
 export class ZonaEmergenza {
 
@@ -48,7 +51,11 @@ export class ZonaEmergenza {
         /**
          * Moduli "mob_Pot_Int" assegnati alla Zona Emergenza
          */
-        public listaModuliPotInt?: ModuloColonnaMobile[]
+        public listaModuliPotInt?: ModuloColonnaMobile[],
+        /**
+         * Sedi di Emergenza
+         */
+        public cra?: Cra
     ) {
     }
 }

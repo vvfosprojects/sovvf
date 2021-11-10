@@ -30,7 +30,6 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { SediEmergenzaCrudState } from './store/states/sedi-emergenza-crud/sedi-emergenza-crud.state';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -55,8 +54,7 @@ const ngWizardConfig: NgWizardConfig = {
         TreeviewModule.forRoot(),
         NgxsModule.forFeature([
             ZoneEmergenzaState,
-            ModuliColonnaMobileState,
-            SediEmergenzaCrudState
+            ModuliColonnaMobileState
         ]),
         NgxsFormPluginModule.forRoot(),
         FormsModule,
