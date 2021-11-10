@@ -29,7 +29,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
@@ -49,7 +49,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-3 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
@@ -69,7 +69,7 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <div class="row pt-2">
+                    <div *ngIf="moduliColonnaMobile[m]" class="row pt-2">
                         <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                             <div class="col-2 mb-2">
                                 <app-modulo-colonna-mobile [modulo]="mCM"
