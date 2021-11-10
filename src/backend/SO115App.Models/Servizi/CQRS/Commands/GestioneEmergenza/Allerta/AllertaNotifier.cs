@@ -29,13 +29,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
     public class AllertaNotifier : ICommandNotifier<AllertaCommand>
     {
         private readonly ICallMatrix _callMatrix;
-        private readonly INotifyUpDateEmergenza _sender;
+        private readonly INotifyAllerta _sender;
         private readonly INotify_ESRIAddRichiesta _notify_ESRIAddRichiesta;
         private readonly IMappingESRIMessage _mappingESRIMessage;
 
         public AllertaNotifier(
                                      ICallMatrix callMatrix,
-                                     INotifyUpDateEmergenza sender,
+                                     INotifyAllerta sender,
                                      INotify_ESRIAddRichiesta notify_ESRIAddRichiesta,
                                      IMappingESRIMessage mappingESRIMessage)
         {
