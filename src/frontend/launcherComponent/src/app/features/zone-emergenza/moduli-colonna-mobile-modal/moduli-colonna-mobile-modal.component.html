@@ -101,6 +101,16 @@
                         </div>
                     </div>
                 </ng-container>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 text-right">
+                    <button class="btn btn-no-hover btn-success"
+                            [disabled]="!moduliSelezionati?.length"
+                            (click)="onConfermaModuli()">
+                        Conferma Moduli
+                    </button>
+                </div>
             </div>
         </ng-wizard-step>
     </ng-wizard>
