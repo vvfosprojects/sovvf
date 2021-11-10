@@ -549,8 +549,8 @@
                                 [interventiStessaVia]="interventiStessaVia"
                                 [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo"
                                 [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
-                                [triageSummary]="triageSummary"
-                                [pos]="pos"
+                                [triageSummary]="getTipologia(f.codTipologia.value) ? triageSummary : null"
+                                [pos]="getTipologia(f.codTipologia.value) ? pos : null"
                                 [schedaContatto]="schedaContatto">
             </app-triage-summary>
         </div>
