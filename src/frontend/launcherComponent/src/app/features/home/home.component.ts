@@ -28,7 +28,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     columnState: Grids;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
+
+    @Select(SediTreeviewState.isDirRegionale) isDirRegionale$: Observable<boolean>;
+    isDirRegionale: boolean;
     @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
+    isCON: boolean;
 
     // Chiamata From Mappa Active Value
     @Select(TastoChiamataMappaState.tastoChiamataMappaActive) tastoChiamataMappaActive$: Observable<boolean>;
@@ -48,6 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store) {
         this.getDettagliTipologie(true);
+        this.getIsCON();
+        this.getIsDirRegionale();
         this.getViewState();
         this.getColumnState();
         this.getBoxAttivi();
@@ -96,6 +102,14 @@ export class HomeComponent implements OnInit, OnDestroy {
             page = this.store.selectSnapshot(PaginationState.page);
         }
         this.store.dispatch(new GetDettagliTipologie(page));
+    }
+
+    getIsCON(): void {
+        this.subscription.add(this.isCON$.subscribe(value => this.isCON = value));
+    }
+
+    getIsDirRegionale(): void {
+        this.subscription.add(this.isDirRegionale$.subscribe(value => this.isDirRegionale = value));
     }
 
     getViewState(): void {
