@@ -6,6 +6,6 @@
         public string CodiceSede { get; set; }
         public int CodTipologia { get; set; }
         public int CodDettaglioTipologia { get; set; }
-        public TreeTriage data { get; set; }
+        public Tree data { get; set; }
     }
 }

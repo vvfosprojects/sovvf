@@ -52,7 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
             //var infoESRI = _mappingESRIMessage.Map(sintesi);
             //_notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
-            var messaggio = $"E' stato richiesto l'internvento per l'emergenza codice {command.InfoEmergenza.CodEmergenza}. Coordinate: x:{command.InfoEmergenza.Localita.Coordinate.Longitudine} y:{command.InfoEmergenza.Localita.Coordinate.Latitudine}";
+            var messaggio = $"E' stato richiesto l'internvento del CON per l'emergenza codice {command.InfoEmergenza.CodEmergenza}. Coordinate: x:{command.InfoEmergenza.Localita.Coordinate.Longitudine} y:{command.InfoEmergenza.Localita.Coordinate.Latitudine}";
             var infoMatrix = new MessageMatrix()
             {
                 Messaggio = messaggio,
