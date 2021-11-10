@@ -105,7 +105,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 const nowHour = this.time.getHours();
                 const nowMin = this.time.getMinutes();
                 const nowSeconds = this.time.getSeconds();
-                if ((nowHour === 7) || (nowHour === 19) && nowMin === 45 && nowSeconds === 0) {
+                if (((nowHour === 7) || (nowHour === 19)) && nowMin === 55 && nowSeconds === 0) {
                     this.checkCambioTurnoSquadre();
                 }
             })
