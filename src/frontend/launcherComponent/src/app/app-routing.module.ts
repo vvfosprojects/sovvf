@@ -82,10 +82,12 @@ const appRoutes: Routes = [
     },
     {
         path: RoutesPath.DashboardPortale,
+        canActivate: [AuthGuard],
         loadChildren: () => import('./features/dashboard-portale/dashboard-portale.module').then(m => m.DashboardPortaleModule),
     },
     {
         path: RoutesPath.ZoneEmergenza,
+        canActivate: [AuthGuard],
         loadChildren: () => import('./features/zone-emergenza/zone-emergenza.module').then(m => m.ZoneEmergenzaModule),
     },
     {

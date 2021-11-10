@@ -12,26 +12,28 @@
                     </app-info-aggregate>
                 </div>
                 <!-- Filterbar -->
-                <div class="col-12 bg-filterbar py-2"
-                     [class.mt-1]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
-                     [class.d-none]="viewState.composizione.active">
-                    <app-filterbar [colorButton]="colorButton$ | async"
-                                   [doubleMonitor]="doubleMonitor$ | async"
-                                   [viewState]="viewState"
-                                   [nightMode]="nightMode$ | async"
-                                   [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async">
-                    </app-filterbar>
-                </div>
+                <ng-container *ngIf="!isCON">
+                    <div class="col-12 bg-filterbar py-2"
+                         [class.mt-1]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active"
+                         [class.d-none]="viewState.composizione.active">
+                        <app-filterbar [colorButton]="colorButton$ | async"
+                                       [doubleMonitor]="doubleMonitor$ | async"
+                                       [viewState]="viewState"
+                                       [nightMode]="nightMode$ | async"
+                                       [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async">
+                        </app-filterbar>
+                    </div>
+                </ng-container>
                 <!-- Richieste -->
                 <div class="col-12">
-                    <app-richieste *ngIf="viewState.richieste.active"
+                    <app-richieste *ngIf="viewState.richieste.active && !isCON"
                                    [nightMode]="nightMode$ | async"
                                    [boxAttivi]="boxAttivi">
                     </app-richieste>
                     <div *ngIf="(doubleMonitor$ | async) === false">
                         <div class="mt-2"
                              style="height:740px; max-height:740px"
-                             [class.d-none]="(viewState.richieste.active || viewState.codaChiamate.active || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active)">
+                             [class.d-none]="(viewState.richieste.active || viewState.codaChiamate.active || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active) && !isCON">
                             <app-maps [viewStateMappa]="viewStateMappa$ | async"
                                       [boxAttivi]="boxAttivi"
                                       [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async">

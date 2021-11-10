@@ -19,6 +19,8 @@ import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-mod
 import { ModuloColonnaMobileComponent } from './moduli-colonna-mobile-modal/modulo-colonna-mobile/modulo-colonna-mobile.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
+import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
+import { SediZonaEmergenzaComponent } from './sedi-zona-emergenza/sedi-zona-emergenza.component';
 /**
  * Routing
  */
@@ -28,7 +30,7 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
+import { SediEmergenzaCrudState } from './store/states/sedi-emergenza-crud/sedi-emergenza-crud.state';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -43,7 +45,8 @@ const ngWizardConfig: NgWizardConfig = {
         AllertaCONZonaEmergenzaModalComponent,
         ModuloColonnaMobileComponent,
         DettaglioZonaEmergenzaComponent,
-        ZonaEmergenzaModalComponent
+        ZonaEmergenzaModalComponent,
+        SediZonaEmergenzaComponent
     ],
     imports: [
         CommonModule,
@@ -52,7 +55,8 @@ const ngWizardConfig: NgWizardConfig = {
         TreeviewModule.forRoot(),
         NgxsModule.forFeature([
             ZoneEmergenzaState,
-            ModuliColonnaMobileState
+            ModuliColonnaMobileState,
+            SediEmergenzaCrudState
         ]),
         NgxsFormPluginModule.forRoot(),
         FormsModule,

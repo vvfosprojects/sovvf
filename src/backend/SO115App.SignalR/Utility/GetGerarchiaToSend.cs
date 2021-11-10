@@ -30,10 +30,13 @@ namespace SO115App.SignalR.Utility
 
             foreach (var direzioneRegionale in listaSediAlberata.Result.Figli.First().Figli)
             {
-                if (direzioneRegionale.Figli.ToList().Contains(unitaperativa))
+                if (direzioneRegionale.Equals(unitaperativa))
                 {
                     ListaCodiciSediInteressate.Add(direzioneRegionale.Codice);
                     ListaCodiciSediInteressate.Add(unitaperativa.Codice);
+                    foreach (var comune in direzioneRegionale.Figli)
+                        ListaCodiciSediInteressate.Add(comune.Codice);                       
+                    
                 }
                 else
                 {

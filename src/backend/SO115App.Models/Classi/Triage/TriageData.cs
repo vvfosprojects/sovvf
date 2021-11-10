@@ -10,9 +10,7 @@
         public string SoccorsoAereo { get; set; }
         public string[] GeneriMezzo { get; set; }
         public string PrioritaConsigliata { get; set; }
-
         public string NoteOperatore { get; set; }
-
         public string NoteUtente { get; set; }
     }
 }

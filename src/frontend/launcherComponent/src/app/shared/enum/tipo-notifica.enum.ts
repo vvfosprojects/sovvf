@@ -1,3 +1,6 @@
 export enum TipoNotifica {
-    TrasferimentoChiamata
+    TrasferimentoChiamata,
+    AllertaEmergenza,
+    InsertEmergenza,
+    UpdateEmergenza
 }

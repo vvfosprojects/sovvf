@@ -2,6 +2,9 @@
 {
     public enum TipoNotifica
     {
-        TrasferimentoChiamata
+        TrasferimentoChiamata,
+        AllertaEmergenza,
+        InsertEmergenza,
+        UpDateEmergenza
     }
 }

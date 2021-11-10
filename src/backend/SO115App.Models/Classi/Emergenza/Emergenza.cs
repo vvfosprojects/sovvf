@@ -23,6 +23,7 @@ namespace SO115App.Models.Classi.Emergenza
         public TipologiaEmergenza Tipologia { get; set; }
         public string CodSedePresaInCarico { get; set; }
         public bool Annullata { get; set; }
+        public CraTree Cra { get; set; }
         public List<ModuliColonnaMobile> ListaModuliImmediata { get; set; }
         public List<ModuliColonnaMobile> ListaModuliPotInt { get; set; }
         public List<ModuliColonnaMobile> ListaModuliConsolidamento { get; set; }
