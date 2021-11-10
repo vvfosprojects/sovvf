@@ -2,7 +2,12 @@
        class="table table-striped bg-white">
     <thead>
     <tr>
-        <th scope="col" style="width:19%">Azioni</th>
+        <th scope="col"
+            [class.azioni-emergenza-CON]="isCON"
+            [class.azioni-emergenza-dir-regionale]="isDirRegionale && !isCON"
+            [class.azioni-emergenza-default]="!isCON && !isDirRegionale">
+            Azioni
+        </th>
         <th scope="col" style="width:14%">Codice Emergenza</th>
         <th scope="col" style="width:10%">Cod. Sede Richiedente</th>
         <th scope="col" style="width:10%">Tipologia</th>
@@ -12,7 +17,10 @@
     </thead>
     <tbody>
     <tr *ngFor="let zE of zoneEmergenza">
-        <td style="width:19%" class="align-middle">
+        <td [class.azioni-emergenza-CON]="isCON"
+            [class.azioni-emergenza-dir-regionale]="isDirRegionale && !isCON"
+            [class.azioni-emergenza-default]="!isCON && !isDirRegionale"
+            class="align-middle">
             <button class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
@@ -66,6 +74,15 @@
                     [disabled]="!zE.listaModuliImmediata || !zE.listaModuliPotInt"
                     (click)="onColonneMobili(zE, '3')">
                 F.3
+            </button>
+            <button *ngIf="isCON"
+                    class="btn btn-sm float-left mr-2"
+                    [class.btn-outline-dark]="!nightMode"
+                    [class.btn-outline-light]="nightMode"
+                    ngbTooltip="Creazione Sedi Emergenza"
+                    placement="right"
+                    (click)="onSedi(zE)">
+                <i class="fas fa-stream"></i>
             </button>
         </td>
         <td style="width:14%" class="align-middle cursor-pointer"

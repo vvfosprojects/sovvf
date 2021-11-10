@@ -17,3 +17,15 @@ i {
     font-size: .95rem !important;
     font-weight: 700 !important;
 }
+
+.azioni-emergenza-CON {
+    width: 18%;
+}
+
+.azioni-emergenza-dir-regionale {
+    width: 16%;
+}
+
+.azioni-emergenza-default {
+    width: 6%;
+}

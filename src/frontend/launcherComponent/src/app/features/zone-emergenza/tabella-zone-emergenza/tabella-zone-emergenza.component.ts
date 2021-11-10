@@ -25,6 +25,7 @@ export class TabellaZoneEmergenzaComponent {
     @Output() delete: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
     @Output() colonneMobili: EventEmitter<{ zonaEmergenza: ZonaEmergenza, fase: string }> = new EventEmitter<{ zonaEmergenza: ZonaEmergenza, fase: string }>();
     @Output() allertaCON: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
+    @Output() sedi: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
 
     constructor() {
     }
@@ -47,5 +48,9 @@ export class TabellaZoneEmergenzaComponent {
 
     onAllertaCON(zonaEmergenza: ZonaEmergenza): void {
         this.allertaCON.emit(zonaEmergenza);
+    }
+
+    onSedi(zonaEmergenza: ZonaEmergenza): void {
+        this.sedi.emit(zonaEmergenza);
     }
 }

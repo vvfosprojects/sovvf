@@ -3,7 +3,6 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -19,8 +18,10 @@ import {
     GetZoneEmergenza,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
-    ResetZonaEmergenzaForm, UpdateModuliMobConsolidamentoZonaEmergenza, UpdateModuliMobImmediataZonaEmergenza, UpdateModuliMobPotIntZonaEmergenza,
-
+    ResetZonaEmergenzaForm,
+    UpdateModuliMobConsolidamentoZonaEmergenza,
+    UpdateModuliMobImmediataZonaEmergenza,
+    UpdateModuliMobPotIntZonaEmergenza
 } from './store/actions/zone-emergenza/zone-emergenza.actions';
 import { SetZonaEmergenzaFromMappaActiveValue } from './store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { TastoZonaEmergenzaMappaState } from './store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
@@ -255,6 +256,10 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
                     break;
             }
         });
+    }
+
+    onSedi(zonaEmergenza: ZonaEmergenza): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/sedi/' + zonaEmergenza.id]));
     }
 
     edit(): void {

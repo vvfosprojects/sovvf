@@ -1,0 +1,53 @@
+<div class="container-fluid pt-3 pb-2">
+    <div *ngIf="zonaEmergenzaById"
+         class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="col-12">
+                <h4>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Gestione Emergenze - Sedi Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                </h4>
+            </div>
+            <hr>
+            <div class="col-12">
+                <h5>
+                    <span class="text-muted">
+                        Tipologia:
+                    </span>
+                    {{ zonaEmergenzaById.tipologia.emergenza[0] }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Indirizzo:
+                    </span>
+                    {{ zonaEmergenzaById?.localita.indirizzo }} -
+                    Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
+                    Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Cod. Sede Richiedente:
+                    </span>
+                    {{ zonaEmergenzaById.codComandoRichiedente }}
+                </h5>
+                <h5>
+                    <span class="text-muted">
+                        Descrizione:
+                    </span>
+                    {{ zonaEmergenzaById.descrizione }}
+                </h5>
+            </div>
+            <hr>
+            <div>
+                TEST
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>
