@@ -244,12 +244,28 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
-  //
 
   .esri-feature-fields__field-data {
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
+  //
+
+  // Feature Emergenza
+  .tab-pane {
+    background-color: $SO-dark $SO-i;
+    color: $SO-white $SO-i;
+  }
+
+  .ng-wizard-toolbar {
+    background-color: $SO-dark $SO-i;
+    color: $SO-white $SO-i;
+  }
+
+  .ng-wizard-theme-default>ul.step-anchor>li.done>a {
+    color: $SO-secondary $SO-i;
+  }
+  //
 
   a {
     color: $SO-white $SO-i;
@@ -271,6 +287,11 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .card-body {
     background-color: $SO-dark $SO-i;
+  }
+
+  .card-footer {
+    background-color: $SO-dark-light $SO-i;
+    color: $SO-white $SO-i;
   }
 
   .legend-labels {
