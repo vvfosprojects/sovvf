@@ -39,7 +39,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
             _sender.SendNotification(command);
 
             //Richiamo ESRI per aggiornare il MARKER
-            _notifyUpDateSchedaContatto.UpDate(command.Scheda);
+            if (command.Scheda.esri_params != null)
+            {
+                _notifyUpDateSchedaContatto.UpDate(command.Scheda);
+            }
         }
     }
 }
