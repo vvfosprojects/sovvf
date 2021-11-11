@@ -268,6 +268,7 @@ export class ZoneEmergenzaState {
             dispatch([
                 new GetZoneEmergenza(),
                 new ResetZonaEmergenzaForm(),
+                new SetMappaActiveValue(false),
                 new StopLoadingZoneEmergenza()
             ]);
         }, error => {

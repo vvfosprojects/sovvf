@@ -35,8 +35,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
                 UnitaOperative = lstPinNodo
             });
 
-            result.RemoveAll(i => resultStessaVia.Select(ii => ii.Codice).Contains(i.Codice));
-
             var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {
                 UnitaOperative = lstPinNodo,
@@ -49,8 +47,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
                 CountInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo.Count,
                 CountStessaVia = resultStessaVia.Count
             };
-
-            return null;
         }
     }
 }

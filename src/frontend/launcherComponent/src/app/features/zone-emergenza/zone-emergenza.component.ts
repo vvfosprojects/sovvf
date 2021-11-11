@@ -19,6 +19,7 @@ import {
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
     ResetZonaEmergenzaForm,
+    SetMappaActiveValue,
     UpdateModuliMobConsolidamentoZonaEmergenza,
     UpdateModuliMobImmediataZonaEmergenza,
     UpdateModuliMobPotIntZonaEmergenza
@@ -37,8 +38,7 @@ import { Navigate } from '@ngxs/router-plugin';
 @Component({
     selector: 'app-zone-emergenza',
     templateUrl: './zone-emergenza.component.html',
-    styleUrls: ['./zone-emergenza.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./zone-emergenza.component.scss']
 })
 export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
@@ -50,6 +50,8 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     @Select(ZoneEmergenzaState.loadingZoneEmergenza) loading$: Observable<boolean>;
     @Select(ZoneEmergenzaState.tipologieZonaEmergenza) tipologieZonaEmergenza$: Observable<TipologiaEmergenza[]>;
     @Select(ZoneEmergenzaState.loadingTipologieEmergenza) loadingTipologieEmergenza$: Observable<boolean>;
+    @Select(ZoneEmergenzaState.mappaActive) mappaActive$: Observable<boolean>;
+    mappaActive: boolean;
     @Select(TastoZonaEmergenzaMappaState.tastoZonaEmergenzaMappaActive) tastoZonaEmergenzaMappaActive$: Observable<boolean>;
     tastoZonaEmergenzaMappaActive: boolean;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -61,8 +63,6 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     @Select(SediTreeviewState.isDirRegionale) isDirRegionale$: Observable<boolean>;
     @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
 
-    mapActive: boolean;
-
     private subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
@@ -71,6 +71,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         this.getNightMode();
         this.getZoneEmergenza(true);
         this.getTastoZonaEmergenzaMappaActive();
+        this.getMappaActive();
     }
 
     ngOnInit(): void {
@@ -113,6 +114,14 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getMappaActive(): void {
+        this.subscriptions.add(
+            this.mappaActive$.subscribe((mappaActive: boolean) => {
+                this.mappaActive = mappaActive;
+            })
+        );
+    }
+
     getZoneEmergenza(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
@@ -122,22 +131,24 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     }
 
     onChangeVisualizzazione(): void {
-        if (this.mapActive) {
-            // TODO: richiamare action per attivare la visualizzazione tabellare
-            this.mapActive = false;
-        } else if (!this.mapActive) {
-            // TODO: richiamare action per attivare la mappa
-            this.mapActive = true;
+        if (this.mappaActive) {
+            this.store.dispatch(new SetMappaActiveValue(false));
+        } else if (!this.mappaActive) {
+            this.store.dispatch(new SetMappaActiveValue(true));
         }
     }
 
     onSetZonaEmergenzaFromMappaActiveValue(): void {
         if (!this.tastoZonaEmergenzaMappaActive) {
-            this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(true));
-            this.mapActive = true;
+            this.store.dispatch([
+                new SetZonaEmergenzaFromMappaActiveValue(true),
+                new SetMappaActiveValue(true)
+            ]);
         } else {
-            this.store.dispatch(new SetZonaEmergenzaFromMappaActiveValue(false));
-            this.mapActive = false;
+            this.store.dispatch([
+                new SetZonaEmergenzaFromMappaActiveValue(false),
+                new SetMappaActiveValue(false)
+            ]);
         }
     }
 

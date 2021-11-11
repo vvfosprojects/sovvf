@@ -32,20 +32,20 @@
                             <div class="btn-group" role="group">
                                 <button type="button"
                                         class="btn btn-sm btn-no-hover"
-                                        [class.btn-dark]="!mapActive && !nightMode"
-                                        [class.btn-outline-dark]="mapActive && !nightMode"
-                                        [class.btn-light]="!mapActive && nightMode"
-                                        [class.btn-outline-light]="mapActive && nightMode"
+                                        [class.btn-dark]="!mappaActive && !nightMode"
+                                        [class.btn-outline-dark]="mappaActive && !nightMode"
+                                        [class.btn-light]="!mappaActive && nightMode"
+                                        [class.btn-outline-light]="mappaActive && nightMode"
                                         (click)="onChangeVisualizzazione()">
                                     <i class="fas fa-list-ul"></i>
                                     Lista Emergenze
                                 </button>
                                 <button type="button"
                                         class="btn btn-sm btn-no-hover"
-                                        [class.btn-dark]="mapActive && !nightMode"
-                                        [class.btn-outline-dark]="!mapActive && !nightMode"
-                                        [class.btn-light]="mapActive && nightMode"
-                                        [class.btn-outline-light]="!mapActive && nightMode"
+                                        [class.btn-dark]="mappaActive && !nightMode"
+                                        [class.btn-outline-dark]="!mappaActive && !nightMode"
+                                        [class.btn-light]="mappaActive && nightMode"
+                                        [class.btn-outline-light]="!mappaActive && nightMode"
                                         (click)="onChangeVisualizzazione()">
                                     <i class="fas fa-globe-europe"></i>
                                     Mappa
@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="!mapActive">
+            <div *ngIf="!mappaActive">
                 <app-tabella-zone-emergenza [zoneEmergenza]="zoneEmergenza$ | async"
                                             [page]="page$ | async"
                                             [pageSize]="pageSize$ | async"
@@ -74,12 +74,12 @@
                 </app-tabella-zone-emergenza>
             </div>
         </div>
-        <div *ngIf="doubleMonitor || mapActive"
-             [class.col-12]="mapActive"
-             [class.col-6]="!mapActive">
+        <div *ngIf="doubleMonitor || mappaActive"
+             [class.col-12]="mappaActive"
+             [class.col-6]="!mappaActive">
             <div class="mt-2"
-                 [class.map-active]="mapActive"
-                 [class.map-double-monitor]="!mapActive">
+                 [class.map-active]="mappaActive"
+                 [class.map-double-monitor]="!mappaActive">
                 <app-maps [tastoZonaEmergenzaMappaActive]="tastoZonaEmergenzaMappaActive$ | async">
                 </app-maps>
             </div>
