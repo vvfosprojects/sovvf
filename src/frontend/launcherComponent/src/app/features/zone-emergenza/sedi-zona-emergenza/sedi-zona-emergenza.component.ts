@@ -6,10 +6,16 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { GetZonaEmergenzaById } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { AddDoa, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { NgWizardConfig, THEME } from 'ng-wizard';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Doa } from '../interface/doa.interface';
+import { DoaModalComponent } from './doa-modal/doa-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DoaForm } from '../interface/doa-form.interface';
 
 @Component({
     selector: 'app-sedi-zona-emergenza',
@@ -22,21 +28,52 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
     doubleMonitor: boolean;
     @Select(ZoneEmergenzaState.zonaEmergenzaById) zonaEmergenzaById$: Observable<ZonaEmergenza>;
     zonaEmergenzaById: ZonaEmergenza;
+    @Select(ZoneEmergenzaState.doa) doa$: Observable<Doa[]>;
+    doa: Doa[];
 
     idZonaEmergenza: string;
+
+    config: NgWizardConfig = {
+        theme: THEME.default,
+        selected: 0,
+        lang: { next: 'Avanti', previous: 'Indietro' },
+        cycleSteps: false,
+        toolbarSettings: {
+            toolbarExtraButtons: [
+                {
+                    text: 'SALVA MODIFICHE',
+                    class: 'btn btn-success',
+                    event: () => {
+                        this.saveCraZonaEmergenza();
+                    }
+                }
+            ],
+        }
+    };
+
+    craZonaEmergenzaForm: FormGroup;
+
 
     private subscriptions: Subscription = new Subscription();
 
     constructor(private route: ActivatedRoute,
-                private store: Store) {
+                private store: Store,
+                private formBuilder: FormBuilder,
+                private modalService: NgbModal) {
         this.getDoubleMonitorMode();
         this.getZonaEmergenzaById();
+        this.getDoa();
 
         this.idZonaEmergenza = this.route.snapshot.paramMap.get('id');
         if (!this.idZonaEmergenza) {
             this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
         }
         this.store.dispatch(new GetZonaEmergenzaById(this.idZonaEmergenza));
+        this.initForm();
+    }
+
+    get f(): any {
+        return this.craZonaEmergenzaForm?.controls;
     }
 
     ngOnInit(): void {
@@ -66,9 +103,81 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             this.zonaEmergenzaById$.subscribe((zonaEmergenza: ZonaEmergenza) => {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
+                    if (this.zonaEmergenzaById.cra) {
+                        this.patchForm();
+                    }
                 }
             })
         );
     }
 
+    getDoa(): void {
+        this.subscriptions.add(
+            this.doa$.subscribe((doa: Doa[]) => {
+                this.doa = doa;
+            })
+        );
+    }
+
+    initForm(): void {
+        this.craZonaEmergenzaForm = this.formBuilder.group({
+            codice: [null],
+            nome: [null, [Validators.required]],
+            indirizzo: [null, [Validators.required]],
+            latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            comandanteRegionale: [null, [Validators.required]],
+            responsabileDistrettoAreaColpita: [null, [Validators.required]],
+            responsabile: [null, [Validators.required]],
+            responsabileCampiBaseMezziOperativi: [null, [Validators.required]],
+            responsabileGestionePersonaleContratti: [null, [Validators.required]],
+            listaDoa: [null],
+        });
+    }
+
+    patchForm(): void {
+        this.craZonaEmergenzaForm.patchValue({
+            codice: this.zonaEmergenzaById.cra.codice,
+            nome: this.zonaEmergenzaById.cra.nome,
+            indirizzo: this.zonaEmergenzaById.cra.indirizzo,
+            latitudine: this.zonaEmergenzaById.cra.coordinate?.latitudine,
+            longitudine: this.zonaEmergenzaById.cra.coordinate?.longitudine,
+            comandanteRegionale: this.zonaEmergenzaById.cra.dirigenti[0],
+            responsabileDistrettoAreaColpita: this.zonaEmergenzaById.cra.dirigenti[1],
+            responsabile: this.zonaEmergenzaById.cra.dirigenti[2],
+            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaById.cra.dirigenti[3],
+            responsabileGestionePersonaleContratti: this.zonaEmergenzaById.cra.dirigenti[4],
+            listaDoa: this.zonaEmergenzaById.cra.listaDoa,
+        });
+    }
+
+    onAddDoa(): void {
+        const inserisciDoaModal = this.modalService.open(DoaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg',
+            centered: true
+        });
+
+        inserisciDoaModal.result.then((result: { esito: string, doa: DoaForm }) => {
+            switch (result.esito) {
+                case 'ok':
+                    this.addDoa(result.doa);
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    addDoa(doa: DoaForm): void {
+        this.store.dispatch(new AddDoa(doa));
+    }
+
+    saveCraZonaEmergenza(): void {
+        if (this.craZonaEmergenzaForm.valid) {
+            this.store.dispatch(new SaveCraZonaEmergenza());
+        }
+    }
 }

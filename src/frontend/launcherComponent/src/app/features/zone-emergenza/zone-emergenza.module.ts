@@ -21,6 +21,7 @@ import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emerge
 import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
 import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
 import { SediZonaEmergenzaComponent } from './sedi-zona-emergenza/sedi-zona-emergenza.component';
+import { DoaModalComponent } from './sedi-zona-emergenza/doa-modal/doa-modal.component';
 /**
  * Routing
  */
@@ -45,7 +46,8 @@ const ngWizardConfig: NgWizardConfig = {
         ModuloColonnaMobileComponent,
         DettaglioZonaEmergenzaComponent,
         ZonaEmergenzaModalComponent,
-        SediZonaEmergenzaComponent
+        SediZonaEmergenzaComponent,
+        DoaModalComponent
     ],
     imports: [
         CommonModule,
