@@ -32,7 +32,7 @@ namespace SO115App.Persistence.MongoDB.Mappings
             BsonClassMap.RegisterClassMap<CraModel>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Codice)
+                cm.MapIdMember(c => c.Id)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });

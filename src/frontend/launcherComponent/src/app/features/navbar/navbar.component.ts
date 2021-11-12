@@ -25,6 +25,7 @@ import { NotificheState } from '../../shared/store/states/notifiche/notifiche.st
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { NavbarState } from './store/states/navbar.state';
+import { TipoNotifica } from '../../shared/enum/tipo-notifica.enum';
 
 @Component({
     selector: 'app-navbar',
@@ -160,6 +161,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setNotificheLette(): void {
         this.store.dispatch(new SetNotificheLette());
+    }
+
+    onNotificaSelezionata(notifica: NotificaInterface): void {
+        switch (notifica.tipo) {
+            case TipoNotifica.TrasferimentoChiamata:
+                break;
+            case TipoNotifica.AllertaEmergenza:
+                this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
+                break;
+            case TipoNotifica.InsertEmergenza:
+                this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
+                break;
+            case TipoNotifica.UpdateEmergenza:
+                this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
+                break;
+        }
     }
 
     onChiamateInterventi(): void {

@@ -41,7 +41,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
 
             foreach (var evento in emergenza.ListaEventi)
                 command.InfoEmergenza.AddEvento(evento);
-            
+
+
             command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
 
             if (emergenza.ListaModuliImmediata == null && command.InfoEmergenza.ListaModuliImmediata != null)
