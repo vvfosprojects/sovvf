@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { AddDoa, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { AddDoa, DeleteDoa, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -121,7 +121,6 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     initForm(): void {
         this.craZonaEmergenzaForm = this.formBuilder.group({
-            codice: [null],
             nome: [null, [Validators.required]],
             indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
@@ -137,16 +136,15 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     patchForm(): void {
         this.craZonaEmergenzaForm.patchValue({
-            codice: this.zonaEmergenzaById.cra.codice,
             nome: this.zonaEmergenzaById.cra.nome,
             indirizzo: this.zonaEmergenzaById.cra.indirizzo,
             latitudine: this.zonaEmergenzaById.cra.coordinate?.latitudine,
             longitudine: this.zonaEmergenzaById.cra.coordinate?.longitudine,
-            comandanteRegionale: this.zonaEmergenzaById.cra.dirigenti[0],
-            responsabileDistrettoAreaColpita: this.zonaEmergenzaById.cra.dirigenti[1],
-            responsabile: this.zonaEmergenzaById.cra.dirigenti[2],
-            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaById.cra.dirigenti[3],
-            responsabileGestionePersonaleContratti: this.zonaEmergenzaById.cra.dirigenti[4],
+            comandanteRegionale: this.zonaEmergenzaById.dirigenti[0],
+            responsabileDistrettoAreaColpita: this.zonaEmergenzaById.dirigenti[1],
+            responsabile: this.zonaEmergenzaById.dirigenti[2],
+            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaById.dirigenti[3],
+            responsabileGestionePersonaleContratti: this.zonaEmergenzaById.dirigenti[4],
             listaDoa: this.zonaEmergenzaById.cra.listaDoa,
         });
     }
@@ -173,6 +171,10 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     addDoa(doa: DoaForm): void {
         this.store.dispatch(new AddDoa(doa));
+    }
+
+    deleteDoa(codiceDoa: string): void {
+        this.store.dispatch(new DeleteDoa(codiceDoa));
     }
 
     saveCraZonaEmergenza(): void {

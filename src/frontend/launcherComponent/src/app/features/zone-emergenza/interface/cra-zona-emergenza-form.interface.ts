@@ -1,7 +1,6 @@
 import { Doa } from './doa.interface';
 
 export interface CraZonaEmergenzaForm {
-    codice?: string;
     nome: string;
     latitudine: number;
     longitudine: number;

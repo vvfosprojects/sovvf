@@ -81,7 +81,8 @@
                         <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
                                        [nuoveNotifiche]="nuoveNotifiche$ | async"
                                        [nightMode]="nightMode"
-                                       (notificheLette)="setNotificheLette()">
+                                       (notificheLette)="setNotificheLette()"
+                                       (notificaSelezionata)="onNotificaSelezionata($event)">
                         </app-notifiche>
                     </div>
                 </div>
