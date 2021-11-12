@@ -85,6 +85,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
+            if(sede.Descrizione.Equals("CENTRALE"))
+                sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+
             return sede;
         }
 
