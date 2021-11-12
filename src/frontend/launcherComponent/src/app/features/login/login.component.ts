@@ -12,6 +12,7 @@ import { Utente } from '../../shared/model/utente.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -23,6 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     loading: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     @Select(AuthState.currentUser) currentUser$: Observable<Utente>;
 
     loginForm: FormGroup;
@@ -46,6 +49,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                     this.loginVisible = true;
                 }
             })
+        );
+        this.subscription.add(
+            this.doubleMonitor$.subscribe((doubleMonitor: boolean) => this.doubleMonitor = doubleMonitor)
         );
     }
 
