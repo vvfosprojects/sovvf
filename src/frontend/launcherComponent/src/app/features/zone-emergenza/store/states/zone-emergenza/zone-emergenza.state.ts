@@ -41,6 +41,8 @@ import { Doa } from '../../../interface/doa.interface';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { Cra } from '../../../interface/cra.interface';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { PcaForm } from '../../../interface/pca-zona-emergenza-form.interface';
+import { DoaForm } from '../../../interface/doa-form.interface';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -72,7 +74,13 @@ export interface ZoneEmergenzaStateModel {
         errors: any
     };
     doaForm: {
-        model: CraZonaEmergenzaForm,
+        model: DoaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    pcaForm: {
+        model: PcaForm,
         dirty: boolean,
         status: string,
         errors: any
@@ -113,6 +121,12 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
         errors: {}
     },
     doaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    pcaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -188,7 +202,7 @@ export class ZoneEmergenzaState {
                 new SetZoneEmergenza(response.dataArray),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch(new StopLoadingZoneEmergenza());
         });
     }
@@ -209,7 +223,7 @@ export class ZoneEmergenzaState {
                 new SetZonaEmergenzaById(response.emergenza),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch(new StopLoadingZoneEmergenza());
         });
     }
@@ -236,14 +250,14 @@ export class ZoneEmergenzaState {
     }
 
     @Action(GetTipologieEmergenza)
-    getTipologieEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: GetZoneEmergenza): void {
+    getTipologieEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
         dispatch(new StartLoadingTipologieEmergenza());
         this.zoneEmergenzaService.getTipologieEmergenze().subscribe((response: { listaTipologie: TipologiaEmergenza[] }) => {
             dispatch([
                 new SetTipologieEmergenza(response.listaTipologie),
                 new StopLoadingTipologieEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch(new StopLoadingTipologieEmergenza());
         });
     }
@@ -314,7 +328,7 @@ export class ZoneEmergenzaState {
                 new SetMappaActiveValue(false),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new ResetZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
@@ -362,6 +376,8 @@ export class ZoneEmergenzaState {
             ),
             formValue.listaEventi,
             formValue.annullata,
+            formValue.allertata,
+            formValue.dirigenti,
             formValue.listaModuliImmediata,
             formValue.listaModuliConsolidamento,
             formValue.listaModuliPotInt
@@ -372,7 +388,7 @@ export class ZoneEmergenzaState {
                 new ResetZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new ResetZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
@@ -408,6 +424,8 @@ export class ZoneEmergenzaState {
             ),
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.allertata,
+            zonaEmergenzaValue.dirigenti,
             moduliMobImmediata,
             zonaEmergenzaValue.listaModuliConsolidamento,
             zonaEmergenzaValue.listaModuliPotInt
@@ -417,7 +435,7 @@ export class ZoneEmergenzaState {
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new StopLoadingZoneEmergenza()
             ]);
@@ -452,6 +470,8 @@ export class ZoneEmergenzaState {
             ),
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.allertata,
+            zonaEmergenzaValue.dirigenti,
             zonaEmergenzaValue.listaModuliImmediata,
             zonaEmergenzaValue.listaModuliConsolidamento,
             moduliMobPotInt
@@ -461,7 +481,7 @@ export class ZoneEmergenzaState {
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new StopLoadingZoneEmergenza()
             ]);
@@ -496,6 +516,8 @@ export class ZoneEmergenzaState {
             ),
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.allertata,
+            zonaEmergenzaValue.dirigenti,
             zonaEmergenzaValue.listaModuliImmediata,
             moduliMobConsolidamento,
             zonaEmergenzaValue.listaModuliPotInt
@@ -505,7 +527,7 @@ export class ZoneEmergenzaState {
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new StopLoadingZoneEmergenza()
             ]);
@@ -527,7 +549,7 @@ export class ZoneEmergenzaState {
                 new ResetAnnullaZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new ResetAnnullaZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
@@ -540,9 +562,17 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
         const formValue = state.allertaCONZonaEmergenzaForm.model;
+        const dirigenti = [
+            formValue.comandanteRegionale,
+            formValue.responsabileDistrettoAreaColpita,
+            formValue.responsabile,
+            formValue.responsabileCampiBaseMezziOperativi,
+            formValue.responsabileGestionePersonaleContratti,
+        ];
         const params = {
             id: formValue.id,
-            descrizioneEmergenza: formValue.descrizioneEmergenza
+            descrizioneEmergenza: formValue.descrizioneEmergenza,
+            dirigenti
         };
         this.zoneEmergenzaService.allertaEmergenzaCON(params).subscribe((response: ResponseInterface) => {
             dispatch([
@@ -550,7 +580,7 @@ export class ZoneEmergenzaState {
                 new ResetAllertaCONZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new ResetAllertaCONZonaEmergenzaForm(),
                 new StopLoadingZoneEmergenza()
@@ -639,17 +669,9 @@ export class ZoneEmergenzaState {
         // Costruzione oggetto CRA
         const craZonaEmergenzaFormValue = state.craZonaEmergenzaForm.model as CraZonaEmergenzaForm;
         const cra = {
-            codice: craZonaEmergenzaFormValue.codice,
             nome: craZonaEmergenzaFormValue.nome,
             coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
             indirizzo: craZonaEmergenzaFormValue.indirizzo,
-            dirigenti: [
-                craZonaEmergenzaFormValue.comandanteRegionale,
-                craZonaEmergenzaFormValue.responsabileDistrettoAreaColpita,
-                craZonaEmergenzaFormValue.responsabile,
-                craZonaEmergenzaFormValue.responsabileCampiBaseMezziOperativi,
-                craZonaEmergenzaFormValue.responsabileGestionePersonaleContratti,
-            ],
             listaDoa: [] // TODO: aggiungere listaDoa
         } as Cra;
 
@@ -677,6 +699,8 @@ export class ZoneEmergenzaState {
             ),
             zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.allertata,
+            zonaEmergenzaValue.dirigenti,
             zonaEmergenzaValue.listaModuliImmediata,
             zonaEmergenzaValue.listaModuliConsolidamento,
             zonaEmergenzaValue.listaModuliPotInt,
@@ -687,7 +711,7 @@ export class ZoneEmergenzaState {
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza()
             ]);
-        }, error => {
+        }, () => {
             dispatch([
                 new StopLoadingZoneEmergenza()
             ]);

@@ -1,8 +1,6 @@
 import { Localita } from '../../../shared/model/localita.model';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
-import { TreeviewItem } from 'ngx-treeview';
-import { TreeItem } from 'ngx-treeview/lib/models/treeview-item';
 import { Cra } from '../interface/cra.interface';
 
 export class ZonaEmergenza {
@@ -40,6 +38,14 @@ export class ZonaEmergenza {
          * Definisce se la Zona Emergenza è stata annullata
          */
         public annullata?: boolean,
+        /**
+         * Definisce se la Zona Emergenza è stata allertata al CON
+         */
+        public allertata?: boolean,
+        /**
+         * Dirigenti assegnati dalla Direzione Regionale quando viene allertato il CON
+         */
+        public dirigenti?: string[],
         /**
          * Moduli "mob_Immediata" assegnati alla Zona Emergenza
          */

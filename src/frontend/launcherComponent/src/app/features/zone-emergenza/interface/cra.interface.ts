@@ -2,11 +2,10 @@ import { Doa } from './doa.interface';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 
 export interface Cra {
-    codice: string;
+    id: string;
     nome: string;
     coordinate: Coordinate;
     indirizzo: string;
-    dirigenti: string[];
     listaDoa: Doa[];
 }
 
