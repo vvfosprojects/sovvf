@@ -50,7 +50,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
                 DataArrayStessaVia = resultStessaVia
             };
 
-            return null;
         }
     }
 }
