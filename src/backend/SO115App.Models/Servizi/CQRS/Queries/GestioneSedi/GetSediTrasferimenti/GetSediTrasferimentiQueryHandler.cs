@@ -17,7 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSediTrasferimenti
         {
             var lstSedi = _service.GetAll().Result;
 
-            var result = lstSedi.OrderBy(s => s.Codice).ToList();
+            var result = lstSedi.FindAll(s=>s.Codice.Contains("1000")).OrderBy(s => s.Codice).ToList();
 
             return new GetSediTrasferimentiResult() { DataArray = result };
         }
