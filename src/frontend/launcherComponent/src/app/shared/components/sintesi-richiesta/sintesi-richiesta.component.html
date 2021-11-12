@@ -425,7 +425,7 @@
                             <!-- II colonna Triage -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0"
                                  class="col-8">
-                                <div *ngIf="richiesta?.triageSummary?.length">
+                                <div *ngIf="richiesta?.triageSummary?.length" style="max-height: 170px;overflow-y: auto;">
                                     <app-triage-summary-sintesi-richiesta [triageSummary]="richiesta?.triageSummary"
                                                                           [pos]="richiesta?.dettaglioTipologia?.pos">
                                     </app-triage-summary-sintesi-richiesta>
