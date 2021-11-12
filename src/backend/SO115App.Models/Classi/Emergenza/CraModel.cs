@@ -5,6 +5,7 @@ namespace SO115App.Models.Classi.Emergenza
 {
     public class CraModel
     {
+        //Id MongoDB
         public string Id { get; set; }
         public string Nome { get; set; }
         public Coordinate Coordinate { get; set; }
