@@ -79,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Result.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
                     {
                         Codice = s.IdSquadra,
-                        Distaccamento = new Sede(lstSedi.Result.Find(sede => sede.Codice == s.CodiceSede).Descrizione),
+                        Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
                         Nome = s.IdSquadra,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
                         Membri = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
@@ -148,8 +148,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento.Codice) ?? true :
-                    query.Filtro.CodDistaccamentoSelezionato.Equals(mezzo.Mezzo.Distaccamento?.Codice);
+                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true :
+                    query.Filtro.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
 
                 bool genere = (query.Filtro.Autista == true || query.Filtro.Autista == null) ? query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true : mezzo.Mezzo.Genere.ToLower().Contains("av");
 
@@ -169,7 +169,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
                     .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                     .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
-                    .ThenBy(mezzo => mezzo.Mezzo.Distaccamento.Codice);
+                    .ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice);
                 //.ThenByDescending(mezzo => mezzo.IndiceOrdinamento);
             });
 
