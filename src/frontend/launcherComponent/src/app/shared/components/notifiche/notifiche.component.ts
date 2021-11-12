@@ -13,6 +13,7 @@ export class NotificheComponent implements OnInit {
 
     @Input() listaNotifiche: NotificaInterface[];
     @Input() nuoveNotifiche: number;
+    @Input() nightMode: boolean;
 
     @Output() notificheLette: EventEmitter<boolean> = new EventEmitter<boolean>();
 
