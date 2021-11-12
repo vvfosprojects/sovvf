@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommand.cs" company="CNVVF">
+// <copyright file="AddInterventoFromSurvey123.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,21 +19,18 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace DomainModel.CQRS.Commands.AddIntervento
+namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 {
-    public class AddInterventoCommand
+    public class AddInterventoFromSurvey123Command
     {
-        public Intervento Chiamata { get; set; }
+        public ChiamataFromSurvey123 Chiamata { get; set; }
 
         public string CodiceSede { get; set; }
 
         public string CodUtente { get; set; }
 
         public RichiestaAssistenza Intervento { get; set; }
-
-        public SintesiRichiesta sintesi { get; set; }
 
         public string[] CodCompetenze { get; set; }
     }

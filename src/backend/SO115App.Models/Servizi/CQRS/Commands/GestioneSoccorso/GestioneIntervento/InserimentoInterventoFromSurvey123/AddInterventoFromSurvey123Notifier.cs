@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoNotifier.cs" company="CNVVF">
+// <copyright file="AddInterventoFromSurvey123Notifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using DomainModel.CQRS.Commands.AddIntervento;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Classi.Matrix;
@@ -25,9 +26,9 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
-namespace DomainModel.CQRS.Commands.AddIntervento
+namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 {
-    public class AddInterventoNotifier : ICommandNotifier<AddInterventoCommand>
+    public class AddInterventoFromSurvey123Notifier : ICommandNotifier<AddInterventoFromSurvey123Command>
     {
         private readonly INotifyInserimentoChiamata _sender;
         private readonly ICallMatrix _callMatrix;
@@ -35,7 +36,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly INotify_ESRIAddRichiesta _notify_ESRIAddRichiesta;
         private readonly IMappingESRIMessage _mappingESRIMessage;
 
-        public AddInterventoNotifier(INotifyInserimentoChiamata sender,
+        public AddInterventoFromSurvey123Notifier(INotifyInserimentoChiamata sender,
                                      ICallMatrix callMatrix,
                                      IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
                                      INotify_ESRIAddRichiesta notify_ESRIAddRichiesta,
@@ -48,18 +49,22 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             _mappingESRIMessage = mappingESRIMessage;
         }
 
-        public void Notify(AddInterventoCommand command)
+        public void Notify(AddInterventoFromSurvey123Command command)
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
-            
-            command.sintesi = sintesi;
-            _sender.SendNotification(command);
+
+            var commandInserimentoChiamata = new AddInterventoCommand() 
+            { 
+                sintesi = sintesi
+            };
+
+            _sender.SendNotification(commandInserimentoChiamata);
 
             var infoESRI = _mappingESRIMessage.Map(sintesi);
 
             _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
 
-            var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
+            var messaggio = $"E' stato registrato un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice} . Fonte Survey123";
             var infoMatrix = new MessageMatrix()
             {
                 Messaggio = messaggio,

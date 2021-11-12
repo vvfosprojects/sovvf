@@ -124,10 +124,6 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         return description;
     }
 
-    stepChanged(event: any): void {
-        // TODO: logica prossimo step wizard
-    }
-
     isSelezionatoModulo(idModulo: string): boolean {
         return !!(this.moduliSelezionati.filter((m: ModuloColonnaMobile) => m.id === idModulo)[0]);
     }

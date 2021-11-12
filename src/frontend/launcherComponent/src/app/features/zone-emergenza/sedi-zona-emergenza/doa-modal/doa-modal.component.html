@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Creazione DOA' | uppercase }}
+    </h4>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="doaForm" ngxsForm="zoneEmergenza.doaForm">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome"
+                   class="form-control"
+                   type="text"
+                   placeholder="Nome"
+                   formControlName="nome"/>
+        </div>
+        <div class="form-group">
+            <label for="indirizzo">Indirizzo</label>
+            <input id="indirizzo"
+                   class="form-control"
+                   type="text"
+                   placeholder="Indirizzo"
+                   formControlName="indirizzo"/>
+        </div>
+        <div class="form-group">
+            <label for="latitudine">Latitudine</label>
+            <input id="latitudine"
+                   class="form-control"
+                   type="tel"
+                   placeholder="Latitudine"
+                   formControlName="latitudine"/>
+        </div>
+        <div class="form-group">
+            <label for="longitudine">Longitudine</label>
+            <input id="longitudine"
+                   class="form-control"
+                   type="tel"
+                   placeholder="Longitudine"
+                   formControlName="longitudine"/>
+        </div>
+        <div class="form-group">
+            <label for="dirigente">Dirigente</label>
+            <textarea id="dirigente"
+                      class="form-control"
+                      type="text"
+                      placeholder="Dirigente"
+                      formControlName="dirigente">
+            </textarea>
+        </div>
+        <div class="form-group">
+            <label for="listaModuliColonnaMobile">Moduli Colonna Mobile</label>
+            <ng-select id="listaModuliColonnaMobile"
+                       [items]="['Modulo 1', 'Modulo 2', 'Modulo 3', 'Modulo 4']"
+                       [multiple]="true"
+                       [hideSelected]="true"
+                       placeholder="Moduli Colonna Mobile"
+                       formControlName="listaModuliColonnaMobile">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="listaComuniInteressati">Lista Comuni Interessati</label>
+            <ng-select id="listaComuniInteressati"
+                       [items]="['Comune 1', 'Comune 2', 'Comune 3', 'Comune 4']"
+                       [multiple]="true"
+                       [hideSelected]="true"
+                       placeholder="Lista Comuni Interessati"
+                       formControlName="listaComuniInteressati">
+            </ng-select>
+        </div>
+    </form>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+            (click)="onInserisciDoa()"
+            [disabled]="!doaForm?.valid">
+        {{ 'Conferma' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+</div>

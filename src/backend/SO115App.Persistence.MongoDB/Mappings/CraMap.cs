@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommand.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.Models.Classi.Emergenza;
 
-namespace DomainModel.CQRS.Commands.AddIntervento
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    public class AddInterventoCommand
+    internal static class CraMap
     {
-        public Intervento Chiamata { get; set; }
-
-        public string CodiceSede { get; set; }
-
-        public string CodUtente { get; set; }
-
-        public RichiestaAssistenza Intervento { get; set; }
-
-        public SintesiRichiesta sintesi { get; set; }
-
-        public string[] CodCompetenze { get; set; }
+        public static void Map()
+        {
+            BsonClassMap.RegisterClassMap<CraModel>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Codice)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
     }
 }

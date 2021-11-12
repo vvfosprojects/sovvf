@@ -2,33 +2,45 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
+    AddDoa,
     AddZonaEmergenza,
     AllertaCONZonaEmergenza,
     AnnullaZonaEmergenza,
+    DeleteDoa,
     EditZonaEmergenza,
-    GetTipologieEmergenza, GetZonaEmergenzaById,
+    GetTipologieEmergenza,
+    GetZonaEmergenzaById,
     GetZoneEmergenza,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
+    ResetDoaForm,
     ResetZonaEmergenzaForm,
+    SaveCraZonaEmergenza,
     SetMappaActiveValue,
-    SetTipologieEmergenza, SetZonaEmergenzaById,
+    SetTipologieEmergenza,
+    SetZonaEmergenzaById,
     SetZoneEmergenza,
     StartLoadingTipologieEmergenza,
     StartLoadingZoneEmergenza,
     StopLoadingTipologieEmergenza,
-    StopLoadingZoneEmergenza, UpdateModuliMobConsolidamentoZonaEmergenza,
-    UpdateModuliMobImmediataZonaEmergenza, UpdateModuliMobPotIntZonaEmergenza,
+    StopLoadingZoneEmergenza,
+    UpdateModuliMobConsolidamentoZonaEmergenza,
+    UpdateModuliMobImmediataZonaEmergenza,
+    UpdateModuliMobPotIntZonaEmergenza,
 } from '../../actions/zone-emergenza/zone-emergenza.actions';
-import { ZonaEmergenzaForm } from '../../../../../shared/interface/forms/zona-emergenza-form.interface';
+import { ZonaEmergenzaForm } from '../../../interface/zona-emergenza-form.interface';
 import { Localita } from '../../../../../shared/model/localita.model';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { AnnullaZonaEmergenzaForm } from '../../../../../shared/interface/forms/annulla-zona-emergenza-form.interface';
-import { AllertaCONZonaEmergenzaForm } from '../../../../../shared/interface/forms/allerta-CON-zona-emergenza-form.interface';
+import { AnnullaZonaEmergenzaForm } from '../../../interface/annulla-zona-emergenza-form.interface';
+import { AllertaCONZonaEmergenzaForm } from '../../../interface/allerta-CON-zona-emergenza-form.interface';
+import { CraZonaEmergenzaForm } from '../../../interface/cra-zona-emergenza-form.interface';
+import { Doa } from '../../../interface/doa.interface';
+import { append, patch, removeItem } from '@ngxs/store/operators';
+import { Cra } from '../../../interface/cra.interface';
+import { Coordinate } from '../../../../../shared/model/coordinate.model';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -53,6 +65,19 @@ export interface ZoneEmergenzaStateModel {
         status: string,
         errors: any
     };
+    craZonaEmergenzaForm: {
+        model: CraZonaEmergenzaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    doaForm: {
+        model: CraZonaEmergenzaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    doa: Doa[];
     loadingZoneEmergenza: boolean;
     loadingTipologieEmergenza: boolean;
     mappaActive: boolean;
@@ -81,6 +106,19 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
         status: '',
         errors: {}
     },
+    craZonaEmergenzaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    doaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    doa: [],
     loadingZoneEmergenza: false,
     loadingTipologieEmergenza: false,
     mappaActive: false
@@ -130,6 +168,11 @@ export class ZoneEmergenzaState {
     @Selector()
     static mappaActive(state: ZoneEmergenzaStateModel): boolean {
         return state.mappaActive;
+    }
+
+    @Selector()
+    static doa(state: ZoneEmergenzaStateModel): Doa[] {
+        return state.doa;
     }
 
     @Action(GetZoneEmergenza)
@@ -554,6 +597,100 @@ export class ZoneEmergenzaState {
     setMappaActiveValue({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetMappaActiveValue): void {
         patchState({
             mappaActive: action.value
+        });
+    }
+
+    @Action(ResetDoaForm)
+    resetDoaForm({ patchState }: StateContext<ZoneEmergenzaStateModel>): void {
+        patchState({
+            doaForm: ZoneEmergenzaStateModelDefaults.doaForm
+        });
+    }
+
+    @Action(AddDoa)
+    addDoa({ getState, setState }: StateContext<ZoneEmergenzaStateModel>, action: AddDoa): void {
+        const state = getState();
+        const craZonaEmergenzaFormValue = state.craZonaEmergenzaForm.model;
+        const doaLength = state.doa?.length;
+        const doa = action.doa;
+        doa.codice = craZonaEmergenzaFormValue.nome.replace(' ', '') + '-' + (doaLength + 1);
+        setState(
+            patch({
+                doa: append([action.doa])
+            })
+        );
+    }
+
+    @Action(DeleteDoa)
+    deleteDoa({ setState }: StateContext<ZoneEmergenzaStateModel>, action: DeleteDoa): void {
+        const codice = action.codice;
+        setState(
+            patch({
+                doa: removeItem((d: Doa) => d.codice === codice)
+            })
+        );
+    }
+
+    @Action(SaveCraZonaEmergenza)
+    saveCraZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+
+        // Costruzione oggetto CRA
+        const craZonaEmergenzaFormValue = state.craZonaEmergenzaForm.model as CraZonaEmergenzaForm;
+        const cra = {
+            codice: craZonaEmergenzaFormValue.codice,
+            nome: craZonaEmergenzaFormValue.nome,
+            coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
+            indirizzo: craZonaEmergenzaFormValue.indirizzo,
+            dirigenti: [
+                craZonaEmergenzaFormValue.comandanteRegionale,
+                craZonaEmergenzaFormValue.responsabileDistrettoAreaColpita,
+                craZonaEmergenzaFormValue.responsabile,
+                craZonaEmergenzaFormValue.responsabileCampiBaseMezziOperativi,
+                craZonaEmergenzaFormValue.responsabileGestionePersonaleContratti,
+            ],
+            listaDoa: [] // TODO: aggiungere listaDoa
+        } as Cra;
+
+        const zonaEmergenzaValue = state.zonaEmergenzaById;
+        const zonaEmergenza = new ZonaEmergenza(
+            zonaEmergenzaValue.id,
+            zonaEmergenzaValue.codEmergenza,
+            zonaEmergenzaValue.codComandoRichiedente,
+            zonaEmergenzaValue.descrizione,
+            zonaEmergenzaValue.tipologia,
+            new Localita(
+                {
+                    latitudine: zonaEmergenzaValue.localita.coordinate.latitudine,
+                    longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
+                },
+                zonaEmergenzaValue.localita.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                zonaEmergenzaValue.localita.provincia,
+                zonaEmergenzaValue.localita.regione
+            ),
+            zonaEmergenzaValue.listaEventi,
+            zonaEmergenzaValue.annullata,
+            zonaEmergenzaValue.listaModuliImmediata,
+            zonaEmergenzaValue.listaModuliConsolidamento,
+            zonaEmergenzaValue.listaModuliPotInt,
+            cra
+        );
+        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new GetZoneEmergenza(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, error => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
         });
     }
 }

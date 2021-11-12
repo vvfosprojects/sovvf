@@ -1,4 +1,4 @@
-import { ModuloColonnaMobile } from '../../../features/zone-emergenza/interface/modulo-colonna-mobile.interface';
+import { ModuloColonnaMobile } from './modulo-colonna-mobile.interface';
 
 export interface ZonaEmergenzaForm {
     indirizzo: string;

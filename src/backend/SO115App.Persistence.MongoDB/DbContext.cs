@@ -136,6 +136,7 @@ namespace Persistence.MongoDB
 
             EmergenzaMap.Map();
             TipologieEmergenzaMap.Map();
+            CraMap.Map();
             BsonClassMap.RegisterClassMap<CreazioneEmergenza>();
             BsonClassMap.RegisterClassMap<ModificaEmergenza>();
             BsonClassMap.RegisterClassMap<AnnullamentoEmergenza>();
@@ -148,7 +149,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
-            BsonClassMap.RegisterClassMap<CraModel>();
+            
         }
 
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection

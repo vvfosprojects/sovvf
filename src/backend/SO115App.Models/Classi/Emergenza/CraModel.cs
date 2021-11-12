@@ -7,7 +7,7 @@ namespace SO115App.Models.Classi.Emergenza
     {
         public string Codice { get; set; }
         public string Nome { get; set; }
-        public Coordinate Coodinate { get; set; }
+        public Coordinate Coordinate { get; set; }
         public string Indirizzo { get; set; }
         public string[] Dirigenti { get; set; }
         public List<DoaModel> ListaDoa { get; set; }

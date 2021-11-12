@@ -1,6 +1,8 @@
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { SetZonaEmergenzaFromMappaActiveValue } from '../tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
+import { Doa } from '../../../interface/doa.interface';
+import { DoaForm } from '../../../interface/doa-form.interface';
 
 export class GetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Get Zone Emergenza';
@@ -111,4 +113,26 @@ export class SetMappaActiveValue {
 
     constructor(public value: boolean) {
     }
+}
+
+export class ResetDoaForm {
+    static readonly type = '[ZoneEmergenza] Reset Doa Form';
+}
+
+export class AddDoa {
+    static readonly type = '[ZoneEmergenza] Add Doa';
+
+    constructor(public doa: DoaForm) {
+    }
+}
+
+export class DeleteDoa {
+    static readonly type = '[ZoneEmergenza] Delete Doa';
+
+    constructor(public codice: string) {
+    }
+}
+
+export class SaveCraZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Save Cra Zona Emergenza';
 }
