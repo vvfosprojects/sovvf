@@ -76,20 +76,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList());
 
-                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Result.FindAll(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
+                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Result.Where(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
                     {
                         Codice = s.IdSquadra,
                         Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
                         Nome = s.IdSquadra,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
+                        Membri = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{m.FirstName} {m.LastName}",
                             Ruolo = m.Ruolo
                         }).ToList(),
-                        Turno = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra)).TurnoAttuale.ToCharArray()[0],
+                        Turno = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.TurnoAttuale.ToCharArray()[0] ?? 'X',
                     }).ToList());
 
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
